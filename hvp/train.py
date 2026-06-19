@@ -124,7 +124,8 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     cascade = HierarchicalCascade(cfg.topology, cfg.predictor).to(device).train()
     n_params = sum(p.numel() for p in tok.parameters()) + sum(p.numel() for p in cascade.parameters())
     tr, va = _loaders(cfg)
-    params = list(tok.parameters()) + list(cascade.parameters())
+    tok_params, cas_params = list(tok.parameters()), list(cascade.parameters())
+    params = tok_params + cas_params
     opt = build_optimizer(params, cfg.optim)
     steps = max_steps or cfg.optim.max_steps
     log_every = log_every or cfg.run.log_every
@@ -161,7 +162,11 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
             opt.zero_grad(set_to_none=True)
             continue
         if cfg.optim.grad_clip > 0:
-            torch.nn.utils.clip_grad_norm_(params, cfg.optim.grad_clip)
+            # clip the tokenizer and cascade SEPARATELY: a large predictor/rollout gradient must not
+            # throttle the recon (tokenizer) gradient through a shared global norm (P2.1 showed a big
+            # cascade gradient regressing recon ~1.9 dB under joint clipping).
+            torch.nn.utils.clip_grad_norm_(tok_params, cfg.optim.grad_clip)
+            torch.nn.utils.clip_grad_norm_(cas_params, cfg.optim.grad_clip)
         opt.step()
         last = m
         if step % log_every == 0 or step == steps - 1:
