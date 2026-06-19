@@ -50,3 +50,21 @@ def test_modes_diverge_after_several_steps():
     px = free_run(tok, cas, seed, n_steps=5, mode="pixel")
     lat = free_run(tok, cas, seed, n_steps=5, mode="latent")
     assert not torch.allclose(px[:, :, -1], lat[:, :, -1], atol=1e-4)
+
+
+def test_gmm_cascade_rollout_point_vs_sampled():
+    """A GMM-head cascade rolls out; the point (mode) rollout is deterministic, the sampled
+    rollout is stochastic (best-of-N path) — both finite."""
+    topo = TopologyConfig(image_size=32, ch_mult=(1, 2, 2, 2, 4, 4),
+                          temporal_downsample=(False, False, True, False, True), tap_after=(0, 2, 4))
+    cas = HierarchicalCascade(topo, PredictorConfig(dim=32, n_heads=4, n_layers=1,
+                                                    head="gmm", head_components=3)).eval()
+    tok = HierTokenizer(topo).eval()
+    seed = torch.randn(2, 3, 9, 32, 32)
+    torch.manual_seed(0); a = free_run(tok, cas, seed, n_steps=4, mode="pixel", sample=False)
+    torch.manual_seed(0); b = free_run(tok, cas, seed, n_steps=4, mode="pixel", sample=False)
+    s1 = free_run(tok, cas, seed, n_steps=4, mode="pixel", sample=True)
+    s2 = free_run(tok, cas, seed, n_steps=4, mode="pixel", sample=True)
+    assert a.shape == (2, 3, 4, 32, 32) and torch.isfinite(a).all()
+    assert torch.allclose(a, b)                                   # mode rollout deterministic
+    assert torch.isfinite(s1).all() and not torch.allclose(s1, s2)  # sampled rollout stochastic

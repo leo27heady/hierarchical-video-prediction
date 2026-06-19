@@ -24,6 +24,7 @@ from hvp.metrics import frames_to_strip, psnr, video_ssim
 from hvp.objectives import compute_oneshot_loss, compute_vae_loss
 from hvp.predictor.cascade import HierarchicalCascade
 from hvp.predictor.continuous import variance_explained
+from hvp.predictor.rollout import _pred_to_latents
 from hvp.tokenizer import build_tokenizer
 from hvp.wandblog import WandbLogger
 
@@ -89,17 +90,18 @@ def validate(tok, cascade, val_loader, cfg, device, max_batches=None) -> Tuple[D
         z = [zi.float() for zi in out.z]
         p_on = cascade(z, use_cascade=True)
         p_off = cascade(z, use_cascade=False)
-        z_pred = [p.permute(0, 4, 1, 2, 3).contiguous() for p in p_on]
+        z_pred = _pred_to_latents(cascade, [p.float() for p in p_on])
         recon_pred = tok.decoder.decode_depth(z_pred, n).float()
         pred, gt_next, persist = recon_pred[:, :, :-1], x[:, :, 1:], x[:, :, :-1]
         acc["val/pred_psnr"].append(psnr(pred, gt_next))
         acc["val/persist_psnr"].append(psnr(persist, gt_next))
         acc["val/pred_ssim"].append(video_ssim(pred, gt_next))
         acc["val/persist_ssim"].append(video_ssim(persist, gt_next))
+        hk, hc = cfg.predictor.head, cfg.predictor.head_components
         for s in range(n):
             acc[f"val/erank_s{s}"].append(effective_rank(z[s]))
-            acc[f"val/ve_on_s{s}"].append(variance_explained(p_on[s].float(), z[s])["ve_changed"])
-            acc[f"val/ve_off_s{s}"].append(variance_explained(p_off[s].float(), z[s])["ve_changed"])
+            acc[f"val/ve_on_s{s}"].append(variance_explained(p_on[s].float(), z[s], head=hk, n_components=hc)["ve_changed"])
+            acc[f"val/ve_off_s{s}"].append(variance_explained(p_off[s].float(), z[s], head=hk, n_components=hc)["ve_changed"])
         if not rows:
             for j in range(min(cfg.run.n_log_images, x.shape[0])):
                 rows.append((j, "GT", frames_to_strip(x[j, :, 1:])))

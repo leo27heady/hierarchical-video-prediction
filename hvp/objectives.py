@@ -109,7 +109,7 @@ def compute_oneshot_loss(tokenizer, cascade, x, cfg: Config, step: int):
     pw = cfg.predictor.stage_pred_weight
     pred_loss = x.new_zeros(())
     for s, p in enumerate(preds):
-        pl = predictive_loss(p, z_det[s], cfg.predictor.head)
+        pl = predictive_loss(p, z_det[s], cfg.predictor.head, cfg.predictor.head_components)
         w = pw[s] if s < len(pw) else 1.0
         pred_loss = pred_loss + w * pl
         m[f"pred_s{s}"] = float(pl.detach())

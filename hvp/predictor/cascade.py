@@ -18,6 +18,7 @@ from hvp.attention.masks import temporal_causal_mask, windowed_causal_mask
 from hvp.attention.rope import Rotary3D
 from hvp.attention.sdpa import SelfAttention, _rms_norm
 from hvp.config import TopologyConfig
+from hvp.predictor.heads import head_out_dim
 from hvp.predictor.masks import CascadeMasks
 
 
@@ -73,10 +74,10 @@ class CascadeStagePredictor(nn.Module):
     def __init__(self, in_ch: int, thw: Tuple[int, int, int], *, dim: int, n_heads: int,
                  n_layers: int, head: str, has_parent: bool, parent_dim: int,
                  mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0, rope_base: float = 10000.0,
-                 t_window: int = 0, s_window: int = 0):
+                 t_window: int = 0, s_window: int = 0, head_components: int = 4):
         super().__init__()
         T, H, W = thw
-        self.thw, self.in_ch, self.head_kind = thw, in_ch, head
+        self.thw, self.in_ch, self.head_kind, self.head_components = thw, in_ch, head, head_components
         self.proj_in = nn.Linear(in_ch, dim)
         self.spatial = nn.Parameter(torch.zeros(H * W, dim))
         rope = Rotary3D(dim // n_heads, base=rope_base)
@@ -86,7 +87,7 @@ class CascadeStagePredictor(nn.Module):
             for _ in range(n_layers)
         )
         self.norm = nn.LayerNorm(dim)
-        self.head = nn.Linear(dim, in_ch if head == "l2" else 2 * in_ch)
+        self.head = nn.Linear(dim, head_out_dim(head, in_ch, head_components))
         self.register_buffer("self_mask", windowed_causal_mask(T, H, W, t_window, s_window), persistent=False)
 
     def forward(self, feat: torch.Tensor, parent: Optional[torch.Tensor], cross_mask) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -120,6 +121,7 @@ class HierarchicalCascade(nn.Module):
                 parent_dim=dims[s + 1] if s < self.N - 1 else dims[s],
                 mlp_ratio=pcfg.mlp_ratio, qk_norm=pcfg.qk_norm, dropout=pcfg.dropout,
                 rope_base=pcfg.rope_base, t_window=tw[s], s_window=sw[s],
+                head_components=pcfg.head_components,
             )
             for s in range(self.N)
         )

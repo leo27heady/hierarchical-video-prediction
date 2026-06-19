@@ -16,6 +16,7 @@ import torch.nn.functional as F
 from hvp.attention.blocks import SelfAttnBlock
 from hvp.attention.masks import temporal_causal_mask
 from hvp.attention.rope import Rotary3D
+from hvp.predictor.heads import head_mean, head_nll
 
 
 class ContinuousStagePredictor(nn.Module):
@@ -51,24 +52,20 @@ def _target(feat: torch.Tensor) -> torch.Tensor:
     return feat[:, :, 1:].permute(0, 2, 3, 4, 1)
 
 
-def predictive_loss(pred: torch.Tensor, feat: torch.Tensor, head: str = "l2") -> torch.Tensor:
-    tgt = _target(feat)
-    p = pred[:, :-1]
-    if head == "l2":
-        return F.mse_loss(p, tgt)
-    C = feat.shape[1]
-    mu, logvar = p[..., :C], p[..., C:].clamp(-8, 8)
-    return 0.5 * (logvar + (tgt - mu) ** 2 / logvar.exp()).mean()
+def predictive_loss(pred: torch.Tensor, feat: torch.Tensor, head: str = "l2",
+                    n_components: int = 4) -> torch.Tensor:
+    return head_nll(pred[:, :-1], _target(feat), head, feat.shape[1], n_components)
 
 
 @torch.no_grad()
-def variance_explained(pred: torch.Tensor, feat: torch.Tensor, changed_frac: float = 0.5) -> dict:
+def variance_explained(pred: torch.Tensor, feat: torch.Tensor, changed_frac: float = 0.5,
+                       head: str = "l2", n_components: int = 4) -> dict:
     """VE = 1 - MSE(pred, next)/MSE(persistence, next). Reported overall and on the most
-    'changed' positions (where persistence is a hard baseline). pred is the l2/mu output."""
+    'changed' positions (where persistence is a hard baseline). Uses the head's point estimate."""
     C = feat.shape[1]
     tgt = _target(feat)                       # (B,T-1,H,W,C)
     cur = feat[:, :, :-1].permute(0, 2, 3, 4, 1)
-    mu = pred[:, :-1, ..., :C]
+    mu = head_mean(pred[:, :-1], head, C, n_components)
     # per-position squared errors, reduced over channels
     err_pred = (mu - tgt).pow(2).mean(dim=-1)         # (B,T-1,H,W)
     err_persist = (cur - tgt).pow(2).mean(dim=-1)

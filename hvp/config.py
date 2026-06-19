@@ -106,7 +106,8 @@ class PredictorConfig:
     rope_base: float = 10000.0
     qk_norm: bool = True
     # --- head / conditioning ---
-    head: str = "l2"                             # "l2" | "gaussian"
+    head: str = "l2"                             # "l2" | "gaussian" | "gmm"
+    head_components: int = 4                      # GMM mixture components (head="gmm")
     conditioning: str = "cross_attn"             # "cross_attn" | "none"
     use_cascade: bool = True                     # if False, stages predict independently
     detach_parent: bool = True
