@@ -79,12 +79,20 @@ $PY -m pytest tests -q
 # G0 — the predictability gate (decisive, < a GPU-hr): is the MID latent predictable?
 $PY -m hvp.probes.continuous_predictability --ckpt logs/oneshot/last.pt --steps 800
 
-# one-shot training (tokenizer + cascade), with wandb logging + image tables
-$PY -m hvp.train --max-steps 3000 --set optim.batch_size=16 run.wandb=true run.wandb_name=run1
+# one-shot training from a config (tokenizer + cascade), wandb + image tables
+$PY -m hvp.train --config configs/base_64.yaml                  # main 64x64 run
+$PY -m hvp.train --config configs/dev.yaml                      # fast smoke (~1 min)
+$PY -m hvp.train --config configs/big_64.yaml --set optim.lr=2e-4   # + CLI override
 
 # pixel-space single-step eval (+ GT/Pred strip PNG)
 $PY scripts/eval_predict.py --ckpt logs/oneshot/last.pt --strip logs/predict_strip.png
 ```
+
+### Configs
+Every knob (model / training / data / logging / per-stage dims / depth / connections / optimizer /
+schedule) is a config field. `configs/_base.yaml` documents all defaults with comments; presets
+(`dev`, `base_64`, `big_64`) inherit via `_base_:` and override only what they change. Unknown keys are
+rejected (typo guard). Override anything on the CLI: `--set predictor.stage_dims=[192,256,256] optim.lr_schedule=warmup_cosine`.
 
 ### wandb
 Set `run.wandb=true` (online if `WANDB_API_KEY` is set, else `run.wandb_mode=offline`). Logged: all
@@ -113,8 +121,13 @@ docs/                ARCHITECTURE · PLAN · RESULTS · SESSION_SUMMARY
 
 ## Roadmap
 
-1. **De-blur**: longer/larger runs + a **GIVT-GMM distributional head** (continuous, multimodal) before SO(3).
-2. **Windowed BOT attention** — BOT (2304 tokens) is the compute bottleneck.
-3. **AR rollout stability** (v1.5): noised-conditioning + scheduled sampling to close the TF→AR drift.
-4. **SO(3) rotation** (unlock the dataset's Z-axis lock) paired with the distributional head + best-of-N eval.
-5. **Reversibility** integration (dissertation goal #3).
+The full V2 roadmap (honest state-of-the-union, 12 prioritized gaps, phases P0–P8 with falsifiable
+gates, eval-upgrade table, risks) is in **[`docs/PLAN_V2_ROADMAP.md`](docs/PLAN_V2_ROADMAP.md)**.
+Binding constraints, front-loaded:
+
+1. **P0 — eval + repro spine**: per-horizon/LPIPS/FVD/changed-region metrics + resumable checkpoints.
+2. **P1 — autoregressive rollout** + per-horizon drift instrumentation (the prediction-horizon gap; v1 horizon = 1).
+3. **P2 — anti-drift training**: scheduled sampling + noised-history conditioning (Diffusion-Forcing/Self-Forcing).
+4. **P3 — distributional head** (GMM→diffusion) wired through sampling + best-of-N (de-blur + multimodal honesty).
+5. **P4 — hierarchy-anchors-horizon** (the money result) + multi-seed error bars.
+6. **P5+ — SO(3) / windowed BOT attention / reversibility / joint-training escalation.**
