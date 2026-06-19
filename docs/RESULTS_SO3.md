@@ -101,6 +101,33 @@ But the **rollout drift gets WORSE, not better**, with 3× the training:
    escalation (train-what-you-test) is well-motivated. (Best-of-N is oracle-selected = a coverage upper
    bound, not deployable single-shot.)
 
+## 3d. P2.1 — the anti-drift lever EXISTS (clean A/B, matched recon)
+
+K=1 grad-enabled self-rollout (the cascade consumes its own detached prediction one step, supervised
+vs detached latents 2-ahead) vs an identical `lambda_rollout=0` control, SO(3)+GMM, 2000 steps,
+**recon matched at 28.07 dB** (after fixing the grad-clip coupling with per-module clipping):
+
+| changed-region PSNR | control | P2.1 | Δ |
+|---|---|---|---|
+| @h0 | 7.23 | 7.82 | +0.59 |
+| @h7 | 7.17 | 7.92 | +0.75 |
+| @h15 | 6.97 | 8.00 | **+1.04** |
+| @h23 | 7.08 | 7.97 | **+0.89** |
+| mean AR−rotation | −0.86 | −0.15 | +0.71 |
+| best-of-8 (deployed) | 8.38 | **8.72** | +0.34 |
+
+**The win GROWS with horizon** (+0.6 early → +0.9–1.0 late) — the anti-drift signature: P2.1 stays flat
+(~8.0) while the control drifts (8.0→7.0). It also wins the deployed best-of-8 (+0.34 dB) at matched
+recon. **The lever is real and clean.** Two implementation notes: (1) the v1 run regressed recon 1.9 dB
+because the large cascade gradient throttled recon through the *global* grad clip — fixed by clipping
+tokenizer and cascade SEPARATELY; (2) the rollout term mildly over-confidences the GMM (best-of-N gain
++0.76 vs control +0.98), the variance-gaming optimum — to be floored in P2.3.
+
+**Honest caveats:** the effect is modest (+0.3 to +1.0 dB), and P2.1 still does not *beat* the rotation
+null in absolute terms (mean AR−rotation −0.15, close). K=1 within-window does not yet supervise the
+position rollout feeds back (#4). **Next = P2.2** (K=2 compounding + honest last-position supervision),
+which the plan predicts is where the predecessor's +0.151 is decisively beaten.
+
 ## 4. Takeaways
 
 - Harder data is the unlock: it makes the predictive task real and the drift problem measurable.
