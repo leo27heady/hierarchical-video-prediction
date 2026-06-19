@@ -92,6 +92,24 @@ class VAEConfig:
 
 
 @dataclass(frozen=True)
+class SchedConfig:
+    """Anti-drift (P2) grad-enabled self-rollout schedule. All defaults = today's behavior (no-op),
+    so configs that omit `predictor.sched` are byte-identical to before."""
+    rollout_enabled: bool = False
+    rollout_steps: int = 1                        # K feedback steps (seq[i] predicts shift i+2)
+    lambda_rollout: float = 0.0                   # weight of the self-rollout term (ramped)
+    rollout_warmup_steps: int = 2000              # ramp lambda_rollout 0->target, AFTER pred warmup
+    sample_rollout: bool = False                  # feedback via head_mode (False) | head_sample (True)
+    detach_feedback: bool = True                  # stop-grad on fed-back latents (grad truncation)
+
+    def validate(self) -> None:
+        if self.rollout_steps < 1:
+            raise ValueError("predictor.sched.rollout_steps must be >= 1")
+        if self.lambda_rollout < 0:
+            raise ValueError("predictor.sched.lambda_rollout must be >= 0")
+
+
+@dataclass(frozen=True)
 class PredictorConfig:
     # --- per-stage capacity (scalars broadcast to all stages; tuples override per stage bot..top) ---
     dim: int = 128
@@ -119,6 +137,7 @@ class PredictorConfig:
     lambda_pred: float = 0.25
     pred_warmup_steps: int = 1000                # ramp lambda 0->lambda_pred
     stage_pred_weight: Tuple[float, ...] = (1.0, 2.0, 2.0)  # bot, mid, top
+    sched: SchedConfig = field(default_factory=SchedConfig)  # P2 anti-drift self-rollout (default no-op)
 
     def windows(self, n_stages: int) -> Tuple[Tuple[int, ...], Tuple[int, ...]]:
         tw = self.stage_t_window or tuple(0 for _ in range(n_stages))
@@ -197,6 +216,7 @@ class Config:
     def validate(self) -> "Config":
         self.topology.validate()
         self.predictor.resolved(self.topology.n_stages())
+        self.predictor.sched.validate()
         if self.data.image_size != self.topology.image_size:
             raise ValueError("data.image_size must match topology.image_size")
         if len(self.predictor.stage_pred_weight) != self.topology.n_stages():

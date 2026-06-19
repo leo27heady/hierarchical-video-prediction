@@ -16,6 +16,7 @@ import torch.nn.functional as F
 
 from hvp.config import Config
 from hvp.predictor.continuous import predictive_loss
+from hvp.predictor.rollout import unroll_latent
 from hvp.tokenizer import HierTokenizer, TokenizerOut
 
 
@@ -99,6 +100,35 @@ def lambda_pred_at(step: int, pcfg) -> float:
     return pcfg.lambda_pred * min(1.0, step / pcfg.pred_warmup_steps)
 
 
+def lambda_rollout_at(step: int, pcfg) -> float:
+    """Ramp the P2 self-rollout weight 0->target over rollout_warmup_steps, STARTING only after the
+    predictive warmup (so the encoder/cascade have settled before the harder term turns on)."""
+    sc = pcfg.sched
+    if not sc.rollout_enabled:
+        return 0.0
+    if sc.rollout_warmup_steps <= 0:
+        return sc.lambda_rollout
+    prog = (step - pcfg.pred_warmup_steps) / sc.rollout_warmup_steps
+    return sc.lambda_rollout * min(1.0, max(0.0, prog))
+
+
+def compute_rollout_loss(cascade, z_det, pcfg) -> torch.Tensor:
+    """P2 self-rollout: the cascade consumes its OWN detached predictions for K steps and is supervised
+    (head_nll) against the DETACHED encoder latents shifted k+2 ahead. Within-window targets only
+    (K=1 needs no extra frames); positions whose shift falls outside the window are skipped."""
+    sc = pcfg.sched
+    pw, head, K = pcfg.stage_pred_weight, pcfg.head, pcfg.head_components
+    seq = unroll_latent(cascade, z_det, sc.rollout_steps, sc.sample_rollout, sc.detach_feedback)
+    loss = z_det[0].new_zeros(())
+    for k, rp in enumerate(seq):
+        shift = k + 2
+        for s in range(len(z_det)):
+            if z_det[s].shape[2] > shift:
+                w = pw[s] if s < len(pw) else 1.0
+                loss = loss + w * predictive_loss(rp[s], z_det[s], head, K, shift=shift)
+    return loss
+
+
 def compute_oneshot_loss(tokenizer, cascade, x, cfg: Config, step: int):
     """Detached-target one-shot: encoder shaped by recon (+VICReg); the cascade predicts
     the encoder's own DETACHED latents (so prediction never collapses the encoder)."""
@@ -116,5 +146,34 @@ def compute_oneshot_loss(tokenizer, cascade, x, cfg: Config, step: int):
     total = recon_total + lam * pred_loss
     m["pred_loss"] = float(pred_loss.detach())
     m["lambda"] = lam
+
+    # --- P2 anti-drift self-rollout term (off by default => byte-identical to before) ---
+    sc = cfg.predictor.sched
+    lam_roll = lambda_rollout_at(step, cfg.predictor)
+    if sc.rollout_enabled:
+        if lam_roll > 0:
+            roll_loss = compute_rollout_loss(cascade, z_det, cfg.predictor)
+            total = total + lam_roll * roll_loss
+        else:                                          # warmup: log the proxy without building grad
+            with torch.no_grad():
+                roll_loss = compute_rollout_loss(cascade, z_det, cfg.predictor)
+        # Live diagnostic (interpret COMPARATIVELY: P2.1 run vs the lambda_rollout=0 control, not by
+        # absolute sign). `rollout_loss` is the clean train-what-you-test signal (it exactly matches the
+        # deployed latent rollout). The TF-2 baseline below feeds the GT-shifted stack, which is itself
+        # positionally off-distribution for the cascade, so the proxy's absolute sign is confounded — the
+        # AUTHORITATIVE gate is the offline scripts/eval_rollout.py PIXEL changed_psnr@h / TF->AR gap.
+        with torch.no_grad():
+            pw, head, K = cfg.predictor.stage_pred_weight, cfg.predictor.head, cfg.predictor.head_components
+            gt_next = [torch.cat([z[:, :, 1:], z[:, :, -1:]], dim=2) for z in z_det]  # GT intermediate stack
+            tf_preds = cascade(gt_next)
+            tf2 = total.new_zeros(())
+            for s in range(len(z_det)):
+                if z_det[s].shape[2] > 2:
+                    w = pw[s] if s < len(pw) else 1.0
+                    tf2 = tf2 + w * predictive_loss(tf_preds[s], z_det[s], head, K, shift=2)
+        m["rollout_loss"] = float(roll_loss.detach())
+        m["tf2_loss"] = float(tf2)
+        m["sf_tf_ar_proxy"] = float(roll_loss.detach() - tf2)
+    m["lambda_rollout"] = lam_roll
     m["loss"] = float(total.detach())
     return total, m, out, preds

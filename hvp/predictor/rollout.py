@@ -35,6 +35,31 @@ def _pred_to_latents(cascade, preds: List[torch.Tensor], sample: bool = False) -
     return out
 
 
+def unroll_latent(cascade, z0: List[torch.Tensor], n_steps: int, sample: bool = False,
+                  detach_feedback: bool = True) -> List[List[torch.Tensor]]:
+    """Grad-capable latent self-rollout core (NO decode) — the P2 anti-drift primitive.
+
+    Mirrors free_run's whole-stack latent feedback (z <- predicted stack), but returns the per-step
+    head outputs so the caller can supervise each. ``seq[i]`` = cascade applied after ``i+1`` feedback
+    steps, i.e. it predicts the latent stack ``i+2`` positions ahead of ``z0``. With
+    ``detach_feedback`` (default) each fed-back latent is stop-grad'd, so gradient flows only through
+    the single cascade pass that produced ``seq[i]`` (the stochastic one-step gradient truncation that
+    bounds cost to ~one extra forward+back per step). The targets stay detached, so this can never push
+    gradient into the encoder.
+    """
+    fb = _pred_to_latents(cascade, cascade(z0), sample)
+    if detach_feedback:
+        fb = [zi.detach() for zi in fb]
+    seq: List[List[torch.Tensor]] = []
+    for _ in range(n_steps):
+        preds = cascade(fb)
+        seq.append(preds)
+        fb = _pred_to_latents(cascade, preds, sample)
+        if detach_feedback:
+            fb = [zi.detach() for zi in fb]
+    return seq
+
+
 @torch.no_grad()
 def free_run(tok, cascade, seed: torch.Tensor, n_steps: int, mode: str = "pixel",
              sample: bool = False) -> torch.Tensor:

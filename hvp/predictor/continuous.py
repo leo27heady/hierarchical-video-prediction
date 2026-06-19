@@ -53,8 +53,11 @@ def _target(feat: torch.Tensor) -> torch.Tensor:
 
 
 def predictive_loss(pred: torch.Tensor, feat: torch.Tensor, head: str = "l2",
-                    n_components: int = 4) -> torch.Tensor:
-    return head_nll(pred[:, :-1], _target(feat), head, feat.shape[1], n_components)
+                    n_components: int = 4, shift: int = 1) -> torch.Tensor:
+    """Supervise position t's prediction against frame t+shift. shift=1 = next-frame (default);
+    shift>1 = multi-step-ahead (the self-rollout term predicts shift=k+2 after k feedback steps)."""
+    tgt = feat[:, :, shift:].permute(0, 2, 3, 4, 1)
+    return head_nll(pred[:, :-shift], tgt, head, feat.shape[1], n_components)
 
 
 @torch.no_grad()

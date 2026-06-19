@@ -170,8 +170,9 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
             scal.update({"train/grad_norm": gn, "train/it_per_s": ips, "train/lr": cur_lr})
             logger.log(scal, step)
             ps = " ".join(f"p{s}={m.get(f'pred_s{s}',0):.3f}" for s in range(cfg.topology.n_stages()))
+            roll = f" roll {m['rollout_loss']:.2f} lr {m['lambda_rollout']:.3f} sf-tf {m['sf_tf_ar_proxy']:+.3f}" if "sf_tf_ar_proxy" in m else ""
             print(f"[{step:5d}] loss {m['loss']:.3f} recon {m['recon']:.3f} psnr {m['psnr_full']:5.2f} "
-                  f"d{m['active_depth']} lam {m['lambda']:.2f} gn {gn:5.1f} pred[{ps}]")
+                  f"d{m['active_depth']} lam {m['lambda']:.2f} gn {gn:5.1f} pred[{ps}]{roll}")
         if step > 0 and (step % cfg.run.val_every == 0):
             vmet, vrows = validate(tok, cascade, va, cfg, device)
             logger.log(vmet, step)
