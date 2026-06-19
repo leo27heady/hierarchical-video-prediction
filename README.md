@@ -86,6 +86,12 @@ $PY -m hvp.train --config configs/big_64.yaml --set optim.lr=2e-4   # + CLI over
 
 # pixel-space single-step eval (+ GT/Pred strip PNG)
 $PY scripts/eval_predict.py --ckpt logs/oneshot/last.pt --strip logs/predict_strip.png
+
+# autoregressive rollout / per-horizon drift eval (P1) on the long-horizon set
+$PY scripts/eval_rollout.py --ckpt logs/oneshot/last.pt --strip logs/rollout_strip.png
+
+# resume a killed run
+$PY -m hvp.train --config configs/base_64.yaml --resume logs/oneshot/last.pt
 ```
 
 ### Configs
@@ -125,8 +131,8 @@ The full V2 roadmap (honest state-of-the-union, 12 prioritized gaps, phases P0�
 gates, eval-upgrade table, risks) is in **[`docs/PLAN_V2_ROADMAP.md`](docs/PLAN_V2_ROADMAP.md)**.
 Binding constraints, front-loaded:
 
-1. **P0 — eval + repro spine**: per-horizon/LPIPS/FVD/changed-region metrics + resumable checkpoints.
-2. **P1 — autoregressive rollout** + per-horizon drift instrumentation (the prediction-horizon gap; v1 horizon = 1).
+1. **P0 — eval + repro spine** ✅: per-horizon/LPIPS/FVD/changed-region metrics + resumable checkpoints.
+2. **P1 — autoregressive rollout** ✅: stable to H=24, beats persistence 24/24, TF→AR gap +1.61 dB (bounded). See [`docs/RESULTS_P0_P1.md`](docs/RESULTS_P0_P1.md).
 3. **P2 — anti-drift training**: scheduled sampling + noised-history conditioning (Diffusion-Forcing/Self-Forcing).
 4. **P3 — distributional head** (GMM→diffusion) wired through sampling + best-of-N (de-blur + multimodal honesty).
 5. **P4 — hierarchy-anchors-horizon** (the money result) + multi-seed error bars.

@@ -63,7 +63,11 @@ Throughout: every new behavior is a **config flag** (the v1 discipline), every n
 
 ---
 
-### P0 — Eval scaffolding + repro spine *(do first; cheap; unblocks every gate)*
+### P0 — Eval scaffolding + repro spine *(do first; cheap; unblocks every gate)*  — ✅ DONE
+> **Status:** done ([RESULTS_P0_P1.md](RESULTS_P0_P1.md)). changed-region/LPIPS/FVD metrics + resumable
+> checkpoints (`--resume`) + full seeding shipped; G0-eval green. (Cross-split was already real; FVD via
+> torchvision r3d_18; FID-style proxy not needed.)
+
 **Goal:** make horizon and distribution *measurable* before changing the model, and make long runs resumable/reproducible.
 **Work items:**
 - `hvp/eval/` module: `metrics_horizon.py` (per-horizon PSNR/SSIM, TF→AR gap, drift/softening curve), `lpips.py` (pip `lpips`), `fvd.py` (pretrained I3D features), `changed_region.py` (reuse the `change` tensor already computed in `variance_explained`, `continuous.py:75`, so persistence stops being a free win), `bestofN.py` + `density_coverage.py` (stubs, activated in P3).
@@ -75,7 +79,13 @@ Throughout: every new behavior is a **config flag** (the v1 discipline), every n
 
 ---
 
-### P1 — Autoregressive rollout + per-horizon drift instrumentation *(THE prediction-horizon gap; highest priority)*
+### P1 — Autoregressive rollout + per-horizon drift instrumentation *(THE prediction-horizon gap; highest priority)*  — ✅ DONE
+> **Status:** done ([RESULTS_P0_P1.md](RESULTS_P0_P1.md)). `rollout.py` (pixel + latent feedback) +
+> `eval/horizon.py` + `scripts/eval_rollout.py` shipped. **Result:** stable rollout to H=24 (2.6× train
+> horizon), AR-pixel plateaus ~13 dB (nearly flat drift), **beats persistence 24/24** (+1.14 dB), **TF→AR
+> gap +1.61 dB and not growing**; pixel-feedback ≫ latent-feedback (carry pixel forward). Blurry (L2) →
+> P2/P3. No KV-cache needed (fixed-window rollout is O(n)).
+
 **Goal:** make the model roll out and make drift **visible** as a curve, before trying to fix it.
 **Work items:**
 - `hvp/predictor/rollout.py`: `free_run(context_frames, n_steps)` that (a) encodes the seed clip, (b) runs the cascade one step, (c) advances the window. Implement **both** modes behind a flag: **pixel-feedback** (decode → re-encode the prediction → predict; robust to the RF masks, adds tokenizer round-trip error each step) and **latent-feedback** (advance the latent window directly; cheaper, needs the causal masks to be sliding-window-correct under generated frames). Reuse `decoder.decode_depth` (`decoder.py:56`).
