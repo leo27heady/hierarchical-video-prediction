@@ -1,0 +1,35 @@
+# Flagship long run (~8h): the full validated frontier system on the hard data, wandb on.
+#   big_64 scaling (stage_dims 192/256/256, 4 layers, deeper tokenizer, cosine)
+#   + SO(3) data (drift is measurable)
+#   + GMM distributional head (best-of-N payoff, grows with training)
+#   + K=1 anti-drift self-rollout (P2.1, clean PASS) with per-module grad clipping
+# Every component is individually proven stable. max_steps is calibrated to ~8h after a timing probe.
+_base_: big_64.yaml
+
+data:
+  train_hash: 20153dc2d445       # SO(3) 64x64 T=9
+  val_hash: 65d9ffe039f7
+  val_long_hash: c6199c18d53b
+
+predictor:
+  head: gmm
+  head_components: 4
+  lambda_pred: 0.02              # override big_64's 0.3 (that targets L2/MSE; GMM NLL scale is ~20-40x)
+  pred_warmup_steps: 1000
+  sched:
+    rollout_enabled: true
+    rollout_steps: 1             # K=1 (the proven, no-new-data anti-drift term)
+    lambda_rollout: 0.05
+    rollout_warmup_steps: 2000   # ramps after pred warmup -> fully active by ~step 3000
+    sample_rollout: false        # head_mode feedback (stable point; sampled = future P2.3)
+    detach_feedback: true
+
+optim:
+  max_steps: 32000               # CALIBRATED: ~1.1 it/s incl. val/ckpt overhead -> ~8h (24.3M params, 9 GB peak)
+
+run:
+  out_dir: logs/so3_flagship
+  save_every: 1500               # frequent checkpoints (recoverable + analyzable mid-run)
+  val_every: 1000
+  wandb: true
+  wandb_name: so3-flagship-gmm-p2
