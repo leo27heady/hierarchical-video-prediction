@@ -110,10 +110,22 @@ class PredictorConfig:
     conditioning: str = "cross_attn"             # "cross_attn" | "none"
     use_cascade: bool = True                     # if False, stages predict independently
     detach_parent: bool = True
+    # --- per-stage attention windowing (bot, mid, top); 0 = unlimited ---
+    # forces fine stages to lean on the parent: motion/context must come via cross-attention.
+    stage_t_window: Optional[Tuple[int, ...]] = None   # frames back incl self; 1 = self-frame only
+    stage_s_window: Optional[Tuple[int, ...]] = None   # square spatial window side; 0 = global
     # --- predictive loss ---
     lambda_pred: float = 0.25
     pred_warmup_steps: int = 1000                # ramp lambda 0->lambda_pred
     stage_pred_weight: Tuple[float, ...] = (1.0, 2.0, 2.0)  # bot, mid, top
+
+    def windows(self, n_stages: int) -> Tuple[Tuple[int, ...], Tuple[int, ...]]:
+        tw = self.stage_t_window or tuple(0 for _ in range(n_stages))
+        sw = self.stage_s_window or tuple(0 for _ in range(n_stages))
+        for name, t in (("stage_t_window", tw), ("stage_s_window", sw)):
+            if len(t) != n_stages:
+                raise ValueError(f"predictor.{name} must have {n_stages} entries, got {t}")
+        return tw, sw
 
     def resolved(self, n_stages: int) -> Tuple[Tuple[int, ...], Tuple[int, ...], Tuple[int, ...]]:
         dims = self.stage_dims or tuple(self.dim for _ in range(n_stages))
