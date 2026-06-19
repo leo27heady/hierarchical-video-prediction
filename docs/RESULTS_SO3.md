@@ -69,6 +69,38 @@ use the coarse plan" hypothesis is not supported even where motion prediction ma
 falls back to copying the current frame rather than leaning on the parent. The binding problem stays
 drift, not representational bandwidth.
 
+## 3c. Longer training (6000 steps, SO(3)+GMM+mild windowing): drift is NOT under-training
+
+`so3_long.yaml` (GMM K=4, `t_window=(4,3,0)`, 6000 steps). Recon climbs steadily and substantially:
+
+```
+step:   1000   2000   3000   4000   5000   6000
+recon:  24.1   28.3   31.3   32.5   33.0   33.45 dB     <- tokenizer was badly undertrained at 2k
+1-step lift: +0.46 +0.96 +1.21 +1.14 +1.15 +1.09        <- plateaus ~+1.1 dB
+mid cascade lift: +0.061 ... +0.023                      <- SHRINKS as stages individually improve
+```
+
+But the **rollout drift gets WORSE, not better**, with 3× the training:
+
+| metric (changed-region, SO(3) long) | 2000-step | 6000-step |
+|---|---|---|
+| AR-pixel **mode** @ h=23 | 6.67 | **6.05** (worse) |
+| mean AR−rotation | −0.54 | −1.26 (worse) |
+| FVD (AR-pixel) | 211 | **107** (much better) |
+| **best-of-8 gain** vs mode | +0.56 | **+1.18 dB** (doubled) |
+| best-of-8 @ h=10/11 | — | 8.39 / 8.56 (beats persist & rotation, **flat**) |
+
+**Two decisive reads:**
+1. **Drift is a training-OBJECTIVE problem (exposure bias), not under-training.** Longer training sharpened
+   single-step prediction (and recon, +5 dB) but made the *mode* rollout drift *faster* — sharper
+   one-step predictions accumulate off-manifold error more quickly. This is the cleanest possible
+   motivation for P2 (anti-drift): you cannot train your way out of drift with the current objective.
+2. **The distributional head's value GROWS with training.** Best-of-N gain doubled (+0.56→+1.18 dB) and
+   best-of-8 stays flat (~8.5) across horizons where the mode collapses — the GMM is learning a genuinely
+   multimodal, well-covering future. → the deployed predictor should be sampled, and P2's *sampled-feedback*
+   escalation (train-what-you-test) is well-motivated. (Best-of-N is oracle-selected = a coverage upper
+   bound, not deployable single-shot.)
+
 ## 4. Takeaways
 
 - Harder data is the unlock: it makes the predictive task real and the drift problem measurable.
