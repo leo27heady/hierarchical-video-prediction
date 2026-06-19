@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hvp"
+version = "0.1.0"
+description = "VQ-free hierarchical single-step video predictor (causal temporal downsampling)"
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "einops",
+    "numpy",
+    "pyyaml",
+    "pillow",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "psutil"]
+
+[tool.setuptools.packages.find]
+include = ["hvp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

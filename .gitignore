@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# venv
+venv/
+.venv/
+env/
+
+# caches / artifacts
+.pytest_cache/
+data/
+logs/
+checkpoints/
+results/
+wandb/
+*.ckpt
+*.pt
+*.npy
+*.memmap
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
