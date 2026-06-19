@@ -25,8 +25,8 @@ def _gauss_window(ws: int = 11, sigma: float = 1.5) -> torch.Tensor:
     return g[:, None] * g[None, :]
 
 
-def ssim(a: torch.Tensor, b: torch.Tensor, ws: int = 7) -> float:
-    """Mean SSIM over a batch of images. a,b: (N,C,H,W) in [-1,1]."""
+def ssim_map(a: torch.Tensor, b: torch.Tensor, ws: int = 7) -> torch.Tensor:
+    """Per-pixel SSIM map, mean over channels. a,b: (N,C,H,W) in [-1,1] -> (N,1,H,W)."""
     a = (a + 1) / 2
     b = (b + 1) / 2
     C = a.shape[1]
@@ -40,7 +40,12 @@ def ssim(a: torch.Tensor, b: torch.Tensor, ws: int = 7) -> float:
     vab = conv(a * b) - mu_ab
     c1, c2 = 0.01 ** 2, 0.03 ** 2
     s = ((2 * mu_ab + c1) * (2 * vab + c2)) / ((mu_a2 + mu_b2 + c1) * (va + vb + c2))
-    return float(s.mean())
+    return s.mean(dim=1, keepdim=True)
+
+
+def ssim(a: torch.Tensor, b: torch.Tensor, ws: int = 7) -> float:
+    """Mean SSIM over a batch of images. a,b: (N,C,H,W) in [-1,1]."""
+    return float(ssim_map(a, b, ws).mean())
 
 
 def video_ssim(pred: torch.Tensor, x: torch.Tensor) -> float:

@@ -17,6 +17,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
+from hvp.checkpoint import load_checkpoint, save_checkpoint, seed_everything
 from hvp.config import Config
 from hvp.data import dataset_from_cfg
 from hvp.metrics import frames_to_strip, psnr, video_ssim
@@ -113,9 +114,10 @@ def validate(tok, cascade, val_loader, cfg, device, max_batches=None) -> Tuple[D
     return res, rows
 
 
-def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None = None) -> Dict:
+def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None = None,
+                resume: str | None = None) -> Dict:
     device = device_of(cfg)
-    torch.manual_seed(cfg.optim.seed)
+    seed_everything(cfg.optim.seed)
     tok = build_tokenizer(cfg).to(device).train()
     cascade = HierarchicalCascade(cfg.topology, cfg.predictor).to(device).train()
     n_params = sum(p.numel() for p in tok.parameters()) + sum(p.numel() for p in cascade.parameters())
@@ -125,14 +127,18 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     steps = max_steps or cfg.optim.max_steps
     log_every = log_every or cfg.run.log_every
     use_amp = device.type == "cuda" and cfg.optim.amp == "bf16"
+    start_step = 0
+    if resume:
+        start_step = load_checkpoint(resume, tok=tok, cascade=cascade, opt=opt, device=device) + 1
+        print(f"[fit] resumed from {resume} at step {start_step}")
     logger = WandbLogger(cfg, cfg.run)
-    print(f"[fit] device={device} params={n_params/1e6:.2f}M steps={steps} bs={cfg.optim.batch_size} "
-          f"amp={'bf16' if use_amp else 'off'} wandb={logger.enabled}")
+    print(f"[fit] device={device} params={n_params/1e6:.2f}M steps={start_step}->{steps} "
+          f"bs={cfg.optim.batch_size} amp={'bf16' if use_amp else 'off'} wandb={logger.enabled}")
 
     data_iter = itertools.cycle(tr)
     t0 = time.time()
     last = None
-    for step in range(steps):
+    for step in range(start_step, steps):
         cur_lr = lr_at(step, cfg.optim, steps)
         for g in opt.param_groups:
             g["lr"] = cur_lr
@@ -164,7 +170,7 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
             print(f"        [val@{step}] recon_psnr {vmet['val/recon_psnr']:.2f} ssim {vmet['val/recon_ssim']:.3f} "
                   f"| pred_lift {vmet['val/pred_psnr_lift']:+.2f}dB | mid_casc_lift {vmet['val/cascade_lift_s1']:+.3f}")
         if cfg.run.save_every > 0 and step > 0 and step % cfg.run.save_every == 0:
-            _save(tok, cascade, cfg)
+            _save(tok, cascade, opt, step, cfg)
 
     vmet, vrows = validate(tok, cascade, va, cfg, device)
     logger.log(vmet, steps)
@@ -181,24 +187,21 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     for s in range(n):
         print(f"  {names[s]:5s} {vmet[f'val/ve_on_s{s}']:10.3f} {vmet[f'val/ve_off_s{s}']:9.3f} "
               f"{vmet[f'val/cascade_lift_s{s}']:+7.3f} {vmet[f'val/erank_s{s}']:6.1f}")
-    ckpt = _save(tok, cascade, cfg)
+    ckpt = _save(tok, cascade, opt, steps - 1, cfg)
     logger.finish()
     return {"ckpt": ckpt, **vmet}
 
 
-def _save(tok, cascade, cfg) -> str:
-    out = Path(cfg.run.out_dir) / "oneshot"
-    out.mkdir(parents=True, exist_ok=True)
-    path = out / "last.pt"
-    torch.save({"model": tok.state_dict(), "cascade": cascade.state_dict(),
-                "topo": vars(cfg.topology)}, path)
-    return str(path)
+def _save(tok, cascade, opt, step, cfg) -> str:
+    path = Path(cfg.run.out_dir) / "oneshot" / "last.pt"
+    return save_checkpoint(path, tok=tok, cascade=cascade, opt=opt, step=step, cfg=cfg)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", type=str, default=None)
     ap.add_argument("--max-steps", type=int, default=None)
+    ap.add_argument("--resume", type=str, default=None, help="checkpoint to resume from")
     ap.add_argument("--set", nargs="*", default=[], help="dot-path overrides, e.g. optim.lr=1e-3")
     args = ap.parse_args()
     if args.config:
@@ -207,7 +210,7 @@ def main():
         from hvp.config import apply_cli_overrides
         cfg = Config.from_dict(apply_cli_overrides({}, args.set))
     cfg.validate()
-    fit_oneshot(cfg, max_steps=args.max_steps)
+    fit_oneshot(cfg, max_steps=args.max_steps, resume=args.resume)
 
 
 if __name__ == "__main__":

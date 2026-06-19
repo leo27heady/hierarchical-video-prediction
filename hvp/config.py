@@ -131,8 +131,9 @@ class PredictorConfig:
 @dataclass(frozen=True)
 class DataConfig:
     cache_root: str = "C:/Users/leoni/Documents/data/shape_cache"
-    train_hash: str = "e075debc82fc"             # 64x64, 600 clips (independently rendered)
-    val_hash: str = "9dffa66fdc0e"               # 64x64, 200 clips (true cross-split)
+    train_hash: str = "e075debc82fc"             # 64x64, T=9, 600 clips (independently rendered)
+    val_hash: str = "9dffa66fdc0e"               # 64x64, T=9, 200 clips (true cross-split)
+    val_long_hash: str = "c5691972cc49"          # 64x64, T=33, 120 clips (long-horizon rollout eval)
     image_size: int = 64
     max_clips: Optional[int] = None
     num_workers: int = 0

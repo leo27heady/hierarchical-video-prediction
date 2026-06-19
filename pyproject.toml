@@ -17,6 +17,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "psutil"]
+eval = ["lpips"]            # perceptual metric (FVD uses torchvision r3d_18, already a torch dep)
+log = ["wandb"]
 
 [tool.setuptools.packages.find]
 include = ["hvp*"]

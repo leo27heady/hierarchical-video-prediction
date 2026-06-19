@@ -40,7 +40,20 @@ def gen(mode: str, n: int, seed: int) -> str:
     return h
 
 
+def gen_long(mode: str, n: int, seed: int, seq_len: int = 33) -> str:
+    """Long-horizon clips (T>9) for rollout/drift eval."""
+    random.seed(seed)
+    cfg = dict(mode=mode, sequence_length=seq_len, size=64, dataset_size=n,
+               shape_scene_type="DIM_3", shape_min_cubes=2, shape_max_cubes=6,
+               shape_angle_min=15, shape_angle_max=45, shape_cache_dir=CACHE, cache=True)
+    ds = ShapeVideoDataset(cfg)
+    h = os.path.basename(ds.cache_dir)
+    print(f"GENERATED mode={mode} n={n} T={seq_len} hash={h}", flush=True)
+    return h
+
+
 if __name__ == "__main__":
     th = gen("train", 600, seed=0)
     vh = gen("val", 200, seed=1)
-    print(f"\nWIRE INTO DataConfig:  train_hash={th}  val_hash={vh}", flush=True)
+    lh = gen_long("val_long", 120, seed=2, seq_len=33)
+    print(f"\nWIRE INTO DataConfig:  train_hash={th}  val_hash={vh}  val_long_hash={lh}", flush=True)
