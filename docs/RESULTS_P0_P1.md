@@ -4,6 +4,17 @@
 > (3000 steps, AdamW + warmup-cosine, wd 0.01). Rollout eval on the independently-rendered
 > long-horizon set `val_long` (T=33, 120 clips): seed = first 9 frames, free-run 24 steps.
 
+> **⚠️ CORRECTION (2026-06-19 review) — the headline below is against a ZERO-MOTION baseline and does not survive a motion baseline.**
+> A parameter-free **constant-angular-velocity rotation warp** (estimate θ from 2 seed frames, extrapolate; `hvp/eval/baselines.py`)
+> **beats the learned AR pipeline by ~11 dB on the changed (moving) region and ~15–20 dB full-frame at *every* one of the 24
+> horizons (changed-region gate: 0/24, mean −11.0 dB).** Persistence is a zero-motion strawman on constant-velocity data; on the
+> *moving-pixel* metric AR beats persistence only 3/24 horizons (mean +0.81 dB) and loses to rotation everywhere. The C1 (horizon)
+> claim is therefore **NOT met** and must be re-gated on the changed-region metric vs the motion baselines. Part of the gap is the
+> tokenizer round-trip (rotation works in pixel space and skips the ~15 dB encode→decode loss); the honest path is to escalate to
+> dynamics where rotation-warp fails (multi-object / occlusion / non-rigid) and/or evaluate in latent space. Framing: a *controlled
+> predictability study*, with C1+C3 (stable, distributionally-honest rollout) as the headline and C2 (hierarchy-slows-drift) demoted
+> to a tested hypothesis. See the full review notes for the ranked defect list.
+
 ## Gate scorecard
 
 | Gate | Pass condition | Result | Status |
@@ -11,6 +22,7 @@
 | **G0-eval (metrics)** | changed-region/LPIPS/FVD compute correctly | persistence penalized on moving pixels; LPIPS ok; FVD(identical)≈0 | ✅ (5 tests) |
 | **G0-eval (resume)** | kill + `--resume` continues at the saved step | resumed at step 60, loss continues (no reset) | ✅ (3 tests + e2e) |
 | **G-AR-baseline** | rollout coherent to H ≥ 2× train horizon, drift curves logged, both modes | stable to H=24, both modes; full curve table + FVD + strip | ✅ (4 tests) |
+| **G-motion (NEW, the real C1 gate)** | AR beats a constant-velocity MOTION baseline on changed-region at every horizon | **FAIL** — loses to rotation-warp 0/24 (−11.0 dB); the prior "beats persistence" was vs a zero-motion null | ❌ |
 
 ## Prediction-horizon drift (held-out `val_long`, 24 steps, base_64)
 
@@ -29,7 +41,28 @@ TF→AR gap (mean over 24 horizons):     +1.61 dB     (bounded, does NOT grow)
 AR(pixel) beats persistence until:     24/24 horizons
 AR(pixel) − persistence (mean PSNR):   +1.14 dB
 FVD: AR-pixel 186.8 · AR-latent 202.8     LPIPS AR-pixel 0.357
+(FVD is unreliable here: 120 clips < 512 r3d_18 feature dims → rank-deficient covariance. Do not gate on it.)
 ```
+
+## Motion-baseline gate (the honest comparison — added in the 2026-06-19 review)
+
+```
+                CHANGED-REGION PSNR (moving pixels), val_long
+  h |  AR-px  persist  linear  rotation
+  0 | 10.11    5.98    4.91    25.10
+  2 |  8.41    7.13    5.94    20.42
+  4 |  8.35    8.32    6.60    19.03
+ 11 |  8.38    8.07    5.87    19.99
+ 23 |  8.35    7.72    5.36    17.52   (PSNR, dB)
+
+changed-region "beats until horizon":  vs persist 3/24 (+0.81) · vs linear 24/24 (+2.76) · vs rotation 0/24 (−11.00)
+```
+
+The learned AR predictor **loses to a 2-line constant-angular-velocity rotation warp at every horizon by ~11 dB** on the
+moving region (and ~15–20 dB full-frame). It beats only the zero-motion (persistence) and the bad pixel-linear nulls. On this
+near-rigid-rotation data the trivial motion model is a near-oracle, so a pixel-space predictive win here is not evidence of
+hierarchical motion modelling. **Next:** escalate the data to where rotation-warp fails, and/or evaluate predictability in latent
+space (factor out the ~15 dB tokenizer round-trip the pixel baseline avoids).
 
 ## What this establishes (the prediction-horizon question)
 

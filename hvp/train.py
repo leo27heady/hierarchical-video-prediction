@@ -151,6 +151,13 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
             continue
         total.backward()
         gn = grad_norm(params)
+        if not math.isfinite(gn):
+            # bf16 has no GradScaler; a non-finite GRAD (loss can still be finite) would be
+            # written into every weight by opt.step() and silently corrupt the whole run.
+            # clip_grad_norm_ does NOT stop NaN, so guard here and skip the step.
+            print(f"[fit] step {step}: non-finite grad (norm={gn}), skipping")
+            opt.zero_grad(set_to_none=True)
+            continue
         if cfg.optim.grad_clip > 0:
             torch.nn.utils.clip_grad_norm_(params, cfg.optim.grad_clip)
         opt.step()
@@ -187,14 +194,18 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     for s in range(n):
         print(f"  {names[s]:5s} {vmet[f'val/ve_on_s{s}']:10.3f} {vmet[f'val/ve_off_s{s}']:9.3f} "
               f"{vmet[f'val/cascade_lift_s{s}']:+7.3f} {vmet[f'val/erank_s{s}']:6.1f}")
-    ckpt = _save(tok, cascade, opt, steps - 1, cfg)
+    ckpt = _save(tok, cascade, opt, steps - 1, cfg, stamped=True)
     logger.finish()
     return {"ckpt": ckpt, **vmet}
 
 
-def _save(tok, cascade, opt, step, cfg) -> str:
-    path = Path(cfg.run.out_dir) / "oneshot" / "last.pt"
-    return save_checkpoint(path, tok=tok, cascade=cascade, opt=opt, step=step, cfg=cfg)
+def _save(tok, cascade, opt, step, cfg, stamped: bool = False) -> str:
+    out = Path(cfg.run.out_dir) / "oneshot"
+    path = save_checkpoint(out / "last.pt", tok=tok, cascade=cascade, opt=opt, step=step, cfg=cfg)
+    if stamped:
+        # retain a step-stamped copy so a headline number is never silently overwritten by a later run
+        save_checkpoint(out / f"step{step:06d}.pt", tok=tok, cascade=cascade, opt=opt, step=step, cfg=cfg)
+    return path
 
 
 def main():

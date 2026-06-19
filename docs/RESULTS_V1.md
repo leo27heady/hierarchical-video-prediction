@@ -1,5 +1,12 @@
 # V1 results — VQ-free hierarchical single-step cascade (gate scorecard)
 
+> **⚠️ Provenance note (2026-06-19 review):** the numbers in this file are from the original v1 checkpoint, which was
+> **overwritten** by the later `base_64` P0/P1 retrain (`_save` always writes `logs/oneshot/last.pt`). Re-running the **on-disk**
+> checkpoint reproduces **recon PSNR 30.23 / SSIM 0.963** and **single-step lift +4.47 dB / +0.072 SSIM** (cascade lift bot +0.068,
+> mid +0.032, top +0.000) — *not* the 32.34 dB / +5.10 dB / +0.126 SSIM below (the SSIM lift in particular is ~2× overstated).
+> Trust the on-disk numbers; retain (don't overwrite) any checkpoint a headline number is quoted from. Also: the cascade "lift" is an
+> **eval-time input ablation on one always-conditioned model**, single-seed — a suggestive diagnostic, not a trained-A/B causal result.
+
 > 2026-06-19. Built per [PLAN_VQFREE_HIER_PREDICTOR.md](PLAN_VQFREE_HIER_PREDICTOR.md);
 > architecture in [ARCHITECTURE.md](ARCHITECTURE.md); story in [SESSION_SUMMARY.md](SESSION_SUMMARY.md).
 > Data: rotating 3D polycubes, **64×64**, T=9, Z-axis rotation, **true cross-split** (train/val rendered

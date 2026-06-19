@@ -5,10 +5,12 @@ dissertation. It is a **VQ-free** (continuous) hierarchical video autoencoder wi
 downsampling**, plus a **single-step, BLT-style cross-attention cascade** that predicts the next frame
 coarse-to-fine. Trained **end-to-end in one shot** on synthetic rotating-shape video.
 
-> **Status (v1, 2026-06-19):** all gates pass — see [`docs/RESULTS_V1.md`](docs/RESULTS_V1.md).
-> The temporally-downsampled MID latent is highly predictable (held-out VE ≈ 0.84), the cross-attention
-> hierarchy adds real lift over independent stages, and single-step prediction beats persistence in pixel
-> space (no blob). Detailed design: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · plan:
+> **Status (v1, 2026-06-19; revised after review):** engineering/causality gates pass and there is no latent collapse;
+> the temporally-downsampled MID latent is predictable (held-out VE ≈ 0.84) and single-step prediction beats *persistence*.
+> **But the predictive claim does not yet survive a motion baseline** — a constant-velocity rotation warp beats the rollout at
+> every horizon (see [`docs/RESULTS_P0_P1.md`](docs/RESULTS_P0_P1.md)), and the hierarchy "lift" is an eval-time ablation, single
+> seed. Treat v1 as an honest *foundation/controlled study*, not a finished result. Detailed design:
+> [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · plan:
 > [`docs/PLAN_VQFREE_HIER_PREDICTOR.md`](docs/PLAN_VQFREE_HIER_PREDICTOR.md) · story & next steps:
 > [`docs/SESSION_SUMMARY.md`](docs/SESSION_SUMMARY.md).
 
@@ -42,10 +44,10 @@ DECODER: causal-conv 3D, deep-supervised, BOT→64×64  Loss = recon(pixels) + V
 
 | signal | result |
 |---|---|
-| reconstruction (held-out) | **PSNR 32.3 dB, SSIM 0.975**, all stages near full effective rank (no collapse) |
+| reconstruction (held-out, on-disk ckpt) | **PSNR 30.2 dB, SSIM 0.963**, all stages near full effective rank (no collapse) |
 | **MID predictability** (independent stage) | `ve_changed ≈ 0.73` (bot 0.84) — *temporal-downsampling-is-fatal worry falsified* |
-| **cross-attention hierarchy lift** | BOT **+0.061**, MID **+0.022** VE over independent stages |
-| single-step prediction (pixel) | **+5.10 dB / +0.126 SSIM** over persistence; tracks rotation, not a blob |
+| **cross-attention hierarchy lift** (eval-time ablation, 1 seed) | BOT **+0.068**, MID **+0.032** VE — diagnostic, needs a trained A/B |
+| single-step prediction (pixel) | **+4.47 dB / +0.072 SSIM** over *persistence* — but loses to a rotation-warp baseline (see P1) |
 
 ## Install
 
@@ -132,7 +134,9 @@ gates, eval-upgrade table, risks) is in **[`docs/PLAN_V2_ROADMAP.md`](docs/PLAN_
 Binding constraints, front-loaded:
 
 1. **P0 — eval + repro spine** ✅: per-horizon/LPIPS/FVD/changed-region metrics + resumable checkpoints.
-2. **P1 — autoregressive rollout** ✅: stable to H=24, beats persistence 24/24, TF→AR gap +1.61 dB (bounded). See [`docs/RESULTS_P0_P1.md`](docs/RESULTS_P0_P1.md).
+2. **P1 — autoregressive rollout** ⚠️: rollout is *stable* to H=24 (no blob), but a new **motion-baseline gate** shows it
+   **loses to a constant-velocity rotation warp at every horizon (−11 dB changed-region)** — "beats persistence" was vs a
+   zero-motion null. C1 (horizon) is **not yet met**. See [`docs/RESULTS_P0_P1.md`](docs/RESULTS_P0_P1.md).
 3. **P2 — anti-drift training**: scheduled sampling + noised-history conditioning (Diffusion-Forcing/Self-Forcing).
 4. **P3 — distributional head** (GMM→diffusion) wired through sampling + best-of-N (de-blur + multimodal honesty).
 5. **P4 — hierarchy-anchors-horizon** (the money result) + multi-seed error bars.

@@ -14,6 +14,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import torch
 
+from hvp.eval.baselines import motion_baselines
 from hvp.eval.quality import changed_region_metrics, fvd
 from hvp.metrics import frames_to_strip, ssim, video_ssim
 from hvp.predictor.rollout import free_run, teacher_forced_at
@@ -50,7 +51,8 @@ def horizon_eval(tok, cascade, loader, cfg, device, modes=("pixel", "latent"),
                  max_batches: Optional[int] = None, lpips_metric=None,
                  strip_path: Optional[str] = None) -> Dict:
     seed_len = cfg.topology.sequence_length
-    keys = list(modes) + ["tf", "persist"]
+    baseline_names = ["persist", "linear", "rotation"]
+    keys = list(modes) + ["tf"] + baseline_names
     acc: Dict[str, _Acc] = {}
     feats: Dict[str, List] = {**{m: [] for m in modes}, "gt": []}
     n_steps = None
@@ -68,11 +70,10 @@ def horizon_eval(tok, cascade, loader, cfg, device, modes=("pixel", "latent"),
         seed = clip[:, :, :seed_len]
         gt_future = clip[:, :, seed_len:]
         prev = clip[:, :, seed_len - 1: T - 1]
-        persist = clip[:, :, seed_len - 1: seed_len].repeat(1, 1, n, 1, 1)
 
         preds = {m: free_run(tok, cascade, seed, n, m) for m in modes}
         preds["tf"] = torch.stack([teacher_forced_at(tok, cascade, clip, seed_len, h) for h in range(n)], dim=2)
-        preds["persist"] = persist
+        preds.update(motion_baselines(seed, n))          # persist + linear + rotation
         for k, p in preds.items():
             acc[k].add(p, gt_future, prev)
         for m in modes:
@@ -83,6 +84,7 @@ def horizon_eval(tok, cascade, loader, cfg, device, modes=("pixel", "latent"),
             strip_rows = [("GT", frames_to_strip(gt_future[0][:, hs]))]
             for m in modes:
                 strip_rows.append((m, frames_to_strip(preds[m][0][:, hs])))
+            strip_rows.append(("rotation", frames_to_strip(preds["rotation"][0][:, hs])))
 
     res: Dict = {"n_steps": n_steps, "seed_len": seed_len}
     for k in keys:
@@ -99,6 +101,15 @@ def horizon_eval(tok, cascade, loader, cfg, device, modes=("pixel", "latent"),
     beats = np.where(ar_psnr <= persist_psnr)[0]
     res["beats_persistence_until"] = int(beats[0]) if len(beats) else int(n_steps)
     res["ar_minus_persist_mean"] = float((ar_psnr - persist_psnr).mean())
+
+    # CHANGED-REGION gate (the honest one): does AR beat each MOTION baseline on the
+    # moving pixels at every horizon? `*_until` = first horizon where AR stops winning.
+    ar_chg = np.array(res[f"changed_psnr/{primary}"])
+    for b in baseline_names:
+        b_chg = np.array(res[f"changed_psnr/{b}"])
+        lost = np.where(ar_chg <= b_chg)[0]
+        res[f"beats_{b}_changed_until"] = int(lost[0]) if len(lost) else int(n_steps)
+        res[f"ar_minus_{b}_changed_mean"] = float((ar_chg - b_chg).mean())
 
     # FVD over rolled clips (best-effort)
     try:

@@ -53,13 +53,21 @@ def main():
     hs = [0, 1, 2, 4, 7, 11, min(15, n - 1), n - 1]
     hs = sorted(set(h for h in hs if h < n))
     print(f"\n=== rollout per-horizon (seed_len={res['seed_len']}, n_steps={n}) ===")
-    print(f"  {'h':>3s} | {'AR-px':>7s} {'AR-lat':>7s} {'TF':>7s} {'persist':>7s} | {'AR-px chg':>9s} {'persist chg':>11s}")
+    print("  full-frame PSNR (dB):")
+    print(f"  {'h':>3s} | {'AR-px':>7s} {'AR-lat':>7s} {'TF':>7s} {'persist':>7s} {'linear':>7s} {'rotation':>8s}")
     for h in hs:
         print(f"  {h:>3d} | {res['psnr/pixel'][h]:7.2f} {res['psnr/latent'][h]:7.2f} {res['psnr/tf'][h]:7.2f} "
-              f"{res['psnr/persist'][h]:7.2f} | {res['changed_psnr/pixel'][h]:9.2f} {res['changed_psnr/persist'][h]:11.2f}")
+              f"{res['psnr/persist'][h]:7.2f} {res['psnr/linear'][h]:7.2f} {res['psnr/rotation'][h]:8.2f}")
+    print("\n  CHANGED-REGION PSNR (moving pixels — the honest metric):")
+    print(f"  {'h':>3s} | {'AR-px':>7s} {'persist':>7s} {'linear':>7s} {'rotation':>8s}")
+    for h in hs:
+        print(f"  {h:>3d} | {res['changed_psnr/pixel'][h]:7.2f} {res['changed_psnr/persist'][h]:7.2f} "
+              f"{res['changed_psnr/linear'][h]:7.2f} {res['changed_psnr/rotation'][h]:8.2f}")
     print(f"\n  TF->AR gap (mean over horizons): {res['tf_ar_gap_mean']:+.2f} dB")
-    print(f"  AR(pixel) beats persistence until horizon: {res['beats_persistence_until']}/{n}")
-    print(f"  AR(pixel) - persistence PSNR (mean):       {res['ar_minus_persist_mean']:+.2f} dB")
+    print("  CHANGED-REGION gate — AR(pixel) beats each MOTION baseline until horizon:")
+    for b in ("persist", "linear", "rotation"):
+        print(f"    vs {b:8s}: {res[f'beats_{b}_changed_until']:>2d}/{n}  "
+              f"(mean AR - {b} = {res[f'ar_minus_{b}_changed_mean']:+.2f} dB)")
     if "fvd/pixel" in res:
         print(f"  FVD  AR-pixel {res['fvd/pixel']:.1f}  AR-latent {res.get('fvd/latent', float('nan')):.1f}")
     if "lpips/pixel" in res:
