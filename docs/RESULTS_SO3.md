@@ -49,6 +49,26 @@ GMM best-of-8 (8.66) beats the rotation null (~8.1) and persistence (~6.7) on mo
 flat across horizons where the L2 mode drifted. Under genuine multimodality the mixture places mass on
 the true future that the L2 mean averages away — the MAR/GIVT result, reproduced.
 
+## 3b. Windowing on SO(3): hypothesis not supported
+
+`so3_64.yaml` + `stage_t_window=[1,1,0] stage_s_window=[8,0,0]` (BOT self-frame+8×8, MID self-frame,
+TOP full), 2000 steps, vs the full-attention L2 baseline:
+
+| metric | baseline (full) | windowed |
+|---|---|---|
+| recon | 28.0 / 0.939 | 28.2 / 0.940 |
+| single-step lift | +0.97 dB | **+1.37 dB** |
+| cascade lift bot / mid | +0.035 / +0.032 | +0.019 / +0.029 |
+| mean AR−rotation (changed-region) | −0.54 | −0.87 |
+| FVD (AR-pixel) | 210.9 | **137.9** |
+
+Windowing marginally helps single-step prediction, recon, and FVD, but **does not increase the cascade
+lift** (the parent does not become load-bearing — it falls, if anything), is slightly worse on the
+changed-region rollout gate, and **drift persists unchanged**. The "starve the fine stages so they must
+use the coarse plan" hypothesis is not supported even where motion prediction matters: the fine stage
+falls back to copying the current frame rather than leaning on the parent. The binding problem stays
+drift, not representational bandwidth.
+
 ## 4. Takeaways
 
 - Harder data is the unlock: it makes the predictive task real and the drift problem measurable.
