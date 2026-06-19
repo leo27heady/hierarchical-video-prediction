@@ -1,0 +1,14 @@
+# Harder data: full SO(3) (multi-axis) rotation — self-occlusion + depth ambiguity defeats
+# the 2D rotation-warp null (it drops 25.0 -> 9.4 dB changed-region vs Z-only). This is the
+# dataset where the hierarchy / windowing / distributional-head hypotheses become testable.
+_base_: base_64.yaml
+
+data:
+  train_hash: 20153dc2d445       # SO(3), 64x64, T=9, 500 clips
+  val_hash: 65d9ffe039f7         # SO(3), 64x64, T=9, 200 clips (cross-split)
+  val_long_hash: c6199c18d53b    # SO(3), 64x64, T=33, 100 clips (rollout)
+
+run:
+  out_dir: logs/so3              # don't clobber the Z-only reference checkpoint
+  wandb: false
+  wandb_name: so3-64
