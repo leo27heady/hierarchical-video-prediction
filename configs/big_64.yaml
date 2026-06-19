@@ -1,0 +1,32 @@
+# Larger model: per-stage capacity (BOT wider for the 16x16 grid), dropout, longer
+# cosine schedule. Demonstrates per-stage dims/heads/layers and the full knob surface.
+_base_: _base.yaml
+
+predictor:
+  stage_dims: [192, 256, 256]     # bot, mid, top
+  stage_heads: [6, 8, 8]
+  stage_layers: [4, 4, 3]
+  mlp_ratio: 4
+  dropout: 0.05
+  lambda_pred: 0.3
+  pred_warmup_steps: 1000
+
+topology:
+  num_res_blocks: 2               # deeper encoder/decoder
+
+optim:
+  optimizer: adamw
+  lr: 0.0004
+  min_lr: 1.0e-6
+  weight_decay: 0.05
+  betas: [0.9, 0.95]
+  batch_size: 12
+  max_steps: 8000
+  lr_schedule: warmup_cosine
+  warmup_steps: 400
+
+run:
+  val_every: 1000
+  save_every: 2000
+  wandb: true
+  wandb_name: big-64

@@ -1,0 +1,91 @@
+# ============================================================================
+# hvp base config — every knob, with its default. Presets `_base_: _base.yaml`
+# and override only what they change. Unknown keys are REJECTED (typo guard).
+# Override anything on the CLI too:  --set predictor.dim=256 optim.lr=1e-4
+# ============================================================================
+
+phase: fit_oneshot            # fit_oneshot | cache_features | fit_predictor
+
+# ---- model: encoder/decoder topology (single source of truth for shapes) ----
+topology:
+  image_size: 64              # input H==W
+  image_c: 3
+  base_ch: 32                 # encoder base width (× ch_mult per level)
+  ch_mult: [1, 2, 2, 2, 2, 4, 4]              # per encoder level; len-1 = #downsamples
+  temporal_downsample: [false, false, true, false, true, false]  # per downsample: stride-2 in time?
+  num_res_blocks: 1           # ResBlock3d per level
+  tap_after: [1, 3, 5]        # downsample idx after which to tap a stage (bot, mid, top)
+  stage_latent_ch: [16, 8, 8] # continuous latent channels per stage (bot, mid, top)
+  decode_width: 64            # decoder hidden width
+  sequence_length: 9          # frames per clip (must be ≡ 1 mod 4)
+
+# ---- objective: reconstruction + VICReg anti-collapse ----
+vae:
+  recon_loss: l1              # l1 | l2
+  recon_weight: 1.0
+  progressive: true           # coarse-first curriculum (ramp active decode depth)
+  progressive_steps_per_depth: 400
+  depth_loss_weights: null    # null = uniform; else per-depth weights
+  vicreg_weight: 1.0          # variance-hinge weight (anti dimensional-collapse)
+  vicreg_gamma: 1.0           # per-dim std floor
+  vicreg_stage_scale: [0.1, 1.0, 1.0]   # bot, mid, top (coarse weighted higher)
+  vicreg_cov_weight: 0.04     # off-diagonal covariance penalty
+
+# ---- model: predictor cascade (capacity, connections, dims, head, loss) ----
+predictor:
+  dim: 128                    # scalar transformer width (broadcast to all stages)
+  n_heads: 4
+  n_layers: 3
+  stage_dims: null            # per-stage override [bot, mid, top]; null = broadcast `dim`
+  stage_heads: null
+  stage_layers: null
+  mlp_ratio: 4
+  dropout: 0.0
+  rope_base: 10000.0          # factorized 3D-RoPE base
+  qk_norm: true               # RMSNorm on q,k (AMP stability)
+  head: l2                    # l2 (deterministic MSE) | gaussian (per-dim NLL)
+  conditioning: cross_attn    # cross_attn (hierarchy) | none (independent stages)
+  use_cascade: true           # wire coarse hidden into finer stage
+  detach_parent: true         # stop-grad on parent hidden (each stage shaped by own loss)
+  lambda_pred: 0.25           # predictive-loss weight (target)
+  pred_warmup_steps: 1000     # ramp lambda 0 -> lambda_pred
+  stage_pred_weight: [1.0, 2.0, 2.0]    # bot, mid, top (coarse up-weighted)
+
+# ---- data ----
+data:
+  cache_root: C:/Users/leoni/Documents/data/shape_cache
+  train_hash: e075debc82fc    # 64x64, 600 clips
+  val_hash: 9dffa66fdc0e      # 64x64, 200 clips (independently rendered = true cross-split)
+  image_size: 64              # must match topology.image_size
+  max_clips: null             # cap clips (debug)
+  num_workers: 0              # Windows-safe default
+
+# ---- optimization ----
+optim:
+  optimizer: adamw            # adam | adamw
+  lr: 0.0003
+  min_lr: 0.0                 # cosine floor
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+  batch_size: 16
+  grad_clip: 1.0
+  max_steps: 3000
+  lr_schedule: constant       # constant | cosine | warmup_cosine
+  warmup_steps: 0
+  amp: bf16                   # bf16 | off
+  seed: 0
+
+# ---- logging / checkpointing ----
+run:
+  out_dir: logs
+  log_every: 50
+  val_every: 500
+  val_max_batches: 8
+  save_every: 0               # 0 = save only at end
+  max_checkpoints_keep: 3
+  wandb: false
+  wandb_project: hvp-vqfree
+  wandb_name: null
+  wandb_mode: online          # online | offline | disabled
+  n_log_images: 6             # clips in the GT/Recon/Pred image table

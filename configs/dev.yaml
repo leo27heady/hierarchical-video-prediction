@@ -1,0 +1,23 @@
+# Fast smoke: small model, few steps, no wandb. Exercises the full pipeline in ~1 min.
+_base_: _base.yaml
+
+vae:
+  progressive_steps_per_depth: 60
+
+predictor:
+  dim: 64
+  n_layers: 2
+  pred_warmup_steps: 80
+
+optim:
+  batch_size: 4
+  max_steps: 200
+
+data:
+  max_clips: 64
+
+run:
+  log_every: 25
+  val_every: 100
+  val_max_batches: 2
+  wandb: false

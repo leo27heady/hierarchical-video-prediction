@@ -22,14 +22,15 @@ from hvp.predictor.masks import CascadeMasks
 
 
 class CrossAttention(nn.Module):
-    """Child tokens (query) attend parent hidden tokens (key/value) under a bool mask."""
+    """Child tokens (query, dim) attend parent hidden tokens (key/value, parent_dim) under a bool mask.
+    parent_dim may differ from dim (per-stage capacity) — the kv projection handles the mismatch."""
 
-    def __init__(self, dim: int, n_heads: int, qk_norm: bool = True):
+    def __init__(self, dim: int, parent_dim: int, n_heads: int, qk_norm: bool = True):
         super().__init__()
         assert dim % n_heads == 0
         self.n_heads, self.head_dim, self.qk_norm = n_heads, dim // n_heads, qk_norm
         self.q = nn.Linear(dim, dim, bias=False)
-        self.kv = nn.Linear(dim, 2 * dim, bias=False)
+        self.kv = nn.Linear(parent_dim, 2 * dim, bias=False)
         self.out = nn.Linear(dim, dim, bias=False)
 
     def forward(self, x: torch.Tensor, parent: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
@@ -45,17 +46,20 @@ class CrossAttention(nn.Module):
 
 
 class CascadeStageBlock(nn.Module):
-    def __init__(self, dim: int, n_heads: int, rope: Rotary3D, has_parent: bool,
-                 mlp_ratio: int = 4, qk_norm: bool = True):
+    def __init__(self, dim: int, n_heads: int, rope: Rotary3D, has_parent: bool, parent_dim: int,
+                 mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0):
         super().__init__()
         self.norm1 = nn.LayerNorm(dim)
         self.attn = SelfAttention(dim, n_heads, rope, qk_norm=qk_norm)
         self.has_parent = has_parent
         if has_parent:
             self.norm_c = nn.LayerNorm(dim)
-            self.cross = CrossAttention(dim, n_heads, qk_norm=qk_norm)
+            self.cross = CrossAttention(dim, parent_dim, n_heads, qk_norm=qk_norm)
         self.norm2 = nn.LayerNorm(dim)
-        self.mlp = nn.Sequential(nn.Linear(dim, dim * mlp_ratio), nn.GELU(), nn.Linear(dim * mlp_ratio, dim))
+        self.mlp = nn.Sequential(
+            nn.Linear(dim, dim * mlp_ratio), nn.GELU(), nn.Dropout(dropout),
+            nn.Linear(dim * mlp_ratio, dim), nn.Dropout(dropout),
+        )
 
     def forward(self, x, grid, self_mask, parent=None, cross_mask=None):
         x = x + self.attn(self.norm1(x), grid, self_mask)
@@ -67,15 +71,18 @@ class CascadeStageBlock(nn.Module):
 
 class CascadeStagePredictor(nn.Module):
     def __init__(self, in_ch: int, thw: Tuple[int, int, int], *, dim: int, n_heads: int,
-                 n_layers: int, head: str, has_parent: bool, qk_norm: bool = True):
+                 n_layers: int, head: str, has_parent: bool, parent_dim: int,
+                 mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0, rope_base: float = 10000.0):
         super().__init__()
         T, H, W = thw
         self.thw, self.in_ch, self.head_kind = thw, in_ch, head
         self.proj_in = nn.Linear(in_ch, dim)
         self.spatial = nn.Parameter(torch.zeros(H * W, dim))
-        rope = Rotary3D(dim // n_heads)
+        rope = Rotary3D(dim // n_heads, base=rope_base)
         self.blocks = nn.ModuleList(
-            CascadeStageBlock(dim, n_heads, rope, has_parent, qk_norm=qk_norm) for _ in range(n_layers)
+            CascadeStageBlock(dim, n_heads, rope, has_parent, parent_dim, mlp_ratio=mlp_ratio,
+                              qk_norm=qk_norm, dropout=dropout)
+            for _ in range(n_layers)
         )
         self.norm = nn.LayerNorm(dim)
         self.head = nn.Linear(dim, in_ch if head == "l2" else 2 * in_ch)
@@ -99,20 +106,25 @@ class HierarchicalCascade(nn.Module):
         super().__init__()
         self.N = topo.n_stages()
         self.detach_parent = pcfg.detach_parent
+        self.default_cascade = pcfg.use_cascade and pcfg.conditioning != "none"
+        dims, heads, layers = pcfg.resolved(self.N)
         spatial, temporal = topo.stage_spatial(), topo.stage_temporal()
         thw = [(temporal[s], spatial[s], spatial[s]) for s in range(self.N)]
         self.masks = CascadeMasks(thw)
         self.stages = nn.ModuleList(
             CascadeStagePredictor(
-                topo.stage_latent_ch[s], thw[s], dim=pcfg.dim, n_heads=pcfg.n_heads,
-                n_layers=pcfg.n_layers, head=pcfg.head, has_parent=(s < self.N - 1),
-                qk_norm=pcfg.qk_norm,
+                topo.stage_latent_ch[s], thw[s], dim=dims[s], n_heads=heads[s], n_layers=layers[s],
+                head=pcfg.head, has_parent=(s < self.N - 1),
+                parent_dim=dims[s + 1] if s < self.N - 1 else dims[s],
+                mlp_ratio=pcfg.mlp_ratio, qk_norm=pcfg.qk_norm, dropout=pcfg.dropout,
+                rope_base=pcfg.rope_base,
             )
             for s in range(self.N)
         )
 
-    def forward(self, z: List[torch.Tensor], use_cascade: bool = True) -> List[torch.Tensor]:
+    def forward(self, z: List[torch.Tensor], use_cascade: Optional[bool] = None) -> List[torch.Tensor]:
         """z fine->coarse [bot, mid, top]; returns per-stage predictions (B,T,H,W,out)."""
+        use_cascade = self.default_cascade if use_cascade is None else use_cascade
         preds: List[Optional[torch.Tensor]] = [None] * self.N
         parent_hidden = None
         for s in range(self.N - 1, -1, -1):              # top -> mid -> bot

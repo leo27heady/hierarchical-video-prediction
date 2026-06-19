@@ -1,0 +1,20 @@
+# Main 64x64 run (the v1 reference). Cosine LR with warmup, wandb on.
+_base_: _base.yaml
+
+predictor:
+  lambda_pred: 0.25
+  pred_warmup_steps: 600
+
+optim:
+  lr: 0.0003
+  min_lr: 1.0e-5
+  weight_decay: 0.01
+  batch_size: 16
+  max_steps: 3000
+  lr_schedule: warmup_cosine
+  warmup_steps: 200
+
+run:
+  val_every: 500
+  wandb: true
+  wandb_name: base-64

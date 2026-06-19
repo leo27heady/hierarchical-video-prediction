@@ -93,17 +93,39 @@ class VAEConfig:
 
 @dataclass(frozen=True)
 class PredictorConfig:
+    # --- per-stage capacity (scalars broadcast to all stages; tuples override per stage bot..top) ---
     dim: int = 128
     n_heads: int = 4
     n_layers: int = 3
+    stage_dims: Optional[Tuple[int, ...]] = None
+    stage_heads: Optional[Tuple[int, ...]] = None
+    stage_layers: Optional[Tuple[int, ...]] = None
+    mlp_ratio: int = 4
+    dropout: float = 0.0
+    # --- attention / positional ---
     rope_base: float = 10000.0
     qk_norm: bool = True
+    # --- head / conditioning ---
     head: str = "l2"                             # "l2" | "gaussian"
-    conditioning: str = "cross_attn"             # "cross_attn" | "adaln" | "none"
+    conditioning: str = "cross_attn"             # "cross_attn" | "none"
+    use_cascade: bool = True                     # if False, stages predict independently
     detach_parent: bool = True
+    # --- predictive loss ---
     lambda_pred: float = 0.25
     pred_warmup_steps: int = 1000                # ramp lambda 0->lambda_pred
     stage_pred_weight: Tuple[float, ...] = (1.0, 2.0, 2.0)  # bot, mid, top
+
+    def resolved(self, n_stages: int) -> Tuple[Tuple[int, ...], Tuple[int, ...], Tuple[int, ...]]:
+        dims = self.stage_dims or tuple(self.dim for _ in range(n_stages))
+        heads = self.stage_heads or tuple(self.n_heads for _ in range(n_stages))
+        layers = self.stage_layers or tuple(self.n_layers for _ in range(n_stages))
+        for name, t in (("stage_dims", dims), ("stage_heads", heads), ("stage_layers", layers)):
+            if len(t) != n_stages:
+                raise ValueError(f"predictor.{name} must have {n_stages} entries, got {t}")
+        for d, h in zip(dims, heads):
+            if d % h != 0:
+                raise ValueError(f"stage dim {d} not divisible by n_heads {h}")
+        return dims, heads, layers
 
 
 @dataclass(frozen=True)
@@ -113,15 +135,22 @@ class DataConfig:
     val_hash: str = "9dffa66fdc0e"               # 64x64, 200 clips (true cross-split)
     image_size: int = 64
     max_clips: Optional[int] = None
+    num_workers: int = 0
 
 
 @dataclass(frozen=True)
 class OptimConfig:
+    optimizer: str = "adamw"                     # "adam" | "adamw"
     lr: float = 3e-4
+    min_lr: float = 0.0
     weight_decay: float = 0.0
+    betas: Tuple[float, float] = (0.9, 0.999)
+    eps: float = 1e-8
     batch_size: int = 16
     grad_clip: float = 1.0
     max_steps: int = 2000
+    lr_schedule: str = "constant"                # "constant" | "cosine" | "warmup_cosine"
+    warmup_steps: int = 0
     amp: str = "bf16"                            # "bf16" | "off"
     seed: int = 0
 
@@ -131,6 +160,8 @@ class RunConfig:
     out_dir: str = "logs"
     log_every: int = 50
     val_every: int = 500
+    val_max_batches: int = 8
+    save_every: int = 0                          # 0 = save only at the end
     max_checkpoints_keep: int = 3
     wandb: bool = False
     wandb_project: str = "hvp-vqfree"
@@ -151,8 +182,11 @@ class Config:
 
     def validate(self) -> "Config":
         self.topology.validate()
+        self.predictor.resolved(self.topology.n_stages())
         if self.data.image_size != self.topology.image_size:
             raise ValueError("data.image_size must match topology.image_size")
+        if len(self.predictor.stage_pred_weight) != self.topology.n_stages():
+            raise ValueError("predictor.stage_pred_weight must have one entry per stage")
         return self
 
     # ---- (de)serialization ------------------------------------------------ #

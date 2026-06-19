@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import itertools
+import math
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -49,15 +50,31 @@ def grad_norm(params) -> float:
 
 
 def _loaders(cfg: Config):
-    common = dict(batch_size=cfg.optim.batch_size, num_workers=0, pin_memory=True)
+    common = dict(batch_size=cfg.optim.batch_size, num_workers=cfg.data.num_workers, pin_memory=True)
     tr = DataLoader(dataset_from_cfg(cfg, "train"), shuffle=True, drop_last=True, **common)
     va = DataLoader(dataset_from_cfg(cfg, "val"), shuffle=False, drop_last=False, **common)
     return tr, va
 
 
+def build_optimizer(params, oc):
+    kw = dict(lr=oc.lr, betas=tuple(oc.betas), eps=oc.eps, weight_decay=oc.weight_decay)
+    return torch.optim.AdamW(params, **kw) if oc.optimizer == "adamw" else torch.optim.Adam(params, **kw)
+
+
+def lr_at(step: int, oc, total: int) -> float:
+    if oc.warmup_steps > 0 and step < oc.warmup_steps:
+        return oc.lr * (step + 1) / oc.warmup_steps
+    if oc.lr_schedule in ("cosine", "warmup_cosine"):
+        s0 = oc.warmup_steps if oc.lr_schedule == "warmup_cosine" else 0
+        prog = min(1.0, max(0.0, (step - s0) / max(1, total - s0)))
+        return oc.min_lr + (oc.lr - oc.min_lr) * 0.5 * (1 + math.cos(math.pi * prog))
+    return oc.lr
+
+
 @torch.no_grad()
-def validate(tok, cascade, val_loader, cfg, device, max_batches=8) -> Tuple[Dict[str, float], List]:
+def validate(tok, cascade, val_loader, cfg, device, max_batches=None) -> Tuple[Dict[str, float], List]:
     tok.eval(); cascade.eval()
+    max_batches = cfg.run.val_max_batches if max_batches is None else max_batches
     n = tok.topology.n_stages()
     acc: Dict[str, list] = defaultdict(list)
     rows: List[Tuple[int, str, np.ndarray]] = []
@@ -104,7 +121,7 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     n_params = sum(p.numel() for p in tok.parameters()) + sum(p.numel() for p in cascade.parameters())
     tr, va = _loaders(cfg)
     params = list(tok.parameters()) + list(cascade.parameters())
-    opt = torch.optim.Adam(params, lr=cfg.optim.lr, weight_decay=cfg.optim.weight_decay)
+    opt = build_optimizer(params, cfg.optim)
     steps = max_steps or cfg.optim.max_steps
     log_every = log_every or cfg.run.log_every
     use_amp = device.type == "cuda" and cfg.optim.amp == "bf16"
@@ -116,6 +133,9 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
     t0 = time.time()
     last = None
     for step in range(steps):
+        cur_lr = lr_at(step, cfg.optim, steps)
+        for g in opt.param_groups:
+            g["lr"] = cur_lr
         x = next(data_iter)["video"].to(device, non_blocking=True)
         opt.zero_grad(set_to_none=True)
         with torch.autocast("cuda", dtype=torch.bfloat16, enabled=use_amp):
@@ -132,7 +152,7 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
         if step % log_every == 0 or step == steps - 1:
             ips = (step + 1) / (time.time() - t0)
             scal = {f"train/{k}": v for k, v in m.items()}
-            scal.update({"train/grad_norm": gn, "train/it_per_s": ips, "train/lr": cfg.optim.lr})
+            scal.update({"train/grad_norm": gn, "train/it_per_s": ips, "train/lr": cur_lr})
             logger.log(scal, step)
             ps = " ".join(f"p{s}={m.get(f'pred_s{s}',0):.3f}" for s in range(cfg.topology.n_stages()))
             print(f"[{step:5d}] loss {m['loss']:.3f} recon {m['recon']:.3f} psnr {m['psnr_full']:5.2f} "
@@ -143,6 +163,8 @@ def fit_oneshot(cfg: Config, max_steps: int | None = None, log_every: int | None
             logger.log_image_table(vrows, step)
             print(f"        [val@{step}] recon_psnr {vmet['val/recon_psnr']:.2f} ssim {vmet['val/recon_ssim']:.3f} "
                   f"| pred_lift {vmet['val/pred_psnr_lift']:+.2f}dB | mid_casc_lift {vmet['val/cascade_lift_s1']:+.3f}")
+        if cfg.run.save_every > 0 and step > 0 and step % cfg.run.save_every == 0:
+            _save(tok, cascade, cfg)
 
     vmet, vrows = validate(tok, cascade, va, cfg, device)
     logger.log(vmet, steps)
