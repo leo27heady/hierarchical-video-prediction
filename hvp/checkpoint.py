@@ -45,7 +45,10 @@ def save_checkpoint(path, *, tok, cascade, opt, step: int, cfg, extra: Optional[
     }
     if extra:
         blob.update(extra)
-    torch.save(blob, path)
+    # atomic write: a kill DURING torch.save would otherwise corrupt the only survivor (last.pt).
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    torch.save(blob, tmp)
+    tmp.replace(path)
     return str(path)
 
 

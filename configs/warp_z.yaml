@@ -1,0 +1,19 @@
+# Explicit-motion (flow-warp) head on fast Z-only (15-45 deg/frame in-plane). The L2 head gives a
+# 17.3 dB rounded blob here; the rotation-warp baseline is ~25 dB (near-oracle), so a learned warp
+# should be sharp. BOT is the stage that matters (warp on the 16x16 grid); coarse stages degrade to
+# persistence+residual. stage_pred_weight favors BOT (the coarse stages can't extrapolate rotation).
+_base_: base_64.yaml
+
+predictor:
+  head: warp
+  stage_pred_weight: [1.0, 0.5, 0.25]   # bot, mid, top -- favor the finest (warp) stage
+
+optim:
+  max_steps: 3000
+
+run:
+  out_dir: logs/warp_z
+  val_every: 500
+  save_every: 3000
+  wandb: false
+  wandb_name: warp-z

@@ -21,7 +21,7 @@ import torch.nn.functional as F
 
 
 def head_out_dim(kind: str, in_ch: int, n_components: int = 1) -> int:
-    if kind == "l2":
+    if kind in ("l2", "warp"):
         return in_ch
     if kind == "gaussian":
         return 2 * in_ch
@@ -40,7 +40,7 @@ def _split_gmm(pred: torch.Tensor, C: int, K: int):
 
 def head_nll(pred: torch.Tensor, tgt: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor:
     """Training loss: MSE (l2) or negative log-likelihood (gaussian / gmm). Mean over all cells."""
-    if kind == "l2":
+    if kind in ("l2", "warp"):
         return F.mse_loss(pred[..., :C], tgt)
     if kind == "gaussian":
         mu, logvar = pred[..., :C], pred[..., C:].clamp(-8.0, 8.0)
@@ -56,7 +56,7 @@ def head_nll(pred: torch.Tensor, tgt: torch.Tensor, kind: str, C: int, K: int = 
 
 def head_mean(pred: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor:
     """MMSE point estimate (mixture mean). Used by variance-explained."""
-    if kind in ("l2", "gaussian"):
+    if kind in ("l2", "gaussian", "warp"):
         return pred[..., :C]
     logits, mu, _ = _split_gmm(pred, C, K)
     pi = F.softmax(logits, dim=-1).unsqueeze(-1)                     # (...,K,1)
@@ -65,7 +65,7 @@ def head_mean(pred: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor
 
 def head_mode(pred: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor:
     """Most-likely component's mean — the stable point prediction for rollout/decode."""
-    if kind in ("l2", "gaussian"):
+    if kind in ("l2", "gaussian", "warp"):
         return pred[..., :C]
     logits, mu, _ = _split_gmm(pred, C, K)
     k = logits.argmax(-1, keepdim=True).unsqueeze(-1).expand(*logits.shape[:-1], 1, C)
@@ -74,7 +74,7 @@ def head_mode(pred: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor
 
 def head_sample(pred: torch.Tensor, kind: str, C: int, K: int = 1) -> torch.Tensor:
     """Draw one stochastic sample (for best-of-N / multimodal eval)."""
-    if kind == "l2":
+    if kind in ("l2", "warp"):
         return pred[..., :C]
     if kind == "gaussian":
         mu, logvar = pred[..., :C], pred[..., C:].clamp(-8.0, 8.0)

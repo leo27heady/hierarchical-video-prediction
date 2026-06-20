@@ -25,11 +25,12 @@ predictor:
     detach_feedback: true
 
 optim:
-  max_steps: 32000               # CALIBRATED: ~1.1 it/s incl. val/ckpt overhead -> ~8h (24.3M params, 9 GB peak)
+  max_steps: 60000               # CALIBRATED: ~1.1 it/s incl. val/ckpt overhead -> ~8h (24.3M params, 9 GB peak)
 
 run:
   out_dir: logs/so3_flagship
   save_every: 1500               # frequent checkpoints (recoverable + analyzable mid-run)
+  save_every_min: 30             # wall-clock safety net: durable ckpt every 30 min even if a slow run never crosses save_every
   val_every: 1000
   wandb: true
   wandb_name: so3-flagship-gmm-p2

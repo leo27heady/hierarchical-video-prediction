@@ -1,0 +1,23 @@
+# Easiest prediction-debug setting: 1-2 cubes, Z-only (in-plane), SLOW 4-10 deg/frame rotation, 64px,
+# deterministic L2 head. If the predictor cannot produce a SHARP next frame here, the architecture
+# (not the data difficulty) is the problem. Builds on base_64 (known-good capacity/schedule).
+_base_: base_64.yaml
+
+data:
+  train_hash: d3dea126cf5a        # simple-z: 1-2 cubes, slow Z-only, 64px, 400 clips
+  val_hash: 961d56a2c6d5          # 100 clips
+  val_long_hash: 961d56a2c6d5     # unused in single-shift (placeholder)
+  image_size: 64
+
+predictor:
+  head: l2                        # deterministic: slow Z rotation is ~deterministic -> should be sharp
+
+optim:
+  max_steps: 3000
+
+run:
+  out_dir: logs/simple_z
+  val_every: 500
+  save_every: 3000
+  wandb: false
+  wandb_name: simple-z

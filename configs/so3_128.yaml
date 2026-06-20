@@ -1,0 +1,46 @@
+# 2 -> 8 -> 32 spatial pyramid: image_size=128 with the same tap schedule yields
+#   BOT 32x32 / MID 8x8 / TOP 2x2  (verified: stage_spatial = image_size // 2**(tap+1)).
+# SO(3) data (genuine multimodality -> the distributional head + uncertainty maps are meaningful),
+# GMM head (samplable -> entropy/uncertainty maps), SINGLE-SHIFT only (no AR / no self-rollout).
+# NOTE: BOT is 32*32*9 = 9216 self-attention tokens (the compute bottleneck) -> batch_size and the
+# optional BOT spatial window are the memory levers; calibrated by scripts/probe_128.py.
+_base_: big_64.yaml
+
+topology:
+  image_size: 128
+  num_res_blocks: 2
+
+data:
+  train_hash: 7c5bd7e5bafd        # SO(3) 128x128 T=9, 500 clips
+  val_hash: f911afa05732          # SO(3) 128x128 T=9, 200 clips (true cross-split)
+  val_long_hash: 89d218152553     # SO(3) 128x128 T=33, 100 clips
+  image_size: 128
+
+predictor:
+  head: gmm
+  head_components: 4
+  lambda_pred: 0.02               # GMM NLL scale ~20-40x the L2/MSE scale big_64 targets
+  pred_warmup_steps: 800
+  # global BOT attention (windowing via a dense mask does NOT cut SDPA memory; the lever is batch_size).
+  stage_s_window: [0, 0, 0]
+  stage_t_window: [0, 0, 0]
+
+optim:
+  # probe: bs=4 fits at 10.25 GB / ~1 it/s on the 16 GB GPU; bs>=6 thrashes. Use bs=4 with
+  # accum_steps=4 -> effective batch 16 (matches the proven 64px regime) at bs=4 memory.
+  batch_size: 4
+  accum_steps: 4
+  lr: 0.00025                     # ~linear-scaled for effective bs 16 (big_64 was 4e-4 @ bs 32)
+  max_steps: 6000                 # optimizer steps (each = 4 microbatches); ~calibrated to a multi-hour run
+  lr_schedule: warmup_cosine
+  warmup_steps: 400
+
+run:
+  out_dir: logs/so3_128
+  val_every: 250
+  save_every: 250                 # step-stamped, pruned to max_checkpoints_keep
+  save_every_min: 20              # wall-clock safety net (checkpoint at least every 20 min)
+  max_checkpoints_keep: 3
+  wandb: true
+  wandb_name: so3-128-gmm-2to8to32
+  n_log_images: 6

@@ -87,7 +87,21 @@ class CascadeStagePredictor(nn.Module):
             for _ in range(n_layers)
         )
         self.norm = nn.LayerNorm(dim)
-        self.head = nn.Linear(dim, head_out_dim(head, in_ch, head_components))
+        if head == "warp":
+            # Explicit-motion head: predict a per-cell 2D flow and WARP the current latent (so detail is
+            # resampled, not regressed -> stays sharp), plus a small residual for disocclusion / content
+            # change. Zero-init both heads so training STARTS at identity-warp = persistence, then learns
+            # motion. The warp samples the (detached) current latent, so it adds no encoder gradient.
+            self.flow_head = nn.Linear(dim, 2)
+            self.residual_head = nn.Linear(dim, in_ch)
+            self.flow_scale = 1.5
+            for m in (self.flow_head, self.residual_head):
+                nn.init.zeros_(m.weight)
+                nn.init.zeros_(m.bias)
+            ys, xs = torch.meshgrid(torch.linspace(-1, 1, H), torch.linspace(-1, 1, W), indexing="ij")
+            self.register_buffer("base_grid", torch.stack([xs, ys], dim=-1), persistent=False)  # (H,W,2) (x,y)
+        else:
+            self.head = nn.Linear(dim, head_out_dim(head, in_ch, head_components))
         self.register_buffer("self_mask", windowed_causal_mask(T, H, W, t_window, s_window), persistent=False)
 
     def forward(self, feat: torch.Tensor, parent: Optional[torch.Tensor], cross_mask) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -97,7 +111,16 @@ class CascadeStagePredictor(nn.Module):
         for blk in self.blocks:
             x = blk(x, (T, H, W), self.self_mask, parent=parent, cross_mask=cross_mask)
         hidden = self.norm(x)
-        pred = self.head(hidden).reshape(B, T, H, W, -1)
+        if self.head_kind == "warp":
+            h = hidden.reshape(B, T, H, W, -1)
+            flow = torch.tanh(self.flow_head(h)) * self.flow_scale          # (B,T,H,W,2) grid offsets
+            grid = self.base_grid[None] + flow.reshape(B * T, H, W, 2)
+            feat_bt = feat.permute(0, 2, 1, 3, 4).reshape(B * T, C, H, W)    # current latent, per frame
+            warped = F.grid_sample(feat_bt, grid, mode="bilinear", padding_mode="border", align_corners=False)
+            warped = warped.reshape(B, T, C, H, W).permute(0, 1, 3, 4, 2)    # (B,T,H,W,C)
+            pred = warped + self.residual_head(h)
+        else:
+            pred = self.head(hidden).reshape(B, T, H, W, -1)
         return pred, hidden
 
 

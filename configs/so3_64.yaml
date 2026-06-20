@@ -10,5 +10,5 @@ data:
 
 run:
   out_dir: logs/so3              # don't clobber the Z-only reference checkpoint
-  wandb: false
+  wandb: true
   wandb_name: so3-64

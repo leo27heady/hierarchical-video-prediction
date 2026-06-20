@@ -82,8 +82,9 @@ run:
   log_every: 50
   val_every: 500
   val_max_batches: 8
-  save_every: 0               # 0 = save only at end
-  max_checkpoints_keep: 3
+  save_every: 0               # step-stamped ckpt every N steps (0 = only at end)
+  save_every_min: 0           # wall-clock ckpt interval in minutes (0 = disabled)
+  max_checkpoints_keep: 3     # retain only the N newest stepNNNNNN.pt (0 = keep all)
   wandb: false
   wandb_project: hvp-vqfree
   wandb_name: null

@@ -76,6 +76,15 @@ class TopologyConfig:
             raise ValueError("sequence_length must be ≡ 1 (mod 4) for the causal encoder")
         if tuple(sorted(self.tap_after)) != tuple(self.tap_after):
             raise ValueError("tap_after must be ascending (bot..top = fine..coarse)")
+        # guard the zero-spatial / zero-temporal footgun (e.g. image_size=32 + tap_after=(1,3,5)
+        # -> top spatial 0 -> a ZeroDivisionError deep in the decoder). Fail loudly, here.
+        ss, st = self.stage_spatial(), self.stage_temporal()
+        if any(s < 1 for s in ss) or any(t < 1 for t in st):
+            raise ValueError(
+                f"degenerate topology: stage_spatial={ss} stage_temporal={st} for image_size="
+                f"{self.image_size}, tap_after={self.tap_after}, sequence_length={self.sequence_length}; "
+                "every stage must have spatial>=1 and temporal>=1 (raise image_size or lower tap_after)"
+            )
 
 
 @dataclass(frozen=True)
@@ -180,6 +189,7 @@ class OptimConfig:
     betas: Tuple[float, float] = (0.9, 0.999)
     eps: float = 1e-8
     batch_size: int = 16
+    accum_steps: int = 1          # gradient-accumulation microbatches per optimizer step (effective bs = batch_size*accum_steps)
     grad_clip: float = 1.0
     max_steps: int = 2000
     lr_schedule: str = "constant"                # "constant" | "cosine" | "warmup_cosine"
@@ -194,8 +204,9 @@ class RunConfig:
     log_every: int = 50
     val_every: int = 500
     val_max_batches: int = 8
-    save_every: int = 0                          # 0 = save only at the end
-    max_checkpoints_keep: int = 3
+    save_every: int = 0                          # step-stamped ckpt every N steps (0 = only at end)
+    save_every_min: float = 0.0                  # wall-clock ckpt interval in minutes (0 = disabled)
+    max_checkpoints_keep: int = 3                # retain only the N newest stepNNNNNN.pt (0 = keep all)
     wandb: bool = False
     wandb_project: str = "hvp-vqfree"
     wandb_name: Optional[str] = None

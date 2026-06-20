@@ -19,14 +19,17 @@ from typing import List
 import torch
 import torch.nn as nn
 
-from hvp.predictor.heads import head_mode, head_sample
+from hvp.predictor.heads import head_mean, head_mode, head_sample
 
 
-def _pred_to_latents(cascade, preds: List[torch.Tensor], sample: bool = False) -> List[torch.Tensor]:
+def _pred_to_latents(cascade, preds: List[torch.Tensor], sample: bool = False,
+                     use_mean: bool = False) -> List[torch.Tensor]:
     """(B,T,H,W,out) per stage -> (B,C,T,H,W) latents via each stage's head.
-    sample=False -> the stable point prediction (mixture mode); sample=True -> a stochastic
-    draw (for best-of-N / multimodal rollout). l2/gaussian are unaffected by the flag."""
-    fn = head_sample if sample else head_mode
+    Point estimate selection (l2/gaussian are unaffected — all three collapse to the same value):
+      use_mean=True  -> MMSE mixture MEAN (best for an MSE/PSNR pixel metric);
+      sample=True    -> a stochastic draw (best-of-N / uncertainty / multimodal rollout);
+      else           -> the stable mixture MODE (default; the right point for AR rollout feedback)."""
+    fn = head_mean if use_mean else (head_sample if sample else head_mode)
     out = []
     for s, p in enumerate(preds):
         st = cascade.stages[s]

@@ -1,0 +1,22 @@
+# Longer run on the harder data with the validated wins, mild windowing:
+#  - SO(3) data (drift is the real frontier here)
+#  - GMM distributional head (best-of-N payoff under multimodality)
+#  - LIMITED windowing: a soft temporal horizon only (BOT sees 4 frames back, MID 3), full
+#    spatial — much milder than the self-frame-only that crippled the fine stages into copying.
+# Checkpoints every 1500 steps so progress can be reviewed mid-run.
+_base_: so3_64.yaml
+
+predictor:
+  head: gmm
+  head_components: 4
+  lambda_pred: 0.02              # NLL scale >> MSE; keeps pred/recon grad balance ~ the L2 run
+  stage_t_window: [4, 3, 0]      # bot/mid soft temporal horizon; top full
+  stage_s_window: [0, 0, 0]      # no spatial windowing (limited)
+
+optim:
+  max_steps: 6000
+
+run:
+  out_dir: logs/so3_long
+  save_every: 1500               # mid-run checkpoints for progress review
+  val_every: 1000
