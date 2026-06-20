@@ -61,3 +61,43 @@ The wall is *motion inference*. Candidate directions, untested here:
 3. **Explicit 3D-aware motion** (warp can't hallucinate newly-revealed faces under SO(3) self-occlusion);
    pair an in-plane warp with a generative residual / diffusion head only for the disoccluded region.
 4. **Slower frame rate** for the SO(3) demo (the pragmatic option — moderate motion already looks normal).
+
+## Research update — R1 cracks FAST in-plane motion (`configs/research_r1.yaml`)
+Combining the levers above on the previously-blobby fast Z-only case (15–45°/frame): **more temporal
+context (T=17)** + **larger BOT-focused predictor** (`stage_dims=[256,192,128]`, `stage_layers=[6,4,3]`,
+`stage_pred_weight=[1,0.25,0.1]`) + **warp head**, 6000 steps.
+
+| fast Z-only (15–45°/frame) | recon | oracle | pred | look |
+|---|---|---|---|---|
+| baseline L2/warp (T=9, dim128) | 30 | 22–24 | **17–18** | rounded blob |
+| **R1 (T=17, big BOT, warp)** | **34.2** | 27.2 | **~21 (20.8)** | **recognizable structured shapes** |
+
+So the levers work: fast in-plane prediction goes from a formless blob to recognizable, oriented shapes
+(+3–4 dB, ~54% of the oracle headroom; see `logs/debug_r1_final/`). This shows the fast-motion blob was a
+*model-capacity/context* problem after all (for in-plane motion) — not an intrinsic single-step wall.
+**R2** applies the same recipe to moderate **SO(3)** (`configs/research_r2.yaml`) to test transfer to real
+3D rotation (where self-occlusion is the extra difficulty the warp can't resample).
+
+### R2 — recipe transfers to real 3D rotation (moderate SO(3), 64px)
+Same recipe, moderate SO(3) (8–16°/frame, x+y+z), 6000 steps: recon **34.5 dB**, pred **~20 dB**
+(oracle 28.0 → ~30% of headroom), and a notably **stronger hierarchy lift `mid_casc +0.10`** (vs ~+0.03
+in-plane) — the coarse cross-attention earns its keep on 3D rotation. Predictions are **recognizable
+rotating cuboids** (`logs/debug_r2_final/`), vs the original SO(3) blob at 12.6 dB. Self-occlusion leaves
+a larger oracle gap than in-plane (the warp can't resample newly-revealed faces — the residual must, and
+that part still softens).
+
+### Scaling to 128px / 2→8→32 — a memory wall on a 16 GB GPU
+The two capacity/context levers that make R1/R2 sharp **do not fit at 128**: BOT is already 32²×9 = 9216
+self-attention tokens, so T=17 (→17408 tokens) and a larger BOT both OOM at bs≤4. The feasible 128 recipe
+(`configs/so3_128_recipe.yaml`) keeps only **warp + BOT-focus + moderate motion** (original BOT size, T=9,
+bs=4×accum4). To get the full recipe at 128 you need **true windowed/Flex attention on BOT** (the dense
+SDPA mask saves no memory) or a bigger GPU — the clear next engineering step for full-res 2→8→32.
+
+## Bottom line for the dissertation
+- The blob was **mean-regression under hard-to-infer motion**, not a tokenizer/representation defect.
+- It is **fixable**: moderate motion alone makes single-step prediction recognizable; for *fast* motion,
+  **more temporal context + a larger BOT-focused predictor + a warp head** recover recognizable, oriented
+  predictions (proven at 64px on both in-plane and SO(3)).
+- The hierarchy (coarse→fine cross-attention) **measurably helps, more so on 3D rotation**.
+- Remaining frontier: **full-res 2→8→32** needs windowed attention to afford the recipe; **SO(3)
+  self-occlusion** needs a stronger generative residual than the warp (diffusion head) to fully sharpen.

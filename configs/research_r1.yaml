@@ -1,0 +1,36 @@
+# Research R1: attack motion INFERENCE on hard in-plane motion (fast Z-only, 15-45 deg/frame, where the
+# baseline predicts a ~17 dB rounded blob vs a ~22-23 dB oracle ceiling). Levers, combined:
+#   - more temporal context  (T=17 vs 9)
+#   - BOT-focused + LARGER BOT predictor (the coarse stages are context, not the output)
+#   - explicit-motion warp head
+#   - longer training (6000 steps)
+# Success = pred climbs toward the oracle ceiling and the decoded frame is a crisp rotated shape.
+_base_: base_64.yaml
+
+topology:
+  image_size: 64
+  sequence_length: 17            # more temporal context
+
+data:
+  train_hash: 1e7a2d916d25       # fast Z-only, T=17, 15-45 deg/frame, 1-6 cubes, 400 clips
+  val_hash: 75b3db0ab6e2         # 100 clips
+  val_long_hash: 75b3db0ab6e2
+  image_size: 64
+
+predictor:
+  head: warp
+  stage_dims: [256, 192, 128]    # bot, mid, top -- larger BOT for motion-inference capacity
+  stage_heads: [8, 6, 4]
+  stage_layers: [6, 4, 3]
+  stage_pred_weight: [1.0, 0.25, 0.1]   # BOT-focused
+
+optim:
+  batch_size: 8                  # T=17 + larger BOT -> smaller batch
+  max_steps: 6000
+
+run:
+  out_dir: logs/research_r1
+  val_every: 500
+  save_every: 1000
+  wandb: false
+  wandb_name: research-r1

@@ -1,0 +1,31 @@
+# The R1/R2 recipe scaled to the 128px / 2->8->32 target on MODERATE SO(3) motion (the original goal).
+# T=17 (more context) is INFEASIBLE at 128 (BOT 32^2 x 17 = 17408 self-attention tokens), so this keeps
+# T=9 and applies the other levers: larger BOT-focused predictor + warp head + moderate motion.
+# batch_size/stage_dims may be trimmed after scripts/probe_128.py confirms memory.
+_base_: so3_128.yaml          # 128px -> BOT 32 / MID 8 / TOP 2, T=9
+
+data:
+  train_hash: 96e3b8e4df6a    # moderate SO(3) (xyz), 128px, T=9, 8-16 deg/frame, 1-3 cubes, 400 clips
+  val_hash: bd688ce90315      # 100 clips
+  val_long_hash: bd688ce90315
+
+predictor:
+  head: warp
+  # NOTE: the larger BOT (R1/R2's capacity lever) and T=17 both OOM at 128 on 16 GB (BOT is already
+  # 9216 tokens) -> keep original BOT size; feasible levers here = warp + BOT-focus + moderate motion.
+  stage_dims: [192, 160, 128]      # bot >= coarse (so3_128 default 192,256,256 is backwards)
+  stage_heads: [8, 8, 8]
+  stage_layers: [4, 3, 3]
+  stage_pred_weight: [1.0, 0.25, 0.1]   # BOT-focused
+
+optim:
+  batch_size: 4
+  accum_steps: 4
+  max_steps: 4000
+
+run:
+  out_dir: logs/so3_128_recipe
+  val_every: 500
+  save_every: 1000
+  wandb: false
+  wandb_name: so3-128-recipe

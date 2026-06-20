@@ -1,0 +1,15 @@
+# Research R2: the R1 recipe (more temporal context T=17 + larger BOT-focused predictor + warp head)
+# applied to MODERATE SO(3) motion (8-16 deg/frame, full 3D x+y+z rotation -> self-occlusion). Tests
+# whether the levers that cracked fast in-plane motion also help genuine 3D rotation (the goal).
+# Caveat: a warp cannot hallucinate newly-revealed faces under self-occlusion, so the residual must
+# carry disocclusion -> expect this to be harder than the in-plane case.
+_base_: research_r1.yaml
+
+data:
+  train_hash: 8fa4ed74dcc3       # moderate SO(3) (xyz), T=17, 8-16 deg/frame, 1-3 cubes, 64px, 400 clips
+  val_hash: 84a0c9e42e2a         # 100 clips
+  val_long_hash: 84a0c9e42e2a
+
+run:
+  out_dir: logs/research_r2
+  wandb_name: research-r2
