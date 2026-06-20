@@ -17,6 +17,9 @@ predictor:
   stage_heads: [8, 8, 8]
   stage_layers: [4, 3, 3]
   stage_pred_weight: [1.0, 0.25, 0.1]   # BOT-focused
+  lambda_pred: 0.25                # OVERRIDE so3_128's 0.02 (that was for the GMM-NLL scale; the warp
+                                   # head uses MSE -> needs the l2-scale weight, as in R1/R2)
+  pred_warmup_steps: 800
 
 optim:
   batch_size: 4
