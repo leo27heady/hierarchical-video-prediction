@@ -129,6 +129,7 @@ class PredictorConfig:
     stage_layers: Optional[Tuple[int, ...]] = None
     mlp_ratio: int = 4
     dropout: float = 0.0
+    grad_checkpoint: bool = False     # gradient-checkpoint cascade blocks (trade compute for memory at 128)
     # --- attention / positional ---
     rope_base: float = 10000.0
     qk_norm: bool = True

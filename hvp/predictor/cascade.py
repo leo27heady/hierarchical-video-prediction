@@ -74,10 +74,12 @@ class CascadeStagePredictor(nn.Module):
     def __init__(self, in_ch: int, thw: Tuple[int, int, int], *, dim: int, n_heads: int,
                  n_layers: int, head: str, has_parent: bool, parent_dim: int,
                  mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0, rope_base: float = 10000.0,
-                 t_window: int = 0, s_window: int = 0, head_components: int = 4):
+                 t_window: int = 0, s_window: int = 0, head_components: int = 4,
+                 grad_checkpoint: bool = False):
         super().__init__()
         T, H, W = thw
         self.thw, self.in_ch, self.head_kind, self.head_components = thw, in_ch, head, head_components
+        self.grad_checkpoint = grad_checkpoint
         self.proj_in = nn.Linear(in_ch, dim)
         self.spatial = nn.Parameter(torch.zeros(H * W, dim))
         rope = Rotary3D(dim // n_heads, base=rope_base)
@@ -109,7 +111,11 @@ class CascadeStagePredictor(nn.Module):
         x = feat.permute(0, 2, 3, 4, 1).reshape(B, T * H * W, C)
         x = self.proj_in(x) + self.spatial.repeat(T, 1)[None]
         for blk in self.blocks:
-            x = blk(x, (T, H, W), self.self_mask, parent=parent, cross_mask=cross_mask)
+            if self.grad_checkpoint and self.training:
+                from torch.utils.checkpoint import checkpoint
+                x = checkpoint(blk, x, (T, H, W), self.self_mask, parent, cross_mask, use_reentrant=False)
+            else:
+                x = blk(x, (T, H, W), self.self_mask, parent=parent, cross_mask=cross_mask)
         hidden = self.norm(x)
         if self.head_kind == "warp":
             h = hidden.reshape(B, T, H, W, -1)
@@ -144,7 +150,7 @@ class HierarchicalCascade(nn.Module):
                 parent_dim=dims[s + 1] if s < self.N - 1 else dims[s],
                 mlp_ratio=pcfg.mlp_ratio, qk_norm=pcfg.qk_norm, dropout=pcfg.dropout,
                 rope_base=pcfg.rope_base, t_window=tw[s], s_window=sw[s],
-                head_components=pcfg.head_components,
+                head_components=pcfg.head_components, grad_checkpoint=pcfg.grad_checkpoint,
             )
             for s in range(self.N)
         )

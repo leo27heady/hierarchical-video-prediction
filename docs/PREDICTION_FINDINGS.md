@@ -90,8 +90,14 @@ that part still softens).
 The two capacity/context levers that make R1/R2 sharp **do not fit at 128**: BOT is already 32²×9 = 9216
 self-attention tokens, so T=17 (→17408 tokens) and a larger BOT both OOM at bs≤4. The feasible 128 recipe
 (`configs/so3_128_recipe.yaml`) keeps only **warp + BOT-focus + moderate motion** (original BOT size, T=9,
-bs=4×accum4). To get the full recipe at 128 you need **true windowed/Flex attention on BOT** (the dense
-SDPA mask saves no memory) or a bigger GPU — the clear next engineering step for full-res 2→8→32.
+bs=4×accum4). **Empirical result (4000 steps): it BLOBS** — recon climbs fine to 34 dB but the predictor
+plateaus at pred ~15 dB / lift ~0 (a formless blob, `logs/so3_128_recipe/val_strips/`), while the hierarchy
+lift keeps growing to **mid_casc +0.24** (the cascade is healthy; the per-stage predictor is starved).
+This is the decisive control: **the T=17-context + larger-BOT levers are NECESSARY, not merely helpful** —
+strip them (as 128 memory forces) and even moderate SO(3) reverts to a blob. So full-res 2→8→32 needs
+**true windowed/Flex attention on BOT** (the dense SDPA mask saves no memory) or a bigger GPU to afford the
+recipe — the clear next engineering step. (mid_casc rising 0.10→0.18→0.24 from 64px→128px shows the deeper
+2→8→32 hierarchy's coarse cross-attention is increasingly load-bearing — promising once the predictor fits.)
 
 ## Bottom line for the dissertation
 - The blob was **mean-regression under hard-to-infer motion**, not a tokenizer/representation defect.

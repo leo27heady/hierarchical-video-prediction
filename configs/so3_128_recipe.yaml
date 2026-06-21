@@ -11,20 +11,21 @@ data:
 
 predictor:
   head: warp
-  # NOTE: the larger BOT (R1/R2's capacity lever) and T=17 both OOM at 128 on 16 GB (BOT is already
-  # 9216 tokens) -> keep original BOT size; feasible levers here = warp + BOT-focus + moderate motion.
-  stage_dims: [192, 160, 128]      # bot >= coarse (so3_128 default 192,256,256 is backwards)
+  # GRAD-CHECKPOINTING lets the larger BOT (R1's capacity lever) fit at 128 (8.5 GB vs OOM). T=17 is
+  # still infeasible (that's the attention SCORE matrix, not activations) -> keep T=9. Recipe here =
+  # larger BOT-focused predictor + warp + moderate motion (the only missing lever vs R1/R2 is T=17).
+  grad_checkpoint: true
+  stage_dims: [256, 192, 128]      # larger BOT (capacity); bot >= coarse
   stage_heads: [8, 8, 8]
-  stage_layers: [4, 3, 3]
+  stage_layers: [6, 4, 3]
   stage_pred_weight: [1.0, 0.25, 0.1]   # BOT-focused
-  lambda_pred: 0.25                # OVERRIDE so3_128's 0.02 (that was for the GMM-NLL scale; the warp
-                                   # head uses MSE -> needs the l2-scale weight, as in R1/R2)
+  lambda_pred: 0.25                # OVERRIDE so3_128's 0.02 (GMM-NLL scale); the warp head uses MSE
   pred_warmup_steps: 800
 
 optim:
   batch_size: 4
-  accum_steps: 4
-  max_steps: 4000
+  accum_steps: 2                   # effective batch 8 (matches R1/R2); grad-checkpoint slows steps
+  max_steps: 3500
 
 run:
   out_dir: logs/so3_128_recipe
