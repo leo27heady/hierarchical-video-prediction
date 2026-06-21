@@ -48,10 +48,10 @@ class CrossAttention(nn.Module):
 
 class CascadeStageBlock(nn.Module):
     def __init__(self, dim: int, n_heads: int, rope: Rotary3D, has_parent: bool, parent_dim: int,
-                 mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0):
+                 mlp_ratio: int = 4, qk_norm: bool = True, dropout: float = 0.0, s_window: int = 0):
         super().__init__()
         self.norm1 = nn.LayerNorm(dim)
-        self.attn = SelfAttention(dim, n_heads, rope, qk_norm=qk_norm)
+        self.attn = SelfAttention(dim, n_heads, rope, qk_norm=qk_norm, s_window=s_window)
         self.has_parent = has_parent
         if has_parent:
             self.norm_c = nn.LayerNorm(dim)
@@ -85,7 +85,7 @@ class CascadeStagePredictor(nn.Module):
         rope = Rotary3D(dim // n_heads, base=rope_base)
         self.blocks = nn.ModuleList(
             CascadeStageBlock(dim, n_heads, rope, has_parent, parent_dim, mlp_ratio=mlp_ratio,
-                              qk_norm=qk_norm, dropout=dropout)
+                              qk_norm=qk_norm, dropout=dropout, s_window=s_window)
             for _ in range(n_layers)
         )
         self.norm = nn.LayerNorm(dim)
@@ -104,7 +104,13 @@ class CascadeStagePredictor(nn.Module):
             self.register_buffer("base_grid", torch.stack([xs, ys], dim=-1), persistent=False)  # (H,W,2) (x,y)
         else:
             self.head = nn.Linear(dim, head_out_dim(head, in_ch, head_components))
-        self.register_buffer("self_mask", windowed_causal_mask(T, H, W, t_window, s_window), persistent=False)
+        # Block-windowed self-attention (s_window>0): SelfAttention partitions into w x w spatial blocks
+        # and attends within each, so the mask is the per-block (T*w*w)^2 causal mask (spatial handled by
+        # partitioning -> s_window=0 in the mask). Otherwise the full-grid temporal-causal mask.
+        if s_window and 0 < s_window < H and H % s_window == 0:
+            self.register_buffer("self_mask", windowed_causal_mask(T, s_window, s_window, t_window, 0), persistent=False)
+        else:
+            self.register_buffer("self_mask", windowed_causal_mask(T, H, W, t_window, 0), persistent=False)
 
     def forward(self, feat: torch.Tensor, parent: Optional[torch.Tensor], cross_mask) -> Tuple[torch.Tensor, torch.Tensor]:
         B, C, T, H, W = feat.shape

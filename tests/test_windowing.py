@@ -34,13 +34,20 @@ def test_spatial_window_limits_neighbourhood_and_no_empty_rows():
 
 
 def test_cascade_builds_with_windows_and_runs():
+    """BOT uses TRUE block-windowed self-attention (non-overlapping w x w spatial blocks, attended
+    within across causal time) — real memory savings, unlike a dense windowed mask. So the BOT self
+    mask is the PER-BLOCK (T*w*w)^2 mask (spatial handled by partitioning), and the windowed
+    SelfAttention carries s_window. Top (1x1) is unrestricted."""
     topo = TopologyConfig()
     pcfg = PredictorConfig(dim=64, n_heads=4, n_layers=1,
                            stage_t_window=(1, 1, 0), stage_s_window=(8, 0, 0))  # bot, mid, top
     cas = HierarchicalCascade(topo, pcfg).eval()
-    # bot (finest) must be self-frame-only + spatially windowed; top unrestricted
-    assert torch.equal(cas.stages[0].self_mask, windowed_causal_mask(9, 16, 16, 1, 8))
+    # bot (16x16): block-windowed w=8 -> per-block mask windowed_causal_mask(T=9, 8, 8, t_window=1, 0)
+    assert torch.equal(cas.stages[0].self_mask, windowed_causal_mask(9, 8, 8, 1, 0))
+    assert cas.stages[0].blocks[0].attn.s_window == 8
+    # top (1x1): no spatial window, no temporal window -> plain causal
     assert torch.equal(cas.stages[2].self_mask, windowed_causal_mask(3, 1, 1, 0, 0))
+    assert cas.stages[2].blocks[0].attn.s_window == 0
     z = [torch.randn(1, c, t, s, s) for c, t, s in
          zip(topo.stage_latent_ch, topo.stage_temporal(), topo.stage_spatial())]
     preds = cas(z)
