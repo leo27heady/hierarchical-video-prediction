@@ -99,6 +99,15 @@ strip them (as 128 memory forces) and even moderate SO(3) reverts to a blob. So 
 recipe — the clear next engineering step. (mid_casc rising 0.10→0.18→0.24 from 64px→128px shows the deeper
 2→8→32 hierarchy's coarse cross-attention is increasingly load-bearing — promising once the predictor fits.)
 
+**Follow-up (gradient checkpointing -> larger BOT fits, but still blobs):** `predictor.grad_checkpoint`
+drops peak 19→8.5 GB and lets the larger BOT (R1's capacity lever) fit at 128 (bs=4). A 3500-step run
+with **larger-BOT + warp + BOT-focus (but T=9)** still **plateaus at pred ~15.6 / lift ~0 — a blob**
+(`logs/so3_128_recipe/val_strips/`). So the capacity lever alone is NOT sufficient: **the T=17 temporal
+context is the essential lever**, and it is exactly the one that cannot fit at 128 (the attention SCORE
+matrix is 17408² — not reducible by checkpointing). **Conclusion: literal 2→8→32 at recognizable quality
+needs true windowed/Flex attention on BOT** (to make T=17 affordable) or a bigger GPU. The science is
+proven at 64px (16→4→1); full-res 2→8→32 is gated on that one engineering piece.
+
 ## Bottom line for the dissertation
 - The blob was **mean-regression under hard-to-infer motion**, not a tokenizer/representation defect.
 - It is **fixable**: moderate motion alone makes single-step prediction recognizable; for *fast* motion,
