@@ -89,8 +89,9 @@ class DLH(nn.Module):
         return cs, c
 
     # ----------------------------------------------------------------- one timestep
-    def _step(self, state, x_t, mode):
+    def _step(self, state, x_t, mode, force_tick=False):
         """One timestep. mode='posterior' (obs x_t available, hard-KL e) or 'prior' (free-run, sample e).
+        force_tick=True forces every level to update (dense warmup bootstrap).
         Returns decoded image (B,C,H,W), new state, and dict of per-step tensors (losses + e_eff + K)."""
         cfg, N = self.cfg, self.cfg.levels
         B = state["s"][0].shape[0]
@@ -108,7 +109,9 @@ class DLH(nn.Module):
                 e_eff[0] = torch.ones(B, 1, device=dev)            # bottom always changes (q(e^1=1)=1)
                 parent = e_eff[0]
                 continue
-            if mode == "posterior":
+            if force_tick:                                         # dense warmup bootstrap
+                e_raw = torch.ones(B, 1, device=dev)
+            elif mode == "posterior":
                 mu_c, sg_c = self.prior[n](torch.cat([state["d"][n], cs_static[n]], -1))
                 mu_q, sg_q = self.post[n](torch.cat([x_t[n], cs_static[n]], -1))
                 kl_c = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
@@ -129,8 +132,10 @@ class DLH(nn.Module):
             if mode == "posterior":
                 mu_q, sg_q = self.post[n](torch.cat([x_t[n], c], -1))
                 s_changed = mu_q + sg_q * torch.randn_like(sg_q)
+                # ELBO term (b) breakdown: KL to the SELECTED MoG component (change if tick, static if frozen)
                 kl_change = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
-                skl_level[n] = e_eff[n] * kl_change                 # frozen levels add ~0 (copy)
+                kl_static = gaussian_kl(mu_q, sg_q, state["bmean"][n], state["bstd"][n]).sum(-1, keepdim=True)
+                skl_level[n] = e_eff[n] * kl_change + (1 - e_eff[n]) * kl_static
                 state_kl = state_kl + skl_level[n]
             else:
                 s_changed = mu_c + sg_c * torch.randn_like(sg_c)
@@ -164,8 +169,9 @@ class DLH(nn.Module):
         return decoded, new, info
 
     # ----------------------------------------------------------------- training forward (ELBO)
-    def loss(self, obs, beta=1.0):
-        """obs (B,T,C,H,W) in [0,1]. Teacher-forced ELBO over the full sequence."""
+    def loss(self, obs, beta=1.0, force_tick=False):
+        """obs (B,T,C,H,W) in [0,1]. Teacher-forced ELBO over the full sequence.
+        force_tick=True forces all levels to update every step (dense warmup bootstrap)."""
         cfg = self.cfg
         B, T = obs.shape[:2]
         feats = self._bottom_up(obs)                                # list[N] of (B,T,D)
@@ -179,7 +185,7 @@ class DLH(nn.Module):
         var = cfg.dec_stddev ** 2
         for t in range(T):
             x_t = [feats[n][:, t] for n in range(cfg.levels)]
-            dec, state, info = self._step(state, x_t, mode="posterior")
+            dec, state, info = self._step(state, x_t, mode="posterior", force_tick=force_tick)
             se = ((obs[:, t] - dec) ** 2).reshape(B, -1).sum(-1)
             recon = recon + 0.5 * se / var + 0.5 * math.log(2 * math.pi * var) * dec[0].numel()
             skl = skl + info["state_kl"]

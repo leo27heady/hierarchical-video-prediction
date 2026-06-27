@@ -45,6 +45,9 @@ class DLHConfig:
     beta_warmup_iters: int = 10000          # linear 0 -> beta_max over the first N iters (paper §A.1)
     free_nats: float = 0.0                  # optional per-level state-KL floor (0 = off)
     transition_kl_weight: float = 1.0       # weight on the Bernoulli (transition) KL term
+    force_tick_iters: int = 3000            # dense warmup: force ALL levels to tick (bootstrap the
+                                            # upper levels out of the dead-unit cold start), then anneal
+                                            # to the learned KL-selection. 0 = off (pure paper rule).
 
     # ---- optimisation (paper §A.1: Adam lr 5e-4, eps 1e-4) ----
     lr: float = 5e-4

@@ -76,8 +76,9 @@ def main():
 
     for step in range(1, cfg.total_iters + 1):
         beta = cfg.beta_max * min(1.0, step / max(1, cfg.beta_warmup_iters))
+        force_tick = step <= cfg.force_tick_iters                  # dense warmup, then learned selection
         obs = next(it).to(dev)
-        loss, met = model.loss(obs, beta=beta)
+        loss, met = model.loss(obs, beta=beta, force_tick=force_tick)
         opt.zero_grad(set_to_none=True)
         loss.backward()
         gnorm = torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.grad_clip)
@@ -87,6 +88,7 @@ def main():
             log = {"train/loss": met["loss"].item(), "train/nll": met["nll"].item(),
                    "train/state_kl": met["state_kl"].item(), "train/trans_kl": met["trans_kl"].item(),
                    "train/K_mean": met["K_mean"].item(), "train/beta": beta,
+                   "train/force_tick": float(force_tick),
                    "train/grad_norm": float(gnorm), "step": step}
             for n, (e, sk) in enumerate(zip(met["e_per_level"].tolist(), met["skl_per_level"].tolist())):
                 log[f"clock/e_L{n}"] = e            # fraction of steps level n ticks (adaptive clock usage)
