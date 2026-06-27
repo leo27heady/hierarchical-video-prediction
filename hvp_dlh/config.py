@@ -12,6 +12,8 @@ class DLHConfig:
     dataset: str = "moving_ball"            # moving_ball | mmnist | mazes
     image_size: int = 64
     image_channels: int = 1                 # 1 for MMNIST/ball(gray), 3 for colour ball / mazes
+    ball_p_turn: float = 0.1                # ball: prob/step of a direction change (FAST feature -> bottom)
+    ball_p_colour: float = 0.05             # ball: prob/step of a colour change (SLOW feature -> top, needs C=3)
 
     # ---- hierarchy (paper: 3 levels MMNIST/Mazes, 2 levels Moving Ball) ----
     levels: int = 2                         # N. level 0 = BOTTOM (always ticks), level N-1 = TOP

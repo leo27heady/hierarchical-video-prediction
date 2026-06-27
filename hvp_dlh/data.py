@@ -17,12 +17,21 @@ from torch.utils.data import Dataset, DataLoader, IterableDataset
 # --------------------------------------------------------------------------- Moving Ball
 class MovingBallDataset(IterableDataset):
     """Infinite stream of bouncing-ball sequences. (T, C, 64, 64) float32 in [0,1].
-    Stochastic: velocity is resampled with prob p_turn each step (the source of uncertainty)."""
+    Two stochastic features at DIFFERENT timescales (the point of the 2-level test, paper §3.4):
+      - position: velocity resampled with prob p_turn each step (FAST feature -> bottom level)
+      - colour:   resampled with prob p_colour each step, only if channels>1 (SLOW feature -> top level,
+                  matching the paper's colour-changing Moving Ball; gives the hierarchy a real job)."""
 
-    def __init__(self, seq_len=100, size=64, radius=6, speed=4.0, p_turn=0.1, channels=1, seed=0):
+    def __init__(self, seq_len=100, size=64, radius=6, speed=4.0, p_turn=0.1, p_colour=0.05,
+                 channels=1, seed=0):
         self.seq_len, self.size, self.radius = seq_len, size, radius
-        self.speed, self.p_turn, self.channels = speed, p_turn, channels
+        self.speed, self.p_turn, self.p_colour, self.channels = speed, p_turn, p_colour, channels
         self.seed = seed
+
+    def _rand_colour(self, rng):
+        # saturated, well-separated colours so a change is a clear global event
+        c = rng.uniform(0.2, 1.0, size=self.channels); c[rng.integers(self.channels)] = 1.0
+        return c
 
     def _gen(self, rng):
         S, r = self.size, self.radius
@@ -30,12 +39,14 @@ class MovingBallDataset(IterableDataset):
         ang = rng.uniform(0, 2 * np.pi)
         vel = self.speed * np.array([np.cos(ang), np.sin(ang)])
         yy, xx = np.mgrid[0:S, 0:S]
-        col = rng.uniform(0.6, 1.0, size=self.channels) if self.channels > 1 else np.array([1.0])
+        col = self._rand_colour(rng) if self.channels > 1 else np.array([1.0])
         frames = np.zeros((self.seq_len, self.channels, S, S), np.float32)
         for t in range(self.seq_len):
-            if rng.random() < self.p_turn:                          # stochastic direction change
+            if rng.random() < self.p_turn:                          # FAST: stochastic direction change
                 ang = rng.uniform(0, 2 * np.pi)
                 vel = self.speed * np.array([np.cos(ang), np.sin(ang)])
+            if self.channels > 1 and rng.random() < self.p_colour:  # SLOW: stochastic colour change
+                col = self._rand_colour(rng)
             pos = pos + vel
             for d in range(2):                                      # bounce off walls
                 if pos[d] < r:
@@ -82,10 +93,10 @@ class MovingMNISTDataset(Dataset):
 def make_loaders(cfg):
     """Returns (train_iter_fn, test_dataset). train_iter_fn() yields a (B,T,C,H,W) batch."""
     if cfg.dataset == "moving_ball":
-        ds = MovingBallDataset(seq_len=cfg.seq_len, channels=cfg.image_channels, seed=cfg.seed)
+        bk = dict(channels=cfg.image_channels, p_turn=cfg.ball_p_turn, p_colour=cfg.ball_p_colour)
+        ds = MovingBallDataset(seq_len=cfg.seq_len, seed=cfg.seed, **bk)
         dl = DataLoader(ds, batch_size=cfg.batch_size, num_workers=cfg.num_workers, drop_last=True)
-        test = MovingBallDataset(seq_len=cfg.ctx_frames + cfg.eval_horizon,
-                                 channels=cfg.image_channels, seed=cfg.seed + 777)
+        test = MovingBallDataset(seq_len=cfg.ctx_frames + cfg.eval_horizon, seed=cfg.seed + 777, **bk)
         return dl, test
     elif cfg.dataset == "mmnist":
         ds = MovingMNISTDataset(cfg.data_root, "train", cfg.seq_len)
