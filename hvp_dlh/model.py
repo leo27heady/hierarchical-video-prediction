@@ -104,6 +104,7 @@ class DLH(nn.Module):
         # ===== Sweep A: e-decision =====
         cs_static, _ = self._contexts(state["s"])                  # contexts under static assumption
         e_eff, parent = [None] * N, torch.ones(B, 1, device=dev)
+        kl_dec = [(None, None)] * N                                # (KL->change, KL->static) per level (diagnostics)
         for n in range(N):
             if n == 0:
                 e_eff[0] = torch.ones(B, 1, device=dev)            # bottom always changes (q(e^1=1)=1)
@@ -116,6 +117,7 @@ class DLH(nn.Module):
                 mu_q, sg_q = self.post[n](torch.cat([x_t[n], cs_static[n]], -1))
                 kl_c = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
                 kl_s = gaussian_kl(mu_q, sg_q, state["bmean"][n], state["bstd"][n]).sum(-1, keepdim=True)
+                kl_dec[n] = (kl_c, kl_s)
                 e_raw = (kl_c < kl_s).float()
             else:                                                  # free-run: sample from prior factor
                 e_raw = torch.bernoulli(torch.sigmoid(pf_logit[n]))
@@ -165,7 +167,7 @@ class DLH(nn.Module):
 
         K = torch.stack([e for e in e_eff], 1).sum(1)               # (B,1) update depth this step
         info = {"state_kl": state_kl, "trans_kl": trans_kl, "e": e_eff, "K": K,
-                "skl_level": skl_level}
+                "skl_level": skl_level, "kl_dec": kl_dec}
         return decoded, new, info
 
     # ----------------------------------------------------------------- training forward (ELBO)
