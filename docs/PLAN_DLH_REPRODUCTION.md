@@ -196,3 +196,36 @@ docs/PLAN_DLH_REPRODUCTION.md   # this file
 
 **Open question for you:** repo home — keep DLH here in `hierarchical-video-prediction` (this branch), or co-locate
 with the CW-VAE port in `../cwvae`? This plan assumes here, pointing at `../cwvae` for data. Easy to change.
+
+---
+
+## 9. Bad-outcome debugging ladder (if the top level collapses back after warmup)
+
+Symptom: after `force_tick_iters`, `K` snaps to 1.0 and top-level state-KL → 0. Ordered cheapest-first; each rung
+has a concrete check and fix. (See also `DLH_EXPLAINED.md` §4–5 for the mechanism each rung touches.)
+
+0. **Is it actually a bug, or correct auto-collapse?** DLH is *designed* to collapse unused levels (paper App. C,
+   Table 4: Moving Ball L2 KL ≈ 6.8 — low but **nonzero**, with occasional ticks). First distinguish *dead*
+   (K≡1.0, top-KL≡0, never ticks) from *low-usage* (K≈1.05–1.3, top-KL a few nats). Low-usage on a 1-object toy is
+   the paper's expected behaviour — then just proceed to MMNIST where the hierarchy is genuinely needed.
+1. **Instrument the decision.** Log, per level over a sequence, the two KLs `KL(q‖change)` and `KL(q‖static)` and
+   the tick rate. This shows *why* the rule chooses static. Cheapest, most informative step — do this first.
+2. **Static-prior semantics.** We use static = persisted last *change-prior*; the paper says `p(s_{t-1})` = previous
+   *state distribution*. Try static = previous **posterior** `q(s_{t-1})` instead. Changes which hypothesis "stay"
+   means and can unstick ticking.
+3. **Anneal the warmup instead of a hard switch.** Replace the step cutoff with a *stochastic* force-tick whose
+   probability decays (e.g. 1→0 over 3k–8k iters), or scheduled-sampling style. A gentler hand-off avoids the model
+   snapping to all-static at the boundary.
+4. **Soft / temperature decision.** Replace the hard `argmin` with `e ~ Bernoulli(σ((KL_static − KL_change)/τ))`
+   and anneal `τ→0`. Keeps exploration (some ticks → gradient) and recovers the hard rule at the end.
+5. **Prior-factor overconfidence (paper §2.2 footnote).** If teacher-forced `K`>1 but free-run `K`=1, the learned
+   `p(eⁿ|dⁿ)` collapsed to "never change". Fix: entropy bonus / label-smoothing on the transition-KL, or a small
+   floor on `p(e=1)`. This is a known DLH issue, explicitly flagged in the paper.
+6. **Top-level leverage.** If the top-down context `cⁿ` barely affects reconstruction, there's no incentive to use
+   the level. Check the gradient/΄magnitude of `c` into the bottom decode; widen `dec_mlp` or add a skip if weak.
+7. **Move off the toy.** If the top level stays near-dead *only* on Moving Ball after rungs 1–6, that dataset may be
+   genuinely ~1-level. Switch to MMNIST/Mazes (3 levels, hierarchy demonstrably load-bearing — CW-VAE showed all
+   levels carry KL there) rather than over-fitting the debugging to the simplest data.
+
+Rule of thumb: rung 1 (logging the two KLs) almost always tells you which of 2/5/6 is the real cause before you
+touch the model.
