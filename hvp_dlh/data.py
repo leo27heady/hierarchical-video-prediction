@@ -83,13 +83,13 @@ def make_loaders(cfg):
     """Returns (train_iter_fn, test_dataset). train_iter_fn() yields a (B,T,C,H,W) batch."""
     if cfg.dataset == "moving_ball":
         ds = MovingBallDataset(seq_len=cfg.seq_len, channels=cfg.image_channels, seed=cfg.seed)
-        dl = DataLoader(ds, batch_size=cfg.batch_size, num_workers=2, drop_last=True)
+        dl = DataLoader(ds, batch_size=cfg.batch_size, num_workers=cfg.num_workers, drop_last=True)
         test = MovingBallDataset(seq_len=cfg.ctx_frames + cfg.eval_horizon,
                                  channels=cfg.image_channels, seed=cfg.seed + 777)
         return dl, test
     elif cfg.dataset == "mmnist":
         ds = MovingMNISTDataset(cfg.data_root, "train", cfg.seq_len)
-        dl = DataLoader(ds, batch_size=cfg.batch_size, shuffle=True, num_workers=2, drop_last=True)
+        dl = DataLoader(ds, batch_size=cfg.batch_size, shuffle=True, num_workers=cfg.num_workers, drop_last=True)
         test = MovingMNISTDataset(cfg.data_root, "test", cfg.ctx_frames + cfg.eval_horizon)
         return dl, test
     else:

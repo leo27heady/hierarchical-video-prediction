@@ -55,6 +55,7 @@ class DLHConfig:
     grad_clip: float = 100.0
     seq_len: int = 100                      # training sequence length
     batch_size: int = 32                    # paper used 100 on a V100; 32 fits 16GB
+    num_workers: int = 0                    # DataLoader workers; 0 = in-process (no orphan subprocesses)
 
     # ---- evaluation / rollout ----
     ctx_frames: int = 30                    # context frames before open-loop (paper: 30; CW-VAE: 36)
