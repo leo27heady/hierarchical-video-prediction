@@ -76,6 +76,7 @@ class DLHConfig:
     run_name: str = "ball-2lvl"
     logdir: str = "logs_dlh"
     data_root: str = "../cwvae/data_mmnist" # MMNIST numpy cache (train.npy/test.npy)
+    resume: str = ""                        # path to a checkpoint to resume from (model[+opt]+step)
 
     def to_dict(self):
         return asdict(self)

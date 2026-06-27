@@ -71,10 +71,20 @@ def main():
     wandb.summary["params_M"] = nparams / 1e6
     opt = torch.optim.Adam(model.parameters(), lr=cfg.lr, eps=cfg.adam_eps)
 
+    start_step = 0
+    if cfg.resume:
+        ck = torch.load(cfg.resume, map_location=dev)
+        model.load_state_dict(ck["model"])
+        if "opt" in ck:
+            opt.load_state_dict(ck["opt"])
+        start_step = int(ck.get("step", 0))
+        print(f"resumed from {cfg.resume} at step {start_step}"
+              + ("" if "opt" in ck else " (model-only; optimizer re-initialised)"), flush=True)
+
     train_loader, test = make_loaders(cfg)
     it = infinite(train_loader)
 
-    for step in range(1, cfg.total_iters + 1):
+    for step in range(start_step + 1, cfg.total_iters + 1):
         beta = cfg.beta_max * min(1.0, step / max(1, cfg.beta_warmup_iters))
         force_tick = step <= cfg.force_tick_iters                  # dense warmup, then learned selection
         obs = next(it).to(dev)
@@ -114,7 +124,8 @@ def main():
 
         if step % cfg.ckpt_every == 0 or step == cfg.total_iters:
             ck = Path(cfg.logdir) / f"{cfg.run_name}_last.pt"
-            torch.save({"model": model.state_dict(), "cfg": cfg.to_dict(), "step": step}, ck)
+            torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
+                        "cfg": cfg.to_dict(), "step": step}, ck)
 
     wandb.finish()
 
