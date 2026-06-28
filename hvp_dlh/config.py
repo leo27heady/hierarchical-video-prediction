@@ -45,7 +45,9 @@ class DLHConfig:
     # ---- ELBO weighting ----
     beta_max: float = 1.0
     beta_warmup_iters: int = 10000          # linear 0 -> beta_max over the first N iters (paper §A.1)
-    free_nats: float = 0.0                  # optional per-level state-KL floor (0 = off)
+    free_nats: float = 0.0                  # (legacy global) per-level state-KL floor (0 = off)
+    free_nats_per_level: tuple = (0.0, 0.0, 0.0)  # per-level KL floor (nats/frame); anti-collapse insurance
+                                            # for ALREADY-TICKING levels (cannot revive a frozen level)
     transition_kl_weight: float = 1.0       # weight on the Bernoulli (transition) KL term
     force_tick_iters: int = 3000            # dense warmup: force ALL levels to tick (bootstrap the
                                             # upper levels out of the dead-unit cold start), then anneal
@@ -62,7 +64,8 @@ class DLHConfig:
     # ---- evaluation / rollout ----
     ctx_frames: int = 30                    # context frames before open-loop (paper: 30; CW-VAE: 36)
     eval_horizon: int = 100                 # frames predicted open-loop (300 MMNIST / 200 mazes / 100 ball)
-    eval_samples: int = 10                  # best-of-N (paper final: 100; dev: 10)
+    eval_samples: int = 10                  # best-of-N, selected by fg-MSE (paper final: 100; dev: 6-10)
+    eval_clips: int = 16                    # clips per periodic eval (gate eval uses more, via gate.py)
 
     # ---- run / logging ----
     seed: int = 0
@@ -77,6 +80,8 @@ class DLHConfig:
     logdir: str = "logs_dlh"
     data_root: str = "../cwvae/data_mmnist" # MMNIST numpy cache (train.npy/test.npy)
     resume: str = ""                        # path to a checkpoint to resume from (model[+opt]+step)
+    auto_resume: bool = False               # if set, resume from logs_dlh/{run_name}_last.pt when it exists
+                                            # (idempotent re-launch -> survives crashes/session boundaries)
 
     def to_dict(self):
         return asdict(self)

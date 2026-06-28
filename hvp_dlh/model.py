@@ -185,7 +185,6 @@ class DLH(nn.Module):
         feats = self._bottom_up(obs)                                # list[N] of (B,T,D)
         state = self._init_state(B, obs.device)
         recon = torch.zeros(B, device=obs.device)
-        skl = torch.zeros(B, 1, device=obs.device)
         tkl = torch.zeros(B, 1, device=obs.device)
         Ksum = torch.zeros(B, 1, device=obs.device)
         per_level_e = torch.zeros(cfg.levels, device=obs.device)
@@ -196,15 +195,19 @@ class DLH(nn.Module):
             dec, state, info = self._step(state, x_t, mode="posterior", force_tick=force_tick)
             se = ((obs[:, t] - dec) ** 2).reshape(B, -1).sum(-1)
             recon = recon + 0.5 * se / var + 0.5 * math.log(2 * math.pi * var) * dec[0].numel()
-            skl = skl + info["state_kl"]
             tkl = tkl + info["trans_kl"]
             Ksum = Ksum + info["K"]
             per_level_e = per_level_e + torch.stack([e.mean() for e in info["e"]])
+            # per-level state-KL, IN-GRAPH (sum over t, mean over B): the single KL path
             per_level_skl = per_level_skl + torch.stack([s.mean() for s in info["skl_level"]])
-        if cfg.free_nats > 0:
-            skl = torch.clamp(skl, min=cfg.free_nats * T)
         nll = recon.mean()
-        state_kl = skl.mean()
+        # per-level free-bits (anti-collapse insurance for ALREADY-TICKING levels; zero gradient below
+        # the floor, so it cannot revive a clock-frozen level — engaging a level is a clock lever, not this).
+        fnp = list(cfg.free_nats_per_level)[:cfg.levels] + [0.0] * max(0, cfg.levels - len(cfg.free_nats_per_level))
+        floors = torch.tensor(fnp, device=obs.device) * T            # robust to any level count
+        state_kl = torch.maximum(per_level_skl, floors).sum()       # single KL path
+        if not any(fnp):                                             # no floors -> plain sum (avoid no-op max graph)
+            state_kl = per_level_skl.sum()
         trans_kl = tkl.mean()
         elbo = nll + beta * (state_kl + cfg.transition_kl_weight * trans_kl)
         loss = elbo / T

@@ -72,6 +72,10 @@ def main():
     opt = torch.optim.Adam(model.parameters(), lr=cfg.lr, eps=cfg.adam_eps)
 
     start_step = 0
+    if cfg.auto_resume and not cfg.resume:                         # idempotent re-launch
+        cand = Path(cfg.logdir) / f"{cfg.run_name}_last.pt"
+        if cand.exists():
+            cfg.resume = str(cand)
     if cfg.resume:
         ck = torch.load(cfg.resume, map_location=dev)
         model.load_state_dict(ck["model"])
@@ -110,17 +114,22 @@ def main():
                   f"beta {beta:.2f}", flush=True)
 
         if step % cfg.eval_every == 0:
-            ev = evaluate(model, test, cfg, n_clips=16, n_samples=cfg.eval_samples, device=dev)
-            elog = {f"eval/{k}": v for k, v in ev.items()
-                    if k not in ("strip", "ssim_curve", "K_curve")}
+            ev = evaluate(model, test, cfg, n_clips=cfg.eval_clips, n_samples=cfg.eval_samples, device=dev)
+            _arr = ("strip",) + tuple(k for k in ev if isinstance(ev[k], np.ndarray) or isinstance(ev[k], list))
+            elog = {f"eval/{k}": v for k, v in ev.items() if k not in _arr}
             elog["step"] = step
-            elog["eval/strip"] = wandb.Image(np.clip(ev["strip"], 0, 1), caption="rows=clips; per col: GT/pred")
-            elog["eval/ssim_curve"] = wandb.Image(_curve_fig(ev["ssim_curve"], "open-loop SSIM"))
-            elog["eval/K_curve"] = wandb.Image(_curve_fig(ev["K_curve"], "update-depth K(t)"))
+            for n, (e, sk) in enumerate(zip(ev["e_per_level"], ev["skl_per_level"])):
+                elog[f"eval/e_L{n}"] = e; elog[f"eval/kl_L{n}"] = sk
+            elog["eval/strip"] = wandb.Image(np.clip(ev["strip"], 0, 1), caption="rows=clips; per col GT/pred")
+            for cv, ttl in [("fg_mse_curve", "fg-MSE(t)"), ("lpips_fg_curve", "fg-LPIPS(t)"),
+                            ("ssim_curve", "SSIM(t)"), ("K_curve", "K(t)")]:
+                if cv in ev:
+                    elog[f"eval/{cv}"] = wandb.Image(_curve_fig(ev[cv], ttl))
             wandb.log(elog)
-            print(f"  EVAL[{step}] SSIM {ev['ssim']:.3f} (black {ev['ssim_black_baseline']:.3f}) "
-                  f"PSNR {ev['psnr']:.2f} | fg_MSE {ev['fg_mse']:.3f} (black {ev['fg_mse_black']:.3f} "
-                  f"persist {ev['fg_mse_persist']:.3f}) | K {ev['K_eval_mean']:.2f}", flush=True)
+            print(f"  EVAL[{step}] fg_MSE {ev['fg_mse']:.3f} (black {ev['fg_mse_black']:.3f} "
+                  f"persist {ev['fg_mse_persist']:.3f}) | LPIPS_fg {ev.get('lpips_fg',-1):.3f} "
+                  f"(black {ev.get('lpips_fg_black',-1):.3f}) | SSIM {ev['ssim']:.3f} | "
+                  f"KL/lvl {[round(x,2) for x in ev['skl_per_level']]} K_tf {ev['K_mean_tf']:.2f}", flush=True)
 
         if step % cfg.ckpt_every == 0 or step == cfg.total_iters:
             ck = Path(cfg.logdir) / f"{cfg.run_name}_last.pt"
