@@ -17,7 +17,7 @@ import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 ROOT = Path(__file__).resolve().parents[1]; CW = ROOT.parent / "cwvae"
 sys.path.insert(0, str(CW))
 from cwvae_torch import CWVAE
-from hvp_rev.codes import teacher_forced_codes
+from hvp_rev.codes import teacher_forced_codes, free_run_codes
 from hvp_rev.modules_gan import RendererDecoder, PatchGAN, hinge_d_loss, hinge_g_loss, adaptive_lambda, WarmStartG
 from hvp_rev import fid as fidmod
 dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -48,6 +48,7 @@ def main():
     ap.add_argument("--log-every", type=int, default=250)
     ap.add_argument("--warm-start", action="store_true", help="init G from the pretrained CW-VAE decoder (sharpen, not build from scratch)")
     ap.add_argument("--fg-weight", type=float, default=0.0, help="extra L1 weight on foreground pixels (GT>0.1) to pin sparse digit structure")
+    ap.add_argument("--codes", choices=["tf","freerun"], default="tf", help="train on teacher-forced or free-run (open-loop) codes (domain-adaptation probe)")
     ap.add_argument("--run-name", required=True); ap.add_argument("--logdir", default=str(ROOT/"logs_render"))
     a = ap.parse_args()
     torch.manual_seed(a.seed); np.random.seed(a.seed)
@@ -66,8 +67,11 @@ def main():
     tr_raw = np.load(str(CW/"data_mmnist"/"train.npy")); te_raw = np.load(str(CW/"data_mmnist"/"test.npy"))
     def tf_set(raw, n, T=86, seed=0):
         rng = np.random.default_rng(seed); idx = rng.integers(0, raw.shape[0], n)
+        if a.codes == "freerun":   # domain-adaptation probe: render the FROZEN-dynamics free-run codes
+            x = torch.from_numpy(raw[idx, :a.ctx+a.hor].astype(np.float32)/255).unsqueeze(2).to(dev)
+            return free_run_codes(m, x, a.ctx, sample=True)
         x = torch.from_numpy(raw[idx, :T].astype(np.float32)/255).unsqueeze(2).to(dev)
-        c, f = teacher_forced_codes(m, x, sample=True); return c, f
+        return teacher_forced_codes(m, x, sample=True)
     tr_c, tr_f = tf_set(tr_raw, a.train_clips, seed=1)                  # renderer TRAIN pairs (train.npy, disjoint)
     x_ev = torch.from_numpy(te_raw[:a.eval_clips, :a.ctx+a.hor].astype(np.float32)/255).unsqueeze(2).to(dev)  # held-out test
     ev_c, ev_f = teacher_forced_codes(m, x_ev, sample=True)            # TF eval pairs (same held-out clips)
