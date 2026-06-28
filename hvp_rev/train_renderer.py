@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]; CW = ROOT.parent / "cwvae"
 sys.path.insert(0, str(CW))
 from cwvae_torch import CWVAE
 from hvp_rev.codes import teacher_forced_codes
-from hvp_rev.modules_gan import RendererDecoder, PatchGAN, hinge_d_loss, hinge_g_loss, adaptive_lambda
+from hvp_rev.modules_gan import RendererDecoder, PatchGAN, hinge_d_loss, hinge_g_loss, adaptive_lambda, WarmStartG
 from hvp_rev import fid as fidmod
 dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 LPIPS_W, WARMUP_DEFAULT = 1.0, 1000
@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--ctx", type=int, default=36); ap.add_argument("--hor", type=int, default=50)
     ap.add_argument("--eval-every", type=int, default=2000); ap.add_argument("--ckpt-every", type=int, default=2000)
     ap.add_argument("--log-every", type=int, default=250)
+    ap.add_argument("--warm-start", action="store_true", help="init G from the pretrained CW-VAE decoder (sharpen, not build from scratch)")
+    ap.add_argument("--fg-weight", type=float, default=0.0, help="extra L1 weight on foreground pixels (GT>0.1) to pin sparse digit structure")
     ap.add_argument("--run-name", required=True); ap.add_argument("--logdir", default=str(ROOT/"logs_render"))
     a = ap.parse_args()
     torch.manual_seed(a.seed); np.random.seed(a.seed)
@@ -75,7 +77,9 @@ def main():
     mu_tf, sig_tf = fidmod._stats(fidmod.features(ev_f, dev))
     mu_ol, sig_ol = fidmod._stats(fidmod.features(gt_ol, dev))
 
-    G = RendererDecoder(220).to(dev); optG = torch.optim.Adam(G.parameters(), lr=a.lr, betas=(0.5,0.9))
+    G = (WarmStartG(m.decoder) if a.warm_start else RendererDecoder(220)).to(dev)
+    print(f"  G = {'WARM-START(pretrained decoder)' if a.warm_start else 'fresh RendererDecoder'}", flush=True)
+    optG = torch.optim.Adam(G.parameters(), lr=a.lr, betas=(0.5,0.9))
     D = optD = None
     if a.arm == "gan":
         D = PatchGAN(1, 64, 3, spectral=True).to(dev); optD = torch.optim.Adam(D.parameters(), lr=a.lr, betas=(0.5,0.9))
@@ -137,7 +141,10 @@ def main():
     for step in range(start+1, a.steps+1):
         idx = torch.randint(0, N, (a.batch,), device=dev); code = tr_c[idx]; real = tr_f[idx]
         pred = G(code)
-        l1 = F.l1_loss(pred, real)
+        if a.fg_weight > 0:
+            w = 1.0 + a.fg_weight*(real > 0.1).float(); l1 = (w*(pred-real).abs()).sum()/w.sum()
+        else:
+            l1 = F.l1_loss(pred, real)
         if a.arm == "l2":
             loss_nll = F.mse_loss(pred, real); info = {"l1": float(l1)}
         else:
@@ -172,7 +179,8 @@ def main():
             (out/f"{a.run_name}_hist.json").write_text(json.dumps(hist, indent=1))
         if step % a.ckpt_every == 0 or step == a.steps:
             if disk_free_gb(out) < 3: sys.exit("ABORT before ckpt: disk<3GB")
-            sd = {"G": G.state_dict(), "step": step, "hist": hist, "arm": a.arm, "seed": a.seed}
+            sd = {"G": G.state_dict(), "step": step, "hist": hist, "arm": a.arm, "seed": a.seed,
+                  "warm": a.warm_start, "fg_weight": a.fg_weight}
             if D is not None: sd["D"] = D.state_dict()
             tmp = str(ck)+".tmp"; torch.save(sd, tmp); os.replace(tmp, str(ck))
     print(f"[{a.run_name}] DONE @ {a.steps}", flush=True)

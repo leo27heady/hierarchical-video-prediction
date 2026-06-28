@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]; CW = ROOT.parent / "cwvae"
 sys.path.insert(0, str(CW))
 from cwvae_torch import CWVAE
 from hvp_rev.codes import teacher_forced_codes
-from hvp_rev.modules_gan import RendererDecoder
+from hvp_rev.modules_gan import RendererDecoder, WarmStartG
 from hvp_rev import fid as fidmod
 dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 LOG = ROOT / "logs_render"
@@ -27,7 +27,8 @@ def load_cwvae():
     return m
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--seed", type=int, default=0); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--prefix", default="s1", help="run-name prefix, e.g. s1 or s1wfg"); a = ap.parse_args()
     import lpips; LP = lpips.LPIPS(net="alex", spatial=True).to(dev).eval()
     def lpmap(p,g): return LP(p.repeat(1,3,1,1)*2-1, g.repeat(1,3,1,1)*2-1)
     def fglp(p,g):
@@ -67,9 +68,11 @@ def main():
     res = {"baseline": eval_decoder(m.decoder, is_G=False)}
     Gs = {}
     for arm in ["l2","lpips","gan"]:
-        ck = LOG/f"s1_{arm}_s{a.seed}_last.pt"
+        ck = LOG/f"{a.prefix}_{arm}_s{a.seed}_last.pt"
         if not ck.exists(): print(f"  (missing {ck.name})"); continue
-        G = RendererDecoder(220).to(dev); G.load_state_dict(torch.load(ck,map_location=dev)["G"]); G.eval()
+        sd = torch.load(ck, map_location=dev)
+        G = (WarmStartG(m.decoder) if sd.get("warm") else RendererDecoder(220)).to(dev)
+        G.load_state_dict(sd["G"]); G.eval()
         Gs[arm] = G; res[arm] = eval_decoder(G, is_G=True)
 
     print(f"\n{'decoder':>10} | {'TF_fid':>7}{'TF_fglp':>8}{'TF_fgmse':>9}{'TF_lapv':>8} | {'OL_fid':>8}{'OL_fglp':>8}{'OL_fgmse':>9}{'OL_lapv':>8}{'OL_tcoh':>8}")

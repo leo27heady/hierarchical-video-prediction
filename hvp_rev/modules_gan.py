@@ -2,7 +2,19 @@
 PatchGAN discriminator (70x70 receptive field), and VQGAN's adaptive-lambda weighting (the C0b texture guard).
 """
 from __future__ import annotations
+import copy
 import torch, torch.nn as nn, torch.nn.functional as F
+
+
+class WarmStartG(nn.Module):
+    """Warm-start the renderer from the pretrained (coherent, blurry) CW-VAE ConvDecoder, then let the GAN
+    SHARPEN it (vs building coherence from scratch, which fresh-init failed at). tanh[-1,1] -> [0,1]."""
+    def __init__(self, pretrained_decoder):
+        super().__init__()
+        self.dec = copy.deepcopy(pretrained_decoder)
+        for p in self.dec.parameters(): p.requires_grad_(True)
+    def last_layer(self): return self.dec.net[-1].weight
+    def forward(self, z): return ((self.dec(z) + 1) / 2).clamp(0, 1)
 
 
 class RendererDecoder(nn.Module):
