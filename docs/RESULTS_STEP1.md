@@ -50,7 +50,8 @@ final ConvTranspose, D warm-up 500, spectral-norm, hinge). lr 5e-5, ~6k steps, b
 - **Open-loop is still partly dynamics-limited** at long horizon: the renderer is sharp+coherent on *good* codes
   (TF-recon), but free-run codes are uncertain, so open-loop digits drift — **this is the dynamics problem
   (Step 3), not the renderer.** The renderer is decoupled and validated.
-- 1 training seed shown; **gan seed-band (seeds 1,2) running** for the FID-stability CI.
+- **Confirmed across 3 training seeds:** gan OL-FID **69.8 ± 3.1** (67.0/68.4/74.1) — +2σ still far below
+  baseline 101 / l2 114 / lpips 125; fg-LPIPS 0.240±0.001, lap-var 0.068±0.001. The win is large and robust.
 - FID is out-of-domain (relative ranking only); fg-LPIPS + the visual corroborate.
 - **Next: Step 3** — a distribution-matching *rollout* objective (Diffusion-Forcing-style) on the hierarchical
   latent to fix the open-loop drift+fade, where the reversible core (TempVerseFormer) plugs in as the
