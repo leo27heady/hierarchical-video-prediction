@@ -74,8 +74,12 @@ class DLH(nn.Module):
             "s": [z(S) for _ in range(N)],
             "d": [z(self.cfg.temporal_gru) for _ in range(N)],
             "pf": [z(self.cfg.prior_factor_gru) for _ in range(N)],
-            "bmean": [z(S) for _ in range(N)],            # static-prior (persisted belief) mean
-            "bstd": [torch.ones(B, S, device=device) for _ in range(N)],
+            # static prior = the PREVIOUS POSTERIOR (carried). A frozen level copies its posterior, so
+            # KL(q_t || static) = KL(q_{t-1} || q_{t-1}) = 0 -> frozen levels cost no KL (the KL economy
+            # that makes the hierarchy worthwhile). Penalising frozen levels toward a separate belief
+            # caused upper-level collapse at high beta.
+            "qmean": [z(S) for _ in range(N)],
+            "qstd": [torch.ones(B, S, device=device) for _ in range(N)],
         }
 
     def _contexts(self, s_list):
@@ -116,9 +120,9 @@ class DLH(nn.Module):
                 mu_c, sg_c = self.prior[n](torch.cat([state["d"][n], cs_static[n]], -1))
                 mu_q, sg_q = self.post[n](torch.cat([x_t[n], cs_static[n]], -1))
                 kl_c = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
-                kl_s = gaussian_kl(mu_q, sg_q, state["bmean"][n], state["bstd"][n]).sum(-1, keepdim=True)
+                kl_s = gaussian_kl(mu_q, sg_q, state["qmean"][n], state["qstd"][n]).sum(-1, keepdim=True)
                 kl_dec[n] = (kl_c, kl_s)
-                e_raw = (kl_c < kl_s).float()
+                e_raw = (kl_c < kl_s).float()                       # tick if posterior moved off the previous state
             else:                                                  # free-run: sample from prior factor
                 e_raw = torch.bernoulli(torch.sigmoid(pf_logit[n]))
             e_eff[n] = e_raw * parent                              # nested constraint
@@ -126,27 +130,29 @@ class DLH(nn.Module):
 
         # ===== Sweep B: top-down state sampling with decided e =====
         c = torch.zeros(B, cfg.det_dim, device=dev)
-        new = {k: [None] * N for k in ("s", "d", "pf", "bmean", "bstd")}
+        new = {k: [None] * N for k in ("s", "d", "pf", "qmean", "qstd")}
         state_kl = torch.zeros(B, 1, device=dev)
         skl_level = [torch.zeros(B, 1, device=dev) for _ in range(N)]
         for n in range(N - 1, -1, -1):
             mu_c, sg_c = self.prior[n](torch.cat([state["d"][n], c], -1))
+            e = e_eff[n]
             if mode == "posterior":
                 mu_q, sg_q = self.post[n](torch.cat([x_t[n], c], -1))
                 s_changed = mu_q + sg_q * torch.randn_like(sg_q)
-                # ELBO term (b) breakdown: KL to the SELECTED MoG component (change if tick, static if frozen)
+                # term (b): a TICKING level pays KL(q||change); a FROZEN level copies its posterior and
+                # pays 0 (the static prior is its own previous posterior). This preserves the KL economy
+                # that makes slow features migrate up the hierarchy.
                 kl_change = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
-                kl_static = gaussian_kl(mu_q, sg_q, state["bmean"][n], state["bstd"][n]).sum(-1, keepdim=True)
-                skl_level[n] = e_eff[n] * kl_change + (1 - e_eff[n]) * kl_static
+                skl_level[n] = e * kl_change
                 state_kl = state_kl + skl_level[n]
+                new["qmean"][n] = e * mu_q + (1 - e) * state["qmean"][n]    # carry posterior if frozen
+                new["qstd"][n] = e * sg_q + (1 - e) * state["qstd"][n]
             else:
                 s_changed = mu_c + sg_c * torch.randn_like(sg_c)
-            e = e_eff[n]
+                new["qmean"][n] = state["qmean"][n]                        # free-run: no posterior, carry
+                new["qstd"][n] = state["qstd"][n]
             s_n = e * s_changed + (1 - e) * state["s"][n]
             new["s"][n] = s_n
-            # persisted belief (static prior for next step) = last change-prior where changed
-            new["bmean"][n] = e * mu_c + (1 - e) * state["bmean"][n]
-            new["bstd"][n] = e * sg_c + (1 - e) * state["bstd"][n]
             # temporal + prior-factor recurrences advance only on change
             d_upd = self.tem[n](s_n, state["d"][n])
             new["d"][n] = e * d_upd + (1 - e) * state["d"][n]
