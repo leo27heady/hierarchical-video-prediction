@@ -132,8 +132,19 @@ LPIPS/lap-var.
 
 ## Phase C — the REAL sharpness path (DLH-distinct) `[RT]`
 
-**C0. Oracle-headroom probe FIRST (~1 h).** On the **existing 8k latents**, fit/oracle the best possible decoder
-output and measure ceiling: is there **>0.05 LPIPS / >2 dB** to gain? If not, **M2 is dead cheaply** — stop.
+**>>> C0/C0b RESULTS (DONE, `scripts/c0_decoder_headroom.py`, `c0b_perceptual_sweep.py`):** Headroom is real —
+a decoder retrained on the **frozen** teacher-forced codes reaches **GT-level lap-var (0.047 vs 0.043)** and
+**LPIPS −0.085** vs the current decoder, so **the L2 objective (not latent starvation) is the blur** (refines the
+earlier "representation bottleneck" framing). BUT: (i) naive L1+LPIPS overshoots into **incoherent texture**
+(`c0_headroom_strip.png`) — lap-var/LPIPS are gameable, vindicating the FVD requirement; (ii) a coherent
+`MSE+λ·LPIPS` decoder is ~5–7× sharper at **LPIPS −0.09** but costs **+45% fg-MSE** (partly undertraining: 2.5k vs
+8k steps; the λ=0 fresh control tanked too). **Critical tension `[!!]`: sharpening trades fg-MSE, and fg-MSE is the
+ONLY metric where DLH beats CW-VAE (its long-horizon margin is ~0.01–0.02).** So Phase C must be gated to keep the
+long-horizon fg-MSE win, and a plain perceptual decoder won't do it — **C1 needs a structural prior (adversarial/
+diffusion) + converged training + open-loop eval + an fg-MSE floor.** `det_carry` is further deprioritised (the
+latents are not the problem). Net: M2 is reachable but it is a **careful build, not a swap** (raises C1 cost/risk).
+
+**C0. Oracle-headroom probe — DONE above; verdict: headroom exists, with the perception-distortion caveat.**
 
 **C1. Perceptual/adversarial/diffusion decoder on the FROZEN STOCHASTIC code.** This is the genuine,
 non-tautological renderer: keep DLH's stochastic-only code (the thing `det_carry` would have bypassed) and train
@@ -187,7 +198,13 @@ with ≥3 training seeds × Phases B+C is **7–21 GPU-days**, not "3–5 days."
   DLH is worth keeping **only** for the long-horizon/clock story (which §D shows it earns). Keep that framing honest.
 
 ## §R. Open risks
+- **Perception–distortion tension `[!!]` (C0/C0b):** every sharpness gain on the frozen latents costs fg-MSE — the
+  one axis DLH leads. A sharp C1 could win LPIPS/FVD while *erasing* DLH's long-horizon identity edge, turning
+  "surpass on sharpness AND accuracy" into "trade one for the other." C1 must carry an fg-MSE floor at DLH's
+  long-horizon margin; if no config clears both, the honest result is "DLH owns long-horizon-accuracy, CW-VAE/
+  a perceptual model owns sharpness" — a frontier, not a single winner.
 - B-knobs (`min_std`/`dec_stddev`) can break the clock — gate hard, revert fast.
 - FVD infra (I3D) must be stood up for any surpass claim; budget it in A1.
-- `det_carry` is seductive but tautological — keep it labelled diagnostic.
+- `det_carry` is seductive but tautological — keep it labelled diagnostic (and C0 shows the latents aren't the limit).
 - "beat CW-VAE" is parity with a blurry 2× model; only C1 is real sharpness.
+- Single-training-seed caveat on the long-horizon win (A0) — needs ≥3 seeds (3× retrains) for full rigor.
