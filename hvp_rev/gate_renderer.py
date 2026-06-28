@@ -71,7 +71,8 @@ def main():
         ck = LOG/f"{a.prefix}_{arm}_s{a.seed}_last.pt"
         if not ck.exists(): print(f"  (missing {ck.name})"); continue
         sd = torch.load(ck, map_location=dev)
-        G = (WarmStartG(m.decoder) if sd.get("warm") else RendererDecoder(220)).to(dev)
+        is_warm = sd.get("warm") or any(k.startswith("dec.") for k in sd["G"])
+        G = (WarmStartG(m.decoder) if is_warm else RendererDecoder(220)).to(dev)
         G.load_state_dict(sd["G"]); G.eval()
         Gs[arm] = G; res[arm] = eval_decoder(G, is_G=True)
 
