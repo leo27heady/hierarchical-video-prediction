@@ -65,3 +65,24 @@ weights load (download) BEFORE the run**; if unavailable, fall back to a frame-F
 - Is per-frame FID (InceptionV3, out-of-domain MNIST) a sound enough gate, or is a temporal FVD needed even at
   Step 1?
 - How many seeds is enough for the FID/fg-LPIPS band given FID's small-sample noise?
+
+---
+## v2 — red-team folded in (GO-WITH-CHANGES)
+- **Backbone = CW-VAE (user's explicit choice).** The red-team pushed DLH because the *old* c0 harness loads DLH;
+  instead I build a FRESH CW-VAE renderer (`hvp_rev/codes.py` 220-dim `[s,det]`, `modules_gan.py`). The **smoke is
+  the fresh CW-VAE headroom check** — I do NOT inherit DLH's C0 headroom claim.
+- **Gate = PARETO, no absolute fg-MSE floor (it auto-failed: C0b perceptual = +45% fg-MSE).** Primary = **TF-recon
+  FID + fg-LPIPS**; arm C must improve FID+fg-LPIPS over the **fresh-L2 arm A (primary ref, matched init/steps/
+  activation)** and beat arm B (LPIPS-only) on FID **at no-worse fg-MSE than B**. Pretrained decoder = secondary
+  anchor only. Open-loop = **transfer diagnostic** (report FID/fg-LPIPS/fg-MSE/temporal-LPIPS); open-loop rollout
+  fg-MSE must not inflate > ~0.006–0.009 in DLH-leading windows (principled, from a0); a regression triggers
+  **Step-1b** (free-run-code fine-tune), not a NO-GO.
+- **FID validated** (monotonic in blur; ~18 noise floor). Report **InceptionV3-FID AND LPIPS-AlexNet-feature-FID**
+  (directional agreement) + fg-LPIPS primary; clip-bootstrap CI (win = CI excludes 0); ≥5 sampling + ≥3 training seeds.
+  Add **temporal-LPIPS** coherence on open-loop. Full FVD deferred to Step 3.
+- **adaptive-λ spec:** `last_layer = G.net[-1].weight` (final ConvTranspose, not the dense); `g_nll = grad(L1+LPIPS,
+  last_layer)` (full non-adv loss incl. LPIPS); `λ=(‖g_nll‖/(‖g_adv‖+1e-4)).clamp(0,1e4).detach()`. Pre-register
+  warm-up W, clamp, spectral-norm (VQGAN defaults); freeze across seeds; never tune on the eval clips.
+- **Compute:** PatchGAN ~2.8M (not 21M); VRAM tripwire **6 GiB**; weights-only atomic `_last.pt` (~26 MB/arm);
+  FID over the full eval-frame draw with one cached real-stats. **Smoke first** (1 seed, arm C, TF, ~2k steps:
+  D-acc∈[0.5,0.9], λ finite, recon not destroyed, strip sharper) → then 3-arm × 3-seed sweep.
