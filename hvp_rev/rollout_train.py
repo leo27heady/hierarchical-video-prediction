@@ -244,6 +244,7 @@ if __name__ == "__main__":
     ap.add_argument("--frames_budget", type=int, default=None)
     ap.add_argument("--backward", default="replay", choices=["replay", "autograd"])
     ap.add_argument("--lr", type=float, default=5e-4)
+    ap.add_argument("--n_in", type=int, default=10)
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     print(f"rollout_train | torch {torch.__version__} | device {DEV}")
@@ -254,6 +255,6 @@ if __name__ == "__main__":
     elif args.train:
         train_rollout(K_train=args.K_train, objective=args.objective, seed=args.seed, lr=args.lr,
                       steps=args.steps, batch=args.batch, frames_budget=args.frames_budget,
-                      backward=args.backward, out=args.out)
+                      backward=args.backward, n_in=args.n_in, out=args.out)
     else:
         gate(K=args.K)
