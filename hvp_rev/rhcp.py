@@ -257,7 +257,10 @@ class PyramidEncoder(nn.Module):
         for l, spec in enumerate(self.cfg.levels):
             fi = self.feat_at[spec.spatial]
             f = feats[fi].reshape(B, T, *feats[fi].shape[1:])       # (B,T,Cw,h,w)
-            summary = torch.cat([f.mean(1), f[:, -1], f[:, -1] - f[:, 0]], dim=1)   # motion-aware
+            # RECENT velocity (last - last[-3]) is a clean motion estimate ROBUST to context length; (last - first)
+            # is meaningless once T is long (digits bounce many times). mean = appearance; last = current position.
+            prev = f[:, -3] if T >= 3 else f[:, 0]
+            summary = torch.cat([f.mean(1), f[:, -1], f[:, -1] - prev], dim=1)
             states.append(self.heads[l](summary))
         return states
 
