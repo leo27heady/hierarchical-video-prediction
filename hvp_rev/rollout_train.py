@@ -61,7 +61,7 @@ def bptt_loss_grads(model: RHCP, context, targets, objective: Callable):
     loss = 0.0
     for t in range(K):
         s = model.core.step(s, t)
-        loss = loss + objective(model.decoder(s[0]), targets[:, t])
+        loss = loss + objective(model.decoder(s[0]), targets[:, t]) / K   # MEAN over frames: K-invariant grad scale
     params = list(model.parameters())
     grads = torch.autograd.grad(loss, params, allow_unused=True)
     return float(loss.detach()), {id(p): (g if g is not None else torch.zeros_like(p)) for p, g in zip(params, grads)}
@@ -103,7 +103,7 @@ def reverse_replay_loss_grads(model: RHCP, context, targets, objective: Callable
         leaves = [x.detach().requires_grad_(True) for x in s_pre]
         s_next = core.step(leaves, t)
         y = dec(s_next[0])
-        loss_t = objective(y, targets[:, t])
+        loss_t = objective(y, targets[:, t]) / K       # MEAN over frames: K-invariant grad scale (matches BPTT path)
         surrogate = loss_t + sum((a * sn).sum() for a, sn in zip(adj, s_next))
         g = torch.autograd.grad(surrogate, leaves + cd_params, allow_unused=True)
         new_adj = g[:len(leaves)]
@@ -146,7 +146,7 @@ def gate(K=40, B=4, seed=0):
             p.add_(0.02 * torch.randn_like(p))
     context = torch.randn(B, 10, 1, 64, 64, device=DEV)
     targets = torch.randn(B, K, 1, 64, 64, device=DEV).tanh()
-    for name, obj in [("l1mse", obj_l1mse)]:
+    for name, obj in [("l1mse", obj_l1mse), ("l1lpips", obj_l1lpips)]:
         l_b, g_b = bptt_loss_grads(model, context, targets, obj)
         l_r, g_r = reverse_replay_loss_grads(model, context, targets, obj)
         cos, rel = _cos(g_r, g_b, list(model.parameters()))
@@ -186,9 +186,10 @@ class RolloutClips:
 
 
 def train_rollout(K_train=40, objective="l1lpips", seed=0, steps=2000, batch=8, lr=5e-4,
-                  n_in=10, frames_budget=None, log_every=50, out=None):
-    """Free-running rollout training via reverse-replay. frames_budget overrides steps to equalise predicted-frames-
-    seen across K (compute-match): steps = frames_budget // (batch*K_train)."""
+                  n_in=10, frames_budget=None, log_every=50, out=None, backward="replay"):
+    """Free-running latent-rollout training. backward='replay' = constant-memory reverse-replay (P3, both arms);
+    'autograd' = plain BPTT (fast, for small-K P1). frames_budget overrides steps to equalise predicted-frames-seen
+    across K (compute-match): steps = frames_budget // (batch*K_train). Objective is K-normalised (MEAN over frames)."""
     torch.manual_seed(seed)
     if frames_budget:
         steps = max(1, frames_budget // (batch * K_train))
@@ -198,20 +199,32 @@ def train_rollout(K_train=40, objective="l1lpips", seed=0, steps=2000, batch=8, 
     obj = OBJECTIVES[objective]
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=steps, pct_start=0.1)
-    print(f"train_rollout: K={K_train} obj={objective} seed={seed} steps={steps} batch={batch} "
+    print(f"train_rollout: K={K_train} obj={objective} seed={seed} steps={steps} batch={batch} backward={backward} "
           f"params={model.n_params()/1e6:.2f}M  (frames/step={batch*K_train})")
     run = 0.0
     for step in range(1, steps + 1):
         ctx, tgt = data.batch(batch, train=True)
         opt.zero_grad(set_to_none=True)
-        loss, _ = reverse_replay_loss_grads(model, ctx, tgt, obj, accumulate_into_grad=True)
+        if backward == "autograd":
+            K = tgt.shape[1]
+            s = model.init_states(ctx)
+            loss = 0.0
+            for t in range(K):
+                s = model.core.step(s, t)
+                loss = loss + obj(model.decoder(s[0]), tgt[:, t]) / K
+            loss.backward()
+            loss = float(loss.detach())
+        else:
+            loss, _ = reverse_replay_loss_grads(model, ctx, tgt, obj, accumulate_into_grad=True)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step(); sched.step()
-        run += loss / tgt.shape[1]
+        run += loss
         if step % log_every == 0:
-            print(f"[step {step:5d}] loss/frame {run/log_every:.4f}  lr {sched.get_last_lr()[0]:.2e}")
+            print(f"[step {step:5d}] loss {run/log_every:.4f}  lr {sched.get_last_lr()[0]:.2e}")
             run = 0.0
     if out:
+        import os
+        os.makedirs(os.path.dirname(out), exist_ok=True)
         torch.save({"model": model.state_dict(), "cfg": cfg, "K_train": K_train, "seed": seed}, out)
         print(f"saved {out}")
     return model
@@ -229,6 +242,8 @@ if __name__ == "__main__":
     ap.add_argument("--steps", type=int, default=2000)
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--frames_budget", type=int, default=None)
+    ap.add_argument("--backward", default="replay", choices=["replay", "autograd"])
+    ap.add_argument("--lr", type=float, default=5e-4)
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     print(f"rollout_train | torch {torch.__version__} | device {DEV}")
@@ -237,7 +252,8 @@ if __name__ == "__main__":
     elif args.smoke:
         train_rollout(K_train=12, objective="l1mse", steps=120, batch=8, log_every=20)
     elif args.train:
-        train_rollout(K_train=args.K_train, objective=args.objective, seed=args.seed,
-                      steps=args.steps, batch=args.batch, frames_budget=args.frames_budget, out=args.out)
+        train_rollout(K_train=args.K_train, objective=args.objective, seed=args.seed, lr=args.lr,
+                      steps=args.steps, batch=args.batch, frames_budget=args.frames_budget,
+                      backward=args.backward, out=args.out)
     else:
         gate(K=args.K)

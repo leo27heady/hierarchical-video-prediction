@@ -30,33 +30,58 @@ def fg_mse(pred: np.ndarray, true: np.ndarray, thr: float = 0.1) -> np.ndarray:
     return out
 
 
-def _centroid(frame: np.ndarray) -> Tuple[float, float]:
-    """Intensity-weighted centroid (row, col) of a single (H,W) frame; (-1,-1) if empty."""
-    s = frame.sum()
-    if s < 1e-6:
-        return -1.0, -1.0
+def _components(frame: np.ndarray, thr: float = 0.1, max_k: int = 4, min_px: int = 4) -> List[Tuple[float, float]]:
+    """Per-digit intensity-weighted centroids via connected components (largest-mass first, up to max_k)."""
+    from scipy import ndimage
+    lab, n = ndimage.label(frame > thr)
     H, W = frame.shape
     rows = np.arange(H)[:, None]
     cols = np.arange(W)[None, :]
-    return float((frame * rows).sum() / s), float((frame * cols).sum() / s)
+    comps = []
+    for i in range(1, n + 1):
+        mask = lab == i
+        if mask.sum() < min_px:
+            continue
+        w = frame * mask
+        s = w.sum()
+        if s < 1e-6:
+            continue
+        comps.append((float((w * rows).sum() / s), float((w * cols).sum() / s), float(s)))
+    comps.sort(key=lambda c: -c[2])
+    return [(r, c) for r, c, _ in comps[:max_k]]
 
 
-def centroid_l2(pred: np.ndarray, true: np.ndarray) -> np.ndarray:
-    """(N,T,1,H,W) -> (N,T) L2 pixel distance between fg centroids. Empty-pred penalized with the frame diagonal."""
+def centroid_l2(pred: np.ndarray, true: np.ndarray, thr: float = 0.1) -> np.ndarray:
+    """(N,T,1,H,W) -> (N,T) PER-DIGIT position drift: match each gt component to the nearest pred component (greedy),
+    mean matched centroid-L2; unmatched gt (faded/missing pred digit) penalized with the frame diagonal. This removes
+    the symmetric-cancellation null space of a single global centroid (red-team P0)."""
     N, T = pred.shape[0], pred.shape[1]
     H, W = pred.shape[3], pred.shape[4]
     diag = float(np.hypot(H, W))
     out = np.zeros((N, T), np.float32)
     for i in range(N):
         for j in range(T):
-            pr, pc = _centroid(pred[i, j, 0])
-            gr, gc = _centroid(true[i, j, 0])
-            if gr < 0:                       # no gt foreground -> skip (set 0)
+            gt_c = _components(true[i, j, 0], thr)
+            pr_c = _components(pred[i, j, 0], thr)
+            if not gt_c:
                 out[i, j] = 0.0
-            elif pr < 0:                     # pred faded to empty -> max penalty
-                out[i, j] = diag
-            else:
-                out[i, j] = float(np.hypot(pr - gr, pc - gc))
+                continue
+            used: set = set()
+            dists = []
+            for (gr, gc) in gt_c:
+                best, bi = None, -1
+                for k, (pr, pc) in enumerate(pr_c):
+                    if k in used:
+                        continue
+                    d = float(np.hypot(gr - pr, gc - pc))
+                    if best is None or d < best:
+                        best, bi = d, k
+                if best is None:             # no pred component left -> this gt digit faded
+                    dists.append(diag)
+                else:
+                    used.add(bi)
+                    dists.append(best)
+            out[i, j] = float(np.mean(dists))
     return out
 
 
@@ -80,7 +105,7 @@ def fg_lpips(pred: np.ndarray, true: np.ndarray, thr: float = 0.1, device: str =
         import lpips
         _LPIPS = lpips.LPIPS(net="alex", verbose=False).to(device).eval()
     N, T = pred.shape[0], pred.shape[1]
-    m = (true > thr).astype(np.float32)
+    m = ((true > thr) | (pred > thr)).astype(np.float32)   # UNION mask: wrong-location pred energy is NOT hidden
     pm = (pred * m)[:, :, 0]                  # (N,T,H,W)
     gm = (true * m)[:, :, 0]
     pm = np.repeat(pm.reshape(N * T, 1, *pm.shape[2:]), 3, axis=1)   # 1->3 ch
