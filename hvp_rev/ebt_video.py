@@ -78,11 +78,12 @@ class LatentEnergy(nn.Module):
         return self.head(h.mean(dim=(2, 3)))                 # (B,1)
 
 
-def mcmc(model, ctx, act, n_steps, target=None, mode="s1", langevin=0.0, randomize=False, train=False, scale=2.0):
+def mcmc(model, ctx, act, n_steps, target=None, mode="s1", langevin=0.0, randomize=False, train=False, scale=2.0,
+         y_init=None):
     """Faithful EBT descent (verified vs the real repo): y<-y-alpha*grad E; per-element multiplicative randomized
     alpha; NO raw-grad clamp; SmoothL1 loss. mode='s1' = detach between steps + loss at EVERY step (the paper's
-    stable-first recipe); 's2' = no detach + loss on final step only."""
-    y = torch.randn(ctx.shape[0], LAT, HW, HW, device=ctx.device)
+    stable-first recipe); 's2' = no detach + loss on final step only. y_init warm-starts descent (replay buffer)."""
+    y = torch.randn(ctx.shape[0], LAT, HW, HW, device=ctx.device) if y_init is None else y_init.clone()
     a0 = model.alpha()
     traj, losses = [], []
     for _ in range(n_steps):

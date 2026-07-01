@@ -66,6 +66,26 @@ def _fg_sharp(ae, zpred, zgt):
     return fg, sh
 
 
+class ReplayBuffer:
+    """FIFO of past FINAL predictions. Re-initializing part of each batch's descent from these simulates much longer
+    descent trajectories than n_mcmc alone -> shapes the energy landscape far from the target, which is what makes
+    'think longer' at inference actually help (the S2 landscape-regularization the S1 recipe lacks)."""
+
+    def __init__(self, size=1024):
+        self.buf, self.size = [], size
+
+    def sample(self, n):
+        if len(self.buf) < n:
+            return None
+        idx = torch.randint(0, len(self.buf), (n,))
+        return torch.stack([self.buf[i] for i in idx])
+
+    def add(self, batch):
+        for b in batch.detach().cpu():
+            self.buf.append(b)
+        self.buf = self.buf[-self.size:]
+
+
 def bo_predict(model, ctx, n_steps, best_of_n=4, langevin=0.05):
     """EBT inference = energy DESCENT (needs grad w.r.t. y) + Best-of-N argmin-energy. NOT under no_grad."""
     best_y, best_E = None, None
@@ -85,6 +105,7 @@ def main():
     ap.add_argument("--k", type=int, default=4)
     ap.add_argument("--n_mcmc", type=int, default=3)
     ap.add_argument("--batch", type=int, default=64)
+    ap.add_argument("--recipe", default="s2", choices=["s1", "s2"], help="s2 = thinking recipe (replay buffer + no-detach + randomized steps)")
     args = ap.parse_args()
     torch.manual_seed(0)
     ae = load_ae(args.ae)
@@ -96,15 +117,28 @@ def main():
     oe = torch.optim.Adam([{"params": [p for n, p in ebt.named_parameters() if n != "log_alpha"], "lr": 3e-4},
                            {"params": [ebt.log_alpha], "lr": 3e-2, "weight_decay": 0.0}])
     ob = torch.optim.Adam(base.parameters(), lr=3e-4)
-    print(f"Stage-1 EBT value-prop gate | UNCONDITIONED k={args.k}-ahead | steps={args.steps}", flush=True)
+    print(f"Stage-1 EBT value-prop gate | UNCONDITIONED k={args.k}-ahead | recipe={args.recipe} | steps={args.steps}", flush=True)
+    rb = ReplayBuffer(1024) if args.recipe == "s2" else None
     for s in range(1, args.steps + 1):
         ctx, nxt, _ = data.batch(args.batch)
-        _, _, le = mcmc(ebt, ctx, None, args.n_mcmc, target=nxt, mode="s1", train=True)
+        B = ctx.shape[0]
+        if args.recipe == "s2":
+            # replay-buffer warm start (half the batch) + no-detach + final loss + langevin + randomized alpha & steps
+            y0 = torch.randn(B, LAT, HW, HW, device=DEV)
+            rs = rb.sample(B // 2)
+            if rs is not None:
+                y0[: B // 2] = rs.to(DEV)
+            nsteps = args.n_mcmc + int(torch.randint(0, 3, (1,)))          # randomized num-steps
+            yN, _, le = mcmc(ebt, ctx, None, nsteps, target=nxt, mode="s2", langevin=0.1, randomize=True,
+                             train=True, y_init=y0)
+            rb.add(yN)
+        else:
+            _, _, le = mcmc(ebt, ctx, None, args.n_mcmc, target=nxt, mode="s1", train=True)
         oe.zero_grad(set_to_none=True); le.backward(); torch.nn.utils.clip_grad_norm_(ebt.parameters(), 1.0); oe.step()
-        lb = F.smooth_l1_loss(base(ctx.reshape(ctx.shape[0], -1, HW, HW)), nxt)
+        lb = F.smooth_l1_loss(base(ctx.reshape(B, -1, HW, HW)), nxt)
         ob.zero_grad(set_to_none=True); lb.backward(); ob.step()
-        if s % 2000 == 0:
-            print(f"  [step {s}] EBT {float(le):.4f} base {float(lb):.4f} alpha {float(ebt.alpha()):.1f}", flush=True)
+        if s % 1000 == 0:
+            print(f"  [step {s}] EBT {float(le.detach()):.4f} base {float(lb.detach()):.4f} alpha {float(ebt.alpha()):.1f}", flush=True)
 
     # ---- (A) System-2: error vs inference steps, split easy/hard ----
     ctx, nxt, hard = data.batch(1024, train=False)
