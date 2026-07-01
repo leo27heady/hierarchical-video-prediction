@@ -39,6 +39,8 @@ class DLH(nn.Module):
                                         cfg.image_size, feat_dim=D, project=cfg.enc_to_feat)
         self.img_dec = ConvImageDecoder(D, cfg.image_channels, cfg.conv_channels, cfg.image_size,
                                         out_activation=cfg.dec_out_activation)
+        # ABLATION: project [c, d^0] -> D so img_dec can see the deterministic detail path (CW-VAE-style)
+        self.det_proj = nn.Linear(D + cfg.temporal_gru, D) if cfg.decoder_det_carry else None
 
         # ---- bottom-up feature MLPs f_enc^n: x^n -> x^{n+1}  (n = 0 .. N-2) ----
         self.enc = nn.ModuleList([mlp(D, cfg.enc_mlp, D) for _ in range(N - 1)])
@@ -143,7 +145,13 @@ class DLH(nn.Module):
                 # pays 0 (the static prior is its own previous posterior). This preserves the KL economy
                 # that makes slow features migrate up the hierarchy.
                 kl_change = gaussian_kl(mu_q, sg_q, mu_c, sg_c).sum(-1, keepdim=True)
-                skl_level[n] = e * kl_change
+                if cfg.state_kl_mode == "paper":
+                    # restore the paper's (1-e)*KL[q||static] clustering term (Eq. ELBO-b-breakdown): a frozen
+                    # level pulls its FRESH posterior toward the carried belief instead of paying nothing.
+                    kl_static = gaussian_kl(mu_q, sg_q, state["qmean"][n], state["qstd"][n]).sum(-1, keepdim=True)
+                    skl_level[n] = e * kl_change + (1 - e) * kl_static
+                else:                                                      # "economy" (current port): frozen pays 0
+                    skl_level[n] = e * kl_change
                 state_kl = state_kl + skl_level[n]
                 new["qmean"][n] = e * mu_q + (1 - e) * state["qmean"][n]    # carry posterior if frozen
                 new["qstd"][n] = e * sg_q + (1 - e) * state["qstd"][n]
@@ -162,7 +170,8 @@ class DLH(nn.Module):
             else:
                 new["pf"][n] = new["d"][n]
             c = self.dec[n](torch.cat([s_n, c], -1))
-        decoded = self.img_dec(c)
+        c_dec = self.det_proj(torch.cat([c, new["d"][0]], -1)) if self.det_proj is not None else c
+        decoded = self.img_dec(c_dec)
 
         # ---- transition KL (term c): predict the hard e (skip bottom; mask by parent active) ----
         trans_kl, parent = torch.zeros(B, 1, device=dev), torch.ones(B, 1, device=dev)

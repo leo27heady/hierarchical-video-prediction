@@ -58,15 +58,31 @@ def build_world(Ww, Hh, digits, rng, num_digits):
     return world
 
 
-def pan_trajectory(T, Ww, rng, p_hold=0.2, speed=2):
-    """Bounded random walk of the viewport's left edge over the torus; returns positions (T,) and actions (T,) in
-    {-1 left,0 hold,+1 right}. Random walk (not constant velocity) forces true position tracking + memory."""
+def pan_trajectory(T, Ww, rng, p_hold=0.2, speed=2, p_cont=None):
+    """Viewport left-edge trajectory over the torus; returns positions (T,) and actions (T,) in {-1 left,0 hold,+1 right}.
+
+    p_cont=None -> original iid SYMMETRIC random walk (equal L/R). This diffuses too slowly to cycle the torus in a
+    tractable clip, so off-screen content is either still in a short context (determined) or never revisited (unknowable)
+    -> no memory-horizon regime (verified by the step1 geometry probe: 0.9-col newly-revealed strip).
+
+    p_cont in (0,1] -> MOMENTUM walk: with prob p_hold hold; else continue the current heading w.p. p_cont, reverse w.p.
+    1-p_cont. Directed motion CYCLES the torus (period ~Ww/speed frames) so content genuinely exits and RE-ENTERS -> a
+    long-context model can recall it, a short-context one cannot = a real hard-but-computable-WITH-MEMORY regime."""
     pos = np.zeros(T, np.int32)
     act = np.zeros(T, np.int32)
     x = rng.randint(0, Ww)
+    d = 1 if rng.rand() < 0.5 else -1
     for t in range(T):
         r = rng.rand()
-        a = 0 if r < p_hold else (1 if r < p_hold + (1 - p_hold) / 2 else -1)
+        if p_cont is None:
+            a = 0 if r < p_hold else (1 if r < p_hold + (1 - p_hold) / 2 else -1)
+        else:
+            if r < p_hold:
+                a = 0
+            else:
+                if rng.rand() >= p_cont:
+                    d = -d
+                a = d
         act[t] = a
         x = (x + a * speed) % Ww
         pos[t] = x
@@ -91,6 +107,8 @@ def main():
     ap.add_argument("--world", type=int, default=128, help="torus world width (>64 so content goes off-screen)")
     ap.add_argument("--digits", type=int, default=3)
     ap.add_argument("--speed", type=int, default=2)
+    ap.add_argument("--p_cont", type=float, default=None, help="momentum: prob of continuing heading (None=iid walk)")
+    ap.add_argument("--p_hold", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", required=True)
     ap.add_argument("--out_actions", default=None)
@@ -102,7 +120,7 @@ def main():
     actions = np.zeros((args.n, args.frames), np.int8)
     for i in range(args.n):
         world = build_world(args.world, V, digits, rng, args.digits)
-        pos, act = pan_trajectory(args.frames, args.world, rng, speed=args.speed)
+        pos, act = pan_trajectory(args.frames, args.world, rng, p_hold=args.p_hold, speed=args.speed, p_cont=args.p_cont)
         clip = render_clip(world, pos, V)
         clips[i] = np.clip(clip * 255, 0, 255).astype(np.uint8)
         actions[i] = act

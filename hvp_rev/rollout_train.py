@@ -25,6 +25,15 @@ from hvp_rev.rhcp import RHCP, RHCPConfig, LevelSpec
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 
 
+def build_model(arch="simple"):
+    """simple = the minimal 1M RHCP (gates/mechanism); enriched = RHCP2 (ConvGRU encoder + cross-attn cond, ~5-8M)."""
+    if arch == "enriched":
+        from hvp_rev.rhcp2 import RHCP2, ship_config
+        return RHCP2(ship_config()).to(DEV)
+    cfg = RHCPConfig(levels=[LevelSpec(64, 16, 1), LevelSpec(96, 8, 2), LevelSpec(128, 4, 4)])
+    return RHCP(cfg).to(DEV)
+
+
 # ----------------------------------------------------------------------------- objectives
 _LPIPS = None
 
@@ -135,11 +144,10 @@ def _cos(ga, gb, params):
     return F.cosine_similarity(a, b, dim=0).item(), ((a - b).norm() / (b.norm() + 1e-12)).item()
 
 
-def gate(K=40, B=4, seed=0):
-    print(f"\n=== reverse-replay gradient-equivalence gate (REAL RHCP, K={K}) ===")
+def gate(K=40, B=4, seed=0, arch="simple"):
+    print(f"\n=== reverse-replay gradient-equivalence gate (arch={arch}, K={K}) ===")
     torch.manual_seed(seed)
-    cfg = RHCPConfig(levels=[LevelSpec(64, 16, 1), LevelSpec(96, 8, 2), LevelSpec(128, 4, 4)])
-    model = RHCP(cfg).to(DEV)
+    model = build_model(arch)
     # nudge the reversible core off identity init so the test is non-trivial
     with torch.no_grad():
         for p in model.core.parameters():
@@ -185,22 +193,51 @@ class RolloutClips:
         return ctx, tgt
 
 
+@torch.no_grad()
+def eval_fg(model, val_ctx01, val_gt01, H, batch=64):
+    """Foreground-metric eval on a fixed held-out set (the REAL signal; raw loss is background-dominated).
+    val_ctx01/gt01: numpy (N,n_in,1,64,64)/(N,H,1,64,64) in [0,1]. Returns mean fg-MSE, centroid-L2, IoU over horizon."""
+    from hvp_rev import long_eval as LE
+    model.eval()
+    outs = []
+    for s in range(0, val_ctx01.shape[0], batch):
+        c = torch.from_numpy(val_ctx01[s:s + batch] * 2 - 1).to(DEV)
+        y = model.rollout(c, H)
+        outs.append(((y.clamp(-1, 1) + 1) * 0.5).cpu().numpy())
+    pred = np.concatenate(outs)
+    model.train()
+    return {"fg_mse": float(LE.fg_mse(pred, val_gt01).mean()),
+            "centroid": float(LE.centroid_l2(pred, val_gt01).mean()),
+            "iou": float(LE.digit_iou(pred, val_gt01).mean())}
+
+
 def train_rollout(K_train=40, objective="l1lpips", seed=0, steps=2000, batch=8, lr=5e-4,
-                  n_in=10, frames_budget=None, log_every=50, out=None, backward="replay"):
+                  n_in=10, frames_budget=None, log_every=50, eval_every=500, eval_H=20, eval_clips=128,
+                  out=None, backward="replay", wandb_proj=None, tag="rhcp", arch="simple"):
     """Free-running latent-rollout training. backward='replay' = constant-memory reverse-replay (P3, both arms);
-    'autograd' = plain BPTT (fast, for small-K P1). frames_budget overrides steps to equalise predicted-frames-seen
-    across K (compute-match): steps = frames_budget // (batch*K_train). Objective is K-normalised (MEAN over frames)."""
+    'autograd' = plain BPTT (fast, small-K). arch='enriched' = RHCP2 (ConvGRU enc + cross-attn cond). frames_budget
+    equalises predicted-frames-seen across K. Objective K-normalised. Periodic FOREGROUND eval + optional wandb."""
     torch.manual_seed(seed)
     if frames_budget:
         steps = max(1, frames_budget // (batch * K_train))
-    cfg = RHCPConfig(levels=[LevelSpec(64, 16, 1), LevelSpec(96, 8, 2), LevelSpec(128, 4, 4)])
-    model = RHCP(cfg).to(DEV)
+    model = build_model(arch)
+    cfg = model.cfg
     data = RolloutClips(n_in=n_in, K=K_train)
     obj = OBJECTIVES[objective]
     opt = torch.optim.Adam(model.parameters(), lr=lr)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=steps, pct_start=0.1)
-    print(f"train_rollout: K={K_train} obj={objective} seed={seed} steps={steps} batch={batch} backward={backward} "
-          f"params={model.n_params()/1e6:.2f}M  (frames/step={batch*K_train})")
+    # fixed held-out eval set from the CW-VAE TEST split (matched to the final comparison), ctx=n_in -> eval_H
+    varr = load_clips(CWVAE_TEST, time_axis=1, n=eval_clips, t=n_in + eval_H)        # (N,T,1,64,64) [0,1]
+    val_ctx01, val_gt01 = varr[:, :n_in].copy(), varr[:, n_in:n_in + eval_H].copy()
+    run_name = f"{tag}-K{K_train}-{objective}-s{seed}"
+    wb = None
+    if wandb_proj:
+        import wandb
+        wb = wandb.init(project=wandb_proj, name=run_name, config=dict(
+            K_train=K_train, objective=objective, seed=seed, steps=steps, batch=batch, lr=lr, n_in=n_in,
+            backward=backward, params=model.n_params(), frames_per_step=batch * K_train), reinit=True)
+    print(f"train_rollout: {run_name} steps={steps} batch={batch} backward={backward} "
+          f"params={model.n_params()/1e6:.2f}M frames/step={batch*K_train} | wandb={'on' if wb else 'off'}")
     run = 0.0
     for step in range(1, steps + 1):
         ctx, tgt = data.batch(batch, train=True)
@@ -220,13 +257,23 @@ def train_rollout(K_train=40, objective="l1lpips", seed=0, steps=2000, batch=8, 
         opt.step(); sched.step()
         run += loss
         if step % log_every == 0:
-            print(f"[step {step:5d}] loss {run/log_every:.4f}  lr {sched.get_last_lr()[0]:.2e}")
+            print(f"[step {step:5d}] loss {run/log_every:.4f}  lr {sched.get_last_lr()[0]:.2e}", flush=True)
+            if wb:
+                wb.log({"train/loss": run / log_every, "train/lr": sched.get_last_lr()[0]}, step=step)
             run = 0.0
+        if step % eval_every == 0 or step == steps:
+            m = eval_fg(model, val_ctx01, val_gt01, eval_H)
+            print(f"   >> eval@{step} (->{eval_H}): fg-MSE {m['fg_mse']:.4f}  centroid {m['centroid']:.2f}px  "
+                  f"IoU {m['iou']:.3f}   [CW-VAE ~0.28/10.3/0.41]", flush=True)
+            if wb:
+                wb.log({f"val/{k}": v for k, v in m.items()}, step=step)
     if out:
         import os
         os.makedirs(os.path.dirname(out), exist_ok=True)
         torch.save({"model": model.state_dict(), "cfg": cfg, "K_train": K_train, "seed": seed}, out)
         print(f"saved {out}")
+    if wb:
+        wb.finish()
     return model
 
 
@@ -245,16 +292,21 @@ if __name__ == "__main__":
     ap.add_argument("--backward", default="replay", choices=["replay", "autograd"])
     ap.add_argument("--lr", type=float, default=5e-4)
     ap.add_argument("--n_in", type=int, default=10)
+    ap.add_argument("--eval_every", type=int, default=500)
+    ap.add_argument("--wandb", default=None, help="wandb project name (off if unset)")
+    ap.add_argument("--tag", default="rhcp")
+    ap.add_argument("--arch", default="simple", choices=["simple", "enriched"])
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     print(f"rollout_train | torch {torch.__version__} | device {DEV}")
     if args.gate:
-        gate(K=args.K)
+        gate(K=args.K, arch=args.arch)
     elif args.smoke:
-        train_rollout(K_train=12, objective="l1mse", steps=120, batch=8, log_every=20)
+        train_rollout(K_train=12, objective="l1mse", steps=120, batch=8, log_every=20, arch=args.arch)
     elif args.train:
         train_rollout(K_train=args.K_train, objective=args.objective, seed=args.seed, lr=args.lr,
                       steps=args.steps, batch=args.batch, frames_budget=args.frames_budget,
-                      backward=args.backward, n_in=args.n_in, out=args.out)
+                      backward=args.backward, n_in=args.n_in, eval_every=args.eval_every,
+                      wandb_proj=args.wandb, tag=args.tag, arch=args.arch, out=args.out)
     else:
         gate(K=args.K)

@@ -87,8 +87,14 @@ def evaluate(model, test, cfg, n_clips=16, n_samples=10, device="cuda", seed=0, 
     def fgm(arr):  # foreground-MSE scalar over all clips/frames
         return float(((arr - gt) ** 2)[fg].mean()) if fg.any() else 0.0
 
+    def lapvar(arr):  # mean per-frame Laplacian variance (sharpness; GT MMNIST ~0.059)
+        a = arr[:, :, 0]                                            # (Nc,H,h,w)
+        lap = (-4 * a + np.roll(a, 1, -1) + np.roll(a, -1, -1) + np.roll(a, 1, -2) + np.roll(a, -1, -2))
+        return float(lap.reshape(-1, a.shape[-2] * a.shape[-1]).var(-1).mean())
+
     m = {
         "fg_mse": float(fgmse_c.mean()), "fg_mse_black": fgm(np.zeros_like(gt)), "fg_mse_persist": fgm(persist),
+        "lapvar": lapvar(pred_keep), "lapvar_gt": lapvar(gt),       # sharpness (pred should approach GT)
         "ssim": float(ssim_c.mean()), "psnr": float(psnr_c.mean()),
         "ssim_black_baseline": float(np.mean([[ssim_m(gt[c, t, 0], np.zeros_like(gt[c, t, 0]), data_range=1.0)
                                                for t in range(H)] for c in range(Nc)])),

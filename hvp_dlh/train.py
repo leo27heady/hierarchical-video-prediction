@@ -38,7 +38,8 @@ def build_cfg():
         if v is None:
             continue
         if isinstance(f.default, (tuple, list)) and isinstance(v, str):
-            v = tuple(int(x) for x in v.split(","))
+            elem = type(f.default[0]) if len(f.default) else float  # infer int vs float from the default
+            v = tuple(elem(x) for x in v.split(","))
         setattr(cfg, f.name, v)
     return cfg
 
@@ -129,6 +130,7 @@ def main():
             print(f"  EVAL[{step}] fg_MSE {ev['fg_mse']:.3f} (black {ev['fg_mse_black']:.3f} "
                   f"persist {ev['fg_mse_persist']:.3f}) | LPIPS_fg {ev.get('lpips_fg',-1):.3f} "
                   f"(black {ev.get('lpips_fg_black',-1):.3f}) | SSIM {ev['ssim']:.3f} | "
+                  f"lapvar {ev.get('lapvar',-1):.4f}/{ev.get('lapvar_gt',-1):.4f} | "
                   f"KL/lvl {[round(x,2) for x in ev['skl_per_level']]} K_tf {ev['K_mean_tf']:.2f}", flush=True)
 
         if step % cfg.ckpt_every == 0 or step == cfg.total_iters:

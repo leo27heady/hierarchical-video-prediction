@@ -41,6 +41,15 @@ class DLHConfig:
 
     # ---- decoder likelihood ----
     dec_stddev: float = 1.0                 # fixed Gaussian std of the image likelihood (per dataset)
+    decoder_det_carry: bool = False         # ABLATION: also feed the bottom temporal state d^0 to img_dec
+                                            # (CW-VAE-style det path; paper f_dec sees only s,c -> deviation)
+
+    # ---- state-KL term (ELBO 5b) ----
+    state_kl_mode: str = "economy"          # economy: skl = e*KL(q||change) only (frozen pays 0, current port).
+                                            # paper:   skl = e*KL(q||change) + (1-e)*KL(q||static) -- restores the
+                                            #          paper's "cluster persistent states" clustering pressure (Eq.
+                                            #          ELBO-b-breakdown). Pair with free_nats_per_level to avoid the
+                                            #          Bug-2 high-beta collapse.
 
     # ---- ELBO weighting ----
     beta_max: float = 1.0

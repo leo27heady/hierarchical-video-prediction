@@ -58,7 +58,8 @@ mechanism that lets a level "cluster temporally-persistent states together" (abs
 when the world actually moves.
 
 *Code:* `model.py` — the **change** prior is `self.prior[n]` (a `GaussianHead` on `[dⁿ, cⁿ]`); the **static** prior
-is the carried belief `state["bmean"/"bstd"][n]` (the persisted previous change-prior, updated only on a tick).
+is the carried **previous posterior** `state["qmean"/"qstd"][n]` (updated to the fresh posterior only on a tick, carried
+when frozen). This matches the paper's appendix definition `p'(sⁿ_t|e=0)=q'(sⁿ_{t-1})` (Eq. hierarchicalassumption).
 
 ---
 
@@ -150,8 +151,12 @@ Maximising data likelihood is intractable, so DLH maximises a variational lower 
 - **(b) state KL** `Σ_n KL[ q(sⁿ_t) ‖ p(sⁿ_t | eⁿ_t) ]` — *"keep each inferred state close to whichever prior
   component (static or change) was selected."* The paper expands this (Eq. `ELBO-b-breakdown`) as
   `q(e=0)·KL[q‖static] + q(e=1)·KL[q‖change]`; with the hard `e`, exactly one term is active per level.
-  **This term is what gives a frozen level gradient** (via `KL[q‖static]`) — getting this right was the fix that
-  un-stuck our top level. *Code:* `skl_level[n] = e·KL(q‖change) + (1−e)·KL(q‖static)`.
+  **The default port ("economy" mode) keeps only the change half** — `skl_level[n] = e·KL(q‖change)` — because the
+  static prior is the level's own carried previous posterior, so a frozen level's `(1−e)·KL[q‖static]` is identically
+  zero (`KL[q_{t-1}‖q_{t-1}]=0`). This is faithful *in value* and is the "KL economy" that holds the hierarchy at
+  β=1.0. The paper-literal form (a fresh posterior pays a non-zero clustering KL on frozen levels) is available as
+  `state_kl_mode="paper"`; on MMNIST it collapses to 1 level at β=1 unless paired with `free_nats_per_level` — verified
+  in `logs_ablate/` (see [RESULTS_DLH_REPRODUCTION.md] / the blur-instability memory). *Code:* `_step`, `model.py` term (b).
 - **(c) transition KL** `Σ_n KL[ q(eⁿ_t) ‖ p_θ(eⁿ_t | dⁿ) ]` — *"train the little prior-factor model to predict the
   change decisions the KL rule made."* At rollout time (no observations) there is no KL rule, so the model samples
   `eⁿ` from this learned prior factor — that is how the dynamic clock runs **at generation**. *Code:* `trans_kl`,
