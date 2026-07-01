@@ -45,9 +45,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 # --- make the genuine reference repo importable (stubs shim its heavy deps) ---
-_STUBS = os.environ.get("EBT_STUBS")
+# default stubs now live IN-REPO (hvp_rev/ebt_stubs: pytorch_lightning/diffusers/torchmetrics
+# shims) -- the originals sat in a session temp dir and would vanish with a cleanup.
+_STUBS = os.environ.get("EBT_STUBS",
+                        os.path.join(os.path.dirname(os.path.abspath(__file__)), "ebt_stubs"))
 _EBT_REPO = os.environ.get("EBT_REPO", "C:/Users/leoni/Documents/projects/EBT")
-if _STUBS and _STUBS not in sys.path:
+if _STUBS and os.path.isdir(_STUBS) and _STUBS not in sys.path:
     sys.path.insert(0, _STUBS)
 if _EBT_REPO not in sys.path:
     sys.path.insert(0, _EBT_REPO)
