@@ -38,22 +38,34 @@ class ConvMixer(nn.Module):
     identity transition (s_{t+1} = s_t), which is a numerically benign, trivially-invertible starting point.
     """
 
-    def __init__(self, c_in: int, c_out: int, hidden: Optional[int] = None, k: int = 7):
+    def __init__(self, c_in: int, c_out: int, hidden: Optional[int] = None, k: int = 7, lipschitz: bool = False,
+                 out_scale: float = 1.0):
         super().__init__()
+        self.out_scale = out_scale
         hidden = hidden or 4 * c_out
         self.dw = nn.Conv2d(c_in, c_in, k, padding=k // 2, groups=c_in)
         self.norm = nn.GroupNorm(1, c_in)
         self.pw1 = nn.Conv2d(c_in, hidden, 1)
         self.act = nn.GELU()
         self.pw2 = nn.Conv2d(hidden, c_out, 1)
-        nn.init.zeros_(self.pw2.weight)
-        nn.init.zeros_(self.pw2.bias)
+        if not lipschitz:                       # identity-start; NB a zero weight has no valid spectral norm (0/0=NaN)
+            nn.init.zeros_(self.pw2.weight)
+            nn.init.zeros_(self.pw2.bias)
+        if lipschitz:
+            # spectral-norm the convs -> bounded Lip(F). Invertibility is UNAFFECTED (additive coupling inverts for
+            # ANY F); this bounds the DYNAMICS (the actual stability lever -- invertibility is NOT one). GroupNorm is
+            # dropped under Lipschitz mode (its per-sample rescaling is not 1-Lipschitz).
+            from torch.nn.utils.parametrizations import spectral_norm
+            self.dw = spectral_norm(self.dw)
+            self.pw1 = spectral_norm(self.pw1)
+            self.pw2 = spectral_norm(self.pw2)
+            self.norm = nn.Identity()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.dw(x)
         x = self.norm(x)
         x = self.pw2(self.act(self.pw1(x)))
-        return x
+        return x if self.out_scale == 1.0 else self.out_scale * x
 
 
 # --------------------------------------------------------------------------------------------------
@@ -68,17 +80,20 @@ class RevConvStage(nn.Module):
     inverse:  reverse the pairs: x2 -= G([x1,c]); x1 -= F([x2,c])      (exact for ANY c)
     """
 
-    def __init__(self, channels: int, cond_ch: int = 0, depth: int = 2, k: int = 7, hidden_mult: int = 4):
+    def __init__(self, channels: int, cond_ch: int = 0, depth: int = 2, k: int = 7, hidden_mult: int = 4,
+                 lipschitz: bool = False, out_scale: float = 1.0):
         super().__init__()
         assert channels % 2 == 0, "reversible coupling needs an even channel count"
         self.half = channels // 2
         self.cond_ch = cond_ch
         self.depth = depth
         self.Fs = nn.ModuleList(
-            ConvMixer(self.half + cond_ch, self.half, hidden=hidden_mult * self.half, k=k) for _ in range(depth)
+            ConvMixer(self.half + cond_ch, self.half, hidden=hidden_mult * self.half, k=k, lipschitz=lipschitz,
+                      out_scale=out_scale) for _ in range(depth)
         )
         self.Gs = nn.ModuleList(
-            ConvMixer(self.half + cond_ch, self.half, hidden=hidden_mult * self.half, k=k) for _ in range(depth)
+            ConvMixer(self.half + cond_ch, self.half, hidden=hidden_mult * self.half, k=k, lipschitz=lipschitz,
+                      out_scale=out_scale) for _ in range(depth)
         )
 
     def _cat(self, a: torch.Tensor, c: Optional[torch.Tensor]) -> torch.Tensor:
