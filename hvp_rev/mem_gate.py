@@ -96,7 +96,8 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
     diff = Diffusion(net)
     opt = torch.optim.AdamW(net.parameters(), lr=3e-4, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=3e-4, total_steps=steps, pct_start=0.05)
-    ckpt = f"logs_rhcp/mem_gate_{name}_s{seed}.pt"
+    ckpt = f"logs_rhcp/mem_gate_{name}_s{seed}_t{steps}.pt"  # steps in path: a smoke ckpt must never
+    #                                                          resume-poison the full run's schedule
     start = load_ckpt(ckpt, net, opt, sched)
     ntok = n_ctx_c * 16 + n_ctx_f * 64 + 80
     p = sum(x.numel() for x in net.parameters()) / 1e6
@@ -130,12 +131,14 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
 
 
 @torch.no_grad()
-def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B=32):
+def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B=32, seed=0):
     """Best-of-N pixel fg-MSE per sample + sharpness; frames for the viz grid REUSE the scored
-    samples (red-team fix: the original drew a fresh sample set for the grid)."""
+    samples (red-team fix: the original drew a fresh sample set for the grid). Sampling noise is
+    reseeded per eval batch (common random numbers across arms -> tighter paired CIs)."""
     diff.net.eval()
     per_fg, per_nf6, sharps, panels = [], [], [], None
     for bi in range(nb):
+        torch.manual_seed(31337 + bi)   # CRN: identical DDIM noise draws across arms
         bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=False, seed=1000 + bi, frames=(bi == 0))
         gt01 = decode01(ae, bt["tgt_f"])
         all_frames, allfg = [], np.empty((N, B), np.float32)
@@ -149,7 +152,7 @@ def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B
         sharps.append(fg_sharp(bestf, gt01))
         if bi == 0:
             panels = (bt.get("last"), bestf, gt01)
-            viz.save_samples(f"logs_rhcp/mem_gate_{name}.png",
+            viz.save_samples(f"logs_rhcp/mem_gate_{name}_s{seed}.png",
                              [("last", panels[0]), (f"pred(best{N})", panels[1]), ("GT", panels[2])], n=8)
     return np.concatenate(per_fg), np.concatenate(per_nf6), float(np.mean(sharps))
 
@@ -221,7 +224,7 @@ def main():
     for name, nc, nf in arm_specs:
         diff = train_arm(name, data, nc, nf, steps, args.batch, maxc, args.seed)
         fg, nf6, sharp = eval_arm(name, diff, test, ae, nc, nf, maxc, N=args.N, nfe=args.nfe,
-                                  nb=nb, B=B_eval)
+                                  nb=nb, B=B_eval, seed=args.seed)
         arms[name] = (fg, nf6, sharp)
         del diff
         torch.cuda.empty_cache()

@@ -112,14 +112,16 @@ class RefTrainerS1:
 
 
 @torch.no_grad()
-def s1_paper_inference_probe(m: RefEBTS1, test, ae, N=4, n_steps=4, seed=777):
+def s1_paper_inference_probe(m: RefEBTS1, test, ae, a_over, N=4, n_steps=4, seed=777):
     """The paper's actual video-generation recipe (ebt_ssv2_vae.sh): N samples, n_steps descent
-    steps on the final landscape, alpha_override = alpha/4 (their 7500/30000 ratio), langevin 1
-    at inference, pick per-element argmin final-frame energy. Returns (d_tgt, fg_sharp)."""
+    steps (landscapes [0,1,1,1]), langevin 1 at inference, pick per-element argmin final-frame
+    energy. a_over: the inference alpha. Their script uses a LITERAL 7500 vs alpha init 30000,
+    but alpha is learnable and drifts -- ratio-to-current vs ratio-to-init is ambiguous by
+    construction (their VID ebt_advanced_inference is NotImplementedError), so the caller logs
+    BOTH readings. Returns (d_tgt, fg_sharp)."""
     b = test.batch(64, train=False, return_frames=True, seed=seed)
     full = m._seq_from_ctx(b["ctx_c"], b["ctx_f"], b["tgt_c"], b["tgt_f"])
     real_in, tgt_tok = full[:, :-1], full[:, -1]
-    a_over = float(torch.clamp(m.alpha, min=1e-4)) / 4.0
     cands, energies = [], []
     for n in range(N):
         with torch.enable_grad():
@@ -170,12 +172,14 @@ def main():
     ap.add_argument("--probe_steps", type=int, default=0, help=">0: timing/VRAM probe only, then exit")
     ap.add_argument("--resume", action="store_true", default=True)
     ap.add_argument("--no_resume", dest="resume", action="store_false")
-    ap.add_argument("--bf16", action="store_true")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--tag", default="")
     args = ap.parse_args()
     torch.manual_seed(args.seed); np.random.seed(args.seed)
-    M._BF16 = bool(args.bf16)
+    # NOTE: no --bf16 here on purpose (red-team #2): the RefEBT/EBTTimeConcat path never enters
+    # step1_mech._ac(), so a bf16 flag would be a silent no-op recorded as used precision. This
+    # script runs honest fp32; the frame-as-token seq (~ctx+2 tokens) is tiny, wall-clock is
+    # launch-overhead-bound, and the timing probe measures the real cost.
     tag = f"{args.recipe}{args.tag}"
 
     ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
@@ -260,7 +264,7 @@ def main():
     # ---- training with periodic probes ----
     pms = (m.mcmc_num_steps - 1) if args.recipe == "s1" else 0   # probe the FINAL landscape
     m.eval(); probe(m, trainer, test, ae, f"scaled_{tag}_step0", k_eval_steps, probe_mcmc_step=pms); m.train()
-    run, t_last, gn = 0.0, time.time(), 0.0
+    run, t_last, gn, nan_events = 0.0, time.time(), 0.0, 0
     for s in range(start, args.steps + 1):
         lr = lr_at(s, args.lr, args.warmup)
         opt.param_groups[0]["lr"] = lr
@@ -270,8 +274,22 @@ def main():
         step_loss, bad = 0.0, False
         for _ in range(args.accum):
             bt = data.batch(args.micro, train=True)
-            loss = trainer.train_step(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"],
-                                      bt["actions"]) / args.accum
+            try:
+                loss = trainer.train_step(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"],
+                                          bt["actions"]) / args.accum
+            except ValueError:
+                # NaN/Inf grad inside the MCMC descent (expected for --alpha_mode transplant:
+                # alpha=30000 in unit-std space). Record the divergence as the run's DATUM
+                # instead of dying uncheckpointed (red-team #3).
+                nan_events += 1
+                bad = True
+                if nan_events >= 100:
+                    print(f"[DIVERGED] {nan_events} NaN/Inf MCMC events by step {s} "
+                          f"(alpha {float(m.alpha.detach()):.4g}) -> recipe diverges at this "
+                          f"alpha on unit-std latents. Recorded as the run's verdict.", flush=True)
+                    save_ckpt(ckpt, step=s, model=m.state_dict(), opt=opt.state_dict())
+                    return
+                break
             if not torch.isfinite(loss):
                 bad = True
                 continue
@@ -288,7 +306,7 @@ def main():
                                f"(ckpt saved). Shrink micro/accum and resume.")
         if s % 200 == 0:
             print(f"[train {s}/{args.steps}] sl1 {run/200:.4f} lr {lr:.2e} gnorm {gn:.3f} "
-                  f"alpha {float(m.alpha.detach()):.4g} {dt:.2f}s/step", flush=True)
+                  f"alpha {float(m.alpha.detach()):.4g} {dt:.2f}s/step nan_events {nan_events}", flush=True)
             run = 0.0
         if s % args.save_every == 0 or s == args.steps:
             save_ckpt(ckpt, step=s, model=m.state_dict(), opt=opt.state_dict())
@@ -296,10 +314,12 @@ def main():
             m.eval()
             probe(m, trainer, test, ae, f"scaled_{tag}_step{s}", k_eval_steps, probe_mcmc_step=pms)
             if args.recipe == "s1":
-                d_tgt, sh = s1_paper_inference_probe(m, test, ae)
-                print(f"  [s1-paper-infer step{s}] best-of-4 min-energy: d_tgt {d_tgt:.3f} "
-                      f"fg-sharp {sh:.4f} (GT~0.25) "
-                      f"{'[COLLAPSED]' if sh < 0.08 else '[HAS STRUCTURE]'}", flush=True)
+                a_cur = float(torch.clamp(m.alpha.detach(), min=1e-4))
+                for lab, a_over in (("cur/4", a_cur / 4.0), ("init/4", a_init / 4.0)):
+                    d_tgt, sh = s1_paper_inference_probe(m, test, ae, a_over)
+                    print(f"  [s1-paper-infer step{s} alpha[{lab}]={a_over:.4g}] best-of-4 "
+                          f"min-energy: d_tgt {d_tgt:.3f} fg-sharp {sh:.4f} (GT~0.25) "
+                          f"{'[COLLAPSED]' if sh < 0.08 else '[HAS STRUCTURE]'}", flush=True)
             m.train()
     print(f"\nSCALED {tag} DONE ({args.steps} steps, eff-batch {eff}). Scoping gate: check the "
           f"E(tgt)-vs-E(mean) and fg-sharp trends in the probe lines above, post-warmup.", flush=True)

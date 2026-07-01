@@ -317,6 +317,7 @@ class Regressor(nn.Module):
         with _ac():  # [SPEEDUP-1] bf16 autocast (opt-in); matched-precision vs diff/ebt
             for blk in self.blocks:
                 x = self.drop(blk(x, c))
+        x = x.float()  # heads run in fp32 (outside autocast, fp32 Linear vs bf16 input would error)
         tgt = x[:, -(n_tgt_c + n_tgt_f):]
         xc, xf = tgt[:, :n_tgt_c], tgt[:, n_tgt_c:]
         yc = self.head_c(self.norm_c(xc)).transpose(1, 2).reshape(B, self.lat, 4, 4)
@@ -354,7 +355,8 @@ class Diffusion:
         t = (ti.float() / self.Ttr)
         with _ac():  # [SPEEDUP-1] bf16 autocast (opt-in)
             vc, vf = self.net(yc, yf, ctx_c, ctx_f, t, actions)
-        return F.mse_loss(vc, vc_t) + F.mse_loss(vf, vf_t)
+        # loss math in fp32 regardless of autocast (bf16 net output vs fp32 target breaks backward)
+        return F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
 
     @torch.no_grad()
     def sample(self, ctx_c, ctx_f, actions, n_steps=16):
@@ -831,20 +833,22 @@ def run_mech(args):
     for name, m in (("regressor", reg), ("diffusion", diff.net), ("ebt", ebt.net)):
         log(f"  params[{name}] = {sum(p.numel() for p in m.parameters())/1e6:.2f}M")
 
+    # ckpt names carry the step count: resuming a ckpt into a DIFFERENT --steps would poison
+    # OneCycleLR's restored schedule (red-team #5)
     if "reg" in modes:
         log(f"\n-- training regressor ({args.steps} steps) --")
         train_regressor(reg, data, args.steps, args.batch,
-                        ckpt=f"logs_rhcp/mech{tag}_reg.pt", resume=args.resume)
+                        ckpt=f"logs_rhcp/mech{tag}_reg_t{args.steps}.pt", resume=args.resume)
     if "diff" in modes:
         log(f"-- training diffusion ({args.diff_steps} steps) --")
         train_diffusion(diff, data, args.diff_steps, args.batch, test=test, ae=ae,
-                        grid_every=args.grid_every, ckpt=f"logs_rhcp/mech{tag}_diff.pt",
+                        grid_every=args.grid_every, ckpt=f"logs_rhcp/mech{tag}_diff_t{args.diff_steps}.pt",
                         resume=args.resume, tag=tag)
     if "ebt" in modes:
         log(f"-- training ebt ({args.ebt_steps} steps) --")
         train_ebt(ebt, data, args.ebt_steps, args.batch, micro=args.ebt_micro,
                   test=test, ae=ae, grid_every=args.grid_every,
-                  ckpt=f"logs_rhcp/mech{tag}_ebt.pt", resume=args.resume, tag=tag)
+                  ckpt=f"logs_rhcp/mech{tag}_ebt_t{args.ebt_steps}.pt", resume=args.resume, tag=tag)
 
     # references + baseline
     raw_sharp, rt_sharp = reference_sharpness(test, ae)

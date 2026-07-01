@@ -370,7 +370,8 @@ def main():
     data = ActionHierData(ae, "data/loopmom_train_3000x100.npy",
                           "data/loopmom_train_3000x100_actions.npy", n_ctx=6, k=4)
     test = ActionHierData(ae, "data/loopmom_test_500x200.npy",
-                          "data/loopmom_test_500x200_actions.npy", n_ctx=6, k=4, n_val=250)
+                          "data/loopmom_test_500x200_actions.npy", n_ctx=6, k=4, n_val=250,
+                          stats=data.stats)  # [STD-FIX] test must use TRAIN stats (red-team #1)
     b0 = data.batch(1024, train=True)
     sc = _rms(b0["tgt_c"] - b0["tgt_c"].mean())
     sf = _rms(b0["tgt_f"] - b0["tgt_f"].mean())
