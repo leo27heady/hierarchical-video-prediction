@@ -273,3 +273,26 @@ The core contribution: hierarchical latent video model in discrete/compact featu
 **Q5 (formalities):** Copyright-certificate status: filed or not? If not, drop "HVEBT" from the software title; if filed, exact number + title. Also the two НДР numbers, and whether the НДР-2 report text says "енергетичну модель" (needs consistency with the rewrite).
 **Q6 (EBT visibility):** How prominent may the EBT characterized negative be? Options: (a) full §4.2 subsection with both recipes' diagnostics (recommended — it's real science and justifies the core choice), or (b) compressed to a paragraph + appendix, keeping energy models purely as literature. Supervisor/defense-culture call.
 **Q7 (scope of Ch.4 datasets):** Is the looping memory-horizon testbed acceptable to the committee as the *primary* benchmark (purpose-built, synthetic), with KTH/MMNIST as secondary? This determines how much §4.1 argues for testbed validity.
+
+---
+
+## 8. AUTHOR DECISIONS (2026-07-03) — all Q1–Q7 resolved
+
+- **Q1 RESOLVED:** paradigm = **continuous-latent hierarchical diffusion** (author empirically found
+  hierarchical VQ video models unstable to train — usable as motivation in Ch.1). DROP the
+  "diffusion as the limitation" thesis; new motivation spine = flat long-context attention memory
+  blow-up + consistency degradation -> hierarchy + coarse-level memory + reversibility as remedies;
+  per-frame refinement core selected empirically (mechanism study). EBT included as the full
+  characterized study. Reversibility = memory-optimization emphasis, stays a contribution.
+- **Q2 RESOLVED:** drop MobileCLIP pyramid AND VQ-VAE from Ch.3 entirely; architecture = the
+  MilliVid-style stack as implemented (2-level conv-AE + joint-attention hierarchical DiT +
+  AR window rollout; hvp_rev/rhvd.py).
+- **Q3 RESOLVED:** publications list unchanged for now.
+- **Q4 RESOLVED:** Ch.4 evidence: TempVerseFormer receipts exist for 2D/3D rotations, MMNIST,
+  MMNIST-CIFAR, TaxiBJ, KTH — keep as [A2] results. New model: looping memory-horizon testbed
+  PRIMARY + OpenSTL MMNIST bridge (+ MMNIST-CIFAR as stretch); NO new TaxiBJ/KTH commitment.
+- **Q5 RESOLVED:** no copyright certificate filed -> drop "HVEBT" naming everywhere, freely.
+- **Q6 RESOLVED:** option (a) — full §4.2 EBT subsection with both recipes' diagnostics.
+- **Q7 RESOLVED:** looping testbed as primary benchmark accepted; additionally include the
+  TempVerseFormer-style memory-benchmark-on-noise + GPU-memory-trend projection device for the
+  constant-memory rollout claim (Panel A frontier + projection).
