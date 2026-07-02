@@ -32,15 +32,18 @@ flat-budget needs `_build_sequence` to accept n_ctx_c=0 (skip coarse context tok
 coarse TARGET tokens so the AE interface and losses stay identical across arms — the flat arm
 simply gets no coarse memory). Implementation: allow ctx_c with shape (B,0,LAT,4,4).
 
-## Training protocol (single-step, multi-offset)
+## Training protocol (4-frame windows — ADDENDUM, supersedes the single-step k-sampling draft)
 
-Keep the leakage-free single-step protocol of step1_mech (GT context -> predict frame at +k), but
-sample k uniformly from {1..8} per example with k embedded via the action sequence (the k bridging
-actions already encode horizon; add a horizon embedding only if sampling shows it's needed).
-Rationale: the AR rollout advances 4 frames per step (k=4 fixed at eval); training on k in {1..8}
-is cheap layout diversity that regularizes exposure at little complexity cost. NO self-generated
-context at train time in v1 (clean-context first, per plan; context-noise augmentation is the
-single budgeted fallback if rollout drifts, +2 GPU-days cap, G2 text).
+ROLLOUT-CONSISTENCY: single-frame prediction at k=4 would leave stride-4 gaps in the AR context
+buffer, so rollout context would be stride-4 frames while training context is consecutive — a
+train/eval distribution mismatch. Fix (MilliVid-faithful): predict a WINDOW of 4 consecutive
+frames per step, both levels (4 x (16+64) = 320 target tokens; seq = 1152 + 320 = 1472). Context
+= 48 consecutive coarse + 6 consecutive fine frames (GT at train, self-generated after warmup at
+eval); target frame j carries its own action embedding a_{t+j} and its own frame id (48..51) —
+per-target-frame action codes replace the single summed code. Rollout appends all 4 predicted
+frames' latents to the buffers and advances 4 -> buffers stay consecutive, train == eval layout.
+NO self-generated context at train time in v1 (clean-context first; context-noise augmentation is
+the single budgeted fallback if rollout drifts, +2 GPU-days cap, G2b).
 
 ## Rollout (eval-time AR)
 
