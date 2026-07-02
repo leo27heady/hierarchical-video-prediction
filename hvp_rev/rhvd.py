@@ -54,6 +54,10 @@ ARMS = {
     "hier-short": (6,       6,       "diff"),
     "flat-budget": (0,      18,      "diff"),   # 18*64 = 1152 ctx tokens == hier-long's budget
     "reg-long":   (48,      6,       "reg"),
+    # fixed-WINDOW corner of the 2x2 (hierarchy-benefit exhibit): flat with the SAME 48-frame
+    # window as hier-long, paying 48*64=3072 ctx tokens (2.7x hier-long's budget). seq ~3392 --
+    # run with --batch 8 (+timing probe first); spill guard protects the 15GB cap.
+    "flat-long":  (0,       48,      "diff"),
 }
 
 
