@@ -35,8 +35,11 @@ def make_background(Ww, Hh, rng):
     x = np.arange(Ww)[None, :]
     y = np.arange(Hh)[:, None]
     bg = np.zeros((Hh, Ww), np.float32)
+    # scale wavenumbers with world size (reference = the 192px loopmom world) so the PER-VIEWPORT
+    # background frequency distribution is world-size-invariant (integer scale keeps seamless wrap)
+    kx_scale = max(1, round(Ww / 192))
     for _ in range(4):
-        kx = rng.randint(1, 6)                       # integer wavenumber -> seamless wrap
+        kx = rng.randint(1, 6) * kx_scale            # integer wavenumber -> seamless wrap
         ky = rng.randint(0, 4)
         ph = rng.rand() * 2 * np.pi
         amp = rng.uniform(0.15, 0.4)
@@ -118,22 +121,29 @@ def main():
     rng = np.random.RandomState(args.seed)
     clips = np.zeros((args.n, args.frames, V, V), np.uint8)
     actions = np.zeros((args.n, args.frames), np.int8)
+    positions = np.zeros((args.n, args.frames), np.int32)   # viewport left edge (world coords)
     for i in range(args.n):
         world = build_world(args.world, V, digits, rng, args.digits)
         pos, act = pan_trajectory(args.frames, args.world, rng, p_hold=args.p_hold, speed=args.speed, p_cont=args.p_cont)
         clip = render_clip(world, pos, V)
         clips[i] = np.clip(clip * 255, 0, 255).astype(np.uint8)
         actions[i] = act
+        positions[i] = pos
         if (i + 1) % 500 == 0:
             print(f"  {i+1}/{args.n}", flush=True)
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     np.save(args.out, clips)                            # (N, T, 64, 64) uint8, load with time_axis=1
     ap_out = args.out_actions or args.out.replace(".npy", "_actions.npy")
     np.save(ap_out, actions)
+    pp_out = args.out.replace(".npy", "_positions.npy")
+    np.save(pp_out, positions)                          # exact trajectories -> exact re-entry/warmup-seen labels
     off = args.world - V
-    print(f"saved {args.out} {clips.shape}; actions {ap_out} {actions.shape}")
+    dens = args.digits * (V + DIGIT) / args.world       # E[digits overlapping a viewport frame]
+    fg_meas = float((clips[: min(64, args.n)].astype(np.float32) / 255.0 > 0.55).mean())
+    print(f"saved {args.out} {clips.shape}; actions {ap_out}; positions {pp_out}; seed={args.seed}")
     print(f"world width {args.world}, viewport {V} -> {off}px ({100*off/args.world:.0f}%) off-screen at any time; "
-          f"loop period ~ {args.world//max(1,args.speed)} frames (memory horizon)")
+          f"ballistic loop ~ {args.world//max(1,args.speed)} frames (memory horizon)")
+    print(f"digit density: analytic {dens:.2f}/frame; measured fg(>0.55) fraction {fg_meas:.4f}")
 
 
 if __name__ == "__main__":
