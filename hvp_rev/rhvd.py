@@ -49,24 +49,38 @@ WIN = 4          # predicted frames per step
 SPILL_SEC = 10.0
 
 ARMS = {
-    #              n_ctx_c  n_ctx_f  mode
-    "hier-long":  (48,      6,       "diff"),
-    "hier-short": (6,       6,       "diff"),
-    "flat-budget": (0,      18,      "diff"),   # 18*64 = 1152 ctx tokens == hier-long's budget
-    "reg-long":   (48,      6,       "reg"),
+    # name: (n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f)
+    #   stride_c: temporal stride of the coarse context/target (1 = legacy per-frame; 4 = slow
+    #             clock: one coarse SLOT per 4 frames, anchor = block-end frame, ONE coarse
+    #             target slot per window).
+    #   n_hist_f: extra strided FULL-RES history slots in the fine stream (hybrid control only):
+    #             anchors tj-7, tj-11, ..., depth 4*n_hist_f+6; separates "coarse abstraction"
+    #             from "full-res temporal subsampling" with recency (6 consecutive) held equal.
+    "hier-long":  (48,      6,       "diff", 1, 0),
+    "hier-short": (6,       6,       "diff", 1, 0),
+    "flat-budget": (0,      18,      "diff", 1, 0),  # 18*64 = 1152 ctx tokens == hier-long's budget
+    "reg-long":   (48,      6,       "reg",  1, 0),
     # fixed-WINDOW corner of the 2x2 (hierarchy-benefit exhibit): flat with the SAME 48-frame
     # window as hier-long, paying 48*64=3072 ctx tokens (2.7x hier-long's budget). seq ~3392 --
     # run with --batch 8 (+timing probe first); spill guard protects the 15GB cap.
-    "flat-long":  (0,       48,      "diff"),
+    "flat-long":  (0,       48,      "diff", 1, 0),
     # token-matched flat control for the REGRESSION core (added after the H2 surprise: reg-long
     # beat hier-long-diffusion at rollout with equal sharpness -- the hierarchy benefit must be
     # shown for the WINNING mechanism too, or the headline is diffusion-only).
-    "reg-flat":   (0,       18,      "reg"),
+    "reg-flat":   (0,       18,      "reg",  1, 0),
     # ---- H-grid arms (HGRID_DESIGN.md v2, testbed operating point B: world 768 / loop ~192 /
     #      T=480 / WARM=192; run with --train_path data/hgrid_* --world 768 --warm 192,
     #      uniform B=8 x 40k). d0 = flat, largest affordable window (48 frames << 192 loop).
-    "d0-diff-long": (0,     48,      "diff"),
-    "d0-reg-long":  (0,     48,      "reg"),
+    "d0-diff-long": (0,     48,      "diff", 1, 0),
+    "d0-reg-long":  (0,     48,      "reg",  1, 0),
+    # d1 = slow-clock hierarchy: 48 coarse slots @ stride 4 span 192 frames (one full loop) for
+    # 768 ctx tokens + 6 recent fine (384) = 1152 ctx tokens; ~1424-token seq, B=8 safe.
+    "d1-diff":    (48,      6,       "diff", 4, 0),
+    "d1-reg":     (48,      6,       "reg",  4, 0),
+    # hybrid strided-flat control (G-H3): 47 FULL-RES slots @ stride 4 (reach 191) + 6 recent
+    # fine = 3392 ctx tokens (== d0-long budget, 2.9x d1's) at d1's temporal reach — isolates
+    # coarse ABSTRACTION from temporal subsampling; token asymmetry favors the CONTROL.
+    "d0-strided-flat": (0,  6,       "diff", 1, 47),
 }
 
 
@@ -79,12 +93,16 @@ def log(*a):
 # ================================================================================================
 class WindowDiT(nn.Module):
     def __init__(self, n_ctx_c=48, n_ctx_f=6, win=WIN, d=384, depth=8, heads=6, lat=LAT,
-                 mode="diff"):
+                 mode="diff", stride_c=1, n_hist_f=0):
         super().__init__()
-        assert n_ctx_c == 0 or n_ctx_f <= n_ctx_c
         self.n_ctx_c, self.n_ctx_f, self.win, self.lat, self.d = n_ctx_c, n_ctx_f, win, lat, d
-        self.mode = mode
-        n_frames = max(n_ctx_c, n_ctx_f)                  # context window length in frames
+        self.mode, self.stride_c, self.n_hist_f = mode, stride_c, n_hist_f
+        # strided coarse: ONE coarse target slot per window (anchor = last window frame);
+        # legacy (stride 1): per-frame coarse targets.
+        self.n_tgt_c = 1 if (stride_c > 1 and n_ctx_c > 0) else win
+        span_c = n_ctx_c * stride_c
+        hist_reach = (n_ctx_f + 1 + 4 * (n_hist_f - 1) + 1) if n_hist_f > 0 else 0
+        n_frames = max(span_c, n_ctx_f, hist_reach)       # context REACH in frames
         self.base = n_frames                              # first target frame id
         self.tok = LatentTokenizer(lat, d, n_frames + win - 1, k=win)  # frame_embedding covers base+win
         self.time_embedding = TimestepEmbedder(d)
@@ -100,52 +118,75 @@ class WindowDiT(nn.Module):
             nn.init.constant_(ada[-1].weight, 0); nn.init.constant_(ada[-1].bias, 0)
         for head in (self.head_c, self.head_f):
             nn.init.constant_(head.weight, 0); nn.init.constant_(head.bias, 0)
+        self.expected_seq = (n_ctx_c * 16 + (n_hist_f + n_ctx_f) * 64
+                             + self.n_tgt_c * 16 + win * 64)
 
     def _ctx_tokens(self, ctx_c, ctx_f):
-        """Context token list + (level,role,frame) ids. Coarse frames span ids [0..n_ctx_c-1];
-        fine frames are the LAST n_ctx_f ids of the n_frames window (flat arm: coarse absent,
-        fine spans [0..n_ctx_f-1])."""
+        """Context token list + (level,role,frame) ids, all in TRUE frame units (base = tj).
+        Coarse slots (stride s): anchors at frame ids s-1, 2s-1, ..., base-1 (block ends).
+        Fine stream: n_hist_f strided full-res slots (hybrid control; anchors base-n_ctx_f-1-4k,
+        deepest first) followed by the n_ctx_f consecutive recent frames [base-n_ctx_f..base-1].
+        ctx_f is passed pre-concatenated: [:, :n_hist_f] = hist slots, [:, n_hist_f:] = recent."""
         xs, lvs, rls, fms = [], [], [], []
-        f0_fine = self.base - self.n_ctx_f
         for f in range(self.n_ctx_c):
-            x, lv, rl, fm = self.tok.tokenize_level(ctx_c[:, f], level=0, role=0, frame_idx=f)
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_c[:, f], level=0, role=0,
+                                                    frame_idx=(f + 1) * self.stride_c - 1)
             xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        for k in range(self.n_hist_f):
+            fid = self.base - (self.n_ctx_f + 1 + 4 * (self.n_hist_f - 1 - k))
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, k], level=1, role=0, frame_idx=fid)
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        f0_fine = self.base - self.n_ctx_f
         for j in range(self.n_ctx_f):
-            x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, j], level=1, role=0,
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, self.n_hist_f + j], level=1, role=0,
                                                     frame_idx=f0_fine + j)
             xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
         return xs, lvs, rls, fms
 
     def forward(self, yc, yf, ctx_c, ctx_f, t, actions):
-        """yc:(B,win,LAT,4,4) yf:(B,win,LAT,8,8) noisy targets (or dummies for reg);
-        ctx_c:(B,n_ctx_c,...) ctx_f:(B,n_ctx_f,...); t:(B,); actions:(B,win) one per target frame.
-        Returns per-level outputs shaped like yc/yf (v-pred for diff, x0 for reg)."""
+        """yc:(B,n_tgt_c,LAT,4,4) yf:(B,win,LAT,8,8) noisy targets (or dummies for reg);
+        ctx_c:(B,n_ctx_c,...) ctx_f:(B,n_hist_f+n_ctx_f,...); t:(B,); actions:(B,win) one per
+        target frame. Returns per-level outputs shaped like yc/yf (v-pred for diff, x0 for reg).
+        Strided coarse (n_tgt_c=1): the single slot is conditioned on the SUM of the window's
+        action embeddings (multiset of actions = sufficient statistic for the displacement)."""
         B = yf.shape[0]
         xs, lvs, rls, fms = self._ctx_tokens(ctx_c, ctx_f)
         n_ctx_tok = sum(x.shape[1] for x in xs)
-        tgt_meta = []                                     # (n_tok_c, n_tok_f) per frame
-        for j in range(self.win):
-            xc, lvc, rlc, fmc = self.tok.tokenize_level(yc[:, j], level=0, role=1,
-                                                        frame_idx=self.base + j)
-            xf_, lvf, rlf, fmf = self.tok.tokenize_level(yf[:, j], level=1, role=1,
-                                                         frame_idx=self.base + j)
-            xs += [xc, xf_]; lvs += [lvc, lvf]; rls += [rlc, rlf]; fms += [fmc, fmf]
-            tgt_meta.append((xc.shape[1], xf_.shape[1]))
+        groups = []                                       # (kind, j, n_tok) in token order
+        if self.n_tgt_c == 1:
+            xc, lvc, rlc, fmc = self.tok.tokenize_level(yc[:, 0], level=0, role=1,
+                                                        frame_idx=self.base + self.win - 1)
+            xs += [xc]; lvs += [lvc]; rls += [rlc]; fms += [fmc]
+            groups.append(("c", 0, xc.shape[1]))
+            for j in range(self.win):
+                xf_, lvf, rlf, fmf = self.tok.tokenize_level(yf[:, j], level=1, role=1,
+                                                             frame_idx=self.base + j)
+                xs += [xf_]; lvs += [lvf]; rls += [rlf]; fms += [fmf]
+                groups.append(("f", j, xf_.shape[1]))
+        else:
+            for j in range(self.win):
+                xc, lvc, rlc, fmc = self.tok.tokenize_level(yc[:, j], level=0, role=1,
+                                                            frame_idx=self.base + j)
+                xf_, lvf, rlf, fmf = self.tok.tokenize_level(yf[:, j], level=1, role=1,
+                                                             frame_idx=self.base + j)
+                xs += [xc, xf_]; lvs += [lvc, lvf]; rls += [rlc, rlf]; fms += [fmc, fmf]
+                groups.append(("c", j, xc.shape[1])); groups.append(("f", j, xf_.shape[1]))
         x = torch.cat(xs, 1)
+        assert x.shape[1] == self.expected_seq, f"seq {x.shape[1]} != expected {self.expected_seq}"
         level_id, role_id, frame_id = torch.cat(lvs, 1), torch.cat(rls, 1), torch.cat(fms, 1)
 
-        # per-token conditioning: level+frame+role + [ctx: t=0 emb] / [tgt frame j: t emb + a_j emb]
+        # per-token conditioning: level+frame+role + [ctx: t=0 emb] / [tgt group: t emb + action emb]
         c = (self.tok.level_embedding(level_id) + self.tok.frame_embedding(frame_id)
              + self.tok.role_embedding(role_id))
         cond_ctx = self.time_embedding(torch.zeros(B, device=x.device))
         cond_tgt = self.time_embedding(t)
         a_emb = self.tok.action_embedding(actions + 1)     # (B,win,d)
-        # assemble target-token conditioning frame-by-frame
         per_tok_cond = cond_ctx[:, None, :].expand(B, n_ctx_tok, self.d)
         chunks = [per_tok_cond]
-        for j, (nc_, nf_) in enumerate(tgt_meta):
-            cj = (cond_tgt + a_emb[:, j])[:, None, :]      # (B,1,d)
-            chunks.append(cj.expand(B, nc_ + nf_, self.d))
+        for kind, j, ntk in groups:
+            a_j = a_emb.sum(1) if (kind == "c" and self.n_tgt_c == 1) else a_emb[:, j]
+            cj = (cond_tgt + a_j)[:, None, :]              # (B,1,d)
+            chunks.append(cj.expand(B, ntk, self.d))
         c = c + torch.cat(chunks, 1)
 
         with M._ac():
@@ -153,19 +194,20 @@ class WindowDiT(nn.Module):
                 x = blk(x, c)
         x = x.float()
 
-        # unpatchify target tokens per frame per level
-        out_c = torch.empty(B, self.win, self.lat, 4, 4, device=x.device)
+        # unpatchify target tokens per group per level
+        out_c = torch.empty(B, self.n_tgt_c, self.lat, 4, 4, device=x.device)
         out_f = torch.empty(B, self.win, self.lat, 8, 8, device=x.device)
         pos = n_ctx_tok
-        for j, (nc_, nf_) in enumerate(tgt_meta):
-            xc = x[:, pos:pos + nc_]; cc = c[:, pos:pos + nc_].float(); pos += nc_
-            xf_ = x[:, pos:pos + nf_]; cf = c[:, pos:pos + nf_].float(); pos += nf_
-            sc, scl = self.final_c_ada(cc).chunk(2, -1)
-            vc = self.head_c(modulate(self.norm_c(xc), sc, scl))
-            sf, sfl = self.final_f_ada(cf).chunk(2, -1)
-            vf = self.head_f(modulate(self.norm_f(xf_), sf, sfl))
-            out_c[:, j] = vc.transpose(1, 2).reshape(B, self.lat, 4, 4)
-            out_f[:, j] = vf.transpose(1, 2).reshape(B, self.lat, 8, 8)
+        for kind, j, ntk in groups:
+            seg = x[:, pos:pos + ntk]; cseg = c[:, pos:pos + ntk].float(); pos += ntk
+            if kind == "c":
+                sc, scl = self.final_c_ada(cseg).chunk(2, -1)
+                vc = self.head_c(modulate(self.norm_c(seg), sc, scl))
+                out_c[:, j] = vc.transpose(1, 2).reshape(B, self.lat, 4, 4)
+            else:
+                sf, sfl = self.final_f_ada(cseg).chunk(2, -1)
+                vf = self.head_f(modulate(self.norm_f(seg), sf, sfl))
+                out_f[:, j] = vf.transpose(1, 2).reshape(B, self.lat, 8, 8)
         return out_c, out_f
 
 
@@ -192,7 +234,7 @@ class WindowDiffusion:
     def sample(self, ctx_c, ctx_f, actions, n_steps=16):
         B, dev = ctx_f.shape[0], ctx_f.device
         abar = self.abar.to(dev)
-        yc = torch.randn(B, WIN, LAT, 4, 4, device=dev)
+        yc = torch.randn(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
         yf = torch.randn(B, WIN, LAT, 8, 8, device=dev)
         ts = torch.linspace(self.Ttr, 1, n_steps, device=dev).round().long().clamp(1, self.Ttr)
         for i in range(n_steps):
@@ -228,7 +270,7 @@ class WindowRegression:
     @torch.no_grad()
     def sample(self, ctx_c, ctx_f, actions, n_steps=0):
         B, dev = ctx_f.shape[0], ctx_f.device
-        zc = torch.zeros(B, WIN, LAT, 4, 4, device=dev)
+        zc = torch.zeros(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
         zf = torch.zeros(B, WIN, LAT, 8, 8, device=dev)
         return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions)
 
@@ -236,15 +278,27 @@ class WindowRegression:
 # ================================================================================================
 # Data: window batches on top of ActionHierData's encoded+standardized latents.
 # ================================================================================================
-def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False):
-    """Context ends at frame tj-1 (coarse [tj-n_ctx_c..tj-1], fine [tj-n_ctx_f..tj-1]);
-    targets = frames [tj..tj+WIN-1]; actions[:, j] = acts[tj+j] (moves frame tj+j-1 -> tj+j)."""
+def ctx_reach(n_ctx_c, n_ctx_f, stride_c=1, n_hist_f=0):
+    """Deepest context reach in frames (= model.base = first target frame id)."""
+    hist_reach = (n_ctx_f + 1 + 4 * (n_hist_f - 1) + 1) if n_hist_f > 0 else 0
+    return max(n_ctx_c * stride_c, n_ctx_f, hist_reach)
+
+
+def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False,
+                 stride_c=1, n_hist_f=0):
+    """Context ends at frame tj-1. Coarse: n_ctx_c slots at stride_c (anchors tj-1-s*(m) block
+    ends; stride 1 = legacy contiguous). Fine: n_hist_f strided full-res slots (anchors
+    tj-n_ctx_f-1-4k, deepest first) ++ n_ctx_f consecutive [tj-n_ctx_f..tj-1].
+    Targets = frames [tj..tj+WIN-1]; coarse target = ONE slot (anchor tj+WIN-1) when strided;
+    actions[:, j] = acts[tj+j] (moves frame tj+j-1 -> tj+j)."""
     rng = np.random.RandomState(seed) if seed is not None else np.random
     pool = data.train_idx if train else data.val_idx
-    n_frames = max(n_ctx_c, n_ctx_f)
+    n_frames = ctx_reach(n_ctx_c, n_ctx_f, stride_c, n_hist_f)
+    span_c = n_ctx_c * stride_c
+    n_tgt_c = 1 if (stride_c > 1 and n_ctx_c > 0) else WIN
     ctx_c = torch.empty(B, n_ctx_c, LAT, 4, 4)
-    ctx_f = torch.empty(B, n_ctx_f, LAT, 8, 8)
-    tgt_c = torch.empty(B, WIN, LAT, 4, 4)
+    ctx_f = torch.empty(B, n_hist_f + n_ctx_f, LAT, 8, 8)
+    tgt_c = torch.empty(B, n_tgt_c, LAT, 4, 4)
     tgt_f = torch.empty(B, WIN, LAT, 8, 8)
     acts = torch.empty(B, WIN, dtype=torch.long)
     gt = torch.empty(B, WIN, 1, 64, 64) if frames else None
@@ -252,9 +306,15 @@ def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False)
         ci = int(pool[rng.randint(len(pool))])
         tj = int(rng.randint(n_frames, data.T - WIN + 1))
         if n_ctx_c > 0:
-            ctx_c[b] = data.zc[ci, tj - n_ctx_c:tj]
-        ctx_f[b] = data.zf[ci, tj - n_ctx_f:tj]
-        tgt_c[b] = data.zc[ci, tj:tj + WIN]
+            ctx_c[b] = data.zc[ci, tj - span_c + stride_c - 1:tj:stride_c]
+        if n_hist_f > 0:
+            ctx_f[b, :n_hist_f] = data.zf[ci, tj - (n_ctx_f + 1 + 4 * (n_hist_f - 1)):
+                                          tj - n_ctx_f:4]
+        ctx_f[b, n_hist_f:] = data.zf[ci, tj - n_ctx_f:tj]
+        if n_tgt_c == 1:
+            tgt_c[b] = data.zc[ci, tj + WIN - 1:tj + WIN]
+        else:
+            tgt_c[b] = data.zc[ci, tj:tj + WIN]
         tgt_f[b] = data.zf[ci, tj:tj + WIN]
         acts[b] = torch.from_numpy(data.acts[ci, tj:tj + WIN].astype(np.int64))
         if frames:
@@ -353,9 +413,10 @@ class EMA:
 
 def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=500,
           save_every=1000, grid_every=2000):
-    n_ctx_c, n_ctx_f, mode = ARMS[arm]
+    n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f = ARMS[arm]
     torch.manual_seed(seed); np.random.seed(seed)
-    net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode).to(DEV)
+    net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                    n_hist_f=n_hist_f).to(DEV)
     wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
     ema = EMA(net)
     opt = torch.optim.AdamW(net.parameters(), lr=lr, weight_decay=1e-4)
@@ -367,10 +428,9 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
         ema.shadow.load_state_dict(st["ema"])
         start = int(st["step"]) + 1
         log(f"[ckpt] resumed {ckpt} @ {st['step']}")
-    ntok = n_ctx_c * 16 + n_ctx_f * 64 + WIN * 80
-    log(f"[arm {arm}] mode={mode} ctx_c={n_ctx_c} ctx_f={n_ctx_f} tokens={ntok} "
-        f"params={sum(p.numel() for p in net.parameters())/1e6:.2f}M steps {start}..{steps} "
-        f"B={B} seed={seed}")
+    log(f"[arm {arm}] mode={mode} ctx_c={n_ctx_c}(s{stride_c}) hist_f={n_hist_f} ctx_f={n_ctx_f} "
+        f"seq={net.expected_seq} params={sum(p.numel() for p in net.parameters())/1e6:.2f}M "
+        f"steps {start}..{steps} B={B} seed={seed}")
     if start > steps:
         log(f"[arm {arm}] already trained; skipping to eval")
         return wrap, ema
@@ -380,7 +440,8 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
     for s in range(start, steps + 1):
         for g in opt.param_groups:
             g["lr"] = lr * min(1.0, s / warmup)
-        bt = window_batch(data, B, n_ctx_c, n_ctx_f, train=True)
+        bt = window_batch(data, B, n_ctx_c, n_ctx_f, train=True, stride_c=stride_c,
+                          n_hist_f=n_hist_f)
         loss = wrap.loss(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"], bt["actions"])
         opt.zero_grad(set_to_none=True); loss.backward()
         torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
@@ -402,7 +463,8 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
                       ema=ema.shadow.state_dict())
         if s % grid_every == 0:
             net.eval()
-            vb = window_batch(test, 8, n_ctx_c, n_ctx_f, train=False, seed=777, frames=True)
+            vb = window_batch(test, 8, n_ctx_c, n_ctx_f, train=False, seed=777, frames=True,
+                              stride_c=stride_c, n_hist_f=n_hist_f)
             wrap_eval = WindowDiffusion(ema.shadow, wrap.Ttr) if mode == "diff" else WindowRegression(ema.shadow)
             yc, yf = wrap_eval.sample(vb["ctx_c"], vb["ctx_f"], vb["actions"], n_steps=16)
             pred01 = decode01(ae, yf[:, -1])               # last window frame (horizon 4)
@@ -421,16 +483,23 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
 # AR rollout eval -> npz (per-frame horizon/hardness/fg-MSE/sharp records)
 # ================================================================================================
 @torch.no_grad()
-def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48):
+def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48,
+                 oracle=False, tag=""):
     """warm: UNIVERSAL GT warmup across arms of one campaign — every arm starts rollout at the
     same frame so (clip, horizon) records pair exactly. Legacy campaign: 48. H-grid (testbed B):
-    192 (= one full loop seen in GT before rollout)."""
-    n_ctx_c, n_ctx_f, mode = ARMS[arm]
+    192 (= one full loop seen in GT before rollout).
+    oracle=True [GO gate]: bypass the model — feed GT latents through the FULL rollout/buffer/
+    metric path; fg-MSE must land at the AE round-trip ceiling at every horizon, which validates
+    buffer alignment, stride phasing, decode, and labels in one shot. Writes *_oracle.npz."""
+    n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f = ARMS[arm]
     net_eval = ema.shadow
     wrap_eval = WindowDiffusion(net_eval, wrap.Ttr) if mode == "diff" else WindowRegression(net_eval)
-    n_frames = max(n_ctx_c, n_ctx_f)
+    n_frames = ctx_reach(n_ctx_c, n_ctx_f, stride_c, n_hist_f)
+    n_tgt_c = 1 if (stride_c > 1 and n_ctx_c > 0) else WIN
     WARM = warm
-    assert WARM >= n_frames, f"warm {WARM} must cover the context window {n_frames}"
+    assert WARM >= n_frames, f"warm {WARM} must cover the context reach {n_frames}"
+    if stride_c > 1:
+        assert WARM % stride_c == 0, "warm must be a multiple of the coarse stride"
     T = data.T
     n_steps_roll = (T - WARM) // WIN
     clips = data.val_idx[:n_clips]
@@ -441,8 +510,14 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
     for c0 in range(0, len(clips), chunk):
         cs = clips[c0:c0 + chunk]
         B = len(cs)
-        buf_c = data.zc[cs, WARM - n_frames:WARM].clone().to(DEV) if n_ctx_c > 0 else \
-            torch.zeros(B, n_frames, LAT, 4, 4, device=DEV)
+        if n_ctx_c > 0:
+            if stride_c > 1:   # slot buffer: GT anchors at frames stride-1, 2*stride-1, ..., WARM-1
+                buf_c = data.zc[cs, WARM - n_ctx_c * stride_c + stride_c - 1:WARM:stride_c] \
+                    .clone().to(DEV)
+            else:
+                buf_c = data.zc[cs, WARM - n_frames:WARM].clone().to(DEV)
+        else:
+            buf_c = torch.zeros(B, 1, LAT, 4, 4, device=DEV)
         buf_f = data.zf[cs, WARM - n_frames:WARM].clone().to(DEV)
         pers01 = decode01(ae, data.zf[cs, WARM - 1].to(DEV))           # persistence reference
         for srn in range(n_steps_roll):
@@ -450,10 +525,20 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
             torch.manual_seed(100000 + 1000 * (c0 // chunk) + srn)     # CRN across arms
             acts = torch.from_numpy(data.acts[cs, tj:tj + WIN].astype(np.int64)).to(DEV)
             ctx_c = buf_c[:, -n_ctx_c:] if n_ctx_c > 0 else buf_c[:, :0]
-            ctx_f = buf_f[:, -n_ctx_f:]
-            yc, yf = wrap_eval.sample(ctx_c, ctx_f, acts, n_steps=nfe)
+            if n_hist_f > 0:
+                lo = n_frames - (n_ctx_f + 1 + 4 * (n_hist_f - 1))     # deepest hist anchor index
+                ctx_f = torch.cat([buf_f[:, lo:n_frames - n_ctx_f:4], buf_f[:, -n_ctx_f:]], 1)
+            else:
+                ctx_f = buf_f[:, -n_ctx_f:]
+            if oracle:
+                yc = data.zc[cs, tj + WIN - 1:tj + WIN].to(DEV) if n_tgt_c == 1 else \
+                    data.zc[cs, tj:tj + WIN].to(DEV)
+                yf = data.zf[cs, tj:tj + WIN].to(DEV)
+            else:
+                yc, yf = wrap_eval.sample(ctx_c, ctx_f, acts, n_steps=nfe)
             if n_ctx_c > 0:
-                buf_c = torch.cat([buf_c, yc], 1)[:, -n_frames:]
+                keep = n_ctx_c if stride_c > 1 else n_frames
+                buf_c = torch.cat([buf_c, yc], 1)[:, -keep:]
             buf_f = torch.cat([buf_f, yf], 1)[:, -n_frames:]
             for j in range(WIN):
                 tf = tj + j
@@ -479,10 +564,10 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
                     viz_rows.append((tf - WARM + 1, p01[:6].cpu(), gt01[:6].cpu()))
         log(f"  [rollout {arm}] clips {c0}..{c0+B-1} done ({n_steps_roll} steps x {WIN} frames)")
     out = {k: np.asarray(v) for k, v in recs.items()}
-    path = f"logs_rhcp/rhvd_eval_{arm}_s{seed}.npz"
+    path = f"logs_rhcp/rhvd_eval_{arm}_s{seed}{'_oracle' if oracle else ''}{tag}.npz"
     np.savez(path, **out)
-    log(f"[rollout {arm}] saved {path}: {len(out['fg'])} frame-records, "
-        f"mean fg {out['fg'].mean():.4f} (persistence {out['pers_fg'].mean():.4f})")
+    log(f"[rollout {arm}{' ORACLE' if oracle else ''}] saved {path}: {len(out['fg'])} "
+        f"frame-records, mean fg {out['fg'].mean():.4f} (persistence {out['pers_fg'].mean():.4f})")
     if viz_rows:
         vpath = f"logs_rhcp/rhvd_rollout_{arm}_s{seed}.png"
         panels = []
@@ -619,6 +704,10 @@ def main():
     ap.add_argument("--probe_steps", type=int, default=0, help=">0: timing/VRAM probe, then exit")
     ap.add_argument("--eval_only", action="store_true")
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--go_gate", action="store_true",
+                    help="GT-oracle rollout through the full eval path; PASS iff fg-MSE ~= AE ceiling")
+    ap.add_argument("--eval_tag", default="", help="suffix for the eval npz (mid-training trend "
+                    "probes write _probe10k etc. so the final eval is never overwritten)")
     ap.add_argument("--compare", default="", help="comma list of arms to compare from saved npz")
     # ---- H-grid campaign args (defaults = legacy loopmom campaign, unchanged) ----
     ap.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
@@ -640,13 +729,14 @@ def main():
         assert args.warm == 192 and "hgrid" in args.train_path and args.world == 768, \
             "H-grid arms require --train_path data/hgrid_* --test_path data/hgrid_* --world 768 --warm 192"
 
-    if not args.no_wandb and args.probe_steps == 0:
-        n_ctx_c_, n_ctx_f_, mode_ = ARMS[args.arm]
+    if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
+        n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_ = ARMS[args.arm]
         run_name = f"rhvd-{args.arm}-s{args.seed}" + ("-smoke" if args.smoke else "")
         wb.init(run_name,
                 config=dict(vars(args), n_ctx_c=n_ctx_c_, n_ctx_f=n_ctx_f_, mode=mode_,
+                            stride_c=stride_c_, n_hist_f=n_hist_f_,
                             win=WIN, campaign="hgrid" if args.warm == 192 else "loopmom"),
-                tags=["hgrid" if args.warm == 192 else "loopmom", ARMS[args.arm][2]])
+                tags=["hgrid" if args.warm == 192 else "loopmom", mode_])
 
     ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
     data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
@@ -656,15 +746,17 @@ def main():
                           stats=data.stats)
 
     if args.probe_steps > 0:
-        n_ctx_c, n_ctx_f, mode = ARMS[args.arm]
-        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode).to(DEV)
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f = ARMS[args.arm]
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f).to(DEV)
         wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
         opt = torch.optim.AdamW(net.parameters(), lr=3e-4)
         if DEV == "cuda":
             torch.cuda.reset_peak_memory_stats()
         t0 = time.time()
         for _ in range(args.probe_steps):
-            bt = window_batch(data, args.batch, n_ctx_c, n_ctx_f, train=True)
+            bt = window_batch(data, args.batch, n_ctx_c, n_ctx_f, train=True,
+                              stride_c=stride_c, n_hist_f=n_hist_f)
             loss = wrap.loss(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"], bt["actions"])
             opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
         if DEV == "cuda":
@@ -675,10 +767,30 @@ def main():
               f"{args.steps} steps => {args.steps*dt/3600:.1f} h")
         return
 
+    if args.go_gate:
+        # [GO GATE] GT-oracle rollout through the full buffer/metric path: fg-MSE must land at
+        # the AE round-trip ceiling (0.0106 on hgrid test) at every horizon.
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f = ARMS[args.arm]
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f).to(DEV)
+        wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
+        path = rollout_eval(args.arm, wrap, EMA(net), test, ae, args.seed, n_clips=16,
+                            nfe=1, warm=args.warm, oracle=True)
+        z = np.load(path)
+        by_h = [(hn, float(z["fg"][(z["h"] >= lo) & (z["h"] <= hi)].mean()))
+                for lo, hi, hn in [(1, 48, "h1-48"), (49, 192, "h49-192"), (193, 288, "h193+")]]
+        ceiling = 0.0106
+        ok = all(v <= ceiling * 1.6 for _, v in by_h)
+        print(f"[GO-GATE {args.arm}] oracle fg-MSE by horizon: "
+              + "  ".join(f"{hn} {v:.4f}" for hn, v in by_h)
+              + f"  (AE ceiling {ceiling:.4f})  -> {'PASS' if ok else 'FAIL'}")
+        return
+
     steps = 300 if args.smoke else args.steps
     if args.eval_only:
-        n_ctx_c, n_ctx_f, mode = ARMS[args.arm]
-        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode).to(DEV)
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f = ARMS[args.arm]
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f).to(DEV)
         wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
         ema = EMA(net)
         ckpt = f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt"
@@ -688,7 +800,8 @@ def main():
     else:
         wrap, ema = train(args.arm, data, test, ae, steps, args.batch, args.seed)
     rollout_eval(args.arm, wrap, ema, test, ae, args.seed,
-                 n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm)
+                 n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm,
+                 tag=args.eval_tag)
     wb.finish()
     log("RHVD DONE")
 
