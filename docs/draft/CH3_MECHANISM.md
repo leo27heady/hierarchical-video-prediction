@@ -73,7 +73,7 @@ mechanism comparisons in small latent spaces are easy to invalidate this way.
 ## 3.4 Part A results: regression averages, diffusion commits
 
 Table 3.1 reports the clean standardised run on the held-out test clips (best-of-8, NFE 16, six
-evaluation batches of 48; hard split = novel-strip > 0, which covers 19% of samples).
+evaluation batches of 48; hard split = novel-strip > 0, which covers 27% of samples).
 
 **Table 3.1 — Matched-capacity mechanism comparison (single-step, k = 4, best-of-8, NFE 16).
 fg-MSE: lower is better; fg-sharp: reference ceiling 0.2412 (AE round-trip), GT 0.4785;
@@ -81,18 +81,18 @@ persistence baseline: fg-MSE 0.2367, fg-sharp 0.0515.**
 
 | Mechanism | fg-MSE (all) | fg-MSE (easy) | fg-MSE (hard) | mean-over-8 | fg-sharp |
 |---|---|---|---|---|---|
-| Regression (MC-dropout) | 0.0489 | 0.0158 | 0.1890 | 0.0526 | 0.1547 |
-| Diffusion (v-pred, DDIM) | **0.0363** | **0.0085** | **0.1538** | **0.0468** | **0.1805** |
+| Regression (MC-dropout) | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
+| Diffusion (v-pred, DDIM) | **0.0512** | **0.0120** | **0.1549** | **0.0640** | **0.1886** |
 
 Three observations. First, both mechanisms are far below persistence on every column: the
 action-conditioned warp is learnt by everything, as expected on a testbed whose easy region is
 deterministic given the action. Second, the separation concentrates where the theory says it
-should: on the easy bin diffusion's advantage is 0.007 absolute (0.0158 → 0.0085), whereas on the
-hard, genuinely generative bin it is 0.035 (0.1890 → 0.1538), and diffusion is sharper (0.1805 vs
-0.1547 against the 0.2412 ceiling). Third, the regressor's mean-over-N (0.0526) is close to its
-best-of-N (0.0489): MC-dropout produces near-identical samples, so extra inference-time samples
+should: on the easy bin diffusion's advantage is 0.011 absolute (0.0232 → 0.0120), whereas on the
+hard, genuinely generative bin it is 0.026 (0.1808 → 0.1549), and diffusion is sharper (0.1886 vs
+0.1591 against the 0.2412 ceiling). Third, the regressor's mean-over-N (0.0714) is close to its
+best-of-N (0.0664): MC-dropout produces near-identical samples, so extra inference-time samples
 buy the regressor little coverage — it has averaged over the futures rather than distributing
-mass across them. Diffusion's larger best-of-N gap (0.0468 → 0.0363) is the coverage signature of
+mass across them. Diffusion's larger best-of-N gap (0.0640 → 0.0512) is the coverage signature of
 a mechanism that commits to distinct hypotheses per sample.
 
 Table 3.2 varies the per-sample inference budget. Regression is budget-invariant by construction
@@ -103,9 +103,9 @@ monotonically; the comparison is not an artefact of granting diffusion a large b
 
 | NFE per sample | Regression | Diffusion |
 |---|---|---|
-| 4 | 0.0483 | 0.0378 |
-| 8 | 0.0483 | 0.0352 |
-| 16 | 0.0483 | 0.0346 |
+| 4 | 0.0680 | 0.0546 |
+| 8 | 0.0680 | 0.0514 |
+| 16 | 0.0680 | 0.0503 |
 
 [FIG ch3-1: decoded panels (last context | prediction | ground truth) for the regression and
 diffusion arms on identical evaluation inputs. Caption: regression hedges the re-entering digit
@@ -113,8 +113,11 @@ into a blur; diffusion commits to a sharp, correctly located digit.]
 
 We emphasise the epistemic status: this is a controlled replication of "regression averages,
 diffusion commits" [SVG18, SAVP18, DIAMOND24] under matched capacity, matched conditioning and a
-matched inference budget, with exact hardness stratification. The new cells in the comparison are
-the protocol itself and the third mechanism, to which we now turn.
+matched inference budget, with exact hardness stratification. It is also protocol-scoped:
+best-of-8 selection is an oracle coverage regime, and under the deterministic best-of-1 rollout
+protocol of Chapter 4 the ranking reverses — the regression arm beats the hierarchical diffusion
+arm at equal sharpness; the two results are reconciled explicitly there. The new cells in the
+comparison are the protocol itself and the third mechanism, to which we now turn.
 
 ## 3.5 Part B: a two-sided capability study of Energy-Based Transformers
 
@@ -182,14 +185,20 @@ foreground sharpness never leaves the collapse regime (0.008–0.014 across all 
 batch semantics and scheduler do not repair the ordering; the earlier objection that our negative
 was an under-training artefact is thereby closed for this recipe.
 
+One disclosure attaches to this probe: the batch-mean latent has roughly eight times lower norm
+than an individual target, so a smoothness/norm preference could in principle carry part of the
+E(mean) < E(target) ordering. Two features of the probe rebut a pure norm artefact: E(random
+noise) sits far above both throughout, and the S1 recipe (§3.5.3) flips the *same* probe to the
+correct ordering — a norm effect alone cannot produce opposite orderings on identical probe inputs.
+
 ### 3.5.3 The S1 recipe: ordering repaired, generation still out of reach
 
 The S1 run is the informative one. Its loss falls further (0.361 at 20,000 steps, still slowly
 improving), the learnable α drifts upward (23.95 → 33.27), and — unlike S2 — the landscape
 *becomes correctly ordered*: after mean-lowest probes through step 5,000 (with one marginal
 target-lowest reading at 2,000), E(target) is strictly lowest at all fifteen consecutive probes
-from step 6,000 to 20,000, with the target-vs-mean gap growing to ≈2–3 energy units. By the
-ordering criterion that indicted S2, S1's energy is *right*.
+from step 6,000 to 20,000, with a target-below-mean gap ranging from +0.22 to +3.09 energy units
+across those probes. By the ordering criterion that indicted S2, S1's energy is *right*.
 
 Generation still never materialises. Cold descent from the prescribed random-noise initialisation
 is flat throughout: d_tgt ≈ 1.12–1.17 (again versus 0.964 for the mean itself), foreground
@@ -227,12 +236,20 @@ probe* — target energy strictly lowest (copy: −65.6 vs mean −57.2 vs noise
 energy-conditioning matrix that identifies the matching context for 8/8 targets with an off-diagonal
 gap of +26.4 — yet cold descent still lands blank (fg-sharp 0.030 on copy, 0.016 on shift).
 Inference-time scaling does not rescue it: sweeping cold-descent steps 2 → 128 leaves d_tgt flat
-(1.131–1.149); warm-starting *at the target* and descending flees it at every step size tested
-(α 0.3 → 3,000; d_tgt grows from 0.41 to 85), i.e. the target is not even a local minimum of the
-learnt landscape along the descent dynamics; and picking the minimum-energy sample among 16 cold
+(1.131–1.149); warm-starting *at the target* and descending does not hold it — at the operating
+step size (α ≈ 12.6) the output drifts off the target and settles in a shallow basin between
+target and mean (d_tgt 0.41 → ≈0.55), so the target is at best a weak attractor of the learnt
+landscape along the descent dynamics (runaway d_tgt readings up to 85 occur only at step sizes
+two orders of magnitude above the operating α, i.e. numerical divergence, not landscape shape);
+and picking the minimum-energy sample among 16 cold
 descents remains collapsed (fg-sharp 0.0145). A persistence-initialised variant (descent started
 from the previous frame rather than noise) also fails to move towards the target (d_tgt 0.835,
-fg-sharp 0.046, versus 0.348 and 0.088 for a plain regressor on the same task).
+fg-sharp 0.046, versus 0.348 and 0.088 for a plain regressor on the same task). A provenance note
+attaches to these positive-control probes: the diagnostic log that records them drew the opposite
+interim conclusion at the time (a suspected harness wiring/scale bug that would have made the
+whole negative suspect); the scaled S1 run — which repairs the ordering in the same harness while
+descent still fails — resolved that hypothesis, and the probes are cited here under the resolved
+reading.
 
 The two factors are separable because S1 fixes (a) while leaving (b) intact. What we observe at
 16 GB-reachable scale is therefore not "EBT learns the wrong energy" simpliciter: with the
@@ -277,7 +294,7 @@ The negative is comparative, not absolute: the task is generable at this scale. 
 diffusion arm — a 7.53 M-parameter model, roughly half the parameter count of the scaled EBT runs,
 on the same frozen latents and the same standardisation — shows recognisable digit structure in
 its decoded training samples by 1,500 optimiser steps, and at convergence commits to sharp,
-correctly located digits (best-of-8 fg-MSE 0.0363; fg-sharp 0.1805 against the 0.2412 ceiling;
+correctly located digits (best-of-8 fg-MSE 0.0512; fg-sharp 0.1886 against the 0.2412 ceiling;
 Table 3.1, Fig. ch3-1). Whatever resource EBT's sampler is missing at this scale, diffusion does
 not miss it.
 
@@ -300,15 +317,16 @@ non-zero; a longer run could in principle continue it, and our claim is scoped a
 ---
 
 *Draft-only provenance notes (remove before submission).* Table 3.1/3.2, params, latent stds,
-references and persistence: `logs_rhcp/step1_mech_clean.log` (headline eval: 6 batches × 48,
-best-of-8, NFE 16; NFE table: 2 batches). Protocol/red-team definitions: `hvp_rev/step1_mech.py`
+references and persistence: `logs_rhcp/step1_mech_clean2.log` (corrected hardness anchor + single
+raw-GT reference; supersedes `step1_mech_clean.log` — do NOT cite the old 0.0489/0.0363 values;
+headline eval: 6 batches × 48, best-of-8, NFE 16; NFE table: 2 batches). Protocol/red-team definitions: `hvp_rev/step1_mech.py`
 docstring ([RT-shared], [RT-mcdrop], [RT-nfe], [RT-pxbest], [RT-sharp], [STD-FIX]). Standardisation
 changed the ranking: `docs/STAGE2_DESIGN.md` (G0b) + `docs/FINAL_ARTICLE_REVIEW_2026-07-02.md` §Q2(1).
 Faithfulness inventory + flagged adaptations: `hvp_rev/ebt_reference_control.py` header. Scaled-run
 config: `hvp_rev/ebt_ref_scaled.py` + `logs_rhcp/ebt_scaled_s2.log` line 8 / `ebt_scaled_s1.log`
 lines 8–9. S2 numbers: `logs_rhcp/ebt_scaled_s2.log` (21 probes, all LOWEST=mean; gap computed from
 probe lines; loss ≈0.597 from steps 7k–20k; d_tgt 1.264–1.292; fg-sharp 0.0081–0.0144; α 15.97).
-S1 numbers: `logs_rhcp/ebt_scaled_s1.log` (GOOD at 2k then 6k–20k = 15 consecutive; gap +2.1 to +3.1;
+S1 numbers: `logs_rhcp/ebt_scaled_s1.log` (GOOD at 2k then 6k–20k = 15 consecutive; gap +0.22 to +3.09;
 loss 0.3614; α 23.95→33.27, α-lr 0.02874; cold d_tgt 1.123–1.166, fg-sharp max 0.0345 @19k;
 paper-inference lines d_tgt 1.186–1.260, fg-sharp 0.0102–0.0154). Copy/shift/reachability probes:
 `logs_rhcp/ebt_verify_full.log` (copy E −65.586/−57.193/−14.840, 8/8, gap +26.374, sharp 0.0303;

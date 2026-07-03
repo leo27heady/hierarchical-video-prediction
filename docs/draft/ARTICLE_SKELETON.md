@@ -5,8 +5,10 @@
 > mechanism science on a purpose-built memory-horizon testbed; reversibility homed as the
 > constant-memory enabler theorem (Ch. D); the EBT study as an honest, two-sided negative.
 >
-> Status date: 2026-07-03. Every table below is either FILLED with verified numbers (source named)
-> or marked **PENDING** with a pre-registered expectation. Status ledger: §S at the end.
+> Status date: 2026-07-04 (P0-doc corrections pass: clean2 T1 numbers, cluster CIs, measured
+> reg-long/flat-long/reg-flat rollout results, measured T6c panel). Every table below is either
+> FILLED with verified numbers (source named) or marked **PENDING** with a pre-registered
+> expectation. Status ledger: §S at the end.
 > Full chapter drafts already exist for Ch. 2 (`docs/draft/CH2_TESTBED.md`) and Ch. 3
 > (`docs/draft/CH3_MECHANISM.md`) — this skeleton points to them and does not duplicate.
 
@@ -21,6 +23,14 @@
 3. **Long Coarse Memory: Controlled Mechanism Science for Hierarchical Video Diffusion, with an
    Exactly Invertible Route to Long-Horizon Training**
 
+> **Red-team recommendation (2026-07-03, `docs/draft/REDTEAM_REVIEW_2026-07-03.md`):** candidate 1
+> over-claims relative to the measured matrix (flat-long is the outright quality frontier;
+> regression wins the best-of-1 rollout). **Null/efficiency-branch title = candidate 2 — "When
+> Does Hierarchy Pay? A Memory-Horizon Study … at Matched Token Budgets"** — the claim the current
+> data defends. A capability-branch title (to be drafted) becomes available only if the H-grid
+> experiment (`docs/HGRID_DESIGN.md`) delivers a capability win; until that outcome, both branch
+> titles stay listed and candidate 1 is retained for reference only.
+
 ## 0.1 Abstract (draft, ~180 words)
 
 Hierarchical latent video models are usually motivated by efficiency, yet controlled evidence that
@@ -34,7 +44,13 @@ Energy-Based Transformers dissociate into a two-sided result — the S1 recipe l
 show the headline: a two-level latent diffusion model whose coarse level carries a 48-frame memory
 beats a token-budget-matched flat model precisely where the horizon demands it — no advantage
 before frame 24, a CI-excluding-zero win on hard re-entry frames from horizon 25 onward over
-200-frame rollouts. Finally, we prove and measure an exactly invertible stochastic recurrence
+rollouts of 152 autoregressive frames after a 48-frame ground-truth warmup. The benefit is
+mechanism-agnostic — it replicates when both arms use a regression predictor — but the mechanism
+ranking is regime-dependent: regression, not diffusion, wins the deterministic best-of-1 rollout
+at equal sharpness (diffusion's advantage is a single-step best-of-N coverage result), and a
+full-resolution flat context at 2.7× the token cost is the outright quality frontier, making the
+hierarchy an efficiency point rather than a capability necessity in this regime. Finally, we
+prove and measure an exactly invertible stochastic recurrence
 (gradients equal to BPTT, memory constant in rollout length) and honestly delimit where
 reversibility pays against checkpointing.
 
@@ -61,8 +77,8 @@ reversibility pays against checkpointing.
      one frozen latent interface and one harness; the EBT part is two-sided (landscape ordering ×
      descent reachability) and scale-scoped.
   3. **The system result** (Ch. 4): hierarchy vs. a token-budget-matched flat control over
-     200-frame rollouts, stratified by horizon × analytic hardness — the win appears exactly where
-     the memory horizon demands it, and nowhere else.
+     rollouts of 152 AR frames after a 48-frame GT warmup, stratified by horizon × analytic
+     hardness — the win appears exactly where the memory horizon demands it, and nowhere else.
   4. Supporting theory (Ch. 5): the invertible stochastic recurrence — exact gradients at
      $O(1)$ activation memory in rollout length $K$ — plus the honest three-axis account of where
      reversibility cannot pay.
@@ -115,22 +131,35 @@ reachability; scope/non-claims + config-gap Table 3.3 (= T2b); diffusion control
 - **4.3 Arms and controls (pre-registered, `docs/STAGE2_DESIGN.md`).** hier-long (48c+6f = 1152
   ctx tokens) — THE system; hier-short (6c+6f = 480) — memory ablation; flat-budget (18f = 1152) —
   the token-budget-matched flat control that makes the claim "hierarchy", not "long context";
-  reg-long — regression-rollout control (H2, generative mechanism earns its keep at rollout);
+  reg-long — regression-rollout control (H2; outcome: reversal, §4.6); reg-flat (18f = 1152,
+  regression) — mechanism-agnosticism control (red-team P0, added post-registration);
   flat-long (48f = 3072 tokens ≈ 2.7×) — token-cost framing arm; persistence + AE round-trip
   floors/ceilings.
-- **4.4 Headline result (T4).** 200-frame AR rollouts (38 steps × 4 frames), best-of-1, paired
-  per-frame fg-MSE, horizon × hardness matrix. hier-long vs flat-budget: **null at every bin below
-  horizon 25; WIN with CI excluding zero on every bin from h25-60 onward** (hard re-entry
-  h25-60: +0.0344 [+0.0267,+0.0423]; h61+: +0.0314 [+0.0273,+0.0356]). Window ordering (ALL-row
-  fg-MSE): hier-long 0.1848 < flat-budget 0.2038 < hier-short 0.2260 < persistence 0.2552.
-  This is the article's sentence: *the advantage appears exactly where the memory horizon demands
-  it, and nowhere else.* Gate G2c: **WIN (seed 0)**.
+- **4.4 Headline result (T4).** 152 AR frames after a 48-frame GT warmup (38 steps × 4 frames),
+  best-of-1, paired per-frame fg-MSE, horizon × hardness matrix, clip-level cluster-bootstrap CIs,
+  empty-GT-fg records (21.5%) excluded from bins. hier-long vs flat-budget: **null at every bin
+  below horizon 25; WIN with CI excluding zero from h25-60 onward on every easy/HARD bin**
+  (hard re-entry h25-60: +0.0344 [+0.0162,+0.0531]; h61+ HARD: +0.0314 [+0.0202,+0.0431]; the
+  sparse h25-60 mid cell, n=79, is null). Window ordering (ALL-row fg-MSE, final matrix):
+  flat-long 0.1564 < reg-long 0.1682 < hier-long 0.1848 < reg-flat 0.2015 < flat-budget 0.2038 <
+  hier-short 0.2260 < persistence 0.2552 — within each mechanism, hierarchy wins at matched
+  budget; across mechanisms, regression wins the best-of-1 rollout; the full-resolution window
+  wins outright at 2.7× tokens. This is the article's sentence: *at matched token budget, the
+  advantage appears exactly where the memory horizon demands it, and nowhere else.* Gate G2c:
+  **WIN (seed 0)**.
 - **4.5 Per-horizon curves (T5)** + sharpness-vs-horizon; re-entry stratification; qualitative
   strips at re-entry events.
-- **4.6 The mechanism control (reg-long, H2).** PENDING (running): pre-registered expectation —
-  the regressor rolled out under the same scheduler fades toward the mean (E1 precedent:
-  laplacian-variance 0.0073→0.0017 under MSE rollout training) while diffusion holds relative
-  sharpness; report either way.
+- **4.6 The mechanism controls (reg-long + reg-flat).** MEASURED — the pre-registered H2
+  expectation (the regressor rolled out under the same scheduler fades toward the mean, per the
+  E1 precedent) was **REFUTED**: reg-long beats hier-long-diffusion at every horizon band and
+  hard bin at *equal sharpness* (0.0741 vs 0.0729; ALL Δ, direct cluster CI [+0.0110,+0.0227]).
+  Reported as a reversal, not a confirmation. Protocol reconciliation (state it wherever T1 and
+  the rollout result are juxtaposed): T1's diffusion win is single-step **best-of-8** (oracle
+  coverage switched on); the rollout headline is **best-of-1** (coverage off) — diffusion wins
+  the coverage regime, regression the deterministic rollout regime. Mechanism-agnosticism of the
+  matched-budget hierarchy win (pre-registered gate, red-team P0): **CONFIRMED** — reg-long beats
+  token-matched reg-flat in EVERY bin (ALL +0.0334 [+0.0248,+0.0423]; hard-bin wins at every
+  horizon incl. h1-8 +0.0447; sharper 0.0741 vs 0.0512).
 - **4.7 Honest limitations of the headline.** Single seed on the matrix so far (2-seed plan for
   hier-long/flat-budget); sharpness fades with horizon for *all* arms (hier-long 0.202 at h1-4 →
   0.032 at h105-152 — bounded drift, no divergence, but the G2b sharpness-retention clause
@@ -160,10 +189,17 @@ reachability; scope/non-claims + config-gap Table 3.3 (= T2b); diffusion control
   (explains the trained-RHCP fade honestly); no-forgetting framing per MacKay 2018.
 - **5.5 Three-axis taxonomy (closing subsection).** Reversibility across depth (RevNet), time
   (TempVerseFormer/Ch. D), computation (inner optimization loop) — and why the computation axis
-  cannot pay: the descent state is ~5 KB/sample while the per-step `create_graph` second-order
-  graph is ~1.5–2.3 GB and must be rebuilt from a fresh forward regardless; saving ≈ 0.2% at
-  K=128 (bits-per-step volume-contraction accounting **attributed to Maclaurin 2015, applied**);
-  DOODL/MALI/EDICT preempt the diffusion-sampler variant. Measured 4-way panel (T6c) QUEUED.
+  cannot pay *under EBT's second-order truncated recipe*: the reconstructable descent state is
+  (y,v) ≈ 10 KB/sample while the final-step `create_graph` second-order graph dominates the peak
+  and must be rebuilt from a fresh forward regardless. **Measured (T6c, `logs_rhcp/mem_panel.md`):
+  naive full-graph 18.1 GB (spilling, 17 s/step) at K=4 and OOM at K=8; truncate / checkpoint /
+  reversible all flat at 5.282–5.296 GB through K=128; reversible saves 14 MB = 0.26% of peak vs
+  checkpointing, at ~2× wall-clock (recompute).** The analytic states-vs-graph band is ~0.6–1.0%
+  (bits-per-step volume-contraction accounting **attributed to Maclaurin 2015, applied**); the
+  measured panel closes the earlier unmeasured-graph caveat. Qualification (red-team): the no-go
+  is recipe-scoped — a first-order many-step store-the-noise sampler has a genuinely O(K)
+  activation peak where reversibility saves real memory, but it ties checkpointing there too (the
+  temporal Pareto tie). DOODL/MALI/EDICT preempt the diffusion-sampler variant.
   Applicability boundary sentence: *reversibility pays on recurrences whose transition is the
   coupling itself; diffusion rollouts are the checkpointing regime.*
 
@@ -195,13 +231,16 @@ reachability; scope/non-claims + config-gap Table 3.3 (= T2b); diffusion control
 - **One claim:** the coarse level of a hierarchical latent video model earns its token budget
   precisely when the prediction horizon exceeds what a flat context can carry — demonstrated with
   exact hardness labels, matched token budgets, and CIs.
-- **Its boundary conditions:** emerges only late in training (null at 6k, win at 20k); requires a
-  generative (committing) mechanism; requires the horizon regime (null below h25); measured on a
-  single synthetic world at 16 GB scale.
+- **Its boundary conditions:** emerges only under the larger optimization budget (null at 6k, win
+  at 20k); holds for both mechanisms at matched budget (mechanism-agnostic — reg-flat control),
+  while the best mechanism is regime-dependent (diffusion for single-step best-of-N coverage,
+  regression for the best-of-1 rollout); requires the horizon regime (null below h25); an
+  efficiency point, not a capability necessity (full-res flat context wins outright at 2.7×
+  tokens); measured on a single synthetic world at 16 GB scale.
 - **The two honest negatives that scope it:** (i) energy-based descent — even a correctly ordered
   landscape does not yield reachable generation at our scale (two-sided EBT study); (ii)
-  reversibility saves memory vs BPTT but is Pareto-neutral vs checkpointing, and cannot pay at all
-  on the inner optimization loop (~0.2%).
+  reversibility saves memory vs BPTT but is Pareto-neutral vs checkpointing, and cannot pay on the
+  inner optimization loop (0.26% measured, ~0.6–1.0% analytic band).
 - **Future work:** paper-scale EBT (the 35% branch), Self-Forcing-style distribution-matching
   rollout objectives enabled by the Ch. D recurrence, natural-video instantiation of the testbed
   protocol, sharp renderer over the frozen latents (Step-1 adversarial renderer precedent).
@@ -227,39 +266,44 @@ reachability; scope/non-claims + config-gap Table 3.3 (= T2b); diffusion control
 Conventions: fg-MSE on decoded frames under the GT foreground mask (lower better); "sharp" =
 foreground Laplacian sharpness (higher better; raw-GT 0.4785, AE-roundtrip ceiling 0.2412,
 structure threshold ≈0.08); best-of-N over N samples; hardness = analytic novel-content labels
-(Ch. 2). Δ = base − arm (positive = arm better); 95% CI = paired bootstrap.
+(Ch. 2). Δ = base − arm (positive = arm better); 95% CI = paired clip-level cluster bootstrap
+(rollout bins exclude empty-GT-foreground records, 21.5%, reported as a bg-only row).
 
 ## T1 — Mechanism comparison at matched capacity (Ch. 3, Part A) — **DONE**
 
-Source: `logs_rhcp/step1_mech_clean.log` (clean re-run; reg 6k steps, diff 8k, best-of-8, NFE 16,
-held-out test; params reg 7.27M / diff 7.53M / ebt 7.28M).
+Source: `logs_rhcp/step1_mech_clean2.log` (corrected re-run: fixed hardness anchor + single
+raw-GT reference; supersedes `step1_mech_clean.log`, whose 0.0489/0.0363 values must NOT be
+cited; reg 6k steps, diff 8k, best-of-8, NFE 16, held-out test; params reg 7.27M / diff 7.53M /
+ebt 7.28M).
 
 | mech | fg-MSE all | easy | HARD | mean-of-N | sharp |
 |---|---:|---:|---:|---:|---:|
-| regression | 0.0489 | 0.0158 | 0.1890 | 0.0526 | 0.1547 |
-| diffusion | **0.0363** | **0.0085** | **0.1538** | **0.0468** | **0.1805** |
+| regression | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
+| diffusion | **0.0512** | **0.0120** | **0.1549** | **0.0640** | **0.1886** |
 | EBT (Part B) | collapsed — see T2 | | | | ≈0.009–0.035 |
 
 References: raw-GT sharp 0.4785 | AE-roundtrip sharp 0.2412 (decoder ceiling).
-Persistence baseline: fg-MSE 0.2367 | sharp 0.0515. Easy/hard split = novel_strip>0; frac_hard 0.19.
+Persistence baseline: fg-MSE 0.2367 | sharp 0.0515. Easy/hard split = novel_strip>0; frac_hard 0.27.
 
 **T1b — matched-NFE (best-of-N fg-MSE):**
 
 | NFE | reg | diff |
 |---:|---:|---:|
-| 4 | 0.0483 | 0.0378 |
-| 8 | 0.0483 | 0.0352 |
-| 16 | 0.0483 | **0.0346** |
+| 4 | 0.0680 | 0.0546 |
+| 8 | 0.0680 | 0.0514 |
+| 16 | 0.0680 | **0.0503** |
 
 Reading: diffusion beats regression on every column at matched capacity and NFE; regression flat
 in N (deterministic), diffusion improves with samples — the "averages vs commits" signature.
+Protocol scope: single-step, best-of-8 (oracle coverage regime); under the best-of-1 rollout
+protocol the mechanism ranking reverses (§4.6, T4) — the two results are reconciled there.
 
 ## T2 — Two-sided EBT study, fair-scale runs (Ch. 3, Part B) — **DONE**
 
 Source: `logs_rhcp/ebt_scaled_s2.log`, `logs_rhcp/ebt_scaled_s1.log` (xxs shape d384/6L/6H/FFN4×,
 ctx 16, 14.66M, eff-batch 128, 20k steps / 5k warmup; probes on the final landscape; mean→target
 distance reference 0.964 — d_tgt above it means descent output is farther from target than the
-mean is; GT fg-sharp ≈0.25).
+mean is; AE-roundtrip sharp ceiling ≈0.24).
 
 **S2 recipe (α fixed 15.97, S2-calibrated; replay + Langevin 1):**
 
@@ -273,6 +317,10 @@ mean is; GT fg-sharp ≈0.25).
 
 E(mean)<E(target) at **all 21 probes**; training SmoothL1 converged (≈0.597 from ~7k). Verdict:
 stably mis-ordered landscape; the under-training objection is closed for this recipe.
+Disclosure (norm confound): the batch-mean probe token has ~8× lower norm than an individual
+target, so a smoothness/norm preference could carry part of the ordering; rebuttal in-probe —
+E(randn) stays far above both throughout, and S1 flips the *same* probe to the correct ordering
+(a norm effect alone cannot produce opposite orderings on identical probe inputs).
 
 **S1 recipe (α learnable, init 23.95 → 33.27; mcmc 2, per-step losses, no replay):**
 
@@ -284,7 +332,8 @@ stably mis-ordered landscape; the under-training objection is closed for this re
 | 15,000 | −40.858 | −38.421 | **target [GOOD]** | 1.158 | 0.0259 |
 | 20,000 | −44.097 | −41.961 | **target [GOOD]** | 1.148 | 0.0259 |
 
-Target strictly lowest at all 15 probes from 6k→20k (ordering **repaired**); cold-descent sharpness
+Target strictly lowest at all 15 probes from 6k→20k (ordering **repaired**; target-below-mean gap
++0.22…+3.09 across the 15 probes); cold-descent sharpness
 peaks at 0.0345 (step 19k) — a real trend but ≈2.3× below the 0.08 structure threshold. Final
 paper-inference probe (step 20k, best-of-4 min-energy, 4 steps, Langevin 1, both α readings):
 α[cur/4]=8.316 → d_tgt 1.207, fg-sharp 0.0127; α[init/4]=5.988 → d_tgt 1.233, fg-sharp 0.0120.
@@ -320,48 +369,58 @@ Hard-bin absolute at 20k, seed 0: 0.1053 → 0.0918 (n=184). Sharpness tied (≈
 the win is retrieval, not sharpness. Reading: **retrieval-from-memory emerges late in training**;
 6k-step ablations would have (wrongly) killed the memory headline.
 
-## T4 — Rollout hierarchy matrix (Ch. 4.4) — **4/5 arms DONE**
+## T4 — Rollout hierarchy matrix (Ch. 4.4) — **DONE (all arms)**
 
-Source: `venv/Scripts/python.exe -u -m hvp_rev.rhvd --compare ...` over
-`logs_rhcp/rhvd_eval_{hier-long,flat-budget,hier-short}_s0.npz` (30k-step arms, 200-frame rollouts,
-100 test clips, best-of-1, paired per-frame fg-MSE; re-verified 2026-07-03).
+Source: `logs_rhcp/compare_clustered.log` (`venv/Scripts/python.exe -u -m hvp_rev.rhvd
+--compare ...` over `logs_rhcp/rhvd_eval_{arm}_s0.npz`; 30k-step arms — flat-long 60k @ B=8,
+sample-matched; 48-frame GT warmup + 152 AR frames, 100 test clips, best-of-1, paired per-frame
+fg-MSE, clip-level CLUSTER bootstrap; empty-GT-fg records 3263/15200 (21.5%) excluded from bins
+and reported as the bg-only row).
 
 **Headline pairing — hier-long vs flat-budget (equal 1152 context tokens), Δ = flat − hier:**
 
 | horizon | hardness | n | flat-budget | hier-long | Δ | 95% CI | verdict |
 |---|---|---:|---:|---:|---:|---|---|
-| h 1-8 | easy | 630 | 0.0304 | 0.0289 | +0.0015 | [−0.0008, +0.0041] | null |
-| h 1-8 | HARD | 150 | 0.1435 | 0.1359 | +0.0075 | [−0.0058, +0.0216] | null |
-| h 9-24 | easy | 1273 | 0.0881 | 0.0861 | +0.0021 | [−0.0005, +0.0047] | null |
-| h 9-24 | mid | 45 | 0.1661 | 0.1624 | +0.0038 | [−0.0100, +0.0173] | null |
-| h 9-24 | HARD | 282 | 0.1800 | 0.1728 | +0.0071 | [−0.0020, +0.0165] | null |
-| h 25-60 | easy | 2971 | 0.1711 | 0.1537 | +0.0173 | [+0.0147, +0.0200] | **WIN** |
-| h 25-60 | mid | 79 | 0.2218 | 0.2036 | +0.0182 | [+0.0002, +0.0374] | **WIN** |
-| h 25-60 | HARD | 550 | 0.2554 | 0.2209 | **+0.0344** | [+0.0267, +0.0423] | **WIN** |
-| h 61+ | easy | 7638 | 0.2271 | 0.2065 | +0.0207 | [+0.0191, +0.0223] | **WIN** |
-| h 61+ | mid | 209 | 0.3224 | 0.2842 | +0.0382 | [+0.0276, +0.0493] | **WIN** |
-| h 61+ | HARD | 1353 | 0.3073 | 0.2759 | **+0.0314** | [+0.0273, +0.0356] | **WIN** |
-| ALL | | 15200 | 0.2038 | 0.1848 | +0.0189 | [+0.0178, +0.0201] | **WIN** |
+| h 1-8 | easy | 434 | 0.0440 | 0.0419 | +0.0022 | [−0.0040, +0.0089] | null |
+| h 1-8 | HARD | 150 | 0.1435 | 0.1359 | +0.0075 | [−0.0164, +0.0327] | null |
+| h 9-24 | easy | 919 | 0.1216 | 0.1189 | +0.0028 | [−0.0075, +0.0133] | null |
+| h 9-24 | mid | 45 | 0.1661 | 0.1624 | +0.0038 | [−0.0121, +0.0182] | null |
+| h 9-24 | HARD | 282 | 0.1800 | 0.1728 | +0.0071 | [−0.0110, +0.0260] | null |
+| h 25-60 | easy | 2286 | 0.2210 | 0.1989 | +0.0221 | [+0.0080, +0.0368] | **WIN** |
+| h 25-60 | mid | 79 | 0.2218 | 0.2036 | +0.0182 | [−0.0049, +0.0437] | null |
+| h 25-60 | HARD | 550 | 0.2554 | 0.2209 | **+0.0344** | [+0.0162, +0.0531] | **WIN** |
+| h 61+ | easy | 5610 | 0.3060 | 0.2788 | +0.0272 | [+0.0166, +0.0382] | **WIN** |
+| h 61+ | mid | 209 | 0.3224 | 0.2842 | +0.0382 | [+0.0178, +0.0616] | **WIN** |
+| h 61+ | HARD | 1353 | 0.3073 | 0.2759 | **+0.0314** | [+0.0202, +0.0431] | **WIN** |
+| bg-only | | 3263 | 0.0067 | 0.0047 | +0.0020 | [+0.0013, +0.0026] | **WIN** |
+| ALL | | 15200 | 0.2038 | 0.1848 | +0.0189 | [+0.0121, +0.0264] | **WIN** |
 
-**The spine in one table: null everywhere below horizon 25; CI-excluding-zero win everywhere at
-and beyond it.** (Both arms beat hier-short in every bin — long context helps; the *hierarchical
-packaging* of it wins once the horizon exceeds what 18 flat frames carry.)
+**The spine in one table: null in every bin below horizon 25; CI-excluding-zero win in every
+easy/HARD bin from h25-60 onward** (the sparse mid cell, n=79, is null at h25-60 and WIN at
+h61+ under the cluster bootstrap). (Both arms beat hier-short in every bin — long context helps;
+the *hierarchical packaging* of it wins once the horizon exceeds what 18 flat frames carry.)
 
-**ALL-row window ordering (fg-MSE over 200-frame rollouts, seed 0):**
+**ALL-row window ordering (fg-MSE over 48+152-frame rollouts, seed 0, final matrix):**
 
 | arm | ctx tokens | ALL fg-MSE | sharp | status |
 |---|---:|---:|---:|---|
-| hier-long (48c+6f) | 1152 | **0.1848** | 0.0729 | DONE |
+| flat-long (48f) | 3072 (2.7×) | **0.1564** | **0.0996** | DONE (caveat: B=8×60k sample-matched — EMA horizon/grad-noise differ) |
+| reg-long (48c+6f, regression) | 1152 | 0.1682 | 0.0741 | DONE |
+| hier-long (48c+6f) | 1152 | 0.1848 | 0.0729 | DONE |
+| reg-flat (18f, regression) | 1152 | 0.2015 | 0.0512 | DONE |
 | flat-budget (18f) | 1152 | 0.2038 | 0.0582 | DONE |
 | hier-short (6c+6f) | 480 | 0.2260 | 0.0392 | DONE |
 | persistence | — | 0.2552 | — | DONE (floor) |
-| reg-long (48c+6f, regression) | 1152 | **PENDING** | PENDING | RUNNING — train ~17k/30k; eval eta ≈ hours |
-| flat-long (48f) | 3072 (2.7×) | **PENDING** | PENDING | QUEUED — launch tonight, eta +1 day |
 
-Pre-registered expectations: **reg-long** — fades toward the mean at long horizons (E1 precedent);
-diffusion holds sharpness (cite hier-long sharp column, T5). **flat-long** — either ≈hier-long at
-2.7× the token cost (→ Pareto framing: hierarchy = same memory at 37% of the tokens) or fails to
-learn retrieval (→ necessity framing); both outcomes are writable.
+Measured outcomes (supersede the pre-registered expectations): **reg-long** — the fade
+expectation (E1 precedent) was **REFUTED (reversal)**: reg-long beats hier-long at every horizon
+band and hard bin at equal sharpness (ALL Δ, direct cluster CI [+0.0110,+0.0227]); protocol note —
+T1 is best-of-8 coverage, the rollout is best-of-1 (§4.6 reconciles). **flat-long** — beats every
+arm on both error and sharpness: the Pareto framing holds (hierarchy recovers most of the
+long-memory benefit at ~37% of the context tokens; the full-res window is best outright at 2.7×).
+**reg-flat** — mechanism-agnosticism gate PASSED: reg-long beats token-matched reg-flat in EVERY
+bin (ALL +0.0334 [+0.0248,+0.0423]; h1-8 HARD +0.0447 — for regression the win starts at h1-8,
+no null prelude, unlike diffusion). `logs_rhcp/rhvd_eval_reg-flat_s0.npz`.
 
 ## T5 — Per-horizon rollout curve, hier-long (Ch. 4.5) — **DONE**
 
@@ -410,11 +469,22 @@ reported honestly as the deep-horizon limitation (§4.7).
 *K=80 BPTT spills to shared RAM (~60× slower); hard OOM at K=120. Caption (pre-committed):
 constant-memory capability vs vanilla BPTT; **~Pareto with checkpointing — not claimed as a win**.
 
-**T6c — inner-loop 4-way memory panel — QUEUED** (naive / truncate_mcmc / checkpoint / reversible,
-K ∈ {4, 8, 32, 128}; naive arm guarded against WDDM spill, abort if step >10 s; ~0.5 GPU-day).
-Pre-registered expectation: reversible == checkpoint within noise at K ≤ 128; naive OOM/spills by
-K ≈ 8–16; the analytical ~0.2% state-vs-graph saving is the pre-registered punchline (the panel
-illustrates the accounting, it cannot overturn it).
+**T6c — inner-loop 4-way memory panel — MEASURED** (source: `logs_rhcp/mem_panel.md`; naive /
+truncate_mcmc / checkpoint / reversible, K ∈ {4, 8, 32, 128}, B=12, fp32, spill-guarded; CPU
+`--verify` grad-cos(reversible, checkpoint) > 0.999999):
+
+| arm | K=4 | K=8 | K=32 | K=128 |
+|---|---|---|---|---|
+| naive (full graph) | 18.141 GB, 17.1 s/step (spill) | **OOM** (29.76 GB attempted) | OOM (implied) | OOM (implied) |
+| truncate | 5.282 GB | 5.282 GB | 5.282 GB | 5.282 GB, 7.85 s/step |
+| checkpoint | 5.282 GB | 5.283 GB | 5.286 GB | 5.296 GB, 7.85 s/step |
+| reversible | 5.282 GB | 5.282 GB | 5.282 GB | 5.282 GB, 15.37 s/step |
+
+Outcome matches the pre-registration: naive OOMs by K=8; truncate/checkpoint/reversible flat
+through K=128; **reversible saves 14 MB = 0.26% of peak vs checkpointing, at ~2× wall-clock
+(recompute)**. States-vs-graph accounting: per-step (y,v) state 0.117 MB; checkpoint's K-state
+total at K=128 is 15.0 MB = 0.28% of its measured peak — the most reversibility could save on
+this axis. Quote **0.26% (measured)** alongside the ~0.6–1.0% analytic band.
 
 ## T7 — OpenSTL MMNIST bridge (Appendix A) — **QUEUED**
 
@@ -437,11 +507,11 @@ leaderboard claim.
 | F5 | memory-gate emergence | hard-bin Δ with CIs at 6k vs 20k × 2 seeds: the retrieval capability emerges late. | data DONE (T3); plot QUEUED |
 | F6 | per-horizon rollout curves | fg-MSE vs horizon for hier-long / flat-budget / hier-short / persistence; the curves separate exactly past h≈24. | data DONE (T4/T5); plot QUEUED |
 | F7 | horizon × hardness win map | Δ(flat − hier) heat/CI map: null below h25, wins beyond — the claim in one picture. | data DONE (T4); plot QUEUED |
-| F8 | rollout strips at re-entry | qualitative 200-frame rollout: hier-long re-places the returning digit, flat-budget hallucinates. | ckpts DONE; grid QUEUED (interim: `logs_rhcp/rhvd_*_train30000.png`) |
+| F8 | rollout strips at re-entry | qualitative 48+152-frame rollout: hier-long re-places the returning digit, flat-budget hallucinates. | ckpts DONE; grid QUEUED (interim: `logs_rhcp/rhvd_*_train30000.png`) |
 | F9 | Panel A frontier | activation memory vs K: BPTT OOMs at 120; reversible flat ~1.2 GB; checkpointing ~parity. | data DONE (T6b); plot QUEUED |
 | F10 | Lipschitz stability panel | four exactly-invertible recurrences, perturbation growth 3.3e2× → 1.0×: Lip(F), not invertibility, is the lever. | data DONE (T6a); plot QUEUED |
 | F11 | three-axis taxonomy diagram | reversibility across depth / time / computation, with the state-vs-graph accounting on the third axis. | QUEUED (drawing) |
-| F12 | 4-way inner-loop memory panel | naive / truncate / checkpoint / reversible vs K: the ~0.2% regime, measured. | QUEUED (with T6c) |
+| F12 | 4-way inner-loop memory panel | naive / truncate / checkpoint / reversible vs K: the 0.26% regime, measured. | data DONE (`logs_rhcp/mem_panel.md`); plot QUEUED |
 
 ---
 
@@ -451,20 +521,21 @@ leaderboard claim.
 
 | item | status | eta / next action |
 |---|---|---|
-| T1 mechanism comparison (+NFE, refs) | **DONE** (verified from `step1_mech_clean.log`) | — |
+| T1 mechanism comparison (+NFE, refs) | **DONE** (verified from `step1_mech_clean2.log`; corrected hardness anchor — `clean.log` superseded) | — |
 | T2 EBT two-sided (S1+S2 probes, paper-inference) | **DONE** (verified from `ebt_scaled_s{1,2}.log`) | — |
 | T2b config-gap block | **DONE** (CH3 Table 3.3; scripts cross-checked) | — |
 | T3 memory gate emergence (2 seeds × 2 budgets) | **DONE** (verified from 4 `mem_gate_full_*` logs) | — |
-| T4 rollout matrix — hier-long/flat-budget/hier-short/persistence | **DONE** (re-run `--compare`, seed 0) | 2-seed replication of headline pairing QUEUED |
-| T4 reg-long row (H2) | **RUNNING** — training ~17k/30k (0.40 s/step) | eta ≈ hours (finish train + rollout eval); pre-registered: regression fades to mean per E1 |
-| T4 flat-long row | **PENDING** | launch tonight; eta +1 day; Pareto-or-necessity framing pre-registered |
+| T4 rollout matrix — hier-long/flat-budget/hier-short/persistence | **DONE** (cluster CIs, `compare_clustered.log`, seed 0) | 2-seed replication of headline pairing QUEUED |
+| T4 reg-long row (H2) | **DONE** — REVERSAL: reg-long beats hier-long everywhere at equal sharpness (ALL cluster CI [+0.0110,+0.0227]) | fade expectation REFUTED; best-of-8 vs best-of-1 protocol note propagated |
+| T4 flat-long row | **DONE** — ALL 0.1564, sharp 0.0996; best arm outright | B=8×60k sample-matched caveat disclosed wherever quoted |
+| T4 reg-flat row (mechanism-agnosticism control) | **DONE** — reg-long beats reg-flat in EVERY bin (ALL +0.0334 [+0.0248,+0.0423]); pre-registered gate PASSED | mechanism-agnosticism CONFIRMED |
 | T5 per-horizon curve (hier-long) | **DONE** (recomputed from npz) | flat-budget/hier-short columns: same npz, trivial |
 | T6a Ch. D properties | **DONE** (`THEORY_CHAPTER_D.md`) | — |
 | T6b Panel A frontier | **DONE** (journey doc §2.2) | — |
-| T6c inner-loop 4-way panel | **QUEUED** (~0.5 GPU-day) | pre-registered ~0.2% result; guard naive arm vs WDDM |
+| T6c inner-loop 4-way panel | **MEASURED** (`logs_rhcp/mem_panel.md`) | reversible saves 14 MB = 0.26% of peak vs checkpointing at ~2× wall-clock; naive 18.1 GB spill @K4, OOM @K8 |
 | T7 OpenSTL bridge | **QUEUED** | expectation pre-registered above |
 | F2 | DONE (compose) | F3–F10: plots from existing data (CPU, ~1 day) |
-| F1, F11 | QUEUED (drawing) | F8, F12: after remaining runs |
+| F1, F11 | QUEUED (drawing) | F8: after grid render; F12: plot from `mem_panel.md` |
 
 ## Pre-registered gates — outcomes on the record
 
@@ -482,9 +553,17 @@ leaderboard claim.
   reported as the honest deep-horizon limitation, no context-noise iteration spent.
 - **G2c (headline)** — text: *"hier-long beats flat-budget on the hard re-entry bin at horizon
   >= 24 with CI excluding 0 (paired, CRN). If flat-budget matches hier-long, the honest conclusion
-  is 'context length, not hierarchy' — write it."* Outcome: **WIN, seed 0** (h25-60 HARD +0.0344
-  [+0.0267,+0.0423]; h61+ HARD +0.0314 [+0.0273,+0.0356]). Seed-1 replication queued before the
-  word "headline" appears in print.
+  is 'context length, not hierarchy' — write it."* Outcome: **WIN, seed 0** (cluster CIs: h25-60
+  HARD +0.0344 [+0.0162,+0.0531]; h61+ HARD +0.0314 [+0.0202,+0.0431]). Seed-1 replication queued
+  before the word "headline" appears in print.
+- **H2 (mechanism-at-rollout expectation)** — pre-registered: the regressor rolled out fades
+  toward the mean (E1 precedent) while diffusion holds sharpness. Outcome: **REFUTED — reversal
+  on the record**: reg-long beats hier-long-diffusion everywhere at equal sharpness (ALL cluster
+  CI [+0.0110,+0.0227]); reconciled with T1 via the best-of-8 vs best-of-1 protocol difference.
+- **Mechanism-agnosticism gate (red-team P0, pre-registered before reg-flat completed)** — text:
+  *"hierarchy is mechanism-agnostic iff reg-long beats reg-flat with CI excluding 0 in the
+  hard/high-horizon bins."* Outcome: **PASSED** — reg-long beats reg-flat in every bin (ALL
+  +0.0334 [+0.0248,+0.0423]; hard-bin wins at every horizon incl. h1-8 +0.0447).
 - **EBT scoping gate** — text (from `hvp_rev/ebt_ref_scaled.py`): *"if by 10k post-warmup steps
   there is NO E(target)<E(mean) flip AND no sharpness trend, write the hardened negative; a
   flip/trend => scale-sensitivity finding."* Outcome: **S2 = hardened negative** (no flip in 21/21
@@ -494,11 +573,12 @@ leaderboard claim.
 
 ## Verification notes (what this skeleton could not verify)
 
-- reg-long/flat-long numbers do not exist yet (marked PENDING/RUNNING above) — no numbers invented.
-- T6c and T7 have no data — expectations pre-registered only.
+- reg-long/flat-long rows verified from `compare_clustered.log`; reg-flat row from
+  `logs_rhcp/rhvd_eval_reg-flat_s0.npz` (final 2026-07-03 updates, handoff §12).
+- T7 has no data — expectation pre-registered only; T6c is measured (`logs_rhcp/mem_panel.md`).
 - Citation-mechanism claims in Ch. 6 remain a verification debt (review doc §5) — to be checked
   against PDFs at write-up.
-- All other numbers in this file were re-read from the named logs/npz/scripts on 2026-07-03.
+- All other numbers in this file were re-read from the named logs/npz/scripts on 2026-07-03/04.
 
 ---
 
@@ -515,6 +595,14 @@ leaderboard claim.
 - **flat-long (DONE)**: rollout ALL 0.1564, sharp 0.0996 — beats every arm; fixed-window corner
   confirms the Pareto framing (full-res memory best at 2.7x tokens; hierarchy = efficiency point).
   Caveat: B=8 x 60k sample-matched protocol.
-- **reg-flat**: RUNNING (mechanism-robustness control for the hierarchy claim).
+- **reg-flat (DONE, 2026-07-03 final update)**: reg-long beats token-matched reg-flat in EVERY
+  bin (ALL +0.0334 [+0.0248,+0.0423]; hard-bin wins at every horizon incl. h1-8 +0.0447; sharper
+  0.0741 vs 0.0512) — mechanism-agnosticism of the matched-budget hierarchy win CONFIRMED
+  (pre-registered gate PASSED). `logs_rhcp/rhvd_eval_reg-flat_s0.npz`.
+- **T6c (MEASURED, 2026-07-03, `logs_rhcp/mem_panel.md`)**: naive full-graph 18.1 GB/17 s-step
+  (spill) at K=4, OOM at K=8; truncate/checkpoint/reversible all 5.282–5.296 GB flat through
+  K=128; reversible saves 14 MB = 0.26% of peak vs checkpointing at ~2× wall-clock — quote
+  0.26% (measured) alongside the ~0.6–1.0% analytic band (replaces all "~0.2%" and the
+  "1.5–2.3 GB unmeasured estimate" phrasing).
 - Wording: "152 AR frames after 48-frame GT warmup" everywhere (not "200-frame rollout").
 - Full audit + disclosures: docs/draft/VALIDITY_AUDIT.md.
