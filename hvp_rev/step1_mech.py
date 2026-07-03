@@ -136,27 +136,31 @@ class ActionHierData:
                 f"{float(sd_c.mean()):.4f} / fine std {float(sd_f.mean()):.4f} -> ~unit")
 
     # -------- geometry hardness labels (reuses step1.rel_positions) --------
-    def _hardness(self, ci, ti, n_ctx):
-        """For clip ci with target frame ti and n_ctx context frames [ti-n_ctx .. ti-1]:
-          novel_fg    = fraction of TARGET sprite columns whose world-col was never covered by any
-                        context frame (information-theoretically unknowable from context).
-          novel_strip = same, restricted to the newly-revealed leading strip (cols not covered by the
-                        LAST context frame ti-1) -- the only genuinely generative region.
-        Sprite columns are detected from the GT target FRAME (max over rows > FG_THR)."""
+    def _hardness(self, ci, tj, tgt_i, n_ctx):
+        """[ANCHOR-FIX 2026-07-03, validity audit] Hardness of predicting TARGET frame tgt_i given
+        the model's ACTUAL context [tj-n_ctx .. tj-1] (tj = first bridge frame index):
+          novel_fg    = fraction of the target frame's sprite columns whose world-col was never
+                        covered by any CONTEXT frame (unknowable from what the model saw).
+          novel_strip = same, restricted to columns not covered by the LAST context frame (tj-1).
+        The pre-fix version anchored the window at the target (coverage [tgt_i-n_ctx .. tgt_i-1]),
+        counting the k-1 bridge frames -- which the model never observes -- as 'covered' and
+        dropping real context frames: it understated novelty by ~0.09 mean and mislabeled ~11-14%
+        of samples (audited vs mem_gate.novel_fg6/step1.geom, which always used the correct
+        anchor). Sprite columns are detected from the GT target FRAME (max over rows > FG_THR)."""
         rel = rel_positions(self.acts[ci], self.speed)  # (T,) left-edge world position
-        frame = self.clips_u8[ci, ti].astype(np.float32) / 255.0
+        frame = self.clips_u8[ci, tgt_i].astype(np.float32) / 255.0
         fg_cols = np.where(frame.max(axis=0) > FG_THR)[0]
         if len(fg_cols) == 0:
             return 0.0, 0.0                              # no sprite in target -> trivially "known"
-        tgt_world = (rel[ti] + fg_cols) % self.W
-        # coverage by the n_ctx context frames
+        tgt_world = (rel[tgt_i] + fg_cols) % self.W
+        # coverage by the n_ctx CONTEXT frames [tj-n_ctx .. tj-1] (never the bridge frames)
         covered = np.zeros(self.W, bool)
-        for m in range(ti - n_ctx, ti):
+        for m in range(tj - n_ctx, tj):
             covered[(rel[m] + np.arange(self.V)) % self.W] = True
         novel = ~covered[tgt_world]
         novel_fg = float(novel.mean())
-        # newly-revealed strip = target sprite cols NOT covered by the last context frame (ti-1)
-        last_world = set(((rel[ti - 1] + np.arange(self.V)) % self.W).tolist())
+        # strip = target sprite cols NOT covered by the last CONTEXT frame (tj-1)
+        last_world = set(((rel[tj - 1] + np.arange(self.V)) % self.W).tolist())
         strip_mask = np.array([wc not in last_world for wc in tgt_world])
         novel_strip = float(novel[strip_mask].mean()) if strip_mask.any() else 0.0
         return novel_fg, novel_strip
@@ -196,7 +200,7 @@ class ActionHierData:
             # the k future actions bridging last context frame (tj-1) to target (tj+k-1):
             # acts[t] moves frame t-1 -> t, so the moves are acts[tj .. tj+k-1].
             actions[b] = torch.from_numpy(self.acts[ci, tj:tj + k])
-            nf, ns = self._hardness(ci, tgt_i, n_ctx)
+            nf, ns = self._hardness(ci, tj, tgt_i, n_ctx)
             novel_fg[b], novel_strip[b] = nf, ns
             if return_frames:
                 gt_frame[b, 0] = torch.from_numpy(self.clips_u8[ci, tgt_i].astype(np.float32) / 127.5 - 1.0)
@@ -693,11 +697,14 @@ def evaluate(mode, reg, diff, ebt, data, ae, N=8, n_eval_batches=6, B=48, nfe=16
     ebt_argmin_best = []
     panel = None
     for bi in range(n_eval_batches):
-        bt = data.batch(B, train=False, return_frames=(bi == 0), seed=1000 + bi)
-        gt_frame01 = (bt.get("gt_frame").clamp(-1, 1) + 1) * 0.5 if "gt_frame" in bt else \
-            decode01(ae, bt["tgt_f"])
-        gt01 = decode01(ae, bt["tgt_f"])                   # for fg-MSE stratification (== gt_frame01 up
-        #                                                    to AE roundtrip; kept for exact prior behavior)
+        bt = data.batch(B, train=False, return_frames=True, seed=1000 + bi)
+        # [REF-FIX 2026-07-03, validity audit] ONE reference for every metric: the RAW GT frame.
+        # Previously fg-MSE scored vs the AE-roundtrip GT (hiding the ~decoder floor) while the
+        # persistence baseline and all rollout tables used raw GT, and sharpness mixed raw
+        # (batch 0) with roundtrip (batches 1-5). Absolute fg-MSE rises accordingly; rankings
+        # and paired deltas are unaffected (shared reference within each comparison).
+        gt_frame01 = (bt["gt_frame"].clamp(-1, 1) + 1) * 0.5
+        gt01 = gt_frame01
         # [SPEEDUP-3] Draw the N candidate samples ONCE per batch and reuse them for (i) best-of-N
         # fg-MSE, (ii) the sharpness panel, and (iii) energy-argmin (EBT). Previously EBT sampled 3x
         # (best_of_N + allfg re-draw + energy re-draw) and reg/diff 2x (best_of_N + allfg re-draw).

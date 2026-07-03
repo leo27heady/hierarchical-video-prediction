@@ -416,23 +416,52 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16):
     return path
 
 
-def paired_ci(delta, n_boot=10000, seed=0):
+def paired_ci(delta, clips=None, n_boot=10000, seed=0):
+    """95% CI of the mean paired delta. With clips given, resamples CLIPS (cluster bootstrap):
+    frames within one AR rollout are strongly autocorrelated (measured lag-1 ~ +0.86), so
+    frame-level iid resampling understates CI widths 2-7x [validity audit 2026-07-03]."""
     rng = np.random.RandomState(seed)
-    idx = rng.randint(0, len(delta), (n_boot, len(delta)))
-    m = delta[idx].mean(axis=1)
+    if clips is None:
+        idx = rng.randint(0, len(delta), (n_boot, len(delta)))
+        m = delta[idx].mean(axis=1)
+    else:
+        uc = np.unique(clips)
+        s = np.array([delta[clips == c].sum() for c in uc])
+        n = np.array([(clips == c).sum() for c in uc], dtype=np.float64)
+        pick = rng.randint(0, len(uc), (n_boot, len(uc)))
+        m = s[pick].sum(axis=1) / n[pick].sum(axis=1)
     return float(np.percentile(m, 2.5)), float(np.percentile(m, 97.5))
 
 
+def _fg_empty_mask(clip_arr, h_arr, test_path="data/loopmom_test_500x200.npy", warm=48, thr=0.5):
+    """True where the GT frame has NO foreground above thr. [validity audit] ~21% of rollout
+    records have an empty GT sprite mask; long_eval.fg_mse silently falls back to full-frame MSE
+    there and hardness_at bins them 'easy' -- they are excluded from the stratified tables and
+    reported as their own row."""
+    raw = np.load(test_path, mmap_mode="r")
+    cache, out = {}, np.zeros(len(clip_arr), bool)
+    for i in range(len(clip_arr)):
+        key = (int(clip_arr[i]), int(h_arr[i]))
+        if key not in cache:
+            frame = raw[key[0], warm + key[1] - 1]
+            cache[key] = bool(frame.max() <= thr * 255.0)
+        out[i] = cache[key]
+    return out
+
+
 def compare(arms, seed):
-    """Paired per-frame comparison of rollout npz files (same clips/horizons across arms)."""
+    """Paired per-frame comparison of rollout npz files (same clips/horizons across arms).
+    Cluster (clip-level) bootstrap CIs; empty-GT-foreground records excluded from strat bins."""
     d = {}
     for a in arms:
         z = np.load(f"logs_rhcp/rhvd_eval_{a}_s{seed}.npz")
         d[a] = z
     base = arms[0]
     zb = d[base]
-    key = list(zip(zb["clip"], zb["h"]))
-    print(f"\n{'='*100}\n  RHVD ROLLOUT COMPARISON (paired per-frame fg-MSE, base = {base}, seed {seed})\n{'='*100}")
+    empty = _fg_empty_mask(zb["clip"], zb["h"])
+    print(f"\n{'='*100}\n  RHVD ROLLOUT COMPARISON (paired per-frame fg-MSE, base = {base}, seed {seed};"
+          f" CLUSTER bootstrap by clip)\n  empty-GT-fg records excluded from bins: {int(empty.sum())}"
+          f"/{len(empty)} ({empty.mean()*100:.1f}%)\n{'='*100}")
     hbins = [(1, 8, "h 1-8"), (9, 24, "h 9-24"), (25, 60, "h 25-60"), (61, 200, "h 61+")]
     hardbins = [(-0.01, 0.001, "easy"), (0.001, 0.1, "mid"), (0.1, 1.01, "HARD")]
     for a in arms[1:]:
@@ -444,19 +473,21 @@ def compare(arms, seed):
         print(f"  {'horizon':<10}{'hardness':<8}{'n':>7}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>9}")
         for hlo, hhi, hname in hbins:
             for blo, bhi, bname in hardbins:
-                m = (zb["h"] >= hlo) & (zb["h"] <= hhi) & (zb["hard"] > blo) & (zb["hard"] <= bhi)
+                m = (zb["h"] >= hlo) & (zb["h"] <= hhi) & (zb["hard"] > blo) & (zb["hard"] <= bhi) & ~empty
                 if m.sum() < 30:
                     continue
                 delta = zb["fg"][m] - za["fg"][m]
-                lo, hi = paired_ci(delta)
+                lo, hi = paired_ci(delta, clips=zb["clip"][m])
                 v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
                 print(f"  {hname:<10}{bname:<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}"
                       f"{za['fg'][m].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
-        delta = zb["fg"] - za["fg"]
-        lo, hi = paired_ci(delta)
-        v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
-        print(f"  {'ALL':<10}{'':<8}{len(delta):>7}{zb['fg'].mean():>10.4f}{za['fg'].mean():>10.4f}"
-              f"{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+        # empty-fg row (bg-only frames; full-frame-MSE fallback semantics) + ALL row, both clustered
+        for label, m in (("bg-only", empty), ("ALL", np.ones(len(empty), bool))):
+            delta = zb["fg"][m] - za["fg"][m]
+            lo, hi = paired_ci(delta, clips=zb["clip"][m])
+            v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
+            print(f"  {label:<10}{'':<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}{za['fg'][m].mean():>10.4f}"
+                  f"{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
 
 
 # ================================================================================================
