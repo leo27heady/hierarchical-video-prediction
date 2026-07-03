@@ -60,12 +60,40 @@ def novel_fg6(data, ci, tj, n_ctx=6, thr=0.5):
     return float((~cov[tw]).mean())
 
 
-def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=False, stride_c=1):
+def dt_seen(data, ci, tj, thr=0.5, n_short=6):
+    """[H-grid] dt-since-last-visible + answerability of the target (tj+k-1), single-step twin of
+    rhvd.DtLabeler: over the target's NOVEL sprite columns (not covered in the last n_short ctx
+    frames), dt = median frames since each column was last inside the viewport (any frame < tj);
+    seen = fraction ever visible before. (0.0, 1.0) when no fg / no novel columns."""
+    rel = rel_positions(data.acts[ci], data.speed)
+    ti = tj + data.k - 1
+    frame = data.clips_u8[ci, ti].astype(np.float32) / 255.0
+    fg = np.where(frame.max(axis=0) > thr)[0]
+    if len(fg) == 0:
+        return 0.0, 1.0
+    tw = (rel[ti] + fg) % data.W
+    last = np.full(data.W, -(10 ** 9), np.int64)
+    for m in range(tj):
+        last[(rel[m] + np.arange(V)) % data.W] = m
+    dt = ti - last[tw]
+    novel = dt > (ti - (tj - n_short))          # not covered by the last n_short context frames
+    if not novel.any():
+        return 0.0, 1.0
+    dtn = dt[novel]
+    finite = dtn < 10 ** 8
+    if not finite.any():
+        return 1e9, 0.0
+    return float(np.median(dtn[finite])), float(finite.mean())
+
+
+def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=False, stride_c=1,
+               labels=False):
     """Sample tj in [maxc, T-k); coarse context = last n_ctx_c frames AT TEMPORAL STRIDE stride_c
     (slots anchored at tj-1, tj-1-stride, ... — span n_ctx_c*stride_c frames; stride_c=1 = legacy
     contiguous), fine context = last n_ctx_f contiguous frames; target = tj+k-1. Shared seed =>
     identical (clip,target) across arms => per-sample PAIRED deltas (maxc must be the SHARED max
-    span across arms of one run). Always returns novel_fg-at-6 for stratification."""
+    span across arms of one run). Always returns novel_fg-at-6 for stratification; labels=True
+    additionally returns dt/seen (eval only — dt is O(T*V) per sample)."""
     rng = np.random.RandomState(seed) if seed is not None else np.random
     pool = data.train_idx if train else data.val_idx
     span_c = n_ctx_c * stride_c
@@ -74,6 +102,8 @@ def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=Fa
     tgt_c = torch.empty(B, LAT, 4, 4); tgt_f = torch.empty(B, LAT, 8, 8)
     acts = torch.empty(B, data.k, dtype=torch.long)
     nf6 = torch.empty(B)
+    dts = torch.empty(B) if labels else None
+    seen = torch.empty(B) if labels else None
     gt = torch.empty(B, 1, 64, 64) if frames else None
     lastf = torch.empty(B, 1, 64, 64) if frames else None
     for b in range(B):
@@ -86,11 +116,16 @@ def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=Fa
         tgt_c[b] = data.zc[ci, ti]; tgt_f[b] = data.zf[ci, ti]
         acts[b] = torch.from_numpy(data.acts[ci, tj:tj + data.k])
         nf6[b] = novel_fg6(data, ci, tj)
+        if labels:
+            d_, s_ = dt_seen(data, ci, tj)
+            dts[b] = d_; seen[b] = s_
         if frames:
             gt[b, 0] = torch.from_numpy(data.clips_u8[ci, ti].astype(np.float32) / 127.5 - 1.0)
             lastf[b, 0] = torch.from_numpy(data.clips_u8[ci, tj - 1].astype(np.float32) / 127.5 - 1.0)
     out = dict(ctx_c=ctx_c.to(DEV), ctx_f=ctx_f.to(DEV), tgt_c=tgt_c.to(DEV), tgt_f=tgt_f.to(DEV),
                actions=acts.to(DEV), nf6=nf6)
+    if labels:
+        out["dt"] = dts; out["seen"] = seen
     if frames:
         out["gt"] = gt.to(DEV); out["last"] = lastf.to(DEV)
     return out
@@ -147,11 +182,11 @@ def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B
     samples (red-team fix: the original drew a fresh sample set for the grid). Sampling noise is
     reseeded per eval batch (common random numbers across arms -> tighter paired CIs)."""
     diff.net.eval()
-    per_fg, per_nf6, sharps, panels = [], [], [], None
+    per_fg, per_nf6, per_dt, per_seen, sharps, panels = [], [], [], [], [], None
     for bi in range(nb):
         torch.manual_seed(31337 + bi)   # CRN: identical DDIM noise draws across arms
         bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=False, seed=1000 + bi, frames=(bi == 0),
-                        stride_c=stride_c)
+                        stride_c=stride_c, labels=True)
         gt01 = decode01(ae, bt["tgt_f"])
         all_frames, allfg = [], np.empty((N, B), np.float32)
         for n in range(N):
@@ -161,12 +196,14 @@ def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B
         best_idx = allfg.argmin(axis=0)
         bestf = torch.stack([all_frames[best_idx[b]][b] for b in range(B)], 0)
         per_fg.append(allfg.min(axis=0)); per_nf6.append(bt["nf6"].numpy())
+        per_dt.append(bt["dt"].numpy()); per_seen.append(bt["seen"].numpy())
         sharps.append(fg_sharp(bestf, gt01))
         if bi == 0:
             panels = (bt.get("last"), bestf, gt01)
             viz.save_samples(f"logs_rhcp/mem_gate_{name}_s{seed}.png",
                              [("last", panels[0]), (f"pred(best{N})", panels[1]), ("GT", panels[2])], n=8)
-    return np.concatenate(per_fg), np.concatenate(per_nf6), float(np.mean(sharps))
+    return (np.concatenate(per_fg), np.concatenate(per_nf6), float(np.mean(sharps)),
+            np.concatenate(per_dt), np.concatenate(per_seen))
 
 
 def paired_bootstrap_ci(delta, n_boot=10000, seed=0):
@@ -181,11 +218,12 @@ BINS = [(-0.01, 0.001, "easy (nf6=0)"), (0.001, 0.1, "mid (0,0.1]"), (0.1, 1.01,
 
 
 def report(arms, base_name, args):
-    fg0, nf6, sharp0 = arms[base_name]
+    fg0, nf6, sharp0, dt0, seen0 = arms[base_name]
     print(f"\n{'='*94}\n  MEMORY-PAYOFF GATE  (best-of-{args.N} fg-MSE, stratified by novel-fg-at-6; "
           f"paired bootstrap 95% CI)\n{'='*94}")
     print(f"  baseline arm {base_name}: fg-MSE ALL {fg0.mean():.4f} | sharp {sharp0:.4f}")
-    for name, (fg, nf6_a, sharp) in arms.items():
+    dt_rows = [(6, 48, "dt 7-48"), (48, 96, "dt 49-96"), (96, 192, "dt 97-192"), (192, 1e12, "dt >192")]
+    for name, (fg, nf6_a, sharp, dt, seen) in arms.items():
         if name == base_name:
             continue
         assert np.allclose(nf6, nf6_a), "eval sets diverged between arms — pairing broken"
@@ -193,6 +231,18 @@ def report(arms, base_name, args):
         print(f"  {'bin':<24}{'n':>6}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>10}")
         for lo, hi, bname in BINS + [(-0.01, 1.01, "ALL")]:
             m = (nf6 > lo) & (nf6 <= hi)
+            if m.sum() < 5:
+                continue
+            d = fg0[m] - fg[m]
+            ci_lo, ci_hi = paired_bootstrap_ci(d)
+            verdict = "WIN" if ci_lo > 0 else ("LOSS" if ci_hi < 0 else "null")
+            print(f"  {bname:<24}{int(m.sum()):>6}{fg0[m].mean():>10.4f}{fg[m].mean():>10.4f}"
+                  f"{d.mean():>+10.4f}   [{ci_lo:+.4f},{ci_hi:+.4f}]{verdict:>10}")
+        # [H-grid] dt-stratified HARD rows on answerable targets: where in the memory horizon does
+        # the strided arm win/lose? (dt ~= how long the novel content was off-screen)
+        print(f"  --- HARD (>0.1) x dt-since-visible, answerable (seen>=0.5) ---")
+        for lo, hi, bname in dt_rows:
+            m = (nf6 > 0.1) & (dt0 > lo) & (dt0 <= hi) & (seen0 >= 0.5)
             if m.sum() < 5:
                 continue
             d = fg0[m] - fg[m]
@@ -260,9 +310,10 @@ def main():
     arms = {}
     for name, nc, nf, sc in arm_specs:
         diff = train_arm(name, data, nc, nf, steps, args.batch, maxc, args.seed, stride_c=sc)
-        fg, nf6, sharp = eval_arm(name, diff, test, ae, nc, nf, maxc, N=args.N, nfe=args.nfe,
-                                  nb=nb, B=B_eval, seed=args.seed, stride_c=sc)
-        arms[name] = (fg, nf6, sharp)
+        fg, nf6, sharp, dt, seen = eval_arm(name, diff, test, ae, nc, nf, maxc, N=args.N,
+                                            nfe=args.nfe, nb=nb, B=B_eval, seed=args.seed,
+                                            stride_c=sc)
+        arms[name] = (fg, nf6, sharp, dt, seen)
         wb.summary({f"{name}/fg_mse_all": float(fg.mean()), f"{name}/sharp": sharp,
                     f"{name}/fg_mse_hard": float(fg[nf6 > 0.1].mean()) if (nf6 > 0.1).any() else 0.0})
         wb.image(f"{name}/eval_grid", f"logs_rhcp/mem_gate_{name}_s{args.seed}.png")
