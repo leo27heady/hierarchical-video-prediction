@@ -50,9 +50,10 @@ def make_background(Ww, Hh, rng, unique_amp=0.0):
         amp = rng.uniform(0.15, 0.4)
         bg += amp * np.sin(2 * np.pi * kx * x / Ww + ph) * np.cos(2 * np.pi * ky * y / Hh + ph)
     if unique_amp > 0:
-        kx = rng.randint(1, 4)                        # unique global phase (breaks mod-192 aliasing)
+        # kx MUST be 1: any kx>1 leaves kx-fold positional degeneracy (verified: kx=2 left the
+        # +384px crop byte-identical). Random phase per world provides the diversity instead.
         ph = rng.rand() * 2 * np.pi
-        bg += unique_amp * np.sin(2 * np.pi * kx * x / Ww + ph) * np.ones_like(y, np.float32)
+        bg += unique_amp * np.sin(2 * np.pi * 1 * x / Ww + ph) * np.ones_like(y, np.float32)
     bg = (bg - bg.min()) / (np.ptp(bg) + 1e-6)
     return (0.15 + 0.35 * bg).astype(np.float32)     # dim background in [0.15, 0.5]
 
