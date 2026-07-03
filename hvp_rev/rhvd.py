@@ -37,7 +37,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from hvp_rev import hier_convae, viz
+from hvp_rev import hier_convae, viz, wb
 import hvp_rev.step1_mech as M
 from hvp_rev.step1_mech import (ActionHierData, cosine_alphas, decode01, fg_mse_px_frames,
                                 fg_sharp, load_ckpt, save_ckpt)
@@ -62,6 +62,11 @@ ARMS = {
     # beat hier-long-diffusion at rollout with equal sharpness -- the hierarchy benefit must be
     # shown for the WINNING mechanism too, or the headline is diffusion-only).
     "reg-flat":   (0,       18,      "reg"),
+    # ---- H-grid arms (HGRID_DESIGN.md v2, testbed operating point B: world 768 / loop ~192 /
+    #      T=480 / WARM=192; run with --train_path data/hgrid_* --world 768 --warm 192,
+    #      uniform B=8 x 40k). d0 = flat, largest affordable window (48 frames << 192 loop).
+    "d0-diff-long": (0,     48,      "diff"),
+    "d0-reg-long":  (0,     48,      "reg"),
 }
 
 
@@ -278,6 +283,56 @@ def hardness_at(data, ci, tframe, n_short=6, thr=0.5):
     return float((~cov[tw]).mean())
 
 
+class DtLabeler:
+    """[H-grid gate variable] Per-frame dt-since-last-visible + answerability labels.
+
+    For GT frame tf of clip ci: its NOVEL sprite columns (not covered by the 6-frame short
+    window, same notion as hardness_at) each have dt = tf - (last frame the column was in the
+    viewport). Labels per record:
+      dt   = median dt over novel columns that WERE seen before (1e9 if none were) — the
+             capability axis: dt > 48 means the content re-enters from beyond ANY flat window.
+      seen = fraction of novel columns visible at least once before tf (answerable-by-
+             construction; gates read on seen >= 0.5, unseen rows reported separately).
+    Trajectory-only (rel_positions from actions) — identical machinery to hardness_at, so the
+    two axes stratify consistently. Requires monotonically increasing tf per clip (rollout order).
+    """
+
+    def __init__(self, data, warm, n_short=6, thr=0.5):
+        self.data, self.warm, self.n_short, self.thr = data, warm, n_short, thr
+        self._st = {}                                    # ci -> [rel, last_seen, next_unmarked_t]
+
+    def _init_clip(self, ci):
+        rel = rel_positions(self.data.acts[ci], self.data.speed)
+        last = np.full(self.data.W, -(10 ** 9), np.int64)
+        for m in range(self.warm):
+            last[(rel[m] + np.arange(64)) % self.data.W] = m
+        return [rel, last, self.warm]
+
+    def label(self, ci, tf):
+        st = self._st.get(ci)
+        if st is None:
+            st = self._st[ci] = self._init_clip(ci)
+        rel, last, nxt = st
+        assert tf >= nxt, f"DtLabeler needs monotonic tf per clip (got {tf} < {nxt})"
+        for m in range(nxt, tf):                         # mark frames up to but NOT including tf
+            last[(rel[m] + np.arange(64)) % self.data.W] = m
+        st[2] = tf
+        frame = self.data.clips_u8[ci, tf].astype(np.float32) / 255.0
+        fg = np.where(frame.max(axis=0) > self.thr)[0]
+        if len(fg) == 0:
+            return 0.0, 1.0
+        tw = (rel[tf] + fg) % self.data.W
+        dt = tf - last[tw]                               # (n_fg,) per-column dt
+        novel = dt > self.n_short
+        if not novel.any():
+            return 0.0, 1.0
+        dtn = dt[novel]
+        finite = dtn < 10 ** 8
+        seen = float(finite.mean())
+        dt_med = float(np.median(dtn[finite])) if finite.any() else 1e9
+        return dt_med, seen
+
+
 # ================================================================================================
 # Training (EMA + warmup-constant LR + ckpt/resume + grids)
 # ================================================================================================
@@ -339,6 +394,8 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
         if s % val_every == 0:
             vram = torch.cuda.max_memory_allocated() / 2**30 if DEV == "cuda" else 0.0
             log(f"  [{arm} {s}/{steps}] loss {run/val_every:.4f}  {dt:.2f}s/step  peak {vram:.2f}GB")
+            wb.log({"train/loss": run / val_every, "train/s_per_step": dt,
+                    "train/vram_gb": vram, "train/lr": opt.param_groups[0]["lr"]}, step=s)
             run = 0.0
         if s % save_every == 0 or s == steps:
             save_ckpt(ckpt, step=s, model=net.state_dict(), opt=opt.state_dict(),
@@ -350,10 +407,13 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
             yc, yf = wrap_eval.sample(vb["ctx_c"], vb["ctx_f"], vb["actions"], n_steps=16)
             pred01 = decode01(ae, yf[:, -1])               # last window frame (horizon 4)
             gt01 = (vb["gt"][:, -1].clamp(-1, 1) + 1) * 0.5
-            viz.save_samples(f"logs_rhcp/rhvd_{arm}_s{seed}_train{s}.png",
-                             [("pred_h4", pred01), ("GT", gt01)], n=8)
+            gpath = f"logs_rhcp/rhvd_{arm}_s{seed}_train{s}.png"
+            viz.save_samples(gpath, [("pred_h4", pred01), ("GT", gt01)], n=8)
+            vfg = float(fg_mse_px_frames(pred01, gt01).mean())
             net.train()
-            log(f"      >> grid logs_rhcp/rhvd_{arm}_s{seed}_train{s}.png")
+            log(f"      >> grid {gpath}  val fg-MSE(h4) {vfg:.4f}")
+            wb.log({"val/fg_mse_h4": vfg}, step=s)
+            wb.image("val/sample_grid", gpath, step=s)
     return wrap, ema
 
 
@@ -361,18 +421,23 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
 # AR rollout eval -> npz (per-frame horizon/hardness/fg-MSE/sharp records)
 # ================================================================================================
 @torch.no_grad()
-def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16):
+def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48):
+    """warm: UNIVERSAL GT warmup across arms of one campaign — every arm starts rollout at the
+    same frame so (clip, horizon) records pair exactly. Legacy campaign: 48. H-grid (testbed B):
+    192 (= one full loop seen in GT before rollout)."""
     n_ctx_c, n_ctx_f, mode = ARMS[arm]
     net_eval = ema.shadow
     wrap_eval = WindowDiffusion(net_eval, wrap.Ttr) if mode == "diff" else WindowRegression(net_eval)
     n_frames = max(n_ctx_c, n_ctx_f)
-    WARM = 48   # UNIVERSAL warmup across arms: every arm starts rollout at frame 48, so the
-    #             (clip, horizon) records pair exactly across arms (flat's 18-frame buffer is
-    #             warmed from GT frames 30..47)
+    WARM = warm
+    assert WARM >= n_frames, f"warm {WARM} must cover the context window {n_frames}"
     T = data.T
     n_steps_roll = (T - WARM) // WIN
     clips = data.val_idx[:n_clips]
-    recs = dict(h=[], hard=[], fg=[], sharp=[], pers_fg=[], clip=[])
+    dtl = DtLabeler(data, WARM)
+    recs = dict(h=[], hard=[], fg=[], sharp=[], pers_fg=[], clip=[], dt=[], seen=[])
+    viz_h = {1, WIN, 48, 96, 192, min(288, n_steps_roll * WIN)}     # rollout strip horizons
+    viz_rows = []
     for c0 in range(0, len(clips), chunk):
         cs = clips[c0:c0 + chunk]
         B = len(cs)
@@ -403,16 +468,39 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16):
                     # hardness axis is ARM-INDEPENDENT (always the 6-frame short window) so the
                     # paired cross-arm comparison stratifies every arm identically
                     recs["hard"].append(hardness_at(data, ci, tf, n_short=6))
+                    dt_med, seen = dtl.label(ci, tf)
+                    recs["dt"].append(dt_med)
+                    recs["seen"].append(seen)
                     recs["fg"].append(float(fg[bi_]))
                     recs["pers_fg"].append(float(pfg[bi_]))
                     recs["sharp"].append(sh)              # batch-mean sharp per frame (coarse record)
                     recs["clip"].append(int(ci))
+                if c0 == 0 and (tf - WARM + 1) in viz_h:
+                    viz_rows.append((tf - WARM + 1, p01[:6].cpu(), gt01[:6].cpu()))
         log(f"  [rollout {arm}] clips {c0}..{c0+B-1} done ({n_steps_roll} steps x {WIN} frames)")
     out = {k: np.asarray(v) for k, v in recs.items()}
     path = f"logs_rhcp/rhvd_eval_{arm}_s{seed}.npz"
     np.savez(path, **out)
     log(f"[rollout {arm}] saved {path}: {len(out['fg'])} frame-records, "
         f"mean fg {out['fg'].mean():.4f} (persistence {out['pers_fg'].mean():.4f})")
+    if viz_rows:
+        vpath = f"logs_rhcp/rhvd_rollout_{arm}_s{seed}.png"
+        panels = []
+        for h, p, g in sorted(viz_rows, key=lambda r: r[0]):
+            panels += [(f"pred_h{h}", p), (f"GT_h{h}", g)]
+        viz.save_samples(vpath, panels, n=6)
+        log(f"[rollout {arm}] strip {vpath}")
+        wb.image("eval/rollout_strip", vpath)
+    hs, fgs = out["h"], out["fg"]
+    wb.summary({"eval/fg_mse_all": float(fgs.mean()),
+                "eval/pers_fg": float(out["pers_fg"].mean()),
+                "eval/sharp": float(out["sharp"].mean()),
+                "eval/fg_mse_h1_48": float(fgs[hs <= 48].mean()),
+                "eval/fg_mse_h49_192": float(fgs[(hs > 48) & (hs <= 192)].mean()),
+                "eval/fg_mse_h193plus": float(fgs[hs > 192].mean()) if (hs > 192).any() else 0.0,
+                "eval/fg_mse_beyondwin_hard": float(
+                    fgs[(out["dt"] > 48) & (out["hard"] > 0.1) & (out["seen"] >= 0.5)].mean())
+                if ((out["dt"] > 48) & (out["hard"] > 0.1) & (out["seen"] >= 0.5)).any() else 0.0})
     return path
 
 
@@ -433,11 +521,12 @@ def paired_ci(delta, clips=None, n_boot=10000, seed=0):
     return float(np.percentile(m, 2.5)), float(np.percentile(m, 97.5))
 
 
-def _fg_empty_mask(clip_arr, h_arr, test_path="data/loopmom_test_500x200.npy", warm=48, thr=0.5):
+def _fg_empty_mask(clip_arr, h_arr, test_path, warm, thr=0.5):
     """True where the GT frame has NO foreground above thr. [validity audit] ~21% of rollout
     records have an empty GT sprite mask; long_eval.fg_mse silently falls back to full-frame MSE
     there and hardness_at bins them 'easy' -- they are excluded from the stratified tables and
-    reported as their own row."""
+    reported as their own row. [H-grid fix] test_path/warm are REQUIRED args: the old defaults
+    silently indexed the loopmom file for any campaign."""
     raw = np.load(test_path, mmap_mode="r")
     cache, out = {}, np.zeros(len(clip_arr), bool)
     for i in range(len(clip_arr)):
@@ -449,21 +538,26 @@ def _fg_empty_mask(clip_arr, h_arr, test_path="data/loopmom_test_500x200.npy", w
     return out
 
 
-def compare(arms, seed):
+def compare(arms, seed, test_path, warm):
     """Paired per-frame comparison of rollout npz files (same clips/horizons across arms).
-    Cluster (clip-level) bootstrap CIs; empty-GT-foreground records excluded from strat bins."""
+    Cluster (clip-level) bootstrap CIs; empty-GT-foreground records excluded from strat bins.
+    H-grid npz (with dt/seen fields) additionally get the pre-registered GATE table: dt-since-
+    last-visible bins x HARD, on answerable (seen>=0.5) records — G-H1/2/3 read on dt>48 rows."""
     d = {}
     for a in arms:
         z = np.load(f"logs_rhcp/rhvd_eval_{a}_s{seed}.npz")
         d[a] = z
     base = arms[0]
     zb = d[base]
-    empty = _fg_empty_mask(zb["clip"], zb["h"])
+    empty = _fg_empty_mask(zb["clip"], zb["h"], test_path, warm)
+    has_dt = "dt" in zb.files
     print(f"\n{'='*100}\n  RHVD ROLLOUT COMPARISON (paired per-frame fg-MSE, base = {base}, seed {seed};"
-          f" CLUSTER bootstrap by clip)\n  empty-GT-fg records excluded from bins: {int(empty.sum())}"
-          f"/{len(empty)} ({empty.mean()*100:.1f}%)\n{'='*100}")
-    hbins = [(1, 8, "h 1-8"), (9, 24, "h 9-24"), (25, 60, "h 25-60"), (61, 200, "h 61+")]
+          f" CLUSTER bootstrap by clip)\n  test={test_path} warm={warm}; empty-GT-fg records excluded"
+          f" from bins: {int(empty.sum())}/{len(empty)} ({empty.mean()*100:.1f}%)\n{'='*100}")
+    hbins = [(1, 8, "h 1-8"), (9, 24, "h 9-24"), (25, 60, "h 25-60"), (61, 120, "h 61-120"),
+             (121, 192, "h 121-192"), (193, 288, "h 193-288")]
     hardbins = [(-0.01, 0.001, "easy"), (0.001, 0.1, "mid"), (0.1, 1.01, "HARD")]
+    dtbins = [(0, 48, "dt<=48"), (48, 96, "dt 49-96"), (96, 192, "dt 97-192"), (192, 1e12, "dt>192")]
     for a in arms[1:]:
         za = d[a]
         assert np.array_equal(za["clip"], zb["clip"]) and np.array_equal(za["h"], zb["h"]), \
@@ -481,6 +575,28 @@ def compare(arms, seed):
                 v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
                 print(f"  {hname:<10}{bname:<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}"
                       f"{za['fg'][m].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+        if has_dt and "dt" in za.files:
+            print(f"\n  [GATE TABLE] dt-since-last-visible x HARD, answerable (seen>=0.5), ~empty"
+                  f" — gates read on dt>48 rows:")
+            print(f"  {'dt bin':<12}{'hardness':<8}{'n':>7}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>9}")
+            ans = (zb["seen"] >= 0.5) & ~empty
+            for dlo, dhi, dname in dtbins:
+                for blo, bhi, bname in [(0.001, 1.01, "mid+HARD"), (0.1, 1.01, "HARD")]:
+                    m = ans & (zb["dt"] > dlo) & (zb["dt"] <= dhi) & (zb["hard"] > blo) & (zb["hard"] <= bhi)
+                    if m.sum() < 30:
+                        continue
+                    delta = zb["fg"][m] - za["fg"][m]
+                    lo, hi = paired_ci(delta, clips=zb["clip"][m])
+                    v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
+                    print(f"  {dname:<12}{bname:<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}"
+                          f"{za['fg'][m].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+            un = (zb["seen"] < 0.5) & (zb["dt"] > 48) & ~empty
+            if un.sum() >= 30:
+                delta = zb["fg"][un] - za["fg"][un]
+                lo, hi = paired_ci(delta, clips=zb["clip"][un])
+                print(f"  {'UNSEEN dt>48':<20}{int(un.sum()):>7}{zb['fg'][un].mean():>10.4f}"
+                      f"{za['fg'][un].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]"
+                      f"{'(report-only)':>14}")
         # empty-fg row (bg-only frames; full-frame-MSE fallback semantics) + ALL row, both clustered
         for label, m in (("bg-only", empty), ("ALL", np.ones(len(empty), bool))):
             delta = zb["fg"][m] - za["fg"][m]
@@ -504,18 +620,39 @@ def main():
     ap.add_argument("--eval_only", action="store_true")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--compare", default="", help="comma list of arms to compare from saved npz")
+    # ---- H-grid campaign args (defaults = legacy loopmom campaign, unchanged) ----
+    ap.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
+    ap.add_argument("--test_path", default="data/loopmom_test_500x200.npy")
+    ap.add_argument("--world", type=int, default=192, help="torus world width (rel_positions mod)")
+    ap.add_argument("--wspeed", type=int, default=4)
+    ap.add_argument("--warm", type=int, default=48, help="universal GT warmup (H-grid: 192)")
+    ap.add_argument("--n_val", type=int, default=250)
+    ap.add_argument("--no_wandb", action="store_true")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
 
     if args.compare:
-        compare([a.strip() for a in args.compare.split(",")], args.seed)
+        compare([a.strip() for a in args.compare.split(",")], args.seed,
+                test_path=args.test_path, warm=args.warm)
         return
 
+    if args.arm.startswith(("d0-", "d1-", "d2-")):
+        assert args.warm == 192 and "hgrid" in args.train_path and args.world == 768, \
+            "H-grid arms require --train_path data/hgrid_* --test_path data/hgrid_* --world 768 --warm 192"
+
+    if not args.no_wandb and args.probe_steps == 0:
+        n_ctx_c_, n_ctx_f_, mode_ = ARMS[args.arm]
+        run_name = f"rhvd-{args.arm}-s{args.seed}" + ("-smoke" if args.smoke else "")
+        wb.init(run_name,
+                config=dict(vars(args), n_ctx_c=n_ctx_c_, n_ctx_f=n_ctx_f_, mode=mode_,
+                            win=WIN, campaign="hgrid" if args.warm == 192 else "loopmom"),
+                tags=["hgrid" if args.warm == 192 else "loopmom", ARMS[args.arm][2]])
+
     ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
-    data = ActionHierData(ae, "data/loopmom_train_3000x100.npy",
-                          "data/loopmom_train_3000x100_actions.npy", n_ctx=6, k=4)
-    test = ActionHierData(ae, "data/loopmom_test_500x200.npy",
-                          "data/loopmom_test_500x200_actions.npy", n_ctx=6, k=4, n_val=250,
+    data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
+                          n_ctx=6, k=4, W=args.world, speed=args.wspeed)
+    test = ActionHierData(ae, args.test_path, args.test_path.replace(".npy", "_actions.npy"),
+                          n_ctx=6, k=4, n_val=args.n_val, W=args.world, speed=args.wspeed,
                           stats=data.stats)
 
     if args.probe_steps > 0:
@@ -551,7 +688,8 @@ def main():
     else:
         wrap, ema = train(args.arm, data, test, ae, steps, args.batch, args.seed)
     rollout_eval(args.arm, wrap, ema, test, ae, args.seed,
-                 n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe)
+                 n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm)
+    wb.finish()
     log("RHVD DONE")
 
 

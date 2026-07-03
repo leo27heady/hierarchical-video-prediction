@@ -30,7 +30,7 @@ import time
 import numpy as np
 import torch
 
-from hvp_rev import hier_convae, viz
+from hvp_rev import hier_convae, viz, wb
 import hvp_rev.step1_mech as M
 from hvp_rev.step1_mech import (ActionHierData, Diffusion, decode01, fg_mse_px_frames, fg_sharp,
                                 load_ckpt, save_ckpt)
@@ -60,12 +60,16 @@ def novel_fg6(data, ci, tj, n_ctx=6, thr=0.5):
     return float((~cov[tw]).mean())
 
 
-def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=False):
-    """Sample tj in [maxc, T-k); coarse context = last n_ctx_c frames, fine context = last n_ctx_f
-    frames (n_ctx_f <= n_ctx_c); target = tj+k-1. Shared seed => identical (clip,target) across
-    arms => per-sample PAIRED deltas. Always returns novel_fg-at-6 for stratification."""
+def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=False, stride_c=1):
+    """Sample tj in [maxc, T-k); coarse context = last n_ctx_c frames AT TEMPORAL STRIDE stride_c
+    (slots anchored at tj-1, tj-1-stride, ... — span n_ctx_c*stride_c frames; stride_c=1 = legacy
+    contiguous), fine context = last n_ctx_f contiguous frames; target = tj+k-1. Shared seed =>
+    identical (clip,target) across arms => per-sample PAIRED deltas (maxc must be the SHARED max
+    span across arms of one run). Always returns novel_fg-at-6 for stratification."""
     rng = np.random.RandomState(seed) if seed is not None else np.random
     pool = data.train_idx if train else data.val_idx
+    span_c = n_ctx_c * stride_c
+    assert maxc >= span_c, f"maxc {maxc} < coarse span {span_c}"
     ctx_c = torch.empty(B, n_ctx_c, LAT, 4, 4); ctx_f = torch.empty(B, n_ctx_f, LAT, 8, 8)
     tgt_c = torch.empty(B, LAT, 4, 4); tgt_f = torch.empty(B, LAT, 8, 8)
     acts = torch.empty(B, data.k, dtype=torch.long)
@@ -76,7 +80,9 @@ def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=Fa
         ci = int(pool[rng.randint(len(pool))])
         tj = int(rng.randint(maxc, data.T - data.k))
         ti = tj + data.k - 1
-        ctx_c[b] = data.zc[ci, tj - n_ctx_c:tj]; ctx_f[b] = data.zf[ci, tj - n_ctx_f:tj]
+        # strided slots: frames tj-span+stride-1, ..., tj-1-stride, tj-1 (anchor = block end)
+        ctx_c[b] = data.zc[ci, tj - span_c + stride_c - 1: tj: stride_c]
+        ctx_f[b] = data.zf[ci, tj - n_ctx_f:tj]
         tgt_c[b] = data.zc[ci, ti]; tgt_f[b] = data.zf[ci, ti]
         acts[b] = torch.from_numpy(data.acts[ci, tj:tj + data.k])
         nf6[b] = novel_fg6(data, ci, tj)
@@ -90,7 +96,8 @@ def gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, seed=None, frames=Fa
     return out
 
 
-def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000, save_every=1000):
+def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000, save_every=1000,
+              stride_c=1):
     torch.manual_seed(seed); np.random.seed(seed)
     net = DiTDenoiser(n_ctx=n_ctx_c, k=data.k, d=256).to(DEV)
     diff = Diffusion(net)
@@ -101,7 +108,8 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
     start = load_ckpt(ckpt, net, opt, sched)
     ntok = n_ctx_c * 16 + n_ctx_f * 64 + 80
     p = sum(x.numel() for x in net.parameters()) / 1e6
-    print(f"-- arm {name}: n_ctx_c={n_ctx_c} n_ctx_f={n_ctx_f} ({p:.2f}M, {ntok} tokens) "
+    print(f"-- arm {name}: n_ctx_c={n_ctx_c} (stride {stride_c}, span {n_ctx_c*stride_c}) "
+          f"n_ctx_f={n_ctx_f} ({p:.2f}M, {ntok} tokens) "
           f"steps {start}..{steps} B={B} seed={seed} --", flush=True)
     if start > steps:
         print(f"   [arm {name}] already trained (ckpt @ >= {steps}), skipping to eval", flush=True)
@@ -110,7 +118,7 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
         torch.cuda.reset_peak_memory_stats()
     net.train(); run = 0.0; t_last = time.time()
     for s in range(start, steps + 1):
-        bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True)
+        bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=True, stride_c=stride_c)
         loss = diff.loss(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"], bt["actions"])
         opt.zero_grad(set_to_none=True); loss.backward()
         torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0); opt.step(); sched.step()
@@ -124,6 +132,8 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
             vram = torch.cuda.max_memory_allocated() / 2**30 if DEV == "cuda" else 0.0
             print(f"   [{name} {s}/{steps}] v-mse {run/val_every:.4f}  {dt:.2f}s/step  peakVRAM {vram:.2f}GB",
                   flush=True)
+            wb.log({f"{name}/v_mse": run / val_every, f"{name}/s_per_step": dt,
+                    f"{name}/vram_gb": vram}, step=s)
             run = 0.0
         if s % save_every == 0 or s == steps:
             save_ckpt(ckpt, step=s, model=net.state_dict(), opt=opt.state_dict(), sched=sched.state_dict())
@@ -131,7 +141,8 @@ def train_arm(name, data, n_ctx_c, n_ctx_f, steps, B, maxc, seed, val_every=1000
 
 
 @torch.no_grad()
-def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B=32, seed=0):
+def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B=32, seed=0,
+             stride_c=1):
     """Best-of-N pixel fg-MSE per sample + sharpness; frames for the viz grid REUSE the scored
     samples (red-team fix: the original drew a fresh sample set for the grid). Sampling noise is
     reseeded per eval batch (common random numbers across arms -> tighter paired CIs)."""
@@ -139,7 +150,8 @@ def eval_arm(name, diff, data, ae, n_ctx_c, n_ctx_f, maxc, N=8, nfe=16, nb=24, B
     per_fg, per_nf6, sharps, panels = [], [], [], None
     for bi in range(nb):
         torch.manual_seed(31337 + bi)   # CRN: identical DDIM noise draws across arms
-        bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=False, seed=1000 + bi, frames=(bi == 0))
+        bt = gate_batch(data, B, n_ctx_c, n_ctx_f, maxc, train=False, seed=1000 + bi, frames=(bi == 0),
+                        stride_c=stride_c)
         gt01 = decode01(ae, bt["tgt_f"])
         all_frames, allfg = [], np.empty((N, B), np.float32)
         for n in range(N):
@@ -204,32 +216,57 @@ def main():
     ap.add_argument("--bf16", action="store_true")
     ap.add_argument("--with_longboth", action="store_true", help="also run the L-coarse + L-fine ceiling arm")
     ap.add_argument("--smoke", action="store_true")
+    # ---- H-grid strided PRE-CHECK (HGRID_DESIGN.md v2 §3, the kill-switch) ----
+    ap.add_argument("--precheck", action="store_true",
+                    help="arms = nctx6 vs strided long-coarse (L slots @ --stride); new-dataset args required")
+    ap.add_argument("--stride", type=int, default=4)
+    ap.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
+    ap.add_argument("--test_path", default="data/loopmom_test_500x200.npy")
+    ap.add_argument("--world", type=int, default=192)
+    ap.add_argument("--wspeed", type=int, default=4)
+    ap.add_argument("--n_val", type=int, default=250)
+    ap.add_argument("--no_wandb", action="store_true")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
-    maxc = args.long
+    maxc = args.long * (args.stride if args.precheck else 1)   # SHARED tj pool = max span
+    if not args.no_wandb:
+        wb.init(f"memgate-{'precheck' if args.precheck else 'gate'}-s{args.seed}"
+                + ("-smoke" if args.smoke else ""),
+                config=vars(args), tags=["hgrid-precheck" if args.precheck else "memgate"])
     ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
-    data = ActionHierData(ae, "data/loopmom_train_3000x100.npy",
-                          "data/loopmom_train_3000x100_actions.npy", n_ctx=maxc, k=4)
-    test = ActionHierData(ae, "data/loopmom_test_500x200.npy",
-                          "data/loopmom_test_500x200_actions.npy", n_ctx=maxc, k=4, n_val=250,
+    data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
+                          n_ctx=maxc, k=4, W=args.world, speed=args.wspeed)
+    test = ActionHierData(ae, args.test_path, args.test_path.replace(".npy", "_actions.npy"),
+                          n_ctx=maxc, k=4, n_val=args.n_val, W=args.world, speed=args.wspeed,
                           stats=data.stats)  # [STD-FIX] test standardized with TRAIN stats
     steps = 200 if args.smoke else args.steps
     nb, B_eval = (2, 16) if args.smoke else (24, 32)
 
-    arm_specs = [("nctx6", 6, 6), (f"coarse{args.long}", args.long, 6)]
-    if args.with_longboth:
-        arm_specs.append((f"both{args.long}", args.long, args.long))
+    if args.precheck:
+        # kill-switch arms: short baseline vs strided slow-clock coarse (span = L*stride frames).
+        # NOTE the near-ballistic loop regime makes the HARD (novel-at-6) bin ~= beyond-window
+        # re-entry (measured dt-at-re-entry median ~196 >> 48), so the HARD-bin verdict here IS
+        # the beyond-window retrieval signal.
+        arm_specs = [("nctx6", 6, 6, 1), (f"stride{args.long}x{args.stride}", args.long, 6, args.stride)]
+    else:
+        arm_specs = [("nctx6", 6, 6, 1), (f"coarse{args.long}", args.long, 6, 1)]
+        if args.with_longboth:
+            arm_specs.append((f"both{args.long}", args.long, args.long, 1))
 
     arms = {}
-    for name, nc, nf in arm_specs:
-        diff = train_arm(name, data, nc, nf, steps, args.batch, maxc, args.seed)
+    for name, nc, nf, sc in arm_specs:
+        diff = train_arm(name, data, nc, nf, steps, args.batch, maxc, args.seed, stride_c=sc)
         fg, nf6, sharp = eval_arm(name, diff, test, ae, nc, nf, maxc, N=args.N, nfe=args.nfe,
-                                  nb=nb, B=B_eval, seed=args.seed)
+                                  nb=nb, B=B_eval, seed=args.seed, stride_c=sc)
         arms[name] = (fg, nf6, sharp)
+        wb.summary({f"{name}/fg_mse_all": float(fg.mean()), f"{name}/sharp": sharp,
+                    f"{name}/fg_mse_hard": float(fg[nf6 > 0.1].mean()) if (nf6 > 0.1).any() else 0.0})
+        wb.image(f"{name}/eval_grid", f"logs_rhcp/mem_gate_{name}_s{args.seed}.png")
         del diff
         torch.cuda.empty_cache()
 
     report(arms, "nctx6", args)
+    wb.finish()
 
 
 if __name__ == "__main__":
