@@ -499,3 +499,22 @@ leaderboard claim.
 - Citation-mechanism claims in Ch. 6 remain a verification debt (review doc §5) — to be checked
   against PDFs at write-up.
 - All other numbers in this file were re-read from the named logs/npz/scripts on 2026-07-03.
+
+---
+
+## CORRECTIONS LEDGER (2026-07-03, validity audit) — supersedes numbers above where they conflict
+
+- **T1 REPLACED** by the clean2 recompute (corrected hardness anchor + single raw-GT reference,
+  logs_rhcp/step1_mech_clean2.log): reg 0.0664/0.0232/0.1808/sharp 0.1591; diff
+  0.0512/0.0120/0.1549/sharp 0.1886; frac_hard 0.27; NFE diff 0.0546->0.0503, reg 0.0680 flat.
+  Diffusion > regression on every column (conclusion unchanged; absolute values now include the
+  decoder floor).
+- **T4/T5 CIs REPLACED** by cluster-bootstrap versions (logs_rhcp/compare_clustered.log):
+  headline verdicts survive; early-horizon flat-budget cells now null (cleaner horizon-gated
+  story); empty-fg records (21.5%) excluded from bins, reported as bg-only row.
+- **flat-long (DONE)**: rollout ALL 0.1564, sharp 0.0996 — beats every arm; fixed-window corner
+  confirms the Pareto framing (full-res memory best at 2.7x tokens; hierarchy = efficiency point).
+  Caveat: B=8 x 60k sample-matched protocol.
+- **reg-flat**: RUNNING (mechanism-robustness control for the hierarchy claim).
+- Wording: "152 AR frames after 48-frame GT warmup" everywhere (not "200-frame rollout").
+- Full audit + disclosures: docs/draft/VALIDITY_AUDIT.md.
