@@ -29,9 +29,14 @@ def load_mnist():
         return np.frombuffer(f.read(), np.uint8, offset=16).reshape(-1, 28, 28).astype(np.float32)
 
 
-def make_background(Ww, Hh, rng):
-    """Smooth low-frequency texture on the torus (seamless in x). Non-trivial but static in world coords."""
-    # sum of a few horizontal sinusoids with integer periods (so it wraps seamlessly) + vertical variation
+def make_background(Ww, Hh, rng, unique_amp=0.0):
+    """Smooth low-frequency texture on the torus (seamless in x). Non-trivial but static in world coords.
+
+    unique_amp > 0 adds ONE unscaled kx in {1,2,3} component (period = full world / kx): with the
+    kx_scale below, all scaled components are (Ww/kx_scale)-periodic, so a world larger than the
+    192px reference has kx_scale identical background copies -> viewport position is aliased and
+    slot-addressing loses its absolute positional cue. The unique component breaks that aliasing
+    at a mild appearance cost (re-run the AE gate after enabling)."""
     x = np.arange(Ww)[None, :]
     y = np.arange(Hh)[:, None]
     bg = np.zeros((Hh, Ww), np.float32)
@@ -44,13 +49,17 @@ def make_background(Ww, Hh, rng):
         ph = rng.rand() * 2 * np.pi
         amp = rng.uniform(0.15, 0.4)
         bg += amp * np.sin(2 * np.pi * kx * x / Ww + ph) * np.cos(2 * np.pi * ky * y / Hh + ph)
+    if unique_amp > 0:
+        kx = rng.randint(1, 4)                        # unique global phase (breaks mod-192 aliasing)
+        ph = rng.rand() * 2 * np.pi
+        bg += unique_amp * np.sin(2 * np.pi * kx * x / Ww + ph) * np.ones_like(y, np.float32)
     bg = (bg - bg.min()) / (np.ptp(bg) + 1e-6)
     return (0.15 + 0.35 * bg).astype(np.float32)     # dim background in [0.15, 0.5]
 
 
-def build_world(Ww, Hh, digits, rng, num_digits):
+def build_world(Ww, Hh, digits, rng, num_digits, unique_amp=0.0):
     """Torus world image (Hh, Ww) in [0,1]: background texture + sprites at fixed world positions (max-composite)."""
-    world = make_background(Ww, Hh, rng)
+    world = make_background(Ww, Hh, rng, unique_amp=unique_amp)
     for _ in range(num_digits):
         d = digits[rng.randint(len(digits))] / 255.0
         wx = rng.randint(0, Ww)                        # torus x (wraps)
@@ -112,6 +121,8 @@ def main():
     ap.add_argument("--speed", type=int, default=2)
     ap.add_argument("--p_cont", type=float, default=None, help="momentum: prob of continuing heading (None=iid walk)")
     ap.add_argument("--p_hold", type=float, default=0.2)
+    ap.add_argument("--unique_amp", type=float, default=0.0,
+                    help=">0: add one unscaled kx in {1..3} bg component (breaks positional aliasing)")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", required=True)
     ap.add_argument("--out_actions", default=None)
@@ -123,7 +134,7 @@ def main():
     actions = np.zeros((args.n, args.frames), np.int8)
     positions = np.zeros((args.n, args.frames), np.int32)   # viewport left edge (world coords)
     for i in range(args.n):
-        world = build_world(args.world, V, digits, rng, args.digits)
+        world = build_world(args.world, V, digits, rng, args.digits, unique_amp=args.unique_amp)
         pos, act = pan_trajectory(args.frames, args.world, rng, p_hold=args.p_hold, speed=args.speed, p_cont=args.p_cont)
         clip = render_clip(world, pos, V)
         clips[i] = np.clip(clip * 255, 0, 255).astype(np.uint8)
