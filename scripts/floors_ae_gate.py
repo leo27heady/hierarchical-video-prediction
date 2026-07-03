@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+import argparse
 import sys
 
 import numpy as np
@@ -30,9 +31,13 @@ def frames_to_pm1(u8):
 
 @torch.no_grad()
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--train_path", default="data/hgrid_train_1200x480.npy")
+    ap.add_argument("--test_path", default="data/hgrid_test_300x480.npy")
+    args = ap.parse_args()
     ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
-    train = np.load("data/hgrid_train_1200x480.npy", mmap_mode="r")
-    test = np.load("data/hgrid_test_300x480.npy", mmap_mode="r")
+    train = np.load(args.train_path, mmap_mode="r")
+    test = np.load(args.test_path, mmap_mode="r")
 
     # ---- 1. AE-reuse gate: 512 random frames from the new TRAIN file ----
     rng = np.random.RandomState(0)
