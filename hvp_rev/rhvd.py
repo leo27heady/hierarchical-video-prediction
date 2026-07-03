@@ -58,6 +58,10 @@ ARMS = {
     # window as hier-long, paying 48*64=3072 ctx tokens (2.7x hier-long's budget). seq ~3392 --
     # run with --batch 8 (+timing probe first); spill guard protects the 15GB cap.
     "flat-long":  (0,       48,      "diff"),
+    # token-matched flat control for the REGRESSION core (added after the H2 surprise: reg-long
+    # beat hier-long-diffusion at rollout with equal sharpness -- the hierarchy benefit must be
+    # shown for the WINNING mechanism too, or the headline is diffusion-only).
+    "reg-flat":   (0,       18,      "reg"),
 }
 
 
