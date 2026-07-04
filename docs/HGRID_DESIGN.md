@@ -272,3 +272,33 @@ shown).
 Claim 1 carried by the loopmom matched-budget rollout (horizon curves plotted), Claim 2 by the
 mechanism study, Claim 3 by the spatial factorial (docs/SPATIAL_FACTORIAL.md; spat18 cells
 running); seed-1 of the Claim-1 headline pair overnight.
+
+### PRE-COMMITTED DECISION RULE (2026-07-04, written BEFORE the disambiguation runs; author +
+### two external reviewers converged)
+
+Context: the span-224 result (HARD +0.0273, REACHABLE-HARD +0.0363, beyond-reach null; effect
+confined to hard-reachable cells — easy/mid/beyond all null) is single-seed, lacks a direct
+same-pool 48-vs-56 comparison, and was measured against the weakest (nctx6) baseline. Status:
+"threshold HYPOTHESIS — systematic-or-lucky, undetermined." Disambiguation (~7h unattended,
+runs after tonight's Path-A chain):
+
+(a) JOINT SHARED-POOL RE-EVAL (no training): nctx6 + stride48x4 + stride56x4 + contig56 at
+    maxc=224, eval_nb=96, seed 0 — existing ckpts reused; contig56 (56 contiguous coarse + 6
+    fine = EXACT same tokens/slots as stride56x4, reach 59 vs 227) trains fresh. Pairwise
+    stride-vs-stride and stride-vs-contig tables split into SHARED-reach and DIFFERENTIAL-reach
+    dt bands.
+(b) SEED-1 of nctx6 + stride48x4 + stride56x4 (fresh 40k each) — the luck-vs-threshold
+    discriminator.
+
+RULES (binding):
+- R1 (replication): stride56x4 seed-1 REACHABLE-HARD (48<dt<=227, seen>=0.5) vs seed-1 nctx6:
+  CI>0.
+- R2 (reach causality): stride56x4 beats contig56 on REACHABLE-HARD, CI>0 (shared pool, seed 0).
+- R3 (informative, non-gating): 48-slot seed-1 — flat again (threshold story) vs jumped (luck
+  story); reported either way.
+- PASS = R1 AND R2 -> run the DECISIVE ROLLOUT PAIR ONLY (d1-56slot vs d0-diff-long on hgrid3,
+  WARM=224, uniform B8x40k, ~9h; teacher-forced caveat: the pair IS the real test). Full Tier-A
+  grid ONLY if the pair's dt-stratified reachable-HARD rollout gate is CI-clean green.
+- FAIL of either -> H-grid closes as the single-step characterization (reach dose-response +
+  aliasing ablation), labeled with the seed outcome; no further capability spend.
+Anything not covered above -> default to FAIL (no soft reads).
