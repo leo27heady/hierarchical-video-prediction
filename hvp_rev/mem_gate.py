@@ -266,6 +266,30 @@ def report(arms, base_name, args):
             verdict = "WIN" if ci_lo > 0 else ("LOSS" if ci_hi < 0 else "null")
             print(f"  {bname:<24}{int(m.sum()):>6}{fg0[m].mean():>10.4f}{fg[m].mean():>10.4f}"
                   f"{d.mean():>+10.4f}   [{ci_lo:+.4f},{ci_hi:+.4f}]{verdict:>10}")
+    # [DISAMBIG] pairwise tables between non-base arms, split into SHARED-reach and
+    # DIFFERENTIAL-reach dt bands: if the higher-reach arm wins ONLY in the differential band,
+    # the effect is reach-caused; a uniform win incl. the shared band says circuit-level
+    # (learned-to-use-memory) difference.
+    others = [(n, v) for n, v in arms.items() if n != base_name]
+    for i in range(len(others)):
+        for j in range(i + 1, len(others)):
+            (na, va), (nb_, vb) = others[i], others[j]
+            if va[5] < vb[5]:
+                (na, va), (nb_, vb) = (nb_, vb), (na, va)          # a = higher reach
+            fga, fgb, ra, rb = va[0], vb[0], va[5], vb[5]
+            print(f"\n  [pairwise] {na} (reach {ra}f) vs {nb_} (reach {rb}f)"
+                  f"  [delta = {nb_} - {na}; >0 = {na} better]")
+            rows = [((nf6 > 0.1) & (dt0 > 48) & (dt0 <= rb) & (seen0 >= 0.5), f"SHARED 48<dt<={rb}"),
+                    ((nf6 > 0.1) & (dt0 > rb) & (dt0 <= ra) & (seen0 >= 0.5), f"DIFFERENTIAL {rb}<dt<={ra}"),
+                    ((nf6 > 0.1), "HARD all")]
+            for m, bname in rows:
+                if m.sum() < 5:
+                    continue
+                d = fgb[m] - fga[m]
+                ci_lo, ci_hi = paired_bootstrap_ci(d)
+                verdict = "WIN" if ci_lo > 0 else ("LOSS" if ci_hi < 0 else "null")
+                print(f"  {bname:<24}{int(m.sum()):>6}{fgb[m].mean():>10.4f}{fga[m].mean():>10.4f}"
+                      f"{d.mean():>+10.4f}   [{ci_lo:+.4f},{ci_hi:+.4f}]{verdict:>10}")
     print("\n  GATE G0a: the coarseL arm must WIN the HARD re-entry bin (CI excluding 0). If null/LOSS")
     print("  on seed 0, run --seed 1 before declaring the memory-horizon headline dead (2-seed rule).")
     print("  grids: logs_rhcp/mem_gate_<arm>.png", flush=True)
@@ -298,6 +322,9 @@ def main():
     ap.add_argument("--eval_nb", type=int, default=24,
                     help="eval batches (widened-power re-eval: 96 = 4x samples, ~1.7x tighter CIs; "
                          "batches extend the same CRN seed series so arms stay paired)")
+    ap.add_argument("--disambig", action="store_true",
+                    help="pre-committed R1/R2/R3 arm set: nctx6 + stride{long}x4 + stride48x4 + "
+                         "contig{long}, one shared sample pool, pairwise reach-band tables")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
     maxc = args.long * (args.stride if args.precheck else 1)   # SHARED tj pool = max span
@@ -329,6 +356,14 @@ def main():
             # positive control: contiguous coarse-48 (stride 1, 48-frame lookback) — the exact
             # design that retrieved on loopmom. Disambiguates stride-mechanism vs dataset failure.
             arm_specs.append((f"{tagpc}-contig48", 48, 6, 1))
+        if args.disambig:
+            # [PRE-COMMITTED RULE, HGRID_DESIGN addendum 2026-07-04] joint shared-pool set:
+            # baseline + both stride spans + contig56 (SAME tokens/slots as stride56, reach 59
+            # vs 227 — isolates REACH causally). maxc = long*stride covers every arm's span.
+            arm_specs = [(f"{tagpc}-nctx6", 6, 6, 1),
+                         (f"{tagpc}-stride{args.long}x{args.stride}", args.long, 6, args.stride),
+                         (f"{tagpc}-stride48x4", 48, 6, 4),
+                         (f"{tagpc}-contig{args.long}", args.long, 6, 1)]
     else:
         arm_specs = [("nctx6", 6, 6, 1), (f"coarse{args.long}", args.long, 6, 1)]
         if args.with_longboth:
