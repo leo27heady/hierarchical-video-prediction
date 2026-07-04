@@ -81,6 +81,11 @@ ARMS = {
     # fine = 3392 ctx tokens (== d0-long budget, 2.9x d1's) at d1's temporal reach — isolates
     # coarse ABSTRACTION from temporal subsampling; token asymmetry favors the CONTROL.
     "d0-strided-flat": (0,  6,       "diff", 1, 47),
+    # ---- spatial factorial (docs/SPATIAL_FACTORIAL.md, testbed A/loopmom): the missing W18
+    #      coarse-history cell — 18 coarse + 6 fine = 672 ctx tokens vs flat-budget's 1152 at the
+    #      SAME 18-frame window. Isolates Claim 3 (spatial abstraction) from window length.
+    "spat18":     (18,      6,       "diff", 1, 0),
+    "spat18-reg": (18,      6,       "reg",  1, 0),
 }
 
 
