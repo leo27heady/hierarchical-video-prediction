@@ -245,3 +245,30 @@ author (contiguous-d1 costs ≈3× tokens and weakens the token-budget story). B
 STOP; comprehensive diagnosis to the author; no further dataset iterations autonomously.
 Chronic checkpoint-collision class fixed twice (legacy loopmom names, then cross-dataset names)
 → arm names now dataset-prefixed.
+
+### Addendum update (2026-07-04, ~10:40) — widened eval REVERSES the hgrid3 read
+
+The 4x-widened paired re-eval (`--eval_nb 96`, pre-registered before running; both reads
+disclosed) of the SAME hgrid3 models flips the nb=24 nulls to CI-clean WINs:
+- strided 48x4 (reach 195f): HARD +0.0016 [+0.0007,+0.0025] WIN (= the original G0a criterion);
+  REACHABLE-HARD +0.0021 [+0.0008,+0.0036] WIN (= the Path-B criterion); dt 49-96 +0.0032 WIN;
+  ALL +0.0005 WIN.
+- contig48 (reach 51f): null in EVERY cell — the effect appears exactly where memory reach
+  covers the re-entry interval and vanishes where it cannot (reach dose-response, internal
+  control).
+Interpretation: beyond-window retrieval on the position-unique wide world EXISTS but is ~7x
+smaller than loopmom's (+0.002 vs +0.0135 absolute; ~2% vs ~13% relative) — consistent with the
+span shortfall (192 < effective loop ~196-213) diluting it and with scale/addressing difficulty.
+The nb=24 pre-checks were underpowered for this magnitude, NOT wrong about hgrid (whose 40k read
+was a CI-clean LOSS — aliasing verdict stands).
+
+**Path-B shot (pre-approved, running):** 56-slot d1 (span 224 > loop), 40k, eval_nb 96 —
+decides whether corrected geometry amplifies the effect enough for the rollout campaign's
+resolution (~±0.005-0.02 cluster CIs), or the H-grid closes as "retrieval exists but is an
+order of magnitude below practical significance at this scale" (still a REAL positive for the
+boundary-condition section: mechanism demonstrated, magnitude characterized, reach dose-response
+shown).
+**Campaign re-scope (author-approved, same morning):** Path A = the three-claim structure —
+Claim 1 carried by the loopmom matched-budget rollout (horizon curves plotted), Claim 2 by the
+mechanism study, Claim 3 by the spatial factorial (docs/SPATIAL_FACTORIAL.md; spat18 cells
+running); seed-1 of the Claim-1 headline pair overnight.
