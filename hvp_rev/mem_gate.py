@@ -297,11 +297,12 @@ def main():
         # NOTE the near-ballistic loop regime makes the HARD (novel-at-6) bin ~= beyond-window
         # re-entry (measured dt-at-re-entry median ~196 >> 48), so the HARD-bin verdict here IS
         # the beyond-window retrieval signal.
-        # Arm names are "hgpc-" prefixed: the ckpt path is name-derived and the LEGACY loopmom
-        # campaign already owns mem_gate_nctx6_s0_t20000.pt — an unprefixed precheck silently
-        # resumes the loopmom model as the baseline (caught live 2026-07-04).
-        arm_specs = [("hgpc-nctx6", 6, 6, 1),
-                     (f"hgpc-stride{args.long}x{args.stride}", args.long, 6, args.stride)]
+        # Arm names carry a DATASET-derived prefix: ckpt paths are name-derived, and both the
+        # legacy loopmom campaign AND any earlier pre-check on a different dataset would
+        # otherwise be silently resumed as the baseline (caught live twice, 2026-07-04).
+        tagpc = os.path.basename(args.train_path).split("_")[0] + "pc"   # e.g. hgridpc / hgrid2pc
+        arm_specs = [(f"{tagpc}-nctx6", 6, 6, 1),
+                     (f"{tagpc}-stride{args.long}x{args.stride}", args.long, 6, args.stride)]
     else:
         arm_specs = [("nctx6", 6, 6, 1), (f"coarse{args.long}", args.long, 6, 1)]
         if args.with_longboth:
