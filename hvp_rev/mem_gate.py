@@ -218,16 +218,17 @@ BINS = [(-0.01, 0.001, "easy (nf6=0)"), (0.001, 0.1, "mid (0,0.1]"), (0.1, 1.01,
 
 
 def report(arms, base_name, args):
-    fg0, nf6, sharp0, dt0, seen0 = arms[base_name]
+    fg0, nf6, sharp0, dt0, seen0, _ = arms[base_name]
     print(f"\n{'='*94}\n  MEMORY-PAYOFF GATE  (best-of-{args.N} fg-MSE, stratified by novel-fg-at-6; "
-          f"paired bootstrap 95% CI)\n{'='*94}")
+          f"paired bootstrap 95% CI; eval_nb={args.eval_nb})\n{'='*94}")
     print(f"  baseline arm {base_name}: fg-MSE ALL {fg0.mean():.4f} | sharp {sharp0:.4f}")
     dt_rows = [(6, 48, "dt 7-48"), (48, 96, "dt 49-96"), (96, 192, "dt 97-192"), (192, 1e12, "dt >192")]
-    for name, (fg, nf6_a, sharp, dt, seen) in arms.items():
+    for name, (fg, nf6_a, sharp, dt, seen, reach) in arms.items():
         if name == base_name:
             continue
         assert np.allclose(nf6, nf6_a), "eval sets diverged between arms — pairing broken"
-        print(f"\n  arm {name} (sharp {sharp:.4f}) vs {base_name}:  [delta = base - arm; >0 = arm better]")
+        print(f"\n  arm {name} (sharp {sharp:.4f}, memory reach {reach}f) vs {base_name}:"
+              f"  [delta = base - arm; >0 = arm better]")
         print(f"  {'bin':<24}{'n':>6}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>10}")
         for lo, hi, bname in BINS + [(-0.01, 1.01, "ALL")]:
             m = (nf6 > lo) & (nf6 <= hi)
@@ -243,6 +244,21 @@ def report(arms, base_name, args):
         print(f"  --- HARD (>0.1) x dt-since-visible, answerable (seen>=0.5) ---")
         for lo, hi, bname in dt_rows:
             m = (nf6 > 0.1) & (dt0 > lo) & (dt0 <= hi) & (seen0 >= 0.5)
+            if m.sum() < 5:
+                continue
+            d = fg0[m] - fg[m]
+            ci_lo, ci_hi = paired_bootstrap_ci(d)
+            verdict = "WIN" if ci_lo > 0 else ("LOSS" if ci_hi < 0 else "null")
+            print(f"  {bname:<24}{int(m.sum()):>6}{fg0[m].mean():>10.4f}{fg[m].mean():>10.4f}"
+                  f"{d.mean():>+10.4f}   [{ci_lo:+.4f},{ci_hi:+.4f}]{verdict:>10}")
+        # [REACHABILITY 2026-07-04] the effective loop (~196-213f: p_hold slows mean speed to
+        # 3.6px/f) EXCEEDS a 192f span, so >half the dt>192 mass is unanswerable BY CONSTRUCTION
+        # for a 48x4 arm — these rows read the gate where the arm's memory physically reaches.
+        # Pre-registered criterion for the Path-B decision: REACHABLE-HARD (48<dt<=reach) CI>0.
+        print(f"  --- HARD x REACHABILITY (arm memory reach = {reach} frames) ---")
+        for m, bname in ((
+            (nf6 > 0.1) & (dt0 > 48) & (dt0 <= reach) & (seen0 >= 0.5), f"REACHABLE 48<dt<={reach}"), (
+            (nf6 > 0.1) & (dt0 > reach) & (seen0 >= 0.5), f"BEYOND dt>{reach}")):
             if m.sum() < 5:
                 continue
             d = fg0[m] - fg[m]
@@ -279,6 +295,9 @@ def main():
     ap.add_argument("--ae_path", default="logs_rhcp/hier_ae_mom.pt")
     ap.add_argument("--with_contig", action="store_true",
                     help="precheck: add a contiguous coarse-48 positive-control arm (loopmom's winner)")
+    ap.add_argument("--eval_nb", type=int, default=24,
+                    help="eval batches (widened-power re-eval: 96 = 4x samples, ~1.7x tighter CIs; "
+                         "batches extend the same CRN seed series so arms stay paired)")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
     maxc = args.long * (args.stride if args.precheck else 1)   # SHARED tj pool = max span
@@ -293,7 +312,7 @@ def main():
                           n_ctx=maxc, k=4, n_val=args.n_val, W=args.world, speed=args.wspeed,
                           stats=data.stats)  # [STD-FIX] test standardized with TRAIN stats
     steps = 200 if args.smoke else args.steps
-    nb, B_eval = (2, 16) if args.smoke else (24, 32)
+    nb, B_eval = (2, 16) if args.smoke else (args.eval_nb, 32)
 
     if args.precheck:
         # kill-switch arms: short baseline vs strided slow-clock coarse (span = L*stride frames).
@@ -321,7 +340,7 @@ def main():
         fg, nf6, sharp, dt, seen = eval_arm(name, diff, test, ae, nc, nf, maxc, N=args.N,
                                             nfe=args.nfe, nb=nb, B=B_eval, seed=args.seed,
                                             stride_c=sc)
-        arms[name] = (fg, nf6, sharp, dt, seen)
+        arms[name] = (fg, nf6, sharp, dt, seen, nc * sc + data.k - 1)   # + reach in frames
         wb.summary({f"{name}/fg_mse_all": float(fg.mean()), f"{name}/sharp": sharp,
                     f"{name}/fg_mse_hard": float(fg[nf6 > 0.1].mean()) if (nf6 > 0.1).any() else 0.0})
         wb.image(f"{name}/eval_grid", f"logs_rhcp/mem_gate_{name}_s{args.seed}.png")
