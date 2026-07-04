@@ -203,3 +203,45 @@ What is postponed (NOT cancelled), for a later ~5h GPU slot:
   item 1 uses the two-branch wording (see DISS_DIGEST + rewrite files); digest Q2 record gets the
   "architecture generalizes to the depth-parameterized family" note (author signed off by
   approving this memo).
+
+---
+
+## ADDENDUM — pre-check execution record (2026-07-04, written live; full logs in logs_rhcp/)
+
+The §3 kill-switch fired and was iterated per the frozen rules. Complete trail (ALL attempts are
+reported in the article regardless of outcome — no dataset roulette without diagnosis):
+
+1. **hgrid** (world 768, kx scaled ×4 for AE-reuse, seeds 1000/2000): regime verification PASS,
+   AE gate PASS (0.0021). Pre-check @20k (`hgrid_precheck_s0_v2.log`): dead-flat null — HARD
+   −0.0008 [−0.0027,+0.0012]; all dt bands null. Budget extension @40k budget-matched
+   (`hgrid_precheck_s0_40k.log`): **LOSS** — HARD −0.0025 [−0.0042,−0.0008], ALL −0.0012,
+   dt>192 −0.0026; more optimization made the unaddressable slots pure attention cost.
+   **Diagnosed cause (established, not speculative):** the ×4 kx scaling makes the background
+   EXACTLY 192-px periodic — pairwise MSE 0.000000 between the four aliased viewport positions
+   (crop test in the git log). Slot addressing lost the absolute-position cue it plausibly used
+   on loopmom (where k=1 components made positions unique). The AE-reuse constraint CAUSED this;
+   it is hereby dropped (fresh AE per testbed variant; within-grid comparability only needs one
+   shared AE per campaign).
+2. **hgrid2** (+ DC k=1 brightness cue, kx=1 forced after a kx=2 bug left 2-fold aliasing; seeds
+   1100/2100): gates PASS. Pre-check ABORTED mid-run in favor of the stronger variant: the DC
+   cue is mechanistically doubtful (encoder GroupNorms attenuate per-sample DC) and time-to-
+   decision favored the proven recipe. Baseline ckpt kept (`mem_gate_hgrid2pc-nctx6_*`) for a
+   later cue-strength ablation (~2h to backfill).
+   Probe attempts to measure cue visibility in latents FAILED and are retracted: v1 absolute-
+   position probe invalid by construction (per-world random phases); v2 relative-displacement
+   probe too weak even for pixel-level positive controls. Kept in `scripts/probe_position.py`
+   for the record.
+3. **hgrid3** (scaled-loopmom background: UNSCALED kx with k=1 FORCED — note loopmom itself drew
+   k=1 with only p≈0.59; seeds 1400/2400): crop-uniqueness 0.004–0.010 (≫ hgrid2's 0.0006–0.003),
+   regime PASS (gap 192, 204 beyond-48 frames/clip, coverage 88.5%), fresh AE
+   `hier_ae_hgrid3.pt` (fine 0.0024/coarse 0.0059), gate PASS, floors: persistence 0.2381,
+   ceiling 0.0108 (sharp 0.2084), raw-GT sharp 0.4218. Pre-check @40k RUNNING with an added
+   **contiguous coarse-48 positive-control arm** (loopmom's exact winning design).
+
+**Frozen decision rules for the hgrid3 verdict:** strided WIN on HARD (CI>0) → rollout campaign
+launches on hgrid3 (all §4 arms; floors/GO-gate re-run with the fresh AE first). Strided null
+but contig48 retrieves → the STRIDE mechanism is implicated → design decision escalated to the
+author (contiguous-d1 costs ≈3× tokens and weakens the token-budget story). Both null → FULL
+STOP; comprehensive diagnosis to the author; no further dataset iterations autonomously.
+Chronic checkpoint-collision class fixed twice (legacy loopmom names, then cross-dataset names)
+→ arm names now dataset-prefixed.
