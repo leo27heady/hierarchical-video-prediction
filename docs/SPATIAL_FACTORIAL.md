@@ -43,3 +43,37 @@ grid above answers Claim 3 without it.
 spat18: ~736-token seq, ~0.25 s/step × 30k ≈ 2.2h + eval. spat18-reg: same. Total ≤ 4.5h GPU,
 both today; seed-1 replication of the Claim-1 headline pair (hier-long + flat-budget, original
 protocol) runs overnight after.
+
+---
+
+## MEASURED RESULTS (2026-07-04/05, seed 0; logs: rhvd_eval_spat18{,-reg}_s0.npz, compare runs)
+
+Full factorial (fg-MSE ALL over 152 AR frames, cluster CIs; tokens in parentheses):
+
+| window | full-res history | coarse history | paired delta (full − coarse) |
+|---|---|---|---|
+| 18f, diff | flat-budget 0.2038 (1152) | spat18 0.2120 (672) | **−0.0082 [−0.0115,−0.0050] LOSS** (short-h concentrated, null by h>120; sharp 0.058 vs 0.050) |
+| 18f, reg | reg-flat 0.2015 (1152) | spat18-reg 0.2008 (672) | **+0.0008 [−0.0013,+0.0029] null** (h61-120 HARD +0.0047 WIN; tiny h1-8 loss) |
+| 48f, diff | flat-long 0.1564 (3072) | hier-long 0.1848 (1152) | −0.0284 (from T4; 2.7× token gap) |
+
+**G-S1 verdict (head-dependent):** for the DIFFUSION head, coarse history is a small, real,
+short-horizon-concentrated cost (−0.008 ALL at 42% token savings). For the REGRESSION head —
+the better rollout head (H2 reversal) — coarse history is **statistically free** (null ALL at
+42% savings, long-horizon HARD slightly better). The "intrinsically-better abstraction"
+hypothesis is NOT supported; the supported Claim-3 form is ECONOMIC + head-conditional:
+abstraction is lossy compression whose savings buy the memory window, and with the regression
+head the loss term is ~zero.
+**G-S2 (interaction):** the abstraction cost per saved token is similar at both windows for
+diffusion (~0.007-0.008 per 480 tokens); no evidence the cost shrinks with window.
+**G-S3 (window at fixed representation):** hier-long 0.1848 (W48) vs spat18 0.2120 (W18):
+window extension via coarse tokens buys −0.027 — dwarfs the abstraction cost, same law as T4.
+**Combined-optimum readout:** spat18-reg (672 tok) 0.2008 ≤ flat-budget-diff (1152 tok) 0.2038 —
+regression + coarse history at 58% tokens matches the diffusion flat arm; with W48 (reg-long
+0.1682 @1152) the recipe "reg head + coarse history + long window" is the cheapest strong
+configuration measured.
+
+**Claim-1 replication (same night):** hier-long vs flat-budget at seed 1 = WIN in EVERY cell
+(ALL +0.0354 [+0.0267,+0.0447]; HARD h25-60 +0.0622; sharp 0.088 vs 0.057). Two-seed status:
+CONFIRMED (seed-0 +0.0189). Honest nuance: onset boundary is seed-variable (s0 null h<25, s1
+wins from h1-8; hier-long seed spread 0.1848→0.1690 over a stable flat baseline) — the robust
+claim is the win and its mid-horizon peak, not the exact onset frame.
