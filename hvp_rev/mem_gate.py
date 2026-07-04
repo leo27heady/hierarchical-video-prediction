@@ -276,6 +276,9 @@ def main():
     ap.add_argument("--wspeed", type=int, default=4)
     ap.add_argument("--n_val", type=int, default=250)
     ap.add_argument("--no_wandb", action="store_true")
+    ap.add_argument("--ae_path", default="logs_rhcp/hier_ae_mom.pt")
+    ap.add_argument("--with_contig", action="store_true",
+                    help="precheck: add a contiguous coarse-48 positive-control arm (loopmom's winner)")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
     maxc = args.long * (args.stride if args.precheck else 1)   # SHARED tj pool = max span
@@ -283,7 +286,7 @@ def main():
         wb.init(f"memgate-{'precheck' if args.precheck else 'gate'}-s{args.seed}"
                 + ("-smoke" if args.smoke else ""),
                 config=vars(args), tags=["hgrid-precheck" if args.precheck else "memgate"])
-    ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
+    ae = hier_convae.load(args.ae_path)
     data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
                           n_ctx=maxc, k=4, W=args.world, speed=args.wspeed)
     test = ActionHierData(ae, args.test_path, args.test_path.replace(".npy", "_actions.npy"),
@@ -303,6 +306,10 @@ def main():
         tagpc = os.path.basename(args.train_path).split("_")[0] + "pc"   # e.g. hgridpc / hgrid2pc
         arm_specs = [(f"{tagpc}-nctx6", 6, 6, 1),
                      (f"{tagpc}-stride{args.long}x{args.stride}", args.long, 6, args.stride)]
+        if args.with_contig:
+            # positive control: contiguous coarse-48 (stride 1, 48-frame lookback) — the exact
+            # design that retrieved on loopmom. Disambiguates stride-mechanism vs dataset failure.
+            arm_specs.append((f"{tagpc}-contig48", 48, 6, 1))
     else:
         arm_specs = [("nctx6", 6, 6, 1), (f"coarse{args.long}", args.long, 6, 1)]
         if args.with_longboth:

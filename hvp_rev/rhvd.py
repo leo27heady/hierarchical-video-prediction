@@ -717,6 +717,7 @@ def main():
     ap.add_argument("--warm", type=int, default=48, help="universal GT warmup (H-grid: 192)")
     ap.add_argument("--n_val", type=int, default=250)
     ap.add_argument("--no_wandb", action="store_true")
+    ap.add_argument("--ae_path", default="logs_rhcp/hier_ae_mom.pt")
     args = ap.parse_args()
     M._BF16 = bool(args.bf16)
 
@@ -738,7 +739,7 @@ def main():
                             win=WIN, campaign="hgrid" if args.warm == 192 else "loopmom"),
                 tags=["hgrid" if args.warm == 192 else "loopmom", mode_])
 
-    ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
+    ae = hier_convae.load(args.ae_path)
     data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
                           n_ctx=6, k=4, W=args.world, speed=args.wspeed)
     test = ActionHierData(ae, args.test_path, args.test_path.replace(".npy", "_actions.npy"),

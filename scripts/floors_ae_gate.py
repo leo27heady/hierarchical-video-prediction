@@ -34,8 +34,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--train_path", default="data/hgrid_train_1200x480.npy")
     ap.add_argument("--test_path", default="data/hgrid_test_300x480.npy")
+    ap.add_argument("--ae_path", default="logs_rhcp/hier_ae_mom.pt")
     args = ap.parse_args()
-    ae = hier_convae.load("logs_rhcp/hier_ae_mom.pt")
+    ae = hier_convae.load(args.ae_path)
     train = np.load(args.train_path, mmap_mode="r")
     test = np.load(args.test_path, mmap_mode="r")
 
