@@ -302,3 +302,25 @@ RULES (binding):
 - FAIL of either -> H-grid closes as the single-step characterization (reach dose-response +
   aliasing ablation), labeled with the seed outcome; no further capability spend.
 Anything not covered above -> default to FAIL (no soft reads).
+
+### DISAMBIGUATION VERDICT (2026-07-05, read against the binding rule; logs hgrid3_disambig_s{0,1}.log)
+
+- **R1 (replication) PASS:** stride56x4 seed-1 vs seed-1 nctx6: REACHABLE-HARD +0.0134
+  [+0.0107,+0.0161] WIN; HARD +0.0089 [+0.0069,+0.0109] WIN. Magnitude 2.7x smaller than
+  seed-0 (+0.0363/+0.0273) — real seed variance, disclosed; seed-mean reachable ~+0.025.
+- **R2 (reach causality) PASS:** stride56 vs contig56 (SAME tokens/slots, seed-0 shared pool):
+  DIFFERENTIAL 59<dt<=227 +0.0374 [+0.0334,+0.0416] WIN, SHARED +0.0338 [+0.0030,+0.0600] WIN;
+  replicates at seed-1 with the textbook signature (SHARED null -0.0005, DIFFERENTIAL +0.0144
+  [+0.0118,+0.0171] WIN — the win confined exactly to the reach-differential band).
+- **R3 (informative):** stride48x4 stays ~flat at BOTH seeds (HARD +0.0004 null / +0.0011
+  [+0.0002,+0.0021]); contig56 never helps at either seed (HARD -0.0009 both). Tally: 4 runs
+  with span <= loop ~= zero effect; 2 runs with span > loop both CI-clean positive → the
+  THRESHOLD story is supported over pure luck, with honest nuances: (a) effect magnitude is
+  seed-noisy (2.7x); (b) the mechanism signature differs by seed — the seed-0 model uses memory
+  uniformly (56>48 even in the shared band +0.0343), the seed-1 model is reach-graded (shared
+  +0.0053 vs differential +0.0181). "Span>loop reliably enables retrieval learning; how the
+  learned circuit is used varies by seed."
+- **RULE OUTCOME: PASS → decisive rollout pair authorized and LAUNCHED** (d1-56-diff vs
+  d0-diff-long, hgrid3, WARM=224, uniform B8x40k; GO-gate oracle PASS 0.0105 ~= ceiling;
+  0.209 s/step probe). Gate for the pair (pre-registered): reachable-HARD (48<dt<=227, seen>=0.5)
+  cluster-CI > 0 over the 256-frame rollout. Full Tier-A grid ONLY on a green pair.
