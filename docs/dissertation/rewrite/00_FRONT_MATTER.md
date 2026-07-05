@@ -114,16 +114,17 @@ period of approximately 48 frames), and a bridge evaluation on the standard Movi
 **[AUTHOR: the OpenSTL bridge (T7) is queued — confirm completion before defense or soften to
 "planned"]**. A matched-capacity, matched-compute comparison of prediction mechanisms (regression,
 diffusion, energy-based descent) on a shared backbone shows that regression averages over possible
-futures while diffusion commits to sharp, correctly located content (foreground error 0.0363
-versus 0.0489; on the hard, genuinely generative subset 0.1538 versus 0.1890), and includes a
+futures while diffusion commits to sharp, correctly located content (foreground error 0.0512
+versus 0.0664; on the hard, genuinely generative subset 0.1549 versus 0.1808), and includes a
 two-sided capability study of Energy-Based Transformers using the official implementation — a
 characterized negative result: one published recipe yields a stably mis-ordered energy landscape,
 the other repairs the ordering, yet gradient descent from the prescribed initialization does not
 reach structured outputs at the scale reachable in this work. For the developed hierarchical
 model, single-step evaluation shows that long coarse-level memory reduces the error on hard
 re-entry frames by approximately 13% (two seeds, confidence intervals excluding zero), a
-capability that emerges only late in training (null at 6,000 steps, win at 20,000); in 200-frame
-autoregressive rollouts the hierarchical model beats a flat model matched in context-token budget
+capability that emerges only under a larger optimization budget (null at 6,000 steps, win at
+20,000; budget-matched schedules); in 152-frame autoregressive rollouts (after a 48-frame
+ground-truth warm-up) the hierarchical model beats a flat model matched in context-token budget
 precisely beyond the horizon of the flat context window (null at every horizon-hardness bin below
 horizon 25, a win with confidence interval excluding zero at every bin from horizon 25 onward),
 and the overall window ordering confirms that longer memory windows strictly improve rollout error
@@ -183,8 +184,8 @@ is scoped by its applicability taxonomy.
 
 7. Conducted comprehensive experimental verification of the developed methods and technology:
    a matched-capacity, matched-compute comparison of prediction mechanisms (including the
-   two-sided characterized study of energy-based descent), single-step and 200-frame
-   autoregressive-rollout evaluations with paired-bootstrap confidence intervals, and
+   two-sided characterized study of energy-based descent), single-step and 152-frame
+   autoregressive-rollout evaluations with clip-clustered paired-bootstrap confidence intervals, and
    memory-consumption measurements; the developed system outperforms the token-budget-matched
    flat control exactly in the memory-horizon regime, and the boundary conditions of every claim
    are stated explicitly. *(Task 7)*

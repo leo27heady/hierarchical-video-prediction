@@ -409,18 +409,29 @@ runs, converged with two external reviewers, and is binding; we quote it:
 > + aliasing ablation), labeled with the seed outcome; no further capability spend.
 > **Anything not covered above → default to FAIL** (no soft reads).
 
-**[BRANCH: PASS — retain iff R1 AND R2 pass; insert the seed-1 and shared-pool numbers.]**
-The threshold hypothesis is supported: the span-224 effect replicates on an independent seed (R1)
-and is reach-causal at matched tokens — the strided arm beats a contiguous arm with identical
-token and slot counts but 59-frame reach (R2), so the win is attributable to *where the slots
-point*, not to their number. R3's 48-slot seed-1 outcome [flat / jumped — report as measured]
-[either sharpens the threshold reading or qualifies it]. Together with the dose-response of
-§4.5.3, operating point B then establishes the capability form of the hierarchy claim at the
-single-step level — retrieval beyond any affordable flat window, switching on when the memory
-span crosses the effective loop — and the pre-registered decisive rollout pair (d1-56slot vs
-d0-diff-long, WARM = 224, uniform B8×40k) is justified as the confirmatory experiment, with the
-teacher-forced caveat stated: the single-step study conditions on GT context, and the rollout
-pair is the real test.
+**[BRANCH: PASS — R1 AND R2 passed 2026-07-05; measured numbers inserted. Mechanism wording
+revised per external review: the original "attributable to where the slots point" formulation
+over-read the seed-0 evidence and is retracted.]**
+R1 (replication): the span-224 arm beats its baseline on an independent seed — reachable-HARD
++0.0134 [+0.0107, +0.0161], HARD +0.0089 [+0.0069, +0.0109] — at 2.7× smaller magnitude than
+seed 0 (+0.0363 / +0.0273): the effect is replicable but seed-noisy (seed mean ≈ +0.025
+reachable). R2 (same-token control): the strided arm beats the contiguous arm with identical
+token and slot counts (reach 227 vs 59) at both seeds (differential band +0.0374
+[+0.0334, +0.0416] seed 0; +0.0144 [+0.0118, +0.0171] seed 1). The MECHANISM ATTRIBUTION is
+seed-dependent and we do not over-read it: at seed 1 the win concentrates in the
+reach-differential bands exactly as a per-sample reach-causal account predicts (56-vs-48 shared
++0.0053 vs differential +0.0181; 56-vs-contig shared null −0.0005 vs differential +0.0144), but
+at seed 0 it is uniform across shared and differential bands (+0.0343 vs +0.0366) — a
+circuit-level rather than per-sample-reach signature. R3: the span-192 arm stays ≈flat at both
+seeds (+0.0004; +0.0011) and the contiguous arms never help (both seeds). The reliable two-seed
+statement is therefore: **a memory span exceeding the effective loop reliably enables retrieval
+learning (2/2 span>loop runs CI-positive vs 0/4 span≤loop runs), while the magnitude and
+per-sample usage pattern of the learned circuit vary by seed.** Disclosure: the single-step gate
+CIs in this subsection are sample-iid, not clip-clustered; the load-bearing cells survive a
+conservative 2–3× design-effect widening (a clip-clustered recomputation is reported alongside).
+The pre-registered decisive rollout pair (d1-56slot vs d0-diff-long, WARM = 224, uniform B8×40k)
+is thereby justified as the confirmatory experiment, with the teacher-forced caveat stated: the
+single-step study conditions on GT context, and the rollout pair is the real test.
 
 **[BRANCH: FAIL — retain iff R1 or R2 fails, or any uncovered outcome occurs.]**
 The H-grid closes as a measured characterization rather than a capability claim, in three
