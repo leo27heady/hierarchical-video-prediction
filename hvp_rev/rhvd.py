@@ -86,6 +86,10 @@ ARMS = {
     #      SAME 18-frame window. Isolates Claim 3 (spatial abstraction) from window length.
     "spat18":     (18,      6,       "diff", 1, 0),
     "spat18-reg": (18,      6,       "reg",  1, 0),
+    # ---- decisive rollout pair (pre-committed rule PASSED 2026-07-05): d1 with the span-224 fix
+    #      (56 slots @ stride 4 > effective loop ~213; 1552-token seq) vs d0-diff-long, both at
+    #      WARM=224 on hgrid3. Full grid only if this pair's reachable-HARD rollout gate is green.
+    "d1-56-diff": (56,      6,       "diff", 4, 0),
 }
 
 
@@ -732,8 +736,8 @@ def main():
         return
 
     if args.arm.startswith(("d0-", "d1-", "d2-")):
-        assert args.warm == 192 and "hgrid" in args.train_path and args.world == 768, \
-            "H-grid arms require --train_path data/hgrid_* --test_path data/hgrid_* --world 768 --warm 192"
+        assert args.warm in (192, 224) and "hgrid" in args.train_path and args.world == 768, \
+            "H-grid arms require hgrid data, world 768, warm 192 (span-192 era) or 224 (span-224 pair)"
 
     if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
         n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_ = ARMS[args.arm]
