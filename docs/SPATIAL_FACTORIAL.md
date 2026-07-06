@@ -77,3 +77,18 @@ configuration measured.
 CONFIRMED (seed-0 +0.0189). Honest nuance: onset boundary is seed-variable (s0 null h<25, s1
 wins from h1-8; hier-long seed spread 0.1848→0.1690 over a stable flat baseline) — the robust
 claim is the win and its mid-horizon peak, not the exact onset frame.
+
+---
+
+## FRONTIER COMPLETION (pre-registered 2026-07-06, author request: every flat point gets a
+## same-budget hierarchical partner)
+
+Gap: flat-long (3072 tok) and hier-short (480 tok) had no budget-matched partners. New arms:
+**hier-rich** (48c+36f = 3072 tok, B8x60k sample-matched to flat-long's disclosed regime) and
+**flat-short** (8f = 512 tok ~ hier-short's 480, B16x30k). PRE-REGISTERED READING: at 3072
+tokens the window is SATURATED at 48 frames by the T=100 train clips — hierarchy cannot buy
+more window, so per the factorial's abstraction cost the honest expectation is hier-rich ~<=
+flat-long (CONVERGENCE at the frontier top). The efficiency claim's correct form is "the
+hierarchy curve reaches a given quality at fewer tokens and converges with flat where the
+window saturates" — a frontier-from-below, not dominance at every budget. At the low end,
+hier-short vs flat-short tests the frontier's bottom. Diffusion heads first; reg optional.

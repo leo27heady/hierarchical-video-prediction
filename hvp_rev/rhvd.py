@@ -86,6 +86,16 @@ ARMS = {
     #      SAME 18-frame window. Isolates Claim 3 (spatial abstraction) from window length.
     "spat18":     (18,      6,       "diff", 1, 0),
     "spat18-reg": (18,      6,       "reg",  1, 0),
+    # ---- token-budget FRONTIER completion (author request 2026-07-06): every flat point gets a
+    #      hierarchical partner at the SAME budget. hier-rich = flat-long's 3072 tokens spent as
+    #      48 coarse + 36 fine (window saturated at 48 by the T=100 train clips — hierarchy cannot
+    #      buy MORE window here, so the pre-registered honest expectation is CONVERGENCE at the
+    #      frontier top, per the factorial's abstraction-cost result, NOT hier dominance).
+    #      flat-short = hier-short's ~480-token partner (8 fine = 512 tokens).
+    "hier-rich":      (48,  36,      "diff", 1, 0),
+    "hier-rich-reg":  (48,  36,      "reg",  1, 0),
+    "flat-short":     (0,   8,       "diff", 1, 0),
+    "flat-short-reg": (0,   8,       "reg",  1, 0),
     # ---- decisive rollout pair (pre-committed rule PASSED 2026-07-05): d1 with the span-224 fix
     #      (56 slots @ stride 4 > effective loop ~213; 1552-token seq) vs d0-diff-long, both at
     #      WARM=224 on hgrid3. Full grid only if this pair's reachable-HARD rollout gate is green.
