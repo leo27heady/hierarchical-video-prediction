@@ -324,3 +324,22 @@ Anything not covered above -> default to FAIL (no soft reads).
   d0-diff-long, hgrid3, WARM=224, uniform B8x40k; GO-gate oracle PASS 0.0105 ~= ceiling;
   0.209 s/step probe). Gate for the pair (pre-registered): reachable-HARD (48<dt<=227, seen>=0.5)
   cluster-CI > 0 over the 256-frame rollout. Full Tier-A grid ONLY on a green pair.
+
+### FINAL: DECISIVE PAIR VERDICT — RED (2026-07-05/06; logs_rhcp/hgrid3_pair_verdict.log). H-GRID CLOSED.
+
+d1-56-diff vs d0-diff-long, 256-frame self-fed rollout after WARM=224, cluster CIs:
+- Pre-registered gate (reachable-HARD dt cells): ALL NULL — dt 49-96 +0.0020 [-0.0071,+0.0111];
+  dt 97-192 -0.0028 [-0.0088,+0.0035]; dt>192 -0.0018 [-0.0065,+0.0027]. NOT green -> per the
+  binding rule, NO Tier-A grid; the author's conditional pre-authorization does not fire.
+- The informative horizon profile: d1-56 WINS h1-8/h9-24 CI-clean (+0.0211/+0.0224 HARD,
+  +0.0027..+0.0374 across bins) while memory content is still near-GT; null h25-60; small
+  systematic LOSSES h61+ (-0.006..-0.010). Both arms converge to ~0.32-0.33 at long horizons
+  (persistence 0.2361 beats both there). Sharpness d1 0.0216 vs d0 0.0194.
+- CLOSURE STATEMENT (goes to CH4 §4.5): single-step retrieval over slot memory is real and
+  span-threshold-gated (2/2 span>loop vs 0/4 span<=loop, GT-fed), but does NOT convert to a
+  rollout capability at this scale: under self-feeding the slot contents degrade and the
+  advantage inverts after ~24 frames. The testbed-A matched-budget win (loop <= warm window,
+  memory continuously refreshed by recent GT-anchored context) vs the testbed-B failure (loop >>
+  window, memory purely self-generated) TOGETHER bound the mechanism: hierarchical slot memory
+  pays where its contents remain trustworthy. Boundary-condition section as pre-registered;
+  "When Does Hierarchy Pay?" branch title stands.
