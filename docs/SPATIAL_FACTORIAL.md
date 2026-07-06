@@ -110,3 +110,34 @@ window) coarse slots are redundancy and flat's extra fine frames win; at window 
 cost (-0.0131, consistent with G-S1's diffusion penalty). The 1152 headline is untouched.
 Claim-1 wording upgrade: "hierarchy dominates the token-budget frontier exactly where window
 extension is both possible and valuable" — a bounded, dose-response-supported efficiency claim.
+
+---
+
+## FRONTIER LOWER EDGE (pre-registered 2026-07-07, written BEFORE the runs)
+
+**Motivation (author question):** the 3-point frontier shows hier winning only at 1152. The
+win-band theory is geometric: hier wins iff its budget affords a coarse span >= the memory
+horizon (~48 frames = 48x16 = 768 coarse tokens + a minimal fine tail) while flat's same budget
+affords a window < 48. That predicts the lower edge of the win band at ~896 tokens — currently
+UNMEASURED (the gap between 512 LOSS and 1152 WIN). Nailing it upgrades "hier wins at one
+budget" to "hier wins across the band [~900, 3072) — flat needs up to 3.4x the tokens to
+match", with both band edges predicted from geometry BEFORE measurement.
+
+**New arms (standard regime, B16x30k bf16, seed 0, loopmom, diffusion head):**
+- **hier-min** = 48c + 2f = 48*16 + 2*64 = **896 ctx tokens** (span 48 >= loop ~48; minimal
+  recent-fine tail; actions are per-target-frame so motion does not depend on fine history).
+- **flat-min** = 14f = **896 ctx tokens** (window 14 << loop 48; exact budget match 896=896).
+
+**PRE-REGISTERED PRIMARY READING:** hier-min WINS vs flat-min on ALL and on HARD h>=25 bins
+(cluster CI > 0) — the win band's lower edge is at or below 896, matching the geometric
+prediction; the frontier figure gains a 4th point and the efficiency claim its measured band.
+
+**PRE-REGISTERED ALTERNATIVE (fine-context floor):** if 2 recent fine frames are insufficient
+for local detail continuity, hier-min may go null/LOSS despite spanning the loop — then the
+lower edge sits between 896 and 1152 and is set by the fine floor, not the coarse span. This is
+reported as a measured boundary refinement, NOT a failure of the band theory (the span
+mechanism is already isolated by mem_gate T3 and the R2 reach-causality read). Contingency (run
+only in this branch, not by default): one pair at 1024 tokens (48c+4f vs 16f).
+
+**Decision rule (binding):** report whichever branch measures, no soft reads; two-seed rule
+before any claim escalation; no other arms authorized by this block.

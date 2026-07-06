@@ -100,6 +100,12 @@ ARMS = {
     #      (56 slots @ stride 4 > effective loop ~213; 1552-token seq) vs d0-diff-long, both at
     #      WARM=224 on hgrid3. Full grid only if this pair's reachable-HARD rollout gate is green.
     "d1-56-diff": (56,      6,       "diff", 4, 0),
+    # ---- FRONTIER LOWER EDGE (pre-registered 2026-07-07, SPATIAL_FACTORIAL.md final block):
+    #      the win-band theory predicts hier wins from ~896 tokens (the cheapest budget whose
+    #      coarse span covers the ~48-frame loop) while flat's 896 tokens buy only a 14-frame
+    #      window. Exact budget match: 48*16 + 2*64 = 896 == 14*64. Standard regime B16x30k.
+    "hier-min":   (48,      2,       "diff", 1, 0),
+    "flat-min":   (0,       14,      "diff", 1, 0),
 }
 
 
