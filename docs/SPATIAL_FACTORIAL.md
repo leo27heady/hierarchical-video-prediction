@@ -92,3 +92,21 @@ flat-long (CONVERGENCE at the frontier top). The efficiency claim's correct form
 hierarchy curve reaches a given quality at fewer tokens and converges with flat where the
 window saturates" — a frontier-from-below, not dominance at every budget. At the low end,
 hier-short vs flat-short tests the frontier's bottom. Diffusion heads first; reg optional.
+
+### FRONTIER MEASURED (2026-07-07; frontier_{top,bottom}.log, rhvd_eval_{hier-rich,flat-short}_s0.npz)
+
+| budget | flat | hier | paired ALL delta (hier-favorable >0) | verdict |
+|---|---|---|---|---|
+| ~500 | flat-short 0.2224 (512, sharp 0.0432) | hier-short 0.2260 (480, 0.0392) | -0.0036 [-0.0063,-0.0010] | flat WINS |
+| 1152 | flat-budget 0.2038 | hier-long 0.1848 | +0.0189 s0 / +0.0354 s1 | HIER WINS (2 seeds) |
+| 3072 | flat-long 0.1564 (sharp 0.0996) | hier-rich 0.1695 (0.0898) | -0.0131 [-0.0201,-0.0069] | flat WINS |
+
+READING (resolves the pre-registered dual branch to the third, measured outcome — "inverts at
+both ends", stricter than the pre-registered convergence): hierarchy pays in the MID-budget
+regime where coarse tokens buy memory window that (a) exceeds what fine tokens afford and (b)
+matters (window >= memory horizon scale). Below the memory-relevance threshold (~500 tok, 6-8f
+window) coarse slots are redundancy and flat's extra fine frames win; at window saturation
+(3072 tok, 48f = clip-bounded) coarse slots displace full-res frames and pay the abstraction
+cost (-0.0131, consistent with G-S1's diffusion penalty). The 1152 headline is untouched.
+Claim-1 wording upgrade: "hierarchy dominates the token-budget frontier exactly where window
+extension is both possible and valuable" — a bounded, dose-response-supported efficiency claim.
