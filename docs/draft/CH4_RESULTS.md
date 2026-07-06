@@ -533,3 +533,18 @@ ALL +0.0005; contig48 null; ~7× / +0.002-vs-+0.0135 / 2%-vs-13%; span-224 HARD 
 REACHABLE +0.0363, beyond-227 null; R1/R2/R3 quoted from the PRE-COMMITTED block; rollout-CI
 resolution ±0.005–0.02). Branch placeholders [BRANCH: PASS]/[BRANCH: FAIL] to be resolved from
 the disambiguation runs (a)/(b) of the pre-committed block; exactly one branch survives.
+
+### §4.5 PAIR OUTCOME (2026-07-06, fills the rollout-level conclusion; integrate on next pass)
+
+The pre-registered decisive pair returned RED: over 256 self-fed rollout frames the gate cells
+are null (dt 49–96 HARD +0.0020 [−0.0071,+0.0111]; dt 97–192 −0.0028 [−0.0088,+0.0035]; dt>192
+−0.0018 [−0.0065,+0.0027]), so the single-step capability does NOT convert to a rollout
+capability at this scale, and no further capability experiments were run (binding rule). The
+horizon profile is the finding: d1-56 wins every h1–24 bin CI-clean (HARD +0.0211/+0.0224)
+while its slot memory still carries near-ground-truth content, fades to null by h25–60, and
+inverts to small systematic losses beyond h61 as the buffer fills with self-generated,
+degraded content. Read together with §4.3: hierarchical slot memory pays where its contents
+remain trustworthy — continuously refreshed within the recent window (testbed A, matched-budget
+win over 152 frames) or near a ground-truth anchor (testbed B, h≤24) — and cannot yet be
+sustained by pure self-feeding across a 213-frame loop. This bounds the mechanism honestly and
+completes the boundary-condition section; the §4.3 matched-budget result is unaffected.
