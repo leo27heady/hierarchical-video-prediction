@@ -548,3 +548,80 @@ remain trustworthy — continuously refreshed within the recent window (testbed 
 win over 152 frames) or near a ground-truth anchor (testbed B, h≤24) — and cannot yet be
 sustained by pure self-feeding across a 213-frame loop. This bounds the mechanism honestly and
 completes the boundary-condition section; the §4.3 matched-budget result is unaffected.
+
+---
+
+### §4.3.x Token-budget frontier [DRAFT — arms running] (2026-07-06; integrate as §4.3.6 on next pass; do not cite until the [PENDING] cells fill)
+
+**Design (completed frontier — every flat point gets a same-budget hierarchical partner; author
+request 2026-07-06, pre-registered in `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION block,
+commit 220b44f, arms registered in `hvp_rev/rhvd.py`).** Table 4.2 left the frontier's two ends
+unpaired: flat-long (3,072 tokens) and hier-short (480 tokens) had no budget-matched partners.
+Two new arms complete the grid. At the top, **hier-rich** (48 coarse + 36 fine = 3,072 context
+tokens) vs flat-long — trained at B = 8 × 60k, sample-matched to flat-long's disclosed regime
+*by design*, so the §4.3.4 EMA-horizon/gradient-noise caveat cancels within this pair (both arms
+share it). At the bottom, **flat-short** (8 fine frames = 512 tokens) vs hier-short (480 tokens),
+B = 16 × 30k; the 32-token (≈6.7%) budget mismatch favors flat-short and is disclosed. Diffusion
+heads first (matching the existing diffusion frontier curve); regression twins (hier-rich-reg,
+flat-short-reg) are registered but not launched. Protocol otherwise identical to the §4.3
+campaign (seed 0, loopmom, WARM = 48, 152 AR frames, 100 clips, cluster CIs, empty-fg excluded),
+so all records pair exactly with the existing npz set. Measured runtime reference: the
+3,392-token hier-rich sequence runs ≈0.55 s/step ⇒ ≈9.2 h train + eval.
+
+**Pre-registered reading (quoted verbatim from `docs/SPATIAL_FACTORIAL.md`, written before any
+result):**
+
+> "PRE-REGISTERED READING: at 3072 tokens the window is SATURATED at 48 frames by the T=100
+> train clips — hierarchy cannot buy more window, so per the factorial's abstraction cost the
+> honest expectation is hier-rich ~<= flat-long (CONVERGENCE at the frontier top). The
+> efficiency claim's correct form is 'the hierarchy curve reaches a given quality at fewer
+> tokens and converges with flat where the window saturates' — a frontier-from-below, not
+> dominance at every budget. At the low end, hier-short vs flat-short tests the frontier's
+> bottom."
+
+**Table 4.x — Frontier completion (all result cells [PENDING]; fills from
+`rhvd_eval_{hier-rich,flat-short}_s0.npz` via `logs_rhcp/frontier_top.log` /
+`logs_rhcp/frontier_bottom.log`).** Measured partners, for reference only: flat-long 0.1564 /
+sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both from Table 4.2.
+
+| frontier read | arm(s) | ALL fg-MSE | fg-sharp | paired Δ (flat − hier) | 95% CI |
+|---|---|---:|---:|---:|---|
+| top, new arm | hier-rich (48c+36f, 3072 tok, B8×60k) | [PENDING] | [PENDING] | — | — |
+| bottom, new arm | flat-short (8f, 512 tok, B16×30k) | [PENDING] | [PENDING] | — | — |
+| frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | [PENDING] | [PENDING] |
+| frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | [PENDING] | [PENDING] |
+
+[FIG frontier: quality-vs-token-budget, two curves — hier (480 → 1152 → 3072: hier-short 0.2260,
+hier-long 0.1848, hier-rich [PENDING]) and flat (512 → 1152 → 3072: flat-short [PENDING],
+flat-budget 0.2038, flat-long 0.1564) — expected shape: hier dominates below 1152, curves
+converge at 3072 where the window saturates. Caption: the efficiency claim as a frontier — the
+hierarchy curve reaches a given quality at fewer tokens; convergence at the top is the
+pre-registered expectation, not a failure.]
+
+**Reading (dual branch; exactly one survives when the [PENDING] cells fill).**
+**[BRANCH: CONVERGES — the pre-registered expectation.]** hier-rich ~≤ flat-long at equal 3,072
+tokens and equal training regime: with the 48-frame window saturated by the T = 100 train clips,
+hierarchy has nothing left to buy, and the small diffusion-head abstraction cost (G-S1, −0.0082
+at W18) is the predicted residual. The claim of §4.3 then takes its final, honest form — the
+hierarchy curve is a frontier-from-below: it delivers flat-long-class memory benefit at ~37% of
+the tokens (Table 4.2) and merges with flat where token budget ceases to be the binding
+constraint. flat-short vs hier-short then anchors the bottom: if hier-short also beats
+flat-short at ≈equal budget, the matched-budget law of §4.3.3 holds at every measured point
+below saturation.
+**[BRANCH: hier-rich WINS (CI excluding zero).]** This would *exceed* the pre-registration — the
+36-frame fine recency (vs flat-long's uniform full-res history) buying quality beyond the
+saturated window — and would upgrade the §4.3.4 framing from "flat-long is the outright frontier
+at 2.7×" to "the hierarchical packaging Pareto-dominates at every measured budget". Before any
+such upgrade is worded into §4.6 or the abstract: it is a single-seed read against a
+pre-registration that predicted the opposite, so it requires a seed-1 replication (the §4.3.3
+precedent) and is reported as a surprise, not a confirmation. A hier-rich LOSS larger than the
+W18 abstraction cost, or any outcome not covered above, is reported as measured with no soft
+reads (the §4.5.4 default-to-FAIL discipline applies to wording, not just gates).
+
+*Provenance (this section only): design/arms `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION +
+`docs/HANDOFF_2026-07-06.md` §6 (launch 08:54:46 2026-07-06; chain: hier-rich 60k → flat-short
+30k → compare flat-long,hier-rich → compare flat-short,hier-short; FRONTIER_DONE sentinel);
+arm tuples `hvp_rev/rhvd.py` (hier-rich (48,36,diff), flat-short (0,8,diff) + reg twins);
+measured partner rows from Table 4.2 (`logs_rhcp/compare_clustered.log`); 0.55 s/step from the
+handoff's live-run note. On completion: move the two new rows into Table 4.2, resolve this
+section's branch, and renumber to §4.3.6.*
