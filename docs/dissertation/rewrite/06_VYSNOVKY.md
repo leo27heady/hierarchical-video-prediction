@@ -8,7 +8,9 @@
 > the 7 tasks of `01_VSTUP.md`; the two files must stay in sync), `docs/draft/CH4_RESULTS.md`
 > (audited numbers, including the §4.5 PAIR OUTCOME of 2026-07-06 — the boundary study closed
 > RED; the honest-scoping sentences below carry the trustworthy-memory boundary),
-> `docs/SPATIAL_FACTORIAL.md`, `docs/draft/VALIDITY_AUDIT.md`,
+> `docs/SPATIAL_FACTORIAL.md` (incl. the FRONTIER COMPLETION pre-registration),
+> `docs/draft/T7_BRIDGE.md` (the MEASURED OpenSTL bridge — authoritative for the bridge numbers
+> in result 7), `docs/draft/VALIDITY_AUDIT.md`,
 > `docs/dissertation/rewrite/03_ROZDIL2.md` (reversibility receipts), `05_ROZDIL4.md`
 > (chapter-level conclusions these generalize), `docs/dissertation/DISS_DIGEST.md` §6 («ВИСНОВКИ —
 > 7 results restated against the 7 rewritten tasks; honest scoping») and §8 author decisions.
@@ -153,7 +155,20 @@ system outperforms the token-budget-matched flat control exactly in the memory-h
 and the boundary conditions of every claim are stated explicitly. The published validations of
 the reversibility method ([A2]: 2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are
 retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-MNIST suite is
-**[PENDING — runs launched; fill or soften to "planned" before defense]**.
+**measured** and returns the predicted negative control — flat ≈ hierarchical (180.91 vs 181.29
+aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
+benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
+complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
+specialist regressors (23.97–29.80) disclosed and no leaderboard claim made. The generalization
+study of §4.6 extends this to the remaining suites, **[EXPECTED]** — the selected configuration
+outperforms persistence and the [A2] baselines in accuracy and in the duration of consistency
+retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialized deterministic
+regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
+baseline parity or an additional measured boundary condition]** — together with the **[PENDING]**
+token-budget frontier completion (hier-rich at 3,072 tokens; flat-short at 512), read under its
+pre-registered convergence-at-saturation rule (the efficiency claim's final form is a
+frontier-from-below that converges with flat where the window saturates, not dominance at every
+budget).
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -195,8 +210,8 @@ constant-memory reversible method of Chapter 2 makes affordable [REF: Self-Forci
 training]) convert the single-step capability into a rollout capability. Second, the **extension
 of the memory-horizon protocol to real video**: transferring the re-entry-stratified evaluation
 methodology from the analytic testbed family to natural-video data of the KTH class (where
-hardness labels must be estimated rather than computed exactly), and completing the OpenSTL
-bridge as the connectivity anchor **[AUTHOR: T7]**. These directions require no revision of the
+hardness labels must be estimated rather than computed exactly), building on the completed
+OpenSTL bridge as the connectivity anchor and filling the [EXPECTED] transfer shells of §4.6. These directions require no revision of the
 present results: they extend the measured boundary, which is stated exactly.
 
 ---
@@ -214,4 +229,10 @@ present results: they extend the measured boundary, which is stated exactly.
   (single-step gates: see §4.3.1 design-effect widening; §4.5.4 sample-iid disclosure).
 - Deliberately absent per the rules: any capability headline for operating point B (the study
   closed RED); any factorial-interaction reading of the combined optimum; any new TaxiBJ/KTH
-  commitment; the copyright-certificate sentence.
+  *claim* (the §4.6 transfer shells are [EXPECTED]-marked plans under the Q4 run-or-strike
+  disposition, not commitments — struck before defense if unfilled); any "competitive with the
+  OpenSTL leaderboard on aggregate MSE" phrasing (refuted by measurement: 180.91 vs SimVP 26.69);
+  the copyright-certificate sentence.
+- Result 7's generalization/frontier sentence is dual-branch by construction: the [EXPECTED] and
+  [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
+  in sync with §§4.3.6, 4.6.3–4.6.7 of `05_ROZDIL4.md`.

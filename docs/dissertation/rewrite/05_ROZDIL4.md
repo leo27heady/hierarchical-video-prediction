@@ -9,7 +9,10 @@
 > H-grid capability study closed RED; the PASS-branch capability headline is superseded and this
 > chapter reports the FAIL/boundary reading ONLY, with the single-step threshold result kept as a
 > characterized positive *within* the boundary study), `docs/SPATIAL_FACTORIAL.md` (MEASURED
-> RESULTS), `docs/draft/VALIDITY_AUDIT.md` (corrections + disclosures), `docs/draft/CH3_MECHANISM.md`
+> RESULTS, including the pre-registered FRONTIER COMPLETION block quoted in §4.3.6),
+> `docs/draft/T7_BRIDGE.md` (the MEASURED OpenSTL Moving-MNIST bridge of 2026-07-06 —
+> AUTHORITATIVE for every §4.6.2 number),
+> `docs/draft/VALIDITY_AUDIT.md` (corrections + disclosures), `docs/draft/CH3_MECHANISM.md`
 > (the two-sided EBT study, condensed per author decision Q6(a) = full subsection),
 > `docs/HGRID_DESIGN.md` (pre-registered boundary-study design), `docs/dissertation/DISS_DIGEST.md`
 > (§6 «НОВИЙ РОЗДІЛ 4», §8 decisions Q4/Q6/Q7, item 35 §4.1 disposition, item 38 acts),
@@ -17,10 +20,13 @@
 > **Disposition of the old Ch.4 (per DISS_DIGEST §3):** old §4.1 is **REWRITTEN/EXTENDED** (the
 > [A2] TempVerseFormer receipt datasets are kept as-is per decision Q4; the looping memory-horizon
 > testbed becomes the primary instrument; TaxiBJ/KTH survive only as [A2] receipts); §§4.2–4.4
-> stubs are **WRITTEN NEW** from the [A4] campaign; old §4.5 (впровадження) is **KEPT** with the
-> existing acts wording (TempVerseFormer + entropy tokenization only — no new claims, digest item
-> 38); §4.6 becomes §4.7 with real content. Old Ch.3 figures Рис. 3.1/3.2/3.4 land here (§4.2) per
-> the disposition table at the end of `04_ROZDIL3.md`.
+> stubs are **WRITTEN NEW** from the [A4] campaign; a NEW §4.6 (generalization of the selected
+> configuration — mirroring the final article's full scope: the MEASURED OpenSTL bridge from
+> `docs/draft/T7_BRIDGE.md` plus [EXPECTED]-marked transfer shells) is INSERTED after the
+> boundary study; old §4.5 (впровадження) is **KEPT** with the existing acts wording
+> (TempVerseFormer + entropy tokenization only — no new claims, digest item 38) and lands as
+> §4.7; the chapter conclusions land as §4.8 with real content. Old Ch.3 figures Рис. 3.1/3.2/3.4
+> land here (§4.2) per the disposition table at the end of `04_ROZDIL3.md`.
 > **Cross-reference convention:** the article's "Chapter 2" (testbed) = dissertation §3.4; the
 > article's "Chapter 3" (mechanism study) = §4.2 of this chapter; the article's reversibility
 > chapter = dissertation §§2.3–2.4.
@@ -41,9 +47,12 @@ subsequent table depends on knowing how much of a system arm's score is owed to 
 than to its memory design. The matched-token-budget memory study (§4.3) is the headline result of
 the dissertation. The spatial-abstraction factorial (§4.4) isolates the factor that every
 hierarchical arm otherwise confounds. The temporal-capability boundary study at the second
-operating point (§4.5) closes the experimental program with an honestly bounded negative and the
-methodology lessons it produced. §4.6 documents the implementation of the results, and §4.7
-concludes the chapter.
+operating point (§4.5) closes the capability line of the experimental program with an honestly
+bounded negative and the methodology lessons it produced. The generalization study (§4.6) then
+carries the configuration selected by §§4.2–4.4 onto the standard and synthetic benchmark
+suites — its measured component, the standard Moving-MNIST bridge, serving as the predicted
+negative control of the memory-horizon claim. §4.7 documents the implementation of the results,
+and §4.8 concludes the chapter.
 
 Two standing conventions of the chapter, fixed by the validity audit of the experimental campaign
 and stated once here: (i) the long-horizon evaluation protocol is a **48-frame ground-truth
@@ -118,7 +127,7 @@ of Chapter 3; those benchmarks appear in this dissertation exclusively as [A2] r
 
 *(The OpenSTL Moving-MNIST bridge.)*
 
-**[PENDING — runs launched; fill T7 numbers or soften to "planned" before defense.]** For
+**[MEASURED 2026-07-06 — full results, table, and reading in §4.6.2 (Table 4.8).]** For
 continuity with the literature, the developed stack is additionally evaluated on the standard
 OpenSTL Moving-MNIST suite [REF: OpenSTL]. The pre-registered expectation, recorded before the
 runs: mid-pack aggregate MSE/SSIM against the OpenSTL leaderboard — aggregate metrics on a
@@ -128,6 +137,11 @@ constant all-black prediction outperforms a trained CW-VAE [REF: CW-VAE] on aggr
 ceiling row that decomposes decoder error from dynamics error. The purpose of the bridge is
 connectivity to the standard suite, not a leaderboard claim; the memory-horizon claims of this
 chapter cannot be tested on Moving MNIST at all, for the degeneracy reasons established in §3.4.
+The measured outcome (§4.6.2) confirmed the connectivity, ceiling-row, and
+perceptual-versus-persistence clauses, **refuted the "mid-pack aggregate MSE" clause** (180.91
+against the deterministic specialists' 23.97–29.80 — reported as a refutation, per the standing
+convention of §4.2.3), and returned the predicted flat ≈ hierarchical null as the negative
+control of the memory-horizon claim.
 
 ### 4.1.4 Апаратне та програмне середовище
 
@@ -137,7 +151,7 @@ All experiments of the [A4] campaign (§§4.2–4.5) were performed on a single 
 (NVIDIA GeForce RTX 4060 Ti, 16 GB) — a deliberate constraint of the research design: the
 resource-efficiency claims of Chapter 2 are made *for* this class of hardware, and the complete
 benchmark (data generation, autoencoder training, all system arms, all evaluations) reproduces on
-one such device. The software complex is implemented in Python/PyTorch (§4.6; the module map is
+one such device. The software complex is implemented in Python/PyTorch (§4.7; the module map is
 given in the appendix **[AUTHOR: appendix letter]**). The memory-consumption measurements quoted
 in Chapter 2 (Table 2.3: BPTT 12.2 GB at rollout length $K = 40$ and OOM at $K = 120$ versus the
 developed method's ≈1.1–1.2 GB through $K = 160$; the inner-loop panel behind the ≈0.2% no-go
@@ -198,8 +212,8 @@ the protocol definition and are stated here once:
    across splits (texture familiarity only — re-entry memory requires clip-specific trajectory
    content, which does not transfer across clips), while trajectories and world layouts are
    split-disjoint. All claims are scoped to the memory-horizon regime the testbed
-   operationalizes; the OpenSTL bridge (§4.1.3) anchors short-horizon behavior on a standard
-   benchmark. Generation seeds of the shipped dataset files were not recorded (measured
+   operationalizes; the OpenSTL bridge (§4.1.3, measured in §4.6.2) anchors short-horizon
+   behavior on a standard benchmark. Generation seeds of the shipped dataset files were not recorded (measured
    properties are stated as measured; a frame-hash duplication check found no cross-file clip
    duplication).
 
@@ -657,6 +671,58 @@ it on a shorter full-resolution window. This is the precise sense in which the m
 this dissertation is mechanism-agnostic. [UA-PASS: «механізм-агностичність» — keep as a term with
 a defining gloss at first use.]
 
+### 4.3.6 Доповнення фронтиру токен-бюджету: зіставлені партнери на верхній та нижній межі
+
+*(Token-budget frontier completion: same-budget partners at the top and bottom of the budget
+range. — Arms **[RUNNING]** at the time of writing; pre-registered 2026-07-06.)*
+
+The arm matrix of Table 4.5 leaves the two extreme token budgets without same-budget partners:
+flat-long (3,072 tokens) has no hierarchical arm at its budget, and hier-short (480 tokens) has
+no flat control at its. Two frontier-completion arms are **[RUNNING]** at the time of writing,
+pre-registered before launch (the FRONTIER COMPLETION block of the factorial pre-registration):
+**hier-rich** (48 coarse + 36 fine frames = 3,072 tokens, trained B = 8 × 60,000 steps —
+sample-matched to flat-long's disclosed regime, so the pairing inherits flat-long's §4.3.4
+protocol caveat *symmetrically*) and **flat-short** (8 fine frames = 512 tokens ≈ hier-short's
+480, standard B = 16 × 30,000). Diffusion heads first; the regression twins are optional.
+
+The reading was fixed in advance and is quoted verbatim from the pre-registration: "at 3072
+tokens the window is SATURATED at 48 frames by the T=100 train clips — hierarchy cannot buy more
+window, so per the factorial's abstraction cost the honest expectation is hier-rich ~<= flat-long
+(CONVERGENCE at the frontier top). The efficiency claim's correct form is 'the hierarchy curve
+reaches a given quality at fewer tokens and converges with flat where the window saturates' — a
+frontier-from-below, not dominance at every budget. At the low end, hier-short vs flat-short
+tests the frontier's bottom." [UA-PASS: «фронтир якість–бюджет, що будується знизу»; «збіжність
+на насиченні вікна».]
+
+**Table 4.6a — Token-budget frontier of operating point A (letter-suffixed to avoid renumbering
+the audited table register; final numbering at typeset). Measured anchor rows from Tables
+4.5/4.6; frontier-completion cells [PENDING].**
+
+| Token budget | Flat arm | ALL fg-MSE | Hierarchical arm | ALL fg-MSE | Paired Δ (flat − hier), cluster CI |
+|---|---|---:|---|---:|---|
+| ≈3,072 | flat-long | 0.1564 | hier-rich | **[PENDING]** | **[PENDING]** |
+| 1,152 | flat-budget | 0.2038 | hier-long | 0.1848 | +0.0189 [+0.0121, +0.0264] (Table 4.6) |
+| ≈480–512 | flat-short | **[PENDING]** | hier-short | 0.2260 | **[PENDING]** |
+
+**[FIG 4-x — PLACEHOLDER (token-budget frontier)]**
+*Content:* ALL fg-MSE versus context-token budget at operating point A, one curve per family
+(flat: flat-short → flat-budget → flat-long; hierarchical: hier-short → hier-long → hier-rich),
+cluster-CI whiskers; the pre-registered reading drawn as the expected convergence of the two
+curves at the window-saturated top budget.
+*Source:* **NEW** (plot once the two [PENDING] arms land; measured anchors from Table 4.5).
+
+Under the pre-registered branch — **[EXPECTED]** hier-rich ≈ flat-long within CI, or paying at
+most the small diffusion-head abstraction cost of §4.4 — the §4.3 efficiency claim takes its
+final, correct form: *the hierarchical curve reaches a given quality at a fraction of the tokens
+and converges with the flat curve where the training-clip length saturates the window*, and
+Table 4.6a with [FIG 4-x] presents the whole §4.3 campaign as one quality–budget frontier.
+**[FALLBACK: if hier-rich lands CI-clean *below* flat-long (the abstraction cost does not vanish
+at the top budget), the efficiency claim is scoped to sub-saturation budgets exactly as measured;
+if it lands CI-clean *above* flat-long, the convergence expectation is reported as refuted and
+the frontier top re-characterized. No branch touches the matched-budget headline of §4.3.3, which
+is complete at 1,152 tokens.]** **[AUTHOR: fill the [PENDING] cells from the completed runs, or
+mark the subsection "planned" before defense if the arms have not landed.]**
+
 ## 4.4 Факторне дослідження просторової абстракції: економічний, залежний від ядра вердикт
 
 *(The spatial-abstraction factorial: an economic, head-conditional verdict.)*
@@ -890,7 +956,208 @@ with self-generated content); the pre-registered dt-gate cells marked as null.
    a power argument against the plausible effect size, not just a confidence interval spanning
    zero — and both the underpowered and the widened reads are disclosed.
 
-## 4.6 Впровадження результатів дослідження
+## 4.6 Узагальнення обраної конфігурації на стандартні та синтетичні набори даних
+
+*(Generalization of the selected configuration to standard and synthetic datasets.)*
+
+The studies of §§4.2–4.5 select a configuration and delimit it on the purpose-built testbed
+family; this section carries that configuration outward — to the standard benchmark of the field
+and to the synthetic suites on which the reversible-transformation method was published ([A2],
+§4.1.2) — so that the dissertation's two experimental programs meet on shared ground. Scope
+discipline, stated once: **only §4.6.2 is measured**; §§4.6.3–4.6.6 are [EXPECTED]-marked shells
+whose tables stay empty until the runs land, and no number appears in any claim of this section
+before it is measured. [UA-PASS: «узагальнення обраної конфігурації»; genre heading form per the
+§5 terminology table.]
+
+### 4.6.1 Обрана конфігурація за режимами висновування
+
+*(The selected configuration per inference regime — the measured basis of every transfer.)*
+
+The recipe transferred below is not a preference but the measured selection of §§4.2–4.4, and it
+is regime-dependent, exactly as §4.2.5 concluded. For the **deterministic best-of-1
+autoregressive rollout** — the deployment regime of every long-horizon claim — the selected head
+is **regression** (it wins the rollout reversal, §4.2.3, and the memory win replicates under it,
+§4.3.5), combined with the **hierarchical coarse-plus-fine context** (long coarse memory + recent
+fine window, the §4.3 packaging) whose coarse history is statistically free under this head
+(+0.0008 [−0.0013, +0.0029], Table 4.7), at the **largest affordable window** — window extension
+at fixed representation dwarfs the abstraction cost (−0.027 versus −0.008, read G-S3). The
+cheapest strong configuration measured is exactly this recipe (reg-long: 0.1682 at 1,152 tokens,
+§4.4). For the **single-step best-of-N coverage regime**, the selected head is **diffusion** (it
+wins every column at matched capacity and NFE, Table 4.2), with the same hierarchical context
+rule. Transfers below use the rollout recipe as primary and report the diffusion head where
+sampling diversity is part of the question; where a measured transfer predates this formulation,
+its actual arm configuration is disclosed in place (§4.6.2 used the diffusion head, best-of-1).
+
+### 4.6.2 Міст до стандартного стенда OpenSTL Moving-MNIST: виміряний негативний контроль
+
+*(The OpenSTL Moving-MNIST bridge: the measured negative control. — MEASURED 2026-07-06.)*
+
+The bridge announced in §4.1.3 is measured. Protocol: the canonical OpenSTL 10→10 suite on the
+canonical test set (n = 10,000 sequences), with bit-verified reimplementations of the OpenSTL
+metric conventions (pixel-sum MSE/MAE) and a faithful port of the standard sequence generator; a
+fresh two-level autoencoder trained for this benchmark (per the §4.5.6 rule: a fresh autoencoder
+per testbed variant); the unmodified hierarchical DiT backbone of §3.2.2 (22.19 M parameters),
+trained B = 16 × 15,000 steps, bf16, evaluated best-of-1 with three autoregressive window steps
+(4 + 4 + 2 frames). Two arms: **mm-flat** (10 fine frames of context, 640 tokens) and
+**mm-hier** (10 coarse + 6 fine, 544 tokens).
+
+**Table 4.8 — OpenSTL Moving-MNIST bridge (10→10, canonical test set, n = 10,000; pixel-sum
+MSE/MAE per the OpenSTL convention).**
+
+| Arm | MSE | MAE | SSIM | PSNR | LPIPS |
+|---|---:|---:|---:|---:|---:|
+| mm-flat (10 fine frames, 640 tokens) | 180.91 | 229.94 | 0.7625 | 13.55 | **0.1320** |
+| mm-hier (10 coarse + 6 fine frames, 544 tokens) | 181.29 | 230.45 | 0.7607 | 13.54 | 0.1389 |
+| AE round-trip ceiling | 3.30 | 20.79 | 0.9917 | 30.93 | 0.0062 |
+| Persistence | 286.28 | 337.89 | 0.6528 | 11.56 | 0.2533 |
+
+Leaderboard reference (deterministic specialist regressors at ≈200 epochs, OpenSTL
+documentation): ConvLSTM-S 29.80, PredRNN 23.97, SimVP+gSTA-S 26.69 aggregate MSE [REF: OpenSTL].
+
+Three readings, in the order of their epistemic weight.
+
+1. **The protocol anchor is achieved.** The harness reproduces the standard benchmark protocol
+   exactly (canonical test sequences, bit-verified metric conventions), and the autoencoder
+   ceiling row (3.30 against the arms' ≈181) shows the tokenizer is not the limiter: the gap to
+   the specialists is owned by the dynamics model and objective, not the representation.
+
+2. **The absolute aggregate numbers are modest, with disclosed reasons — and the "mid-pack
+   aggregate MSE" clause of the §4.1.3 pre-registered expectation is refuted and reported as
+   such.** The measured 180.91 stands against the specialists' 23.97–29.80: the evaluated arm is
+   a 22 M stochastic latent-diffusion *generalist* at ≈15,000 optimizer steps, evaluated
+   best-of-1, against deterministic pixel-regressors trained roughly an order of magnitude longer
+   and optimized exactly for the pixel-sum-MSE aggregate — an aggregate that structurally
+   punishes sampling variance (§3.4.3: on this ≈93%-black benchmark, aggregate metrics reward
+   mean prediction). Accordingly, **no statement of the form "competitive with, or beating, the
+   OpenSTL leaderboard on aggregate MSE" appears anywhere in this dissertation** — the
+   measurement refutes it. What does hold: the model halves persistence's LPIPS (0.1320 vs
+   0.2533) and beats persistence on every metric of the table.
+
+3. **The flat ≈ hier null (Δ ≈ 0.4 aggregate MSE ≈ 0) is the *predicted* boundary condition, not
+   a failure.** Moving MNIST has no off-screen re-entry — nothing ever leaves the frame — so
+   there is no memory horizon for a coarse level to carry, and the pre-registered prediction of
+   the memory-horizon theory is precisely a null between the two arms here. The bridge thereby
+   closes the dissertation's argument on the field's own benchmark: where the memory horizon is
+   absent, hierarchy is a null (consistent with this project's founding Moving-MNIST
+   observations, §3.4); where the horizon exists (operating point A), the matched-budget
+   hierarchy win is two-seed CI-clean (§4.3.3). The question "when does hierarchy pay" receives
+   its negative control from the standard benchmark itself. [UA-PASS: «передбачений негативний
+   контроль»; «нульовий результат як межова умова, а не невдача».]
+
+### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
+
+*(The author's synthetic suites: 2D rotations and 3D polycubes. — [EXPECTED] shell; runs not yet
+performed.)*
+
+These are the author's own published testbeds ([A2], §4.1.2): procedurally synthesized 2D
+rotations (64 × 64, time-to-predict as a controlled variable) and 3D polycubes (occlusion,
+non-uniform rotation). The transfer question is whether the selected hierarchical configuration
+retains prediction accuracy and consistency over the long horizons on which the
+reversible-transformer baseline was validated — connecting the Chapter 4 model line to the
+Chapter 2 method line on the latter's home ground.
+
+**Table 4.9 — Transfer to the [A2] synthetic suites [EXPECTED — cells empty until measured].**
+
+| Arm | Suite | MSE | SSIM | LPIPS | Consistency horizon |
+|---|---|---:|---:|---:|---:|
+| Hierarchical (selected recipe, §4.6.1) | 2D rotations | | | | |
+| Flat control (token-matched) | 2D rotations | | | | |
+| TempVerseFormer [A2] **[AUTHOR: insert the row from the [A2] publication]** | 2D rotations | | | | |
+| Persistence | 2D rotations | | | | |
+| Hierarchical (selected recipe, §4.6.1) | 3D polycubes | | | | |
+| Flat control (token-matched) | 3D polycubes | | | | |
+| TempVerseFormer [A2] **[AUTHOR: insert the row from the [A2] publication]** | 3D polycubes | | | | |
+| Persistence | 3D polycubes | | | | |
+
+### 4.6.4 MMNIST-CIFAR
+
+*([EXPECTED] shell — the textured-background Moving-MNIST variant; the stretch transfer of
+author decision Q4.)*
+
+The MMNIST-CIFAR variant replaces the black background with natural-image texture, removing the
+background degeneracy that makes aggregate metrics mean-seeking on standard Moving MNIST
+(§3.4.3) while keeping the same no-re-entry kinematics — so the pre-registered expectation of
+the §4.6.2 negative control (flat ≈ hier) carries over, now with more informative aggregate
+metrics.
+
+**Table 4.10 — MMNIST-CIFAR transfer [EXPECTED — cells empty until measured].**
+
+| Arm | MSE | MAE | SSIM | PSNR | LPIPS |
+|---|---:|---:|---:|---:|---:|
+| mm-flat (configuration of §4.6.2) | | | | | |
+| mm-hier (configuration of §4.6.2) | | | | | |
+| AE round-trip ceiling | | | | | |
+| Persistence | | | | | |
+| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | | | |
+
+### 4.6.5 TaxiBJ: реальні дані просторово-часового прогнозування
+
+*(TaxiBJ: real spatio-temporal data. — [EXPECTED] shell.)*
+
+TaxiBJ is the one *real-data* suite of the [A2] receipt set: Beijing taxi in/out-flow grids,
+$32 \times 32 \times 2$ (two flow channels), 4 → 4 frame prediction under the standard protocol.
+The transfer requires the dedicated **$32 \times 32 \times 2$ autoencoder/model variant**: the
+two-level autoencoder and the DiT interface re-instantiated at the 2-channel 32 × 32 input (with
+the coarse level reduced correspondingly), since the 64 × 64 grayscale stack of §3.1.1 does not
+apply as-is — this variant is part of the run, and its round-trip ceiling row is mandatory, per
+the §4.6.2 pattern. Disposition note: per author decision Q4 the dissertation carries **no
+standing commitment** to new TaxiBJ experiments — this shell exists so the chapter mirrors the
+final article's full scope; if it is not filled by the defense, the subsection is struck and
+TaxiBJ remains exclusively an [A2] receipt (§4.1.2). **[AUTHOR: decide run-or-strike.]**
+
+**Table 4.11 — TaxiBJ transfer (32 × 32 × 2 variant) [EXPECTED — cells empty until measured].**
+
+| Arm | MSE | MAE | SSIM |
+|---|---:|---:|---:|
+| Hierarchical (selected recipe, 32×32×2 variant) | | | |
+| Flat control (token-matched, 32×32×2 variant) | | | |
+| AE round-trip ceiling (32×32×2) | | | |
+| Persistence | | | |
+| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | |
+
+### 4.6.6 KTH-64 **[OPTIONAL]**
+
+*(KTH real-video transfer at 64 × 64 — optional shell; same Q4 disposition as §4.6.5.)*
+
+KTH (human actions, grayscale, evaluated at 64 × 64) is the natural-video member of the [A2]
+receipt set and the natural-video extension named in the research prospects. The shell is
+**[OPTIONAL]**: it is filled only if resources permit before the defense; otherwise it is struck
+without replacement and KTH remains an [A2] receipt.
+
+**Table 4.12 — KTH-64 transfer [OPTIONAL / EXPECTED — cells empty until measured].**
+
+| Arm | MSE | SSIM | LPIPS |
+|---|---:|---:|---:|
+| Hierarchical (selected recipe) | | | |
+| Flat control (token-matched) | | | |
+| AE round-trip ceiling | | | |
+| Persistence | | | |
+| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | |
+
+### 4.6.7 Двогілкове формулювання узагальнювального твердження
+
+*(The generalization claim, stated dual-branch before the runs.)*
+
+For the unfilled shells of §§4.6.3–4.6.6, the claim is committed in advance in its realistic
+best-case form and carried in the main text only under the [EXPECTED] marker: **[EXPECTED]**
+обрана конфігурація **перевершує persistence та базові моделі [A2] за точністю і тривалістю
+збереження консистентності; конкурентна за перцептивними метриками (SSIM/LPIPS) зі
+спеціалізованими детермінованими регресорами за частку їх обчислювального бюджету.** *(EN: the
+selected configuration outperforms persistence and the [A2] baselines in accuracy and in the
+duration over which consistency is retained, and is competitive on perceptual metrics
+(SSIM/LPIPS) with specialized deterministic regressors at a fraction of their computational
+budget.)* **[FALLBACK: if a suite shows no advantage over the [A2] baseline, the claim for that
+suite retreats to "matches the published baseline at a fraction of the training budget", or the
+suite is reported as a further measured boundary condition in the §4.6.2 style.]** **[FALLBACK:
+if perceptual competitiveness fails on a suite, the perceptual clause is dropped for that suite
+and the claim is confined to the persistence/[A2]-baseline comparison.]** One formulation is
+excluded on measured grounds rather than branch-dependent: **a claim of beating (or matching)
+the OpenSTL leaderboard on aggregate MSE is never made** — Table 4.8 refutes it (180.91 versus
+SimVP's 26.69), and the honest statement of that comparison is the disclosed-generalist reading
+of §4.6.2. [UA-PASS: keep the quoted Ukrainian claim sentence verbatim as the main-text wording;
+«двогілкове формулювання» for the dual-branch device.]
+
+## 4.7 Впровадження результатів дослідження
 
 *(Implementation of the research results. — Kept as per the existing implementation acts, digest
 item 38: the acts cover the reversible-transformer method and entropy tokenization; no claims
@@ -911,7 +1178,7 @@ The results of the dissertation research have been implemented in:
 Copies of the implementation acts are given in the appendices **[AUTHOR: appendix letters Г/Д;
 insert the act copies — the current draft has headings only]**.
 
-## 4.7 Висновки до розділу
+## 4.8 Висновки до розділу
 
 *(Conclusions to the chapter.)*
 
@@ -923,8 +1190,9 @@ insert the act copies — the current draft has headings only]**.
    an audit-corrected anchoring, common random numbers, per-operating-point reference floors and
    ceilings (Table 4.1), and full disclosure of every correction and caveat (§4.1.5). The [A2]
    receipt datasets (2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are retained as
-   the published validations of the reversibility method; the OpenSTL bridge is pending
-   **[AUTHOR: T7]**.
+   the published validations of the reversibility method; the OpenSTL bridge is **measured**
+   (§4.6.2, Table 4.8): the protocol anchor is achieved, and the pre-registered "mid-pack
+   aggregate MSE" clause is refuted and reported as such.
 
 2. The matched-compute mechanism study (§4.2) established that **the generation-head ranking is
    regime-dependent**: the diffusion core wins the single-step oracle-coverage regime on every
@@ -978,8 +1246,27 @@ insert the act copies — the current draft has headings only]**.
    methodology lessons (effective-loop sizing; the autoencoder-reuse trap; evaluation power)
    constitutes the honest delimitation of the dissertation's central mechanism.
 
-7. The results of the research have been implemented in the practical activities of ORNETIKA LLC
-   and in the educational process of VNTU (§4.6, per the implementation acts).
+7. The generalization study (§4.6) carries the measured per-regime configuration selection —
+   regression head for the deterministic best-of-1 rollout, diffusion for the single-step
+   coverage regime, hierarchical coarse-plus-fine context at the largest affordable window —
+   onto the standard and synthetic suites. Its measured component, the OpenSTL Moving-MNIST
+   bridge (Table 4.8), achieves the protocol anchor (bit-verified standard metrics; the
+   autoencoder ceiling 3.30 shows the tokenizer is not the limiter) and returns the **predicted
+   negative control**: flat ≈ hierarchical (180.91 vs 181.29 aggregate MSE) on a benchmark with
+   no off-screen re-entry — hierarchy pays where the memory horizon exists (§4.3) and is a null
+   where it does not, while the aggregate-MSE gap to the deterministic specialists (23.97–29.80)
+   is disclosed as the refutation of the pre-registered "mid-pack" clause, and no leaderboard
+   claim is made. The remaining transfers (2D rotations, 3D polycubes, MMNIST-CIFAR, TaxiBJ,
+   KTH-64 [OPTIONAL]) stand as [EXPECTED]-marked shells under the dual-branch commitment of
+   §4.6.7 — **[EXPECTED]** superiority over persistence and the [A2] baselines in accuracy and
+   consistency retention, with perceptual competitiveness against specialized deterministic
+   regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
+   baseline parity or a further measured boundary condition]** — and the token-budget frontier
+   completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **[PENDING]** under its
+   pre-registered convergence-at-saturation reading.
+
+8. The results of the research have been implemented in the practical activities of ORNETIKA LLC
+   and in the educational process of VNTU (§4.7, per the implementation acts).
 
 The results of this chapter have been published in [A4] (the mechanism, memory, factorial, and
 boundary studies) and [A2] (the receipt validations of §4.1.2) **[AUTHOR: bind to the final
@@ -1002,9 +1289,17 @@ numbered publication list; add conference theses covering the experimental campa
 | FIG 4-9 | qualitative re-entry rollout strips | NEW (saved checkpoints) |
 | FIG 4-10 | spatial factorial diagram | NEW (Table 4.7) |
 | FIG 4-11 | op-B rollout horizon profile (boundary) | NEW (decisive-pair records) |
+| FIG 4-x | token-budget frontier, both families (§4.3.6) | NEW (pending hier-rich/flat-short; final figure number assigned at typeset, in-text position between FIG 4-9 and FIG 4-10) |
+
+Table register additions of this pass: Table 4.6a (§4.3.6, [PENDING] frontier — letter-suffixed
+to avoid renumbering the audited register; renumber at typeset); Tables 4.8–4.12 (§4.6: 4.8 =
+MEASURED OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; 4.9–4.12 = [EXPECTED] empty shells —
+2D/3D rotations+polycubes, MMNIST-CIFAR, TaxiBJ 32×32×2 variant, KTH-64 [OPTIONAL]).
 
 Numbers deliberately NOT carried into this chapter: the superseded pre-audit mechanism table
 (0.0489/0.0363 — corrected by the hardness-anchor fix); the article's PASS-branch capability
 headline for §4.5 (superseded by the 2026-07-06 pair outcome); any "200-frame rollout" phrasing
 (protocol is 48 + 152); the old draft's TaxiBJ-as-key-benchmark framing and unverified A100
-claims (kept only as [A2] receipts / author-verify).
+claims (kept only as [A2] receipts / author-verify); any "competitive with the OpenSTL
+leaderboard on aggregate MSE" phrasing — refuted by measurement (Table 4.8: 180.91 vs SimVP
+26.69) and permanently excluded from the claim language.

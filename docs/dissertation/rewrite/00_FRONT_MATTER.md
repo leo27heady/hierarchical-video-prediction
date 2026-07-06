@@ -110,9 +110,11 @@ methods and technologies. The information base includes procedurally synthesized
 shapes, 3D polycubes) used in the reversible-transformer studies, the purpose-built looping
 memory-horizon testbed (the primary benchmark: a $192\times64$ toroidal world observed through a
 panning $64\times64$ viewport, with 67% of the world off-screen at any instant and a re-entry loop
-period of approximately 48 frames), and a bridge evaluation on the standard Moving MNIST suite
-**[AUTHOR: the OpenSTL bridge (T7) is queued — confirm completion before defense or soften to
-"planned"]**. A matched-capacity, matched-compute comparison of prediction mechanisms (regression,
+period of approximately 48 frames), and a measured bridge evaluation on the standard Moving MNIST
+suite (canonical 10→10 protocol, n = 10,000; the model halves the persistence baseline's
+perceptual error, and the flat-versus-hierarchical null on this memory-horizon-free benchmark
+serves as the predicted negative control). A matched-capacity, matched-compute comparison of
+prediction mechanisms (regression,
 diffusion, energy-based descent) on a shared backbone shows that regression averages over possible
 futures while diffusion commits to sharp, correctly located content (foreground error 0.0512
 versus 0.0664; on the hard, genuinely generative subset 0.1549 versus 0.1808), and includes a
