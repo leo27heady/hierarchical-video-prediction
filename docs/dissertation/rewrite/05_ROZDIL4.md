@@ -139,7 +139,7 @@ connectivity to the standard suite, not a leaderboard claim; the memory-horizon 
 chapter cannot be tested on Moving MNIST at all, for the degeneracy reasons established in §3.4.
 The measured outcome (§4.6.2) confirmed the connectivity, ceiling-row, and
 perceptual-versus-persistence clauses, **refuted the "mid-pack aggregate MSE" clause** (180.91
-against the deterministic specialists' 23.97–29.80 — reported as a refutation, per the standing
+against the deterministic specialists' 22.06–29.80 — reported as a refutation, per the standing
 convention of §4.2.3), and returned the predicted flat ≈ hierarchical null as the negative
 control of the memory-horizon claim.
 
@@ -1024,7 +1024,7 @@ MSE/MAE per the OpenSTL convention).**
 | Persistence | 286.28 | 337.89 | 0.6528 | 11.56 | 0.2533 |
 
 Leaderboard reference (deterministic specialist regressors at ≈200 epochs, OpenSTL
-documentation): ConvLSTM-S 29.80, PredRNN 23.97, SimVP+gSTA-S 26.69 aggregate MSE [REF: OpenSTL].
+documentation): ConvLSTM-S 29.80, PredRNN 23.97, PredRNN++ 22.06, SimVP+gSTA-S 26.69, TAU 24.60 aggregate MSE [REF: OpenSTL] (range parity with article Table 5.1; the strongest specialist, PredRNN++ 22.06, sets the quoted floor).
 
 Three readings, in the order of their epistemic weight.
 
@@ -1035,7 +1035,7 @@ Three readings, in the order of their epistemic weight.
 
 2. **The absolute aggregate numbers are modest, with disclosed reasons — and the "mid-pack
    aggregate MSE" clause of the §4.1.3 pre-registered expectation is refuted and reported as
-   such.** The measured 180.91 stands against the specialists' 23.97–29.80: the evaluated arm is
+   such.** The measured 180.91 stands against the specialists' 22.06–29.80: the evaluated arm is
    a 22 M stochastic latent-diffusion *generalist* at ≈15,000 optimizer steps, evaluated
    best-of-1, against deterministic pixel-regressors trained roughly an order of magnitude longer
    and optimized exactly for the pixel-sum-MSE aggregate — an aggregate that structurally
@@ -1266,7 +1266,7 @@ insert the act copies — the current draft has headings only]**.
    autoencoder ceiling 3.30 shows the tokenizer is not the limiter) and returns the **predicted
    negative control**: flat ≈ hierarchical (180.91 vs 181.29 aggregate MSE) on a benchmark with
    no off-screen re-entry — hierarchy pays where the memory horizon exists (§4.3) and is a null
-   where it does not, while the aggregate-MSE gap to the deterministic specialists (23.97–29.80)
+   where it does not, while the aggregate-MSE gap to the deterministic specialists (22.06–29.80)
    is disclosed as the refutation of the pre-registered "mid-pack" clause, and no leaderboard
    claim is made. The remaining transfers (2D rotations, 3D polycubes, MMNIST-CIFAR, TaxiBJ,
    KTH-64 [OPTIONAL]) stand as [EXPECTED]-marked shells under the dual-branch commitment of

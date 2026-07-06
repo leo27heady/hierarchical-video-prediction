@@ -161,14 +161,18 @@ vocabulary.)*
 
 ## Наукова новизна отриманих результатів
 
-1. **For the first time**, a method of hierarchical video data generation was developed in which
-   the upper (coarse) level of the hierarchical latent state space carries the long-range temporal
-   memory of the modeled process, together with a methodology for its evaluation on a
-   purpose-built memory-horizon testbed with re-entry-stratified analytic hardness labels; unlike
-   existing flat-context generative models, the method restores content that re-enters the field
-   of view beyond the horizon of the flat context window at a matched context-token budget, which
-   improves the temporal consistency of long video sequences exactly in the regime where the
-   memory horizon demands it.
+1. **For the first time**, a methodology for the systems analysis and evaluation of long-range
+   memory in hierarchical video generation processes was developed — a purpose-built
+   memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
+   control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
+   comparison design — and it was demonstrated with its help that a hierarchical latent state
+   space whose upper (coarse) level carries the long-range temporal memory of the process
+   (developing the coarse-level-memory paradigm of hierarchical latent video models, §1.3.2)
+   restores content that re-enters the field of view beyond the horizon of a flat context window
+   at the same context-token budget; unlike existing evaluation practice, which aggregates
+   prediction error without isolating memory-dependent content, the developed methodology makes
+   the memory contribution of the hierarchy directly measurable and localizes the improvement of
+   temporal consistency exactly in the regime where the memory horizon demands it.
 
 2. **For the first time**, a method for the computationally efficient optimization of processes in
    multi-step iterative systems was developed based on reversible transformations for
@@ -190,9 +194,44 @@ vocabulary.)*
    entropy maps, which allows dynamic allocation of computational resources during the analysis of
    complex visual scenes.
 
-*(Wording identical to 00_FRONT_MATTER.md §2 — keep the two files in sync. «Вперше» scoping is
-exactly as in DISS_DIGEST §6; no "guarantees" language anywhere — the old novelty item 1's
-«математично гарантує» claim is replaced by the empirically demonstrated, exactly scoped claim.)*
+*(Wording identical to 00_FRONT_MATTER.md §2 — keep the two files in sync. Item 1 re-scoped
+2026-07-07 (audit fix): «вперше» now carried by the testbed methodology + matched-budget
+demonstration, with the coarse-memory architecture credited to adopted prior art per §1.3.2 —
+supersedes the DISS_DIGEST §6 wording. No "guarantees" language anywhere — the old novelty item
+1's «математично гарантує» claim is replaced by the empirically demonstrated, exactly scoped
+claim.)*
+
+## Положення, що виносяться на захист
+
+**[AUTHOR: confirm whether the VNTU spec-124 council template expects an explicit
+defended-theses list; if the council treats the scientific-novelty items as the defended
+propositions, replace this block with one sentence stating exactly that.]**
+
+The following propositions are submitted for defense:
+
+1. The hierarchical organization of a compact latent state space, in which the upper (coarse)
+   level carries the long-range temporal memory of the process, improves the temporal
+   consistency of long generated video sequences at a matched context-token budget exactly in
+   the regime where the task's memory horizon exceeds the affordable flat context window — and
+   this regime is identified, measured, and bounded by the developed memory-horizon evaluation
+   methodology with re-entry-stratified analytic hardness labels.
+
+2. Reversible transformations enable time-agnostic backpropagation with constant activation
+   memory in the length of the modeled process; the method extends to stochastic multi-level
+   recurrences through exact noise storage (gradients coinciding with backpropagation through
+   time), and its domain of applicability is delimited by the three-axis reversibility taxonomy:
+   the temporal-rollout axis pays, while the inner-optimization-loop axis cannot pay against
+   gradient checkpointing.
+
+3. The consistency-criteria apparatus extended with conceptual, hierarchical, and trajectory
+   consistency — the latter operationalized through autoregressive-rollout degradation metrics
+   stratified by re-entry hardness — provides a measurable, statistically disciplined decision
+   procedure for the acceptance or rejection of configurations of complex generative systems.
+
+4. The adaptive decomposition of spatio-temporal data based on entropy metrics with
+   multidimensional rotary positional embedding allows dynamic allocation of computational
+   resources to high-information zones of complex visual scenes and mathematically aligns the
+   coordinate systems of the abstraction levels of hierarchical models.
 
 ## Практичне значення отриманих результатів
 
@@ -286,7 +325,8 @@ conclusions, a list of references, and appendices.
   definition of the memory-horizon testbed with the re-entry-stratified evaluation protocol.
 - **Chapter 4** presents the experimental research and practical application: the information
   base; the matched-compute mechanism study (including the two-sided characterized study of
-  energy-based descent); the single-step and 200-frame rollout evaluations of the hierarchical
+  energy-based descent); the single-step and 152-frame autoregressive-rollout (after a 48-frame
+  ground-truth warm-up) evaluations of the hierarchical
   model; the memory-consumption measurements; and the implementations.
 
 The total volume of the work is **[AUTHOR: pages]** pages of typewritten text; the main part

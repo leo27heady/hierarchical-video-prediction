@@ -961,14 +961,23 @@ macro signal forms the contour of a brick building while at the micro level the 
 organic wood patterns.
 
 Ensuring this property requires the introduction of an inter-level coherence operator. From the
-standpoint of system control, this coupling must be strictly unidirectional: the senior
-(coarse/abstract) level provides context to the junior (fine/detailed) level, while the junior
-level must not distort the decisions of the senior one. This requirement is satisfied by the
-developed method of **unidirectional control with gradient detachment** (stop-gradient), realized
-in the cross-level attention of the Chapter 3 model: the fine level attends to the coarse level's
-representations, but no gradient flows back across the boundary, so the coarse level's long-memory
-code cannot be co-opted as auxiliary capacity for texture prediction. [UA-PASS: «односпрямоване
-керування з відсіканням градієнтних зв'язків».]
+standpoint of system control, the essential requirement is that the junior (fine/detailed) level
+must not be able to contradict the senior (coarse/abstract) level's decisions at long range. In
+the Chapter 3 model this requirement is satisfied by two complementary mechanisms (§3.1.2–3.1.3).
+First, by **information-design asymmetry**: within a prediction step both levels are denoised
+jointly in one shared attention pass, but only the coarse level's history extends over the full
+memory horizon — long-range structure can therefore *originate only from the coarse channel*,
+and the fine level physically lacks the inputs to contradict it at long range; the control is
+unidirectional in the information-theoretic sense (coarse → fine for long-horizon signals), not
+in the scheduling sense. Second, by **gradient detachment at the system boundaries** where it is
+exact and load-bearing: between the frozen representation subsystem and the prediction core (the
+state coordinate system is a constant of the control problem), and between past and future along
+the autoregressive rollout (previously generated context enters as a constant, excluding
+destructive gradient interference between successive windows). [UA-PASS: «односпрямоване
+керування з відсіканням градієнтних зв'язків»; «асиметрія інформаційної конструкції». Rewritten
+2026-07-07 (audit fix): the earlier draft asserted a cross-level stop-gradient inside the
+attention that the implemented joint-denoising model does not have — the enforcement statement
+now matches §3.1.2–3.1.3 exactly.]
 
 ### 1.4.5 Траєкторіальна консистентність (Trajectory consistency)
 

@@ -142,8 +142,8 @@ reversibility method; no new TaxiBJ/KTH commitments are made for the hierarchica
 
 The general conclusions present the main results of the dissertation research, confirming the
 fulfillment of all the set tasks, with honest scoping: the hierarchy is validated *where the
-memory horizon demands it*; the energy-based mechanism is a characterized negative; reversibility
-is scoped by its applicability taxonomy.
+memory horizon demands it and where the memory contents remain trustworthy*; the energy-based
+mechanism is a characterized negative; reversibility is scoped by its applicability taxonomy.
 
 ### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
 
@@ -200,15 +200,23 @@ real list — see §3 below.]**
 
 ### Scientific novelty (the 4 rewritten items — canonical wording)
 
-1. **For the first time**, a method of hierarchical video data generation was developed in which
-   the upper (coarse) level of the hierarchical latent state space carries the long-range temporal
-   memory of the modeled process, together with a methodology for its evaluation on a
-   purpose-built memory-horizon testbed with re-entry-stratified analytic hardness labels; unlike
-   existing flat-context generative models, the method restores content that re-enters the field
-   of view beyond the horizon of the flat context window at a matched context-token budget, which
-   improves the temporal consistency of long video sequences exactly in the regime where the
-   memory horizon demands it. [UA-PASS: «Вперше розроблено метод … який, на відміну від існуючих
-   …, забезпечує …» genre formula.]
+1. **For the first time**, a methodology for the systems analysis and evaluation of long-range
+   memory in hierarchical video generation processes was developed — a purpose-built
+   memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
+   control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
+   comparison design — and it was demonstrated with its help that a hierarchical latent state
+   space whose upper (coarse) level carries the long-range temporal memory of the process
+   (developing the coarse-level-memory paradigm of hierarchical latent video models, §1.3.2)
+   restores content that re-enters the field of view beyond the horizon of a flat context window
+   at the same context-token budget; unlike existing evaluation practice, which aggregates
+   prediction error without isolating memory-dependent content, the developed methodology makes
+   the memory contribution of the hierarchy directly measurable and localizes the improvement of
+   temporal consistency exactly in the regime where the memory horizon demands it. [UA-PASS:
+   «Вперше розроблено методологію … яка, на відміну від існуючих …, забезпечує …» genre formula.
+   Re-scoped 2026-07-07: the «вперше» is carried by the testbed methodology + matched-budget
+   demonstration (genuinely unclaimed), NOT by the coarse-memory architecture itself, which
+   §1.3.2 cites as adopted prior art (CW-VAE/MilliVid-class) — this removes the audit-flagged
+   self-contradiction.]
 
 2. **For the first time**, a method for the computationally efficient optimization of processes in
    multi-step iterative systems was developed based on reversible transformations for

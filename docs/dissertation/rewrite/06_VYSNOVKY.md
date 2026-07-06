@@ -159,7 +159,7 @@ retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-M
 aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
 benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
 complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
-specialist regressors (23.97–29.80) disclosed and no leaderboard claim made. The generalization
+specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. The generalization
 study of §4.6 extends this to the remaining suites, **[EXPECTED]** — the selected configuration
 outperforms persistence and the [A2] baselines in accuracy and in the duration of consistency
 retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialized deterministic
