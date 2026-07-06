@@ -674,11 +674,11 @@ a defining gloss at first use.]
 ### 4.3.6 Доповнення фронтиру токен-бюджету: зіставлені партнери на верхній та нижній межі
 
 *(Token-budget frontier completion: same-budget partners at the top and bottom of the budget
-range. — Arms **[RUNNING]** at the time of writing; pre-registered 2026-07-06.)*
+range. — Pre-registered 2026-07-06; **MEASURED 2026-07-07**.)*
 
 The arm matrix of Table 4.5 leaves the two extreme token budgets without same-budget partners:
 flat-long (3,072 tokens) has no hierarchical arm at its budget, and hier-short (480 tokens) has
-no flat control at its. Two frontier-completion arms are **[RUNNING]** at the time of writing,
+no flat control at its. Two frontier-completion arms close the grid,
 pre-registered before launch (the FRONTIER COMPLETION block of the factorial pre-registration):
 **hier-rich** (48 coarse + 36 fine frames = 3,072 tokens, trained B = 8 × 60,000 steps —
 sample-matched to flat-long's disclosed regime, so the pairing inherits flat-long's §4.3.4
@@ -696,32 +696,44 @@ tests the frontier's bottom." [UA-PASS: «фронтир якість–бюдж
 
 **Table 4.6a — Token-budget frontier of operating point A (letter-suffixed to avoid renumbering
 the audited table register; final numbering at typeset). Measured anchor rows from Tables
-4.5/4.6; frontier-completion cells [PENDING].**
+4.5/4.6; frontier-completion cells measured 2026-07-07 (`logs_rhcp/frontier_top.log`,
+`logs_rhcp/frontier_bottom.log`).**
 
 | Token budget | Flat arm | ALL fg-MSE | Hierarchical arm | ALL fg-MSE | Paired Δ (flat − hier), cluster CI |
 |---|---|---:|---|---:|---|
-| ≈3,072 | flat-long | 0.1564 | hier-rich | **[PENDING]** | **[PENDING]** |
+| ≈3,072 | flat-long | 0.1564 | hier-rich | 0.1695 | **−0.0131 [−0.0201, −0.0069]** (flat wins) |
 | 1,152 | flat-budget | 0.2038 | hier-long | 0.1848 | +0.0189 [+0.0121, +0.0264] (Table 4.6) |
-| ≈480–512 | flat-short | **[PENDING]** | hier-short | 0.2260 | **[PENDING]** |
+| ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
 
-**[FIG 4-x — PLACEHOLDER (token-budget frontier)]**
+**[FIG 4-x — token-budget frontier]**
 *Content:* ALL fg-MSE versus context-token budget at operating point A, one curve per family
 (flat: flat-short → flat-budget → flat-long; hierarchical: hier-short → hier-long → hier-rich),
-cluster-CI whiskers; the pre-registered reading drawn as the expected convergence of the two
-curves at the window-saturated top budget.
-*Source:* **NEW** (plot once the two [PENDING] arms land; measured anchors from Table 4.5).
+with the measured mid-budget win region marked and the persistence floor (0.2552) drawn.
+*Source:* **`docs/figures/fig9_frontier.png`** (measured; anchors from Tables 4.5/4.6 and the
+frontier-completion runs).
 
-Under the pre-registered branch — **[EXPECTED]** hier-rich ≈ flat-long within CI, or paying at
-most the small diffusion-head abstraction cost of §4.4 — the §4.3 efficiency claim takes its
-final, correct form: *the hierarchical curve reaches a given quality at a fraction of the tokens
-and converges with the flat curve where the training-clip length saturates the window*, and
-Table 4.6a with [FIG 4-x] presents the whole §4.3 campaign as one quality–budget frontier.
-**[FALLBACK: if hier-rich lands CI-clean *below* flat-long (the abstraction cost does not vanish
-at the top budget), the efficiency claim is scoped to sub-saturation budgets exactly as measured;
-if it lands CI-clean *above* flat-long, the convergence expectation is reported as refuted and
-the frontier top re-characterized. No branch touches the matched-budget headline of §4.3.3, which
-is complete at 1,152 tokens.]** **[AUTHOR: fill the [PENDING] cells from the completed runs, or
-mark the subsection "planned" before defense if the arms have not landed.]**
+The measurement resolved the pre-registered dual branch to a **third outcome, stricter than the
+pre-registered convergence expectation, and reported as measured under the no-soft-reads rule**
+(the default-to-FAIL discipline of §4.5 applied to wording). At the top budget hier-rich does
+not converge with flat-long — it loses CI-clean at equal tokens and equal training regime
+(−0.0131 [−0.0201, −0.0069], a small uniform loss across essentially every horizon × hardness
+bin); at the bottom budget flat-short beats hier-short (−0.0036 [−0.0063, −0.0010], concentrated
+at h ≤ 60, null beyond). The frontier therefore *inverts at both ends*: this lands on the first
+fallback branch at the top (the abstraction cost does not vanish at the top budget — the −0.0131
+loss is of the same kind as the diffusion-head abstraction cost of §4.4) and refutes the
+matched-budget law at the bottom, where the 6–8-frame window is below the memory-relevance scale
+and coarse slots are redundancy rather than memory. The mechanism reading: hierarchy pays where
+its coarse tokens buy a memory window that (a) exceeds what fine tokens afford and (b) matters;
+at window saturation (48 frames, clip-bounded) coarse slots merely displace full-resolution
+frames, and below the memory-relevance threshold they duplicate it. Sharpness follows the window,
+not the hierarchy: hier-rich 0.0898 versus flat-long 0.0996, hier-short 0.0392 versus flat-short
+0.0432 — at matched saturation the hierarchy does **not** retain sharpness better. The
+matched-budget headline of §4.3.3 (1,152 tokens, two seeds, both heads) is untouched; the §4.3
+efficiency claim takes its final, bounded form: **the hierarchy dominates the token-budget
+frontier exactly where window extension is both possible and valuable** — a bounded,
+dose-response-supported efficiency claim, not dominance at every budget. [UA-PASS: «ієрархія
+домінує на фронтирі токен-бюджету саме там, де розширення вікна є водночас можливим і цінним»;
+«інверсія на обох кінцях фронтиру».]
 
 ## 4.4 Факторне дослідження просторової абстракції: економічний, залежний від ядра вердикт
 
@@ -1262,8 +1274,12 @@ insert the act copies — the current draft has headings only]**.
    consistency retention, with perceptual competitiveness against specialized deterministic
    regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
    baseline parity or a further measured boundary condition]** — and the token-budget frontier
-   completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **[PENDING]** under its
-   pre-registered convergence-at-saturation reading.
+   completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **measured**: the
+   frontier inverts at both ends (hier-rich loses to flat-long −0.0131 [−0.0201, −0.0069] at
+   equal budget and regime; flat-short beats hier-short −0.0036 [−0.0063, −0.0010]) — an outcome
+   stricter than the pre-registered convergence expectation, reported as measured — so the
+   efficiency claim takes its final, bounded form: hierarchy dominates the token-budget frontier
+   exactly where window extension is both possible and valuable.
 
 8. The results of the research have been implemented in the practical activities of ORNETIKA LLC
    and in the educational process of VNTU (§4.7, per the implementation acts).
@@ -1289,9 +1305,9 @@ numbered publication list; add conference theses covering the experimental campa
 | FIG 4-9 | qualitative re-entry rollout strips | NEW (saved checkpoints) |
 | FIG 4-10 | spatial factorial diagram | NEW (Table 4.7) |
 | FIG 4-11 | op-B rollout horizon profile (boundary) | NEW (decisive-pair records) |
-| FIG 4-x | token-budget frontier, both families (§4.3.6) | NEW (pending hier-rich/flat-short; final figure number assigned at typeset, in-text position between FIG 4-9 and FIG 4-10) |
+| FIG 4-x | token-budget frontier, both families (§4.3.6) | MEASURED — `docs/figures/fig9_frontier.png` (final figure number assigned at typeset, in-text position between FIG 4-9 and FIG 4-10) |
 
-Table register additions of this pass: Table 4.6a (§4.3.6, [PENDING] frontier — letter-suffixed
+Table register additions of this pass: Table 4.6a (§4.3.6, MEASURED frontier — letter-suffixed
 to avoid renumbering the audited register; renumber at typeset); Tables 4.8–4.12 (§4.6: 4.8 =
 MEASURED OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; 4.9–4.12 = [EXPECTED] empty shells —
 2D/3D rotations+polycubes, MMNIST-CIFAR, TaxiBJ 32×32×2 variant, KTH-64 [OPTIONAL]).

@@ -551,7 +551,7 @@ completes the boundary-condition section; the §4.3 matched-budget result is una
 
 ---
 
-### §4.3.x Token-budget frontier [DRAFT — arms running] (2026-07-06; integrate as §4.3.6 on next pass; do not cite until the [PENDING] cells fill)
+### §4.3.x Token-budget frontier [MEASURED 2026-07-07] (integrate as §4.3.6 on next pass)
 
 **Design (completed frontier — every flat point gets a same-budget hierarchical partner; author
 request 2026-07-06, pre-registered in `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION block,
@@ -579,49 +579,50 @@ result):**
 > dominance at every budget. At the low end, hier-short vs flat-short tests the frontier's
 > bottom."
 
-**Table 4.x — Frontier completion (all result cells [PENDING]; fills from
+**Table 4.x — Frontier completion (MEASURED 2026-07-07; fills from
 `rhvd_eval_{hier-rich,flat-short}_s0.npz` via `logs_rhcp/frontier_top.log` /
-`logs_rhcp/frontier_bottom.log`).** Measured partners, for reference only: flat-long 0.1564 /
+`logs_rhcp/frontier_bottom.log`).** Measured partners, for reference: flat-long 0.1564 /
 sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both from Table 4.2.
 
 | frontier read | arm(s) | ALL fg-MSE | fg-sharp | paired Δ (flat − hier) | 95% CI |
 |---|---|---:|---:|---:|---|
-| top, new arm | hier-rich (48c+36f, 3072 tok, B8×60k) | [PENDING] | [PENDING] | — | — |
-| bottom, new arm | flat-short (8f, 512 tok, B16×30k) | [PENDING] | [PENDING] | — | — |
-| frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | [PENDING] | [PENDING] |
-| frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | [PENDING] | [PENDING] |
+| top, new arm | hier-rich (48c+36f, 3072 tok, B8×60k) | 0.1695 | 0.0898 | — | — |
+| bottom, new arm | flat-short (8f, 512 tok, B16×30k) | 0.2224 | 0.0432 | — | — |
+| frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** |
+| frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** |
 
-[FIG frontier: quality-vs-token-budget, two curves — hier (480 → 1152 → 3072: hier-short 0.2260,
-hier-long 0.1848, hier-rich [PENDING]) and flat (512 → 1152 → 3072: flat-short [PENDING],
-flat-budget 0.2038, flat-long 0.1564) — expected shape: hier dominates below 1152, curves
-converge at 3072 where the window saturates. Caption: the efficiency claim as a frontier — the
-hierarchy curve reaches a given quality at fewer tokens; convergence at the top is the
-pre-registered expectation, not a failure.]
+[FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured curves —
+hier (480 → 1152 → 3072: hier-short 0.2260, hier-long 0.1848, hier-rich 0.1695) and flat
+(512 → 1152 → 3072: flat-short 0.2224, flat-budget 0.2038, flat-long 0.1564) — measured shape:
+the curves cross twice; hierarchy wins only the mid-budget region around 1,152 tokens. Caption:
+the token-budget frontier — hierarchy pays mid-budget and inverts at both ends; the flat curve
+wins below the memory-relevance threshold and at window saturation.]
 
-**Reading (dual branch; exactly one survives when the [PENDING] cells fill).**
-**[BRANCH: CONVERGES — the pre-registered expectation.]** hier-rich ~≤ flat-long at equal 3,072
-tokens and equal training regime: with the 48-frame window saturated by the T = 100 train clips,
-hierarchy has nothing left to buy, and the small diffusion-head abstraction cost (G-S1, −0.0082
-at W18) is the predicted residual. The claim of §4.3 then takes its final, honest form — the
-hierarchy curve is a frontier-from-below: it delivers flat-long-class memory benefit at ~37% of
-the tokens (Table 4.2) and merges with flat where token budget ceases to be the binding
-constraint. flat-short vs hier-short then anchors the bottom: if hier-short also beats
-flat-short at ≈equal budget, the matched-budget law of §4.3.3 holds at every measured point
-below saturation.
-**[BRANCH: hier-rich WINS (CI excluding zero).]** This would *exceed* the pre-registration — the
-36-frame fine recency (vs flat-long's uniform full-res history) buying quality beyond the
-saturated window — and would upgrade the §4.3.4 framing from "flat-long is the outright frontier
-at 2.7×" to "the hierarchical packaging Pareto-dominates at every measured budget". Before any
-such upgrade is worded into §4.6 or the abstract: it is a single-seed read against a
-pre-registration that predicted the opposite, so it requires a seed-1 replication (the §4.3.3
-precedent) and is reported as a surprise, not a confirmation. A hier-rich LOSS larger than the
-W18 abstraction cost, or any outcome not covered above, is reported as measured with no soft
-reads (the §4.5.4 default-to-FAIL discipline applies to wording, not just gates).
+**Reading (measured resolution of the pre-registered dual branch — a third outcome; reported
+under the no-soft-reads rule, the §4.5.4 default-to-FAIL discipline applied to wording).**
+Neither pre-registered branch survived: hier-rich neither converges with nor beats flat-long —
+it **LOSES CI-clean** at equal budget and equal regime (−0.0131 [−0.0201, −0.0069], a small
+uniform loss across essentially every horizon × hardness bin in `frontier_top.log`), and at the
+bottom **flat-short beats hier-short** (−0.0036 [−0.0063, −0.0010], concentrated at h ≤ 60 and
+fading to null beyond h 61). This is *stricter* than the pre-registered convergence expectation
+and is reported as measured. The mechanism reading is consistent with the factorial: at the
+top, the 48-frame window is saturated by the T = 100 train clips, so the coarse slots can no
+longer buy window — they merely displace full-resolution frames and pay the diffusion-head
+abstraction cost (the −0.0131 loss is of the same kind as G-S1's −0.0082 at W18); at the
+bottom, the 6–8-frame window is below the memory-relevance scale, so coarse slots are
+redundancy and flat's extra fine frames win. The 1,152-token headline (§4.3.3, two seeds, both
+heads) is untouched. The claim of §4.3 therefore takes its final, bounded form: **hierarchy
+dominates the token-budget frontier exactly where window extension is both possible and
+valuable** — a bounded, dose-response-supported efficiency claim, not dominance at every
+budget. Sharpness, same discipline: hier-rich 0.0898 vs flat-long 0.0996 and hier-short 0.0392
+vs flat-short 0.0432 — the window (token budget spent on frames) drives sharpness, and
+hierarchy does NOT retain sharpness better at matched saturation.
 
 *Provenance (this section only): design/arms `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION +
-`docs/HANDOFF_2026-07-06.md` §6 (launch 08:54:46 2026-07-06; chain: hier-rich 60k → flat-short
-30k → compare flat-long,hier-rich → compare flat-short,hier-short; FRONTIER_DONE sentinel);
-arm tuples `hvp_rev/rhvd.py` (hier-rich (48,36,diff), flat-short (0,8,diff) + reg twins);
-measured partner rows from Table 4.2 (`logs_rhcp/compare_clustered.log`); 0.55 s/step from the
-handoff's live-run note. On completion: move the two new rows into Table 4.2, resolve this
-section's branch, and renumber to §4.3.6.*
+FRONTIER MEASURED (2026-07-07) + `docs/HANDOFF_2026-07-06.md` §6 (launch 08:54:46 2026-07-06;
+chain: hier-rich 60k → flat-short 30k → compare flat-long,hier-rich → compare
+flat-short,hier-short; FRONTIER_DONE sentinel); arm tuples `hvp_rev/rhvd.py` (hier-rich
+(48,36,diff), flat-short (0,8,diff) + reg twins); per-bin rows `logs_rhcp/frontier_top.log` /
+`frontier_bottom.log`; measured partner rows from Table 4.2 (`logs_rhcp/compare_clustered.log`).
+On the integration pass: move the two new rows into Table 4.2 and renumber this section to
+§4.3.6 (branch already resolved above).*

@@ -164,11 +164,15 @@ study of §4.6 extends this to the remaining suites, **[EXPECTED]** — the sele
 outperforms persistence and the [A2] baselines in accuracy and in the duration of consistency
 retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialized deterministic
 regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
-baseline parity or an additional measured boundary condition]** — together with the **[PENDING]**
-token-budget frontier completion (hier-rich at 3,072 tokens; flat-short at 512), read under its
-pre-registered convergence-at-saturation rule (the efficiency claim's final form is a
-frontier-from-below that converges with flat where the window saturates, not dominance at every
-budget).
+baseline parity or an additional measured boundary condition]** — together with the **measured**
+token-budget frontier completion (hier-rich at 3,072 tokens loses to flat-long, −0.0131
+[−0.0201, −0.0069], at equal budget and training regime; flat-short at 512 beats hier-short,
+−0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the
+pre-registered convergence-at-saturation expectation and reported as measured), which gives the
+efficiency claim its final, bounded form: hierarchy dominates the token-budget frontier exactly
+where window extension is both possible and valuable — the mid-budget regime where coarse
+tokens buy a memory window that fine tokens cannot afford and that the task rewards — not
+dominance at every budget.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -233,6 +237,7 @@ present results: they extend the measured boundary, which is stated exactly.
   disposition, not commitments — struck before defense if unfilled); any "competitive with the
   OpenSTL leaderboard on aggregate MSE" phrasing (refuted by measurement: 180.91 vs SimVP 26.69);
   the copyright-certificate sentence.
-- Result 7's generalization/frontier sentence is dual-branch by construction: the [EXPECTED] and
+- Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
   [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
-  in sync with §§4.3.6, 4.6.3–4.6.7 of `05_ROZDIL4.md`.
+  in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
+  2026-07-07, in sync with §4.3.6): inversion at both ends, bounded-claim wording.

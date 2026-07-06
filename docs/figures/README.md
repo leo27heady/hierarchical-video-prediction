@@ -1,7 +1,8 @@
 # Figures — generated from audited npz/logs (2026-07-06)
 
-All produced by `scripts/make_figures.py` (CPU, from `logs_rhcp/rhvd_eval_*.npz` + bridge logs)
-and `scripts/make_samples.py` (light GPU decode). Regenerable from the committed data.
+All produced by `scripts/make_figures.py` (CPU, from `logs_rhcp/rhvd_eval_*.npz` + bridge logs),
+`scripts/make_samples.py` (light GPU decode), and `scripts/make_fig9_frontier.py` (fig9, CPU).
+Regenerable from the committed data.
 
 | file | what | chapter slot | source |
 |---|---|---|---|
@@ -13,6 +14,7 @@ and `scripts/make_samples.py` (light GPU decode). Regenerable from the committed
 | fig6_mmnist_bridge.png | T7 MMNIST negative control: flat ≈ hier (MSE/SSIM/LPIPS) | CH4 §4.1.3 / appendix | mmnist_bridge_chain.log |
 | fig7_samples_claim1.png | qualitative GT vs hier-long vs flat-budget at h=1..148 (HONEST: both blur late) | CH4 §4.3.3 [FIG ch4-4] | GPU decode, seed 1 |
 | fig8_mmnist_samples_hier.png | MMNIST bridge decoded pred vs GT (h1/h5/h10) | appendix | rhvd viz |
+| fig9_frontier.png | token-budget frontier: fg-MSE(ALL, 152-frame rollout) vs context tokens (log-x), flat vs hier curves + reg context points; hier wins mid-budget only, inverts at both ends | CH4 §4.3.x (→§4.3.6), Розділ 4 §4.3.6 [FIG 4-x] | Table 4.2 + `frontier_{top,bottom}.log` |
 
 ## Honesty notes carried in the figures
 - fig1(c) + fig7: sharpness fades for ALL arms; the hierarchy advantage is a modest average gain,
