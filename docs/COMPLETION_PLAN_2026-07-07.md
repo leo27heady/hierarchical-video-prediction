@@ -1,5 +1,15 @@
 # COMPLETION PLAN — everything between "draft" and "publishable/defendable" (2026-07-07)
 
+> **STATUS UPDATE (2026-07-07 late):** E1 text fixes COMPLETE (batches 1+2, commits 91abb7f +
+> dc3aaba — all 12 audit items done incl. ROZDIL2 math fixes, 124 decision-theory/object,
+> 0.26% sync, Ch3-summary consistency). E2 article completion COMPLETE as prose: CH1_INTRO
+> (finalized abstract), CH6_REVERSIBILITY, CH7_RELATED (+non-claims), CH8_CONCLUSION written;
+> CH4 BRANCH markers resolved (§4.5.6 closure, §4.6 measured resolution) + caption fix; chapter
+> numbering canonical (1-8). [A1]-as-first-hierarchy-adaptation framing added (VSTUP, ROZDIL2
+> §2.1, CH1 arc) per author instruction. REMAINING: E4 figures (placeholders in place), E5
+> generalization runs (TaxiBJ chain RUNNING; R-A/R-B/R-C queued), E6 bibliography (95+28 [REF:]
+> tags), E7 author-blocking cluster, E8 assembly, E9 UA pass, E10 packaging.
+
 **Definition of done.**
 *Article [A4]:* a submittable manuscript — all 7 skeleton chapters as prose, final abstract,
 every figure rendered (or an explicit placeholder box), final tables, verified bibliography,
