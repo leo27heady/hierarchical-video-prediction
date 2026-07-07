@@ -516,29 +516,37 @@ This section verifies the central pre-registered prediction of Table 3.1: at an 
 context-token budget, the hierarchical allocation (long coarse memory + recent fine window) beats
 the flat allocation exactly where the memory horizon demands it.
 
-### 4.3.1 Попередній гейт: здатність пригадування виникає пізно у навчанні
+### 4.3.1 Попередній гейт: здатність пригадування виникає лише за більшого бюджету оптимізації
 
-*(The pre-test: retrieval emerges late in training.)*
+*(The pre-test: retrieval emerges under a larger optimization budget.)*
 
 Before any rollout machinery, the single-step memory gate asked whether a long *coarse* context
 helps at all: coarse context 48 versus 6 at fixed fine context 6 (1,232 vs 560 tokens including
 the target slots), best-of-8, stratified by the exact hardness label. The result is an
-emergence-with-training pattern: at 6,000 steps the HARD-bin delta is null on both training seeds
+emergence-with-budget pattern: at 6,000 steps the HARD-bin delta is null on both training seeds
 (+0.0014 [−0.0004, +0.0033] and +0.0008 [−0.0009, +0.0025]); at 20,000 steps it is a decisive win
 on both (+0.0135 [+0.0080, +0.0196] and +0.0143 [+0.0083, +0.0208]; hard-bin absolute error
 0.1053 → 0.0918 on seed 0 — a ≈13% relative reduction), with sharpness tied (≈0.188 both arms):
-the win is retrieval, not sharpness. Two disclosures attach: "2 seeds" means two training seeds
-sharing one CRN evaluation set (§4.1.5); and these evaluation windows are near-independent rather
+the win is retrieval, not sharpness. Four disclosures attach: "2 seeds" means two training seeds
+sharing one CRN evaluation set (§4.1.5); these evaluation windows are near-independent rather
 than fully clustered, so the audit's worst-case design-effect correction widens the 20k hard-bin
-CIs to ≈[+0.005, +0.022] (seed 0) and ≈[+0.006, +0.023] (seed 1) — the win survives. The
-methodological moral carries through the whole chapter: **retrieval-from-memory is a late
-capability, and short-budget ablations (6,000 steps here) would have spuriously killed it.**
-[UA-PASS: «здатність пригадування з пам'яті виникає пізно» — keep "retrieval" as «пригадування/
-відновлення з пам'яті» consistently.]
+CIs to ≈[+0.005, +0.022] (seed 0) and ≈[+0.006, +0.023] (seed 1) — the win survives; **each
+budget is its own complete, fully annealed training schedule** (a 6,000-step run and a
+20,000-step run, budget-matched within each contrast), so the compared quantity is the
+optimization budget with schedule shape a bundled covariate — and the 6,000-step arms were the
+better-converged endpoints of their own schedules, which works against a mid-anneal objection;
+and the 20,000-step budget was a **disclosed post-null follow-up** — the originally registered
+read at 6,000 steps returned its null, which is on the record, and the extension was then run
+and replicated on both seeds, so the claim rests on the twice-replicated 20k result, not on a
+selected read. The methodological moral carries through the whole chapter:
+**retrieval-from-memory requires a large optimization budget, and short-budget ablations (6,000
+steps here) would have spuriously killed it.** [UA-PASS: «здатність пригадування з пам'яті
+виникає лише за більшого бюджету оптимізації»; keep "retrieval" as «пригадування/відновлення з
+пам'яті» consistently.]
 
 **[FIG 4-6 — PLACEHOLDER]**
 *Content:* hard-bin Δ with confidence intervals at 6k vs 20k steps × 2 seeds: null at 6k on both
-seeds, CI-clean win at 20k on both — the retrieval capability emerges late in training.
+seeds, CI-clean win at 20k on both — retrieval emerges under the larger optimization budget.
 *Source:* **NEW** (data measured; plot from the four memory-gate logs).
 
 ### 4.3.2 Матриця розгортання

@@ -212,3 +212,21 @@ hier-long's 0.0158); flat-min 0.0004 (flat arms stable, as everywhere). Plateau 
 hier-min seed-mean 0.1725 ≈ hier-long seed-mean 0.1769 ≈ hier-rich 0.1695 (~0.17 band).
 Per the binding rule, claim escalation is now permitted: the win band's lower edge is
 headline-grade. R-B launched on completion (hier-rich/flat-long seed 1, B8×60k).
+
+### R-D AMENDMENT (pre-registered 2026-07-08, BEFORE the run; external-review recommendation
+### accepted): mechanism-agnosticism seed-1 replication
+
+**Motivation:** the reg-long vs reg-flat pairing (+0.0334 [+0.0248,+0.0423], every bin) is
+load-bearing — it is what licenses "both heads / mechanism-agnostic" in Claim 1 and novelty
+item 1 — and it exists only at seed 0. R-A/R-B replicate the diffusion pairings; nothing
+replicates the regression pairing. Protecting a stated claim outranks testing a losable
+hypothesis, so **R-D is inserted AFTER R-B and BEFORE R-C.**
+**Arms:** reg-long seed 1 + reg-flat seed 1 (B16×30k each, standard regime, loopmom) + compare.
+**PRE-REGISTERED PRIMARY READING:** reg-long beats reg-flat at seed 1 with ALL cluster-CI > 0
+(replication → mechanism-agnosticism is two-seed on both heads).
+**ALTERNATIVE:** a null/loss at seed 1 demotes the wording everywhere from
+"mechanism-agnostic (both heads)" to "replicated under the diffusion head; single-seed under
+regression, seed-disagreement disclosed" — pre-drafted, no soft reads.
+**Rules:** symmetric pair; both seeds reported; no claim escalation beyond two-seed wording.
+**Queue after this amendment:** R-B (running) → **R-D** → R-C → generalization G-i/G-ii/(G-iii
+vs loop-80 A′ re-ranked: A′ now ABOVE G-iii per external-validity value).

@@ -23,8 +23,8 @@ structured output at our scale. We then map the token-budget frontier of hierarc
 context. At matched budgets, a two-level latent model whose coarse level carries a 48-frame
 memory wins **exactly the band of budgets in which its coarse span covers the memory horizon
 while a flat window cannot** — from ≈900 tokens (the geometric span threshold, predicted before
-measurement; the largest effect, +0.0399 [+0.0299, +0.0501]) up to window saturation at ≈2,050
-tokens — and inverts outside the band. The win is mechanism-agnostic, but the mechanism ranking
+measurement; the largest effect, +0.0399/+0.0358 across two seeds) up to window saturation at
+≈2×10³ tokens (interpolated) — and inverts outside the band. The win is mechanism-agnostic, but the mechanism ranking
 is regime-dependent: regression, not diffusion, wins the deterministic best-of-1 rollout.
 Finally, we prove and measure an exactly invertible stochastic recurrence (gradients equal to
 backpropagation through time; activation memory constant in rollout length) and delimit honestly

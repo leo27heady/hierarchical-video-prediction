@@ -42,6 +42,29 @@ venv/Scripts/python.exe -u -m hvp_rev.rhvd --compare flat-budget,hier-long --see
 archive the 30k npz first: `cp logs_rhcp/rhvd_eval_hier-long_s0.npz logs_rhcp/archive_30k/` etc.,
 or add an `--eval_tag _60k` pass-through. CHECK before launching R-C.)*
 
+### A1b. REVIEW-RESPONSE AMENDMENTS (2026-07-08, external solo review; accepted items)
+
+- **R-D inserted after R-B, before R-C** (pre-registered in SPATIAL_FACTORIAL): reg-long +
+  reg-flat seed 1 (~6–7 h) — the mechanism-agnosticism pairing is load-bearing and single-seed;
+  protecting a stated claim outranks R-C's losable hypothesis.
+- **EVAL-CODE FREEZE while the queue runs:** do NOT edit `hvp_rev/rhvd.py` (or anything it
+  imports) until R-C completes — each queued chain starts fresh Python processes that would pick
+  up mid-queue edits and produce npz with inconsistent fields across a compared pair. The
+  per-image sharpness field (`sharp_img`, additive alongside the old batch-mean field) is
+  scheduled AFTER R-C, BEFORE the generalization runs.
+- **ALL-fg row** (~30 min, CPU): extend the compare tool to print a foreground-bearing-subset
+  ALL row alongside the mixed ALL (the 21.5% bg-only records dilute the headline — quoting both
+  preempts the "why is the headline a metric mixture" question). Apply to all published tables
+  at the next integration pass.
+- **Loop-80 A′ re-ranked ABOVE G-iii** in the optional tier (external validity: a second world
+  where hierarchy is *necessary* answers "one instrument" — G-iii is confirmatory only).
+- **Dataset provenance:** do NOT regenerate loopmom with a recorded seed (it would create a
+  DIFFERENT dataset than the one all results are measured on); instead pin SHA-256 hashes of the
+  shipped .npy files in the reproducibility appendix (script: `certutil -hashfile <file> SHA256`).
+- Rejected from the review, with reasons: the CH8 "stale date" (it is today's date — the review
+  ran mid-update); regenerate-loopmom (above); demoting R-C (kept — the emergence-transfer
+  hypothesis is worth one budget-matched pair, now safely behind R-D).
+
 ### A2. Generalization campaign — remaining datasets (pre-registered in the memo)
 
 | # | dataset | cost | why (argumentation) | build needed |

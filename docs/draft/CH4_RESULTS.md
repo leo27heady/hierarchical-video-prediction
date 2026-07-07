@@ -52,8 +52,17 @@ pre-registered bins dt ∈ (48,96], (96,192], >192, crossed with hardness) and a
 restriction so that gates are read only on re-entries of content that was answerable by
 construction. One metric disclosure carried from the audit: per-horizon *sharpness* series are
 chunk-batch means duplicated per record — valid for overall means and trend curves, never for
-per-bin or per-clip readings; all sharpness-vs-horizon statements below are so scoped. Full
-protocol, floors and threats-to-validity: Chapter 2 and the validity audit
+per-bin or per-clip readings; all sharpness-vs-horizon statements below are so scoped. Two
+further scope notes. **Multiplicity:** the horizon × hardness matrices report per-cell CIs
+without family-wise correction — the framing is estimation-first, and every headline claim rests
+on a pre-registered primary cell plus independent-seed replication (and, in the band results, on
+win-in-every-cell patterns), not on any single secondary bin; secondary-bin verdicts should be
+read descriptively. **Training-window ranges:** arms with different context reach necessarily
+sample training targets from different frame ranges (an arm with reach $r$ trains on targets
+from frame $r$ onward), so shorter-reach flat arms see somewhat more distinct training targets —
+a slack that favors the flat controls and is therefore conservative for every hierarchy win
+reported; evaluation is reach-identical for all arms (fixed 48-frame warm-up). Full protocol,
+floors and threats-to-validity: Chapter 2 and the validity audit
 (`docs/draft/VALIDITY_AUDIT.md`).
 
 ## 4.2 Claim 2 — the generation head: a regime-dependent winner
@@ -135,25 +144,33 @@ choice.
 
 ## 4.3 Claim 1 — hierarchical memory pays at matched token budget
 
-### 4.3.1 Pre-test: retrieval emerges late in training
+### 4.3.1 Pre-test: retrieval emerges under a larger optimization budget
 
 Before any rollout machinery, the single-step memory gate asked whether a long *coarse* context
 helps at all: coarse-context 48 vs 6 at fixed fine context 6 (1,232 vs 560 tokens), best-of-8,
-stratified by the exact hardness label. The result is an emergence-with-training pattern: at 6k
+stratified by the exact hardness label. The result is an emergence-with-budget pattern: at 6k
 steps the HARD-bin delta is null on both seeds (+0.0014 [−0.0004, +0.0033] and +0.0008 [−0.0009,
 +0.0025]); at 20k steps it is a decisive WIN on both seeds (+0.0135 [+0.0080, +0.0196] and
 +0.0143 [+0.0083, +0.0208]; hard-bin absolute 0.1053 → 0.0918 on seed 0), with sharpness tied
-(≈0.188 both arms) — the win is retrieval, not sharpness. Two disclosures: "2 seeds" here means
-two *training* seeds sharing one CRN evaluation set (by design, for pairing); and these
-evaluation windows are near-independent rather than fully clustered, so the audit's worst-case
-design-effect correction widens the 20k hard-bin CIs to ≈[+0.005, +0.022] (s0) and
-≈[+0.006, +0.023] (s1) — the WIN survives. The methodological moral carries through this whole
-chapter: retrieval-from-memory is a *late* capability, and short-budget ablations (6k steps here)
-would have spuriously killed it.
+(≈0.188 both arms) — the win is retrieval, not sharpness. Four disclosures. First, "2 seeds"
+means two *training* seeds sharing one CRN evaluation set (by design, for pairing). Second,
+these evaluation windows are near-independent rather than fully clustered, so the audit's
+worst-case design-effect correction widens the 20k hard-bin CIs to ≈[+0.005, +0.022] (s0) and
+≈[+0.006, +0.023] (s1) — the WIN survives. Third, **each budget is its own complete,
+budget-matched training run** (a fully annealed 6k schedule vs a fully annealed 20k schedule),
+not a single run probed at two checkpoints — so the contrast is *budget*, with schedule shape a
+bundled covariate; the 6k arms were, if anything, the better-converged endpoints of their own
+schedules, which works against the objection that they were merely mid-anneal. Fourth, the 20k
+budget was a **post-null follow-up**: the originally registered read was at 6k, its null was
+recorded, and the 20k extension was then run and replicated on both seeds — the escalation is
+part of the record, and the claim rests on the twice-replicated 20k result, not on a selected
+read. The methodological moral carries through this whole chapter: retrieval-from-memory needs
+a *large optimization budget*, and short-budget ablations (6k steps here) would have spuriously
+killed it.
 
-[FIG ch4-1: hard-bin Δ with CIs at 6k vs 20k × 2 seeds (data DONE, T3; plot QUEUED). Caption: the
-retrieval capability emerges late in training — null at 6k on both seeds, CI-clean win at 20k on
-both.]
+[FIG ch4-1: hard-bin Δ with CIs at 6k vs 20k × 2 seeds (data DONE, T3; plot QUEUED). Caption:
+retrieval emerges under the larger optimization budget — null at 6k on both seeds, CI-clean win
+at 20k on both (each budget its own annealed schedule).]
 
 ### 4.3.2 The rollout matrix
 

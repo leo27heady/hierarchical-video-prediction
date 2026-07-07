@@ -20,9 +20,10 @@ where its full-resolution memory information-dominates any coarse record of the 
 
 ## 8.2 Boundary conditions (each one measured)
 
-- **Emergence:** retrieval-from-memory is a late capability — null at 6k steps, a two-seed
-  CI-clean win at 20k (+0.0135/+0.0143 on hard re-entry) — so short-budget ablations spuriously
-  kill memory mechanisms.
+- **Emergence:** retrieval-from-memory needs a large optimization budget — null at 6k steps, a
+  two-seed CI-clean win at 20k (+0.0135/+0.0143 on hard re-entry; each budget its own complete
+  annealed schedule; the 20k extension was a disclosed post-null follow-up, twice-replicated) —
+  so short-budget ablations spuriously kill memory mechanisms.
 - **Mechanism-agnosticism:** the matched-budget win replicates under the regression head
   (reg-long > reg-flat in every bin, ALL +0.0334 [+0.0248, +0.0423]) — it is a property of the
   memory packaging, not of the diffusion core.
