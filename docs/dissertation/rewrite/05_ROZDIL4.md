@@ -697,20 +697,24 @@ tests the frontier's bottom." [UA-PASS: «фронтир якість–бюдж
 **Table 4.6a — Token-budget frontier of operating point A (letter-suffixed to avoid renumbering
 the audited table register; final numbering at typeset). Measured anchor rows from Tables
 4.5/4.6; frontier-completion cells measured 2026-07-07 (`logs_rhcp/frontier_top.log`,
-`logs_rhcp/frontier_bottom.log`).**
+`logs_rhcp/frontier_bottom.log`); lower-edge pair measured 2026-07-07
+(`logs_rhcp/frontier_low.log`, pre-registered the same morning before the runs).**
 
 | Token budget | Flat arm | ALL fg-MSE | Hierarchical arm | ALL fg-MSE | Paired Δ (flat − hier), cluster CI |
 |---|---|---:|---|---:|---|
 | ≈3,072 | flat-long | 0.1564 | hier-rich | 0.1695 | **−0.0131 [−0.0201, −0.0069]** (flat wins) |
 | 1,152 | flat-budget | 0.2038 | hier-long | 0.1848 | +0.0189 [+0.0121, +0.0264] (Table 4.6) |
+| **896** | flat-min (14 f) | 0.2106 | hier-min (48c+2f) | **0.1706** | **+0.0399 [+0.0299, +0.0501]** (hier wins EVERY cell; single seed, replication queued) |
 | ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
 
 **[FIG 4-x — token-budget frontier]**
-*Content:* ALL fg-MSE versus context-token budget at operating point A, one curve per family
-(flat: flat-short → flat-budget → flat-long; hierarchical: hier-short → hier-long → hier-rich),
-with the measured mid-budget win region marked and the persistence floor (0.2552) drawn.
+*Content:* ALL fg-MSE versus context-token budget at operating point A, one 4-point curve per
+family (flat: flat-short → flat-min → flat-budget → flat-long; hierarchical: hier-short →
+hier-min → hier-long → hier-rich), with the measured win band [896, ≈2,059) shaded, the
+geometric span-threshold (48×16 tokens) drawn as the band's lower edge, and the persistence
+floor (0.2552) drawn.
 *Source:* **`docs/figures/fig9_frontier.png`** (measured; anchors from Tables 4.5/4.6 and the
-frontier-completion runs).
+frontier-completion + lower-edge runs).
 
 The measurement resolved the pre-registered dual branch to a **third outcome, stricter than the
 pre-registered convergence expectation, and reported as measured under the no-soft-reads rule**
@@ -727,13 +731,33 @@ its coarse tokens buy a memory window that (a) exceeds what fine tokens afford a
 at window saturation (48 frames, clip-bounded) coarse slots merely displace full-resolution
 frames, and below the memory-relevance threshold they duplicate it. Sharpness follows the window,
 not the hierarchy: hier-rich 0.0898 versus flat-long 0.0996, hier-short 0.0392 versus flat-short
-0.0432 — at matched saturation the hierarchy does **not** retain sharpness better. The
-matched-budget headline of §4.3.3 (1,152 tokens, two seeds, both heads) is untouched; the §4.3
-efficiency claim takes its final, bounded form: **the hierarchy dominates the token-budget
-frontier exactly where window extension is both possible and valuable** — a bounded,
-dose-response-supported efficiency claim, not dominance at every budget. [UA-PASS: «ієрархія
-домінує на фронтирі токен-бюджету саме там, де розширення вікна є водночас можливим і цінним»;
-«інверсія на обох кінцях фронтиру».]
+0.0432 — at matched saturation the hierarchy does **not** retain sharpness better.
+
+This mechanism reading makes a quantitative prediction, which was pre-registered and then
+measured the same day (the lower-edge row of Table 4.6a): the win must switch on at the cheapest
+budget whose coarse span covers the ≈48-frame loop — 48 × 16 coarse tokens plus a minimal fine
+tail, ≈896 tokens, a budget at which a flat model affords only a 14-frame window. The measured
+pair confirms the prediction, and more strongly than expected: hier-min beats flat-min in
+**every horizon × hardness cell** (overall +0.0399 [+0.0299, +0.0501] — the largest hierarchical
+advantage measured in the campaign), with the visibility-stratified gates showing the reach
+signature exactly where the mechanism operates (dt ≤ 48 HARD +0.0750; dt 49–96 HARD +0.0282;
+dt 97–192, beyond the 48-frame span, null). Two structural conclusions follow. First, the win
+band's **lower edge coincides with the geometric span-threshold arithmetic** written before the
+run: flat wins at 512 tokens, the hierarchy wins at 896, so the switch-on is bracketed to
+(512, 896]. Second, the advantage **peaks at the lower edge**: inside the band, reducing the
+budget removes the flat model's window from the memory horizon faster than the hierarchical
+abstraction cost grows — the efficiency argument is strongest exactly where budgets are
+tightest, and hier-min at 896 tokens (0.1706) reaches a quality the flat curve attains only at
+≈2.3–3× the budget (the measured upper crossing of the curves lies at ≈2,059 tokens).
+Disclosure: the lower-edge pair is single-seed (seed 0); under the binding two-seed rule its
+replication is queued, and no headline statement uses the 896-token point without it — the
+two-seed anchor of the efficiency claim remains the 1,152-token pairing of §4.3.3. The §4.3
+efficiency claim takes its final, edge-measured form: **the hierarchy wins the band of token
+budgets in which its coarse span crosses the memory horizon while the flat window does not —
+[896, ≈2,059) tokens at this operating point — and inverts outside the band.** [UA-PASS:
+«ієрархія виграє смугу токен-бюджетів, у якій її грубий діапазон покриває горизонт пам'яті, тоді
+як пласке вікно — ні»; «нижня межа смуги збігається з геометричним порогом 48×16 токенів»;
+«перевага максимальна на нижній межі смуги».]
 
 ## 4.4 Факторне дослідження просторової абстракції: економічний, залежний від ядра вердикт
 

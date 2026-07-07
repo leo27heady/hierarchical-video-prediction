@@ -1,7 +1,9 @@
 """fig9_frontier.png — token-budget frontier, operating point A (loopmom, seed 0).
 
 Data: Table 4.2 + frontier completion (logs_rhcp/frontier_{top,bottom}.log,
-docs/SPATIAL_FACTORIAL.md FRONTIER MEASURED 2026-07-07). fg-MSE ALL over 152 AR frames.
+docs/SPATIAL_FACTORIAL.md FRONTIER MEASURED + LOWER EDGE MEASURED 2026-07-07;
+logs_rhcp/frontier_low.log: hier-min 0.1706 / flat-min 0.2106, +0.0399 [+0.0299,+0.0501]).
+fg-MSE ALL over 152 AR frames.
 """
 import numpy as np
 import matplotlib
@@ -10,16 +12,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # (tokens, fg-MSE ALL) — diffusion-head frontier curves
-flat = [(512, 0.2224), (1152, 0.2038), (3072, 0.1564)]
-hier = [(480, 0.2260), (1152, 0.1848), (3072, 0.1695)]
+flat = [(512, 0.2224), (896, 0.2106), (1152, 0.2038), (3072, 0.1564)]
+hier = [(480, 0.2260), (896, 0.1706), (1152, 0.1848), (3072, 0.1695)]
 # regression-head reference points (context, dashed/open markers)
 reg_pts = [
     ("spat18-reg", 672, 0.2008),
     ("reg-flat", 1152, 0.2015),
     ("reg-long", 1152, 0.1682),
 ]
-flat_names = ["flat-short", "flat-budget", "flat-long"]
-hier_names = ["hier-short", "hier-long", "hier-rich"]
+flat_names = ["flat-short", "flat-min", "flat-budget", "flat-long"]
+hier_names = ["hier-short", "hier-min", "hier-long", "hier-rich"]
 PERSIST = 0.2552
 
 fx, fy = np.array([p[0] for p in flat], float), np.array([p[1] for p in flat], float)
@@ -39,14 +41,17 @@ for i in idx:
 
 fig, ax = plt.subplots(figsize=(7.6, 5.0))
 
-# mid-budget win region (between the two crossings)
-if len(crossings) >= 2:
-    ax.axvspan(crossings[0], crossings[1], color="#2a9d8f", alpha=0.10, zorder=0)
-    ax.text(
-        np.sqrt(crossings[0] * crossings[1]), 0.243,
-        "hier wins\n(mid-budget)", ha="center", va="top", fontsize=9,
-        color="#1d7268", style="italic",
-    )
+# win band: lower edge = geometric span-threshold (48*16 coarse tok + minimal fine ~ 830;
+# measured bound: flat wins at 512, hier wins at 896); upper edge = measured curve crossing.
+lo_edge = 830.0
+hi_edge = crossings[-1] if crossings else 3072.0
+ax.axvspan(lo_edge, hi_edge, color="#2a9d8f", alpha=0.10, zorder=0)
+ax.axvline(lo_edge, color="#2a9d8f", lw=0.9, ls="--", zorder=1)
+ax.text(np.sqrt(lo_edge * hi_edge), 0.2455,
+        "hier wins\n(span ≥ loop, window < loop)", ha="center", va="top", fontsize=9,
+        color="#1d7268", style="italic")
+ax.text(820, 0.2645, "span=loop threshold\n(48×16 tok, geometric)", ha="right", va="top",
+        fontsize=7.5, color="#1d7268")
 
 ax.axhline(PERSIST, color="0.45", lw=1.0, ls=":", zorder=1)
 ax.text(3072, PERSIST - 0.0015, "persistence 0.2552", ha="right", va="top",
@@ -65,11 +70,11 @@ ax.scatter(rx, ry, marker="D", s=34, facecolors="none", edgecolors="#6a4c93",
 
 # point labels
 lab_kw = dict(fontsize=8.5, zorder=4)
-offs_flat = [(24, -24), (0, 10), (-8, -24)]
+offs_flat = [(24, -24), (-6, 10), (16, 10), (-8, -24)]
 for (x, y), name, (dx, dy) in zip(flat, flat_names, offs_flat):
     ax.annotate(f"{name}\n{y:.4f}", (x, y), textcoords="offset points",
                 xytext=(dx, dy), ha="center", color="#264653", **lab_kw)
-offs_hier = [(-2, 10), (0, -26), (8, 10)]
+offs_hier = [(-2, 10), (30, -16), (12, -26), (8, 10)]
 for (x, y), name, (dx, dy) in zip(hier, hier_names, offs_hier):
     ax.annotate(f"{name}\n{y:.4f}", (x, y), textcoords="offset points",
                 xytext=(dx, dy), ha="center", color="#b3492f", **lab_kw)
@@ -79,6 +84,10 @@ for (name, x, y), (dx, dy) in zip(reg_pts, reg_offs):
                 xytext=(dx, dy), ha="center", fontsize=7.5, color="#6a4c93", zorder=4)
 
 # end-inversion callouts
+ax.annotate("hier wins +0.0399 [+0.0299,+0.0501]\n(peak of the band; single seed)", (896, 0.1706),
+            textcoords="offset points", xytext=(44, -52), ha="left", fontsize=8,
+            color="#1d7268",
+            arrowprops=dict(arrowstyle="-", color="#2a9d8f", lw=0.9))
 ax.annotate("flat wins\n−0.0036 [−0.0063,−0.0010]", (500, 0.2242),
             textcoords="offset points", xytext=(16, 42), ha="left", fontsize=8,
             color="0.25",
@@ -89,14 +98,14 @@ ax.annotate("flat wins\n−0.0131 [−0.0201,−0.0069]", (2900, 0.1685),
             arrowprops=dict(arrowstyle="-", color="0.55", lw=0.8))
 
 ax.set_xscale("log")
-ax.set_xticks([512, 672, 1152, 3072])
-ax.set_xticklabels(["480–512", "672", "1152", "3072"], fontsize=9)
+ax.set_xticks([512, 672, 896, 1152, 3072])
+ax.set_xticklabels(["480–512", "672", "896", "1152", "3072"], fontsize=9)
 ax.minorticks_off()
 ax.set_xlim(430, 3600)
 ax.set_ylim(0.145, 0.265)
 ax.set_xlabel("context-token budget (log scale)")
 ax.set_ylabel("fg-MSE, ALL (152-frame AR rollout; lower is better)")
-ax.set_title("Token-budget frontier: hierarchy pays mid-budget; inverts at both ends\n"
+ax.set_title("Token-budget frontier: hierarchy wins the band where its span crosses the memory horizon\n"
              "(loopmom, seed 0; diffusion curves, cluster-CI deltas in text)",
              fontsize=10.5)
 ax.legend(loc="lower left", fontsize=8.5, framealpha=0.9)

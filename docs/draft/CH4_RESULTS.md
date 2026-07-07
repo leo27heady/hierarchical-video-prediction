@@ -588,15 +588,20 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 |---|---|---:|---:|---:|---|
 | top, new arm | hier-rich (48c+36f, 3072 tok, B8×60k) | 0.1695 | 0.0898 | — | — |
 | bottom, new arm | flat-short (8f, 512 tok, B16×30k) | 0.2224 | 0.0432 | — | — |
+| lower edge, new arm | hier-min (48c+2f, 896 tok, B16×30k) | 0.1706 | 0.0861 | — | — |
+| lower edge, new arm | flat-min (14f, 896 tok, B16×30k) | 0.2106 | 0.0516 | — | — |
 | frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** |
 | frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** |
+| frontier lower edge | flat-min vs hier-min (equal 896 tok, equal regime) | — | — | **+0.0399** | [+0.0299, +0.0501] **HIER WINS** (every bin; single seed, replication queued) |
 
-[FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured curves —
-hier (480 → 1152 → 3072: hier-short 0.2260, hier-long 0.1848, hier-rich 0.1695) and flat
-(512 → 1152 → 3072: flat-short 0.2224, flat-budget 0.2038, flat-long 0.1564) — measured shape:
-the curves cross twice; hierarchy wins only the mid-budget region around 1,152 tokens. Caption:
-the token-budget frontier — hierarchy pays mid-budget and inverts at both ends; the flat curve
-wins below the memory-relevance threshold and at window saturation.]
+[FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured 4-point
+curves — hier (480 → 896 → 1152 → 3072: 0.2260, **0.1706**, 0.1848, 0.1695) and flat
+(512 → 896 → 1152 → 3072: 0.2224, 0.2106, 0.2038, 0.1564) — measured shape: hierarchy wins the
+band [896, ≈2059) tokens (upper crossing interpolated from the curves), with the effect PEAKING
+at the lower edge, which sits exactly at the geometric span-threshold prediction (48×16 coarse
+tokens + minimal fine tail ≈ 830–896); flat wins below the threshold (512) and at window
+saturation (3072). Caption: the token-budget frontier — hierarchy wins exactly the band where
+its coarse span crosses the memory horizon while flat's window does not.]
 
 **Reading (measured resolution of the pre-registered dual branch — a third outcome; reported
 under the no-soft-reads rule, the §4.5.4 default-to-FAIL discipline applied to wording).**
@@ -618,11 +623,40 @@ budget. Sharpness, same discipline: hier-rich 0.0898 vs flat-long 0.0996 and hie
 vs flat-short 0.0432 — the window (token budget spent on frames) drives sharpness, and
 hierarchy does NOT retain sharpness better at matched saturation.
 
+**Lower edge (measured 2026-07-07; pre-registered the same morning, before the runs, in
+`docs/SPATIAL_FACTORIAL.md` FRONTIER LOWER EDGE — the primary branch measured).** The band
+theory makes a quantitative prediction: the win should switch on at the cheapest budget whose
+coarse span covers the ~48-frame loop, i.e. 48×16 coarse tokens plus a minimal fine tail ≈ 896
+tokens — a budget at which flat affords only a 14-frame window. The measured pair confirms it,
+and more strongly than predicted: **hier-min (48c+2f) beats flat-min (14f) in every horizon ×
+hardness cell**, ALL **+0.0399 [+0.0299, +0.0501]** — the largest hierarchy delta of the
+campaign (vs +0.0189/+0.0354 at 1,152) — with the dt-stratified gates showing the reach
+signature exactly where the mechanism lives (dt ≤ 48 HARD +0.0750 WIN; dt 49–96 HARD +0.0282
+WIN; dt 97–192, beyond the 48-frame span, null). Two structural readings follow. First, the
+win band's **lower edge is at the geometric prediction**: flat wins at 512, hierarchy wins at
+896 — the switch-on is bracketed to (512, 896] and coincides with the span-threshold arithmetic
+written before the run. Second, the **effect peaks at the lower edge**: moving down-budget
+inside the band, flat's window falls away from the horizon faster than the hierarchy's
+abstraction cost grows, so the efficiency argument is strongest exactly where budgets are
+tightest — hier-min at 896 tokens (0.1706) reaches a quality that the flat curve only attains
+between 1,152 and 3,072 tokens (interpolated ≈2.3–3× the budget; the measured upper crossing of
+the curves sits at ≈2,059 tokens). One measured arm ordering is reported without a claim
+(single seed): hier-min at 896 tokens (0.1706) also measured *better than hier-long at 1,152*
+(0.1848), i.e. the pre-registered "fine-context floor" alternative was refuted at w_f = 2 —
+fewer recent-fine frames did not hurt. Disclosures: this pair is seed-0 only; per the binding
+two-seed rule a seed-1 replication is queued (behind the generalization campaign per the
+author's GPU priority), and no headline uses the 896-point without it; the 1,152-token headline
+remains the two-seed anchor. The final claim form is unchanged but now edge-measured: hierarchy
+wins **the band of budgets where its span crosses the memory horizon and flat's window does
+not** — [896, ≈2,059) tokens as measured on this testbed — and inverts outside it.
+
 *Provenance (this section only): design/arms `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION +
-FRONTIER MEASURED (2026-07-07) + `docs/HANDOFF_2026-07-06.md` §6 (launch 08:54:46 2026-07-06;
-chain: hier-rich 60k → flat-short 30k → compare flat-long,hier-rich → compare
+FRONTIER MEASURED (2026-07-07) + FRONTIER LOWER EDGE (pre-reg + MEASURED same day, commit
+441076e; chain marker FRONTIER_LOW_DONE) + `docs/HANDOFF_2026-07-06.md` §6 (launch 08:54:46
+2026-07-06; chain: hier-rich 60k → flat-short 30k → compare flat-long,hier-rich → compare
 flat-short,hier-short; FRONTIER_DONE sentinel); arm tuples `hvp_rev/rhvd.py` (hier-rich
-(48,36,diff), flat-short (0,8,diff) + reg twins); per-bin rows `logs_rhcp/frontier_top.log` /
-`frontier_bottom.log`; measured partner rows from Table 4.2 (`logs_rhcp/compare_clustered.log`).
-On the integration pass: move the two new rows into Table 4.2 and renumber this section to
-§4.3.6 (branch already resolved above).*
+(48,36,diff), flat-short (0,8,diff) + reg twins; hier-min (48,2,diff), flat-min (0,14,diff));
+per-bin rows `logs_rhcp/frontier_top.log` / `frontier_bottom.log` / `frontier_low.log`; measured
+partner rows from Table 4.2 (`logs_rhcp/compare_clustered.log`). On the integration pass: move
+the new rows into Table 4.2 and renumber this section to §4.3.6 (branch already resolved
+above).*

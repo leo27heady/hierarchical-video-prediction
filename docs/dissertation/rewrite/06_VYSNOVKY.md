@@ -168,11 +168,16 @@ baseline parity or an additional measured boundary condition]** — together wit
 token-budget frontier completion (hier-rich at 3,072 tokens loses to flat-long, −0.0131
 [−0.0201, −0.0069], at equal budget and training regime; flat-short at 512 beats hier-short,
 −0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the
-pre-registered convergence-at-saturation expectation and reported as measured), which gives the
-efficiency claim its final, bounded form: hierarchy dominates the token-budget frontier exactly
-where window extension is both possible and valuable — the mid-budget regime where coarse
-tokens buy a memory window that fine tokens cannot afford and that the task rewards — not
-dominance at every budget.
+pre-registered convergence-at-saturation expectation and reported as measured) and the
+**measured lower edge of the win band** (a pre-registered geometric prediction confirmed the
+same day: at 896 tokens — the cheapest budget whose 48-slot coarse span covers the ≈48-frame
+loop, against a flat window of only 14 frames — the hierarchical arm wins every horizon ×
+hardness cell, +0.0399 [+0.0299, +0.0501], the largest hierarchical advantage of the campaign;
+single-seed, replication queued under the two-seed rule), which together give the efficiency
+claim its final, edge-measured form: **hierarchy wins the band of token budgets in which its
+coarse span crosses the memory horizon while the flat window does not — approximately 896 to
+2,050 tokens at the primary operating point, with the advantage peaking at the band's lower
+edge — and inverts outside the band**, not dominance at every budget.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -240,4 +245,6 @@ present results: they extend the measured boundary, which is stated exactly.
 - Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
   [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
   in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
-  2026-07-07, in sync with §4.3.6): inversion at both ends, bounded-claim wording.
+  2026-07-07, in sync with §4.3.6): inversion at both ends + measured lower edge at 896 tokens
+  (win band [896, ≈2,059), peak at the edge; single-seed, replication queued) — edge-measured
+  band wording.

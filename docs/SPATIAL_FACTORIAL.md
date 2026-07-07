@@ -141,3 +141,25 @@ only in this branch, not by default): one pair at 1024 tokens (48c+4f vs 16f).
 
 **Decision rule (binding):** report whichever branch measures, no soft reads; two-seed rule
 before any claim escalation; no other arms authorized by this block.
+
+### FRONTIER LOWER EDGE MEASURED (2026-07-07; `logs_rhcp/frontier_low.log`;
+### npz `rhvd_eval_{hier-min,flat-min}_s0.npz`; chain marker FRONTIER_LOW_DONE)
+
+**PRIMARY branch measured — stronger than predicted: hier-min WINS EVERY cell.**
+- hier-min ALL fg-MSE **0.1706** / sharp 0.0861; flat-min 0.2106 / 0.0516 (persistence 0.2552).
+- Paired Δ ALL **+0.0399 [+0.0299, +0.0501]** — the LARGEST hierarchy delta of the campaign
+  (vs +0.0189 s0 / +0.0354 s1 at 1152 tokens).
+- WIN in every horizon × hardness bin (from h1-8 easy +0.0128 [+0.0049,+0.0228] to h25-60 HARD
+  **+0.0790 [+0.0561,+0.1016]**). dt-gates: dt≤48 HARD +0.0750 WIN; dt 49–96 HARD +0.0282 WIN;
+  dt 97–192 null — beyond the 48-frame span, the expected reach signature.
+- **Band statement:** measured win band = **[896, ≈2059) tokens** (upper crossing interpolated
+  from the 4-point curves; CI-clean flat win at 3072; lower edge measured exactly at the
+  geometric span-threshold prediction ~48·16+2·64). The effect PEAKS at the lower edge: the
+  cheaper the budget — provided the coarse span still covers the loop — the larger the
+  hierarchy win, because flat's window shrinks away from the horizon faster than the
+  abstraction cost grows.
+- Notable measured arm ordering (single-seed, REPORT-ONLY, no claim): hier-min 0.1706 @896 tok
+  beats hier-long 0.1848 @1152 tok — fewer recent-fine frames measured BETTER at fewer tokens;
+  the pre-registered "fine-context floor" alternative branch is refuted at w_f = 2.
+- Disclosures: seed 0 only; per the binding rule, **seed-1 replication is QUEUED** (behind the
+  TaxiBJ generalization launch per author GPU priority) before any headline escalation.
