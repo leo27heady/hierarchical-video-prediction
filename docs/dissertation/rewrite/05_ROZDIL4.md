@@ -120,8 +120,10 @@ and **KTH**. **[AUTHOR: carry the exact dataset parameters and result tables fro
 publication text; the old draft's §4.1 description (AdamW, lr $10^{-4}$ cosine, batch 8–32,
 100–300 epochs) must be verified against the published paper before it is retained. The old
 draft's "A100 80GB cloud" hardware claim is kept only if receipts exist — otherwise delete.]**
-Per author decision Q4, no *new* TaxiBJ or KTH experiments are claimed for the hierarchical model
-of Chapter 3; those benchmarks appear in this dissertation exclusively as [A2] receipts.
+Per author decision Q4 (as later amended by execution): KTH appears in this dissertation
+exclusively as an [A2] receipt; TaxiBJ was originally scoped the same way, but the transfer run
+of §4.6.5 was subsequently executed (2026-07-07) and TaxiBJ therefore appears BOTH as an [A2]
+receipt and as a measured transfer suite of the Chapter 3 stack.
 
 ### 4.1.3 Міст до стандартного стенда OpenSTL/MMNIST
 
@@ -1126,30 +1128,55 @@ metrics.
 | Persistence | | | | | |
 | TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | | | |
 
-### 4.6.5 TaxiBJ: реальні дані просторово-часового прогнозування
+### 4.6.5 TaxiBJ: реальні дані просторово-часового прогнозування — ВИМІРЯНО (2026-07-07)
 
-*(TaxiBJ: real spatio-temporal data. — [EXPECTED] shell.)*
+*(TaxiBJ: real spatio-temporal data. — MEASURED; the run-or-strike disposition of decision Q4
+resolved by RUNNING: harness `hvp_rev/taxibj_bridge.py`, chain log
+`logs_rhcp/taxibj_bridge_chain.log`.)*
 
-TaxiBJ is the one *real-data* suite of the [A2] receipt set: Beijing taxi in/out-flow grids,
-$32 \times 32 \times 2$ (two flow channels), 4 → 4 frame prediction under the standard protocol.
-The transfer requires the dedicated **$32 \times 32 \times 2$ autoencoder/model variant**: the
-two-level autoencoder and the DiT interface re-instantiated at the 2-channel 32 × 32 input (with
-the coarse level reduced correspondingly), since the 64 × 64 grayscale stack of §3.1.1 does not
-apply as-is — this variant is part of the run, and its round-trip ceiling row is mandatory, per
-the §4.6.2 pattern. Disposition note: per author decision Q4 the dissertation carries **no
-standing commitment** to new TaxiBJ experiments — this shell exists so the chapter mirrors the
-final article's full scope; if it is not filled by the defense, the subsection is struck and
-TaxiBJ remains exclusively an [A2] receipt (§4.1.2). **[AUTHOR: decide run-or-strike.]**
+TaxiBJ is the one *real-data* suite of the transfer set: Beijing taxi in/out-flow grids,
+$32 \times 32 \times 2$ (two flow channels), 4 → 4 frame prediction under the standard OpenSTL
+protocol, scored by the benchmark's own metric implementation invoked verbatim (the
+normalization convention — data rescaled to $[0,1]$ by the benchmark's loader — was verified in
+the OpenSTL source before any model number was read). Instead of the anticipated dedicated
+32-px model variant, the transfer used the **exact-upsample equivalent** (disclosed, registered
+before the runs): frames nearest-upsampled ×2 through the *unchanged* 64-px two-level
+autoencoder (2-channel input) and WindowDiT stack of Chapter 3, predictions downsampled back by
+the exactly inverse 2×2 mean before scoring — an information-identical formulation that keeps
+the architectural constants of §3.2 literally unchanged across every dataset of the study.
+Regime: fresh autoencoder (12,000 steps), four arms at batch 64 × 15,000 steps (≈48 epochs,
+comparable to the leaderboard's 50-epoch protocol), best-of-1, unconditional, seed 0.
 
-**Table 4.11 — TaxiBJ transfer (32 × 32 × 2 variant) [EXPECTED — cells empty until measured].**
+**Table 4.11 — TaxiBJ 4→4, MEASURED (n = 500 canonical test pairs; OpenSTL convention;
+leaderboard rows = OpenSTL's own 50-epoch retraining, locally verified).**
 
-| Arm | MSE | MAE | SSIM |
-|---|---:|---:|---:|
-| Hierarchical (selected recipe, 32×32×2 variant) | | | |
-| Flat control (token-matched, 32×32×2 variant) | | | |
-| AE round-trip ceiling (32×32×2) | | | |
-| Persistence | | | |
-| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | |
+| Arm | MSE | MAE | SSIM | PSNR |
+|---|---:|---:|---:|---:|
+| **Flat, regression (256 ctx tokens)** | **0.3642** | **14.96** | 0.9781 | **39.83** |
+| Hierarchical, regression (128 ctx tokens) | 0.4170 | 15.44 | 0.9772 | 39.64 |
+| Hierarchical, diffusion (128 ctx tokens) | 0.4986 | 18.37 | 0.9692 | 37.87 |
+| Flat, diffusion (256 ctx tokens) | 0.5152 | 18.44 | 0.9686 | 37.85 |
+| AE round-trip ceiling (2-ch) | 0.0192 | 4.48 | 0.9987 | 50.92 |
+| Persistence | 3.8268 | 48.63 | 0.7853 | 30.20 |
+| TAU (OpenSTL, 50 ep) | 0.3108 | 14.93 | 0.9848 | 39.74 |
+| MIM (OpenSTL, 50 ep) | 0.3110 | 14.96 | 0.9847 | 39.65 |
+| PredRNN (OpenSTL, 50 ep) | 0.3194 | 15.31 | 0.9838 | 39.51 |
+| SimVP+gSTA-S (OpenSTL, 50 ep) | 0.3246 | 15.03 | 0.9844 | 39.71 |
+| PhyDNet (OpenSTL, 50 ep) | 0.3622 | 15.53 | 0.9828 | 39.46 |
+| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | | |
+
+The measured readings, stated per metric and without a leaderboard-superiority headline (the
+§4.2.3 rule): the regression arm of the *unchanged generalist stack* lands **inside the
+leaderboard band on MAE (14.96 — tying MIM for second-best of the quoted rows) and on PSNR
+(39.83 — above every quoted row)**, at the band's lower edge on MSE (0.3642, 0.55% above
+PhyDNet), and below the band on SSIM (0.9781 vs 0.9828–0.9848). Persistence is beaten ≈10.5×;
+the autoencoder ceiling (0.0192, 16× below the best specialist row) shows the frozen tokenizer
+is not the limiter — the pre-registered decoder-capacity fallback branch is measured-moot. The
+regression-over-diffusion best-of-1 ordering replicates on real data (0.364/0.417 vs
+0.515/0.499), and the no-memory-horizon boundary replicates as pre-registered: at half the
+context tokens the hierarchical regression arm pays −0.053 MSE with faster per-horizon
+degradation (4-frame protocol → coarse history is pure token economy). Disclosure: single seed
+(a transfer row, not a claim-bearing contrast, per the campaign's two-seed rule).
 
 ### 4.6.6 KTH-64 **[OPTIONAL]**
 

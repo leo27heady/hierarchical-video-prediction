@@ -295,6 +295,26 @@ is primary (deterministic-ish short-horizon task).
    round-trip ceiling owns the absolute-quality risk (persistence 3.83 pixel-sum vs leaderboard
    ~0.31 measured at smoke -- the ceiling row will decide how close the neighborhood can be).
 
+**MEASURED (2026-07-07, `logs_rhcp/taxibj_bridge_chain.log`, TAXIBJ_ALL_DONE; probe chose B=64 @
+9.8 GB — B=96 overshot 14 GB; 15k steps ≈ 48 epochs ≈ the leaderboard's 50-epoch protocol):**
+
+| row | MSE | MAE | SSIM | PSNR |
+|---|---:|---:|---:|---:|
+| **txb-flat-reg (256 tok)** | **0.3642** | **14.96** | 0.9781 | **39.83** |
+| txb-hier-reg (128 tok) | 0.4170 | 15.44 | 0.9772 | 39.64 |
+| txb-hier-diff (128 tok) | 0.4986 | 18.37 | 0.9692 | 37.87 |
+| txb-flat-diff (256 tok) | 0.5152 | 18.44 | 0.9686 | 37.85 |
+| AE round-trip | 0.0192 | 4.48 | 0.9987 | 50.92 |
+| persistence | 3.8268 | 48.63 | 0.7853 | 30.20 |
+
+PRIMARY branch confirmed, stronger than expected: **inside the leaderboard band on MAE (14.96 =
+MIM, 2nd of quoted rows) and PSNR (39.83 > all quoted rows)**; MSE at the band's lower edge
+(0.55% above PhyDNet, 17% above TAU); SSIM below band. Persistence beaten 10.5×; AE ceiling
+0.0192 (16× below TAU) — decoder-capacity fallback measured-moot. reg > diff replicates on real
+data; hier = economy-only at 4→4 as pre-registered (−14% MSE at 50% tokens for reg; diff twins
+invert slightly). Single seed (transfer row). Filled: CH5 §5.7 (Table 5.5) + Розділ 4 §4.6.5
+(Table 4.11), both with per-metric wording and no leaderboard-superiority headline.
+
 ---
 
 ## 8. Dataset (vi) — KTH-64 (OPTIONAL stretch, with disclosure — or skip)
