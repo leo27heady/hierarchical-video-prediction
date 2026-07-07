@@ -82,7 +82,12 @@ represented by a discrete integer from 0 to 255, allows the system to avoid the 
 information that is unavoidable when heuristic pre-compression or vector-quantization (VQ-VAE)
 algorithms are used [REF: van den Oord et al. 2017, VQ-VAE]. The developed V-BLT architecture is
 a three-tier hierarchical information-transformation system consisting of a Local Encoder, a
-Global Latent Transformer, and a Local Decoder.
+Global Latent Transformer, and a Local Decoder. In the arc of this dissertation, V-BLT is the
+author's **first realization of the hierarchical adaptation of video generation** — a two-stage
+decomposition in which local byte-level stages surround a global latent stage and an entropy
+criterion governs the allocation of capacity between them; the mature form of this hierarchical
+decomposition, in which the upper level carries the long-range temporal memory of the process,
+is developed in Chapter 3.
 
 > **[FIG 2-2 — PLACEHOLDER]**
 > **Content:** Overall architecture of the Vision Byte Latent Transformer (V-BLT): Local Encoder →
@@ -709,27 +714,41 @@ the noise scale, and $\epsilon_t$ is the noise sample of step $t$. Transformatio
 alone, is not invertible: the noise irreversibly injects new information. However, if the noise
 samples $\epsilon_t$ drawn during the forward pass are *stored* — the store-the-noise principle,
 extending the reversible recurrent networks of [REF: MacKay et al. 2018, Reversible RNN] — the
-recurrence becomes exactly invertible:
+recurrence becomes exactly invertible. Equations (2.14)–(2.15) state the principle in its
+simplest, *external-additive* form, in which the stored noise is subtracted before the inverse
+transition is applied:
 
 $$
 h_{t-1} = F^{-1}\!\left(h_t - \sigma\,\epsilon_t\right).
 \tag{2.15}
 $$
 
-The memory cost of storing the noise sequence grows only as $O(T \cdot D_{\epsilon})$ — one noise
-tensor per step, with no layer factor $L$ and no computation-graph factor — and is negligible
-against the $O(T \cdot L \cdot D)$ activation graph that BPTT would store (this is confirmed by
-the direct measurement in part (iii): the total memory of the reversible method stays flat).
-Within a coupled two-branch state $(s_1, s_2)$, the noise is injected inside the coupling
-functions,
+The construction **implemented and measured in this dissertation** is the more general
+*conditioning-injected* form: within a coupled two-branch state $(s_1, s_2)$, the stored noise
+enters the coupling functions as a conditioning argument,
 
 $$
-(s_1, s_2) \;\mapsto\; \Bigl(s_1 + F(s_2, \epsilon_t),\;\; s_2 + G\bigl(s_1 + F(s_2, \epsilon_t)\bigr)\Bigr),
+(y_1, y_2) \;=\; \Bigl(s_1 + F(s_2, \epsilon_t),\;\; s_2 + G\bigl(y_1\bigr)\Bigr),
 \tag{2.16}
 $$
 
-which preserves the closed-form inverse of (2.11)–(2.12) verbatim, with $\epsilon_t$ replayed
-from storage.
+whose closed-form inverse subtracts the couplings in reverse order with the *same* stored
+conditioning replayed:
+
+$$
+s_2 = y_2 - G(y_1), \qquad s_1 = y_1 - F(s_2, \epsilon_t).
+\tag{2.16'}
+$$
+
+The additive-coupling inverse is exact for an *arbitrary* conditioning argument, so (2.16')
+holds verbatim for any signal injected this way (noise, actions, level context); the
+external-additive scheme (2.14)–(2.15) is recovered as the special case in which the noise
+enters only as a final additive term. All numerical properties quoted below are measured on the
+conditioning-injected construction (2.16)–(2.16'), which is the one realized in the software
+complex. The memory cost of storing the noise sequence grows only as $O(T \cdot D_{\epsilon})$ —
+one noise tensor per step, with no layer factor $L$ and no computation-graph factor — and is
+negligible against the $O(T \cdot L \cdot D)$ activation graph that BPTT would store (confirmed
+by the direct measurement in part (iii): the total memory of the reversible method stays flat).
 
 The following properties of this construction were verified numerically on the implemented
 hierarchical multi-rate recurrent core (software complex of the dissertation; measurement details
@@ -858,14 +877,20 @@ gradient-descent (or Langevin) inner loop requires, at each reverse step, a Hess
 product and mixed second-order terms — i.e., rebuilding the differentiable graph of
 $\nabla E$ (a `create_graph`-class second-order graph) from a fresh forward pass, *regardless of
 how the trajectory state at that step was obtained*. Reversibility can eliminate only the storage
-of the trajectory states themselves. In the implemented system, the measured proportions are:
-the descent variable is $\approx 5.1$ KB per sample (1280 floats), while the per-step
-second-order graph occupies $\approx 1.5$–$2.3$ GB at micro-batch 12; at $K = 128$ the total
-trajectory storage that reversibility could save is $\approx 7.8$ MB of a 3–4 GB peak — a saving
-of $\approx 0.2\%$. The crossover at which trajectory states would begin to dominate the
-second-order graph lies at $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically
-meaningful refinement depth. The underlying storage arithmetic — counting the bits per step that
-an optimizer trajectory consumes versus the volume contraction of the update map — is due to
+of the trajectory states themselves. **The direct four-way measurement on the implemented system**
+(naive full-graph / truncated / checkpointed / reversible differentiation of the inner loop,
+$K \in \{4, 8, 32, 128\}$, micro-batch 12, fp32) gives: the naive full graph consumes 18.1 GB
+already at $K = 4$ (spilling to shared memory) and exhausts device memory at $K = 8$; the
+truncated, checkpointed, and reversible variants all remain flat at 5.282–5.296 GB through
+$K = 128$; and the reversible variant saves **14 MB = 0.26% of the peak** relative to
+checkpointing, at approximately twice the wall-clock time (recomputation). The per-step descent
+state $(y, v)$ is 0.117 MB, so checkpointing's total state storage at $K = 128$ is 15.0 MB =
+0.28% of its measured peak — an upper bound on what reversibility could ever reclaim on this
+axis. The analytic accounting band for the same quantity is $\approx 0.6$–$1.0\%$, and the
+crossover at which trajectory states would begin to dominate the second-order graph lies at
+$K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically meaningful refinement
+depth. The underlying storage arithmetic — counting the bits per step that an optimizer
+trajectory consumes versus the volume contraction of the update map — is due to
 [REF: Maclaurin et al. 2015, gradient-based hyperparameter optimization through reversible
 learning], **applied** here to the video-generation inner loop, not claimed as a new theorem.
 Moreover, plain gradient descent is not closed-form invertible at all (inversion requires the
@@ -879,9 +904,10 @@ or truncation precisely because state $\ll$ graph [REF: AlignProp 2023; DRaFT 20
 > **Content:** Three-axis taxonomy diagram of reversible computation: axis 1 depth (RevNet,
 > literature), axis 2 time (temporal chaining + store-the-noise — the axis that pays; annotate
 > with the Table 2.3 frontier), axis 3 computation / inner optimization loop (the axis that
-> cannot pay; annotate with the state-vs-graph accounting: ~5.1 KB state vs ~1.5–2.3 GB per-step
-> second-order graph, saving ≈0.2% at K=128, crossover K ≈ 5,000–30,000).
-> **Source:** NEW — drawing (figure F11 of the article skeleton).
+> cannot pay; annotate with the MEASURED four-way panel: naive 18.1 GB spill at K=4 / OOM at
+> K=8; truncate/checkpoint/reversible flat 5.28–5.30 GB through K=128; reversible saves 14 MB =
+> 0.26% of peak vs checkpointing; analytic band ≈0.6–1.0%; crossover K ≈ 5,000–30,000).
+> **Source:** NEW — drawing (figure F11 of the article skeleton; data `logs_rhcp/mem_panel.md`).
 
 The resulting **applicability boundary** of the developed resource-optimization method is stated
 as the closing result of this chapter: *reversibility pays on recurrences whose transition
@@ -890,8 +916,10 @@ and cannot pay on inner optimization loops, whose reverse step is dominated by t
 of a per-step derivative graph; the latter regime belongs to gradient checkpointing.* This
 scoping replaces the earlier $T \leftrightarrow K$ isomorphism claim with a two-sided,
 measurement-backed delimitation: it simultaneously establishes where the method is the correct
-tool (the constant-memory autoregressive rollout training used in Chapters 3–4) and closes, on
-the record, the axis where it is not.
+tool — as the **enabling instrument** for constant-memory rollout-through-time training, whose
+feasibility Chapter 4 demonstrates by direct memory measurement (the validated Chapter 3 model
+itself is trained single-window and does not presuppose it) — and closes, on the record, the
+axis where it is not.
 
 ## 2.5 Висновки до розділу
 

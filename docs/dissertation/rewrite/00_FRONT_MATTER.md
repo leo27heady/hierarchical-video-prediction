@@ -85,7 +85,7 @@ fp64; $8.4\times10^{-13}$ for the stochastic scheme), and activation memory in a
 is $O(1)$ in $K$ — together with a three-axis applicability taxonomy (reversibility across depth,
 time, and computation) that delimits where reversibility pays (long temporal rollouts) and where
 it cannot (inner optimization loops, where the achievable saving versus gradient checkpointing is
-approximately 0.2%). [UA-PASS: «часонезалежне зворотне розповсюдження помилки», «оборотні
+0.26% measured, with an analytic band of 0.6–1.0%). [UA-PASS: «часонезалежне зворотне розповсюдження помилки», «оборотні
 перетворення», «збереження шуму».]
 
 **Chapter 3** develops the hierarchical mathematical model of video sequence generation with
@@ -94,10 +94,13 @@ representation (a frozen two-level convolutional autoencoder interface with per-
 coarse and fine latents); the upper (coarse) level is the low-rate code that carries the long
 memory horizon of the process. Per-frame generation uses an iterative refinement (denoising
 diffusion) core, selected empirically by the matched-compute mechanism analysis of Chapter 4. The
-inter-level transfer of context signals is realized through cross-level attention with RoPE-ND
-coordinate scaling and unidirectional control with gradient detachment; spatio-temporal routing
-uses block-causal attention masks; the autonomous autoregressive video-prediction algorithm rolls
-the model out window-by-window with a detached pixel decoder. The chapter also gives the formal
+inter-level transfer of context signals is realized within a single joint attention mechanism
+with per-token level, role, and frame conditioning (generalizing the cross-level cross-attention
+of the earlier design), with unidirectional control enforced by the information-design asymmetry
+of the two levels and by gradient detachment at the representation and rollout boundaries; the
+causality of the system is enforced by sequence construction and the autoregressive recursion;
+the autonomous autoregressive video-prediction algorithm rolls the model out window-by-window
+with a frozen pixel decoder. The chapter also gives the formal
 definition of the *memory-horizon looping testbed* and its re-entry-stratified evaluation
 protocol — a criterion-driven measurement instrument in which the hardness of every predicted
 frame ("recoverable only from memory") is an exactly computable analytic label — and derives the

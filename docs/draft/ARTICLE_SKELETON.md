@@ -5,12 +5,14 @@
 > mechanism science on a purpose-built memory-horizon testbed; reversibility homed as the
 > constant-memory enabler theorem (Ch. D); the EBT study as an honest, two-sided negative.
 >
-> Status date: 2026-07-04 (P0-doc corrections pass: clean2 T1 numbers, cluster CIs, measured
-> reg-long/flat-long/reg-flat rollout results, measured T6c panel). Every table below is either
-> FILLED with verified numbers (source named) or marked **PENDING** with a pre-registered
-> expectation. Status ledger: §S at the end.
-> Full chapter drafts already exist for Ch. 2 (`docs/draft/CH2_TESTBED.md`) and Ch. 3
-> (`docs/draft/CH3_MECHANISM.md`) — this skeleton points to them and does not duplicate.
+> Status date: 2026-07-07 — **ALL CHAPTERS NOW EXIST AS PROSE**; this skeleton is the working
+> master for tables/gates only. Canonical order (fixed in CH1_INTRO.md): Ch1 `CH1_INTRO.md` ·
+> Ch2 `CH2_TESTBED.md` · Ch3 `CH3_MECHANISM.md` · Ch4 `CH4_RESULTS.md` (frontier §4.3.6 +
+> pair-closure §4.5.6 integrated; BRANCH markers resolved) · Ch5 `CH5_GENERALIZATION.md` ·
+> Ch6 `CH6_REVERSIBILITY.md` · Ch7 `CH7_RELATED.md` · Ch8 `CH8_CONCLUSION.md`. The abstract in
+> §0.1 below is SUPERSEDED by the finalized abstract in CH1_INTRO.md (adds the frontier band).
+> Title resolved to candidate 2 per the red-team rule (pair closed RED). Every table below is
+> FILLED with verified numbers (source named); T7 measured 2026-07-06. Status ledger: §S.
 
 ---
 

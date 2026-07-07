@@ -2,10 +2,9 @@
 
 > **Status (2026-07-06):** §5.3 (Moving-MNIST) is MEASURED and FINAL. All other dataset sections
 > are protocol + pre-registered expectation only: every unmeasured value is marked [EXPECTED],
-> [PENDING] or [AUTHOR: …] — no bare expected numbers anywhere in this chapter. Placement note:
-> the article skeleton's "Chapter 5" is reversibility; this chapter slots between the results
-> chapter and the reversibility chapter (or absorbs Appendix A) — number to be resolved at
-> integration. `docs/NEXT_EXPERIMENTS_GENERALIZATION.md` did not exist at drafting time; protocols
+> [PENDING] or [AUTHOR: …] — no bare expected numbers anywhere in this chapter. Placement
+> RESOLVED (2026-07-07, per CH1_INTRO.md canonical order): this IS Chapter 5; reversibility is
+> Chapter 6 (`CH6_REVERSIBILITY.md`), related work Chapter 7, conclusion Chapter 8. `docs/NEXT_EXPERIMENTS_GENERALIZATION.md` did not exist at drafting time; protocols
 > and costs below are derived from `docs/draft/T7_BRIDGE.md`, the `hvp_rev/mmnist_bridge.py`
 > protocol block, and the locally verified OpenSTL model-zoo docs.
 

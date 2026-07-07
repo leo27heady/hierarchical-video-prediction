@@ -154,7 +154,7 @@ benchmark (data generation, autoencoder training, all system arms, all evaluatio
 one such device. The software complex is implemented in Python/PyTorch (§4.7; the module map is
 given in the appendix **[AUTHOR: appendix letter]**). The memory-consumption measurements quoted
 in Chapter 2 (Table 2.3: BPTT 12.2 GB at rollout length $K = 40$ and OOM at $K = 120$ versus the
-developed method's ≈1.1–1.2 GB through $K = 160$; the inner-loop panel behind the ≈0.2% no-go
+developed method's ≈1.1–1.2 GB through $K = 160$; the inner-loop panel behind the 0.26%-measured no-go
 result) were performed in this same environment, on the implemented stochastic hierarchical
 recurrent core, and constitute part of the experimental program of this chapter even though their
 tables live with the theory they verify.

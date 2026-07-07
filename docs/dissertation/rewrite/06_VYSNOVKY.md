@@ -82,7 +82,7 @@ the developed method remains at ≈1.1–1.2 GB through $K = 160$, with gradient
 comparable alternative (1.47–1.97 GB). The method's applicability domain has been delimited by
 the three-axis reversibility taxonomy (depth — time — computation): the temporal-rollout axis
 pays and is the resource foundation of long-horizon training; the inner-optimization-loop axis
-provably cannot pay against checkpointing (measured saving ≈0.2% at $K = 128$; crossover at
+provably cannot pay against checkpointing (measured saving 0.26% of peak at $K = 128$, analytic band ≈0.6–1.0%; crossover at
 $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond practical refinement depths) — a
 characterized negative stated as a scoping theorem of the method. It has additionally been
 established by measurement that invertibility does not imply stability (perturbation growth from
@@ -183,7 +183,7 @@ Beyond the numbered results, the dissertation deliberately records its **charact
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
 is a two-sided characterized negative at 16 GB-reachable scale (ordering versus reachability
 dissociate); (ii) reversibility on the inner-optimization-loop axis cannot pay against gradient
-checkpointing (≈0.2% measured saving — the three-axis taxonomy closes this axis by analysis and
+checkpointing (0.26% measured saving — the three-axis taxonomy closes this axis by analysis and
 measurement); (iii) spatial abstraction is not an intrinsically better representation — its
 verdict is economic and head-conditional; and (iv) the **combined-optimum readout** (regression
 head + coarse history + long window: 0.1682 at 1,152 tokens; at the short window, 0.2008 at 672

@@ -244,9 +244,12 @@ and 1 side by side (data DONE, T4 + seed-1; plot QUEUED). Caption: the matched-b
 horizon-gated on seed 0 and everywhere-positive on seed 1; the shared feature is the mid-horizon
 peak on hard re-entry bins.]
 
-[FIG ch4-4: qualitative rollout strips at re-entry events (ckpts DONE; grid QUEUED). Caption:
-hier-long re-places the returning digit; flat-budget hallucinates content at the re-entry
-position.]
+[FIG ch4-4: qualitative rollout strips at re-entry events — asset `docs/figures/
+fig7_samples_claim1.png`. Caption (honest reading per the figures-audit — the earlier
+"re-places vs hallucinates" caption OVER-CLAIMED and is retracted): both arms lose sharpness at
+deep horizons; the hierarchical advantage is a modest average improvement concentrated on hard
+re-entry bins, visible as better-localized (though blurred) content at re-entry positions, not
+as a categorical re-place-vs-hallucinate difference.]
 
 ### 4.3.4 flat-long: the Pareto frontier at 2.7× tokens
 
@@ -409,9 +412,9 @@ runs, converged with two external reviewers, and is binding; we quote it:
 > + aliasing ablation), labeled with the seed outcome; no further capability spend.
 > **Anything not covered above → default to FAIL** (no soft reads).
 
-**[BRANCH: PASS — R1 AND R2 passed 2026-07-05; measured numbers inserted. Mechanism wording
-revised per external review: the original "attributable to where the slots point" formulation
-over-read the seed-0 evidence and is retracted.]**
+**[RESOLVED: PASS — R1 AND R2 passed 2026-07-05; measured numbers below are final. Mechanism
+wording revised per external review: the original "attributable to where the slots point"
+formulation over-read the seed-0 evidence and is retracted.]**
 R1 (replication): the span-224 arm beats its baseline on an independent seed — reachable-HARD
 +0.0134 [+0.0107, +0.0161], HARD +0.0089 [+0.0069, +0.0109] — at 2.7× smaller magnitude than
 seed 0 (+0.0363 / +0.0273): the effect is replicable but seed-noisy (seed mean ≈ +0.025
@@ -433,20 +436,10 @@ The pre-registered decisive rollout pair (d1-56slot vs d0-diff-long, WARM = 224,
 is thereby justified as the confirmatory experiment, with the teacher-forced caveat stated: the
 single-step study conditions on GT context, and the rollout pair is the real test.
 
-**[BRANCH: FAIL — retain iff R1 or R2 fails, or any uncovered outcome occurs.]**
-The H-grid closes as a measured characterization rather than a capability claim, in three
-sentences. *Existence:* beyond-flat-window retrieval at operating point B is real (48-slot
-widened-eval wins with CIs excluding zero, §4.5.3) and reach-causal (contig48 null everywhere;
-[contig56 / seed-1 outcome as measured]). *Boundary conditions:* retrieval requires positional
-landmarks in the observation stream — destroying them by aliasing turns memory slots into a
-measured net cost (crop-test MSE 0.000000 → 40k LOSS) — and a memory span covering the full
-effective loop, $\mathrm{world}/(\mathrm{speed}(1-p_{hold}))$, not the nominal world/speed.
-*Magnitude:* at 16 GB-reachable scale the robust effect is ≈+0.002 absolute (~2% relative) —
-roughly 7× below the same mechanism's effect at operating point A and below the resolution of the
-planned rollout campaign (cluster CIs ~±0.005–0.02) — so the capability question closes as
-"mechanism demonstrated, magnitude characterized, not practically significant at this scale," the
-span-224 single-seed reading is recorded as unreplicated, and the matched-budget result of §4.3
-stands as the article's headline with the H-grid as its boundary-condition section.
+*[The pre-drafted FAIL branch (H-grid closes at the single-step characterization if R1 or R2
+fails) was removed 2026-07-07: R1 AND R2 passed, so that condition never occurred — the branch
+text survives in git history. The study's actual closure came one level later, at the decisive
+rollout pair (§4.5.6 below): single-step PASS, rollout RED.]*
 
 ### 4.5.5 Methodology lessons (threats-style)
 
@@ -495,12 +488,18 @@ abstraction cost.
 history + long window** (reg-long, 0.1682 at 1,152 tokens); at the short window the same recipe
 (spat18-reg, 672 tokens, 0.2008) matches the diffusion flat control at 1,152 tokens (0.2038).
 
-**The capability boundary (operating point B)** resolves per the pre-committed rule of §4.5.4:
-either the span-threshold hypothesis is confirmed and the decisive rollout pair carries a
-capability headline [BRANCH: PASS], or the H-grid closes as a single-step characterization —
-retrieval beyond the flat window exists, requires positional landmarks and full-effective-loop
-span coverage, and is an order of magnitude below practical significance at this scale
-[BRANCH: FAIL]. Under either branch, the matched-budget result of §4.3 stands unchanged.
+**The capability boundary (operating point B) — RESOLVED (2026-07-05/06).** The pre-committed
+rule of §4.5.4 resolved in two stages. First, the span-threshold hypothesis was CONFIRMED at the
+single-step level (R1 ∧ R2 passed: 2/2 span>loop runs CI-positive vs 0/4 span≤loop). Second, the
+thereby-authorized decisive rollout pair returned **RED**: over 256 self-fed frames every
+pre-registered gate cell is null, the early-horizon win (h1–24, CI-clean while the slot memory
+still carries near-ground-truth content) fades and inverts to small systematic losses beyond
+h61 as the buffer fills with self-generated, degraded content — so no capability headline is
+claimed, per the binding rule. The closure statement, read together with §4.3: **hierarchical
+slot memory pays where its contents remain trustworthy** — continuously refreshed within the
+recent window (testbed A) or near a ground-truth anchor (testbed B, h ≤ 24) — and cannot yet be
+sustained by pure self-feeding across a 213-frame loop at this scale. The matched-budget result
+of §4.3 stands unchanged, with the H-grid as its boundary-condition section.
 
 ---
 
@@ -531,10 +530,10 @@ addenda (hgrid 20k HARD −0.0008 [−0.0027,+0.0012], 40k HARD −0.0025 [−0.
 strided HARD +0.0016 [+0.0007,+0.0025], REACHABLE +0.0021 [+0.0008,+0.0036], dt49-96 +0.0032,
 ALL +0.0005; contig48 null; ~7× / +0.002-vs-+0.0135 / 2%-vs-13%; span-224 HARD +0.0273,
 REACHABLE +0.0363, beyond-227 null; R1/R2/R3 quoted from the PRE-COMMITTED block; rollout-CI
-resolution ±0.005–0.02). Branch placeholders [BRANCH: PASS]/[BRANCH: FAIL] to be resolved from
-the disambiguation runs (a)/(b) of the pre-committed block; exactly one branch survives.
+resolution ±0.005–0.02). Branch placeholders RESOLVED 2026-07-05/06: disambiguation = PASS
+(FAIL branch removed), decisive pair = RED (§4.5.6); §4.6 carries the resolved conclusion.
 
-### §4.5 PAIR OUTCOME (2026-07-06, fills the rollout-level conclusion; integrate on next pass)
+### §4.5.6 The decisive rollout pair — closure (2026-07-06; the rollout-level conclusion)
 
 The pre-registered decisive pair returned RED: over 256 self-fed rollout frames the gate cells
 are null (dt 49–96 HARD +0.0020 [−0.0071,+0.0111]; dt 97–192 −0.0028 [−0.0088,+0.0035]; dt>192

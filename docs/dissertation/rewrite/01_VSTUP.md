@@ -132,13 +132,15 @@ To achieve this purpose, the following scientific and practical tasks had to be 
 
 ## Об'єкт і предмет дослідження
 
-**The object of research** is the processes of mathematical modeling and hierarchical generation
-of multidimensional video data as complex systems under structural and computational uncertainty.
-*(«ітеративної» → «ієрархічної»; no discrete-space framing.)*
+**The object of research** is the processes of systems analysis, mathematical modeling, and
+control of complex multi-level systems of video data generation under structural, informational,
+and computational uncertainty. *(«ітеративної» → «ієрархічної»; rebalanced 2026-07-07 (124-
+alignment fix): the systems-analysis activity is the grammatical head, video generation is the
+domain; no discrete-space framing.)*
 
 **The subject of research** is the mathematical models, methods, and intelligent information
-technologies of systems analysis, uncertainty estimation, and control in hierarchical generative
-systems.
+technologies of systems analysis, uncertainty estimation, criteria-based evaluation, and control
+in hierarchical generative systems.
 
 ## Методи дослідження
 
@@ -152,12 +154,17 @@ constitutes a Markovian state transition and, within the experimental mechanism 
 description of the gradient-descent (Langevin) sampling of energy-based models; optimization
 methods and matrix/tensor algebra for the formalization of training objectives and the development
 of reversible transformations and attention mechanisms; machine- and deep-learning methods,
-including backpropagation, for the identification of parameters of the mathematical models; and
-methods of statistical inference (paired bootstrap confidence intervals, common random numbers)
-for the experimental evaluation protocol. *(Rewritten per DISS_DIGEST item 12: the old
-«теорія марковських процесів та стохастичні диференціальні рівняння для моделювання динаміки
-Ланжевена та MCMC-керування» clause is trimmed; Langevin/MCMC survive only as mechanism-study
-vocabulary.)*
+including backpropagation, for the identification of parameters of the mathematical models;
+elements of decision-making theory for the construction of criteria-based decision procedures —
+the pre-registered decision rules of the experimental program and the re-entry-stratified
+evaluation protocol, which operationalizes the acceptance or rejection of model configurations
+as a formal criteria-based choice; and methods of statistical inference (paired bootstrap
+confidence intervals, common random numbers) for the experimental evaluation protocol.
+*(Rewritten per DISS_DIGEST item 12: the old «теорія марковських процесів та стохастичні
+диференціальні рівняння для моделювання динаміки Ланжевена та MCMC-керування» clause is trimmed;
+Langevin/MCMC survive only as mechanism-study vocabulary. Decision-theory clause added 2026-07-07
+per the 124-alignment review — the strongest predictable committee objection. [UA-PASS: «елементи
+теорії прийняття рішень для побудови критеріальних процедур вибору».)*
 
 ## Наукова новизна отриманих результатів
 
@@ -257,7 +264,12 @@ publication list.])*
 - In **[A1]** (hierarchy/BLT-adaptation article), the applicant proposed and implemented the
   method of adaptive decomposition of spatio-temporal data based on entropy metrics (the V-BLT
   architecture) with multidimensional rotary positional embedding, and the procedural synthesis
-  of video datasets.
+  of video datasets. The two-stage V-BLT architecture (local byte-level encoder/decoder around a
+  global latent transformer) is the applicant's **first realization of the hierarchical
+  adaptation of video generation** — the two-level decomposition whose mature, memory-carrying
+  form Chapter 3 develops; the dissertation's hierarchical line thus runs [A1] (two-stage
+  entropy-adaptive hierarchy) → [A4] (two-level latent hierarchy with coarse-level long-range
+  memory).
 - In **[A2]** (TempVerseFormer, Springer Neural Computing and Applications 2025, Scopus, sole
   author), the applicant developed and mathematically substantiated the algorithm of
   time-agnostic backpropagation based on reversible transformations, which resolved the
@@ -319,10 +331,11 @@ conclusions, a list of references, and appendices.
   reversibility taxonomy.
 - **Chapter 3** develops the hierarchical mathematical model of video sequence generation with
   long-range coarse-level memory in compact hierarchical latent state spaces: the two-level
-  latent state space, the iterative-refinement generation core, cross-level attention with
-  unidirectional gradient-detached control, block-causal spatio-temporal routing, the
-  autoregressive rollout algorithm with its memory and complexity estimates, and the formal
-  definition of the memory-horizon testbed with the re-entry-stratified evaluation protocol.
+  latent state space, the iterative-refinement generation core, joint inter-level attention with
+  unidirectional control (information-design asymmetry plus gradient detachment at the
+  representation and rollout boundaries), the autoregressive rollout algorithm with its memory
+  and complexity estimates, and the formal definition of the memory-horizon testbed with the
+  re-entry-stratified evaluation protocol.
 - **Chapter 4** presents the experimental research and practical application: the information
   base; the matched-compute mechanism study (including the two-sided characterized study of
   energy-based descent); the single-step and 152-frame autoregressive-rollout (after a 48-frame
