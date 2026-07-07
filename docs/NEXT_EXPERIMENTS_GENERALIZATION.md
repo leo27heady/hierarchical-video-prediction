@@ -273,6 +273,28 @@ is primary (deterministic-ish short-horizon task).
 / persistence / AE round-trip; columns MSE / MAE / SSIM / PSNR (+ per-frame MSE h1..h4).
 **[FIG gen-5: inflow/outflow heatmap prediction vs GT, h1..h4, one representative frame.]**
 
+**EXECUTION AMENDMENTS (2026-07-07, written before the full runs; harness
+`hvp_rev/taxibj_bridge.py`, smoke green):**
+1. **B2 executed as the exact-x2-upsample equivalent, NOT a native-32px variant:** frames
+   nearest-upsampled x2 to 64x64 and run through the UNCHANGED 64-px HierConvAE(img_ch=2) +
+   WindowDiT 22M stack; predictions 2x2-mean-downsampled back to native 32x32 BEFORE scoring
+   (nearest-x2 is exactly inverted by 2x2-mean -> task-identical). Rationale: removes the
+   memo's single riskiest build and keeps "the unmodified WindowDiT" literally true across all
+   datasets. Disclosed wherever G-5 is quoted.
+2. **De-normalization convention RESOLVED (the memo's [VERIFY]):** OpenSTL's dataloader maps
+   TaxiBJ to [0,1] via (X+1)/2 with mean=0/std=1 (dataloader_taxibj.py); the whole leaderboard
+   convention lives on [0,1]. The bridge replicates this and scores by importing
+   `openstl.core.metrics.metric` VERBATIM (spatial_norm=False).
+3. **Author-instructed regime (2026-07-07):** batch size chosen by an on-device VRAM probe to
+   fill ~14 GB (in place of the memo's B16 default); lr kept at 3e-4 + 2k warmup, NOT
+   batch-scaled (conservative, disclosed); 15k steps; all four arms (reg pair primary, diff
+   twins included since the chain is cheap); AE 12k steps (ceiling quality matters at this
+   per-pixel scale). Seed 0; two-seed rule unchanged.
+4. Pre-registered readings of §1/§7 unchanged: recipe-transfer claim only; hier ~ flat
+   expected (token-efficiency read); regression >= diffusion at best-of-1 expected; AE
+   round-trip ceiling owns the absolute-quality risk (persistence 3.83 pixel-sum vs leaderboard
+   ~0.31 measured at smoke -- the ceiling row will decide how close the neighborhood can be).
+
 ---
 
 ## 8. Dataset (vi) — KTH-64 (OPTIONAL stretch, with disclosure — or skip)
