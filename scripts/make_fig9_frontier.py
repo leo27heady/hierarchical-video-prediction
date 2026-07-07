@@ -68,13 +68,14 @@ ax.scatter(rx, ry, marker="D", s=34, facecolors="none", edgecolors="#6a4c93",
            linestyles="dashed", linewidths=1.2, zorder=3,
            label="regression-head points (context)")
 
-# seed-1 replications where measured (hier-long 0.1690 / flat-budget 0.2044): hollow markers +
-# a spread whisker on hier-long — the only seed-VARIABLE arm (flat arms are seed-stable ±0.0006)
+# seed-1 replications where measured: hollow markers + spread whiskers on the hier arms
+# (hier-long 0.1690 / flat-budget 0.2044; hier-min 0.1744 / flat-min 0.2102 — R-A, 2026-07-08)
 ax.plot([1152, 1152], [0.1690, 0.1848], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
-ax.scatter([1152], [0.1690], marker="s", s=36, facecolors="none", edgecolors="#e76f51",
-           linewidths=1.4, zorder=3, label="seed-1 replications (hollow)")
-ax.scatter([1152], [0.2044], marker="o", s=36, facecolors="none", edgecolors="#264653",
-           linewidths=1.4, zorder=3)
+ax.plot([896, 896], [0.1706, 0.1744], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
+ax.scatter([1152, 896], [0.1690, 0.1744], marker="s", s=36, facecolors="none",
+           edgecolors="#e76f51", linewidths=1.4, zorder=3, label="seed-1 replications (hollow)")
+ax.scatter([1152, 896], [0.2044, 0.2102], marker="o", s=36, facecolors="none",
+           edgecolors="#264653", linewidths=1.4, zorder=3)
 ax.annotate("hier-long s1\n0.1690", (1152, 0.1690), textcoords="offset points",
             xytext=(70, -26), ha="left", fontsize=7.5, color="#b3492f",
             arrowprops=dict(arrowstyle="-", color="#e76f51", lw=0.7, alpha=0.6))
@@ -95,7 +96,8 @@ for (name, x, y), (dx, dy) in zip(reg_pts, reg_offs):
                 xytext=(dx, dy), ha="center", fontsize=7.5, color="#6a4c93", zorder=4)
 
 # end-inversion callouts
-ax.annotate("hier wins +0.0399 [+0.0299,+0.0501]\n(peak of the band; single seed)", (896, 0.1706),
+ax.annotate("hier wins +0.0399 / +0.0358 (2 seeds)\n(peak of the band; every cell, both seeds)",
+            (896, 0.1706),
             textcoords="offset points", xytext=(44, -52), ha="left", fontsize=8,
             color="#1d7268",
             arrowprops=dict(arrowstyle="-", color="#2a9d8f", lw=0.9))
@@ -117,7 +119,7 @@ ax.set_ylim(0.145, 0.265)
 ax.set_xlabel("context-token budget (log scale)")
 ax.set_ylabel("fg-MSE, ALL (152-frame AR rollout; lower is better)")
 ax.set_title("Token-budget frontier: hierarchy wins the band where its span crosses the memory horizon\n"
-             "(loopmom, seed 0; diffusion curves, cluster-CI deltas in text)",
+             "(loopmom; curves = seed 0, hollow = seed-1 replications; lower edge TWO-SEED at the geometric ~896-tok prediction)",
              fontsize=10.5)
 ax.legend(loc="lower left", fontsize=8.5, framealpha=0.9)
 ax.grid(True, which="major", axis="y", alpha=0.25)

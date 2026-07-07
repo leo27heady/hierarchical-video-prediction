@@ -591,7 +591,7 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 | lower edge, new arm | flat-min (14f, 896 tok, B16×30k) | 0.2106 | 0.0516 | — | — |
 | frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** |
 | frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** |
-| frontier lower edge | flat-min vs hier-min (equal 896 tok, equal regime) | — | — | **+0.0399** | [+0.0299, +0.0501] **HIER WINS** (every bin; single seed, replication queued) |
+| frontier lower edge | flat-min vs hier-min (equal 896 tok, equal regime) | — | — | **+0.0399** | [+0.0299, +0.0501] **HIER WINS** (every bin; REPLICATED seed 1: +0.0358 [+0.0267, +0.0454], every bin — two-seed) |
 
 [FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured 4-point
 curves — hier (480 → 896 → 1152 → 3072: 0.2260, **0.1706**, 0.1848, 0.1695) and flat
@@ -639,13 +639,14 @@ inside the band, flat's window falls away from the horizon faster than the hiera
 abstraction cost grows, so the efficiency argument is strongest exactly where budgets are
 tightest — hier-min at 896 tokens (0.1706) reaches a quality that the flat curve only attains
 between 1,152 and 3,072 tokens (interpolated ≈2.3–3× the budget; the measured upper crossing of
-the curves sits at ≈2,059 tokens). One measured arm ordering is reported without a claim
-(single seed): hier-min at 896 tokens (0.1706) also measured *better than hier-long at 1,152*
-(0.1848), i.e. the pre-registered "fine-context floor" alternative was refuted at w_f = 2 —
-fewer recent-fine frames did not hurt. Disclosures: this pair is seed-0 only; per the binding
-two-seed rule a seed-1 replication is queued (behind the generalization campaign per the
-author's GPU priority), and no headline uses the 896-point without it; the 1,152-token headline
-remains the two-seed anchor. The final claim form is unchanged but now edge-measured: hierarchy
+the curves sits at ≈2,059 tokens). The fine-context question resolved with the seeds: hier-min's
+seed-mean (0.1725) sits within hier-long's seed band (0.1690–0.1848, mean 0.1769) — the
+pre-registered "fine-context floor" alternative is refuted at w_f = 2 (two seeds), and the hier
+curve from 896 tokens on reads as a plateau at ≈0.17 rather than a dip. Disclosures resolved: the pre-registered seed-1 replication (R-A, `frontier_low_s1.log`)
+REPLICATED the result — every cell WIN again, ALL +0.0358 [+0.0267, +0.0454], the same dt-gate
+reach signature (dt≤48 HARD +0.0666; beyond-span null) — so the 896-token point is TWO-SEED
+CONFIRMED (seed-mean Δ ≈ +0.0379, the campaign's largest two-seed effect; hier-min seed spread
+0.0038, flat-min 0.0004). Both the 896 and 1,152 budgets now carry two seeds. The final claim form is unchanged but now edge-measured: hierarchy
 wins **the band of budgets where its span crosses the memory horizon and flat's window does
 not** — [896, ≈2,059) tokens as measured on this testbed — and inverts outside it.
 

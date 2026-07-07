@@ -200,3 +200,15 @@ pair's delta sign, the affected edge is re-bracketed and reported as measured �
 **Explicitly forbidden:** selecting the best seed per arm; asymmetric seed counts within a
 quoted pair; extending training of one arm without its budget-matched partner.
 **Execution order (one job at a time, after TAXIBJ_ALL_DONE):** R-A → R-B → R-C.
+
+### R-A MEASURED (2026-07-08; `logs_rhcp/frontier_low_s1.log`; RA_DONE) — **REPLICATED**
+
+Seed 1: hier-min 0.1744 / sharp 0.0835 vs flat-min 0.2102 / 0.0514; paired Δ ALL **+0.0358
+[+0.0267, +0.0454]** — WIN in EVERY horizon × hardness cell again, with the same dt-gate
+signature (dt≤48 HARD +0.0666 WIN; dt 49–96 HARD +0.0263 WIN; dt 97–192 null — beyond-span).
+**The 896-token lower-edge point is TWO-SEED CONFIRMED** (Δ s0 +0.0399 / s1 +0.0358; seed-mean
+≈ +0.0379 — the campaign's largest two-seed effect). Seed spreads: hier-min 0.0038 (tight, vs
+hier-long's 0.0158); flat-min 0.0004 (flat arms stable, as everywhere). Plateau reading holds:
+hier-min seed-mean 0.1725 ≈ hier-long seed-mean 0.1769 ≈ hier-rich 0.1695 (~0.17 band).
+Per the binding rule, claim escalation is now permitted: the win band's lower edge is
+headline-grade. R-B launched on completion (hier-rich/flat-long seed 1, B8×60k).

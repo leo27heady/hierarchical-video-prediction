@@ -706,7 +706,7 @@ the audited table register; final numbering at typeset). Measured anchor rows fr
 |---|---|---:|---|---:|---|
 | ≈3,072 | flat-long | 0.1564 | hier-rich | 0.1695 | **−0.0131 [−0.0201, −0.0069]** (flat wins) |
 | 1,152 | flat-budget | 0.2038 | hier-long | 0.1848 | +0.0189 [+0.0121, +0.0264] (Table 4.6) |
-| **896** | flat-min (14 f) | 0.2106 | hier-min (48c+2f) | **0.1706** | **+0.0399 [+0.0299, +0.0501]** (hier wins EVERY cell; single seed, replication queued) |
+| **896** | flat-min (14 f) | 0.2106 | hier-min (48c+2f) | **0.1706** | **+0.0399 [+0.0299, +0.0501]** (hier wins EVERY cell; seed 1 REPLICATED: +0.0358 [+0.0267, +0.0454], every cell) |
 | ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
 
 **[FIG 4-x — token-budget frontier]**
@@ -751,9 +751,10 @@ budget removes the flat model's window from the memory horizon faster than the h
 abstraction cost grows — the efficiency argument is strongest exactly where budgets are
 tightest, and hier-min at 896 tokens (0.1706) reaches a quality the flat curve attains only at
 ≈2.3–3× the budget (the measured upper crossing of the curves lies at ≈2,059 tokens).
-Disclosure: the lower-edge pair is single-seed (seed 0); under the binding two-seed rule its
-replication is queued, and no headline statement uses the 896-token point without it — the
-two-seed anchor of the efficiency claim remains the 1,152-token pairing of §4.3.3. The §4.3
+The pre-registered seed-1 replication confirmed the point: every cell WIN again (overall
++0.0358 [+0.0267, +0.0454]) with the same visibility-stratified reach signature — the 896-token
+lower edge is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest two-seed effect
+of the campaign), alongside the two-seed 1,152-token pairing of §4.3.3. The §4.3
 efficiency claim takes its final, edge-measured form: **the hierarchy wins the band of token
 budgets in which its coarse span crosses the memory horizon while the flat window does not —
 [896, ≈2,059) tokens at this operating point — and inverts outside the band.** [UA-PASS:

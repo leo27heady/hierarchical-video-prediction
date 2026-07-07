@@ -172,8 +172,8 @@ pre-registered convergence-at-saturation expectation and reported as measured) a
 **measured lower edge of the win band** (a pre-registered geometric prediction confirmed the
 same day: at 896 tokens — the cheapest budget whose 48-slot coarse span covers the ≈48-frame
 loop, against a flat window of only 14 frames — the hierarchical arm wins every horizon ×
-hardness cell, +0.0399 [+0.0299, +0.0501], the largest hierarchical advantage of the campaign;
-single-seed, replication queued under the two-seed rule), which together give the efficiency
+hardness cell, +0.0399 [+0.0299, +0.0501] at seed 0 and +0.0358 [+0.0267, +0.0454] at seed 1 —
+a two-seed result, the largest hierarchical advantage of the campaign), which together give the efficiency
 claim its final, edge-measured form: **hierarchy wins the band of token budgets in which its
 coarse span crosses the memory horizon while the flat window does not — approximately 896 to
 2,050 tokens at the primary operating point, with the advantage peaking at the band's lower

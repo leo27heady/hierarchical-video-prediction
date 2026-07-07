@@ -1,8 +1,8 @@
 # Chapter 8 — Conclusion
 
-> **Status (2026-07-07):** journal-register prose, content-complete; all numbers measured except
-> the marked [SEED-1 PENDING] disclosure and the Ch. 5 [EXPECTED] transfers, which resolve from
-> the queued runs (frontier robustness program R-A/R-B/R-C; generalization campaign).
+> **Status (2026-07-08):** journal-register prose, content-complete; all numbers measured except
+> the Ch. 5 [EXPECTED] transfers (generalization campaign) and the R-B/R-C robustness reads.
+> R-A landed 2026-07-08: the 896-token point is TWO-SEED confirmed.
 
 ## 8.1 One claim
 
@@ -13,9 +13,9 @@ the hierarchy-versus-flat frontier, measured at four matched budgets, has the sh
 account predicts: flat wins below the span threshold (≈500 tokens: no hierarchical configuration
 can cover the ~48-frame loop; −0.0036 [−0.0063, −0.0010]); the hierarchy wins the band from the
 geometric threshold — 48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is
-largest (+0.0399 [+0.0299, +0.0501] at 896 tokens; [SEED-1 PENDING — single-seed, replication
-queued under the binding two-seed rule]) through the two-seed headline at 1,152 (+0.0189 /
-+0.0354); and flat wins again at window saturation (3,072 tokens, −0.0131 [−0.0201, −0.0069]),
+largest (+0.0399 [+0.0299, +0.0501] seed 0 and +0.0358 [+0.0267, +0.0454] seed 1 at 896 tokens —
+two seeds, every horizon × hardness cell on both) through the two-seed headline at 1,152
+(+0.0189 / +0.0354); and flat wins again at window saturation (3,072 tokens, −0.0131 [−0.0201, −0.0069]),
 where its full-resolution memory information-dominates any coarse record of the same span.
 
 ## 8.2 Boundary conditions (each one measured)
