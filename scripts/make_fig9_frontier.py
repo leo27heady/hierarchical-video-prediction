@@ -68,6 +68,17 @@ ax.scatter(rx, ry, marker="D", s=34, facecolors="none", edgecolors="#6a4c93",
            linestyles="dashed", linewidths=1.2, zorder=3,
            label="regression-head points (context)")
 
+# seed-1 replications where measured (hier-long 0.1690 / flat-budget 0.2044): hollow markers +
+# a spread whisker on hier-long — the only seed-VARIABLE arm (flat arms are seed-stable ±0.0006)
+ax.plot([1152, 1152], [0.1690, 0.1848], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
+ax.scatter([1152], [0.1690], marker="s", s=36, facecolors="none", edgecolors="#e76f51",
+           linewidths=1.4, zorder=3, label="seed-1 replications (hollow)")
+ax.scatter([1152], [0.2044], marker="o", s=36, facecolors="none", edgecolors="#264653",
+           linewidths=1.4, zorder=3)
+ax.annotate("hier-long s1\n0.1690", (1152, 0.1690), textcoords="offset points",
+            xytext=(70, -26), ha="left", fontsize=7.5, color="#b3492f",
+            arrowprops=dict(arrowstyle="-", color="#e76f51", lw=0.7, alpha=0.6))
+
 # point labels
 lab_kw = dict(fontsize=8.5, zorder=4)
 offs_flat = [(24, -24), (-6, 10), (16, 10), (-8, -24)]

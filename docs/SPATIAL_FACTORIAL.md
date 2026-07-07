@@ -163,3 +163,40 @@ before any claim escalation; no other arms authorized by this block.
   the pre-registered "fine-context floor" alternative branch is refuted at w_f = 2.
 - Disclosures: seed 0 only; per the binding rule, **seed-1 replication is QUEUED** (behind the
   TaxiBJ generalization launch per author GPU priority) before any headline escalation.
+
+---
+
+## FRONTIER SEED/BUDGET ROBUSTNESS PROGRAM (pre-registered 2026-07-07 evening, author request;
+## written BEFORE any run)
+
+**Motivation (author, on fig9):** the hier curve's non-monotonicity (hier-min 0.1706 < hier-long
+0.1848 s0; hier-rich 0.1695 ≈ hier-min) looks like a possible training outlier; check its
+persistence with more seeds and longer training.
+
+**What the EXISTING data already says (no new GPU):** hier-long has TWO measured seeds — s0
+0.1848, s1 **0.1690** (spread 0.0158, seed-mean 0.1769) — while flat-budget is seed-stable
+(0.2038/0.2044, spread 0.0006). hier-long s1 is already BETTER than hier-min s0 (0.1706), so
+"hier-min beats hier-long" is a seed-0 artifact, not a stable ordering. Under current data the
+hier curve from 896 tokens on is a PLATEAU at ≈0.169–0.177 (hier-min 0.1706, hier-long seed-mean
+0.1769, hier-rich 0.1695 — all within the measured seed spread), i.e. **hierarchy saturates near
+the span threshold; flat scales with budget** — the plateau reading. Hier arms are markedly more
+seed-variable than flat arms (an honest observation to report).
+
+**Runs (symmetric pairs only — the anti-cherry-picking guardrail; ALL seeds reported, means with
+spreads quoted, never best-of-seeds):**
+- **R-A (binding, already queued):** hier-min + flat-min seed 1, B16×30k. Read: does the 896
+  peak replicate (CI>0 at seed 1) and where does hier-min s1 land vs the hier-long seed band?
+- **R-B:** hier-rich + flat-long seed 1, both B8×60k (~18–20 h). Read: top-pair delta at seed 1;
+  does hier-rich stay on the ≈0.17 plateau?
+- **R-C (the legitimate "train longer", hypothesis-driven):** hier-long + flat-budget at
+  B8×60k, seed 0 — budget-matched to the flat-long regime (~18 h). HYPOTHESIS (from the T3
+  emergence result, null@6k → win@20k): the hier−flat delta at 1152 tokens GROWS with training
+  budget, and hier-long-60k moves toward the plateau floor (≈0.169). If instead the delta is
+  flat/shrinks, that is reported as the budget-saturation of the mid-point.
+**PRE-REGISTERED READINGS:** primary = the plateau reading above survives seed averaging (hier
+plateau ≈0.17 from 896 on; flat needs ≈3,072 to reach 0.156); the win band and its edges are
+claimed on seed-means with all per-seed values disclosed. Alternative = if seed-1 runs move any
+pair's delta sign, the affected edge is re-bracketed and reported as measured — no soft reads.
+**Explicitly forbidden:** selecting the best seed per arm; asymmetric seed counts within a
+quoted pair; extending training of one arm without its budget-matched partner.
+**Execution order (one job at a time, after TAXIBJ_ALL_DONE):** R-A → R-B → R-C.
