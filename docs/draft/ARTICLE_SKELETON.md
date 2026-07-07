@@ -13,6 +13,10 @@
 > §0.1 below is SUPERSEDED by the finalized abstract in CH1_INTRO.md (adds the frontier band).
 > Title resolved to candidate 2 per the red-team rule (pair closed RED). Every table below is
 > FILLED with verified numbers (source named); T7 measured 2026-07-06. Status ledger: §S.
+> **Bibliography:** the article cites a subset of the MASTER reference list
+> `docs/dissertation/rewrite/07_REFERENCES.md` (stable keys + binding table; built 2026-07-07
+> from the full [REF:] inventory of both texts) — resolve inline [REF:] tags from it at the
+> venue-format pass; [VERIFY]-flagged entries checked against PDFs per the CH7 §7.6 debt.
 
 ---
 

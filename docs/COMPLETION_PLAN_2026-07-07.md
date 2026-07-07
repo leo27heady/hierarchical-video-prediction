@@ -6,9 +6,13 @@
 > (finalized abstract), CH6_REVERSIBILITY, CH7_RELATED (+non-claims), CH8_CONCLUSION written;
 > CH4 BRANCH markers resolved (§4.5.6 closure, §4.6 measured resolution) + caption fix; chapter
 > numbering canonical (1-8). [A1]-as-first-hierarchy-adaptation framing added (VSTUP, ROZDIL2
-> §2.1, CH1 arc) per author instruction. REMAINING: E4 figures (placeholders in place), E5
-> generalization runs (TaxiBJ chain RUNNING; R-A/R-B/R-C queued), E6 bibliography (95+28 [REF:]
-> tags), E7 author-blocking cluster, E8 assembly, E9 UA pass, E10 packaging.
+> §2.1, CH1 arc) per author instruction. **E6 bibliography BUILT (2026-07-07):**
+> `07_REFERENCES.md` — master list (~85 external entries + author slots) from the full 104-
+> descriptor [REF:] inventory, with the descriptor→key binding table and assembly instructions;
+> remaining E6 work = author slots + [VERIFY]-flag clearing against PDFs + number substitution
+> at E8. REMAINING: E4 figures (placeholders in place), E5 generalization runs (TaxiBJ chain
+> RUNNING; R-A/R-B/R-C queued), E6 verification pass, E7 author-blocking cluster, E8 assembly,
+> E9 UA pass, E10 packaging.
 
 **Definition of done.**
 *Article [A4]:* a submittable manuscript — all 7 skeleton chapters as prose, final abstract,
