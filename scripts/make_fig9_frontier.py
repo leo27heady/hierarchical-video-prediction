@@ -69,12 +69,14 @@ ax.scatter(rx, ry, marker="D", s=34, facecolors="none", edgecolors="#6a4c93",
            label="regression-head points (context)")
 
 # seed-1 replications where measured: hollow markers + spread whiskers on the hier arms
-# (hier-long 0.1690 / flat-budget 0.2044; hier-min 0.1744 / flat-min 0.2102 — R-A, 2026-07-08)
+# (hier-long 0.1690 / flat-budget 0.2044; hier-min 0.1744 / flat-min 0.2102 — R-A, 2026-07-08;
+#  hier-rich 0.1687 / flat-long 0.1580 — R-B, 2026-07-08: both band edges two-seed)
 ax.plot([1152, 1152], [0.1690, 0.1848], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
 ax.plot([896, 896], [0.1706, 0.1744], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
-ax.scatter([1152, 896], [0.1690, 0.1744], marker="s", s=36, facecolors="none",
+ax.plot([3072, 3072], [0.1687, 0.1695], color="#e76f51", lw=0.9, alpha=0.55, zorder=2)
+ax.scatter([1152, 896, 3072], [0.1690, 0.1744, 0.1687], marker="s", s=36, facecolors="none",
            edgecolors="#e76f51", linewidths=1.4, zorder=3, label="seed-1 replications (hollow)")
-ax.scatter([1152, 896], [0.2044, 0.2102], marker="o", s=36, facecolors="none",
+ax.scatter([1152, 896, 3072], [0.2044, 0.2102, 0.1580], marker="o", s=36, facecolors="none",
            edgecolors="#264653", linewidths=1.4, zorder=3)
 ax.annotate("hier-long s1\n0.1690", (1152, 0.1690), textcoords="offset points",
             xytext=(70, -26), ha="left", fontsize=7.5, color="#b3492f",

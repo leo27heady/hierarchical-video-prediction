@@ -166,7 +166,8 @@ retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialize
 regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
 baseline parity or an additional measured boundary condition]** — together with the **measured**
 token-budget frontier completion (hier-rich at 3,072 tokens loses to flat-long, −0.0131
-[−0.0201, −0.0069], at equal budget and training regime; flat-short at 512 beats hier-short,
+[−0.0201, −0.0069] at seed 0 and −0.0107 [−0.0163, −0.0058] at seed 1 — a two-seed inversion —
+at equal budget and training regime; flat-short at 512 beats hier-short,
 −0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the
 pre-registered convergence-at-saturation expectation and reported as measured) and the
 **measured lower edge of the win band** (a pre-registered geometric prediction confirmed the

@@ -230,3 +230,14 @@ regression, seed-disagreement disclosed" — pre-drafted, no soft reads.
 **Rules:** symmetric pair; both seeds reported; no claim escalation beyond two-seed wording.
 **Queue after this amendment:** R-B (running) → **R-D** → R-C → generalization G-i/G-ii/(G-iii
 vs loop-80 A′ re-ranked: A′ now ABOVE G-iii per external-validity value).
+
+### R-B MEASURED (2026-07-08; `logs_rhcp/frontier_top_s1.log`; RB_DONE) — **REPLICATED**
+
+Seed 1: flat-long 0.1580 / sharp 0.0991 vs hier-rich 0.1687 / 0.0888; paired Δ ALL **−0.0107
+[−0.0163, −0.0058]** (flat wins; s0 was −0.0131 [−0.0201, −0.0069]) — the same uniform-loss
+pattern (LOSS in 12/14 cells, 2 nulls, no hier win anywhere). Seed spreads: hier-rich 0.0008
+(0.1695/0.1687 — exactly ON the ≈0.17 plateau), flat-long 0.0016 (stable). **The band's upper
+edge (window-saturation inversion at 3,072 tokens) is TWO-SEED confirmed**, completing the
+frontier: both edges now carry two seeds (896 hier-win, 3,072 flat-win) alongside the two-seed
+1,152 interior point. The plateau reading survives seed averaging in full: hier means 0.1725
+(896) / 0.1769 (1,152) / 0.1691 (3,072). R-D launched on completion (reg-long/reg-flat seed 1).

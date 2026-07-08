@@ -606,7 +606,7 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 | bottom, new arm | flat-short (8f, 512 tok, B16×30k) | 0.2224 | 0.0432 | — | — |
 | lower edge, new arm | hier-min (48c+2f, 896 tok, B16×30k) | 0.1706 | 0.0861 | — | — |
 | lower edge, new arm | flat-min (14f, 896 tok, B16×30k) | 0.2106 | 0.0516 | — | — |
-| frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** |
+| frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** (REPLICATED seed 1: −0.0107 [−0.0163, −0.0058] — two-seed) |
 | frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** |
 | frontier lower edge | flat-min vs hier-min (equal 896 tok, equal regime) | — | — | **+0.0399** | [+0.0299, +0.0501] **HIER WINS** (every bin; REPLICATED seed 1: +0.0358 [+0.0267, +0.0454], every bin — two-seed) |
 
