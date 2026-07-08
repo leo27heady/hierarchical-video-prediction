@@ -102,7 +102,8 @@ hierarchical model beats the token-matched flat control on two training seeds (s
 +0.0189 [+0.0121, +0.0264], with the win concentrated from horizon 25 onward and peaking on hard
 re-entry bins, h 25–60 HARD +0.0344 [+0.0162, +0.0531]; seed 1: ALL +0.0354 [+0.0267, +0.0447],
 winning every horizon-hardness cell), the result is mechanism-agnostic (the regression twin
-pairing wins every bin, ALL +0.0334 [+0.0248, +0.0423]), and the underlying single-step retrieval
+pairing wins every bin at both seeds, ALL +0.0334 [+0.0248, +0.0423] and +0.0501
+[+0.0396, +0.0612]), and the underlying single-step retrieval
 capability reduces the hard re-entry error by ≈13% on both seeds (+0.0135 [+0.0080, +0.0196] and
 +0.0143 [+0.0083, +0.0208]), emerging only at the larger optimization budget (null at 6,000
 steps, win at 20,000). The claim is honestly scoped: **the hierarchy is validated where the

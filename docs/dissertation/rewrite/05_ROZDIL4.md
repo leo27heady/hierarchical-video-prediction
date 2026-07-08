@@ -671,7 +671,7 @@ point B exists to test (§4.5).
 
 The pre-registered mechanism-agnosticism gate required the regression pairing to reproduce the
 memory result: reg-long versus the token-matched reg-flat. Outcome: **passed — reg-long beats
-reg-flat in every bin** (ALL +0.0334 [+0.0248, +0.0423]; hard-bin wins at every horizon,
+reg-flat in every bin at BOTH training seeds** (ALL +0.0334 [+0.0248, +0.0423] seed 0; +0.0501 [+0.0396, +0.0612] seed 1 — two-seed; hard-bin wins at every horizon,
 including h 1–8 HARD +0.0447; sharper, 0.0741 vs 0.0512). Notably, the regression pairing shows
 no null prelude — the win starts at h 1–8 — so the horizon-gating observed on the diffusion
 pairing at seed 0 is a property of that head/seed combination, not of the memory mechanism.
@@ -1289,7 +1289,8 @@ insert the act copies — the current draft has headings only]**.
    152-frame autoregressive rollouts on two seeds and under both heads** — seed 0 ALL +0.0189
    [+0.0121, +0.0264] with the win concentrated from h ≥ 25 on hard re-entry bins (h 25–60 HARD
    +0.0344 [+0.0162, +0.0531]); seed 1 ALL +0.0354 [+0.0267, +0.0447], winning every cell;
-   regression pairing ALL +0.0334 [+0.0248, +0.0423]. The single-step memory gate showed the
+   regression pairing ALL +0.0334 seed 0 and +0.0501 seed 1 — two-seed. The single-step memory
+   gate showed the
    underlying retrieval capability emerging late in training (null at 6,000 steps, ≈13% hard-bin
    win at 20,000 on both seeds). The claim is honestly bounded: the onset horizon is
    seed-variable (the robust claim is the win and its mid-horizon concentration); sharpness fades

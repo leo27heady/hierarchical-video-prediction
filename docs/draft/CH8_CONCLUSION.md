@@ -26,7 +26,8 @@ information-dominates any coarse record of the same span.
   annealed schedule; the 20k extension was a disclosed post-null follow-up, twice-replicated) —
   so short-budget ablations spuriously kill memory mechanisms.
 - **Mechanism-agnosticism:** the matched-budget win replicates under the regression head
-  (reg-long > reg-flat in every bin, ALL +0.0334 [+0.0248, +0.0423]) — it is a property of the
+  (reg-long > reg-flat in every bin at both seeds, ALL +0.0334 s0 / +0.0501 s1) — it is a
+  property of the
   memory packaging, not of the diffusion core.
 - **Regime-dependent heads:** diffusion wins single-step best-of-N coverage on every column
   (0.0512 vs 0.0664); regression wins the deterministic best-of-1 rollout at equal sharpness
@@ -65,7 +66,8 @@ horizon, the hierarchical packaging delivers the largest gains (a quality that f
 reaches only at ≈2.3–3× the budget, with quadratic attention making the compute gap larger
 still); once the budget affords the full horizon at full resolution, the hierarchy's advantage
 inverts into a small abstraction cost. The cheapest strong recipe measured is regression head +
-coarse history + long window (0.1682 at 1,152 tokens).
+coarse history + long window (reg-long: 0.1682 / 0.1503 across two seeds, mean 0.1593, at 1,152
+tokens — at seed level the best absolute rollout number of the campaign).
 
 ## 8.5 Future work
 

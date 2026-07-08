@@ -241,3 +241,16 @@ edge (window-saturation inversion at 3,072 tokens) is TWO-SEED confirmed**, comp
 frontier: both edges now carry two seeds (896 hier-win, 3,072 flat-win) alongside the two-seed
 1,152 interior point. The plateau reading survives seed averaging in full: hier means 0.1725
 (896) / 0.1769 (1,152) / 0.1691 (3,072). R-D launched on completion (reg-long/reg-flat seed 1).
+
+### R-D MEASURED (2026-07-08; `logs_rhcp/mech_agnostic_s1.log`; RD_DONE) — **REPLICATED, STRONGER**
+
+Seed 1: reg-long 0.1503 / sharp 0.0865 vs reg-flat 0.2004 / 0.0515; paired Δ ALL **+0.0501
+[+0.0396, +0.0612]** — WIN in every cell, LARGER than seed 0 (+0.0334 [+0.0248, +0.0423]).
+**Mechanism-agnosticism is TWO-SEED on both heads** (diffusion pairing +0.0189/+0.0354; regression
+pairing +0.0334/+0.0501 — all four runs win every-or-nearly-every cell). Seed spreads: reg-long
+0.0179 (0.1682/0.1503 — the familiar memory-arm seed variance), reg-flat 0.0011 (stable).
+Report-only observation (cross-head, single comparison, NO claim): reg-long s1 (0.1503) is the
+best absolute rollout number of the campaign, below even flat-long-diff (0.1564/0.1580) at 37%
+of its tokens — quote only as a measured arm value with the seed-variance caveat; the recipe
+statement stays at seed-mean level (reg-long mean 0.1593 @ 1,152 tok). Next: R-C (running;
+30k npz archived to `logs_rhcp/archive_30k/` before launch, per the overwrite caveat).

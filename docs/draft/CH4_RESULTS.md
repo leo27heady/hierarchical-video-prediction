@@ -285,7 +285,7 @@ point B exists to test (§4.5).
 
 The pre-registered mechanism-agnosticism gate (red-team P0) required reg-long to beat the
 token-matched reg-flat with CI excluding zero in the hard/high-horizon bins. Outcome: **PASSED —
-reg-long beats reg-flat in every bin** (ALL +0.0334 [+0.0248, +0.0423]; hard-bin wins at every
+reg-long beats reg-flat in every bin at BOTH seeds** (ALL +0.0334 [+0.0248, +0.0423] seed 0; +0.0501 [+0.0396, +0.0612] seed 1 — two-seed; hard-bin wins at every
 horizon including h 1–8 HARD +0.0447; sharper, 0.0741 vs 0.0512). Notably the regression pairing
 shows no null prelude — the win starts at h 1–8 — so the horizon-gating observed on the diffusion
 pairing at seed 0 is a property of that head/seed combination, not of the memory mechanism.
@@ -482,7 +482,8 @@ equal context tokens (1,152), the long-coarse hierarchy beats the flat control o
 rollouts: seed 0 ALL +0.0189 [+0.0121, +0.0264] with the win concentrated from h ≥ 25 on hard
 re-entry bins (h 25–60 HARD +0.0344 [+0.0162, +0.0531]); seed 1 ALL +0.0354 [+0.0267, +0.0447],
 winning every cell. The onset boundary is seed-variable; the win and its mid-horizon peak are
-not. The result is mechanism-agnostic (reg-long > reg-flat, ALL +0.0334 [+0.0248, +0.0423]) —
+not. The result is mechanism-agnostic at two seeds (reg-long > reg-flat, ALL +0.0334 s0 /
++0.0501 s1, every bin on both) —
 and honestly bounded: flat-long at 2.7× tokens is the outright frontier (0.1564), so at operating
 point A hierarchy is an efficiency point, not a necessity.
 
