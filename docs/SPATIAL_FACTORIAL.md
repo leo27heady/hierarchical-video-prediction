@@ -272,8 +272,22 @@ even hier-rich 0.1687/0.1695), so the plateau reading survives the budget axis t
 default-named npz restored to the 30k canonical versions (the T4 matrix and every doc reference
 them unchanged); the 60k data saved as `rhvd_eval_{hier-long,flat-budget}_s0_60k.npz`.
 
+### R-E (pre-registered 2026-07-09, BEFORE the run): the 512-token pair seed-1 (completeness)
+
+**Motivation:** 896/1152/3072 all carry two seeds; only the 512-token below-threshold point
+(hier-short/flat-short) is single-seed. Completing it makes every frontier point two-seed.
+**Arms:** hier-short + flat-short seed 1 (B16×30k) + compare.
+**PRE-REGISTERED PRIMARY READING:** 512 tokens is BELOW the geometric span threshold (a 6-frame
+coarse window cannot cover the ~48-frame loop), so the expectation is **flat still wins or ties**
+(the seed-0 −0.0036 persists or narrows). Hier arms are seed-variable, so hier-short s1 may
+improve and narrow the gap; a CI-clean flip to a hier win would be a genuine surprise and would
+trigger a re-examination of the threshold arithmetic (reported, not buried).
+**ALTERNATIVE:** if hier-short s1 flips the sign, the lower band edge is re-bracketed below 512
+and the geometric-threshold claim is softened to "consistent with, not exactly at, 512–896".
+**Rule:** symmetric pair, both seeds reported, no soft reads.
+
 **This closes the frontier-robustness program (R-A/R-B/R-D/R-C, all four confirmed their primary
-branch).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
+branch; R-E completes the 512 point).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
 the whole program: hier-long's seed-0-30k value (0.1848) is high both because of seed variance
 (s1 = 0.1690) AND because of budget (60k → 0.1666); the true ≈0.17 plateau is robust to both.
 The two-seed 30k pairing (§4.3.3) remains the headline anchor; R-C is a budget-robustness
