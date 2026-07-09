@@ -15,11 +15,11 @@ import matplotlib.pyplot as plt
 
 # ---- measured ALL fg-MSE (diffusion head), per budget: seed values from the npz ----
 BUD = [512, 896, 1152, 3072]
-flat = {512: [0.2224], 896: [0.2106, 0.2102], 1152: [0.2038, 0.2044], 3072: [0.1564, 0.1580]}
-hier = {512: [0.2260], 896: [0.1706, 0.1744], 1152: [0.1848, 0.1690], 3072: [0.1695, 0.1687]}
+flat = {512: [0.2224, 0.2206], 896: [0.2106, 0.2102], 1152: [0.2038, 0.2044], 3072: [0.1564, 0.1580]}
+hier = {512: [0.2260, 0.2257], 896: [0.1706, 0.1744], 1152: [0.1848, 0.1690], 3072: [0.1695, 0.1687]}
 # paired Δ(flat − hier) per seed, with 95% cluster CIs (from the compare logs)
 delta = {  # budget: list of (Δ, lo, hi) per seed
-    512:  [(-0.0036, -0.0063, -0.0010)],
+    512:  [(-0.0036, -0.0063, -0.0010), (-0.0051, -0.0079, -0.0024)],
     896:  [(+0.0399, +0.0299, +0.0501), (+0.0358, +0.0267, +0.0454)],
     1152: [(+0.0189, +0.0121, +0.0264), (+0.0354, +0.0267, +0.0447)],
     3072: [(-0.0131, -0.0201, -0.0069), (-0.0107, -0.0163, -0.0058)],
@@ -93,13 +93,13 @@ ax[1].text(1.5, -0.024, "WIN BAND\n(span ≥ loop, window < loop)", ha="center",
 ax[1].text(0, -0.024, "below\nthreshold", ha="center", fontsize=7.5, color=C_LOSS)
 ax[1].text(3, -0.024, "window\nsaturated", ha="center", fontsize=7.5, color=C_LOSS)
 ax[1].set_title("B. Paired advantage, per seed\n"
-                "(both band edges + interior now two-seed; 512 single-seed)", fontsize=10)
+                "(ALL four budgets now two-seed as of 2026-07-09)", fontsize=10)
 ax[1].legend(loc="upper right", fontsize=8.5, framealpha=0.95)
 ax[1].grid(axis="y", alpha=0.25)
 
 fig.suptitle("Flat vs hierarchical at matched token budgets — hierarchy wins the band where its "
-             "coarse span crosses the memory horizon\n(loopmom, diffusion head; 2 seeds at "
-             "896/1152/3072 as of 2026-07-08)", fontsize=11, y=0.995)
+             "coarse span crosses the memory horizon\n(loopmom, diffusion head; all four budgets "
+             "two-seed as of 2026-07-09)", fontsize=11, y=0.995)
 fig.tight_layout(rect=[0, 0, 1, 0.93])
 out = r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\figures\fig10_flat_vs_hier.png"
 fig.savefig(out, dpi=180)

@@ -286,6 +286,15 @@ trigger a re-examination of the threshold arithmetic (reported, not buried).
 and the geometric-threshold claim is softened to "consistent with, not exactly at, 512–896".
 **Rule:** symmetric pair, both seeds reported, no soft reads.
 
+### R-E MEASURED (2026-07-09; `logs_rhcp/frontier_bottom_s1.log`; RE_DONE) — **REPLICATED (below-threshold flat win)**
+
+Seed 1: hier-short 0.2257 / sharp 0.0397 vs flat-short 0.2206 / 0.0419; paired Δ ALL **−0.0051
+[−0.0079, −0.0024]** — flat wins, replicating seed 0 (−0.0036). The 512-token below-threshold
+point is now two-seed (flat wins both), as pre-registered (a 6-frame coarse window cannot cover
+the 48-frame loop → coarse tokens are redundancy). Seed spreads: hier-short 0.0003 (tight — no
+memory circuit to be seed-variable about, unlike the loop-covering hier arms), flat-short 0.0018.
+**Every frontier point is now two-seed** (512 flat / 896 hier / 1,152 hier / 3,072 flat).
+
 ### R-F/R-G (pre-registered 2026-07-09, BEFORE the runs): the upper-edge BRACKET (1792 & 2432 tok)
 
 **What a token is (for the record):** a token = one spatial cell of a latent frame projected to
