@@ -286,8 +286,39 @@ trigger a re-examination of the threshold arithmetic (reported, not buried).
 and the geometric-threshold claim is softened to "consistent with, not exactly at, 512–896".
 **Rule:** symmetric pair, both seeds reported, no soft reads.
 
+### R-F/R-G (pre-registered 2026-07-09, BEFORE the runs): the upper-edge BRACKET (1792 & 2432 tok)
+
+**What a token is (for the record):** a token = one spatial cell of a latent frame projected to
+width d. The frozen AE encodes each 64×64 frame into a coarse map (16 ch × 4×4 = **16 tokens/
+frame**) and a fine map (16 ch × 8×8 = **64 tokens/frame**); a coarse token summarizes ~16×16 px
+(layout), a fine token ~8×8 px (detail). Context-token budget = n_ctx_c·16 + n_ctx_f·64. In the
+hierarchy the coarse stream is cheap wide memory (48 coarse frames = 768 tok span the whole
+loop) and the fine stream is expensive recent detail; a flat arm has no coarse stream, so the
+same budget buys a shorter window (e.g. flat 1152 tok = 18 fine frames = 18-frame window < loop).
+
+**Motivation (author):** the frontier has a gap between 1,152 and 3,072 tokens, and the upper
+band edge (where hier→flat inverts) is currently only *interpolated* at ≈2,059 tok. Two points
+inside the gap BRACKET the crossing and measure the edge directly. Fixed 48-frame coarse span
+(covers the loop); the varied axis is the number of recent fine frames.
+
+**Arms (diffusion head; budget matches exact):**
+- **R-F @ 1,792 tok:** hier-c1 (48c+16f) vs flat-c1 (28f). 1,792 < 2,059 → **predict HIER win**
+  (positive Δ, narrower than the 1,152 win as the curve approaches the crossing).
+- **R-G @ 2,432 tok:** hier-c2 (48c+26f) vs flat-c2 (38f). 2,432 > 2,059 → **predict FLAT win**
+  (negative Δ, narrower than the 3,072 loss).
+
+**PRE-REGISTERED PRIMARY READING:** the sign of Δ flips between 1,792 and 2,432 — locating the
+measured upper band edge inside that interval and replacing the "≈2×10³ interpolated" qualifier
+with a measured bracket. **ALTERNATIVE:** if BOTH are hier-wins, the edge is >2,432 and the band
+is wider than interpolated (re-bracket upward); if BOTH are flat-wins, the edge is <1,792
+(re-bracket downward). Either way the interpolation is replaced by measurement — no soft reads.
+**Regime:** matched WITHIN each pair; batch by VRAM probe to ~14 GB (seq 2,112 / 2,752 tokens —
+smaller than hier-rich's 3,392, so B16×30k likely fits; the paired delta cancels regime within
+each pair). Seed 0 first; seed 1 only if a point ends up claim-bearing at the edge.
+**Queue:** after R-E → R-F → R-G (one job at a time).
+
 **This closes the frontier-robustness program (R-A/R-B/R-D/R-C, all four confirmed their primary
-branch; R-E completes the 512 point).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
+branch; R-E completes the 512 point; R-F/R-G measure the upper edge).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
 the whole program: hier-long's seed-0-30k value (0.1848) is high both because of seed variance
 (s1 = 0.1690) AND because of budget (60k → 0.1666); the true ≈0.17 plateau is robust to both.
 The two-seed 30k pairing (§4.3.3) remains the headline anchor; R-C is a budget-robustness

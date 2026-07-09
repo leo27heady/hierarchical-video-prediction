@@ -42,6 +42,27 @@ venv/Scripts/python.exe -u -m hvp_rev.rhvd --compare flat-budget,hier-long --see
 archive the 30k npz first: `cp logs_rhcp/rhvd_eval_hier-long_s0.npz logs_rhcp/archive_30k/` etc.,
 or add an `--eval_tag _60k` pass-through. CHECK before launching R-C.)*
 
+### A1a. WHAT A "TOKEN" IS (reference for all budget/frontier discussion)
+
+A token = **one spatial cell of a latent frame**, linearly projected to the model width d=384
+(NOT a pixel, NOT a whole frame). The frozen 2-level AE encodes each 64×64 frame into:
+- **coarse** map: 16 channels × 4×4 grid = **16 tokens/frame** (each ≈ a 16×16-px layout region)
+- **fine** map: 16 channels × 8×8 grid = **64 tokens/frame** (each ≈ an 8×8-px detail region)
+
+**Context-token budget** = `n_ctx_c·16 + n_ctx_f·64` (the target/prediction tokens are equal
+overhead across arms and excluded). **Distribution in the hierarchy:** the coarse stream is
+cheap wide memory (48 coarse frames × 16 = 768 tok span the whole ~48-frame loop); the fine
+stream is expensive recent detail (few frames × 64). A **flat** arm has no coarse stream — all
+tokens are fine frames — so the same budget buys a shorter window (flat 1152 tok = 18 fine
+frames = 18-frame window, < the 48-frame loop). This asymmetry IS the mechanism: coarse tokens
+buy loop-covering span at ¼ the price; flat can't afford the span in the win band.
+
+Arm inventory (diffusion head): hier = (coarse,fine) frames, tokens = c·16+f·64:
+hier-short 6c+6f=480 · hier-min 48c+2f=896 · hier-long 48c+6f=1152 · **hier-c1 48c+16f=1792** ·
+**hier-c2 48c+26f=2432** · hier-rich 48c+36f=3072. Flat = f·64: flat-short 8f=512 ·
+flat-min 14f=896 · flat-budget 18f=1152 · **flat-c1 28f=1792** · **flat-c2 38f=2432** ·
+flat-long 48f=3072.
+
 ### A1b. REVIEW-RESPONSE AMENDMENTS (2026-07-08, external solo review; accepted items)
 
 - **R-D inserted after R-B, before R-C** (pre-registered in SPATIAL_FACTORIAL): reg-long +
@@ -64,6 +85,17 @@ or add an `--eval_tag _60k` pass-through. CHECK before launching R-C.)*
 - Rejected from the review, with reasons: the CH8 "stale date" (it is today's date — the review
   ran mid-update); regenerate-loopmom (above); demoting R-C (kept — the emergence-transfer
   hypothesis is worth one budget-matched pair, now safely behind R-D).
+
+### A1c. FRONTIER COMPLETION QUEUE (as of 2026-07-09; one job at a time)
+
+- **R-E** (RUNNING): 512-tok pair seed 1 → makes every frontier point two-seed.
+- **R-F @ 1,792 tok** (pre-registered): hier-c1 vs flat-c1 — predicted hier-win (below crossing).
+- **R-G @ 2,432 tok** (pre-registered): hier-c2 vs flat-c2 — predicted flat-win (above crossing).
+  R-F/R-G BRACKET the interpolated ≈2,059 crossing → measure the upper band edge, replacing the
+  "≈2×10³ interpolated" qualifier in the abstract/CH8/VYSNOVKY with a measured interval.
+  Launch each on the prior chain's DONE marker; VRAM-probe batch to ~14 GB; fill fig9+fig10 (a
+  6-point frontier) + CH4 §4.3.6 + Розділ 4 on landing.
+- Then generalization (A2) / optional loop-80 A′.
 
 ### A2. Generalization campaign — remaining datasets (pre-registered in the memo)
 

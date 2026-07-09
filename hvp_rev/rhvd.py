@@ -106,6 +106,14 @@ ARMS = {
     #      window. Exact budget match: 48*16 + 2*64 = 896 == 14*64. Standard regime B16x30k.
     "hier-min":   (48,      2,       "diff", 1, 0),
     "flat-min":   (0,       14,      "diff", 1, 0),
+    # ---- FRONTIER UPPER-EDGE BRACKET (pre-registered 2026-07-09): two points between 1152 and
+    #      3072 that BRACKET the interpolated curve-crossing (~2059 tok). Fixed 48-frame coarse
+    #      span (covers the loop); fine-frame count is the varied axis. Budget matches:
+    #      48*16 + 16*64 = 1792 == 28*64 ; 48*16 + 26*64 = 2432 == 38*64.
+    "hier-c1":    (48,      16,      "diff", 1, 0),   # 1792 tok (< crossing: predict hier win)
+    "flat-c1":    (0,       28,      "diff", 1, 0),   # 1792 tok
+    "hier-c2":    (48,      26,      "diff", 1, 0),   # 2432 tok (> crossing: predict flat win)
+    "flat-c2":    (0,       38,      "diff", 1, 0),   # 2432 tok
 }
 
 
