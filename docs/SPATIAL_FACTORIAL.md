@@ -254,3 +254,27 @@ best absolute rollout number of the campaign, below even flat-long-diff (0.1564/
 of its tokens — quote only as a measured arm value with the seed-variance caveat; the recipe
 statement stays at seed-mean level (reg-long mean 0.1593 @ 1,152 tok). Next: R-C (running;
 30k npz archived to `logs_rhcp/archive_30k/` before launch, per the overwrite caveat).
+
+### R-C MEASURED (2026-07-09; `logs_rhcp/frontier_mid_60k.log`; RC_DONE) — **T3-EMERGENCE HYPOTHESIS CONFIRMED**
+
+The legitimate "train longer": hier-long AND flat-budget both retrained at B8×60k (the flat-long
+regime), seed 0, so the pair is same-regime and budget-matched within itself. Result:
+hier-long **0.1666** / sharp 0.0899 vs flat-budget **0.2032** / 0.0592; paired Δ ALL **+0.0366
+[+0.0272, +0.0465]** — WIN in every horizon × hardness cell.
+
+**The pre-registered primary reading is confirmed** (the hier−flat delta at 1,152 tokens GROWS
+with the optimization budget): comparing to the 30k-step seed-0 pair (archived
+`logs_rhcp/archive_30k/`), the delta nearly DOUBLED (+0.0189 → +0.0366), and the mechanism is
+exactly the T3 emergence story — **flat-budget is budget-saturated** (0.2038 → 0.2032, unchanged
+at 2× budget: no memory circuit to mature) while **hier-long keeps maturing** (0.1848 → 0.1666,
+−0.0182). At 60k the mid-budget hier point (0.1666) sits at/below the ≈0.17 plateau floor (below
+even hier-rich 0.1687/0.1695), so the plateau reading survives the budget axis too. Provenance:
+default-named npz restored to the 30k canonical versions (the T4 matrix and every doc reference
+them unchanged); the 60k data saved as `rhvd_eval_{hier-long,flat-budget}_s0_60k.npz`.
+
+**This closes the frontier-robustness program (R-A/R-B/R-D/R-C, all four confirmed their primary
+branch).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
+the whole program: hier-long's seed-0-30k value (0.1848) is high both because of seed variance
+(s1 = 0.1690) AND because of budget (60k → 0.1666); the true ≈0.17 plateau is robust to both.
+The two-seed 30k pairing (§4.3.3) remains the headline anchor; R-C is a budget-robustness
+addendum, single-seed by design (a budget-axis test, not a seed test).

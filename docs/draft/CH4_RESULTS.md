@@ -166,7 +166,11 @@ recorded, and the 20k extension was then run and replicated on both seeds — th
 part of the record, and the claim rests on the twice-replicated 20k result, not on a selected
 read. The methodological moral carries through this whole chapter: retrieval-from-memory needs
 a *large optimization budget*, and short-budget ablations (6k steps here) would have spuriously
-killed it.
+killed it. The rollout-level version of the same pattern is confirmed directly in §4.3.6:
+retraining the headline pair at twice the budget (60k steps) leaves the flat control unchanged
+(0.2038 → 0.2032 — budget-saturated) while the hierarchical arm keeps improving (0.1848 →
+0.1666), so the matched-budget delta nearly doubles (+0.0189 → +0.0366) — memory is the arm that
+still has something to learn.
 
 [FIG ch4-1: hard-bin Δ with CIs at 6k vs 20k × 2 seeds (data DONE, T3; plot QUEUED). Caption:
 retrieval emerges under the larger optimization budget — null at 6k on both seeds, CI-clean win
@@ -664,9 +668,21 @@ curve from 896 tokens on reads as a plateau at ≈0.17 rather than a dip. Disclo
 REPLICATED the result — every cell WIN again, ALL +0.0358 [+0.0267, +0.0454], the same dt-gate
 reach signature (dt≤48 HARD +0.0666; beyond-span null) — so the 896-token point is TWO-SEED
 CONFIRMED (seed-mean Δ ≈ +0.0379, the campaign's largest two-seed effect; hier-min seed spread
-0.0038, flat-min 0.0004). Both the 896 and 1,152 budgets now carry two seeds. The final claim form is unchanged but now edge-measured: hierarchy
-wins **the band of budgets where its span crosses the memory horizon and flat's window does
-not** — [896, ≈2,059) tokens as measured on this testbed — and inverts outside it.
+0.0038, flat-min 0.0004). Both the 896 and 1,152 budgets now carry two seeds. The 3,072-token upper edge is likewise
+two-seed (R-B: flat wins at seed 1 too, −0.0107 [−0.0163, −0.0058]). The final claim form is
+unchanged but now edge-measured: hierarchy wins **the band of budgets where its span crosses the
+memory horizon and flat's window does not** — [896, ≈2×10³ interpolated) tokens as measured on
+this testbed — and inverts outside it.
+
+**Budget robustness of the 1,152-token headline (R-C, `frontier_mid_60k.log`).** Retraining the
+headline pair at twice the budget (both arms B8×60k, seed 0) confirms the pre-registered
+prediction that the matched-budget delta *grows* with optimization budget: the flat control is
+budget-saturated (0.2038 → 0.2032) while the hierarchical arm keeps improving (0.1848 → 0.1666),
+doubling the ALL delta to +0.0366 [+0.0272, +0.0465] (win in every horizon × hardness cell). At
+60k the mid-budget hierarchical point reaches the ≈0.17 plateau floor from below, so the seed-0
+30k value (0.1848) that made the mid-point look weak is explained on two independent axes — seed
+(s1 0.1690) and budget (60k 0.1666) — both moving it to the plateau. The two-seed 30k pairing
+remains the headline anchor; this is a single-seed budget-axis robustness read.
 
 *Provenance (this section only): design/arms `docs/SPATIAL_FACTORIAL.md` FRONTIER COMPLETION +
 FRONTIER MEASURED (2026-07-07) + FRONTIER LOWER EDGE (pre-reg + MEASURED same day, commit
