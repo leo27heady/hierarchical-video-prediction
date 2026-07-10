@@ -4,6 +4,9 @@
 > (sources: `docs/THEORY_CHAPTER_D.md` / `hvp_rev/theory.py` for T6a; `hvp_rev/mem_frontier.py`
 > for T6b; `logs_rhcp/mem_panel.md` for T6c). Figures F9–F12 of the skeleton list are the
 > placeholders here. Numbering: Chapter 6 per the canonical order fixed in CH1_INTRO.md.
+> **Triage (2026-07-10, approved):** NON-CORE for the article's central claim (long-span context
+> packaging); retained in the working manuscript for the dissertation's [A4] mapping.
+> Appendix-vs-separate-paper decided at venue constraints.
 
 ## 6.1 Claim
 

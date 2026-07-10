@@ -121,6 +121,9 @@ comparison are the protocol itself and the third mechanism, to which we now turn
 
 ## 3.5 Part B: a two-sided capability study of Energy-Based Transformers
 
+> **Triage (2026-07-10, approved):** NON-CORE for the article's central claim; retained for the
+> dissertation's mechanism-study mapping (decision Q6(a)). Appendix-vs-main at venue constraints.
+
 Energy-Based Transformers [EBT25] train a scalar energy E(context, candidate) and generate by
 gradient descent on the candidate. The published system-level results include autoregressive video
 modelling (their §5.2), and the mechanism is attractive here precisely because descent steps are a

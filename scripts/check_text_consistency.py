@@ -78,4 +78,20 @@ for path in FILES:
         total += sum(c.values())
 print(f"  total pending: {total}")
 
+# --gate: assembly-time enforcement (approved triage 2026-07-10, adjustment 3): FINAL texts may
+# contain NO [EXPECTED]/[PENDING] residue — every shell must be measured, cut, or explicitly
+# future work. E8 assembly MUST run `check_text_consistency.py --gate` and require exit 0.
+if "--gate" in sys.argv:
+    pend = 0
+    for path in FILES:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+        pend += len(re.findall(r"\[EXPECTED|\[PENDING", text))
+    if pend:
+        print(f"GATE FAIL: {pend} [EXPECTED]/[PENDING] shells remain — measure, cut, or recast "
+              f"as future work before assembly.")
+        fail = True
+    else:
+        print("GATE PASS: no projected-result shells remain.")
+
 sys.exit(1 if fail else 0)

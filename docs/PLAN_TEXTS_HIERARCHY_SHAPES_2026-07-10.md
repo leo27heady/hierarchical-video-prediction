@@ -232,3 +232,35 @@ retitle + subsection skeletons with [EXPECTED] slots, Розділ 1/3 additions
 fig13/14/15 spec stubs, fig10 redesign. AFTER each npz: swap placeholders, pick branch, regen
 figures/table. LAST: abstract/front-matter clauses (only on two-seed), UA pass on frozen text.
 Estimated text effort: ~1.5–2 working days total, parallel to the GPU queue.
+
+---
+
+## 9. ARTICLE TRIAGE — APPROVED (2026-07-10 evening, author + external review convergence)
+
+**Article core (submission-blocking):** protocol/testbed (CH2) · matched-token frontier (§4.3)
+· B1 + B2 **with their seed and head resolution** (S1-a, S1-b, reg twins = article-essential)
+· measured boundary controls · limitations. Organizing message (enters abstract ONLY after
+S1-b + reg twins, however they land): "At matched compute, span is the scarce resource;
+temporal subsampling can outperform spatial abstraction; the useful hierarchy shape depends on
+representation and prediction head."
+
+**Reclassified non-blocking (still in the GPU queue unchanged — cheap, pre-registered; their
+RESULTS decide main-text vs appendix):** B3 (a depth-plus-objective-allocation probe;
+appendix-grade unless weight-matched-clean), blinding probes (mechanism figure), E-320 (third
+edge-law point; 2-point version already carries the family claim).
+
+**Boundary-control framing (adopted):** T7/MMNIST = the predicted negative control; TaxiBJ =
+protocol/competence anchor (in-leaderboard-band) + boundary observation (no memory horizon →
+hierarchy is economy-only). NEITHER is claimed as positive transfer of the hierarchy result to
+real video — positive transfer needs a natural-video re-entry protocol (CH8 future work #3).
+
+**Article CH5 slims to measured-only** (T7 + TaxiBJ + Phase C when landed); the G-i/G-ii/G-iii/
+KTH shells leave the article. **Shell end-state rule (hard):** in FINAL texts every [EXPECTED]/
+[PENDING] is measured, cut, or explicitly future work — enforced mechanically:
+`check_text_consistency.py --gate` exits 1 on any residue; E8 assembly MUST run it. (Shells
+remain at their insertion points in working drafts meanwhile — the lint inventory IS the
+tracker; a separate tracker would desync predictions from their insertion points.)
+
+**EBT (§3.5) + reversibility (CH6): marked non-core for the article's central claim now**
+(status banners added); retained in the working manuscript for the dissertation's [A4] mapping;
+appendix-vs-separate-paper decided at venue constraints.
