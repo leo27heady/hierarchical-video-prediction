@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('full', 'after-seed1', 'core-only')]
+    [ValidateSet('full', 'after-seed1', 'core-only', 'after-seed1-core')]
     [string]$Mode = 'full'
 )
 

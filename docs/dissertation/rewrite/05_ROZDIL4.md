@@ -885,7 +885,8 @@ plateau level. Seed-1 QUEUED per the binding rule before headline escalation. Th
 pre-registered: stride-4 @ **320 tokens** [EXPECTED-E320: win → the edge law becomes a 3-point
 dose–response 896/512/320; ALT: the measured stride limit]. The head axis is crossed at all new
 cells via pre-registered regression twins [EXPECTED-REG: diffusion verdicts reproduce or enlarge
-under regression; a cross-head sign flip = headline-grade surprise, seed-1 gated]. REQUIRED caption
+under regression; a cross-head sign flip = headline-grade surprise; the article-critical
+strided-flat-reg cell is unconditionally two-seed]. REQUIRED caption
 note wherever the
 frontier is drawn: the 512-token stride-2 hier point and the 512-token stride-1 flat win are
 different families at the same budget, not a contradiction. **[FIG 4-13 — asset EXISTS:
@@ -1203,13 +1204,11 @@ Three readings, in the order of their epistemic weight.
    measurement refutes it. What does hold: the model halves persistence's LPIPS (0.1320 vs
    0.2533) and beats persistence on every metric of the table.
 
-3. **The flat ≈ hier null (Δ ≈ 0.4 aggregate MSE ≈ 0) is the *predicted* boundary condition, not
-   a failure.** Moving MNIST has no off-screen re-entry — nothing ever leaves the frame — so
-   there is no memory horizon for a coarse level to carry, and the pre-registered prediction of
-   the memory-horizon theory is precisely a null between the two arms here. The bridge thereby
-   closes the dissertation's argument on the field's own benchmark: where the memory horizon is
-   absent, hierarchy is a null (consistent with this project's founding Moving-MNIST
-   observations, §3.4); where the horizon exists (operating point A), the matched-budget
+3. **The flat ≈ hier null (Δ ≈ 0.4 aggregate MSE ≈ 0) is the measured short-protocol boundary,
+   not a failure.** Moving MNIST has no off-screen re-entry at 10→10, so this protocol does not
+   expose the re-entry-defined demand isolated at operating point A. It does not prove that
+   persistent identity/velocity is irrelevant over long rollout; Phase C tests that separately.
+   Thus the bridge supplies a short/no-re-entry boundary observation, while the matched-budget
    hierarchy win is two-seed CI-clean (§4.3.3). The question "when does hierarchy pay" receives
    its negative control from the standard benchmark itself. [UA-PASS: «передбачений негативний
    контроль»; «нульовий результат як межова умова, а не невдача».]

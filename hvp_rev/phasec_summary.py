@@ -91,7 +91,7 @@ def main():
     print("effect convention: positive = hierarchical arm better")
     for r in results:
         print(f"  {r['name']:10s} s{r['seed']} n={r['n']:5d} effect={r['mean']:+.5f} "
-              f"95%CI=[{r['lo']:+.5f},{r['hi']:+.5f}] margin=±{r['margin']:.5f} "
+              f"95%CI=[{r['lo']:+.5f},{r['hi']:+.5f}] margin=+/-{r['margin']:.5f} "
               f"{r['verdict']}")
     for name in ("fg_mse", "identity", "trajectory", "count"):
         rows = [r for r in results if r["name"] == name]

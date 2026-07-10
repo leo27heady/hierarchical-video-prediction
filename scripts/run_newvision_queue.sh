@@ -5,7 +5,8 @@
 # Modes:
 #   full         seed replications -> core shape/head work -> Phase C -> optional probes
 #   after-seed1  same, but assumes run_cwstyle_seed1.sh has already completed
-#   core-only    core shape/head work -> Phase C; leaves optional probes for later
+#   core-only    seed replications -> core shape/head work -> Phase C; leaves optional probes
+#   after-seed1-core  core shape/head work -> Phase C; seed work already done, optional deferred
 #
 # Examples:
 #   bash scripts/run_newvision_queue.sh full 2>&1 | tee -a logs_rhcp/newvision_queue.log
@@ -13,8 +14,8 @@
 set -euo pipefail
 MODE=${1:-full}
 case "$MODE" in
-  full|after-seed1|core-only) ;;
-  *) echo "usage: $0 [full|after-seed1|core-only]" >&2; exit 2 ;;
+  full|after-seed1|core-only|after-seed1-core) ;;
+  *) echo "usage: $0 [full|after-seed1|core-only|after-seed1-core]" >&2; exit 2 ;;
 esac
 
 PHASEB_LOG=logs_rhcp/cwstyle_phaseB.log
@@ -36,7 +37,7 @@ run_logged () {
   "$@" 2>&1 | tee -a "$log"
 }
 
-if [[ "$MODE" == "full" ]]; then
+if [[ "$MODE" == "full" || "$MODE" == "core-only" ]]; then
   mark "QUEUE 1/4 seed replications"
   run_logged logs_rhcp/cwstyle_seed1.log bash scripts/run_cwstyle_seed1.sh
 fi
@@ -47,7 +48,7 @@ run_logged logs_rhcp/cwstyle_regtwins.log bash scripts/run_cwstyle_regtwins.sh c
 mark "QUEUE 3/4 replicated Phase C boundary test"
 run_logged logs_rhcp/phasec.log bash scripts/run_phaseC_mmnist.sh
 
-if [[ "$MODE" != "core-only" ]]; then
+if [[ "$MODE" == "full" || "$MODE" == "after-seed1" ]]; then
   mark "QUEUE 4/4 optional depth/third-edge probes"
   run_logged logs_rhcp/cwstyle_optional.log bash scripts/run_cwstyle_regtwins.sh optional
 fi

@@ -23,7 +23,7 @@ Sequence length / step time / VRAM are reported separately (table columns to add
 | L9 | Reversibility: exact constant-memory gradients; enabler not win; inner-loop axis closed (0.26%) | CH6 measured panels | **complete; NON-CORE for article** | vs BPTT; ~Pareto with checkpointing |
 | L10 | CW-style multiscale depth benefit | none yet | **FUTURE CLAIM** — multi-timescale testbed (visible slow factor); not required for the current thesis | new paper |
 
-**Escalation queue feeding this ledger:** B3 → blinding → S1-a (L3) → S1-b (L4) → REG twins
-(L4 head axis) → E-320 (L3 optional 3rd point) → Phase C (L8) → [DECISION after reg twins:
-representation-sensitivity test for L4's AE scope; 3rd seed for the 1152 trio hier-long/
-flat-budget/strided-flat if the article headline rests on their means].
+**Escalation queue feeding this ledger:** B3 → blinding → S1-a (L3) → S1-b (L4) → regression
+`core` (L4, including unconditional strided-flat-reg s0/s1) → unconditional diffusion S2 trio →
+three-seed Phase C (L8) → regression `optional` (hier3-reg, E-320). Representation sensitivity
+and the rate-stress/multi-timescale suites remain separately gated future claims.

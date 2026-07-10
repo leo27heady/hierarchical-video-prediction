@@ -143,7 +143,7 @@ Three readings, carried verbatim from the bridge record:
 
 [FIG ch5-1: qualitative 10→10 strips, mm-flat vs mm-hier vs GT at h1/h5/h10 — assets EXIST:
 `logs_rhcp/mmnist_bridge_mm-{flat,hier}_s0_t15000.png`. Caption: sharp committed digits, both
-arms; the null is visible — no memory horizon to separate them.]
+arms; the measured short-protocol null is visible — no re-entry-defined demand separates them.]
 
 ### 5.3.1 Long-horizon control: ~300-frame rollouts on standard Moving MNIST
 
@@ -273,9 +273,10 @@ upsample-equivalent build; SSIM deficit stated.
 > competence anchor — never positive transfer.**
 
 Three measured statements close the article's external scope, each already stated in its own
-section and gathered here without projection. First, the **negative control**: on standard
-Moving MNIST — no off-screen re-entry, hence no memory horizon — flat ≈ hierarchical (§5.3,
-measured; the long-horizon extension is §5.3.1, [EXPECTED-PhaseC] with identity/trajectory
+section and gathered here without projection. First, the **short-protocol boundary control**:
+on standard Moving MNIST with no off-screen re-entry, flat ≈ hierarchical at 10→10 (§5.3,
+measured); the long-horizon extension separately tests persistent-state demand (§5.3.1,
+[EXPECTED-PhaseC] with identity/trajectory
 metrics per the pre-registered mandate). Second, the **competence anchor**: the unchanged 22 M
 generalist stack lands inside the OpenSTL TaxiBJ leaderboard band on MAE/PSNR (§5.7, measured),
 answering "is this system a toy?" without claiming leaderboard superiority anywhere (§5.2
