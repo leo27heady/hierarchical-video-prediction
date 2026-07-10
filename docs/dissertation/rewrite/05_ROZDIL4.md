@@ -793,15 +793,16 @@ slow-clock boundary — §4.5); the remaining cells (temporal family §4.4.2, sp
 depth §4.4.5) follow the pre-registered program of `SPATIAL_FACTORIAL.md` (final block), and
 §4.4.5 assembles the grid into one comparison table in the manner of the Clockwork VAE benchmark
 [REF: CW-VAE] — the format adopted, the controls tightened (Розділ 1, §1.3.x; article §7.1):
-matched token budgets, capacity-neutral depth (levels add tokens, not parameters), foreground-
-masked metrics.
+matched token budgets, backbone-capacity-neutral depth (levels add tokens to a shared
+backbone; per-level I/O heads +0.30 M / +1.4% on the 22.19 M predictor + the frozen 1.25 M AE
+tap, disclosed), foreground-masked metrics.
 
 **Table 4.7-A — таксономія форм (what each axis buys and costs; renumber at assembly).**
 
 | вісь | форма | купує | коштує | доказ |
 |---|---|---|---|---|
 | просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
-| часова | повнороздільна історія, крок 4 (глибина-за-роздільністю 1, **за-темпом 2** — квадрант clockwork) | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 (диф. ядро)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
+| часова | повнороздільна історія, крок 4 (глибина-за-роздільністю 1, **за-темпом 2** — квадрант clockwork) | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 за s0 (диф. ядро; s1 у черзі)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
 | просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище + сімейний зсув плато ≈+0.017 | §4.4.2 виміряно: **+0.0330 @512 ток.** (s0; s1 у черзі) |
 | глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
 | розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |

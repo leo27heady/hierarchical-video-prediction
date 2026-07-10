@@ -31,16 +31,18 @@
 > ГРУБОГО РІВНЯ» kept as fallback pending Prof. Mokin's sign-off. The coarse level remains
 > the concrete stream type of §3.1.1; it is no longer the chapter-title-level principle.
 
-*(EN: Hierarchical mathematical model of video-sequence generation with long-range coarse-level
-memory.)*
+*(EN: Hierarchical mathematical model of video-sequence generation with long-span
+multi-stream context.)*
 
 The preceding chapters performed the decomposition of the video-generation system and developed
 the mathematical instruments for uncertainty estimation (entropy-based adaptive decomposition,
 RoPE-ND) and for resource-efficient multi-step optimization (reversible transformations,
 time-agnostic backpropagation). This chapter synthesizes these results into the central
 contribution of the dissertation: a hierarchical mathematical model of video-sequence generation
-in a compact continuous hierarchical latent state space, in which the upper (coarse) level of the
-hierarchy carries the long-range temporal memory of the modeled process, context signals are
+in a compact continuous hierarchical latent state space with **long-span multi-stream context**:
+the demonstrated system carries long-range temporal memory in a long-span context stream — the
+coarse (spatially downsampled) stream being its measured spatial implementation within the
+multi-stream family of §3.1/§3.3.5 — context signals are
 transferred between abstraction levels within a single joint attention mechanism, and per-frame
 generation is performed by an iterative-refinement (denoising diffusion) core whose selection is
 justified empirically by the matched-compute mechanism study of Chapter 4.
@@ -61,8 +63,8 @@ with the model: it is what operationalizes the trajectory-consistency criterion 
 
 The chapter's organizing object, defined here once and used throughout (full formalization in
 §3.3.5): a **context-stream family**. Each context stream is a triple
-$s_i = (	ext{роздільна здатність}_i,\ 	ext{часовий крок}_i,\ 	ext{кількість слотів}_i)$
-[UA-PASS: «потік контекстних токенів»], and a system configuration is a set of such streams
+$s_i = (r_i,\; k_i,\; n_i)$ — spatial resolution $r_i$, temporal stride $k_i$, and slot count $n_i$
+[UA-PASS: «потік контекстних токенів»: роздільна здатність, часовий крок, кількість слотів], and a system configuration is a set of such streams
 consumed by one shared attention backbone. In this vocabulary: a **flat** configuration is a
 single fine-resolution stride-1 stream; a **temporal (rate) hierarchy** has two or more tick
 rates at any resolution; a **resolution hierarchy** has two or more spatial resolutions; a

@@ -156,8 +156,9 @@ the abstraction cost). The temporal-capability boundary study at the second oper
 closed under its binding pre-committed rule with the trustworthy-memory boundary statement
 (conclusion 5) and three transferable methodology lessons (effective-loop span sizing; the
 autoencoder-reuse trap; evaluation power against plausible effect sizes). Memory-consumption
-measurements confirmed the constant-memory rollout capability (conclusion 4). The developed
-system outperforms the token-budget-matched flat control exactly in the memory-horizon regime,
+measurements confirmed the constant-memory rollout capability (conclusion 4). The measured two-level spatial
+package outperforms the token-budget-matched flat control exactly in the memory-horizon regime
+(the shape comparison across packagings is conclusion 7's separate, seed-gated statement),
 and the boundary conditions of every claim are stated explicitly. The published validations of
 the reversibility method ([A2]: 2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are
 retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-MNIST suite is
@@ -175,13 +176,7 @@ resolution queued]) — the findings consolidating into the empirical laws of §
 `docs/CLAIM_LEDGER.md`), whose conclusion is a conditional design rule rather than universal
 superiority: allocate context tokens to cover the task-relevant span with the least lossy family
 that achieves it; spend the remainder on resolution and recency; add depth only where the data
-contain a distinct slower factor. The generalization
-study of §4.6 extends this to the remaining suites, **[EXPECTED]** — the selected configuration
-outperforms persistence and the [A2] baselines in accuracy and in the duration of consistency
-retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialized deterministic
-regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
-baseline parity or an additional measured boundary condition]** — together with the **measured**
-token-budget frontier completion (hier-rich at 3,072 tokens loses to flat-long, −0.0131
+contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations, 3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Розділ 4 §§4.6.3–4.6.5 carry the pre-registered protocols; per the shell end-state rule no projected result is claimed here).0131
 [−0.0201, −0.0069] at seed 0 and −0.0107 [−0.0163, −0.0058] at seed 1 — a two-seed inversion —
 at equal budget and training regime; flat-short at 512 beats hier-short,
 −0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the

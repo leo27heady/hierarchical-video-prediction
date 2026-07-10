@@ -39,7 +39,7 @@ STALE = [
      "512 is two-seed since R-E"),
     (r"was not re-imported into operating point A",
      "the temporal-only corner IS measured at point A by B2 (strided-flat)"),
-    (r"adds tokens, not parameters",
+    (r"adds? tokens, not parameters",
      "corrected to 'backbone-capacity neutral' (+1.4% per-level I/O disclosed) — review 2026-07-10"),
     (r"\[896, ?[≈~]?2,?0\d\d\)",
      "band upper edge is now the measured bracket (1792, 2432), not a point estimate "
