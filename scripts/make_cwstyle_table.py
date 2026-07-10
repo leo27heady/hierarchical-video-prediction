@@ -53,6 +53,17 @@ ARMS_META = {
     "flat-long":    (3072, 1, "-", "-", "diff", "B8x60k regime"),
     "hier-rich":    (3072, 2, 1, 2, "diff", "48c+36f, B8x60k regime"),
 }
+# compute-normalized reporting (reviewer-adopted): context tokens are the CLAIM axis; total DiT
+# sequence (ctx + target tokens) and measured step time / peak VRAM are DISCLOSED so "token
+# efficient" is never silently read as a compute claim. Targets: 320 tok (4 coarse + 4 fine
+# slots) unless the strided-slot rule reduces coarse slots or a top stream adds 16.
+TGT_TOKENS = {"hier-s2-min": 288, "hier-s2-min-reg": 288, "hier-s4-min": 272,
+              "hier3": 336, "hier3-reg": 336}
+MEASURED_COST = {  # arm -> (s/step at B16 bf16, peak GB) from chain logs; None -> not measured
+    "hier-s2-min": ("0.19–0.23", "3.8"), "strided-flat": ("0.37–0.42", "6.3"),
+    "hier3": ("0.41–0.48", "6.5"), "flat-c2": ("0.82–0.84", "11.8"),
+}
+
 # curves: which arms to draw (only those with npz present are drawn)
 CURVE_ARMS = ["flat-budget", "hier-long", "reg-flat", "reg-long", "hier3", "strided-flat",
               "flat-long", "hier-min", "hier-s2-min"]
@@ -111,8 +122,8 @@ def main():
         "Depth counts RESOLUTION levels; strided single-resolution arms are rate-depth 2",
         "(multi-rate, single-resolution — the clockwork/CW-VAE quadrant), marked in the notes.",
         "",
-        "| tokens | depth | t | s | head | arm | regime | ALL fg-MSE | sharp |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| tokens | seq | s/step | GB | depth | t | s | head | arm | regime | ALL fg-MSE | sharp |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     order = sorted(rows.keys(), key=lambda k: (ARMS_META[k[0]][0], ARMS_META[k[0]][1],
                                                str(ARMS_META[k[0]][4]), k[1]))
@@ -121,8 +132,10 @@ def main():
         v = rows[(arm, regime)]
         sharp = np.mean([s["sharp"] for s in v.values()])
         name = f"{arm}" + (f" — {note}" if note else "")
-        lines.append(f"| {tok} | {depth} | {tf} | {sf} | {head} | {name} | {regime} "
-                     f"| {fmt(v)} | {sharp:.4f} |")
+        seq = tok + TGT_TOKENS.get(arm, 320)
+        sstep, vram = MEASURED_COST.get(arm, ("—", "—"))
+        lines.append(f"| {tok} | {seq} | {sstep} | {vram} | {depth} | {tf} | {sf} | {head} "
+                     f"| {name} | {regime} | {fmt(v)} | {sharp:.4f} |")
     missing = [a for a in ARMS_META if not any(k[0] == a for k in rows)]
     if missing:
         lines += ["", f"Pending (no npz yet): {', '.join(sorted(missing))}."]

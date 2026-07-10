@@ -1482,6 +1482,24 @@ The results of this chapter have been published in [A4] (the mechanism, memory, 
 boundary studies) and [A2] (the receipt validations of §4.1.2) **[AUTHOR: bind to the final
 numbered publication list; add conference theses covering the experimental campaign if any]**.
 
+9. The chapter's findings consolidate into **empirical laws under stated scope** (single source
+   of truth: `docs/CLAIM_LEDGER.md`; a law is quoted only from a complete evidence row, always
+   with testbed, head, representation, and seed level): **(L1) span-threshold** — long-span
+   packaging wins only once its span covers the memory horizon while flat context cannot (edges
+   measured under the diffusion head; regression confirms the interior pair); **(L2)
+   saturation** — where flat full-resolution context covers the same span, the abstraction cost
+   can dominate (crossover measured in (1,792, 2,432) tokens); **(L3) family edge** — the band's
+   lower edge follows each family's token arithmetic (896 stride-1 two-seed; 512 stride-2 seed-0,
+   seed-1 queued), with a family-specific plateau level; **(L4) shape, resolving** — spatial
+   coarsening and temporal sparsification are not interchangeable (strided full-resolution
+   history beats the coarse packaging under the diffusion head at seed 0; seed-1 and the
+   regression twins pending — the head interaction is the open half; static-world scope binding);
+   **(L5) depth — hypothesis, not law** — a depth-plus-objective-allocation probe on single-scale
+   data (only the null branch measurable here); **(L6) trustworthy memory** — a span sufficient
+   for single-step retrieval can fail under self-fed rollout (§4.5). Разом ці закони складають
+   обмежену, фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу
+   [UA-PASS].
+
 ---
 
 ## Working notes — figure register of this chapter (not part of the chapter text)

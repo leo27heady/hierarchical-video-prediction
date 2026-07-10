@@ -146,6 +146,14 @@ ARMS = {
     "hier-s2-min-reg":  (24,  2,      "reg",  2, 0),
     "strided-flat-reg": (0,   6,      "reg",  1, 11),
     "hier3-reg":        (24,  9,      "reg",  1, 0, 48, 1),
+    # ---- PHASE C (pre-registered): standard-MMNIST LONG-horizon control column. Distinct arm
+    #      names are REQUIRED (ckpt/npz paths do not encode the dataset — reusing loopmom arm
+    #      names would resume loopmom checkpoints). Same 1152-tok configs as the headline pair;
+    #      zero-action conditioning (actions file of zeros, disclosed); WARM=48, T=348 test
+    #      clips -> 300-frame rollouts; identity/trajectory metrics via hvp_rev/phasec_eval.py
+    #      (pre-registered METRIC MANDATE).
+    "mmL-flat":         (0,   18,     "diff", 1, 0),
+    "mmL-hier":         (48,  6,      "diff", 1, 0),
 }
 
 

@@ -171,109 +171,27 @@ floors; optional SSIM calibration panel. Asset: `docs/figures/fig15_mmnist_contr
 
 ## 5.4 Author's 2D rotations — the [A2] testbed
 
-**Protocol.** Procedurally synthesized rotating polygonal shapes, 64×64, deterministic dynamics,
-time-to-predict as the controlled variable — the base test of the reversible-transformer method
-[A2]. [AUTHOR: carry the exact generator parameters, train/test sizes, and prediction horizons
-from the [A2] publication; the bridge must match them before any comparison row is quoted.]
-Import per the §5.2 template: fixed-seed frozen files; rotation rate mapped to the {−1, 0, +1}
-action channel where [A2]'s protocol conditions on it, zero-actions otherwise; fresh AE; arms
-rot2d-reg (regression, coarse+fine at the largest window the clip length affords — the selected
-best-of-1 recipe) and rot2d-diff (perceptual/coverage row); flat token-matched controls to keep
-the null interpretable. Scored at the [A2] horizons plus our per-frame persistency curve.
-Expected memory horizon: none (the object never leaves the frame) — the hierarchy factor is
-pre-registered as a null; the section tests the *recipe* on the dissertation's own base testbed.
-
-**Table 5.2 — 2D rotations (all model cells [EXPECTED]/[PENDING]; no measured values exist).**
-
-| row | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| rot2d-reg (selected recipe) | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| rot2d-diff | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| AE round-trip ceiling | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| persistence | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| [A2] reversible transformer (published) | [AUTHOR: insert from A2] | | | | |
-
-**Claims (dual-branch).** [EXPECTED] The selected configuration outperforms persistence and the
-[A2] reversible-transformer baseline in accuracy and long-horizon persistency on [A2]'s own
-testbed — the deterministic, fully-observed regime is exactly where the regression head's
-best-of-1 advantage (§4.2.2) applies, and the stochastic machinery costs nothing when the
-posterior is a point. [FALLBACK: if the [A2] baseline retains the accuracy edge on its home
-testbed, the claim reduces to: the generalist recipe *matches* the specialized reversible
-transformer within CI while adding the stochastic multi-hypothesis capability and the hierarchy
-interface — a compatibility result, and the dissertation arc ("article 1 proposed the machinery;
-this article measures where it pays") absorbs it without contradiction.] [EXPECTED] Competitive
-on SSIM/LPIPS with [A2] at a fraction of training compute (≈1–2 GPU-h per arm, §5.2).
-[FALLBACK: report the measured perceptual gap and attribute it via the AE-ceiling row —
-decoder floor vs dynamics — before any interpretation.]
+> **Removed from the article core (approved triage 2026-07-10):** this suite is
+> carried by the dissertation programme (Розділ 4 §4.6.x — strike-or-fill before the
+> defense); per the shell end-state rule, no projected content ships in the article.
+> Section number retained to keep cross-references stable; merge/renumber at venue
+> formatting.
 
 ## 5.5 3D polycube rotations
 
-**Protocol.** Procedurally generated volumetric objects (PyVista renders) with occlusion and
-non-uniform rotation — the second [A2] receipt dataset. [AUTHOR: carry exact generation
-parameters and result tables from A2.] Template as §5.2; arms poly-reg / poly-diff plus the
-flat-vs-hier pair. This is the one synthetic corpus with a *weak but real* memory horizon:
-self-occlusion cycles surface content out of view for a fraction of the rotation period, so a
-coarse history spanning a full period can in principle retrieve what the fine window has lost.
-The hardness label is approximable (faces hidden for ≥ k frames before re-appearance), weaker
-than testbed A's exact label — disclosed as such.
-
-**Table 5.3 — 3D polycubes (all model cells [EXPECTED]/[PENDING]).**
-
-| row | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| poly-reg (selected recipe) | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| poly-diff | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| poly-flat (token-matched control) | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| AE round-trip ceiling | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| persistence | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| [A2] reversible transformer (published) | [AUTHOR: insert from A2] | | | | |
-
-**Claims (dual-branch).** [EXPECTED] Outperforms persistence and the [A2] baseline in accuracy
-and long-horizon persistency; a small CI-clean hierarchy edge on occlusion-re-appearance frames
-if the occlusion period exceeds the fine window — the only plausible off-testbed hierarchy win
-in this chapter, and it would directly support the memory-horizon thesis on an [A2] dataset.
-[FALLBACK: a hierarchy null here is the pre-registered outcome whenever the occlusion period
-sits inside the fine window (the §5.3 boundary condition again) — report the measured occlusion
-period alongside the null so the prediction is checkable either way.] [FALLBACK for the accuracy
-claim: as §5.4.]
+> **Removed from the article core (approved triage 2026-07-10):** this suite is
+> carried by the dissertation programme (Розділ 4 §4.6.x — strike-or-fill before the
+> defense); per the shell end-state rule, no projected content ships in the article.
+> Section number retained to keep cross-references stable; merge/renumber at venue
+> formatting.
 
 ## 5.6 MMNIST-CIFAR
 
-**Protocol.** OpenSTL's harder Moving-MNIST variant: two digits over CIFAR natural-image
-backgrounds, 10→10, 64×64 RGB. Template as §5.2 with a 3-channel AE variant (fresh
-`hier_ae_mmnist_cifar`); arms mmc-reg / mmc-hier / mmc-flat; canonical OpenSTL test protocol and
-metric convention. No memory horizon (nothing exits the frame; the background is static per
-clip) → hierarchy pre-registered null, extending the §5.3 negative control to textured
-backgrounds. The textured background makes this the most LPIPS-relevant OpenSTL cell — and also
-removes the 93%-black-background degeneracy that makes aggregate MMNIST metrics reward mean
-prediction, so the leaderboard gap is expected to *compress* relative to §5.3 without vanishing.
-
-**Table 5.4 — MMNIST-CIFAR (model cells [EXPECTED]/[PENDING]; leaderboard rows locally
-verified).**
-
-| row | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| mmc-reg (selected recipe) | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| mmc-hier (diff) | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| AE round-trip ceiling | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| persistence | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| ConvLSTM-S (OpenSTL, 200 ep) | 73.31 | 338.56 | 0.9204 | 23.09 | — |
-| PredRNN (OpenSTL, 200 ep) | 50.09 | 225.04 | 0.9499 | 24.90 | — |
-| PredRNN++ (OpenSTL, 200 ep) | 44.19 | 198.27 | 0.9567 | 25.60 | — |
-| SimVP+gSTA-S (OpenSTL, 200 ep) | 51.13 | 185.13 | 0.9512 | 24.93 | — |
-| TAU (OpenSTL, 200 ep) | 48.17 | 177.35 | 0.9539 | 25.21 | — |
-| [A2] (published) | [AUTHOR: insert from A2] | | | | |
-
-**Claims (dual-branch).** [EXPECTED] Beats persistence on every metric and the [A2] baseline on
-accuracy and persistency; competitive on LPIPS with the deterministic leaderboard regressors —
-the diffusion head's committed textures against regressors' known blur on natural background is
-the realistic best case — at a fraction of training compute. [FALLBACK: if LPIPS parity fails,
-the retained claim is the persistence-relative LPIPS halving (measured precedent §5.3) plus the
-AE-ceiling decomposition; aggregate MSE/SSIM are expected mid-to-back of the leaderboard and are
-reported without competitiveness claims per the §5.2 standing rule.] [EXPECTED] mmc-hier ≈
-mmc-flat (null) — the negative control replicates on textured backgrounds. [FALLBACK: any
-CI-clean hier-vs-flat separation here would *contradict* the memory-horizon account and must be
-reported as an anomaly with a mechanism hunt, not quietly celebrated.]
+> **Removed from the article core (approved triage 2026-07-10):** this suite is
+> carried by the dissertation programme (Розділ 4 §4.6.x — strike-or-fill before the
+> defense); per the shell end-state rule, no projected content ships in the article.
+> Section number retained to keep cross-references stable; merge/renumber at venue
+> formatting.
 
 ## 5.7 TaxiBJ — real data, 32×32×2 — MEASURED (2026-07-07)
 
@@ -335,65 +253,33 @@ upsample-equivalent build; SSIM deficit stated.
 
 ## 5.8 KTH-64 — optional stretch
 
-**Protocol.** KTH Action, grayscale real video, 10→20 prediction. Disclosure up front: the
-OpenSTL leaderboard runs this benchmark at 128×128 (`dataloader_kth.py`, in_shape
-[10, 1, 128, 128]; verified locally), while our stack is built at 64×64 — the KTH-64 variant is
-therefore **not directly comparable** to the leaderboard rows on MSE/MAE (pixel-sum scales with
-resolution) and only loosely on SSIM/LPIPS; the rows below are quoted for orientation only and
-so marked. 20 predicted frames = 5 AR window steps — the deepest rollout in this chapter, and
-the only open benchmark where the §4.3 persistency machinery (per-horizon curves) has room to
-show. Weak memory horizon exists (actors exit and re-enter the frame in walking/jogging/running
-clips) but is uncontrolled and unlabeled — no hierarchy claim is staked on it.
-
-**Table 5.6 — KTH (model cells [EXPECTED]/[PENDING]; leaderboard rows at 128×128, orientation
-only, locally verified 100-epoch OpenSTL retraining).**
-
-| row | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| kth64-reg | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| kth64-diff | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] | [EXPECTED] |
-| AE round-trip ceiling (64×64) | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| persistence (64×64) | [PENDING] | [PENDING] | [PENDING] | [PENDING] | [PENDING] |
-| ConvLSTM-S (OpenSTL 128², 100 ep — not comparable) | 47.65 | 445.5 | 0.8977 | 26.99 | 0.26686 |
-| PredRNN++ (OpenSTL 128², 100 ep — not comparable) | 39.84 | 370.4 | 0.9124 | 28.13 | 0.19871 |
-| MIM (OpenSTL 128², 100 ep — not comparable) | 40.73 | 380.8 | 0.9025 | 27.78 | 0.18808 |
-| SimVP+gSTA-S (OpenSTL 128², 100 ep — not comparable) | 45.02 | 417.8 | 0.9049 | 27.04 | 0.25240 |
-| [A2] (published) | [AUTHOR: insert from A2 — KTH is an [A2] receipt per decision Q4; note A2's resolution/protocol] | | | | |
-
-**Claims (dual-branch).** [EXPECTED] Beats persistence on every metric with bounded per-horizon
-error growth over 20 frames; competitive on LPIPS in *relative* terms — the leaderboard's
-deterministic regressors sit at LPIPS 0.19–0.27 at 128² and blur is their known long-horizon
-failure mode, while the diffusion head commits (the §5.3 persistence-halving precedent) — at a
-fraction of training compute. [FALLBACK: report measured LPIPS with the resolution caveat and
-no cross-resolution comparison; if the 5-window rollout degrades (real-video drift), the
-per-horizon curve is reported as the finding — this is the stretch cell and is allowed to fail
-informatively.] Optional: this cell is explicitly droppable without weakening the chapter
-(priority order: 5.4 → 5.7 → 5.5 → 5.6 → 5.8).
+> **Removed from the article core (approved triage 2026-07-10):** this suite is
+> carried by the dissertation programme (Розділ 4 §4.6.x — strike-or-fill before the
+> defense); per the shell end-state rule, no projected content ships in the article.
+> Section number retained to keep cross-references stable; merge/renumber at venue
+> formatting.
 
 ## 5.9 The cross-dataset claim, in dual-branch form
 
-Main text, written for the realistic best case: **[EXPECTED] Across the corpus, the selected
-configuration outperforms persistence and the [A2] reversible-transformer baselines in accuracy
-and long-horizon persistency, and is competitive on perceptual metrics (SSIM/LPIPS) with
-specialized deterministic regressors at a fraction of their training compute** (≈1 GPU-day per
-dataset, §5.2, vs 200-epoch per-benchmark specialist training) — while the hierarchy factor
-itself behaves exactly as the memory-horizon thesis predicts: a two-seed CI-clean win where the
-horizon exists (testbed A), a measured null where it does not (Moving MNIST, §5.3), and
-pre-registered nulls on every other horizon-free benchmark. [FALLBACK, per clause: if an [A2]
-baseline wins its home testbed, the accuracy claim narrows to "matches within CI while adding
-stochastic prediction and the hierarchy interface"; if perceptual parity fails on any cell, the
-retained claim is the persistence-relative LPIPS improvement plus the AE-ceiling decomposition
-of where the loss lives; if a horizon-free benchmark shows a hier-vs-flat separation, it is
-reported as an anomaly against the thesis, not evidence for it.] Aggregate leaderboard MSE is
-conceded everywhere by design (§5.2 standing rule; measured: 180.91 vs 26.69 on MMNIST) — the
-generalist-vs-specialist trade is stated as the price of a single recipe that transfers, and the
-one place the recipe is *predicted* to beat any flat specialist arrangement — a genuine memory
-horizon at matched budget — is exactly the regime the purpose-built testbed measures (§4.3).
+> Retitled at the triage: **the article's external sections are measured boundary controls and a
+> competence anchor — never positive transfer.**
 
-[FIG ch5-2: one row per dataset — ours vs persistence vs leaderboard band (where comparable) on
-MSE-normalized-to-persistence and LPIPS; MMNIST row measured, others [PENDING]. Caption: the
-recipe's generalization profile — persistence beaten everywhere, perceptual competitiveness,
-aggregate-MSE concession disclosed.]
+Three measured statements close the article's external scope, each already stated in its own
+section and gathered here without projection. First, the **negative control**: on standard
+Moving MNIST — no off-screen re-entry, hence no memory horizon — flat ≈ hierarchical (§5.3,
+measured; the long-horizon extension is §5.3.1, [EXPECTED-PhaseC] with identity/trajectory
+metrics per the pre-registered mandate). Second, the **competence anchor**: the unchanged 22 M
+generalist stack lands inside the OpenSTL TaxiBJ leaderboard band on MAE/PSNR (§5.7, measured),
+answering "is this system a toy?" without claiming leaderboard superiority anywhere (§5.2
+standing rule; measured concession: 180.91 vs 26.69 aggregate MSE on MMNIST). Third, the
+**boundary observation**: on both horizon-free datasets the hierarchy factor behaves exactly as
+the memory-horizon account predicts — a null (§5.3) or economy-only (§5.7) — while the two-seed
+CI-clean win exists precisely where the horizon exists (testbed A, §4.3). **No positive-transfer
+claim is made**: demonstrating that the win band transfers to natural video requires a
+natural-video re-entry protocol with estimated hardness labels, which is future work (§8.5),
+not a pending table. The suites formerly projected here (2D rotations, polycubes, MMNIST-CIFAR,
+KTH) are carried by the dissertation programme (§§5.4–5.6, 5.8 stubs) under the strike-or-fill
+rule.
 
 ---
 

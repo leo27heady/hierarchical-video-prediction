@@ -9,27 +9,27 @@ Persistence floor ≈ 0.2552. EBT column: characterized negative at reachable sc
 Depth counts RESOLUTION levels; strided single-resolution arms are rate-depth 2
 (multi-rate, single-resolution — the clockwork/CW-VAE quadrant), marked in the notes.
 
-| tokens | depth | t | s | head | arm | regime | ALL fg-MSE | sharp |
-|---|---|---|---|---|---|---|---|---|
-| 480 | 2 | 1 | 2 | diff | hier-short — 6c+6f (span 6 < loop) | 30k | 0.2258 (0.2257–0.2260) | 0.0394 |
-| 512 | 1 | - | - | diff | flat-short | 30k | 0.2215 (0.2206–0.2224) | 0.0426 |
-| 512 | 2 | 2 | 2 | diff | hier-s2-min — 24c+2f @stride2 (span 48) [B1] | 30k | 0.1893 (1s) | 0.0697 |
-| 672 | 2 | 1 | 2 | diff | spat18 — 18c+6f (W18 factorial) | 30k | 0.2120 (1s) | 0.0498 |
-| 672 | 2 | 1 | 2 | reg | spat18-reg — 18c+6f | 30k | 0.2008 (1s) | 0.0480 |
-| 896 | 1 | - | - | diff | flat-min | 30k | 0.2104 (0.2102–0.2106) | 0.0515 |
-| 896 | 2 | 1 | 2 | diff | hier-min — 48c+2f | 30k | 0.1725 (0.1706–0.1744) | 0.0848 |
-| 1088 | 1 | 4* | - | diff | strided-flat — 11 hist@s4+6f, span 48 [B2; rate-depth 2] | 30k | 0.1652 (1s) | 0.0919 |
-| 1152 | 1 | - | - | diff | flat-budget | 30k | 0.2041 (0.2038–0.2044) | 0.0578 |
-| 1152 | 1 | - | - | diff | flat-budget | 60k | 0.2032 (1s) | 0.0592 |
-| 1152 | 1 | - | - | reg | reg-flat | 30k | 0.2009 (0.2004–0.2015) | 0.0514 |
-| 1152 | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 30k | 0.1769 (0.1690–0.1848) | 0.0804 |
-| 1152 | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 60k | 0.1666 (1s) | 0.0899 |
-| 1152 | 2 | 1 | 2 | reg | reg-long — 48c+6f | 30k | 0.1592 (0.1503–0.1682) | 0.0803 |
-| 1792 | 1 | - | - | diff | flat-c1 | 30k | 0.1876 (1s) | 0.0737 |
-| 1792 | 2 | 1 | 2 | diff | hier-c1 — 48c+16f | 30k | 0.1799 (1s) | 0.0779 |
-| 2432 | 1 | - | - | diff | flat-c2 | 30k | 0.1703 (1s) | 0.0893 |
-| 2432 | 2 | 1 | 2 | diff | hier-c2 — 48c+26f | 30k | 0.1820 (1s) | 0.0771 |
-| 3072 | 1 | - | - | diff | flat-long — B8x60k regime | B8x60k | 0.1572 (0.1564–0.1580) | 0.0993 |
-| 3072 | 2 | 1 | 2 | diff | hier-rich — 48c+36f, B8x60k regime | B8x60k | 0.1691 (0.1687–0.1695) | 0.0893 |
+| tokens | seq | s/step | GB | depth | t | s | head | arm | regime | ALL fg-MSE | sharp |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 480 | 800 | — | — | 2 | 1 | 2 | diff | hier-short — 6c+6f (span 6 < loop) | 30k | 0.2258 (0.2257–0.2260) | 0.0394 |
+| 512 | 832 | — | — | 1 | - | - | diff | flat-short | 30k | 0.2215 (0.2206–0.2224) | 0.0426 |
+| 512 | 800 | 0.19–0.23 | 3.8 | 2 | 2 | 2 | diff | hier-s2-min — 24c+2f @stride2 (span 48) [B1] | 30k | 0.1893 (1s) | 0.0697 |
+| 672 | 992 | — | — | 2 | 1 | 2 | diff | spat18 — 18c+6f (W18 factorial) | 30k | 0.2120 (1s) | 0.0498 |
+| 672 | 992 | — | — | 2 | 1 | 2 | reg | spat18-reg — 18c+6f | 30k | 0.2008 (1s) | 0.0480 |
+| 896 | 1216 | — | — | 1 | - | - | diff | flat-min | 30k | 0.2104 (0.2102–0.2106) | 0.0515 |
+| 896 | 1216 | — | — | 2 | 1 | 2 | diff | hier-min — 48c+2f | 30k | 0.1725 (0.1706–0.1744) | 0.0848 |
+| 1088 | 1408 | 0.37–0.42 | 6.3 | 1 | 4* | - | diff | strided-flat — 11 hist@s4+6f, span 48 [B2; rate-depth 2] | 30k | 0.1652 (1s) | 0.0919 |
+| 1152 | 1472 | — | — | 1 | - | - | diff | flat-budget | 30k | 0.2041 (0.2038–0.2044) | 0.0578 |
+| 1152 | 1472 | — | — | 1 | - | - | diff | flat-budget | 60k | 0.2032 (1s) | 0.0592 |
+| 1152 | 1472 | — | — | 1 | - | - | reg | reg-flat | 30k | 0.2009 (0.2004–0.2015) | 0.0514 |
+| 1152 | 1472 | — | — | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 30k | 0.1769 (0.1690–0.1848) | 0.0804 |
+| 1152 | 1472 | — | — | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 60k | 0.1666 (1s) | 0.0899 |
+| 1152 | 1472 | — | — | 2 | 1 | 2 | reg | reg-long — 48c+6f | 30k | 0.1592 (0.1503–0.1682) | 0.0803 |
+| 1792 | 2112 | — | — | 1 | - | - | diff | flat-c1 | 30k | 0.1876 (1s) | 0.0737 |
+| 1792 | 2112 | — | — | 2 | 1 | 2 | diff | hier-c1 — 48c+16f | 30k | 0.1799 (1s) | 0.0779 |
+| 2432 | 2752 | 0.82–0.84 | 11.8 | 1 | - | - | diff | flat-c2 | 30k | 0.1703 (1s) | 0.0893 |
+| 2432 | 2752 | — | — | 2 | 1 | 2 | diff | hier-c2 — 48c+26f | 30k | 0.1820 (1s) | 0.0771 |
+| 3072 | 3392 | — | — | 1 | - | - | diff | flat-long — B8x60k regime | B8x60k | 0.1572 (0.1564–0.1580) | 0.0993 |
+| 3072 | 3392 | — | — | 2 | 1 | 2 | diff | hier-rich — 48c+36f, B8x60k regime | B8x60k | 0.1691 (0.1687–0.1695) | 0.0893 |
 
 Pending (no npz yet): flat-320, flat-short-reg, hier-s2-min-reg, hier-s4-min, hier3, hier3-reg, strided-flat-reg.
