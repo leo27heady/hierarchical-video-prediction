@@ -201,7 +201,9 @@ the protocol definition and are stated here once:
    statement in this chapter is so scoped.
 
 4. **Pairing and replication conventions.** All arm-versus-arm comparisons share evaluation
-   clips, horizons, and sampling noise (common random numbers); "2 seeds" for the single-step
+   clips and horizons; sampling noise is common only when target tensor shapes match. Cross-shape
+   cells retain record pairing but not elementwise CRN (unbiased, with less variance reduction).
+   "2 seeds" for the single-step
    memory gate means two *training* seeds sharing one CRN evaluation set (by design, for exact
    pairing). At operating point B the evaluation adds the pre-registered
    **dt-since-last-visible** stratifier (per-record time since the target region was last in

@@ -138,9 +138,10 @@ the panels exposed.
 
 ## 2.6 Statistical protocol
 
-All arm-versus-arm comparisons are paired. Evaluation batches are drawn with fixed seeds so that
-every arm sees identical (clip, target) pairs, and stochastic samplers are reseeded per batch with
-common random numbers, so paired per-sample deltas are meaningful. Headline deltas are reported
+All arm-versus-arm comparisons use identical (clip, target, horizon) records. Stochastic samplers
+also use common random numbers when the compared target tensors have the same shape. Cross-shape
+comparisons such as B1/E-320 retain exact record pairing but cannot share elementwise sampler
+noise; this does not bias the delta, but it gives less variance reduction. Headline deltas are reported
 with 95% confidence intervals from a paired bootstrap over per-sample deltas (10,000 resamples,
 percentile intervals), computed within each hardness bin; evaluation pools are sized at ≈768
 samples so that the hard re-entry bin retains adequate power. Where a best-of-N statistic is
@@ -179,7 +180,7 @@ Table 2.1 summarises the testbed and protocol.
 | Error metric | fg-MSE, threshold 0.5 | decoded pixels; bg ≈ 0.18–0.41, sprite ≈ 0.99 |
 | Sharpness metric | per-image masked Laplacian energy | GT 0.4785; AE round-trip ceiling 0.2412; collapse < ≈0.08 |
 | Hardness axis | novel-fg vs 6-frame window (exact, from actions) | easy = 0; mid (0, 0.1]; hard > 0.1 |
-| Statistics | paired bootstrap 95% CIs, common random numbers | 10,000 resamples; ≈768-sample eval pools |
+| Statistics | paired bootstrap 95% CIs; CRN where target shapes match | 10,000 resamples; ≈768-sample eval pools |
 | Baselines | persistence fg-MSE 0.2367, fg-sharp 0.0515 | k = 4 offset |
 
 ## 2.8 Why aggregate pixel benchmarks are excluded

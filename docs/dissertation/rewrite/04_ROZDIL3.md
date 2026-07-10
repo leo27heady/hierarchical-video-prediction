@@ -960,7 +960,7 @@ mechanism study).
 | Sharpness metric | per-image masked Laplacian energy | GT 0.4785; AE round-trip ceiling 0.2412; collapse < ≈0.08 |
 | Hardness axis | $\nu_6$ — novel-fg vs 6-frame window, exact | easy $=0$; mid $(0, 0.1]$; hard $> 0.1$; eq. (3.18) |
 | Rollout | 48-frame GT warm-up; 38 steps × 4 frames | 152 generated frames/clip; 100 clips; horizons binned 1–8 / 9–24 / 25–60 / 61+ |
-| Statistics | paired bootstrap 95% CI, CRN | 10,000 resamples; ≈768-sample single-step pools; 15,200 rollout records/arm; 2 seeds on headline arms |
+| Statistics | paired bootstrap 95% CI; CRN for same target shapes | 10,000 resamples; ≈768-sample single-step pools; 15,200 rollout records/arm; 2 seeds on headline arms; cross-shape cells share records but not elementwise noise |
 | Floors / ceilings | persistence fg-MSE 0.2367 / fg-sharp 0.0515 | k = 4 offset; identical pipeline for every arm |
 
 Scope and limitations of the instrument are stated plainly, as required of a measurement

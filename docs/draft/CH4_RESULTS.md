@@ -35,8 +35,9 @@ backbone and token layout and replace the denoising head with direct latent pred
 
 **Rollout protocol (operating point A).** Every rollout number in this chapter is measured over
 **152 autoregressive frames after a 48-frame ground-truth warmup** (38 scheduler steps × 4
-frames), best-of-1, on 100 held-out test clips with common random numbers across arms, paired
-per-frame fg-MSE on decoded pixels under the GT foreground mask.
+frames), best-of-1, on 100 held-out test clips with identical clip/horizon records across arms
+and common sampler noise where target tensor shapes match, using paired per-frame fg-MSE on
+decoded pixels under the GT foreground mask.
 
 **Statistics.** All CIs quoted in this chapter are 95% paired **clip-level cluster bootstrap**
 intervals. This is not optional hygiene: rollout records are 100 clips × 152 consecutive frames
