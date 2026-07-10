@@ -25,6 +25,7 @@ Depth counts RESOLUTION levels; strided single-resolution arms are rate-depth 2
 | 1152 | 1472 | — | — | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 30k | 0.1769 (0.1690–0.1848) | 0.0804 |
 | 1152 | 1472 | — | — | 2 | 1 | 2 | diff | hier-long — 48c+6f (headline) | 60k | 0.1666 (1s) | 0.0899 |
 | 1152 | 1472 | — | — | 2 | 1 | 2 | reg | reg-long — 48c+6f | 30k | 0.1592 (0.1503–0.1682) | 0.0803 |
+| 1152 | 1488 | 0.41–0.48 | 6.5 | 3 | 1 | 2 | diff | hier3 — 48t+24c+9f (2x2/4x4/8x8) [B3] | 30k | 0.2044 (1s) | 0.0564 |
 | 1792 | 2112 | — | — | 1 | - | - | diff | flat-c1 | 30k | 0.1876 (1s) | 0.0737 |
 | 1792 | 2112 | — | — | 2 | 1 | 2 | diff | hier-c1 — 48c+16f | 30k | 0.1799 (1s) | 0.0779 |
 | 2432 | 2752 | 0.82–0.84 | 11.8 | 1 | - | - | diff | flat-c2 | 30k | 0.1703 (1s) | 0.0893 |
@@ -32,4 +33,4 @@ Depth counts RESOLUTION levels; strided single-resolution arms are rate-depth 2
 | 3072 | 3392 | — | — | 1 | - | - | diff | flat-long — B8x60k regime | B8x60k | 0.1572 (0.1564–0.1580) | 0.0993 |
 | 3072 | 3392 | — | — | 2 | 1 | 2 | diff | hier-rich — 48c+36f, B8x60k regime | B8x60k | 0.1691 (0.1687–0.1695) | 0.0893 |
 
-Pending (no npz yet): flat-320, flat-short-reg, hier-s2-min-reg, hier-s4-min, hier3, hier3-reg, strided-flat-reg.
+Pending (no npz yet): flat-320, flat-short-reg, hier-s2-min-reg, hier-s4-min, hier3-reg, strided-flat-reg.

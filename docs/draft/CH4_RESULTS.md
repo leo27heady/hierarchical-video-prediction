@@ -593,11 +593,18 @@ The Clockwork VAE paper attributes content to levels by letting an upper level f
 while lower levels see the context (their §5.1). Our per-level-decodable latents allow a sharper
 causal version: rerun the full 152-frame rollout of a *trained* arm with one context stream
 **blinded** (zeroed in standardized latent space — the channel-mean neutral input) at every step,
-and read which error bins collapse. [EXPECTED: blinding the coarse stream of hier-long collapses
-specifically the dt ≤ 48 retrieval bins — ALL rising toward the flat-budget level ≈0.20+ — while
-blinding the fine stream costs mainly h1–8 detail and sharpness, leaving long-horizon retrieval
-largely intact. That double dissociation is the mechanism claim of §4.3 made causal at the level
-of streams.] Report-only; no claim gates on it. One caveat is binding on interpretation: a zeroed
+and read which error bins collapse. **Measured (2026-07-10): asymmetric essentiality, with the expectation half right.**
+Blinding the coarse stream shows the predicted retrieval signature cleanly — the cost
+concentrates on the hard re-entry bins (+0.073 at h25–60 HARD vs +0.022 at h1–8) and ALL rises
+past the flat-budget level (0.2236 vs 0.2038): the coarse stream is where the memory advantage
+lives. Blinding the fine stream, however, refutes the "mainly recency detail" expectation:
+the model collapses everywhere (h1–8 five-fold worse at 0.2427; sharpness 0.0086, far below the
+0.08 structureless threshold; ALL 0.2695, below persistence) — without recent fine frames the
+model cannot localize or render current content at all, a brittleness-dominated read exactly as
+the binding OOD caveat anticipated. The most useful probe is the third: removing hier3's
+*entire* top stream costs just +0.0035 ALL — independent, convergent evidence for §4.4.5's
+mechanism reading that the 2×2 stream carries almost no usable information while its *presence*
+cost −0.0196 through loss dilution and optimization load. Report-only; no claim gates on it. One caveat is binding on interpretation: a zeroed
 stream is an out-of-distribution input (never seen in training), so the collapse magnitude is a
 *lower bound on the stream's contribution confounded with an upper bound on OOD brittleness* —
 the probe licenses "stream removed → capability lost," not a precise information accounting.

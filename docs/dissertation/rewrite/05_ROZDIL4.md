@@ -923,10 +923,12 @@ measured statement is «мультитемпова форма перемагає
 *(Level-content attribution by stream blinding — the causal analog of CW-VAE's §5.1 probe.)*
 
 Rerun the trained arm's full 152-frame rollout with one context stream **blinded** (zeroed in
-standardized latent space) at every step. [EXPECTED: blinding the coarse stream collapses
-specifically the dt ≤ 48 retrieval bins (ALL → ≈0.20+, the flat-budget level); blinding the fine
-stream costs h 1–8 detail and sharpness, leaving long-horizon retrieval largely intact — the §4.3
-mechanism made causal at stream level.] Report-only. Binding interpretation caveat (per the
+standardized latent space) at every step. **MEASURED (2026-07-10): asymmetric essentiality.** Blind-coarse = the predicted
+retrieval signature (hard re-entry +0.073 vs h1–8 +0.022; ALL 0.2236 past flat-budget) ✓;
+blind-fine = renderer collapse, expectation partially wrong (h1–8 0.2427; sharp 0.0086 «нижче
+порога структурності»; ALL below persistence — brittleness-dominated per the binding OOD
+caveat); blind-top (hier3) = +0.0035 ALL only — the top stream carries almost nothing usable,
+independent convergent evidence for the §4.4.5 mechanism reading [UA-PASS]. Report-only. Binding interpretation caveat (per the
 pre-registered amendment): a zeroed stream is an out-of-distribution input, so the collapse
 magnitude bounds the stream's contribution from below confounded with OOD brittleness from
 above — the probe licenses «потік вилучено → здатність втрачено», not a precise information

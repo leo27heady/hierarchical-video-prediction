@@ -639,3 +639,27 @@ hier3 (48 top(2×2) + 24c + 9f = 1,152 tok; factor-2 pyramid), seed 0:
   capacity-dump history). Disposition per the approved triage: **appendix-grade** (not
   weight-matched-clean); the multi-timescale testbed (L10) remains where a depth LAW could be
   established.
+
+### A2 BLINDING PROBES MEASURED (2026-07-10 23:43; A2_DONE; report-only per pre-registration)
+
+| series | ALL | h1–8 | h25–60 HARD (retrieval) | sharp |
+|---|---|---|---|---|
+| hier-long unblinded | 0.1848 | 0.0500 | 0.2209 | 0.0729 |
+| blind-COARSE | 0.2236 | 0.0716 | **0.2934** | 0.0390 |
+| blind-FINE | 0.2695 | **0.2427** | 0.3273 | **0.0086** |
+| hier3 unblinded | 0.2044 | 0.0580 | 0.2545 | 0.0564 |
+| hier3 blind-TOP | 0.2079 | 0.0603 | 0.2610 | 0.0528 |
+
+**Reading (OOD caveat binding, as pre-registered):** asymmetric essentiality.
+- **Coarse → retrieval-specific**, the predicted signature: blinding it costs +0.073 on the hard
+  re-entry bins vs +0.022 at h1–8, and pushes ALL past flat-budget (0.2038) — the coarse stream
+  is where the memory advantage lives. The clean half of the expected double dissociation ✓.
+- **Fine → renderer-critical, OOD-dominated**: expectation PARTIALLY WRONG (predicted "mainly
+  h1–8 detail cost"); measured collapse everywhere (h1–8 5× worse; sharpness 0.0086, deep below
+  the 0.08 structureless threshold; ALL below persistence). Without recent fine frames the model
+  cannot localize/render current content at all — a brittleness read, not graded attribution.
+- **Top → nearly information-free**: removing hier3's ENTIRE top stream costs +0.0035 ALL —
+  convergent, independent evidence for B3's mechanism reading (the 2×2 stream carries almost
+  nothing usable while its presence cost −0.0196 through dilution/optimization; the stream is
+  worse than useless at this design point).
+Assets: `docs/figures/fig14_level_blinding.png` (5 series); npz `*_blind-{coarse,fine,top}.npz`.
