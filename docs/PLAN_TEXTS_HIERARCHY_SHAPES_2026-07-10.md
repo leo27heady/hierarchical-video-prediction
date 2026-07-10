@@ -264,3 +264,44 @@ tracker; a separate tracker would desync predictions from their insertion points
 **EBT (§3.5) + reversibility (CH6): marked non-core for the article's central claim now**
 (status banners added); retained in the working manuscript for the dissertation's [A4] mapping;
 appendix-vs-separate-paper decided at venue constraints.
+
+## 10. THE PACKAGING REFRAME (external-review proposal, assessed 2026-07-10 late; sequencing set)
+
+**Adopted in principle:** the dissertation's central claim becomes "long-horizon prediction is a
+constrained CONTEXT-PACKAGING problem; hierarchy = a family of rate/resolution packagings whose
+best form is data- and head-dependent" — completing the 2026-07-07 novelty-item-1 re-scope.
+The FIVE LAWS enumeration (span threshold / saturation / shape / depth / trustworthy-memory) is
+adopted as the structure of CH8 §8.2, ROZDIL4 §4.8, and VYSNOVKY result 7 — see
+`docs/CLAIM_LEDGER.md` (created; binding rule: headlines only from complete rows).
+
+**Sequencing (binding):** the heavy rewording pass (VSTUP/front-matter/ROZDIL3-title/result 5/7
++ article CH1/CH8) runs ONCE, AFTER S1-a + S1-b + reg twins land (~+2 days) — those runs
+determine the wording strength ("can be better under some heads" vs "is better under the
+diffusion head"). Cheap unambiguous parts done now (ledger; wording audit — all frontier claims
+already say "matched context-token budget"; "matched compute" occurs only in the mechanism study
+where it is literally true, keep).
+
+**Author/supervisor gates (drafted both ways when the pass runs, per house discipline):**
+- ROZDIL3 title: «...із довготривалою пам'яттю грубого рівня» → proposal «...із довготривалим
+  багатопотоковим контекстом» (keeps the approved-topic word «ієрархічної» in the dissertation
+  title itself; chapter title change needs supervisor sign-off).
+- Article title: current "When Does Hierarchy Pay?" → proposal "When Does Hierarchical Context
+  Pay? Rate, Resolution, and Memory Span in Long-Horizon Video Prediction" (author decision at
+  venue time; both defensible).
+- Organizing sentence (s1-gated, wording per reviewer's own correction): "At a matched
+  **context-token budget**, span is the scarce resource; temporal subsampling can outperform
+  spatial abstraction; the useful hierarchy shape depends on representation and prediction head."
+
+**New-experiment decisions (recommendations, GPU-costed):**
+- 3rd seed for the article-critical 1152 trio (hier-long, flat-budget, strided-flat; diff) —
+  RECOMMEND APPROVE (~9 GPU-h) if the article headline rests on their seed-means; decide after
+  reg twins.
+- Phase C metric upgrade (digit-identity classifier retention, trajectory/count metrics beyond
+  fg-MSE) — stretch goal; 300-frame protocol stays, 1000-frame optional.
+- Representation-sensitivity test (spatial-vs-strided under a 2nd AE) — DEFERRED DECISION until
+  reg twins land (if reg flips the ordering, head-dependence reduces urgency; if reg also favors
+  strided, this becomes the key scope test for L4).
+- Rate-stress suite + multi-timescale depth testbed — FUTURE CLAIM (next paper), both reviews
+  agree; not a repair of the current thesis.
+- Compute-normalized reporting: add seq-length / s/step / peak-VRAM columns to CWSTYLE_TABLE
+  (data in logs/wandb); one wall-clock-matched control comparison optional.
