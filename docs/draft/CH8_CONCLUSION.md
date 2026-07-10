@@ -9,7 +9,7 @@
 **The coarse level of a hierarchical latent video model earns its token budget exactly when the
 prediction horizon exceeds what the affordable flat context can carry — and the budgets at which
 this happens are predictable from geometry.** On a testbed whose memory demand is an exact label,
-the hierarchy-versus-flat frontier, measured at four matched budgets, has the shape the mechanism
+the hierarchy-versus-flat frontier, measured at six matched budgets, has the shape the mechanism
 account predicts: flat wins below the span threshold (≈500 tokens: no hierarchical configuration
 can cover the ~48-frame loop; −0.0036 [−0.0063, −0.0010]); the hierarchy wins the band from the
 geometric threshold — 48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is
