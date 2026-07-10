@@ -307,7 +307,13 @@ context-token budget can be packaged along at least four axes: **spatial abstrac
 every frame, at lower resolution), **temporal abstraction** (keep full resolution, at a coarser
 tick), **depth** (how many nested levels of either kind), and **allocation** (how the budget is
 split between long-span and recent-detail streams). Each shape buys memory span at a different
-token price and pays a different information cost. This section therefore asks not "does
+token price and pays a different information cost. Throughout, **"hierarchy" means multi-RATE
+and/or multi-RESOLUTION context**, and the two axes are independent: a configuration can be
+hierarchical in tick rate while single-resolution (the strided control of §4.4.3 — a two-rate
+temporal hierarchy in the clockwork sense [REF: Koutník et al. 2014; CW-VAE], whose levels are
+likewise temporal, not spatial) or hierarchical in resolution while single-rate (the dense
+coarse arms). Where the two depth counts differ, the taxonomy reports both (resolution-depth /
+rate-depth). This section therefore asks not "does
 hierarchy help?" but **which shape of hierarchy pays, where, and why** — with the same instrument
 throughout: matched token budgets, exact re-entry labels, paired per-frame comparisons. Three
 cells of the shape grid were measured in earlier sections — the allocation frontier (§4.3.6), the
@@ -321,7 +327,7 @@ benchmark [REF: CW-VAE] (whose format we adopt and whose controls we tighten —
 | axis | shape | buys | costs | evidence |
 |---|---|---|---|---|
 | spatial | coarse 4×4 stream, stride 1 | 4× span/token; per-level decodability; dense temporal coverage | abstraction cost −0.008 (diff) / ≈0 (reg) at fixed window | §4.4.1 measured |
-| temporal | full-res history, stride 4 | 4× span/token; full detail at anchors — **best 1152-class packaging measured (diff head)** | inter-anchor blindness; no cheap decodable level | §4.4.3 measured: **0.1652, beats hier-long +0.0197** (s0; s1 queued) |
+| temporal | full-res history, stride 4 (resolution-depth 1, **rate-depth 2** — the clockwork quadrant) | 4× span/token; full detail at anchors — **best 1152-class packaging measured (diff head)** | inter-anchor blindness; no cheap decodable level | §4.4.3 measured: **0.1652, beats hier-long +0.0197** (s0; s1 queued) |
 | spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above + a ≈+0.017 family plateau offset | §4.4.2 measured: **+0.0330 win @512 tok** (s0; s1 queued) |
 | depth | + 2×2 top stream | a third scale to own | dead weight below the data's scale count; slower fixed-step convergence | §4.4.5 [EXPECTED: null vs 2-stage]; §4.5; per-pixel gate null (§4.4.1) |
 | allocation | span-first sizing | the win band + its measured edges | — | §4.3.6 measured |
@@ -444,6 +450,21 @@ softening is applied at seed 0 per the amendment; if seed 1 confirms, the coarse
 narrows to per-level decodability, dense temporal coverage, and the regression head — where
 §4.4.1 measured abstraction as free, exactly what the pre-registered regression twin
 (strided-flat-reg) now tests directly.
+
+Three scope qualifiers are binding on this reading. **First, the world is static by
+construction** (§2.9): nothing changes in world coordinates between stride-4 anchors, so
+temporal subsampling loses only viewport-trajectory detail (inferable from frame indices and
+content) — the testbed is maximally kind to the strided family, and on data with genuine
+dynamics between anchors the stride would alias state changes that a dense stream tracks. The
+multi-scale arena of §8.5 is where that cost becomes measurable; this result is "at this
+operating point," not a general law. **Second,** the abstraction cost is a property of *this*
+autoencoder's 4×4 layout code; a richer coarse code is an unexplored degree of freedom (the
+frozen-AE discipline that makes all arms comparable also fixes this choice). **Third — the
+framing that keeps the taxonomy honest:** the winning control is itself a hierarchy in the
+*rate* sense (two tick rates, one resolution — precisely the clockwork/CW-VAE quadrant, since
+CW-VAE's own levels are temporal, not spatial). The measured statement is therefore "the
+multi-rate shape beats the multi-resolution shape at this operating point under the diffusion
+head" — not "hierarchy is unnecessary."
 
 ### 4.4.4 What each level stores: blinding probes
 

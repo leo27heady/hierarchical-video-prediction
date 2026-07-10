@@ -781,8 +781,13 @@ AUTHORITATIVE source for every number and both pre-registered branches.)*
 **spatial abstraction** (every frame, at lower resolution), **temporal abstraction** (full
 resolution, at a coarser tick), **depth** (how many nested levels), and **allocation** (the split
 between long-span and recent-detail streams). Each shape buys memory span at a different token
-price and pays a different information cost; the systems-analysis question is therefore not «чи
-допомагає ієрархія», а **яка форма ієрархії окуповується, де і чому**. Three cells of this grid
+price and pays a different information cost. Throughout, «ієрархія» means multi-RATE and/or
+multi-RESOLUTION context — independent axes: a configuration can be hierarchical in tick rate
+while single-resolution (the §4.4.3 strided control — a two-rate temporal hierarchy in the
+clockwork/CW-VAE sense, whose levels are likewise temporal) or hierarchical in resolution while
+single-rate (dense coarse arms); where the two depth counts differ, both are reported
+(глибина-за-роздільністю / глибина-за-темпом [UA-PASS]). The systems-analysis question is
+therefore not «чи допомагає ієрархія», а **яка форма ієрархії окуповується, де і чому**. Three cells of this grid
 are measured in earlier sections (allocation — §4.3.6; the spatial factorial — §4.4.1 below; the
 slow-clock boundary — §4.5); the remaining cells (temporal family §4.4.2, span control §4.4.3,
 depth §4.4.5) follow the pre-registered program of `SPATIAL_FACTORIAL.md` (final block), and
@@ -796,7 +801,7 @@ masked metrics.
 | вісь | форма | купує | коштує | доказ |
 |---|---|---|---|---|
 | просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
-| часова | повнороздільна історія, крок 4 | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 (диф. ядро)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
+| часова | повнороздільна історія, крок 4 (глибина-за-роздільністю 1, **за-темпом 2** — квадрант clockwork) | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 (диф. ядро)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
 | просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище + сімейний зсув плато ≈+0.017 | §4.4.2 виміряно: **+0.0330 @512 ток.** (s0; s1 у черзі) |
 | глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
 | розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |
@@ -901,7 +906,15 @@ flat-budget by +0.0386 — at fewer tokens, winning the hard re-entry bins at ev
 margin ≈0.012; memory-arm spread ~0.016) → per the pre-registered amendment **seed-1 is REQUIRED
 and queued (S1-b)** before the positive claim escalates; the conservative claim softening is
 applied at s0. The coarse level's remaining defense: per-level decodability, dense coverage, and
-the regression head (strided-flat-reg twin queued).
+the regression head (strided-flat-reg twin queued). Three binding scope qualifiers (mirror of
+the article §4.4.3): (1) **static world** — nothing changes between stride-4 anchors, so the
+testbed is maximally kind to temporal subsampling; on data with inter-anchor dynamics the stride
+aliases what a dense stream tracks (the §8.5/§4.7 multi-scale arena measures that cost) — «за
+цієї робочої точки», not a general law; (2) the abstraction cost is a property of THIS AE's 4×4
+layout code (frozen-AE discipline fixes the choice); (3) the winning control is itself a
+hierarchy in the RATE sense (two tick rates, one resolution — the clockwork quadrant), so the
+measured statement is «мультитемпова форма перемагає мультироздільну за цієї робочої точки під
+дифузійним ядром», not «ієрархія не потрібна» [UA-PASS].
 
 ### 4.4.4 Що зберігає кожен рівень: зондування засліпленням
 

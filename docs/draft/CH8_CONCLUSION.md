@@ -9,9 +9,11 @@
 **The coarse level of a hierarchical latent video model earns its token budget exactly when the
 prediction horizon exceeds what the affordable flat context can carry — and the budgets at which
 this happens are predictable from geometry.** (The packaging is not unique: §4.4.3 measures a
-temporally-subsampled full-resolution packaging of the same span that matches or exceeds it at
-seed 0, seed-1 replication queued — the claim is about long-span context at matched budget, with
-the coarse level as its per-level-decodable form.) On a testbed whose memory demand is an exact label,
+temporally-subsampled full-resolution packaging of the same span — itself a two-rate temporal
+hierarchy in the clockwork sense — that matches or exceeds it at
+seed 0, seed-1 replication queued, on a static-world testbed maximally kind to temporal
+subsampling. The claim is about long-span context at matched budget, with
+the coarse level as its per-level-decodable, multi-resolution form.) On a testbed whose memory demand is an exact label,
 the hierarchy-versus-flat frontier, measured at six matched budgets, has the shape the mechanism
 account predicts: flat wins below the span threshold (≈500 tokens: no hierarchical configuration
 can cover the ~48-frame loop; −0.0036 [−0.0063, −0.0010]); the hierarchy wins the band from the

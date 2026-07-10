@@ -6,6 +6,8 @@ hierarchy); t/s = per-stage temporal/spatial downsampling factors. Regime disclo
 B16×30k unless noted; paired deltas + cluster CIs live in the compare logs, not here.
 Persistence floor ≈ 0.2552. EBT column: characterized negative at reachable scale
 (mean-collapse incl. the unchanged reference-repo control) — no rollout cells by design.
+Depth counts RESOLUTION levels; strided single-resolution arms are rate-depth 2
+(multi-rate, single-resolution — the clockwork/CW-VAE quadrant), marked in the notes.
 
 | tokens | depth | t | s | head | arm | regime | ALL fg-MSE | sharp |
 |---|---|---|---|---|---|---|---|---|
@@ -16,7 +18,7 @@ Persistence floor ≈ 0.2552. EBT column: characterized negative at reachable sc
 | 672 | 2 | 1 | 2 | reg | spat18-reg — 18c+6f | 30k | 0.2008 (1s) | 0.0480 |
 | 896 | 1 | - | - | diff | flat-min | 30k | 0.2104 (0.2102–0.2106) | 0.0515 |
 | 896 | 2 | 1 | 2 | diff | hier-min — 48c+2f | 30k | 0.1725 (0.1706–0.1744) | 0.0848 |
-| 1088 | 1 | 4* | - | diff | strided-flat — 11 hist@s4+6f, span 48 [B2] | 30k | 0.1652 (1s) | 0.0919 |
+| 1088 | 1 | 4* | - | diff | strided-flat — 11 hist@s4+6f, span 48 [B2; rate-depth 2] | 30k | 0.1652 (1s) | 0.0919 |
 | 1152 | 1 | - | - | diff | flat-budget | 30k | 0.2041 (0.2038–0.2044) | 0.0578 |
 | 1152 | 1 | - | - | diff | flat-budget | 60k | 0.2032 (1s) | 0.0592 |
 | 1152 | 1 | - | - | reg | reg-flat | 30k | 0.2009 (0.2004–0.2015) | 0.0514 |
