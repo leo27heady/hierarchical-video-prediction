@@ -875,7 +875,11 @@ dt 97–192 null) — «нижній край смуги рухається ра
 токен-арифметикою» [UA-PASS]. Honest refinements vs the pre-registered expectation: the effect
 is smaller than the stride-1 edge win (+0.0330 vs +0.0399/+0.0358) and the family sits ≈+0.017
 above the stride-1 plateau (сімейна вартість розріджених якорів) — each family carries its own
-plateau level. Seed-1 QUEUED per the binding rule before headline escalation. REQUIRED caption
+plateau level. Seed-1 QUEUED per the binding rule before headline escalation. Third family point
+pre-registered: stride-4 @ **320 tokens** [EXPECTED-E320: win → the edge law becomes a 3-point
+dose–response 896/512/320; ALT: the measured stride limit]. The head axis is crossed at all new
+cells via pre-registered regression twins [EXPECTED-REG: diffusion verdicts reproduce or enlarge
+under regression; a cross-head sign flip = headline-grade surprise, seed-1 gated]. REQUIRED caption
 note wherever the
 frontier is drawn: the 512-token stride-2 hier point and the 512-token stride-1 flat win are
 different families at the same budget, not a contradiction. **[FIG 4-13 — asset EXISTS:

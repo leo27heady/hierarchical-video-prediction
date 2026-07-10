@@ -486,3 +486,43 @@ hier-s2-min (24c@stride2 + 2f = 512 tok, span 48) vs flat-short (512 tok, s0):
   measured, not smoothed away.
 - Per the binding rule + amendment: CI-clean win → **seed-1 replication QUEUED** (flat-short s1
   npz exists) before any headline escalation; CH1/CH8 clauses stay gated until then.
+
+### REG TWINS + 320-TOKEN EDGE CELL (pre-registered 2026-07-10 evening, author-approved,
+### BEFORE any run; B2 mid-training, B3/blinding queued — this block launches AFTER S1-a)
+
+**Motivation (author):** complete the shape table along the axes originally requested — the
+head crossing at the new shape cells, and a third point on the edge-law dose–response.
+
+**Arms (standard B16×30k bf16, seed 0, loopmom; 6 training runs ≈ 13–16 GPU-h incl. evals —
+honest cost update vs the ~11 h quoted in chat: the symmetric-pairs rule requires TRAINING
+flat-short-reg and flat-320 as partners, not just the 4 named cells):**
+
+- **E-320 (edge law, third family):** `hier-s4-min` (12c@stride4 + 2f = **320 tok**, span 48 —
+  the cheapest loop-coverer of any family; one coarse slot per window, the proven d1 stride-4
+  rule) vs `flat-320` (5f = 320 tok exact). GO-gate oracle PASS required first (first stride-4
+  coarse ROLLOUT on loopmom). PRIMARY: hier-s4-min WINS (ALL CI>0) → the edge law becomes a
+  3-point dose–response (896 / 512 / 320, all at token-arithmetic predictions). Expected values:
+  hier-s4-min ALL ≈ 0.19–0.22 (family plateau offset GROWS with stride — s2 cost was ≈+0.017;
+  s4 anchors are 4× sparser), flat-320 ≈ 0.23–0.245 (5-frame window, extrapolating the flat
+  curve below flat-short 0.2224@8f), Δ ≈ +0.02..+0.05. ALTERNATIVE (null/loss): stride-4
+  inter-anchor aliasing (momentum reversals unresolvable within 4-frame gaps) breaks the family
+  — reported as the measured STRIDE LIMIT of the edge law, an equally sayable boundary.
+- **REG-SHAPE (head axis at the new cells):** `hier-s2-min-reg` vs `flat-short-reg` (TRAINED,
+  512 tok pair); `strided-flat-reg` (1088) vs reg-flat AND reg-long (both exist two-seed);
+  `hier3-reg` (1152) vs reg-flat AND reg-long. PRIMARY (from G-S1 "coarse ≈ free under reg" +
+  the reg-head H2 reversal): the diffusion-head shape verdicts REPRODUCE or ENLARGE under
+  regression — (i) hier-s2-min-reg beats flat-short-reg CI-clean; (ii) strided-flat-reg lands
+  within ~0.01 of reg-long and CI-clean above reg-flat; (iii) hier3-reg ≈ reg-long (null,
+  |Δ| < seed spread 0.018). Expected absolute values in the reg band (reg-long mean 0.1593,
+  reg-flat 0.2009). ALTERNATIVES mirror the diffusion-head branches cell-for-cell; a
+  head × shape INTERACTION (any verdict flipping sign across heads) is the headline-grade
+  surprise and triggers seed-1 on the flipped cell before any wording.
+
+**Rules (binding, inherited + amendments):** symmetric pairs (flat-short-reg and flat-320
+trained as partners; reg-flat/reg-long reused at both seeds); seed-means, never best-of-seeds;
+two-seed before claim escalation; the B2 seed-asymmetry amendment applies to strided-flat-reg
+verbatim; GO-gate before hier-s4-min; loss-dilution disclosure applies to hier3-reg verbatim;
+anything uncovered defaults to report-only.
+**Queue:** CWSTYLE_PHASE_B_ALL_DONE → S1-a (hier-s2-min s1) → **this block**
+(`scripts/run_cwstyle_regtwins.sh`) → Phase C → G-i/G-ii. S1-b (strided-flat s1) inserts before
+Phase C if its amendment condition fires.

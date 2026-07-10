@@ -131,6 +131,21 @@ ARMS = {
     "hier-s2-min":  (24,     2,       "diff", 2, 0),
     "strided-flat": (0,      6,       "diff", 1, 11),
     "hier3":        (24,     9,       "diff", 1, 0, 48, 1),
+    # ---- REG TWINS + 320-TOKEN EDGE CELL (pre-registered 2026-07-10 evening, author-approved;
+    #      SPATIAL_FACTORIAL.md addendum). Completes the shape table along the head axis at the
+    #      new cells and adds the third edge-law point:
+    #   E-320: hier-s4-min = 12c@stride4 + 2f = 12*16+2*64 = 320 tok (span 48, the cheapest
+    #      loop-coverer of any family) vs flat-320 = 5f = 320 tok exact match. Edge prediction
+    #      for the (k_t=4, k_s=2) family: 320. Stride-4 coarse rollout machinery = the proven
+    #      d1 path (n_tgt_c = WIN//4 = 1 slot, block-end anchor); GO-gate before training.
+    #   REG twins: the same three shape cells under the regression head (the better rollout
+    #      head, G-S1 "coarse ~free under reg"); flat-short-reg is TRAINED as the 512-tok reg
+    #      partner (symmetric-pairs rule) — reg-flat/reg-long (1152, two-seed) are the others.
+    "hier-s4-min":      (12,  2,      "diff", 4, 0),
+    "flat-320":         (0,   5,      "diff", 1, 0),
+    "hier-s2-min-reg":  (24,  2,      "reg",  2, 0),
+    "strided-flat-reg": (0,   6,      "reg",  1, 11),
+    "hier3-reg":        (24,  9,      "reg",  1, 0, 48, 1),
 }
 
 

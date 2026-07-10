@@ -220,6 +220,8 @@ CH1 abstract, CH4 §4.3.6, CH8 §8.1, Розділ 4 §4.3.6, VYSNOVKY, fig9/fig
 | blind-coarse (hier-long) | ALL → ≈0.20+; dt≤48 HARD collapse | ⟨npz⟩ | ⟨⟩ |
 | blind-fine (hier-long) | h1–8 + sharpness cost; long-h mild | ⟨npz⟩ | ⟨⟩ |
 | Phase C MMNIST pair | hier ≈ flat, |Δ| ≤ 0.005 every bin | ⟨npz⟩ | ⟨⟩ |
+| E-320 hier-s4-min @320 | hier 0.19–0.22 vs flat-320 0.23–0.245; Δ +0.02..+0.05 CI>0 → 3-pt edge law | ⟨npz⟩ | ⟨⟩ |
+| REG twins ×3 (512/1088/1152) | diffusion shape verdicts reproduce/enlarge under reg; no cross-head sign flips | ⟨npz⟩ | ⟨⟩ |
 
 Escalation rules (unchanged from the pre-registration): CI-clean surprising sign → seed-1 before
 any text lands; Phase-C hier win → stop-and-examine, no reporting.

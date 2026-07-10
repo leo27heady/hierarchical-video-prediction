@@ -393,7 +393,12 @@ easy +0.0077 to h 25–60 HARD +0.0640 [+0.0450, +0.0827]), with the textbook sp
 (dt ≤ 48 HARD +0.0643 [+0.0496, +0.0791] WIN; dt 49–96 HARD +0.0228 WIN; dt 97–192 null —
 beyond the 48-frame span). **The lower edge moved from 896 to 512 when the coarse tick halved,
 landing at its token-arithmetic prediction both times: the band's edges are arithmetic, not
-accidents of one configuration.** Two honest refinements, reported against the pre-registered
+accidents of one configuration.** A third family point is pre-registered: the stride-4 coarse
+family prices the loop at **320 tokens** (12·16 + 2·64). [EXPECTED-E320: hier-s4-min beats
+flat-320 (ALL CI > 0; expected hier ≈ 0.19–0.22 with a larger family offset — anchors 4×
+sparser — vs flat-320 ≈ 0.23–0.245 at a 5-frame window), making the edge law a three-point
+dose–response (896/512/320); ALTERNATIVE: stride-4 inter-anchor aliasing breaks the family —
+reported as the measured stride limit of the law.] Two honest refinements, reported against the pre-registered
 expectation rather than smoothed away: the effect is smaller than the stride-1 edge win
 (+0.0330 vs +0.0399/+0.0358), and the arm sits ≈+0.017 *above* the stride-1 plateau
 (0.1893 vs hier-min's seed-mean 0.1725) — each family carries its **own plateau level**, the
@@ -465,6 +470,13 @@ and carries no rollout cells by design.
 **Table 4.6 — the assembled shape grid (auto-generated: `docs/CWSTYLE_TABLE.md`; regenerate via
 `scripts/make_cwstyle_table.py` as cells land).** [PLACEHOLDER: paste the generated table at
 integration; currently 17 measured rows + B1/B2/B3 pending.]
+
+The head axis is crossed with every shape cell: the three new configurations carry pre-registered
+**regression twins** (hier-s2-min-reg vs a trained flat-short-reg partner; strided-flat-reg and
+hier3-reg vs the two-seed reg-flat/reg-long pair). [EXPECTED-REG (from the §4.4.1 "coarse ≈ free
+under regression" result and the §4.2.2 reversal): the diffusion-head shape verdicts reproduce or
+enlarge under the regression head; any sign flip across heads is the headline-grade surprise and
+triggers seed-1 on the flipped cell before wording.]
 
 The **depth row** is the grid's most instructive cell. A three-stage arm (`hier3`, 2×2/4×4/8×8
 factor-2 pyramid: 48 top + 24 coarse + 9 fine = the same 1,152 tokens as the headline pair) tests

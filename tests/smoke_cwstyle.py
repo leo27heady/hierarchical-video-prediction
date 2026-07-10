@@ -46,14 +46,18 @@ BUDGET = {  # pre-registered ctx-token budgets
     "hier-s2-min": 24 * 16 + 2 * 64,            # 512
     "strided-flat": (11 + 6) * 64,              # 1088
     "hier3": 48 * 4 + 24 * 16 + 9 * 64,         # 1152
+    "hier-s4-min": 12 * 16 + 2 * 64,            # 320 [E-320]
+    "flat-320": 5 * 64,                         # 320
 }
 TGTS = {  # (n_tgt_t, n_tgt_c) and target tokens
     "hier-s2-min": (0, 2, 2 * 16 + WIN * 64),   # 2 coarse slots (stride 2 divides WIN=4)
     "strided-flat": (0, WIN, WIN * 16 + WIN * 64),
     "hier3": (WIN, WIN, WIN * 4 + WIN * 16 + WIN * 64),
+    "hier-s4-min": (0, 1, 1 * 16 + WIN * 64),   # 1 slot (the legacy d1 stride-4 rule)
+    "flat-320": (0, WIN, WIN * 16 + WIN * 64),
 }
 nets = {}
-for arm in ("hier-s2-min", "strided-flat", "hier3"):
+for arm in ("hier-s2-min", "strided-flat", "hier3", "hier-s4-min", "flat-320"):
     n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
     net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
                     n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t)
@@ -63,8 +67,9 @@ for arm in ("hier-s2-min", "strided-flat", "hier3"):
           f"(ctx {net.expected_seq - tgt_tok} == {BUDGET[arm]}; seq {net.expected_seq})")
     check(f"{arm} targets", (net.n_tgt_t, net.n_tgt_c) == (n_tgt_t, n_tgt_c),
           f"(n_tgt_t={net.n_tgt_t}, n_tgt_c={net.n_tgt_c})")
+    reach_want = 5 if arm == "flat-320" else 48
     check(f"{arm} reach", net.base == ctx_reach(n_ctx_c, n_ctx_f, stride_c, n_hist_f,
-                                                n_ctx_t, stride_t) == 48)
+                                                n_ctx_t, stride_t) == reach_want)
 
 # legacy compat: hier-long unchanged; d1-56-diff stride-4 rule still ONE slot; no top params
 print("== legacy compat ==")
@@ -102,7 +107,7 @@ def fake_data(N=6, T=60, W=192, speed=4, top=False, seed=0):
     return d
 
 
-for arm in ("hier-s2-min", "strided-flat", "hier3"):
+for arm in ("hier-s2-min", "strided-flat", "hier3", "hier-s4-min", "flat-320"):
     n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
     data = fake_data(top=(n_ctx_t > 0))
     bt = window_batch(data, 2, n_ctx_c, n_ctx_f, train=True, seed=1, stride_c=stride_c,
@@ -125,7 +130,7 @@ class _Wrap:
     Ttr = 1000
 
 
-for arm in ("hier-s2-min", "strided-flat", "hier3"):
+for arm in ("hier-s2-min", "strided-flat", "hier3", "hier-s4-min"):
     n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
     data = fake_data(top=(n_ctx_t > 0))
     ema = EMA(nets[arm])
