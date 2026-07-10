@@ -43,3 +43,18 @@ mark "REGTWINS_DONE"
 
 $PY scripts/make_cwstyle_table.py
 mark "CWSTYLE_REGTWINS_ALL_DONE"
+
+# ---------- S2-TRIO (pre-registered UNCONDITIONALLY 2026-07-10 before any S1 result;
+# ---------- third seed for the article-critical 1152 trio; ~9 GPU-h)
+mark "S2-TRIO hier-long seed 2"
+$PY -u -m hvp_rev.rhvd --arm hier-long --steps 30000 --batch 16 --bf16 --seed 2
+mark "S2-TRIO flat-budget seed 2"
+$PY -u -m hvp_rev.rhvd --arm flat-budget --steps 30000 --batch 16 --bf16 --seed 2
+mark "S2-TRIO strided-flat seed 2"
+$PY -u -m hvp_rev.rhvd --arm strided-flat --steps 30000 --batch 16 --bf16 --seed 2
+mark "S2-TRIO compares (seed 2)"
+$PY -u -m hvp_rev.rhvd --compare flat-budget,hier-long --seed 2
+$PY -u -m hvp_rev.rhvd --compare hier-long,strided-flat --seed 2
+$PY -u -m hvp_rev.rhvd --compare flat-budget,strided-flat --seed 2
+$PY scripts/make_cwstyle_table.py
+mark "S2TRIO_DONE"

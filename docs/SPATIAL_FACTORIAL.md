@@ -556,3 +556,27 @@ strided-flat (11 full-res@stride4 + 6f = 1,088 tok, span 48, NO coarse level), s
   coarse anchors when the head is diffusion"; the coarse level's defense narrows to per-level
   decodability + dense coverage + (per G-S1) the regression head, where abstraction is free —
   exactly what the pre-registered REG twin (strided-flat-reg) now tests directly.
+
+### S2-TRIO + PHASE-C METRIC AMENDMENTS (pre-registered 2026-07-10 ~22:40, BEFORE any
+### seed-1 result exists — B3 still training, S1 chain not started; reviewer-refined rules)
+
+- **S2-TRIO (UNCONDITIONAL — outcome-independence by construction):** a third seed (seed 2,
+  B16×30k, standard regime) for the article-critical 1,152-token diffusion trio — hier-long,
+  flat-budget, strided-flat — runs REGARDLESS of how S1-a/S1-b land. Rationale (adopted from
+  the external review): deciding a third seed AFTER seeing seed-1 results would be
+  outcome-dependent; pre-committing now removes that degree of freedom. Memory-arm seed
+  variance (~0.016) is material to any headline resting on these means. Reporting rule:
+  seed-level effects shown individually + clip-level CIs within each seed; frames are NEVER
+  pooled across seeds as independent observations. Regression arms: the standing two-seed rule
+  applies unchanged (reg-long/reg-flat are two-seed; strided-flat-reg escalates to s1 iff its
+  s0 cell is claim-bearing) — quoted headline arms must carry >= 2 seeds, the diffusion trio 3.
+  Queue: appended to `run_cwstyle_regtwins.sh` after REGTWINS_DONE (~9 GPU-h).
+- **PHASE-C METRIC MANDATE (conditional rule, binding):** IF the article/dissertation text
+  engages CW-VAE-facing long-horizon retention on Moving MNIST (the current CH5 §5.3.1 draft
+  DOES — it names CW-VAE's 1,000-frame claim), THEN Phase C MUST report, beyond fg-MSE:
+  (i) digit-identity retention over the rollout via a fixed MNIST classifier readout,
+  (ii) trajectory/center error, (iii) digit-count/disappearance — because aggregate MSE/SSIM
+  can miss exactly the "identity persists while position degrades" distinction CW-VAE
+  emphasizes. If instead §5.3.1 is demoted to a pure internal boundary control (no CW-VAE
+  framing), fg-MSE suffices. Current decision: KEEP the CW-VAE-facing framing → the metric
+  upgrade is REQUIRED for Phase C (classifier ~minutes to train; readout in the bridge eval).
