@@ -67,6 +67,8 @@
 ### B4. Hierarchical / long-horizon video prediction and world-model memory
 
 - **Saxena2021** — Saxena V., Ba J., Hafner D. Clockwork Variational Autoencoders. *NeurIPS 34*, 2021. ✓
+- **Kim2019vta** — Kim T., Ahn S., Bengio Y. Variational Temporal Abstraction. *NeurIPS 32*, 2019. **[VERIFY author list/venue — added 2026-07-10 for the CH7 §7.1 / ROZDIL1 §1.3.2 methodology paragraphs (VTA reset-artifact mention)]**
+- **Koutnik2014** — Koutník J., Greff K., Gomez F., Schmidhuber J. A Clockwork RNN. *ICML*, 2014. **[VERIFY pages — added 2026-07-10 for the temporal-abstraction lineage in CH7 §7.1 / ROZDIL1 §1.3.2]**
 - **Zakharov2023dlh** — Zakharov A., Guo Q., Fountas Z. Long-Horizon Video Prediction Using a Dynamic Latent Hierarchy. arXiv:2212.14376, 2023. **[VERIFY venue/year]**
 - **Yan2023teco** — Yan W., Hafner D., James S., Abbeel P. Temporally Consistent Transformers for Video Generation (TECO). *ICML*, 2023. **[VERIFY author list]**
 - **VillarCorrales2022** — Villar-Corrales A., Karapetyan A., Boltres A., Behnke S. MSPred: Video Prediction at Multiple Spatio-Temporal Scales. *BMVC*, 2022. **[VERIFY]**
@@ -165,6 +167,8 @@
 | classical systems theory textbook | Bertalanffy1968 |
 | CLIP | Radford2021 |
 | Clockwork VAE / CW-VAE | Saxena2021 |
+| Clockwork RNN / Koutník et al. 2014 | Koutnik2014 |
+| VTA / Variational Temporal Abstraction | Kim2019vta |
 | ControlNet | Zhang2023controlnet |
 | critique of flat latent spaces | Saxena2021; Zakharov2023dlh; Yan2023teco |
 | cross-entropy classification objective | Goodfellow2016book |
