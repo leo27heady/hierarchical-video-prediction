@@ -580,3 +580,19 @@ strided-flat (11 full-res@stride4 + 6f = 1,088 tok, span 48, NO coarse level), s
   emphasizes. If instead §5.3.1 is demoted to a pure internal boundary control (no CW-VAE
   framing), fg-MSE suffices. Current decision: KEEP the CW-VAE-facing framing → the metric
   upgrade is REQUIRED for Phase C (classifier ~minutes to train; readout in the bridge eval).
+
+### PHASE-C INTERPRETATION AMENDMENT (pre-registered 2026-07-10 ~23:00, BEFORE Phase C launches;
+### external-review round 5 accepted)
+
+The original Phase-C alternative branch ("a hier win would contradict T7 → stop-and-examine")
+over-presumed error. Corrected reading, binding: Phase C is the **L8 boundary-control column**
+(48-frame warm-up, 300-frame rollouts, flat vs two-level spatial only — NOT a CW-VAE
+reproduction: their protocol is 36-context/1,000-frame, and Phase C tests neither strided
+temporal history nor depth). A hier win at long horizon therefore does NOT automatically
+contradict the measured 10→10 null: Moving MNIST carries persistent digit identity and velocity
+state, and a short-protocol null cannot prove the absence of long-horizon memory-relevant
+structure. Decision rule: a CI-clean hier win triggers a data/protocol EXAMINATION first (as
+before); if the run is sound, it is REPORTED AS A GENUINE FINDING — "the short OpenSTL bridge
+did not expose a memory-relevant regime, while the long-horizon factor metrics did" — extending
+the boundary account, not breaking it (and it would then gate a seed-1 replication per the
+standing rule before any wording lands).

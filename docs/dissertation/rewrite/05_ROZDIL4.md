@@ -1221,8 +1221,10 @@ clips (zero-action conditioning, disclosed; the re-entry hardness axis is inert 
 (calibration with persistence and all-black floors, not evidence). [EXPECTED-PhaseC (primary —
 the theory's own prediction): hier ≈ flat within ±0.005 ALL fg-MSE at every horizon bin — «де
 ієрархія окуповується — властивість структури пам'яті даних, а не довжини розгортання»
-[UA-PASS]. ALTERNATIVE (a hier win): contradicts the measured 10→10 null — pre-registered as
-stop-and-examine before any reporting.] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
+[UA-PASS]. ALTERNATIVE (a hier win): examination first; if sound, reported as a genuine finding — the
+short bridge did not expose a memory-relevant regime (persistent identity/velocity state) while
+the long-horizon factor metrics did — extending the boundary account; seed-1 gated
+(interpretation amendment 2026-07-10).] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
 hier overlapping [EXPECTED] + floors; asset fig15_mmnist_control.png, QUEUED — Phase C.]**
 
 ### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби

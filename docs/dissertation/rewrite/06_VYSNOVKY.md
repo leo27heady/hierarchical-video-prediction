@@ -176,7 +176,11 @@ resolution queued]) — the findings consolidating into the empirical laws of §
 `docs/CLAIM_LEDGER.md`), whose conclusion is a conditional design rule rather than universal
 superiority: allocate context tokens to cover the task-relevant span with the least lossy family
 that achieves it; spend the remainder on resolution and recency; add depth only where the data
-contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations, 3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Розділ 4 §§4.6.3–4.6.5 carry the pre-registered protocols; per the shell end-state rule no projected result is claimed here).0131
+contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations,
+3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Розділ 4
+§§4.6.3–4.6.5 carry the pre-registered protocols; per the shell end-state rule no projected
+result is claimed here). Measured in full, by contrast, is the **token-budget frontier
+completion** (hier-rich at 3,072 tokens loses to flat-long, −0.0131
 [−0.0201, −0.0069] at seed 0 and −0.0107 [−0.0163, −0.0058] at seed 1 — a two-seed inversion —
 at equal budget and training regime; flat-short at 512 beats hier-short,
 −0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the

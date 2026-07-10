@@ -148,7 +148,10 @@ arms; the null is visible — no memory horizon to separate them.]
 
 The 10→10 protocol above tests the short-horizon regime; the hierarchical literature's canonical
 claim on this dataset, however, is *long-horizon* retention — CW-VAE reports 1,000-frame
-open-loop rollouts. This subsection extends the negative control to that regime: the flat and
+open-loop rollouts. This subsection extends the negative control *toward* that regime —
+300 frames under our own protocol, flat versus the two-level spatial package only: a boundary
+control, not a CW-VAE reproduction (their 36-context/1,000-frame protocol, and the strided/depth
+shapes, are not tested here). The flat and
 two-stage configurations at the headline 1,152-token budget, retrained on standard bouncing-digit
 clips (OpenSTL-matched generator; zero-action conditioning, disclosed — the action interface is
 inert on actionless data), rolled out ~300 frames on long held-out clips under the full §2
@@ -162,8 +165,11 @@ confirmation: "the null is not an artifact of the short protocol: with no memory
 coarse stream has nothing to buy at ANY horizon, and the two configurations degrade together —
 the same instrument that separates them decisively on the looping testbed cannot separate them
 here. Where hierarchy pays is a property of the data's memory structure, not of the rollout
-length." ALTERNATIVE (a hier win): would contradict the measured 10→10 null — pre-registered as
-stop-and-examine (data/protocol audit) before any reporting.]
+length." ALTERNATIVE (a hier win): triggers a data/protocol examination first; if the run is sound,
+it is reported as a genuine finding — the short 10→10 bridge did not expose a memory-relevant
+regime (Moving MNIST carries persistent identity and velocity state), while the long-horizon
+factor metrics did — extending the boundary account rather than contradicting it, seed-1
+replication gated before any wording (pre-registered interpretation amendment, 2026-07-10).]
 
 [FIG ch5-2: fg-MSE vs horizon, flat vs hier overlapping [EXPECTED], persistence + all-black
 floors; optional SSIM calibration panel. Asset: `docs/figures/fig15_mmnist_control.png`
