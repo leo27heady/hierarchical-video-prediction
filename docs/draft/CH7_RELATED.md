@@ -28,8 +28,9 @@ one configuration table, quality-retention curves over long open-loop rollouts, 
 probes (their §5.1 prior-following experiment; our stream-blinding probes, sharpened by per-level
 decodability). We adopt the format while tightening three controls it lacks. First, capacity:
 CW-VAE's compared models differ in parameter count (RSSM 5M vs CW-VAE 12M in their own parameter
-table; only their NoTmpAbs ablation is matched), whereas our depth axis is capacity-neutral —
-levels add tokens to a shared backbone, not weights (§2.4). Second, context cost: a recurrent
+table; only their NoTmpAbs ablation is matched), whereas our depth axis is backbone-capacity
+neutral — levels add tokens to a shared backbone, with only per-level I/O heads added (+1.4%
+parameters, disclosed in §2.4). Second, context cost: a recurrent
 state has no token-budget axis, so hierarchy-vs-flat comparisons in the RNN family cannot hold
 context cost fixed; our grid is budget-matched by construction, which is what licenses the
 frontier reading. Third, metrics: their evaluation aggregates SSIM/PSNR/LPIPS/FVD over full

@@ -695,8 +695,8 @@ prior while lower levels see the context). The dissertation adopts this *format*
 tightening three controls the original lacks — a systems-analysis point in its own right. First,
 capacity: the compared CW-VAE-class models differ in parameter count (their RSSM baseline 5M vs
 CW-VAE 12M; only the NoTmpAbs ablation is matched), whereas in the token-stream architecture of
-Chapter 3 depth adds tokens to a shared backbone, not weights — the depth axis is
-capacity-neutral. Second, context cost: a recurrent state has no token-budget axis, so
+Chapter 3 depth adds tokens to a shared backbone with only per-level I/O heads (+1.4%
+parameters, disclosed) — the depth axis is backbone-capacity neutral. Second, context cost: a recurrent state has no token-budget axis, so
 hierarchy-versus-flat comparisons in the recurrent family cannot hold context cost fixed; the
 token interface makes every configuration's cost an exact count, enabling matched-budget
 comparison. Third, metrics: the CW-VAE evaluation aggregates SSIM/PSNR over full frames, and the

@@ -243,7 +243,7 @@ New scope (verbatim constraints): discrete feature spaces (VQ-VAE-class), hierar
 | сімейство конфігурацій | configuration family | (k_s, k_t)-indexed; edges are per-family |
 | закон краю смуги | band-edge law | edge(family) = span cost + fine floor |
 | потік контекстних токенів | context-token stream | (resolution, stride, count) triple |
-| глибина додає токени, а не параметри | depth adds tokens, not parameters | capacity-neutral depth vs CW-VAE |
+| нейтральність глибини щодо ємності остова | backbone-capacity-neutral depth | +1.4% per-level I/O params disclosed; vs CW-VAE's full-cell-per-level |
 | засліплення рівня (потоку) | level (stream) blinding | CW-VAE §5.1 analog, causal version |
 | стовпець контролю | control column | standard-MMNIST long-horizon null |
 | перерозподіл бюджету | budget re-allocation | what depth-3 does on single-scale data |

@@ -88,9 +88,13 @@ mis-scales a diffusion noise schedule and materially changes mechanism-level con
 
 Downstream predictors consume these latents as an arbitrary set of token *streams*, each
 parameterized by spatial resolution, temporal stride, and frame count, joined in one attention
-sequence — so hierarchy **depth adds tokens, not parameters**. This matters for the shape
-comparisons of §4.4: unlike recurrent hierarchies (where each level adds weights, and published
-depth comparisons are capacity-confounded), our depth axis is capacity-neutral by construction.
+sequence — so hierarchy **depth is backbone-capacity neutral**: the attention backbone is
+unchanged, and a third level adds only per-level input/output parameters (+0.30 M on a 22.19 M
+predictor, +1.4%) plus a frozen autoencoder tap (1.25 M) — measured counts, disclosed rather
+than rounded to zero. This matters for the shape
+comparisons of §4.4: unlike recurrent hierarchies (where each level adds a full recurrent cell,
+and published depth comparisons are capacity-confounded), our depth axis holds the backbone
+fixed by construction.
 For the three-stage arm the autoencoder gains a third, 2×2 latent tap trained on the *frozen*
 trunk, so the two levels above remain bit-identical and every earlier measurement stays valid.
 

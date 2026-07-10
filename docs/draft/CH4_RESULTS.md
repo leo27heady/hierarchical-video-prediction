@@ -491,8 +491,9 @@ blind-fine, with a dt≤48-HARD inset; hier3 blind-top added if informative. Ass
 
 Table 4.6 assembles every measured configuration — depth × downsampling factors × head × budget —
 in the format of the CW-VAE benchmark table, with our controls: matched token budgets within
-every pairing, capacity-neutral depth (levels add tokens to a shared backbone, not parameters —
-CW-VAE's depth comparisons differ in parameter count), foreground-masked metrics, disclosed
+every pairing, backbone-capacity-neutral depth (levels add tokens to a shared backbone; the
+third level adds only per-level I/O heads, +1.4% parameters, disclosed in §2.4 — CW-VAE's depth
+comparisons differ by a full recurrent cell per level), foreground-masked metrics, disclosed
 training regimes. The energy-based column is the two-sided characterized negative of §4.2.3/§3.5
 and carries no rollout cells by design.
 

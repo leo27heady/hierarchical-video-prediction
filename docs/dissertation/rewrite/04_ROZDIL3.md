@@ -756,9 +756,11 @@ stream may itself be strided (temporal abstraction without a resolution change);
 per level ($2{\times}2 / 4{\times}4 / 8{\times}8$). The top latent is a third tap of the frozen
 autoencoder trained on the **frozen trunk** (§3.1.1), so the two lower levels remain bit-identical
 and every measurement of Chapter 4 stays valid across the extension. Two systemic properties
-distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth adds tokens,
-not parameters** — all streams share one attention backbone, so the depth axis is
-capacity-neutral by construction [UA-PASS: «глибина додає токени, а не параметри»]; and (ii)
+distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth is
+backbone-capacity neutral** — all streams share one attention backbone; a third level adds only
+per-level input/output parameters (+0.30 M on the 22.19 M predictor, +1.4%) and the frozen
+autoencoder tap (1.25 M), measured and disclosed [UA-PASS: «нейтральність глибини щодо ємності
+остова»]; and (ii)
 every configuration's context cost is an exact token count, so families are comparable at
 **matched budget** — the property that licenses the shape comparisons of §4.4 (спрощені
 конфігурації: `hier-s2-min` = 24 slots at stride 2 + 2 fine = 512 tokens; `strided-flat` = 11
