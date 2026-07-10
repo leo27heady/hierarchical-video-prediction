@@ -199,8 +199,10 @@ head, the hierarchical long-memory arm beats its token-matched flat control** (h
 flat-budget; reg-long < reg-flat); (ii) **across heads, regression wins the best-of-1 rollout**
 (§4.2.2); (iii) **the full-resolution long window wins outright at 2.7× the tokens** (§4.3.4).
 Both long-memory arms also beat hier-short in every bin — long context helps — but the claim
-defended here is the *hierarchical packaging* of it at matched budget, which is exactly what the
-flat-budget control isolates.
+defended here is the *long-span packaging* of it at matched budget, which is exactly what the
+flat-budget control isolates. (The coarse hierarchy is the per-level-decodable form of that
+packaging studied first; §4.4.3 measures a temporally-subsampled full-resolution form against
+it.)
 
 [FIG ch4-2: per-horizon rollout curves — asset EXISTS: `logs_rhcp/fig_horizon_curves_loopmom.png`.
 Three panels over rollout horizon h (frames after the 48-frame GT warmup): (a) fg-MSE vs h on all
@@ -319,7 +321,7 @@ benchmark [REF: CW-VAE] (whose format we adopt and whose controls we tighten —
 | axis | shape | buys | costs | evidence |
 |---|---|---|---|---|
 | spatial | coarse 4×4 stream, stride 1 | 4× span/token; per-level decodability; dense temporal coverage | abstraction cost −0.008 (diff) / ≈0 (reg) at fixed window | §4.4.1 measured |
-| temporal | full-res history, stride 4 | 4× span/token; full detail at anchors | inter-anchor blindness; no cheap decodable level | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
+| temporal | full-res history, stride 4 | 4× span/token; full detail at anchors — **best 1152-class packaging measured (diff head)** | inter-anchor blindness; no cheap decodable level | §4.4.3 measured: **0.1652, beats hier-long +0.0197** (s0; s1 queued) |
 | spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above + a ≈+0.017 family plateau offset | §4.4.2 measured: **+0.0330 win @512 tok** (s0; s1 queued) |
 | depth | + 2×2 top stream | a third scale to own | dead weight below the data's scale count; slower fixed-step convergence | §4.4.5 [EXPECTED: null vs 2-stage]; §4.5; per-pixel gate null (§4.4.1) |
 | allocation | span-first sizing | the win band + its measured edges | — | §4.3.6 measured |
@@ -423,19 +425,25 @@ full-resolution slots at stride 4 (span 48) plus the standard 6 recent fine fram
 tokens, deliberately 64 short of the 1,152 pair so the token deficit *favors the control*. It is
 compared against both members of the two-seed 1,152 pairing.
 
-[EXPECTED-B2 (primary, the honest reading of the §4.4.1 factorial): strided-flat ALL ≈
-0.170–0.185 — inside the hierarchical plateau band; CI-clean win vs flat-budget; |Δ| vs hier-long
-< 0.01 (null-ish). Text on confirmation: "span-per-token, not the coarse level, is the frontier's
-currency; the coarse level is the cheapest **per-level-decodable** implementation of long-span
-context, and the only one that keeps dense temporal coverage — but temporal subsampling of
-full-resolution history reproduces the matched-budget win." On this branch the Claim-1 wording
-softens from "hierarchical packaging" to "long-span context packaging" at the four sites listed
-in the change plan — the softening is conservative and permitted at seed 0, but the POSITIVE
-assertion ("temporal subsampling reproduces the win; span is the currency") stays report-only
-until a seed-1 replication, because memory-arm seed spread (~0.016) can manufacture a one-seed
-null (pre-registered amendment). ALTERNATIVE: hier-long beats strided-flat CI-clean — the coarse
-level's dense coverage carries value beyond span (inter-anchor blindness is costly even on a
-smooth pan), and this control becomes Claim 1's strongest defense; wording stands.]
+**Measured (2026-07-10, seed 0) — a third outcome, stronger than the pre-registered primary:
+the control doesn't just match the coarse hierarchy, it beats it.** strided-flat scores ALL
+**0.1652** with the sharpest non-flat-long output of the campaign (fg-sharp **0.0919**): against
+hier-long (0.1848/0.0729) the paired Δ is **+0.0197 [+0.0143, +0.0252] WIN**, and against
+flat-budget (0.2038) **+0.0386 [+0.0290, +0.0488] WIN** — both at a 64-token *deficit*. The win
+covers the hard re-entry bins at every horizon (h 1–8 HARD +0.0482; h 25–60 HARD +0.0389): the
+full-resolution anchors retain re-entry identity detail that the coarse code loses — the §4.4.1
+abstraction cost expressed at rollout scale. The pre-registered primary expected a null-ish tie;
+the alternative expected a hier-long win; the measurement resolves in the primary's *direction*
+at greater strength: **span is the currency, and at this operating point temporal subsampling of
+full-resolution history is the better packaging under the diffusion head.** Honest single-seed
+caveats, stated before any escalation: hier-long's seed 0 is its weaker seed (s1 0.1690;
+seed-mean 0.1769 — against the seed-mean the margin is ≈0.012), strided-flat is one seed, and
+memory arms spread ~0.016; per the pre-registered amendment the positive claim requires the
+seed-1 replication, which is now **queued as required** (S1-b). The conservative Claim-1 wording
+softening is applied at seed 0 per the amendment; if seed 1 confirms, the coarse level's defense
+narrows to per-level decodability, dense temporal coverage, and the regression head — where
+§4.4.1 measured abstraction as free, exactly what the pre-registered regression twin
+(strided-flat-reg) now tests directly.
 
 ### 4.4.4 What each level stores: blinding probes
 
@@ -660,11 +668,12 @@ history + long window** (reg-long, 0.1682 at 1,152 tokens); at the short window 
 edge is family-parametric — it moved from 896 tokens (stride-1 coarse, two-seed) to 512
 (stride-2 coarse, +0.0330 [+0.0246, +0.0419], every cell), landing at its token-arithmetic
 prediction both times; each family carries its own plateau level (the stride-2 family ≈+0.017
-above stride-1 — sparser anchors are a real cost). [EXPECTED-B2, primary branch: span-per-token is
-the frontier's currency — temporally subsampled full-resolution history reproduces the
-matched-budget win at the same price; the coarse level is its cheapest per-level-decodable
-implementation. / ALTERNATIVE branch: the coarse level's dense temporal coverage carries value
-beyond span — the strided control does NOT reproduce the win.] [EXPECTED-B3: depth is bounded by
+above stride-1 — sparser anchors are a real cost). MEASURED (s0; s1 required and queued): span-per-token is
+the frontier's currency in its strongest form — temporally subsampled full-resolution history
+not only reproduces but EXCEEDS the coarse packaging under the diffusion head (strided-flat
+0.1652 beats hier-long +0.0197 [+0.0143, +0.0252] at fewer tokens, sharper by 0.019); the
+coarse level's remaining defense is per-level decodability, dense coverage, and the regression
+head (twin queued). [EXPECTED-B3: depth is bounded by
 the data's memory-scale count — a third stage on this single-scale task is a measured null at
 matched budget.] Together with the blinding attribution (§4.4.4), the chapter's answer to "which
 hierarchy?" is a sizing rule, not an architecture: cover the horizon with the cheapest family

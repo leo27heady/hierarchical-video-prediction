@@ -8,7 +8,10 @@
 
 **The coarse level of a hierarchical latent video model earns its token budget exactly when the
 prediction horizon exceeds what the affordable flat context can carry — and the budgets at which
-this happens are predictable from geometry.** On a testbed whose memory demand is an exact label,
+this happens are predictable from geometry.** (The packaging is not unique: §4.4.3 measures a
+temporally-subsampled full-resolution packaging of the same span that matches or exceeds it at
+seed 0, seed-1 replication queued — the claim is about long-span context at matched budget, with
+the coarse level as its per-level-decodable form.) On a testbed whose memory demand is an exact label,
 the hierarchy-versus-flat frontier, measured at six matched budgets, has the shape the mechanism
 account predicts: flat wins below the span threshold (≈500 tokens: no hierarchical configuration
 can cover the ~48-frame loop; −0.0036 [−0.0063, −0.0010]); the hierarchy wins the band from the
@@ -50,9 +53,10 @@ information-dominates any coarse record of the same span.
 - **The shape of the hierarchy (§4.4):** MEASURED at seed 0 (seed-1 queued before headline use):
   the band's lower edge is family-parametric — halving the coarse tick moved it from 896 to 512
   tokens (+0.0330 [+0.0246, +0.0419], every cell, span-signature dt-gates), at the
-  token-arithmetic prediction both times; each family carries its own plateau level. [EXPECTED-B2, branch-gated: span-per-token is the currency —
-  temporally subsampled full-resolution history reproduces the matched-budget win / ALT: the
-  coarse level's dense coverage carries value beyond span.] [EXPECTED-B3: depth is bounded by the
+  token-arithmetic prediction both times; each family carries its own plateau level. MEASURED (s0; s1 required, queued): span-per-token is the
+  currency in its strongest form — strided full-resolution history BEATS the coarse packaging
+  under the diffusion head (+0.0197 CI-clean at fewer tokens); the coarse level's defense
+  narrows to per-level decodability, dense coverage, and the regression head (twin queued). [EXPECTED-B3: depth is bounded by the
   data's memory-scale count — a third stage on the single-scale testbed is a measured null at
   matched budget.]
 

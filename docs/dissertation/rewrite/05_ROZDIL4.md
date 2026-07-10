@@ -796,7 +796,7 @@ masked metrics.
 | вісь | форма | купує | коштує | доказ |
 |---|---|---|---|---|
 | просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
-| часова | повнороздільна історія, крок 4 | 4× прольоту/токен; повна деталізація в якорях | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
+| часова | повнороздільна історія, крок 4 | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 (диф. ядро)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
 | просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище + сімейний зсув плато ≈+0.017 | §4.4.2 виміряно: **+0.0330 @512 ток.** (s0; s1 у черзі) |
 | глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
 | розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |
@@ -892,12 +892,16 @@ replication).]**
 
 The control `strided-flat` keeps NO coarse level: 11 full-resolution slots at stride 4 (span 48)
 + 6 recent fine = 1,088 tokens — 64 short of the 1,152 pairing, a deficit that *favors the
-control*. [EXPECTED-B2 (primary, per §4.4.1): strided-flat lands inside the hierarchical plateau
-band (ALL ≈0.170–0.185), CI-clean above flat-budget, null-ish against hier-long → «валютою
-фронтиру є проліт-на-токен; грубий рівень — найдешевша порівнево-декодовна його реалізація»
-[UA-PASS], and the claim wording softens per the pre-drafted branch at the sites listed in the
-change plan. ALTERNATIVE: hier-long wins CI-clean → dense temporal coverage carries value beyond
-span; wording stands and gains its strongest control.]
+control*. **MEASURED (2026-07-10, s0) — a third outcome, stronger than the primary:** strided-flat
+ALL **0.1652** / sharp 0.0919 BEATS hier-long (0.1848): Δ **+0.0197 [+0.0143, +0.0252]**, and
+flat-budget by +0.0386 — at fewer tokens, winning the hard re-entry bins at every horizon (the
+§4.4.1 abstraction cost expressed at rollout scale). «Валютою фронтиру є проліт-на-токен — і за
+дифузійного ядра часове проріджування повнороздільної історії є КРАЩИМ пакуванням, а не лише
+рівноцінним» [UA-PASS]. Single-seed caveats disclosed (hier-long s0 is its weaker seed; seed-mean
+margin ≈0.012; memory-arm spread ~0.016) → per the pre-registered amendment **seed-1 is REQUIRED
+and queued (S1-b)** before the positive claim escalates; the conservative claim softening is
+applied at s0. The coarse level's remaining defense: per-level decodability, dense coverage, and
+the regression head (strided-flat-reg twin queued).
 
 ### 4.4.4 Що зберігає кожен рівень: зондування засліпленням
 

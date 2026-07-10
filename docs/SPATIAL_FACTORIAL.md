@@ -526,3 +526,33 @@ anything uncovered defaults to report-only.
 **Queue:** CWSTYLE_PHASE_B_ALL_DONE → S1-a (hier-s2-min s1) → **this block**
 (`scripts/run_cwstyle_regtwins.sh`) → Phase C → G-i/G-ii. S1-b (strided-flat s1) inserts before
 Phase C if its amendment condition fires.
+
+### B2 MEASURED (2026-07-10 19:08; `logs_rhcp/cwstyle_phaseB.log`, B2_DONE;
+### npz `rhvd_eval_strided-flat_s0.npz`) — **A THIRD OUTCOME, STRONGER THAN THE PRIMARY:
+### strided full-res history BEATS the coarse hierarchy at fewer tokens**
+
+strided-flat (11 full-res@stride4 + 6f = 1,088 tok, span 48, NO coarse level), seed 0:
+- ALL fg-MSE **0.1652** / sharp **0.0919** — vs hier-long s0 (0.1848/0.0729): paired Δ
+  **+0.0197 [+0.0143, +0.0252] WIN**; vs flat-budget (0.2038): **+0.0386 [+0.0290, +0.0488]
+  WIN** — at a 64-token DEFICIT to both partners.
+- Win across bins INCLUDING hard re-entry at every horizon (h1–8 HARD +0.0482; h25–60 HARD
+  +0.0389; h61–120 HARD +0.0180): the full-resolution anchors carry re-entry identity detail
+  that the coarse code loses — the G-S1 abstraction cost (−0.008 at fixed window) expressed at
+  rollout scale. Sharpest 1,152-class arm measured (0.0919; only flat-long 0.0996 is higher).
+- **Neither pre-registered branch as written:** PRIMARY expected ≈hier-long (null-ish,
+  |Δ|<0.01); ALTERNATIVE expected hier-long to win. Measured = the primary's DIRECTION at
+  greater strength: span is the currency, and at this operating point temporal subsampling of
+  full-resolution history is the BETTER implementation under the diffusion head — not merely an
+  equal one. Reported as measured; no soft reads.
+- **Honest single-seed caveats (why escalation is gated):** hier-long s0 (0.1848) is that arm's
+  weaker seed (s1 0.1690; seed-mean 0.1769); strided-flat is 1 seed and memory arms spread
+  ~0.016. Against the hier-long SEED-MEAN the margin is ≈0.012; against hier-long's best seed
+  ≈0.004. Per the pre-registered amendment, the POSITIVE claim ("temporal subsampling matches
+  or exceeds the coarse packaging") requires strided-flat seed 1 — **S1-b now FIRES as
+  REQUIRED** (uncommented in `run_cwstyle_seed1.sh`). The conservative Claim-1 wording
+  softening ("hierarchical packaging" -> "long-span context packaging") is permitted at s0 and
+  is applied at the four registered sites.
+- Consequences if s1 confirms: the sizing rule gains "prefer full-res strided anchors over
+  coarse anchors when the head is diffusion"; the coarse level's defense narrows to per-level
+  decodability + dense coverage + (per G-S1) the regression head, where abstraction is free —
+  exactly what the pre-registered REG twin (strided-flat-reg) now tests directly.
