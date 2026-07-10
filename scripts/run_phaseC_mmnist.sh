@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # PHASE C — standard-MMNIST long-horizon control column (pre-registered; METRIC MANDATE active).
-# LAUNCH AFTER the regtwins/S2-trio chain completes. ~1 GPU-day.
+# LAUNCH AFTER `run_cwstyle_regtwins.sh core` completes and BEFORE the optional depth/E-320 tail.
+# Three training seeds are unconditional: both a null and a win require replication. ~28-32 h.
 #
 #   bash scripts/run_phaseC_mmnist.sh 2>&1 | tee -a logs_rhcp/phasec.log
 set -e
@@ -29,20 +30,24 @@ mark "C0 digit classifier (METRIC MANDATE)"
 [ -f logs_rhcp/mmnist_digit_clf.pt ] || $PY -u -m hvp_rev.mmnist_metrics --train_classifier
 mark "C0_DONE"
 
-# ---------- C1/C2: the 1152-token pair on MMNIST (distinct arm names -> distinct ckpts) ----------
-for ARM in mmL-flat mmL-hier; do
-  mark "PHASEC $ARM train+eval (B16x30k, WARM=48, 300-frame rollouts)"
-  $PY -u -m hvp_rev.rhvd --arm $ARM --steps 30000 --batch 16 --bf16 --seed 0 \
-      --train_path data/mmnistL_train_3000x100.npy --test_path data/mmnistL_test_500x348.npy \
-      --ae_path logs_rhcp/hier_ae_mmnistL.pt --warm 48
+# ---------- C1/C2: replicated 1152-token pair (distinct arm names -> distinct ckpts) ----------
+for SEED in 0 1 2; do
+  for ARM in mmL-flat mmL-hier; do
+    mark "PHASEC $ARM seed $SEED train+eval (B16x30k, WARM=48, 300-frame rollouts)"
+    $PY -u -m hvp_rev.rhvd --arm $ARM --steps 30000 --batch 16 --bf16 --seed "$SEED" \
+        --train_path data/mmnistL_train_3000x100.npy --test_path data/mmnistL_test_500x348.npy \
+        --ae_path logs_rhcp/hier_ae_mmnistL.pt --warm 48
+  done
+  mark "PHASEC seed $SEED compare (fg-MSE, paired cluster CIs)"
+  $PY -u -m hvp_rev.rhvd --compare mmL-flat,mmL-hier --seed "$SEED" \
+      --test_path data/mmnistL_test_500x348.npy --warm 48
+  mark "PHASEC seed $SEED factor metrics (identity/trajectory/count)"
+  for ARM in mmL-flat mmL-hier; do
+    $PY -u -m hvp_rev.phasec_eval --arm "$ARM" --seed "$SEED" \
+        --train_path data/mmnistL_train_3000x100.npy --test_path data/mmnistL_test_500x348.npy \
+        --ae_path logs_rhcp/hier_ae_mmnistL.pt
+  done
 done
-mark "PHASEC compare (fg-MSE, paired cluster CIs)"
-$PY -u -m hvp_rev.rhvd --compare mmL-flat,mmL-hier --seed 0 \
-    --test_path data/mmnistL_test_500x348.npy --warm 48
-mark "PHASEC factor metrics (identity/trajectory/count — the mandate)"
-for ARM in mmL-flat mmL-hier; do
-  $PY -u -m hvp_rev.phasec_eval --arm $ARM --seed 0 \
-      --train_path data/mmnistL_train_3000x100.npy --test_path data/mmnistL_test_500x348.npy \
-      --ae_path logs_rhcp/hier_ae_mmnistL.pt
-done
-mark "PHASEC_ALL_DONE  # then: fig15 + CH5 §5.3.1 / ROZDIL4 §4.6.2 swaps (EXPECTED: null)"
+mark "PHASEC replicated equivalence summary (seed-visible; no frame pooling across seeds)"
+$PY -u -m hvp_rev.phasec_summary --seeds 0,1,2
+mark "PHASEC_ALL_DONE  # then: fig15 + result-contingent text swaps"

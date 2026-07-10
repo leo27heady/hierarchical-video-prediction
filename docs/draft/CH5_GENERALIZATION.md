@@ -42,16 +42,18 @@ decision table, not a single model — every entry below is a measured result, n
   benchmark's exact metric convention, bit-verified through `hvp_rev/eval_adapters` before any
   model number is quoted.
 
-**The generalization prediction is itself a claim of the memory-horizon thesis:** hierarchy pays
-where content verifiably leaves the observation and returns (testbed A: two-seed CI-clean win),
-and is a null where no such horizon exists. Of the datasets below, *none* of the open benchmarks
-has a strong memory horizon — so the pre-registered expectation for the hierarchy factor is a
-null nearly everywhere, and §5.3 already confirms it on Moving MNIST. What generalizes is the
-*recipe* (heads per regime, window packaging, floors/ceilings protocol), not a hierarchy win.
+**The generalization question tests the scope of the memory-horizon thesis.** Testbed A supplies
+the measured re-entry case; the short 10→10 Moving-MNIST bridge and TaxiBJ supply measured
+null/economy-only boundary observations. Those short protocols do not prove that an open dataset
+lacks longer-lived state: Phase C separately tests whether persistent digit identity and velocity
+become memory-relevant over 300-frame rollout. What is already shown to generalize is the
+measurement recipe (heads per regime, window packaging, floors/ceilings protocol), not a positive
+hierarchy effect.
 
 [TABLE ch5-0: dataset × memory-horizon presence × predicted hierarchy outcome — loopmom (present;
 WIN, measured, two seeds); hgrid3 (present beyond self-feed trust; bounded, measured, §4.5 pair
-outcome); Moving MNIST (absent — nothing exits the frame; null, MEASURED §5.3); 2D rotations
+outcome); Moving MNIST (no re-entry horizon at 10→10; null MEASURED §5.3; persistent-state
+demand at 300 frames TESTED by Phase C); 2D rotations
 (absent — object always fully visible; null [EXPECTED]); 3D polycubes (weak — self-occlusion
 cycles content out of view; small hard-bin edge possible [EXPECTED]); MMNIST-CIFAR (absent;
 null [EXPECTED]); TaxiBJ (absent — global field, nothing leaves; MEASURED §5.7: flat-reg wins at
@@ -132,13 +134,12 @@ Three readings, carried verbatim from the bridge record:
    disclosure: both measured rows are diffusion-head best-of-1; under the §4.2.2 reversal the
    regression twin is the regime-matched arm for this protocol — recorded as an observation
    about the recipe, not a promised run; this section is final as measured.
-3. **The flat ≈ hier null (Δ 0.4 MSE ≈ 0) is the PREDICTED boundary condition, not a failure.**
-   Moving MNIST has no off-screen re-entry — nothing ever leaves the frame — so there is no
-   memory horizon for a coarse level to carry. The bridge thereby closes the article's argument
-   *on the field's own benchmark*: where the memory horizon is absent, hierarchy is a null
-   (consistent with this project's founding MMNIST observations); where it exists (testbed A),
-   the matched-budget win is two-seed CI-clean. "When does hierarchy pay" gets its negative
-   control for free.
+3. **The flat ≈ hier null (Δ 0.4 MSE ≈ 0) is the measured short-protocol boundary, not a
+   failure.** Moving MNIST has no off-screen re-entry in 10→10, so this protocol does not expose
+   the re-entry-defined demand isolated by testbed A. It does not rule out a different long-lived
+   state demand: persistent identity and velocity are tested separately by Phase C. Thus the
+   short bridge is a boundary observation, while the 300-frame experiment determines whether
+   that boundary persists at long horizon.
 
 [FIG ch5-1: qualitative 10→10 strips, mm-flat vs mm-hier vs GT at h1/h5/h10 — assets EXIST:
 `logs_rhcp/mmnist_bridge_mm-{flat,hier}_s0_t15000.png`. Caption: sharp committed digits, both
@@ -159,17 +160,18 @@ protocol. Two protocol notes are inherited and disclosed: the re-entry hardness 
 here (nothing leaves the frame), and the SSIM display panel follows the §2.8 carve-out
 (calibration with persistence and all-black floors, not evidence).
 
-[EXPECTED-PhaseC (primary — the thesis's own prediction, extending the measured 10→10 null):
-hier ≈ flat within ±0.005 ALL fg-MSE at every horizon bin over the full rollout. Text on
-confirmation: "the null is not an artifact of the short protocol: with no memory horizon, the
-coarse stream has nothing to buy at ANY horizon, and the two configurations degrade together —
-the same instrument that separates them decisively on the looping testbed cannot separate them
-here. Where hierarchy pays is a property of the data's memory structure, not of the rollout
-length." ALTERNATIVE (a hier win): triggers a data/protocol examination first; if the run is sound,
+[EXPECTED-PhaseC (primary — extending the measured 10→10 null): replicated practical
+equivalence over three training seeds. For fg-MSE, each seed's paired clip-cluster 95% CI must
+lie wholly within ±0.005 on the primary ALL endpoint; horizon bins are secondary diagnostics.
+Factor-metric margins fixed before launch: identity ±0.02 accuracy, trajectory ±1.0 pixel, count
+deviation ±0.05 digit/frame. Text on confirmation: "persistent identity and velocity remained
+recoverable from recent context under this protocol, so the spatial long-span stream bought no
+measurable advantage and the two configurations degraded together." ALTERNATIVE (a hier win):
+triggers a data/protocol examination first; if the run is sound,
 it is reported as a genuine finding — the short 10→10 bridge did not expose a memory-relevant
 regime (Moving MNIST carries persistent identity and velocity state), while the long-horizon
-factor metrics did — extending the boundary account rather than contradicting it, seed-1
-replication gated before any wording (pre-registered interpretation amendment, 2026-07-10).]
+factor metrics did — extending the boundary account rather than contradicting it; all three
+training seeds are already unconditional (pre-registered amendments, 2026-07-10).]
 
 [FIG ch5-2: fg-MSE vs horizon, flat vs hier overlapping [EXPECTED], persistence + all-black
 floors; optional SSIM calibration panel. Asset: `docs/figures/fig15_mmnist_control.png`
@@ -278,8 +280,8 @@ metrics per the pre-registered mandate). Second, the **competence anchor**: the 
 generalist stack lands inside the OpenSTL TaxiBJ leaderboard band on MAE/PSNR (§5.7, measured),
 answering "is this system a toy?" without claiming leaderboard superiority anywhere (§5.2
 standing rule; measured concession: 180.91 vs 26.69 aggregate MSE on MMNIST). Third, the
-**boundary observation**: on both horizon-free datasets the hierarchy factor behaves exactly as
-the memory-horizon account predicts — a null (§5.3) or economy-only (§5.7) — while the two-seed
+**boundary observation**: in the measured short/no-re-entry regimes the hierarchy factor is a
+null (§5.3) or economy-only (§5.7), while the two-seed
 CI-clean win exists precisely where the horizon exists (testbed A, §4.3). **No positive-transfer
 claim is made**: demonstrating that the win band transfers to natural video requires a
 natural-video re-entry protocol with estimated hardness labels, which is future work (§8.5),

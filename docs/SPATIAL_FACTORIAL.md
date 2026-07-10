@@ -449,11 +449,10 @@ defaults to report-only.
 
 Standard bouncing-digit MMNIST (OpenSTL-matched `scripts/gen_moving.py`), NEW frozen AE trained
 on its frames, zero-action conditioning (disclosed; the action interface is inert on actionless
-data), train 3000x100 / test 500x348, WARM=48, ~300-frame rollouts. Arms: flat-budget-mm,
-hier-long-mm (+ hier3-mm optional) at 1152 tok, B16x30k, seed 0. PRIMARY (the thesis's own
-prediction, extending the measured T7 null): hier ~= flat on ALL fg-MSE (no memory horizon ->
-nothing for coarse span to buy); the value of the column is the MEASURED null in the same table
-where loopmom shows the band — "where hierarchy pays and where it cannot". Disclosures: hardness
+data), train 3000x100 / test 500x348, WARM=48, ~300-frame rollouts. Arms: `mmL-flat` and
+`mmL-hier` at 1152 tok, B16x30k, **seeds 0/1/2 unconditionally**. PRIMARY (extending the measured
+T7 short-protocol null): replicated practical equivalence; the column tests whether the measured
+10→10 boundary persists when identity/velocity state is evaluated over 300 frames. Disclosures: hardness
 axis inert (nothing exits the frame); fg-threshold trivial (black bg); an SSIM-vs-horizon curve
 may be SHOWN for literature comparability with persistence + all-black floors drawn, under the
 CH2 §2.8 carve-out (calibration, not claim). A hier win here would contradict T7 and trigger
@@ -461,7 +460,9 @@ re-examination before any reporting.
 
 ### Cost ledger (estimates; VRAM all << the 11.8GB flat-c2 point)
 B1 ~2h train+~1h eval; B2 ~2.5h+1h; AE-top ~0.25h; B3 ~3h+1h; blinding 3x ~0.5h; compares
-minutes. Phase B total ~11-12 GPU-h. Phase C: AE ~0.3h + 2-3 arms x ~3-4h + evals ~ 1 GPU-day.
+minutes. Phase B total ~11-12 GPU-h. Phase C was originally costed at ~1 GPU-day for one seed;
+the pre-launch three-seed equivalence amendment revises it to ~28-32 GPU-h including duplicate
+factor-metric rollouts.
 
 ### B1 MEASURED (2026-07-10 15:42; `logs_rhcp/cwstyle_phaseB.log`, B1_DONE;
 ### npz `rhvd_eval_hier-s2-min_s0.npz`) — **PRIMARY BRANCH CONFIRMED: the edge moves with the
@@ -523,9 +524,9 @@ trained as partners; reg-flat/reg-long reused at both seeds); seed-means, never 
 two-seed before claim escalation; the B2 seed-asymmetry amendment applies to strided-flat-reg
 verbatim; GO-gate before hier-s4-min; loss-dilution disclosure applies to hier3-reg verbatim;
 anything uncovered defaults to report-only.
-**Queue:** CWSTYLE_PHASE_B_ALL_DONE → S1-a (hier-s2-min s1) → **this block**
-(`scripts/run_cwstyle_regtwins.sh`) → Phase C → G-i/G-ii. S1-b (strided-flat s1) inserts before
-Phase C if its amendment condition fires.
+**Historical queue at registration time:** CWSTYLE_PHASE_B_ALL_DONE → S1-a → this block →
+Phase C. Superseded after B2 and the replication/evidentiary-priority amendments by the explicit
+publication-priority queue below: S1-a/S1-b → regtwins `core` → Phase C → regtwins `optional`.
 
 ### B2 MEASURED (2026-07-10 19:08; `logs_rhcp/cwstyle_phaseB.log`, B2_DONE;
 ### npz `rhvd_eval_strided-flat_s0.npz`) — **A THIRD OUTCOME, STRONGER THAN THE PRIMARY:
@@ -567,10 +568,10 @@ strided-flat (11 full-res@stride4 + 6f = 1,088 tok, span 48, NO coarse level), s
   outcome-dependent; pre-committing now removes that degree of freedom. Memory-arm seed
   variance (~0.016) is material to any headline resting on these means. Reporting rule:
   seed-level effects shown individually + clip-level CIs within each seed; frames are NEVER
-  pooled across seeds as independent observations. Regression arms: the standing two-seed rule
-  applies unchanged (reg-long/reg-flat are two-seed; strided-flat-reg escalates to s1 iff its
-  s0 cell is claim-bearing) — quoted headline arms must carry >= 2 seeds, the diffusion trio 3.
-  Queue: appended to `run_cwstyle_regtwins.sh` after REGTWINS_DONE (~9 GPU-h).
+  pooled across seeds as independent observations. Because the B2 head axis is article-critical,
+  `strided-flat-reg` seeds 0 and 1 are unconditional regardless of sign; same-seed reg-long/
+  reg-flat partners already exist. Other regression cells remain report-only unless escalated.
+  Queue: part of `run_cwstyle_regtwins.sh core`; table regeneration occurs at every core marker.
 - **PHASE-C METRIC MANDATE (conditional rule, binding):** IF the article/dissertation text
   engages CW-VAE-facing long-horizon retention on Moving MNIST (the current CH5 §5.3.1 draft
   DOES — it names CW-VAE's 1,000-frame claim), THEN Phase C MUST report, beyond fg-MSE:
@@ -594,5 +595,47 @@ state, and a short-protocol null cannot prove the absence of long-horizon memory
 structure. Decision rule: a CI-clean hier win triggers a data/protocol EXAMINATION first (as
 before); if the run is sound, it is REPORTED AS A GENUINE FINDING — "the short OpenSTL bridge
 did not expose a memory-relevant regime, while the long-horizon factor metrics did" — extending
-the boundary account, not breaking it (and it would then gate a seed-1 replication per the
-standing rule before any wording lands).
+the boundary account, not breaking it. The later replication amendment below makes seeds 0/1/2
+unconditional for either branch before any wording lands.
+
+### PHASE-C REPLICATION + EQUIVALENCE AMENDMENT (pre-registered before launch)
+
+Both outcomes require replication: Phase C trains `mmL-flat` and `mmL-hier` at seeds 0/1/2.
+A null is not inferred from a CI crossing zero. Per seed, practical equivalence requires the
+complete paired clip-cluster 95% CI to lie within the pre-fixed margin on the primary ALL
+endpoint; horizon bins are secondary diagnostics. Margins fixed before model output exists:
+fg-MSE ±0.005; digit-identity accuracy ±0.02; trajectory error ±1.0 px on 64×64; count deviation
+±0.05 digit/frame. `hvp_rev.phasec_summary` reports every seed separately and declares replicated
+equivalence only if every seed interval is inside its margin. A sound positive effect is likewise
+reported seed by seed; frames are never pooled across training seeds.
+
+**Publication-priority queue:** Phase B → S1-a/S1-b → `run_cwstyle_regtwins.sh core`
+(replicated B2 regression head, 512 head control, S2 trio) → Phase C →
+`run_cwstyle_regtwins.sh optional` (hier3-reg, E-320). Optional probes cannot delay L4/L8.
+
+### B3 MEASURED (2026-07-10 22:57; `logs_rhcp/cwstyle_phaseB.log`, B3_DONE;
+### npz `rhvd_eval_hier3_s0.npz`) — **ALTERNATIVE (loss) BRANCH: the depth-plus-objective-
+### allocation probe COSTS at fixed budget on the single-scale task**
+
+hier3 (48 top(2×2) + 24c + 9f = 1,152 tok; factor-2 pyramid), seed 0:
+- ALL fg-MSE **0.2044** / sharp **0.0564** (the lowest sharpness of the 1,152 class) — vs
+  hier-long (0.1848/0.0729): Δ **−0.0196 [−0.0248, −0.0146] LOSS**; vs flat-budget (0.2038):
+  −0.0007 [−0.0050, +0.0040] **null** — the three-stream arm lands exactly at the flat arm's
+  level, erasing the two-stream win entirely.
+- vs the expectation baseline: PRIMARY expected a null vs hier-long (|Δ| < 0.016); measured a
+  CI-clean loss (ALL 0.2044 vs expected 0.175–0.190). The pre-registered ALTERNATIVE (loss)
+  branch applies, with THREE disclosed mechanisms, none separable at this design point:
+  (i) **loss-weight dilution** (pre-registered amendment: the 3-term loss gives the fine level —
+  which every metric decodes — ~2/3 of its 2-level weight; the class-lowest sharpness 0.0564 is
+  the predicted signature); (ii) **fixed-step optimization load** (a third stream to learn at
+  30k); (iii) **top-stream information floor** (2×2 = 32-px cells vs ~20-px digits: the top
+  stream spans 48 frames but likely cannot carry retrieval-grade identity, while the coarse
+  stream was cut 48→24 frames to pay for it). Per the binding amendment, this is REPORTED as
+  "the depth-plus-objective-allocation probe costs ~0.02 at fixed budget under equal-sum loss
+  weighting on a single-scale task" — **NOT** as "depth hurts"; a weight-matched follow-up would
+  be required for a causal depth statement, and none is claimed.
+- Ledger L5: the depth HYPOTHESIS stands (single-scale data cannot reward a third scale; the
+  measured branch is consistent with all three precedents — per-pixel gate, testbed-B, the
+  capacity-dump history). Disposition per the approved triage: **appendix-grade** (not
+  weight-matched-clean); the multi-timescale testbed (L10) remains where a depth LAW could be
+  established.

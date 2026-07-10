@@ -40,7 +40,9 @@ re-entry-stratified. It is also worth stating what CW-VAE's paper does and does 
 depth: its depth evidence is an information-allocation (KL-per-level) analysis, not a
 prediction-quality dose–response, and the authors themselves observe that a two-level model
 sufficed for their maze dataset; our table carries the quality-per-depth cells directly,
-including the single-scale depth null [EXPECTED-B3]. VTA [REF] (a two-level model whose lower
+including the measured single-scale depth probe (§4.4.5: a cost at fixed budget, with the
+objective-allocation confound disclosed — agreeing with their observation from the quality
+side). VTA [REF] (a two-level model whose lower
 level resets when the upper level ticks — the reset artifacts CW-VAE documents) and the clockwork
 lineage [REF: Koutník et al. 2014, Clockwork RNN] are the temporal-abstraction relatives of our
 strided arms; NoTmpAbs is the conceptual ancestor of our "same budget, no abstraction" flat
@@ -97,9 +99,10 @@ For the record, this article does **not** claim:
 3. **No hierarchy-dominance claim.** Hierarchy wins a bounded budget band; flat wins outside it
    (below the span threshold and at window saturation) — measured, with CIs, at six budgets with
    both edges located (the upper edge bracketed to (1,792, 2,432)).
-3a. **No depth claim on single-scale data.** [EXPECTED-B3: a third stage at matched budget is a
-   measured null on this testbed; depth is claimed only as bounded by the data's memory-scale
-   count, never as generally beneficial.]
+3a. **No depth claim on single-scale data.** Measured (§4.4.5, s0): the three-stream probe
+   COSTS at matched budget on this testbed, with the objective-allocation confound disclosed;
+   depth is claimed only as bounded by the data's memory-scale count — never as generally
+   beneficial, and never as generally harmful either.
 4. **No rollout-stabilization claim for reversibility.** Invertibility ≠ stability is one of our
    own results (P3).
 5. **No leaderboard claim on OpenSTL suites.** Aggregate pixel-sum MSE on mostly-static

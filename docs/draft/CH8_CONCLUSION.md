@@ -55,8 +55,11 @@ section only when its evidence row is complete, and its wording carries its scop
   static-world setting (maximally kind to temporal subsampling), this autoencoder's 4×4 code;
   data-dependence untested (a rate-stress suite is future work).
 - **L5 — Depth hypothesis (allocation probe, not a law).** Depth should pay only where the data
-  contain another scale to own; single-scale loopmom can measure only the null branch, and the
-  three-stage probe is a depth-plus-objective-allocation experiment (loss-dilution disclosed).
+  contain another scale to own. Measured (seed 0): the three-stage probe *costs* at fixed budget
+  on single-scale loopmom (−0.0196 [−0.0248, −0.0146] vs the two-stage arm; null vs flat; the
+  class-lowest sharpness matching the disclosed loss-dilution signature) — reported as a
+  depth-plus-objective-allocation result with three inseparable mechanisms (loss dilution,
+  optimization load, top-stream information floor), never as "depth hurts."
   A depth *law* requires the multi-timescale testbed of §8.5.
 - **L6 — Trustworthy-memory law.** A span sufficient for single-step retrieval can fail under
   self-fed rollout: at the ~213-frame-loop operating point, retrieval is real and

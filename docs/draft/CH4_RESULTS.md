@@ -450,7 +450,7 @@ benchmark [REF: CW-VAE] (whose format we adopt and whose controls we tighten —
 | spatial | coarse 4×4 stream, stride 1 | 4× span/token; per-level decodability; dense temporal coverage | abstraction cost −0.008 (diff) / ≈0 (reg) at fixed window | §4.4.1 measured |
 | temporal | full-res history, stride 4 (resolution-depth 1, **rate-depth 2** — the clockwork quadrant) | 4× span/token; full detail at anchors — **best 1152-class packaging measured (diff head)** | inter-anchor blindness; no cheap decodable level | §4.4.3 measured: **0.1652, beats hier-long +0.0197** (s0; s1 queued) |
 | spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above + a ≈+0.017 family plateau offset | §4.4.2 measured: **+0.0330 win @512 tok** (s0; s1 queued) |
-| depth | + 2×2 top stream | a third scale to own | dead weight below the data's scale count; slower fixed-step convergence | §4.4.5 [EXPECTED: null vs 2-stage]; §4.5; per-pixel gate null (§4.4.1) |
+| depth | + 2×2 top stream | a third scale to own | measured: **−0.0196 loss vs 2-stage at fixed budget** (allocation confound disclosed: loss dilution + top info-floor + optimization load) | §4.4.5 measured ALT(loss), s0, appendix-grade; §4.5; per-pixel gate null (§4.4.1) |
 | allocation | span-first sizing | the win band + its measured edges | — | §4.3.6 measured |
 
 ### 4.4.1 The spatial factorial: economic and head-conditional, not intrinsic
@@ -632,16 +632,21 @@ triggers seed-1 on the flipped cell before wording.]
 The **depth row** is the grid's most instructive cell. A three-stage arm (`hier3`, 2×2/4×4/8×8
 factor-2 pyramid: 48 top + 24 coarse + 9 fine = the same 1,152 tokens as the headline pair) tests
 whether a third scale helps on a task with — by construction — a single memory scale and a
-protocol-capped 48-frame history. [EXPECTED-B3 (primary): hier3 ALL ≈ 0.175–0.190, |Δ| vs
-hier-long within the seed spread 0.016 → NULL. Text on confirmation: "a third stage on a
-single-scale task can only re-allocate, not extend: depth must match the data's memory-scale
-count — consistent with the per-pixel gate null, the operating-point-B boundary, and CW-VAE's own
-observation that a two-level model sufficed for their maze dataset." ALTERNATIVE (win): a real
-re-allocation benefit; escalate to seed 1 before any wording lands. ALTERNATIVE (loss): two
-disclosed mechanisms, not one — the fixed-step context-length cost (§4.3.6 regime disclosure)
-AND loss-weight dilution: the three-level loss sums three per-level terms, so hier3's effective
-fine-level weight is ~2/3 of the two-level arms' while every metric decodes the fine latents;
-a small loss is therefore NOT reported as "depth hurts" without a weight-matched follow-up.]
+protocol-capped 48-frame history. **Measured (2026-07-10, seed 0) — the pre-registered ALTERNATIVE (loss) branch.** hier3
+scores ALL **0.2044** with the class-lowest sharpness (0.0564): a CI-clean loss to hier-long
+(**−0.0196 [−0.0248, −0.0146]**) and a null against flat-budget (−0.0007) — the third stream
+erases the two-stream win entirely at fixed budget. Three disclosed mechanisms, none separable
+at this design point: loss-weight dilution (the pre-registered amendment — the fine level, which
+every metric decodes, carries ~2/3 of its two-level weight; the class-lowest sharpness is that
+mechanism's predicted signature), fixed-step optimization load, and the top-stream information
+floor (2×2 = 32-px cells against ~20-px digits, while the coarse stream was cut 48→24 frames to
+pay for it). Per the binding amendment this is reported as **"the depth-plus-objective-allocation
+probe costs ≈0.02 at fixed budget under equal-sum loss weighting on a single-scale task"** — not
+as "depth hurts"; a weight-matched follow-up would be required for a causal depth statement and
+none is claimed. The depth hypothesis (L5) stands: single-scale data cannot reward a third
+scale — consistent with the per-pixel-gate null, the operating-point-B boundary, and CW-VAE's
+own two-levels-sufficed observation; the arena where depth could win remains the multi-timescale
+testbed of §8.5. Disposition per the approved triage: appendix-grade.
 
 [FIG ch4-7: degradation curves — fg-MSE growth and sharpness retention over the 152-frame rollout
 for all grid configurations + persistence floor + AE ceiling ("how long each shape keeps its
@@ -833,9 +838,10 @@ the frontier's currency in its strongest form — temporally subsampled full-res
 not only reproduces but EXCEEDS the coarse packaging under the diffusion head (strided-flat
 0.1652 beats hier-long +0.0197 [+0.0143, +0.0252] at fewer tokens, sharper by 0.019); the
 coarse level's remaining defense is per-level decodability, dense coverage, and the regression
-head (twin queued). [EXPECTED-B3: depth is bounded by
-the data's memory-scale count — a third stage on this single-scale task is a measured null at
-matched budget.] Together with the blinding attribution (§4.4.4), the chapter's answer to "which
+head (twin queued). MEASURED (s0, ALT-loss branch): the three-stream
+probe COSTS at fixed budget (−0.0196 vs the two-stream arm; null vs flat) with the allocation
+confound disclosed — reported as a depth-plus-objective-allocation result, not "depth hurts";
+the depth hypothesis (single-scale data cannot reward a third scale) stands. Together with the blinding attribution (§4.4.4), the chapter's answer to "which
 hierarchy?" is a sizing rule, not an architecture: cover the horizon with the cheapest family
 that spans it, spend the remainder on recency, and add depth only when the data has scales left
 to own.

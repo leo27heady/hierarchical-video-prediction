@@ -216,7 +216,7 @@ CH1 abstract, CH4 §4.3.6, CH8 §8.1, Розділ 4 §4.3.6, VYSNOVKY, fig9/fig
 |---|---|---|---|
 | B1 hier-s2-min @512 | ALL 0.170–0.180; Δ +0.04..+0.05 CI>0 all cells; dt-gate signature | ALL **0.1893**; Δ **+0.0330** [+0.0246,+0.0419]; 14/14 cells WIN; dt-signature exact | **primary CONFIRMED**; magnitude below range → family plateau offset ≈+0.017 discovered (sparser anchors); s1 queued |
 | B2 strided-flat @1088 | ALL 0.170–0.185; ≥ flat-budget CI-win; vs hier-long null-ish (|Δ|<0.01) | ALL **0.1652** / sharp 0.0919; BEATS hier-long **+0.0197** [+0.0143,+0.0252]; beats flat-budget +0.0386 | **THIRD OUTCOME, stronger than primary** — span currency confirmed in strongest form; softening applied at s0; **S1-b required, queued** |
-| B3 hier3 @1152 | ALL 0.175–0.190; vs hier-long |Δ| < 0.016 (null) | ⟨npz⟩ | ⟨⟩ |
+| B3 hier3 @1152 | ALL 0.175–0.190; vs hier-long |Δ| < 0.016 (null) | ALL **0.2044** / sharp 0.0564; vs hier-long **−0.0196** [−0.0248,−0.0146] LOSS; vs flat null | **ALT(loss)**, outside expected range; 3 confounds disclosed; appendix-grade |
 | blind-coarse (hier-long) | ALL → ≈0.20+; dt≤48 HARD collapse | ⟨npz⟩ | ⟨⟩ |
 | blind-fine (hier-long) | h1–8 + sharpness cost; long-h mild | ⟨npz⟩ | ⟨⟩ |
 | Phase C MMNIST pair | hier ≈ flat, |Δ| ≤ 0.005 every bin | ⟨npz⟩ | ⟨⟩ |

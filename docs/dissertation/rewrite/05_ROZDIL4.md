@@ -804,7 +804,7 @@ tap, disclosed), foreground-masked metrics.
 | просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
 | часова | повнороздільна історія, крок 4 (глибина-за-роздільністю 1, **за-темпом 2** — квадрант clockwork) | 4× прольоту/токен; повна деталізація в якорях — **найкраще пакування класу 1152 за s0 (диф. ядро; s1 у черзі)** | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 виміряно: **0.1652, > hier-long на +0.0197** (s0; s1 у черзі) |
 | просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище + сімейний зсув плато ≈+0.017 | §4.4.2 виміряно: **+0.0330 @512 ток.** (s0; s1 у черзі) |
-| глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
+| глибина | + верхній потік 2×2 | третій масштаб | виміряно: **−0.0196 проти 2-рівневої за фіксованого бюджету** (розкритий конфаунд розподілу цільової функції) | §4.4.5 виміряно ALT(loss), s0, рівень додатка; §4.5 |
 | розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |
 
 ### 4.4.1 Просторовий факторіал: економічний, залежний від ядра вердикт
@@ -940,15 +940,17 @@ asset fig14_level_blinding.png, QUEUED (eval-only).]**
 disclosed per row; EBT column = the §4.2.4 characterized negative, no rollout cells by design);
 17 measured rows + B1/B2/B3 pending.]** The depth row: `hier3` (2×2/4×4/8×8 factor-2 pyramid,
 48 top + 24 coarse + 9 fine = the same 1,152 tokens) on a task with a single memory scale and a
-protocol-capped 48-frame history. [EXPECTED-B3 (primary): NULL against hier-long (|Δ| within the
-seed spread 0.016) → «глибина обмежена кількістю масштабів пам'яті в даних: третій рівень на
-одномасштабній задачі лише перерозподіляє, а не розширює» [UA-PASS] — consistent with the
-per-pixel-gate null, the §4.5 boundary, and CW-VAE's own two-levels-sufficed observation.
-ALTERNATIVE (win): a real re-allocation benefit — escalate to seed 1 first. ALTERNATIVE (loss):
-two disclosed mechanisms — the fixed-step context-length cost (§4.3.6 regime disclosure) AND
-loss-weight dilution (the 3-level loss sums three per-level terms → the fine level, which all
-metrics decode, carries ~2/3 of its 2-level weight); a small loss is NOT reported as «глибина
-шкодить» without a weight-matched follow-up.] **[FIG 4-15 —
+protocol-capped 48-frame history. **MEASURED (2026-07-10, s0) — the pre-registered ALTERNATIVE (loss) branch:** hier3 ALL
+**0.2044** / sharp 0.0564 (class-lowest): CI-clean loss to hier-long (**−0.0196
+[−0.0248, −0.0146]**), null vs flat-budget (−0.0007) — the third stream erases the two-stream
+win at fixed budget. Three inseparable disclosed mechanisms: loss-weight dilution (per the
+amendment; the class-lowest sharpness is its predicted signature), fixed-step optimization
+load, and the top-stream information floor (2×2 = 32-px cells vs ~20-px digits, with the coarse
+stream cut 48→24 to pay for the top). Reported as «зонд глибина-плюс-розподіл-цільової-функції
+коштує ≈0.02 за фіксованого бюджету», NOT «глибина шкодить» [UA-PASS]; the depth hypothesis
+stands (single-scale data cannot reward a third scale — consistent with the per-pixel-gate
+null, the §4.5 boundary, CW-VAE's two-levels-sufficed observation). Disposition:
+appendix-grade; a weight-matched follow-up would be required for any causal depth statement. **[FIG 4-15 —
 PLACEHOLDER: degradation curves over the 152-frame rollout for all grid configurations
 («скільки кожна форма утримує метрику»); asset fig12_cwstyle_curves.png, EXISTS — regenerate
 after Phase B.]**
@@ -1219,12 +1221,14 @@ flat and two-stage configurations at the 1,152-token budget, retrained on standa
 clips (zero-action conditioning, disclosed; the re-entry hardness axis is inert here), rolled out
 ~300 frames under the full protocol; the SSIM display panel follows the §4.1.5/§2.8 carve-out
 (calibration with persistence and all-black floors, not evidence). [EXPECTED-PhaseC (primary —
-the theory's own prediction): hier ≈ flat within ±0.005 ALL fg-MSE at every horizon bin — «де
-ієрархія окуповується — властивість структури пам'яті даних, а не довжини розгортання»
+three-seed practical equivalence): for each seed the paired clip-cluster 95% CI on ALL fg-MSE
+must lie wholly within ±0.005; identity/trajectory/count margins are respectively ±0.02,
+±1.0 px and ±0.05 digit/frame; horizon bins are secondary diagnostics — «де
+ієрархія окуповується — властивість структури пам'яті даних, а не лише довжини розгортання»
 [UA-PASS]. ALTERNATIVE (a hier win): examination first; if sound, reported as a genuine finding — the
 short bridge did not expose a memory-relevant regime (persistent identity/velocity state) while
-the long-horizon factor metrics did — extending the boundary account; seed-1 gated
-(interpretation amendment 2026-07-10).] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
+the long-horizon factor metrics did — extending the boundary account; all three training seeds
+are unconditional (interpretation/replication amendments 2026-07-10).] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
 hier overlapping [EXPECTED] + floors; asset fig15_mmnist_control.png, QUEUED — Phase C.]**
 
 ### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
