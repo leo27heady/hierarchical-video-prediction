@@ -766,7 +766,7 @@ lower edge is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest
 of the campaign), alongside the two-seed 1,152-token pairing of §4.3.3. The §4.3
 efficiency claim takes its final, edge-measured form: **the hierarchy wins the band of token
 budgets in which its coarse span crosses the memory horizon while the flat window does not —
-[896, ~2,000) tokens at this operating point, both edges measured — and inverts outside the band.** [UA-PASS:
+[896, e) tokens with e measured to lie in (1,792, 2,432) at this operating point — and inverts outside the band.** [UA-PASS:
 «ієрархія виграє смугу токен-бюджетів, у якій її грубий діапазон покриває горизонт пам'яті, тоді
 як пласке вікно — ні»; «нижня межа смуги збігається з геометричним порогом 48×16 токенів»;
 «перевага максимальна на нижній межі смуги».]
