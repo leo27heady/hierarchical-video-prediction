@@ -218,13 +218,16 @@ class DiTBlock(nn.Module):
 class LatentTokenizer(nn.Module):
     COARSE_HW = 4  # (B,LAT,4,4) -> 16 tokens
     FINE_HW = 8    # (B,LAT,8,8) -> 64 tokens
+    TOP_HW = 2     # (B,LAT,2,2) -> 4 tokens  [hier3 depth-3 extension; level id 2]
 
-    def __init__(self, lat, d, n_ctx, k):
+    def __init__(self, lat, d, n_ctx, k, n_levels=2):
         super().__init__()
         self.d = d
         self.n_ctx = n_ctx
         self.patchify = nn.Linear(lat, d)                 # project LAT channels -> d
-        self.level_embedding = nn.Embedding(2, d)         # 0=coarse, 1=fine
+        # n_levels=2 (default) keeps the module state-dict BIT-IDENTICAL to every existing
+        # checkpoint; n_levels=3 (hier3 arms only) adds level id 2 = TOP (2x2) + its posemb.
+        self.level_embedding = nn.Embedding(n_levels, d)  # 0=coarse, 1=fine, (2=top)
         self.role_embedding = nn.Embedding(2, d)          # 0=context, 1=target
         # frame-index / temporal posemb: n_ctx context frames get index 0..n_ctx-1, target = n_ctx
         self.frame_embedding = nn.Embedding(n_ctx + 1, d)
@@ -233,6 +236,9 @@ class LatentTokenizer(nn.Module):
         self.fine_pos = nn.Parameter(torch.zeros(self.FINE_HW ** 2, d))
         nn.init.normal_(self.coarse_pos, std=0.02)
         nn.init.normal_(self.fine_pos, std=0.02)
+        if n_levels >= 3:
+            self.top_pos = nn.Parameter(torch.zeros(self.TOP_HW ** 2, d))
+            nn.init.normal_(self.top_pos, std=0.02)
         # action conditioning: k future actions in {-1,0,1} -> {0,1,2}
         self.action_embedding = nn.Embedding(3, d)
         self.k = k
@@ -246,7 +252,8 @@ class LatentTokenizer(nn.Module):
         # returns x (patch-projected latents + spatial posemb), and role/level/frame ids for c
         B = z.shape[0]
         tok = self.patchify(self._cells(z))                       # (B,N,d)
-        pos = self.coarse_pos if level == 0 else self.fine_pos    # (N,d)
+        # (N,d); level 2 = top exists only on 3-level tokenizers -- branch lazily
+        pos = self.coarse_pos if level == 0 else (self.fine_pos if level == 1 else self.top_pos)
         tok = tok + pos[None]
         N = tok.shape[1]
         dev = z.device
