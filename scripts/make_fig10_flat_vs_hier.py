@@ -40,13 +40,28 @@ def mm(vals):
 
 fig, ax = plt.subplots(1, 2, figsize=(12.4, 5.0), gridspec_kw={"width_ratios": [1.15, 1]})
 
-# ---------- Panel A: grouped bars ----------
+# ---------- Panel A: grouped bars + the hier PLATEAU band ----------
+# From 896 tokens on, every hier arm shares the same protocol-capped 48-frame span; extra budget
+# buys only ~94%-redundant recent fine frames, so the hier side is a PLATEAU, not a trend. The
+# envelope [0.1666, 0.1848] = hier seed extremes ≥896 incl. the 60k regime point (hier-long-60k
+# 0.1666, R-C). Regime note: the 3072 pair trained B8×60k (hatched); hier arms are
+# regime-sensitive (−0.018 at 2× steps, R-C) while flat arms are not (−0.0006).
+PLAT_LO, PLAT_HI = 0.1666, 0.1848
+REGIME_60K = {3072}
 x = np.arange(len(BUD)); w = 0.38
+ax[0].fill_between([x[1] - 0.55, x[-1] + 0.55], PLAT_LO, PLAT_HI, color=C_HIER, alpha=0.12,
+                   zorder=1, lw=0)
+ax[0].annotate("hier plateau ≈0.17 (span capped at the 48-frame loop;\n"
+               "seed+regime envelope — a plateau, not a trend)",
+               xy=(1.55, PLAT_HI), xytext=(-0.45, 0.2415), fontsize=7.5, color="#a34a33",
+               style="italic", ha="left", va="bottom",
+               arrowprops=dict(arrowstyle="->", color="#a34a33", lw=0.9))
 for i, b in enumerate(BUD):
     fm, flo, fhi = mm(flat[b]); hm, hlo, hhi = mm(hier[b])
-    ax[0].bar(x[i] - w/2, fm, w, color=C_FLAT, zorder=2,
+    hatch = "//" if b in REGIME_60K else None
+    ax[0].bar(x[i] - w/2, fm, w, color=C_FLAT, zorder=2, hatch=hatch,
               label="flat (full-res window)" if i == 0 else None)
-    ax[0].bar(x[i] + w/2, hm, w, color=C_HIER, zorder=2,
+    ax[0].bar(x[i] + w/2, hm, w, color=C_HIER, zorder=2, hatch=hatch,
               label="hierarchical (coarse + recent fine)" if i == 0 else None)
     if len(flat[b]) > 1:
         ax[0].plot([x[i]-w/2, x[i]-w/2], [flo, fhi], color="k", lw=1.1, zorder=3)
@@ -58,14 +73,15 @@ for i, b in enumerate(BUD):
     ax[0].text(x[i]-w/2, fm - 0.010, f"{fm:.4f}", ha="center", fontsize=7.5, color="w", zorder=4)
     ax[0].text(x[i]+w/2, hm - 0.010, f"{hm:.4f}", ha="center", fontsize=7.5, color="w", zorder=4)
 ax[0].axhline(PERSIST, color="0.4", ls=":", lw=1.0, zorder=1)
-ax[0].text(len(BUD)-1, PERSIST + 0.001, "persistence 0.2552", ha="right", va="bottom",
+ax[0].text(-0.45, PERSIST + 0.001, "persistence 0.2552", ha="left", va="bottom",
            fontsize=8, color="0.35")
 ax[0].set_xticks(x); ax[0].set_xticklabels([f"{b}\ntok" for b in BUD])
 ax[0].set_ylabel("ALL fg-MSE, 152-frame rollout (lower is better)")
 ax[0].set_xlabel("matched context-token budget")
 ax[0].set_ylim(0.14, 0.268)
-ax[0].set_title("A. Flat vs hierarchical at matched budgets\n"
-                "(bars = seed-mean; whisker = seed min–max where 2 seeds)", fontsize=10)
+ax[0].set_title("A. Flat vs hierarchical at matched budgets — flat descends through a hier "
+                "PLATEAU\n(bars = seed-mean; whiskers = seed min–max; hatched = B8×60k regime, "
+                "others B16×30k)", fontsize=9.5)
 ax[0].legend(loc="upper right", fontsize=8.5, framealpha=0.95)
 ax[0].grid(axis="y", alpha=0.25)
 

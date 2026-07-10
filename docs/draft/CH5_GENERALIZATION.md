@@ -144,6 +144,31 @@ Three readings, carried verbatim from the bridge record:
 `logs_rhcp/mmnist_bridge_mm-{flat,hier}_s0_t15000.png`. Caption: sharp committed digits, both
 arms; the null is visible — no memory horizon to separate them.]
 
+### 5.3.1 Long-horizon control: ~300-frame rollouts on standard Moving MNIST
+
+The 10→10 protocol above tests the short-horizon regime; the hierarchical literature's canonical
+claim on this dataset, however, is *long-horizon* retention — CW-VAE reports 1,000-frame
+open-loop rollouts. This subsection extends the negative control to that regime: the flat and
+two-stage configurations at the headline 1,152-token budget, retrained on standard bouncing-digit
+clips (OpenSTL-matched generator; zero-action conditioning, disclosed — the action interface is
+inert on actionless data), rolled out ~300 frames on long held-out clips under the full §2
+protocol. Two protocol notes are inherited and disclosed: the re-entry hardness axis is inert
+here (nothing leaves the frame), and the SSIM display panel follows the §2.8 carve-out
+(calibration with persistence and all-black floors, not evidence).
+
+[EXPECTED-PhaseC (primary — the thesis's own prediction, extending the measured 10→10 null):
+hier ≈ flat within ±0.005 ALL fg-MSE at every horizon bin over the full rollout. Text on
+confirmation: "the null is not an artifact of the short protocol: with no memory horizon, the
+coarse stream has nothing to buy at ANY horizon, and the two configurations degrade together —
+the same instrument that separates them decisively on the looping testbed cannot separate them
+here. Where hierarchy pays is a property of the data's memory structure, not of the rollout
+length." ALTERNATIVE (a hier win): would contradict the measured 10→10 null — pre-registered as
+stop-and-examine (data/protocol audit) before any reporting.]
+
+[FIG ch5-2: fg-MSE vs horizon, flat vs hier overlapping [EXPECTED], persistence + all-black
+floors; optional SSIM calibration panel. Asset: `docs/figures/fig15_mmnist_control.png`
+(QUEUED — Phase C).]
+
 ## 5.4 Author's 2D rotations — the [A2] testbed
 
 **Protocol.** Procedurally synthesized rotating polygonal shapes, 64×64, deterministic dynamics,

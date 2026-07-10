@@ -44,7 +44,16 @@ information-dominates any coarse record of the same span.
   or near a ground-truth anchor.
 - **The negative control:** on standard Moving MNIST — no off-screen re-entry, hence no memory
   horizon — flat ≈ hierarchical (180.91 vs 181.29 aggregate MSE), exactly as the thesis predicts
-  on a benchmark that cannot reward memory.
+  on a benchmark that cannot reward memory. [EXPECTED-PhaseC: the null extends to ~300-frame
+  rollouts — where hierarchy pays is a property of the data's memory structure, not of rollout
+  length.]
+- **The shape of the hierarchy (§4.4):** [EXPECTED-B1: the band's lower edge is
+  family-parametric — halving the coarse tick moved it from 896 to 512 tokens, at the token-
+  arithmetic prediction both times.] [EXPECTED-B2, branch-gated: span-per-token is the currency —
+  temporally subsampled full-resolution history reproduces the matched-budget win / ALT: the
+  coarse level's dense coverage carries value beyond span.] [EXPECTED-B3: depth is bounded by the
+  data's memory-scale count — a third stage on the single-scale testbed is a measured null at
+  matched budget.]
 
 ## 8.3 The two honest negatives that scope the claim
 
@@ -61,7 +70,8 @@ does not imply stability (perturbation growth 2.7e4× at Lip(F) ≤ 1).
 ## 8.4 Practical reading
 
 For a practitioner the frontier reads as a sizing rule: **spend tokens on span until the memory
-horizon is covered, and only then on resolution.** At the tightest budgets that cover the
+horizon is covered — using the cheapest abstraction family that covers it — and only then on
+resolution and recency; add depth only when the data has scales left to own.** At the tightest budgets that cover the
 horizon, the hierarchical packaging delivers the largest gains (a quality that flat context
 reaches only at ≈2.3–3× the budget, with quadratic attention making the compute gap larger
 still); once the budget affords the full horizon at full resolution, the hierarchy's advantage
@@ -79,4 +89,11 @@ outward; (3) a natural-video instantiation of the re-entry-stratified protocol (
 estimated rather than exact), building on the OpenSTL bridge; (4) a sharp renderer over the
 frozen latents (the adversarial-renderer precedent) to lift the decoder-owned blur ceiling that
 bounds all arms equally. A fifth, cheaper item is measurement, not construction: mapping where
-between loop 48 (works) and loop 213 (fails) the trustworthy-memory boundary sits.
+between loop 48 (works) and loop 213 (fails) the trustworthy-memory boundary sits. A sixth
+follows from the shape study's depth null [EXPECTED-B3]: the arena where depth *can* win is a
+**multi-scale testbed with a visible slow factor** — a slowly evolving, always-visible global
+variable (period ≫ the pan loop) layered under the fast re-entry dynamics. Slow-but-visible
+state is continuously refreshed, so a deep hierarchy's top level can own it without fighting the
+trustworthy-memory boundary that self-fed occluded recall runs into; this is the CW-VAE slowness
+regime rather than the retrieval regime, and the natural home for the re-based factor-4 pyramid
+(16×16 / 4×4 / 1×1) that a 16 GB budget cannot pair with long flat windows.

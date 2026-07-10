@@ -770,9 +770,37 @@ budgets in which its coarse span crosses the memory horizon while the flat windo
 як пласке вікно — ні»; «нижня межа смуги збігається з геометричним порогом 48×16 токенів»;
 «перевага максимальна на нижній межі смуги».]
 
-## 4.4 Факторне дослідження просторової абстракції: економічний, залежний від ядра вердикт
+## 4.4 Форми ієрархічної абстракції: просторова, часова, глибинна
 
-*(The spatial-abstraction factorial: an economic, head-conditional verdict.)*
+*(The shape of the abstraction: spatial, temporal, deep. Mirrors article CH4 §4.4 — the
+AUTHORITATIVE source for every number and both pre-registered branches.)*
+
+Ієрархія в латентному відеопередбачувачі — це не одна конструкція, а **сімейство форм**
+[UA-PASS: «сімейство форм ієрархії»]. A context-token budget can be packaged along four axes:
+**spatial abstraction** (every frame, at lower resolution), **temporal abstraction** (full
+resolution, at a coarser tick), **depth** (how many nested levels), and **allocation** (the split
+between long-span and recent-detail streams). Each shape buys memory span at a different token
+price and pays a different information cost; the systems-analysis question is therefore not «чи
+допомагає ієрархія», а **яка форма ієрархії окуповується, де і чому**. Three cells of this grid
+are measured in earlier sections (allocation — §4.3.6; the spatial factorial — §4.4.1 below; the
+slow-clock boundary — §4.5); the remaining cells (temporal family §4.4.2, span control §4.4.3,
+depth §4.4.5) follow the pre-registered program of `SPATIAL_FACTORIAL.md` (final block), and
+§4.4.5 assembles the grid into one comparison table in the manner of the Clockwork VAE benchmark
+[REF: CW-VAE] — the format adopted, the controls tightened (Розділ 1, §1.3.x; article §7.1):
+matched token budgets, capacity-neutral depth (levels add tokens, not parameters), foreground-
+masked metrics.
+
+**Table 4.7-A — таксономія форм (what each axis buys and costs; renumber at assembly).**
+
+| вісь | форма | купує | коштує | доказ |
+|---|---|---|---|---|
+| просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
+| часова | повнороздільна історія, крок 4 | 4× прольоту/токен; повна деталізація в якорях | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
+| просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище | §4.4.2 [EXPECTED: виграш @512 ток.] |
+| глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
+| розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |
+
+### 4.4.1 Просторовий факторіал: економічний, залежний від ядра вердикт
 
 Every hierarchy arm of §4.3 confounds two factors: the coarse spatial resolution of the history,
 and the longer window its cheaper tokens buy (an accepted external-review finding). The factorial
@@ -820,10 +848,9 @@ study on Moving MNIST found that an upper spatial level engaged unstably and add
 clean null for spatial abstraction as an *intrinsic* representational win. The factorial is
 consistent with that history rather than overturning it: isolated from the window confound,
 coarse history is not intrinsically better (it costs under diffusion and is at best free under
-regression); its value is what its cheapness buys. One declared omission: the temporal-only
-corner (strided full-resolution history) was not re-imported into operating point A, because the
-strided mechanism is separately characterized at operating point B (§4.5) and the
-window × resolution grid answers the resolution claim without it.
+regression); its value is what its cheapness buys. The temporal-only corner (strided
+full-resolution history), declared an omission in the factorial's pre-registration, is filled at
+operating point A by the span control of §4.4.3.
 
 **[FIG 4-10 — PLACEHOLDER]**
 *Content:* the 2×2 factorial as a diagram: axes window (18/48) × history resolution (full/
@@ -831,6 +858,65 @@ coarse), each cell annotated with arm name, token count, ALL fg-MSE; paired delt
 edges (resolution edges: −0.0082 diff / +0.0008 reg; window edge: −0.027 at fixed coarse
 representation), with the combined-optimum path highlighted.
 *Source:* **NEW** (drawing from Table 4.7).
+
+### 4.4.2 Часове сімейство та рухомий край смуги
+
+*(The temporal family and the moving edge. Full account: article §4.4.2.)*
+
+If the frontier's currency is span-per-token, the win band's lower edge is a constant of the
+**family**, not of the testbed: edge(family) ≈ (loop / k_t) · tokens-per-frame(k_s) + fine floor.
+Stride-1 coarse: 48·16 + 2·64 = 896 tokens — measured, two seeds (§4.3.6). Stride-2 coarse
+(`hier-s2-min`, 24 slots + 2 fine) prices the same 48-frame span at **512 tokens** — exactly the
+budget where the stride-1 family *loses* two-seed. [EXPECTED-B1 (primary): hier-s2-min wins at
+512 (ALL ≈0.170–0.180; Δ ≈ +0.04..+0.05, CI > 0, every cell; dt-gate span signature) — «нижній
+край смуги рухається разом із часовим кроком грубого потоку точно за токен-арифметикою»
+[UA-PASS]. ALTERNATIVE (null/loss): the stride-2 family's edge lies in (512, 896] — fine floor or
+inter-anchor aliasing; reported as a measured refinement.] REQUIRED caption note wherever the
+frontier is drawn: the 512-token stride-2 hier point and the 512-token stride-1 flat win are
+different families at the same budget, not a contradiction. **[FIG 4-13 — PLACEHOLDER: family
+edge law, predicted vs measured per family; asset fig13_family_edges.png, QUEUED after B1.]**
+
+### 4.4.3 Грубий рівень чи просто проліт? Контроль зі стрибковою повнороздільною історією
+
+*(Is it the coarse level, or just span? The strided-flat control. Full account: article §4.4.3.)*
+
+The control `strided-flat` keeps NO coarse level: 11 full-resolution slots at stride 4 (span 48)
++ 6 recent fine = 1,088 tokens — 64 short of the 1,152 pairing, a deficit that *favors the
+control*. [EXPECTED-B2 (primary, per §4.4.1): strided-flat lands inside the hierarchical plateau
+band (ALL ≈0.170–0.185), CI-clean above flat-budget, null-ish against hier-long → «валютою
+фронтиру є проліт-на-токен; грубий рівень — найдешевша порівнево-декодовна його реалізація»
+[UA-PASS], and the claim wording softens per the pre-drafted branch at the sites listed in the
+change plan. ALTERNATIVE: hier-long wins CI-clean → dense temporal coverage carries value beyond
+span; wording stands and gains its strongest control.]
+
+### 4.4.4 Що зберігає кожен рівень: зондування засліпленням
+
+*(Level-content attribution by stream blinding — the causal analog of CW-VAE's §5.1 probe.)*
+
+Rerun the trained arm's full 152-frame rollout with one context stream **blinded** (zeroed in
+standardized latent space) at every step. [EXPECTED: blinding the coarse stream collapses
+specifically the dt ≤ 48 retrieval bins (ALL → ≈0.20+, the flat-budget level); blinding the fine
+stream costs h 1–8 detail and sharpness, leaving long-horizon retrieval largely intact — the §4.3
+mechanism made causal at stream level.] Report-only. **[FIG 4-14 — PLACEHOLDER: blinding curves;
+asset fig14_level_blinding.png, QUEUED (eval-only).]**
+
+### 4.4.5 Зведена порівняльна таблиця: глибина, ядра, зібрана сітка
+
+*(The assembled shape grid, CW-VAE-format. Auto-generated source: `docs/CWSTYLE_TABLE.md`.)*
+
+**[TABLE 4.7-B — PLACEHOLDER: paste the generated grid (depth × factors × head × budget; regime
+disclosed per row; EBT column = the §4.2.4 characterized negative, no rollout cells by design);
+17 measured rows + B1/B2/B3 pending.]** The depth row: `hier3` (2×2/4×4/8×8 factor-2 pyramid,
+48 top + 24 coarse + 9 fine = the same 1,152 tokens) on a task with a single memory scale and a
+protocol-capped 48-frame history. [EXPECTED-B3 (primary): NULL against hier-long (|Δ| within the
+seed spread 0.016) → «глибина обмежена кількістю масштабів пам'яті в даних: третій рівень на
+одномасштабній задачі лише перерозподіляє, а не розширює» [UA-PASS] — consistent with the
+per-pixel-gate null, the §4.5 boundary, and CW-VAE's own two-levels-sufficed observation.
+ALTERNATIVE (win): a real re-allocation benefit — escalate to seed 1 first. ALTERNATIVE (loss):
+the fixed-step context-length cost (§4.3.6 regime disclosure) dominates.] **[FIG 4-15 —
+PLACEHOLDER: degradation curves over the 152-frame rollout for all grid configurations
+(«скільки кожна форма утримує метрику»); asset fig12_cwstyle_curves.png, EXISTS — regenerate
+after Phase B.]**
 
 ## 4.5 Дослідження межі часової здатності (робоча точка Б)
 
@@ -1090,6 +1176,19 @@ Three readings, in the order of their epistemic weight.
    hierarchy win is two-seed CI-clean (§4.3.3). The question "when does hierarchy pay" receives
    its negative control from the standard benchmark itself. [UA-PASS: «передбачений негативний
    контроль»; «нульовий результат як межова умова, а не невдача».]
+
+**Довгогоризонтне розширення контролю (Phase C; mirrors article §5.3.1).** The 10→10 protocol
+tests the short-horizon regime; the hierarchical literature's canonical Moving-MNIST claim is
+long-horizon retention (CW-VAE: 1,000-frame rollouts). The control column is therefore extended:
+flat and two-stage configurations at the 1,152-token budget, retrained on standard bouncing-digit
+clips (zero-action conditioning, disclosed; the re-entry hardness axis is inert here), rolled out
+~300 frames under the full protocol; the SSIM display panel follows the §4.1.5/§2.8 carve-out
+(calibration with persistence and all-black floors, not evidence). [EXPECTED-PhaseC (primary —
+the theory's own prediction): hier ≈ flat within ±0.005 ALL fg-MSE at every horizon bin — «де
+ієрархія окуповується — властивість структури пам'яті даних, а не довжини розгортання»
+[UA-PASS]. ALTERNATIVE (a hier win): contradicts the measured 10→10 null — pre-registered as
+stop-and-examine before any reporting.] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
+hier overlapping [EXPECTED] + floors; asset fig15_mmnist_control.png, QUEUED — Phase C.]**
 
 ### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
 

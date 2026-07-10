@@ -59,7 +59,9 @@ on deterministic rotation dynamics. The present article joins the two lines and 
 conditions under which the joined system pays: (i) it instruments the question with a testbed
 whose memory demand is exact and whose evaluation is stratified by an analytic hardness label;
 (ii) it selects the per-frame generation mechanism by controlled comparison rather than
-convention; (iii) it maps the hierarchy-versus-flat frontier across token budgets; and (iv) it
+convention; (iii) it maps the hierarchy-versus-flat frontier across token budgets — and then the
+**shape of the hierarchy itself**: spatial versus temporal abstraction, depth, and allocation,
+compared as budget-matched families in one grid (§4.4); and (iv) it
 extends the reversibility machinery to stochastic recurrences as a correctness-and-enabler
 theorem, with an honest account of where it cannot help. The framing was fixed before the
 results: *earlier work proposed the machinery; this article measures the conditions under which
@@ -82,10 +84,12 @@ negatives (Ch. 3, Ch. 6) that scope it.
    device can reach, with the configuration gap tabulated rather than hidden.
 3. **The frontier result** (Ch. 4). Hierarchy versus a token-budget-matched flat control over
    rollouts of 152 autoregressive frames after a 48-frame ground-truth warm-up, stratified by
-   horizon × analytic hardness, across FOUR matched budgets (≈500, 896, 1,152, 3,072 tokens).
+   horizon × analytic hardness, across SIX matched budgets (512–3,072 tokens).
    The hierarchy wins exactly the band where its coarse span covers the ~48-frame loop and the
    flat window does not — the band's lower edge lands at the geometric prediction (48×16 coarse
-   tokens), its upper edge at window saturation — and inverts outside the band. A second
+   tokens), its upper edge is bracketed by measurement to (1,792, 2,432) — and inverts outside
+   the band. The band is then generalized across hierarchy *shapes* (§4.4): spatial and temporal
+   abstraction, depth, and allocation as budget-matched families. A second
    operating point with a ~213-frame loop bounds the mechanism from above: single-step retrieval
    over slot memory is real and span-threshold-gated, but does not survive pure self-feeding at
    this scale (the trustworthy-memory boundary).
@@ -107,9 +111,12 @@ negatives (Ch. 3, Ch. 6) that scope it.
   one recipe, reachability failing under both — with the configuration-gap table making
   extrapolation risk explicit (Ch. 3).
 - **C4.** The frontier result: hierarchy wins the token-budget band whose edges are predictable
-  from geometry — measured at four budgets, two seeds at the headline budget, both heads
-  (mechanism-agnostic), with the trustworthy-memory boundary from the second operating point
-  (Ch. 4) and the negative control on the field's own benchmark (Ch. 5).
+  from geometry — measured at six budgets (two seeds everywhere except the upper-edge bracket),
+  both heads (mechanism-agnostic), with the trustworthy-memory boundary from the second operating
+  point (Ch. 4) and the negative control on the field's own benchmark (Ch. 5). [EXPECTED-B1,
+  add on two-seed confirmation only: "…and the band's lower edge is family-parametric, moving
+  from 896 to 512 tokens when the coarse tick halves, at the token-arithmetic prediction both
+  times."]
 - **C5.** The exactly invertible stochastic recurrence and the three-axis reversibility taxonomy
   with the measured inner-loop no-go (Ch. 6).
 

@@ -740,6 +740,31 @@ comparable; if they had *not* separated, the honest conclusion recorded in the d
 "context length, not hierarchy," and the dissertation would have reported it as such.
 [UA-PASS: «зрівняний бюджет контекстних токенів» for "matched context-token budget".]
 
+### 3.3.5 Узагальнення на сімейство ієрархічних конфігурацій
+
+*(Generalization to a family of hierarchical configurations — the model basis of the §4.4 shape
+study.)*
+
+The token-stream design of §3.2.1 generalizes beyond the two-level, stride-1 family of Table 3.1
+without any change to the backbone. A configuration is a set of context streams, each
+parameterized by the triple **(роздільна здатність, часовий крок, кількість кадрів)** [UA-PASS:
+«потік контекстних токенів», «часовий крок (проріджування)»]: the coarse stream may tick at
+stride $k_t > 1$ (one slot per $k_t$ frames, block-end anchors, $W/k_t$ target slots per
+prediction window so the slot buffer keeps phase for any $k_t$ dividing $W$); a full-resolution
+stream may itself be strided (temporal abstraction without a resolution change); and a third,
+**top** stream at $2{\times}2$ (4 tokens per frame) extends the pyramid to depth 3 at factor 2
+per level ($2{\times}2 / 4{\times}4 / 8{\times}8$). The top latent is a third tap of the frozen
+autoencoder trained on the **frozen trunk** (§3.1.1), so the two lower levels remain bit-identical
+and every measurement of Chapter 4 stays valid across the extension. Two systemic properties
+distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth adds tokens,
+not parameters** — all streams share one attention backbone, so the depth axis is
+capacity-neutral by construction [UA-PASS: «глибина додає токени, а не параметри»]; and (ii)
+every configuration's context cost is an exact token count, so families are comparable at
+**matched budget** — the property that licenses the shape comparisons of §4.4 (спрощені
+конфігурації: `hier-s2-min` = 24 slots at stride 2 + 2 fine = 512 tokens; `strided-flat` = 11
+full-resolution slots at stride 4 + 6 fine = 1,088; `hier3` = 48 top + 24 coarse + 9 fine =
+1,152).
+
 ## 3.4 Тестовий стенд горизонту пам'яті та протокол оцінювання зі стратифікацією за повторним входженням
 
 *(The memory-horizon testbed and the re-entry-stratified evaluation protocol — the

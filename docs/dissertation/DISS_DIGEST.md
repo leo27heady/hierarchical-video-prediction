@@ -237,6 +237,16 @@ New scope (verbatim constraints): discrete feature spaces (VQ-VAE-class), hierar
 | ідентифікація параметрів | parameter identification (training) | genre term, keep |
 | експозиційне зміщення (exposure bias) | exposure bias | keep EN in parentheses |
 | зіткнення з межею горизонту вікна | (win) turning on at the window's horizon boundary | Ch.4 rollout finding |
+| форма ієрархії | hierarchy shape | shapes program 2026-07-10; §4.4 umbrella |
+| просторова / часова абстракція | spatial / temporal abstraction | the two downsampling axes |
+| крок (проріджування) грубого потоку | coarse-stream (temporal) stride | k_t; slot anchors at block ends |
+| сімейство конфігурацій | configuration family | (k_s, k_t)-indexed; edges are per-family |
+| закон краю смуги | band-edge law | edge(family) = span cost + fine floor |
+| потік контекстних токенів | context-token stream | (resolution, stride, count) triple |
+| глибина додає токени, а не параметри | depth adds tokens, not parameters | capacity-neutral depth vs CW-VAE |
+| засліплення рівня (потоку) | level (stream) blinding | CW-VAE §5.1 analog, causal version |
+| стовпець контролю | control column | standard-MMNIST long-horizon null |
+| перерозподіл бюджету | budget re-allocation | what depth-3 does on single-scale data |
 
 ---
 

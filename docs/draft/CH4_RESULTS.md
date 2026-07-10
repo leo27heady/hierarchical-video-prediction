@@ -298,7 +298,33 @@ whatever the head, packaging the same token budget as long-coarse-plus-recent-fi
 it on a shorter full-resolution window. This is the sense in which Claim 1 is
 mechanism-agnostic.
 
-## 4.4 Claim 3 — spatial abstraction: economic and head-conditional, not intrinsic
+## 4.4 Claim 3 — the shape of the abstraction: spatial, temporal, deep
+
+Hierarchy in a latent video predictor is not a single design but a **family of shapes**. A
+context-token budget can be packaged along at least four axes: **spatial abstraction** (keep
+every frame, at lower resolution), **temporal abstraction** (keep full resolution, at a coarser
+tick), **depth** (how many nested levels of either kind), and **allocation** (how the budget is
+split between long-span and recent-detail streams). Each shape buys memory span at a different
+token price and pays a different information cost. This section therefore asks not "does
+hierarchy help?" but **which shape of hierarchy pays, where, and why** — with the same instrument
+throughout: matched token budgets, exact re-entry labels, paired per-frame comparisons. Three
+cells of the shape grid were measured in earlier sections — the allocation frontier (§4.3.6), the
+spatial factorial below (§4.4.1), and the slow-clock boundary study (§4.5); the runs added here
+complete the temporal-family, span-control, and depth cells at the headline budgets, and §4.4.5
+assembles all of it into one comparison table presented in the manner of the Clockwork VAE
+benchmark [REF: CW-VAE] (whose format we adopt and whose controls we tighten — §7.1).
+
+**Table 4.5 — the shape taxonomy: what each axis buys and costs.**
+
+| axis | shape | buys | costs | evidence |
+|---|---|---|---|---|
+| spatial | coarse 4×4 stream, stride 1 | 4× span/token; per-level decodability; dense temporal coverage | abstraction cost −0.008 (diff) / ≈0 (reg) at fixed window | §4.4.1 measured |
+| temporal | full-res history, stride 4 | 4× span/token; full detail at anchors | inter-anchor blindness; no cheap decodable level | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
+| spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above | §4.4.2 [EXPECTED: hier win at 512 tok] |
+| depth | + 2×2 top stream | a third scale to own | dead weight below the data's scale count; slower fixed-step convergence | §4.4.5 [EXPECTED: null vs 2-stage]; §4.5; per-pixel gate null (§4.4.1) |
+| allocation | span-first sizing | the win band + its measured edges | — | §4.3.6 measured |
+
+### 4.4.1 The spatial factorial: economic and head-conditional, not intrinsic
 
 Every hierarchy arm so far confounds two factors: coarse spatial resolution of the history, and
 the longer window its cheaper tokens buy (an accepted external-review finding). The Claim-3
@@ -345,10 +371,100 @@ study on Moving MNIST found that an upper spatial level engaged unstably and add
 a clean null for spatial abstraction as an *intrinsic* representational win. The factorial is
 consistent with that history rather than overturning it: isolated from the window confound,
 coarse history is not intrinsically better (it costs under diffusion, and is at best free under
-regression); its value is what its cheapness buys. One declared omission: the temporal-only
-corner (strided full-resolution history) was not re-imported into operating point A, because the
-strided mechanism is separately characterized at operating point B (§4.5) and the W×R grid
-answers the resolution claim without it.
+regression); its value is what its cheapness buys. The temporal-only corner (strided
+full-resolution history), declared an omission in the factorial's pre-registration, is filled at
+operating point A by the span control of §4.4.3.
+
+### 4.4.2 The temporal family and the moving edge
+
+If the frontier's currency is span-per-token, then the win band's lower edge is not a constant of
+the testbed but of the **family**: edge(family) ≈ (loop / k_t) · tokens-per-frame(k_s) + the fine
+floor, where k_t is the coarse stream's temporal stride and k_s its spatial factor. For the
+stride-1 coarse family this arithmetic gives 48·16 + 2·64 = 896 tokens — measured at exactly that
+budget, two seeds (§4.3.6). Halving the tick (stride-2 coarse, `hier-s2-min` = 24 slots + 2 fine)
+prices the same 48-frame span at **24·16 + 2·64 = 512 tokens** — the budget where the stride-1
+family *loses* (flat wins 512 two-seed, because six stride-1 coarse frames cannot span the loop).
+The pre-registered prediction is therefore a sign flip **at the same budget across families**.
+
+[EXPECTED-B1 (primary): hier-s2-min ALL ≈ 0.170–0.180 (a plateau member — the loop is covered);
+paired Δ vs flat-short ≈ +0.04 to +0.05, CI > 0, win in every horizon × hardness cell; the
+dt-gate signature of a true span mechanism (dt ≤ 48 HARD win, dt > 96 null). Text on
+confirmation: "the lower edge moved from 896 to 512 when the coarse tick halved, landing at its
+geometric prediction both times — the band's edges are arithmetic, not accidents of one
+configuration." ALTERNATIVE (null/loss): the stride-2 family's edge lies in (512, 896] — loop
+coverage is necessary but the family's fine floor or inter-anchor aliasing (momentum reversals
+between stride-2 anchors) sets the remainder; reported as a measured family-edge refinement.]
+
+[FIG ch4-5: family edge law — predicted vs measured lower edge per family (896 stride-1 measured
+two-seed; 512 stride-2 [EXPECTED]); upper bracket (1792, 2432) drawn for context. Asset:
+`docs/figures/fig13_family_edges.png` (QUEUED — script after B1 npz). Caption note, REQUIRED:
+the 512-token stride-2 hier win coexists with the 512-token stride-1 flat win — two different
+families at the same budget, not a contradiction.]
+
+### 4.4.3 Is it the coarse level, or just span? The strided-flat control
+
+The sharpest attack on the word "hierarchy" in this article's title: perhaps a single-level model
+with temporally subsampled full-resolution history buys the same span at the same price, and the
+coarse level per se contributes nothing. The control (`strided-flat`) keeps NO coarse stream: 11
+full-resolution slots at stride 4 (span 48) plus the standard 6 recent fine frames — 1,088
+tokens, deliberately 64 short of the 1,152 pair so the token deficit *favors the control*. It is
+compared against both members of the two-seed 1,152 pairing.
+
+[EXPECTED-B2 (primary, the honest reading of the §4.4.1 factorial): strided-flat ALL ≈
+0.170–0.185 — inside the hierarchical plateau band; CI-clean win vs flat-budget; |Δ| vs hier-long
+< 0.01 (null-ish). Text on confirmation: "span-per-token, not the coarse level, is the frontier's
+currency; the coarse level is the cheapest **per-level-decodable** implementation of long-span
+context, and the only one that keeps dense temporal coverage — but temporal subsampling of
+full-resolution history reproduces the matched-budget win." On this branch the Claim-1 wording
+softens from "hierarchical packaging" to "long-span context packaging" at the four sites listed
+in the change plan. ALTERNATIVE: hier-long beats strided-flat CI-clean — the coarse level's dense
+coverage carries value beyond span (inter-anchor blindness is costly even on a smooth pan), and
+this control becomes Claim 1's strongest defense; wording stands.]
+
+### 4.4.4 What each level stores: blinding probes
+
+The Clockwork VAE paper attributes content to levels by letting an upper level free-run its prior
+while lower levels see the context (their §5.1). Our per-level-decodable latents allow a sharper
+causal version: rerun the full 152-frame rollout of a *trained* arm with one context stream
+**blinded** (zeroed in standardized latent space — the channel-mean neutral input) at every step,
+and read which error bins collapse. [EXPECTED: blinding the coarse stream of hier-long collapses
+specifically the dt ≤ 48 retrieval bins — ALL rising toward the flat-budget level ≈0.20+ — while
+blinding the fine stream costs mainly h1–8 detail and sharpness, leaving long-horizon retrieval
+largely intact. That double dissociation is the mechanism claim of §4.3 made causal at the level
+of streams.] Report-only; no claim gates on it.
+
+[FIG ch4-6: level-blinding curves — fg-MSE vs horizon for hier-long unblinded / blind-coarse /
+blind-fine, with a dt≤48-HARD inset; hier3 blind-top added if informative. Asset:
+`docs/figures/fig14_level_blinding.png` (QUEUED — eval-only npz from the Phase B chain).]
+
+### 4.4.5 The comparison table: depth, heads, and the assembled grid
+
+Table 4.6 assembles every measured configuration — depth × downsampling factors × head × budget —
+in the format of the CW-VAE benchmark table, with our controls: matched token budgets within
+every pairing, capacity-neutral depth (levels add tokens to a shared backbone, not parameters —
+CW-VAE's depth comparisons differ in parameter count), foreground-masked metrics, disclosed
+training regimes. The energy-based column is the two-sided characterized negative of §4.2.3/§3.5
+and carries no rollout cells by design.
+
+**Table 4.6 — the assembled shape grid (auto-generated: `docs/CWSTYLE_TABLE.md`; regenerate via
+`scripts/make_cwstyle_table.py` as cells land).** [PLACEHOLDER: paste the generated table at
+integration; currently 17 measured rows + B1/B2/B3 pending.]
+
+The **depth row** is the grid's most instructive cell. A three-stage arm (`hier3`, 2×2/4×4/8×8
+factor-2 pyramid: 48 top + 24 coarse + 9 fine = the same 1,152 tokens as the headline pair) tests
+whether a third scale helps on a task with — by construction — a single memory scale and a
+protocol-capped 48-frame history. [EXPECTED-B3 (primary): hier3 ALL ≈ 0.175–0.190, |Δ| vs
+hier-long within the seed spread 0.016 → NULL. Text on confirmation: "a third stage on a
+single-scale task can only re-allocate, not extend: depth must match the data's memory-scale
+count — consistent with the per-pixel gate null, the operating-point-B boundary, and CW-VAE's own
+observation that a two-level model sufficed for their maze dataset." ALTERNATIVE (win): a real
+re-allocation benefit; escalate to seed 1 before any wording lands. ALTERNATIVE (loss): the
+fixed-step context-length cost dominates (§4.3.6 regime disclosure); reported as the depth cost
+at fixed budget.]
+
+[FIG ch4-7: degradation curves — fg-MSE growth and sharpness retention over the 152-frame rollout
+for all grid configurations + persistence floor + AE ceiling ("how long each shape keeps its
+metrics"). Asset EXISTS: `docs/figures/fig12_cwstyle_curves.png`; regenerate after Phase B.]
 
 ## 4.5 The temporal-capability boundary study (operating point B)
 
@@ -509,6 +625,19 @@ abstraction cost.
 **Combined optimum.** The cheapest strong configuration measured is **regression head + coarse
 history + long window** (reg-long, 0.1682 at 1,152 tokens); at the short window the same recipe
 (spat18-reg, 672 tokens, 0.2008) matches the diffusion flat control at 1,152 tokens (0.2038).
+
+**The shape of the hierarchy (§4.4.2–4.4.5).** [EXPECTED-B1: the win band's lower edge is
+family-parametric — it moved from 896 tokens (stride-1 coarse) to 512 (stride-2 coarse), landing
+at its token-arithmetic prediction both times.] [EXPECTED-B2, primary branch: span-per-token is
+the frontier's currency — temporally subsampled full-resolution history reproduces the
+matched-budget win at the same price; the coarse level is its cheapest per-level-decodable
+implementation. / ALTERNATIVE branch: the coarse level's dense temporal coverage carries value
+beyond span — the strided control does NOT reproduce the win.] [EXPECTED-B3: depth is bounded by
+the data's memory-scale count — a third stage on this single-scale task is a measured null at
+matched budget.] Together with the blinding attribution (§4.4.4), the chapter's answer to "which
+hierarchy?" is a sizing rule, not an architecture: cover the horizon with the cheapest family
+that spans it, spend the remainder on recency, and add depth only when the data has scales left
+to own.
 
 **The capability boundary (operating point B) — RESOLVED (2026-07-05/06).** The pre-committed
 rule of §4.5.4 resolved in two stages. First, the span-threshold hypothesis was CONFIRMED at the

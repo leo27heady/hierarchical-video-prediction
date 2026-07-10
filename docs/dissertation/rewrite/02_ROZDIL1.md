@@ -687,6 +687,30 @@ budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the me
 without the flat blow-up (1.7). *(NEW equation formalizing the coarse-memory construction;
 detailed model in Chapter 3.)*
 
+**Методологія порівняння ієрархічних конфігурацій (за стендом CW-VAE).** [UA-PASS: genre
+paragraph.] The canonical comparison methodology of this class is the Clockwork-VAE benchmark
+[REF: CW-VAE]: one configuration table over several datasets and metrics, quality-retention
+curves over long open-loop rollouts, and level-content probes (an upper level following its
+prior while lower levels see the context). The dissertation adopts this *format* in §4.4 while
+tightening three controls the original lacks — a systems-analysis point in its own right. First,
+capacity: the compared CW-VAE-class models differ in parameter count (their RSSM baseline 5M vs
+CW-VAE 12M; only the NoTmpAbs ablation is matched), whereas in the token-stream architecture of
+Chapter 3 depth adds tokens to a shared backbone, not weights — the depth axis is
+capacity-neutral. Second, context cost: a recurrent state has no token-budget axis, so
+hierarchy-versus-flat comparisons in the recurrent family cannot hold context cost fixed; the
+token interface makes every configuration's cost an exact count, enabling matched-budget
+comparison. Third, metrics: the CW-VAE evaluation aggregates SSIM/PSNR over full frames, and the
+author's own measurement (§3.4.3) shows a constant all-black frame outperforming a trained
+CW-VAE on such aggregates on sparse-foreground video — hence the foreground-masked,
+re-entry-stratified protocol of §3.4. It is also noted that the CW-VAE paper's depth evidence is
+an information-allocation (KL-per-level) analysis rather than a prediction-quality dose–response;
+the quality-per-depth cells are measured directly in §4.4.5. The temporal-abstraction relatives —
+VTA [REF] (whose lower level resets when the upper level ticks) and the clockwork recurrent
+lineage [REF: Clockwork RNN, Koutník et al. 2014] — complete the review of hierarchy *shapes*:
+просторова та часова абстракція, глибина і розподіл бюджету є чотирма осями простору
+конструкцій, і питання «яка форма ієрархії окуповується та де» стає предметом вимірювання
+(§4.4), а не постулатом. [UA-PASS: «форми ієрархії»; «вісь глибини, нейтральна до ємності».]
+
 Summarizing the hierarchical-latent review: this paradigm inherits the generation quality of the
 diffusion core (§1.3.1) while remedying its two systemic limitations — the flat latent space and
 the flat context window — and, per the author's measured finding, its *continuous* form is the

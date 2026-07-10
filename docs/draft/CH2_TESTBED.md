@@ -86,6 +86,14 @@ channel to unit variance, per level, using training-set statistics only. This *l
 standardisation* is part of the protocol, not a detail: Chapter 3 shows that omitting it silently
 mis-scales a diffusion noise schedule and materially changes mechanism-level conclusions.
 
+Downstream predictors consume these latents as an arbitrary set of token *streams*, each
+parameterized by spatial resolution, temporal stride, and frame count, joined in one attention
+sequence — so hierarchy **depth adds tokens, not parameters**. This matters for the shape
+comparisons of §4.4: unlike recurrent hierarchies (where each level adds weights, and published
+depth comparisons are capacity-confounded), our depth axis is capacity-neutral by construction.
+For the three-stage arm the autoencoder gains a third, 2×2 latent tap trained on the *frozen*
+trunk, so the two levels above remain bit-identical and every earlier measurement stays valid.
+
 ## 2.5 Metrics: foreground-masked, per-image, decoded
 
 Aggregate pixel metrics are unreliable on sparse video (§2.7), so the protocol measures only
@@ -178,7 +186,10 @@ dynamics. The looping testbed's panning background makes aggregate metrics less 
 Moving MNIST but still foreground-diluted, so the main text uses only the masked metrics of §2.5.
 For continuity with the literature, an appendix reports our bridge to the OpenSTL benchmark suite
 using bit-verified reimplementations of its metric definitions; those numbers are provided for
-calibration, not as claims.
+calibration, not as claims. One further exception of the same kind: for the standard-Moving-MNIST
+long-horizon control (§5.3.1) we *display* an SSIM-versus-horizon curve for comparability with
+the CW-VAE-era literature, always with the persistence and all-black floors drawn on the same
+axes — it is calibration, not evidence, for exactly the reason this section establishes.
 
 ## 2.9 Limitations
 

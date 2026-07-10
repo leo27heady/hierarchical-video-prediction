@@ -22,6 +22,29 @@ require memory at all (our Ch. 5 negative control makes that point on Moving MNI
 The coarse-carries-memory *architecture* is therefore adopted here, not claimed; the measured
 *conditions under which it pays* (the win band and its geometric edges) are the contribution.
 
+**The CW-VAE benchmark as a presentation ancestor — adopted format, tightened controls.** Our
+shape study (§4.4) deliberately adopts the *comparison format* of the Clockwork VAE benchmark:
+one configuration table, quality-retention curves over long open-loop rollouts, and level-content
+probes (their §5.1 prior-following experiment; our stream-blinding probes, sharpened by per-level
+decodability). We adopt the format while tightening three controls it lacks. First, capacity:
+CW-VAE's compared models differ in parameter count (RSSM 5M vs CW-VAE 12M in their own parameter
+table; only their NoTmpAbs ablation is matched), whereas our depth axis is capacity-neutral —
+levels add tokens to a shared backbone, not weights (§2.4). Second, context cost: a recurrent
+state has no token-budget axis, so hierarchy-vs-flat comparisons in the RNN family cannot hold
+context cost fixed; our grid is budget-matched by construction, which is what licenses the
+frontier reading. Third, metrics: their evaluation aggregates SSIM/PSNR/LPIPS/FVD over full
+frames — and on sparse-foreground video we measured a constant all-black frame outperforming a
+trained CW-VAE on aggregate SSIM/PSNR (§2.8) — so our cells are foreground-masked and
+re-entry-stratified. It is also worth stating what CW-VAE's paper does and does not show about
+depth: its depth evidence is an information-allocation (KL-per-level) analysis, not a
+prediction-quality dose–response, and the authors themselves observe that a two-level model
+sufficed for their maze dataset; our table carries the quality-per-depth cells directly,
+including the single-scale depth null [EXPECTED-B3]. VTA [REF] (a two-level model whose lower
+level resets when the upper level ticks — the reset artifacts CW-VAE documents) and the clockwork
+lineage [REF: Koutník et al. 2014, Clockwork RNN] are the temporal-abstraction relatives of our
+strided arms; NoTmpAbs is the conceptual ancestor of our "same budget, no abstraction" flat
+controls.
+
 ## 7.2 Memory in world models
 
 Purpose-built memory benchmarks exist at scale: Memory Maze [REF], TECO-Minecraft [REF], and the
@@ -71,7 +94,11 @@ For the record, this article does **not** claim:
    published recipes, our data regime; the config-gap table quantifies the distance to the
    paper's setting.
 3. **No hierarchy-dominance claim.** Hierarchy wins a bounded budget band; flat wins outside it
-   (below the span threshold and at window saturation) — measured, with CIs, at four budgets.
+   (below the span threshold and at window saturation) — measured, with CIs, at six budgets with
+   both edges located (the upper edge bracketed to (1,792, 2,432)).
+3a. **No depth claim on single-scale data.** [EXPECTED-B3: a third stage at matched budget is a
+   measured null on this testbed; depth is claimed only as bounded by the data's memory-scale
+   count, never as generally beneficial.]
 4. **No rollout-stabilization claim for reversibility.** Invertibility ≠ stability is one of our
    own results (P3).
 5. **No leaderboard claim on OpenSTL suites.** Aggregate pixel-sum MSE on mostly-static
