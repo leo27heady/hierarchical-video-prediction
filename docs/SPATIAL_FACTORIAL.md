@@ -422,6 +422,29 @@ matched to every partner (NO 60k cells in this block); GO-gate oracle PASS requi
 training any arm with new buffer machinery (hier-s2-min, hier3); anything not covered above
 defaults to report-only.
 
+### AMENDMENTS (pre-registered 2026-07-10 ~15:00, BEFORE B2/B3 launch; B1 mid-training,
+### untouched — the same before-the-run discipline as the R-D insertion)
+
+- **B2 seed asymmetry rule (clarifies the general two-seed rule for the null branch):** the
+  CONSERVATIVE claim-1 wording softening ("hierarchical" -> "long-span context packaging") is
+  permitted on a seed-0 null (weakening one's own claim needs no replication), but the POSITIVE
+  assertion "temporal subsampling REPRODUCES the matched-budget win / span is the currency"
+  is itself a claim and stays REPORT-ONLY until strided-flat seed 1 confirms (hier-arm seed
+  spread ~0.016 can manufacture a one-seed null). Text sites carry the distinction explicitly.
+- **B3 disclosed confound (loss-weight dilution):** the 3-level loss sums THREE per-level MSE
+  terms (vs two in every 2-level arm), so hier3's effective fine-level loss weight is ~2/3 of
+  the 2-level arms' — and ALL metrics decode the FINE latents. A small hier3 LOSS is therefore
+  attributable to loss dilution as well as depth per se; ALTERNATIVE (b) reports both mechanisms
+  and does NOT claim "depth hurts" without a weight-matched follow-up. (Equal-sum weighting IS
+  the registered design — changing it now would invalidate the pairing; the confound is
+  disclosed, not repaired mid-program.)
+- **A2 blinding OOD caveat (binding on interpretation):** zeroed context streams are
+  out-of-distribution inputs (never seen in training), so a collapse under blinding is an UPPER
+  bound on brittleness and a LOWER bound on the stream's information contribution — the probe
+  attributes content causally only in the direction "stream removed -> capability lost"; the
+  magnitude may include OOD shock. Reported with this caveat in every use; a less-OOD variant
+  (freeze-last-slot instead of zeros) is noted as optional follow-up, not run by default.
+
 ### Phase C (default-MMNIST control column; after Phase B)
 
 Standard bouncing-digit MMNIST (OpenSTL-matched `scripts/gen_moving.py`), NEW frozen AE trained
