@@ -248,6 +248,6 @@ present results: they extend the measured boundary, which is stated exactly.
 - Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
   [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
   in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
-  2026-07-07, in sync with §4.3.6): inversion at both ends; win band [896, ~2,000) with BOTH
-  edges measured — lower edge 896 two-seed (R-A), upper edge bracketed to (1,792, 2,432) by
+  2026-07-07, in sync with §4.3.6): inversion at both ends; win band [896, e) with BOTH
+  edges measured — lower edge 896 two-seed (R-A), upper edge e bracketed to (1,792, 2,432) by
   R-F/R-G (2026-07-09/10); peak at the lower edge — edge-measured band wording.

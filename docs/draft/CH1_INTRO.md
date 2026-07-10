@@ -88,8 +88,8 @@ negatives (Ch. 3, Ch. 6) that scope it.
    The hierarchy wins exactly the band where its coarse span covers the ~48-frame loop and the
    flat window does not — the band's lower edge lands at the geometric prediction (48×16 coarse
    tokens), its upper edge is bracketed by measurement to (1,792, 2,432) — and inverts outside
-   the band. The band is then generalized across hierarchy *shapes* (§4.4): spatial and temporal
-   abstraction, depth, and allocation as budget-matched families. A second
+   the band. The frontier question is then posed across hierarchy *shapes* (§4.4): spatial and
+   temporal abstraction, depth, and allocation, compared as budget-matched families. A second
    operating point with a ~213-frame loop bounds the mechanism from above: single-step retrieval
    over slot memory is real and span-threshold-gated, but does not survive pure self-feeding at
    this scale (the trustworthy-memory boundary).

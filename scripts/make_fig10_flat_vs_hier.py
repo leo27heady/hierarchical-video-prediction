@@ -81,7 +81,7 @@ ax[0].set_xlabel("matched context-token budget")
 ax[0].set_ylim(0.14, 0.268)
 ax[0].set_title("A. Flat vs hierarchical at matched budgets — flat descends through a hier "
                 "PLATEAU\n(bars = seed-mean; whiskers = seed min–max; hatched = B8×60k regime, "
-                "others B16×30k)", fontsize=9.5)
+                "others 30k)", fontsize=9.5)
 ax[0].legend(loc="upper right", fontsize=8.5, framealpha=0.95)
 ax[0].grid(axis="y", alpha=0.25)
 

@@ -417,9 +417,12 @@ currency; the coarse level is the cheapest **per-level-decodable** implementatio
 context, and the only one that keeps dense temporal coverage — but temporal subsampling of
 full-resolution history reproduces the matched-budget win." On this branch the Claim-1 wording
 softens from "hierarchical packaging" to "long-span context packaging" at the four sites listed
-in the change plan. ALTERNATIVE: hier-long beats strided-flat CI-clean — the coarse level's dense
-coverage carries value beyond span (inter-anchor blindness is costly even on a smooth pan), and
-this control becomes Claim 1's strongest defense; wording stands.]
+in the change plan — the softening is conservative and permitted at seed 0, but the POSITIVE
+assertion ("temporal subsampling reproduces the win; span is the currency") stays report-only
+until a seed-1 replication, because memory-arm seed spread (~0.016) can manufacture a one-seed
+null (pre-registered amendment). ALTERNATIVE: hier-long beats strided-flat CI-clean — the coarse
+level's dense coverage carries value beyond span (inter-anchor blindness is costly even on a
+smooth pan), and this control becomes Claim 1's strongest defense; wording stands.]
 
 ### 4.4.4 What each level stores: blinding probes
 
@@ -431,7 +434,12 @@ and read which error bins collapse. [EXPECTED: blinding the coarse stream of hie
 specifically the dt ≤ 48 retrieval bins — ALL rising toward the flat-budget level ≈0.20+ — while
 blinding the fine stream costs mainly h1–8 detail and sharpness, leaving long-horizon retrieval
 largely intact. That double dissociation is the mechanism claim of §4.3 made causal at the level
-of streams.] Report-only; no claim gates on it.
+of streams.] Report-only; no claim gates on it. One caveat is binding on interpretation: a zeroed
+stream is an out-of-distribution input (never seen in training), so the collapse magnitude is a
+*lower bound on the stream's contribution confounded with an upper bound on OOD brittleness* —
+the probe licenses "stream removed → capability lost," not a precise information accounting.
+(A less-OOD variant — freezing the last slot instead of zeroing — is noted as optional
+follow-up.)
 
 [FIG ch4-6: level-blinding curves — fg-MSE vs horizon for hier-long unblinded / blind-coarse /
 blind-fine, with a dt≤48-HARD inset; hier3 blind-top added if informative. Asset:
@@ -458,9 +466,11 @@ hier-long within the seed spread 0.016 → NULL. Text on confirmation: "a third 
 single-scale task can only re-allocate, not extend: depth must match the data's memory-scale
 count — consistent with the per-pixel gate null, the operating-point-B boundary, and CW-VAE's own
 observation that a two-level model sufficed for their maze dataset." ALTERNATIVE (win): a real
-re-allocation benefit; escalate to seed 1 before any wording lands. ALTERNATIVE (loss): the
-fixed-step context-length cost dominates (§4.3.6 regime disclosure); reported as the depth cost
-at fixed budget.]
+re-allocation benefit; escalate to seed 1 before any wording lands. ALTERNATIVE (loss): two
+disclosed mechanisms, not one — the fixed-step context-length cost (§4.3.6 regime disclosure)
+AND loss-weight dilution: the three-level loss sums three per-level terms, so hier3's effective
+fine-level weight is ~2/3 of the two-level arms' while every metric decodes the fine latents;
+a small loss is therefore NOT reported as "depth hurts" without a weight-matched follow-up.]
 
 [FIG ch4-7: degradation curves — fg-MSE growth and sharpness retention over the 152-frame rollout
 for all grid configurations + persistence floor + AE ceiling ("how long each shape keeps its
@@ -747,7 +757,7 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 [FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured 4-point
 curves — hier (480 → 896 → 1152 → 3072: 0.2260, **0.1706**, 0.1848, 0.1695) and flat
 (512 → 896 → 1152 → 3072: 0.2224, 0.2106, 0.2038, 0.1564) — measured shape: hierarchy wins the
-band [896, ~2,000) tokens (upper edge measured to lie in (1,792, 2,432); see §4.3.6 bracket), with the effect PEAKING
+band [896, e) tokens with the upper edge e measured to lie in (1,792, 2,432) (§4.3.6 bracket), with the effect PEAKING
 at the lower edge, which sits exactly at the geometric span-threshold prediction (48×16 coarse
 tokens + minimal fine tail ≈ 830–896); flat wins below the threshold (512) and at window
 saturation (3072). Caption: the token-budget frontier — hierarchy wins exactly the band where

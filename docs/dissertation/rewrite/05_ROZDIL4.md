@@ -718,9 +718,10 @@ the audited table register; final numbering at typeset). Measured anchor rows fr
 | ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
 
 **[FIG 4-x — token-budget frontier]**
-*Content:* ALL fg-MSE versus context-token budget at operating point A, one 4-point curve per
-family (flat: flat-short → flat-min → flat-budget → flat-long; hierarchical: hier-short →
-hier-min → hier-long → hier-rich), with the measured win band [896, ~2,000) shaded (upper edge bracketed to (1,792, 2,432)), the
+*Content:* ALL fg-MSE versus context-token budget at operating point A, one 6-point curve per
+family (flat: flat-short → flat-min → flat-budget → flat-c1 → flat-c2 → flat-long; hierarchical:
+hier-short → hier-min → hier-long → hier-c1 → hier-c2 → hier-rich), with the measured win band
+[896, e) shaded, e ∈ (1,792, 2,432) per the R-F/R-G bracket, the
 geometric span-threshold (48×16 tokens) drawn as the band's lower edge, and the persistence
 floor (0.2552) drawn.
 *Source:* **`docs/figures/fig9_frontier.png`** (measured; anchors from Tables 4.5/4.6 and the
@@ -897,7 +898,11 @@ Rerun the trained arm's full 152-frame rollout with one context stream **blinded
 standardized latent space) at every step. [EXPECTED: blinding the coarse stream collapses
 specifically the dt ≤ 48 retrieval bins (ALL → ≈0.20+, the flat-budget level); blinding the fine
 stream costs h 1–8 detail and sharpness, leaving long-horizon retrieval largely intact — the §4.3
-mechanism made causal at stream level.] Report-only. **[FIG 4-14 — PLACEHOLDER: blinding curves;
+mechanism made causal at stream level.] Report-only. Binding interpretation caveat (per the
+pre-registered amendment): a zeroed stream is an out-of-distribution input, so the collapse
+magnitude bounds the stream's contribution from below confounded with OOD brittleness from
+above — the probe licenses «потік вилучено → здатність втрачено», not a precise information
+accounting [UA-PASS]. **[FIG 4-14 — PLACEHOLDER: blinding curves;
 asset fig14_level_blinding.png, QUEUED (eval-only).]**
 
 ### 4.4.5 Зведена порівняльна таблиця: глибина, ядра, зібрана сітка
@@ -913,7 +918,10 @@ seed spread 0.016) → «глибина обмежена кількістю ма
 одномасштабній задачі лише перерозподіляє, а не розширює» [UA-PASS] — consistent with the
 per-pixel-gate null, the §4.5 boundary, and CW-VAE's own two-levels-sufficed observation.
 ALTERNATIVE (win): a real re-allocation benefit — escalate to seed 1 first. ALTERNATIVE (loss):
-the fixed-step context-length cost (§4.3.6 regime disclosure) dominates.] **[FIG 4-15 —
+two disclosed mechanisms — the fixed-step context-length cost (§4.3.6 regime disclosure) AND
+loss-weight dilution (the 3-level loss sums three per-level terms → the fine level, which all
+metrics decode, carries ~2/3 of its 2-level weight); a small loss is NOT reported as «глибина
+шкодить» without a weight-matched follow-up.] **[FIG 4-15 —
 PLACEHOLDER: degradation curves over the 152-frame rollout for all grid configurations
 («скільки кожна форма утримує метрику»); asset fig12_cwstyle_curves.png, EXISTS — regenerate
 after Phase B.]**
