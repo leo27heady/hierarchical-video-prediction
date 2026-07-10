@@ -178,7 +178,7 @@ hardness cell, +0.0399 [+0.0299, +0.0501] at seed 0 and +0.0358 [+0.0267, +0.045
 a two-seed result, the largest hierarchical advantage of the campaign), which together give the efficiency
 claim its final, edge-measured form: **hierarchy wins the band of token budgets in which its
 coarse span crosses the memory horizon while the flat window does not — approximately 896 to
-≈2×10³ tokens (upper edge interpolated between measured budgets) at the primary operating
+≈2×10³ tokens (upper edge measured to lie in (1,792, 2,432)) at the primary operating
 point, with the advantage peaking at the band's lower
 edge — and inverts outside the band**, not dominance at every budget.
 
@@ -248,6 +248,6 @@ present results: they extend the measured boundary, which is stated exactly.
 - Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
   [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
   in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
-  2026-07-07, in sync with §4.3.6): inversion at both ends + measured lower edge at 896 tokens
-  (win band [896, ≈2,059 interpolated), peak at the edge; 896 TWO-SEED confirmed 2026-07-08,
-  R-A) — edge-measured band wording.
+  2026-07-07, in sync with §4.3.6): inversion at both ends; win band [896, ~2,000) with BOTH
+  edges measured — lower edge 896 two-seed (R-A), upper edge bracketed to (1,792, 2,432) by
+  R-F/R-G (2026-07-09/10); peak at the lower edge — edge-measured band wording.

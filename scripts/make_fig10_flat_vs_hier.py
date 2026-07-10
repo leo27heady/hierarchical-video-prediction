@@ -14,14 +14,19 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # ---- measured ALL fg-MSE (diffusion head), per budget: seed values from the npz ----
-BUD = [512, 896, 1152, 3072]
-flat = {512: [0.2224, 0.2206], 896: [0.2106, 0.2102], 1152: [0.2038, 0.2044], 3072: [0.1564, 0.1580]}
-hier = {512: [0.2260, 0.2257], 896: [0.1706, 0.1744], 1152: [0.1848, 0.1690], 3072: [0.1695, 0.1687]}
+# 1792 (R-F) and 2432 (R-G) are seed-0 bracket points; the rest are two-seed.
+BUD = [512, 896, 1152, 1792, 2432, 3072]
+flat = {512: [0.2224, 0.2206], 896: [0.2106, 0.2102], 1152: [0.2038, 0.2044],
+        1792: [0.1876], 2432: [0.1703], 3072: [0.1564, 0.1580]}
+hier = {512: [0.2260, 0.2257], 896: [0.1706, 0.1744], 1152: [0.1848, 0.1690],
+        1792: [0.1799], 2432: [0.1820], 3072: [0.1695, 0.1687]}
 # paired Δ(flat − hier) per seed, with 95% cluster CIs (from the compare logs)
 delta = {  # budget: list of (Δ, lo, hi) per seed
     512:  [(-0.0036, -0.0063, -0.0010), (-0.0051, -0.0079, -0.0024)],
     896:  [(+0.0399, +0.0299, +0.0501), (+0.0358, +0.0267, +0.0454)],
     1152: [(+0.0189, +0.0121, +0.0264), (+0.0354, +0.0267, +0.0447)],
+    1792: [(+0.0077, +0.0016, +0.0142)],
+    2432: [(-0.0116, -0.0162, -0.0073)],
     3072: [(-0.0131, -0.0201, -0.0069), (-0.0107, -0.0163, -0.0058)],
 }
 PERSIST = 0.2552
@@ -69,15 +74,17 @@ ax[1].axhspan(0, 0.06, color=C_WIN, alpha=0.07, zorder=0)
 ax[1].axhline(0, color="0.3", lw=1.0, zorder=1)
 ax[1].text(0.02, 0.052, "Δ > 0 : hierarchy better", transform=ax[1].get_yaxis_transform(),
            color="#1d7268", fontsize=8.5, style="italic", va="top")
+_seen_lbl = set()
 for i, b in enumerate(BUD):
     seeds = delta[b]
     offs = np.linspace(-0.12, 0.12, len(seeds)) if len(seeds) > 1 else [0.0]
     for j, (d, lo, hi) in enumerate(seeds):
         col = C_WIN if d > 0 else C_LOSS
+        lbl = "hier win (CI>0)" if d > 0 else "flat win (CI<0)"
+        show = lbl if lbl not in _seen_lbl else None
+        _seen_lbl.add(lbl)
         ax[1].errorbar(x[i] + offs[j], d, yerr=[[d - lo], [hi - d]], fmt="o", ms=6,
-                       color=col, capsize=4, lw=1.6, zorder=3,
-                       label=("hier win (CI>0)" if d > 0 else "flat win (CI<0)")
-                       if (i in (1, 3) and j == 0) else None)
+                       color=col, capsize=4, lw=1.6, zorder=3, label=show)
     dm = np.mean([d for d, _, _ in seeds])
     ax[1].text(x[i], (max(hi for _, _, hi in seeds) if dm > 0 else
                       min(lo for _, lo, _ in seeds)) + (0.004 if dm > 0 else -0.006),
@@ -87,19 +94,20 @@ ax[1].set_xticks(x); ax[1].set_xticklabels([f"{b}\ntok" for b in BUD])
 ax[1].set_ylabel("paired Δ(flat − hier), ALL  [95% cluster-bootstrap CI]")
 ax[1].set_xlabel("matched context-token budget")
 ax[1].set_ylim(-0.028, 0.062)
-ax[1].axvline(0.5, color="0.7", ls="--", lw=0.8); ax[1].axvline(2.5, color="0.7", ls="--", lw=0.8)
-ax[1].text(1.5, -0.024, "WIN BAND\n(span ≥ loop, window < loop)", ha="center", fontsize=8,
+# band spans indices 1–3 (896/1152/1792 hier-wins); edges between 512|896 and 1792|2432
+ax[1].axvline(0.5, color="0.7", ls="--", lw=0.8); ax[1].axvline(3.5, color="0.7", ls="--", lw=0.8)
+ax[1].text(2.0, -0.024, "WIN BAND (span ≥ loop, window < loop)", ha="center", fontsize=8,
            color="#1d7268", fontweight="bold")
 ax[1].text(0, -0.024, "below\nthreshold", ha="center", fontsize=7.5, color=C_LOSS)
-ax[1].text(3, -0.024, "window\nsaturated", ha="center", fontsize=7.5, color=C_LOSS)
-ax[1].set_title("B. Paired advantage, per seed\n"
-                "(ALL four budgets now two-seed as of 2026-07-09)", fontsize=10)
+ax[1].text(4.5, -0.024, "window\nsaturated", ha="center", fontsize=7.5, color=C_LOSS)
+ax[1].set_title("B. Paired advantage, per seed — upper edge bracketed to (1792, 2432)\n"
+                "(896/1152/3072 two-seed; 1792/2432 bracket seed 0)", fontsize=9.5)
 ax[1].legend(loc="upper right", fontsize=8.5, framealpha=0.95)
 ax[1].grid(axis="y", alpha=0.25)
 
 fig.suptitle("Flat vs hierarchical at matched token budgets — hierarchy wins the band where its "
-             "coarse span crosses the memory horizon\n(loopmom, diffusion head; all four budgets "
-             "two-seed as of 2026-07-09)", fontsize=11, y=0.995)
+             "coarse span crosses the memory horizon\n(loopmom, diffusion head; 6 budgets, both "
+             "band edges measured, as of 2026-07-10)", fontsize=11, y=0.995)
 fig.tight_layout(rect=[0, 0, 1, 0.93])
 out = r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\figures\fig10_flat_vs_hier.png"
 fig.savefig(out, dpi=180)

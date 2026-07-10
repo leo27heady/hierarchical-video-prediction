@@ -326,9 +326,116 @@ smaller than hier-rich's 3,392, so B16×30k likely fits; the paired delta cancel
 each pair). Seed 0 first; seed 1 only if a point ends up claim-bearing at the edge.
 **Queue:** after R-E → R-F → R-G (one job at a time).
 
-**This closes the frontier-robustness program (R-A/R-B/R-D/R-C, all four confirmed their primary
-branch; R-E completes the 512 point; R-F/R-G measure the upper edge).** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
+### R-F/R-G MEASURED (2026-07-09/10; `frontier_c1.log`, `frontier_c2.log`) — **UPPER EDGE BRACKETED**
+
+The sign of the paired delta flips between the two bracket points, exactly as pre-registered:
+
+| budget | flat | hier | paired Δ(flat−hier) ALL | verdict |
+|---|---|---|---|---|
+| **1,792 (R-F)** | flat-c1 0.1876 | hier-c1 0.1799 | **+0.0077 [+0.0016, +0.0142]** | **HIER wins** (below crossing) |
+| **2,432 (R-G)** | flat-c2 0.1703 | hier-c2 0.1820 | **−0.0116 [−0.0162, −0.0073]** | **FLAT wins** (above crossing) |
+
+**The upper band edge is therefore MEASURED to lie in the open interval (1,792, 2,432) tokens**
+— the earlier interpolated estimate (≈2,059) sits inside it. The full six-point frontier:
+512 flat / **896 hier** / **1,152 hier** / **1,792 hier** / [edge] / **2,432 flat** / 3,072 flat.
+Replace the "≈2×10³ interpolated" qualifier (abstract, CH8, VYSNOVKY, ROZDIL4, CH1) with the
+measured bracket "(1,792, 2,432)".
+
+**Convergence fairness (verified):** each bracket pair is sequence-length-matched (hier-c1/flat-c1
+seq 2,112; hier-c2/flat-c2 seq 2,752 — same context+target token count within each pair), so the
+per-step training compute and hence the convergence state at the shared 30k-step budget are
+matched WITHIN each pair → the paired delta is fair regardless of absolute convergence.
+
+**Threats note (cross-budget hier-line shape, NOT the paired verdicts — cf. the plateau
+diagnosis).** The absolute hier values are non-monotone across budgets (hier-min 0.1706 @896 <
+hier-c1 0.1799 @1,792 < hier-c2 0.1820 @2,432; hier-rich 0.1695 @3,072). This is the
+fixed-step under-convergence effect: at a constant 30k steps, longer-context arms are less
+converged (train-log val-h4 rises 0.027→0.034→0.044 as fine frames go 2→16→26), so the hier
+*line* wobbles ≈±0.01 on the plateau; hier-rich (3,072) additionally used a 60k regime. This
+does NOT touch any paired win/loss (each is seq-matched), but the frontier *curve* should be
+captioned as regime/convergence-mixed on the hier line — a fair-disclosure item, not a defect.
+
+**This closes the frontier-robustness program (R-A/R-B/R-D/R-C confirmed their primary branch;
+R-E completes the 512 point; R-F/R-G bracket the upper edge to (1,792, 2,432)). The six-point
+two-sided frontier — win band with BOTH edges measured — is complete.** It also fully explains, on two independent axes, the seed-0-30k "dip" that motivated
 the whole program: hier-long's seed-0-30k value (0.1848) is high both because of seed variance
 (s1 = 0.1690) AND because of budget (60k → 0.1666); the true ≈0.17 plateau is robust to both.
 The two-seed 30k pairing (§4.3.3) remains the headline anchor; R-C is a budget-robustness
 addendum, single-seed by design (a budget-axis test, not a seed test).
+
+---
+
+## CW-STYLE COMPARISON TABLE PROGRAM (pre-registered 2026-07-10, BEFORE any run;
+## author direction: depth x downsampling-factor x head table + degradation curves,
+## presented CW-VAE-style [Saxena et al. 2021] but on OUR protocol — fg-masked metrics,
+## matched token budgets, paired cluster CIs; NO aggregate SSIM/PSNR as claims)
+
+**Scope decisions (author, 2026-07-10):** temporal factor axis limited to {1, 2} (4 only where
+it already exists as machinery); spatial re-based pyramids (16x16 bottom / 1x1 top) deferred to
+the multi-scale next-paper arena; EBT column = the existing characterized negative, NO new runs;
+default-MMNIST joins as the CONTROL column (Phase C), never as the primary arena. Launch only
+after R-G resolves (flat-c2 + compare). Infra landed ahead of runs: 7-field ARMS (top stream,
+`hvp_rev/rhvd.py` arm_cfg), frozen-trunk 2x2 top AE branch (`hvp_rev/hier3.py`), generalized
+strided-slot rule (WIN//stride slots per window — stride-4 unchanged, stride-2 now phase-correct),
+`--blind` eval probe, CPU smoke `tests/smoke_cwstyle.py` (ALL GREEN incl. legacy bit-compat),
+auto-table `scripts/make_cwstyle_table.py` (docs/CWSTYLE_TABLE.md + fig12).
+
+### Phase B arms (loopmom, standard regime B16x30k bf16, seed 0 first; WARM=48; one job at a time)
+
+- **B1 `hier-s2-min`** (24c@stride2 + 2f = **512 tok**, span 48) vs **EXISTING** flat-short npz
+  (512 tok, s0+s1 — symmetric-pair rule satisfied by reuse; no new flat run). PRIMARY: hier WINS
+  at 512 (ALL cluster-CI > 0) — the win-band lower edge MOVES with the temporal factor exactly as
+  the token arithmetic predicts (24*16+2*64 = 512 < the stride-1 family's 896). ALTERNATIVE (a):
+  null/loss -> the stride-2 family's edge is between 512 and 896; report as a measured family-edge
+  refinement (fine-floor or aliasing mechanisms discussed, momentum reversals between stride-2
+  anchors disclosed). A CI-clean hier win triggers the two-seed rule (seed 1 before any headline
+  use; flat-short s1 already exists).
+- **B2 `strided-flat`** (11 full-res hist@stride4 + 6f = **1088 tok**, span 48, NO coarse level)
+  vs the EXISTING 1152 pair (hier-long, flat-budget; both two-seed). Its 64-token deficit favors
+  the control. PRIMARY (honest, from G-S1): strided-flat lands ~AT hier-long (within CI of the
+  hier plateau) and clearly beats flat-budget -> the frontier currency is SPAN-PER-TOKEN; coarse
+  tokens are one implementation (the per-level-decodable one), temporal subsampling another.
+  Claim-1 wording then softens per the pre-drafted branch: "hierarchical packaging" ->
+  "long-span context packaging (coarse level = the cheapest per-level-decodable form)".
+  ALTERNATIVE: strided-flat clearly BELOW hier-long (hier win CI>0) -> the coarse level adds
+  value beyond span (denser temporal coverage at equal budget); Claim-1 wording stands and gains
+  this control as its strongest defense. Either branch is reported; no soft reads.
+- **B3 `hier3`** (48 top(2x2) + 24c + 9f = **1152 tok**; factor-2 spatial pyramid 2x2/4x4/8x8;
+  needs `hier_ae_mom_top.pt` trained first + GO-gate oracle PASS) vs hier-long AND flat-budget
+  (both existing, two-seed). PRIMARY: ~null vs hier-long (|delta| CI spans 0 or < seed spread
+  0.016) — on a single-scale task with span protocol-capped at 48, a third stage can only
+  re-allocate, not extend; the depth column's honest loopmom entry is "2 stages suffice; depth
+  must match the task's memory-scale count" (mirrors the capacity-dump precedents). ALTERNATIVE
+  (a): hier3 CI-clean WIN -> re-allocation/optimization benefit is real; escalate to seed 1 and
+  report as a genuine depth finding. ALTERNATIVE (b): CI-clean LOSS -> the extra stream's
+  optimization cost dominates (consistent with the fixed-step context-length effect); reported
+  as the depth cost at fixed budget.
+- **A2 blinding probes** (eval-only on EXISTING ckpts, no training): hier-long s0 with
+  `--blind coarse` and `--blind fine`; hier3 (after B3) with `--blind top`. Read: per-level
+  content attribution (CW-VAE §5.1 analog) — blinding coarse should destroy the dt<=48 retrieval
+  bins specifically; blinding fine should cost recency/detail bins. Report-only (mechanism
+  figure), no claims gate on it.
+
+**Rules (binding):** symmetric pairs (reused partners count — both seeds already exist for every
+partner); seed-means, never best-of-seeds; two-seed before any claim escalation; regime B16x30k
+matched to every partner (NO 60k cells in this block); GO-gate oracle PASS required before
+training any arm with new buffer machinery (hier-s2-min, hier3); anything not covered above
+defaults to report-only.
+
+### Phase C (default-MMNIST control column; after Phase B)
+
+Standard bouncing-digit MMNIST (OpenSTL-matched `scripts/gen_moving.py`), NEW frozen AE trained
+on its frames, zero-action conditioning (disclosed; the action interface is inert on actionless
+data), train 3000x100 / test 500x348, WARM=48, ~300-frame rollouts. Arms: flat-budget-mm,
+hier-long-mm (+ hier3-mm optional) at 1152 tok, B16x30k, seed 0. PRIMARY (the thesis's own
+prediction, extending the measured T7 null): hier ~= flat on ALL fg-MSE (no memory horizon ->
+nothing for coarse span to buy); the value of the column is the MEASURED null in the same table
+where loopmom shows the band — "where hierarchy pays and where it cannot". Disclosures: hardness
+axis inert (nothing exits the frame); fg-threshold trivial (black bg); an SSIM-vs-horizon curve
+may be SHOWN for literature comparability with persistence + all-black floors drawn, under the
+CH2 §2.8 carve-out (calibration, not claim). A hier win here would contradict T7 and trigger
+re-examination before any reporting.
+
+### Cost ledger (estimates; VRAM all << the 11.8GB flat-c2 point)
+B1 ~2h train+~1h eval; B2 ~2.5h+1h; AE-top ~0.25h; B3 ~3h+1h; blinding 3x ~0.5h; compares
+minutes. Phase B total ~11-12 GPU-h. Phase C: AE ~0.3h + 2-3 arms x ~3-4h + evals ~ 1 GPU-day.

@@ -720,7 +720,7 @@ the audited table register; final numbering at typeset). Measured anchor rows fr
 **[FIG 4-x — token-budget frontier]**
 *Content:* ALL fg-MSE versus context-token budget at operating point A, one 4-point curve per
 family (flat: flat-short → flat-min → flat-budget → flat-long; hierarchical: hier-short →
-hier-min → hier-long → hier-rich), with the measured win band [896, ≈2,059) shaded, the
+hier-min → hier-long → hier-rich), with the measured win band [896, ~2,000) shaded (upper edge bracketed to (1,792, 2,432)), the
 geometric span-threshold (48×16 tokens) drawn as the band's lower edge, and the persistence
 floor (0.2552) drawn.
 *Source:* **`docs/figures/fig9_frontier.png`** (measured; anchors from Tables 4.5/4.6 and the
@@ -758,14 +758,14 @@ run: flat wins at 512 tokens, the hierarchy wins at 896, so the switch-on is bra
 budget removes the flat model's window from the memory horizon faster than the hierarchical
 abstraction cost grows — the efficiency argument is strongest exactly where budgets are
 tightest, and hier-min at 896 tokens (0.1706) reaches a quality the flat curve attains only at
-≈2.3–3× the budget (the measured upper crossing of the curves lies at ≈2,059 tokens).
+≈2.3–3× the budget (the upper band edge is measured to lie in (1,792, 2,432) tokens: R-F wins at 1,792, R-G loses at 2,432).
 The pre-registered seed-1 replication confirmed the point: every cell WIN again (overall
 +0.0358 [+0.0267, +0.0454]) with the same visibility-stratified reach signature — the 896-token
 lower edge is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest two-seed effect
 of the campaign), alongside the two-seed 1,152-token pairing of §4.3.3. The §4.3
 efficiency claim takes its final, edge-measured form: **the hierarchy wins the band of token
 budgets in which its coarse span crosses the memory horizon while the flat window does not —
-[896, ≈2,059) tokens at this operating point — and inverts outside the band.** [UA-PASS:
+[896, ~2,000) tokens at this operating point, both edges measured — and inverts outside the band.** [UA-PASS:
 «ієрархія виграє смугу токен-бюджетів, у якій її грубий діапазон покриває горизонт пам'яті, тоді
 як пласке вікно — ні»; «нижня межа смуги збігається з геометричним порогом 48×16 токенів»;
 «перевага максимальна на нижній межі смуги».]

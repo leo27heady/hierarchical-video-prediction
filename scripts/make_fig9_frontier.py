@@ -11,17 +11,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# (tokens, fg-MSE ALL) — diffusion-head frontier curves
-flat = [(512, 0.2224), (896, 0.2106), (1152, 0.2038), (3072, 0.1564)]
-hier = [(480, 0.2260), (896, 0.1706), (1152, 0.1848), (3072, 0.1695)]
+# (tokens, fg-MSE ALL) — diffusion-head frontier curves, seed 0 (6 points; R-F/R-G add 1792/2432)
+flat = [(512, 0.2224), (896, 0.2106), (1152, 0.2038), (1792, 0.1876), (2432, 0.1703), (3072, 0.1564)]
+hier = [(480, 0.2260), (896, 0.1706), (1152, 0.1848), (1792, 0.1799), (2432, 0.1820), (3072, 0.1695)]
 # regression-head reference points (context, dashed/open markers)
 reg_pts = [
     ("spat18-reg", 672, 0.2008),
     ("reg-flat", 1152, 0.2015),
     ("reg-long", 1152, 0.1682),
 ]
-flat_names = ["flat-short", "flat-min", "flat-budget", "flat-long"]
-hier_names = ["hier-short", "hier-min", "hier-long", "hier-rich"]
+flat_names = ["flat-short", "flat-min", "flat-budget", "flat-c1", "flat-c2", "flat-long"]
+hier_names = ["hier-short", "hier-min", "hier-long", "hier-c1", "hier-c2", "hier-rich"]
 PERSIST = 0.2552
 
 fx, fy = np.array([p[0] for p in flat], float), np.array([p[1] for p in flat], float)
@@ -82,13 +82,13 @@ ax.annotate("hier-long s1\n0.1690", (1152, 0.1690), textcoords="offset points",
             xytext=(70, -26), ha="left", fontsize=7.5, color="#b3492f",
             arrowprops=dict(arrowstyle="-", color="#e76f51", lw=0.7, alpha=0.6))
 
-# point labels
-lab_kw = dict(fontsize=8.5, zorder=4)
-offs_flat = [(24, -24), (-6, 10), (16, 10), (-8, -24)]
+# point labels (6 points each: short/min/budget/c1/c2/long ; short/min/long/c1/c2/rich)
+lab_kw = dict(fontsize=8, zorder=4)
+offs_flat = [(22, -22), (-8, 11), (14, 11), (-2, 13), (-24, -20), (-6, -22)]
 for (x, y), name, (dx, dy) in zip(flat, flat_names, offs_flat):
     ax.annotate(f"{name}\n{y:.4f}", (x, y), textcoords="offset points",
                 xytext=(dx, dy), ha="center", color="#264653", **lab_kw)
-offs_hier = [(-2, 10), (30, -16), (12, -26), (8, 10)]
+offs_hier = [(-2, 10), (28, -14), (10, -26), (-24, -24), (26, 4), (10, 11)]
 for (x, y), name, (dx, dy) in zip(hier, hier_names, offs_hier):
     ax.annotate(f"{name}\n{y:.4f}", (x, y), textcoords="offset points",
                 xytext=(dx, dy), ha="center", color="#b3492f", **lab_kw)
@@ -107,22 +107,27 @@ ax.annotate("flat wins\n−0.0036 [−0.0063,−0.0010]", (500, 0.2242),
             textcoords="offset points", xytext=(16, 42), ha="left", fontsize=8,
             color="0.25",
             arrowprops=dict(arrowstyle="-", color="0.55", lw=0.8))
-ax.annotate("flat wins\n−0.0131 [−0.0201,−0.0069]", (2900, 0.1685),
-            textcoords="offset points", xytext=(-118, 36), ha="left", fontsize=8,
+ax.annotate("flat wins\n−0.0131 [−0.0201,−0.0069]", (3072, 0.1564),
+            textcoords="offset points", xytext=(-40, -34), ha="center", fontsize=8,
             color="0.25",
             arrowprops=dict(arrowstyle="-", color="0.55", lw=0.8))
+# bracket callouts: R-F (hier win) and R-G (flat loss) locate the upper edge in (1792, 2432)
+ax.annotate("R-F +0.0077", (1792, 0.1799), textcoords="offset points", xytext=(-2, 22),
+            ha="center", fontsize=7.5, color="#1d7268")
+ax.annotate("R-G −0.0116", (2432, 0.1820), textcoords="offset points", xytext=(2, 20),
+            ha="center", fontsize=7.5, color="#9b2226")
 
 ax.set_xscale("log")
-ax.set_xticks([512, 672, 896, 1152, 3072])
-ax.set_xticklabels(["480–512", "672", "896", "1152", "3072"], fontsize=9)
+ax.set_xticks([512, 896, 1152, 1792, 2432, 3072])
+ax.set_xticklabels(["480–512", "896", "1152", "1792", "2432", "3072"], fontsize=8)
 ax.minorticks_off()
 ax.set_xlim(430, 3600)
 ax.set_ylim(0.145, 0.265)
 ax.set_xlabel("context-token budget (log scale)")
 ax.set_ylabel("fg-MSE, ALL (152-frame AR rollout; lower is better)")
-ax.set_title("Token-budget frontier: hierarchy wins the band where its span crosses the memory horizon\n"
-             "(loopmom; curves = seed 0, hollow = seed-1 replications; lower edge TWO-SEED at the geometric ~896-tok prediction)",
-             fontsize=10.5)
+ax.set_title("Token-budget frontier: hierarchy wins the band where its coarse span crosses the memory horizon\n"
+             "(loopmom; 6 budgets; both edges measured — lower two-seed at ~896, upper bracketed to (1792, 2432))",
+             fontsize=9.8)
 ax.legend(loc="lower left", fontsize=8.5, framealpha=0.9)
 ax.grid(True, which="major", axis="y", alpha=0.25)
 

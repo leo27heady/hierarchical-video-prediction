@@ -618,7 +618,7 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 [FIG `docs/figures/fig9_frontier.png`: quality-vs-token-budget (log-x), two measured 4-point
 curves — hier (480 → 896 → 1152 → 3072: 0.2260, **0.1706**, 0.1848, 0.1695) and flat
 (512 → 896 → 1152 → 3072: 0.2224, 0.2106, 0.2038, 0.1564) — measured shape: hierarchy wins the
-band [896, ≈2059) tokens (upper crossing interpolated from the curves), with the effect PEAKING
+band [896, ~2,000) tokens (upper edge measured to lie in (1,792, 2,432); see §4.3.6 bracket), with the effect PEAKING
 at the lower edge, which sits exactly at the geometric span-threshold prediction (48×16 coarse
 tokens + minimal fine tail ≈ 830–896); flat wins below the threshold (512) and at window
 saturation (3072). Caption: the token-budget frontier — hierarchy wins exactly the band where
@@ -660,8 +660,8 @@ written before the run. Second, the **effect peaks at the lower edge**: moving d
 inside the band, flat's window falls away from the horizon faster than the hierarchy's
 abstraction cost grows, so the efficiency argument is strongest exactly where budgets are
 tightest — hier-min at 896 tokens (0.1706) reaches a quality that the flat curve only attains
-between 1,152 and 3,072 tokens (interpolated ≈2.3–3× the budget; the measured upper crossing of
-the curves sits at ≈2,059 tokens). The fine-context question resolved with the seeds: hier-min's
+between 1,152 and 3,072 tokens (≈2.3–3× the budget; the upper band edge is measured to lie in
+(1,792, 2,432) tokens — R-F wins at 1,792 +0.0077, R-G loses at 2,432 −0.0116). The fine-context question resolved with the seeds: hier-min's
 seed-mean (0.1725) sits within hier-long's seed band (0.1690–0.1848, mean 0.1769) — the
 pre-registered "fine-context floor" alternative is refuted at w_f = 2 (two seeds), and the hier
 curve from 896 tokens on reads as a plateau at ≈0.17 rather than a dip. Disclosures resolved: the pre-registered seed-1 replication (R-A, `frontier_low_s1.log`)
@@ -671,7 +671,7 @@ CONFIRMED (seed-mean Δ ≈ +0.0379, the campaign's largest two-seed effect; hie
 0.0038, flat-min 0.0004). Both the 896 and 1,152 budgets now carry two seeds. The 3,072-token upper edge is likewise
 two-seed (R-B: flat wins at seed 1 too, −0.0107 [−0.0163, −0.0058]). The final claim form is
 unchanged but now edge-measured: hierarchy wins **the band of budgets where its span crosses the
-memory horizon and flat's window does not** — [896, ≈2×10³ interpolated) tokens as measured on
+memory horizon and flat's window does not** — [896, ~2,000) tokens, both edges measured, on
 this testbed — and inverts outside it.
 
 **Budget robustness of the 1,152-token headline (R-C, `frontier_mid_60k.log`).** Retraining the
