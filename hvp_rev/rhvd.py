@@ -847,14 +847,14 @@ def _fg_empty_mask(clip_arr, h_arr, test_path, warm, thr=0.5):
     return out
 
 
-def compare(arms, seed, test_path, warm):
+def compare(arms, seed, test_path, warm, tag=""):
     """Paired per-frame comparison of rollout npz files (same clips/horizons across arms).
     Cluster (clip-level) bootstrap CIs; empty-GT-foreground records excluded from strat bins.
     H-grid npz (with dt/seen fields) additionally get the pre-registered GATE table: dt-since-
     last-visible bins x HARD, on answerable (seen>=0.5) records — G-H1/2/3 read on dt>48 rows."""
     d = {}
     for a in arms:
-        z = np.load(f"logs_rhcp/rhvd_eval_{a}_s{seed}.npz")
+        z = np.load(f"logs_rhcp/rhvd_eval_{a}_s{seed}{tag}.npz")
         d[a] = z
     base = arms[0]
     zb = d[base]
@@ -959,7 +959,7 @@ def main():
 
     if args.compare:
         compare([a.strip() for a in args.compare.split(",")], args.seed,
-                test_path=args.test_path, warm=args.warm)
+                test_path=args.test_path, warm=args.warm, tag=args.eval_tag)
         return
 
     if args.arm.startswith(("d0-", "d1-", "d2-")):

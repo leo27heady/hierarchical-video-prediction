@@ -11,11 +11,24 @@ mark () { echo "=== $1 ($(date '+%F %T')) ==="; }
 # ---------- C0: data (CPU) + zero-action files + fresh AE + digit classifier ----------
 mark "C0 data gen (train 3000x100, test 500x348; OpenSTL-matched generator)"
 [ -f data/mmnistL_train_3000x100.npy ] || $PY scripts/gen_moving.py --src mnist --frames 100 \
-    --n 3000 --out data/mmnistL_train_3000x100.npy
+    --n 3000 --seed 1234 --out data/mmnistL_train_3000x100.npy
 [ -f data/mmnistL_test_500x348.npy ] || $PY scripts/gen_moving.py --src mnist --frames 348 \
-    --n 500 --out data/mmnistL_test_500x348.npy
+    --n 500 --seed 5678 --out data/mmnistL_test_500x348.npy
 $PY - << 'EOF'
+import hashlib
 import numpy as np, os
+
+train = np.load("data/mmnistL_train_3000x100.npy", mmap_mode="r")
+test = np.load("data/mmnistL_test_500x348.npy", mmap_mode="r")
+train_h0 = {hashlib.sha256(np.ascontiguousarray(x).tobytes()).digest() for x in train[:, 0]}
+test_h0 = {hashlib.sha256(np.ascontiguousarray(x).tobytes()).digest() for x in test[:, 0]}
+collisions = train_h0 & test_h0
+assert not collisions, (
+    f"Phase-C split collision: {len(collisions)} test frame-0 images occur in train. "
+    "Delete mmnistL data and regenerate with distinct seeds."
+)
+print("Phase-C split audit PASS: no frame-0 hash collisions (train seed 1234; test seed 5678)")
+
 for p in ("data/mmnistL_train_3000x100.npy", "data/mmnistL_test_500x348.npy"):
     a = p.replace(".npy", "_actions.npy")
     if not os.path.exists(a):

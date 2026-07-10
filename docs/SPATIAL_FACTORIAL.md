@@ -272,6 +272,31 @@ even hier-rich 0.1687/0.1695), so the plateau reading survives the budget axis t
 default-named npz restored to the 30k canonical versions (the T4 matrix and every doc reference
 them unchanged); the 60k data saved as `rhvd_eval_{hier-long,flat-budget}_s0_60k.npz`.
 
+### R-G60 PRE-REGISTRATION (2026-07-10, before launch): upper-edge optimization-budget control
+
+**Motivation.** R-G located the seed-0 upper crossing between 1,792 and 2,432 context tokens at
+B16×30k, but R-C subsequently showed that equal sequence length does not imply equal convergence:
+at 1,152 tokens the hierarchical arm improved by 0.0182 under B8×60k while the flat arm changed
+by only 0.0006. The published upper bracket must therefore be treated as 30k-conditional unless
+the 2,432-token pair is tested at the same longer regime.
+
+**Arms and invariant.** `hier-c2` versus `flat-c2`, seed 0, both B8×60k, otherwise unchanged.
+Evaluation uses the existing paired clip/horizon protocol and writes `_60k`-tagged artifacts so
+the canonical 30k evidence is not overwritten. This is an optimization-budget control, not an
+additional seed.
+
+**Primary reading (edge moves right).** If the paired delta becomes null or a hierarchical win,
+R-G's 30k loss was convergence-conditional. Report the upper edge as **not located at 60k** (at
+or above 2,432 tokens); do not extrapolate a new crossing. This strengthens the plateau/emergence
+account but weakens every fixed 2.3–3× budget-multiple statement.
+
+**Alternative (30k edge survives).** If flat remains a CI-clean winner, the measured upper
+bracket `(1,792, 2,432)` replicates across the 30k and 60k optimization regimes at seed 0. It
+remains a one-seed bracket and is not called an asymptotic law.
+
+**Mixed reading.** A null aggregate with horizon-dependent signs is reported cell-by-cell and
+the upper edge is described as unresolved at 60k. No interpolation from the two regimes.
+
 ### R-E (pre-registered 2026-07-09, BEFORE the run): the 512-token pair seed-1 (completeness)
 
 **Motivation:** 896/1152/3072 all carry two seeds; only the 512-token below-threshold point
