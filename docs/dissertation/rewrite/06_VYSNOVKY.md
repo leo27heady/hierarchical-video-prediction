@@ -90,10 +90,15 @@ $333\times$ to $1.0\times$ over 100 steps purely as a function of the coupling L
 so trajectory stability is a separate design requirement.
 
 **5.** *(Task 5)* A hierarchical mathematical model of multi-level video generation in compact
-hierarchical latent state spaces has been developed, in which the upper (coarse) level carries
-the long-range temporal memory of the process (48-frame coarse context at 16 tokens per
-remembered frame versus the fine level's 64 — a 4× token and asymptotically ≈16× attention-cost
-advantage per memory frame), with unidirectional inter-level context transfer (gradient
+hierarchical latent state spaces has been developed, supporting **multiple context streams at
+different temporal rates and spatial resolutions** over one shared attention backbone (the
+context-stream family of §3.1/§3.3.5). Long-range temporal memory is carried by a long-span
+stream: the **coarse stream is the measured spatial implementation** (48-frame coarse context at
+16 tokens per remembered frame versus the fine level's 64 — a 4× token and asymptotically ≈16×
+attention-cost advantage per memory frame), and **strided full-resolution history is the
+measured temporal implementation** (span 48 at 11 anchors; matches or exceeds the coarse form
+under the diffusion head at seed 0 [EXPECTED-B2-s1: replication queued]) — with unidirectional
+inter-level context transfer (gradient
 detachment at the representation/dynamics and past/future boundaries) and a per-frame
 iterative-refinement (diffusion) generation core selected by controlled mechanism analysis. The
 model demonstrably restores content re-entering the field of view beyond the horizon of a flat
@@ -160,7 +165,17 @@ retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-M
 aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
 benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
 complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
-specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. The generalization
+specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. The shape study (§4.4)
+established that the packaging axes are not interchangeable: the win band's lower edge follows
+each family's token arithmetic (896 tokens for the stride-1 coarse family, two seeds; 512 for
+the stride-2 family, +0.0330 [+0.0246, +0.0419] every cell at seed 0 [EXPECTED-B1-s1: queued]),
+and temporally subsampled full-resolution history beats the coarse packaging under the diffusion
+head at seed 0 (+0.0197 [+0.0143, +0.0252]; [EXPECTED-B2-s1/REG: seed and regression-head
+resolution queued]) — the findings consolidating into the empirical laws of §4.8 (ledger:
+`docs/CLAIM_LEDGER.md`), whose conclusion is a conditional design rule rather than universal
+superiority: allocate context tokens to cover the task-relevant span with the least lossy family
+that achieves it; spend the remainder on resolution and recency; add depth only where the data
+contain a distinct slower factor. The generalization
 study of §4.6 extends this to the remaining suites, **[EXPECTED]** — the selected configuration
 outperforms persistence and the [A2] baselines in accuracy and in the duration of consistency
 retention, and is competitive on perceptual metrics (SSIM/LPIPS) with specialized deterministic

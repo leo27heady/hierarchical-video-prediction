@@ -142,7 +142,7 @@ neither at this scale. The memory results that follow are therefore run with *bo
 wherever the claim depends on it (§4.3.5, §4.4), so that no memory conclusion rides on a head
 choice.
 
-## 4.3 Claim 1 — hierarchical memory pays at matched token budget
+## 4.3 Claim 1 — long-span memory packaging pays at matched token budget
 
 ### 4.3.1 Pre-test: retrieval emerges under a larger optimization budget
 

@@ -6,23 +6,28 @@
 
 ## 8.1 One claim
 
-**The coarse level of a hierarchical latent video model earns its token budget exactly when the
-prediction horizon exceeds what the affordable flat context can carry — and the budgets at which
-this happens are predictable from geometry.** (The packaging is not unique: §4.4.3 measures a
-temporally-subsampled full-resolution packaging of the same span — itself a two-rate temporal
-hierarchy in the clockwork sense — that matches or exceeds it at
-seed 0, seed-1 replication queued, on a static-world testbed maximally kind to temporal
-subsampling. The claim is about long-span context at matched budget, with
-the coarse level as its per-level-decodable, multi-resolution form.) On a testbed whose memory demand is an exact label,
-the hierarchy-versus-flat frontier, measured at six matched budgets, has the shape the mechanism
-account predicts: flat wins below the span threshold (≈500 tokens: no hierarchical configuration
-can cover the ~48-frame loop; −0.0036 [−0.0063, −0.0010]); the hierarchy wins the band from the
-geometric threshold — 48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is
-largest (+0.0399 [+0.0299, +0.0501] seed 0 and +0.0358 [+0.0267, +0.0454] seed 1 at 896 tokens —
-two seeds, every horizon × hardness cell on both) through the two-seed headline at 1,152
-(+0.0189 / +0.0354); and flat wins again at window saturation (3,072 tokens, −0.0131 [−0.0201, −0.0069] seed 0,
-−0.0107 [−0.0163, −0.0058] seed 1 — two seeds), where its full-resolution memory
-information-dominates any coarse record of the same span.
+**Under bounded context and computation, long-horizon consistency depends on how a fixed
+context-token budget is allocated across temporal rate and spatial resolution. Hierarchical
+packaging — any multi-rate and/or multi-resolution allocation — earns its budget exactly when it
+covers task-relevant memory more cheaply than a flat full-resolution window can; the budgets at
+which this happens are predictable from token arithmetic; and spatial compression, temporal
+subsampling, and depth are distinct mechanisms with distinct, measured boundary conditions.**
+On a testbed whose memory demand is an exact label, the frontier of long-span packaging against
+flat context, measured at six matched budgets, has exactly the shape this account predicts:
+flat wins below the span threshold (≈500 tokens: no packaging can cover the ~48-frame loop;
+−0.0036 [−0.0063, −0.0010]); long-span packaging wins the band from the geometric threshold —
+48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is largest (+0.0399
+[+0.0299, +0.0501] seed 0 and +0.0358 [+0.0267, +0.0454] seed 1 at 896 tokens — two seeds, every
+horizon × hardness cell on both) through the two-seed interior point at 1,152 (+0.0189 /
++0.0354); and flat wins again at window saturation (3,072 tokens, −0.0131 / −0.0107 — two
+seeds), where full-resolution memory information-dominates any coarse record of the same span.
+Within the band, the *shape* of the packaging matters and is not interchangeable: the band's
+lower edge follows each family's token arithmetic (896 → 512 when the coarse tick halves;
+[EXPECTED-B1: s1 queued]), and a temporally-subsampled full-resolution packaging — itself a
+two-rate hierarchy in the clockwork sense — matches or exceeds the spatially coarse form under
+the diffusion head on this static-world testbed [EXPECTED-B2-s1/REG: seed and head resolution
+queued]. The spatially coarse two-level model remains the per-level-decodable form of the claim
+and the first one measured; it is not the claim itself.
 
 ## 8.2 The empirical laws, each under stated scope
 

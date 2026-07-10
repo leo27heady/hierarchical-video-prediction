@@ -4,31 +4,40 @@
 > `ARTICLE_SKELETON.md` §0.1/§1 and updated to the measured 2026-07-07 state (frontier band with
 > lower edge; pair-RED closure; T7 bridge). Canonical chapter numbering fixed at integration:
 > 1 introduction · 2 testbed · 3 mechanisms · 4 memory-horizon results · 5 generalization ·
-> 6 reversibility · 7 related work · 8 conclusion. Title = skeleton candidate 2 (the branch the
-> data defends): **"When Does Hierarchy Pay? A Memory-Horizon Study of Hierarchical Latent Video
-> Prediction at Matched Token Budgets."** [AUTHOR: венue/format pass may retitle.]
+> 6 reversibility · 7 related work · 8 conclusion. Title, packaging-reframe candidate
+> (2026-07-10, external-review convergence): **"When Does Hierarchical Context Pay? Rate,
+> Resolution, and Memory Span in Long-Horizon Video Prediction."** [AUTHOR: decision at venue;
+> prior candidate "When Does Hierarchy Pay? A Memory-Horizon Study of Hierarchical Latent Video
+> Prediction at Matched Token Budgets" remains valid — both defended by the data.]
+> **Reframe status:** this chapter is written to the packaging vision (claim ledger
+> `docs/CLAIM_LEDGER.md`); clauses whose final strength depends on the queued seed/head runs
+> carry [EXPECTED-…] markers per the standing convention.
 
-## Abstract (finalized draft, ~230 words)
+## Abstract (packaging-reframe draft, ~250 words; [EXPECTED] clauses finalize with S1/reg runs)
 
 Hierarchical latent video models are usually motivated by efficiency, yet controlled evidence
 that the hierarchy itself — rather than merely added context — improves prediction is scarce, and
 our own attempts on standard benchmarks returned nulls. We argue the nulls are a property of the
 *testbeds*, and build a memory-horizon testbed in which content verifiably exits a panning
 viewport and re-enters ~48 frames later at an analytically known position, so that "hard because
-it must be remembered" is an exact, computable label. At matched capacity and compute we compare
-prediction mechanisms on one frozen latent interface: regression averages over futures, diffusion
-commits sharply, and Energy-Based Transformers dissociate into a two-sided negative — one
-published recipe learns a correctly *ordered* energy landscape, yet descent never *reaches* a
-structured output at our scale. We then map the token-budget frontier of hierarchy against flat
-context. At matched budgets, a two-level latent model whose coarse level carries a 48-frame
-memory wins **exactly the band of budgets in which its coarse span covers the memory horizon
-while a flat window cannot** — from ≈900 tokens (the geometric span threshold, predicted before
-measurement; the largest effect, +0.0399/+0.0358 across two seeds) up to window saturation at
-the measured upper edge in (1,792, 2,432) tokens — and inverts outside the band. The win is mechanism-agnostic, but the mechanism ranking
-is regime-dependent: regression, not diffusion, wins the deterministic best-of-1 rollout.
-Finally, we prove and measure an exactly invertible stochastic recurrence (gradients equal to
-backpropagation through time; activation memory constant in rollout length) and delimit honestly
-where reversibility cannot pay.
+it must be remembered" is an exact, computable label. On this instrument we treat long-horizon
+prediction as a **constrained context-packaging problem**: at a matched context-token budget,
+a fixed backbone consumes context streams parameterized by spatial resolution and temporal
+rate, and "hierarchy" is the family of multi-rate and/or multi-resolution packagings. The
+measured answer is a set of empirical laws under stated scope. Long-span packaging wins exactly
+the band of budgets in which its span covers the memory horizon while a flat window cannot —
+from the geometric span threshold (≈900 tokens, predicted before measurement; the largest
+effect, +0.0399/+0.0358 across two seeds) to window saturation at the measured upper edge in
+(1,792, 2,432) tokens — and inverts outside the band. The band's lower edge moves with the
+packaging family's token arithmetic (896 → 512 tokens when the coarse tick halves;
+[EXPECTED-B1: two-seed on replication]). The packaging axes are not interchangeable: temporally
+subsampled full-resolution history matches or exceeds the spatially coarse hierarchy under the
+diffusion head on this static-world testbed [EXPECTED-B2-s1/REG: strength and head-dependence
+finalize with the queued seed and regression runs], while the head ranking itself is
+regime-dependent (regression, not diffusion, wins deterministic best-of-1 rollout). Energy-based
+descent is a two-sided characterized negative at reachable scale, and an exactly invertible
+stochastic recurrence (gradients equal to backpropagation through time at constant activation
+memory) is proven, measured, and honestly delimited.
 
 ## 1.1 The question
 
@@ -44,7 +53,11 @@ effective context is credited to "hierarchy" when the credit belongs to "more co
 preliminary line of work ran into both confounds: replications of clockwork-style hierarchical
 models on standard benchmarks produced clean nulls (aggregate metrics dominated by static
 background; temporal abstraction acting as a capacity dump), which is what forced the question
-this article answers: **under what measurable conditions does hierarchy actually pay?**
+this article answers — posed, from the start, at the packaging level rather than the
+architecture level: **under bounded context and computation, how should a fixed token budget be
+allocated across temporal rate and spatial resolution — and when does any hierarchical packaging
+of it actually pay?** "Hierarchy" throughout means multi-rate and/or multi-resolution context
+(§4.4); the spatially coarse two-level model is its first measured form, not its definition.
 
 ## 1.2 The research program this article completes
 

@@ -207,13 +207,16 @@ real list — see §3 below.]**
    memory in hierarchical video generation processes was developed — a purpose-built
    memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
    control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
-   comparison design — and it was demonstrated with its help that a hierarchical latent state
-   space whose upper (coarse) level carries the long-range temporal memory of the process
-   (developing the coarse-level-memory paradigm of hierarchical latent video models, §1.3.2)
-   restores content that re-enters the field of view beyond the horizon of a flat context window
-   at the same context-token budget; unlike existing evaluation practice, which aggregates
+   comparison design — and it was demonstrated with its help that **long-span multi-stream
+   context packaging** — a hierarchical allocation of a fixed context-token budget across
+   spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
+   hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
+   and strided full-resolution history the measured temporal form [EXPECTED-B2-s1: seed
+   replication queued] — restores content that re-enters the field of view beyond the horizon of
+   a flat context window at the same context-token budget, with the winning budgets predictable
+   from token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
-   the memory contribution of the hierarchy directly measurable and localizes the improvement of
+   the memory contribution of the packaging directly measurable and localizes the improvement of
    temporal consistency exactly in the regime where the memory horizon demands it. [UA-PASS:
    «Вперше розроблено методологію … яка, на відміну від існуючих …, забезпечує …» genre formula.
    Re-scoped 2026-07-07: the «вперше» is carried by the testbed methodology + matched-budget
@@ -301,9 +304,11 @@ real list itself is unchanged for now; canonical article labels used throughout 
   the "Q1" quartile claim in the current ВСТУП holds or must be softened to "Scopus-indexed".]**
 - **[A3]** — consistency-criteria article (UA professional journal): conceptual consistency and
   the criteria apparatus. **[AUTHOR: exact entry.]**
-- **[A4]** — the fourth article (in finalization): hierarchical latent video model with
-  coarse-level long memory, memory-horizon testbed, matched-compute mechanism study including the
-  EBT characterized negative, reversibility theory. **[AUTHOR: target venue and status by
+- **[A4]** — the fourth article (in finalization): a controlled causal study of long-span
+  context packaging (rate × resolution × depth) for long-horizon video prediction — the
+  memory-horizon testbed, the matched-token-budget frontier with measured edges, the shape study,
+  the matched-compute mechanism study including the EBT characterized negative, and the
+  reversibility theory (non-core supporting material per the 2026-07-10 triage). **[AUTHOR: target venue and status by
   defense.]**
 - 6 conference theses. **[AUTHOR: identify all six; DSMSI-2023 participation needs verification
   per DISS_DIGEST Q3.]**

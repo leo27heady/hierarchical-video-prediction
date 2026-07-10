@@ -92,6 +92,19 @@ systems analysis methods, mathematical models, and intelligent information techn
 аналізу, математичних моделей та інтелектуальних інформаційних технологій.» Note: no
 discrete-space commitment, per decisions Q1/Q2.]
 
+The dissertation's components serve **one backbone question** (packaging reframe 2026-07-10):
+*how can hierarchical decomposition, temporal abstraction, and resource-aware rollout improve
+the consistency of long-horizon video generation under bounded memory and computation?* Each
+contribution has a defined role in answering it: adaptive entropy-based decomposition and
+RoPE-ND (Chapter 2) — how to represent uncertain visual information efficiently; reversible
+transformations and time-agnostic backpropagation (Chapter 2) — how to train and roll out long
+processes within memory limits; the multi-stream hierarchical predictor (Chapter 3) — the
+demonstrated system; the memory-horizon testbed and re-entry-stratified protocol (Chapters 3–4)
+— the causal instrument for measuring whether context memory actually matters; the frontier and
+shape experiments (Chapter 4) — the evidence for how to allocate a fixed context budget; the
+energy-based study (Chapter 4) — the measured mechanism-selection negative. [UA-PASS: «наскрізне
+питання дослідження».]
+
 To achieve this purpose, the following scientific and practical tasks had to be solved:
 
 1. Analyze the state and problems of generative video-data models as complex systems; classify
@@ -172,13 +185,16 @@ per the 124-alignment review — the strongest predictable committee objection. 
    memory in hierarchical video generation processes was developed — a purpose-built
    memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
    control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
-   comparison design — and it was demonstrated with its help that a hierarchical latent state
-   space whose upper (coarse) level carries the long-range temporal memory of the process
-   (developing the coarse-level-memory paradigm of hierarchical latent video models, §1.3.2)
-   restores content that re-enters the field of view beyond the horizon of a flat context window
-   at the same context-token budget; unlike existing evaluation practice, which aggregates
+   comparison design — and it was demonstrated with its help that **long-span multi-stream
+   context packaging** — a hierarchical allocation of a fixed context-token budget across
+   spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
+   hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
+   and strided full-resolution history the measured temporal form [EXPECTED-B2-s1: seed
+   replication queued] — restores content that re-enters the field of view beyond the horizon of
+   a flat context window at the same context-token budget, with the winning budgets predictable
+   from token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
-   the memory contribution of the hierarchy directly measurable and localizes the improvement of
+   the memory contribution of the packaging directly measurable and localizes the improvement of
    temporal consistency exactly in the regime where the memory horizon demands it.
 
 2. **For the first time**, a method for the computationally efficient optimization of processes in

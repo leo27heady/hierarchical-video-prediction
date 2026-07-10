@@ -24,7 +24,12 @@
 
 ---
 
-# РОЗДІЛ 3 — ІЄРАРХІЧНА МАТЕМАТИЧНА МОДЕЛЬ ГЕНЕРАЦІЇ ВІДЕОПОСЛІДОВНОСТЕЙ ІЗ ДОВГОТРИВАЛОЮ ПАМ'ЯТТЮ ГРУБОГО РІВНЯ
+# РОЗДІЛ 3 — ІЄРАРХІЧНА МАТЕМАТИЧНА МОДЕЛЬ ГЕНЕРАЦІЇ ВІДЕОПОСЛІДОВНОСТЕЙ ІЗ ДОВГОТРИВАЛИМ БАГАТОПОТОКОВИМ КОНТЕКСТОМ
+
+> **[SUPERVISOR-GATE, packaging reframe 2026-07-10]:** proposed title above (multi-stream
+> long-span context — survives the B2 measurement); prior title «…ІЗ ДОВГОТРИВАЛОЮ ПАМ'ЯТТЮ
+> ГРУБОГО РІВНЯ» kept as fallback pending Prof. Mokin's sign-off. The coarse level remains
+> the concrete stream type of §3.1.1; it is no longer the chapter-title-level principle.
 
 *(EN: Hierarchical mathematical model of video-sequence generation with long-range coarse-level
 memory.)*
@@ -53,6 +58,18 @@ with the model: it is what operationalizes the trajectory-consistency criterion 
 ## 3.1 Формалізація ієрархічного прихованого простору станів
 
 *(Formalization of the hierarchical latent state space.)*
+
+The chapter's organizing object, defined here once and used throughout (full formalization in
+§3.3.5): a **context-stream family**. Each context stream is a triple
+$s_i = (	ext{роздільна здатність}_i,\ 	ext{часовий крок}_i,\ 	ext{кількість слотів}_i)$
+[UA-PASS: «потік контекстних токенів»], and a system configuration is a set of such streams
+consumed by one shared attention backbone. In this vocabulary: a **flat** configuration is a
+single fine-resolution stride-1 stream; a **temporal (rate) hierarchy** has two or more tick
+rates at any resolution; a **resolution hierarchy** has two or more spatial resolutions; a
+**deep hierarchy** has three or more streams; the **context budget** counts context tokens only,
+with total sequence length and compute reported separately (§4.1). The two-level
+coarse-plus-fine model developed next is the family's per-level-decodable resolution form — the
+dissertation's demonstrated system, not the family's definition.
 
 ### 3.1.1 Дворівнева декомпозиція стану та заморожений автокодувальник
 
