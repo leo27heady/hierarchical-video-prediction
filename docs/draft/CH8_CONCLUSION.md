@@ -47,9 +47,10 @@ information-dominates any coarse record of the same span.
   on a benchmark that cannot reward memory. [EXPECTED-PhaseC: the null extends to ~300-frame
   rollouts — where hierarchy pays is a property of the data's memory structure, not of rollout
   length.]
-- **The shape of the hierarchy (§4.4):** [EXPECTED-B1: the band's lower edge is
-  family-parametric — halving the coarse tick moved it from 896 to 512 tokens, at the token-
-  arithmetic prediction both times.] [EXPECTED-B2, branch-gated: span-per-token is the currency —
+- **The shape of the hierarchy (§4.4):** MEASURED at seed 0 (seed-1 queued before headline use):
+  the band's lower edge is family-parametric — halving the coarse tick moved it from 896 to 512
+  tokens (+0.0330 [+0.0246, +0.0419], every cell, span-signature dt-gates), at the
+  token-arithmetic prediction both times; each family carries its own plateau level. [EXPECTED-B2, branch-gated: span-per-token is the currency —
   temporally subsampled full-resolution history reproduces the matched-budget win / ALT: the
   coarse level's dense coverage carries value beyond span.] [EXPECTED-B3: depth is bounded by the
   data's memory-scale count — a third stage on the single-scale testbed is a measured null at

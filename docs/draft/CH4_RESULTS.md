@@ -320,7 +320,7 @@ benchmark [REF: CW-VAE] (whose format we adopt and whose controls we tighten —
 |---|---|---|---|---|
 | spatial | coarse 4×4 stream, stride 1 | 4× span/token; per-level decodability; dense temporal coverage | abstraction cost −0.008 (diff) / ≈0 (reg) at fixed window | §4.4.1 measured |
 | temporal | full-res history, stride 4 | 4× span/token; full detail at anchors | inter-anchor blindness; no cheap decodable level | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
-| spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above | §4.4.2 [EXPECTED: hier win at 512 tok] |
+| spatial × temporal | coarse stream, stride 2 | 8× span/token — the cheapest loop-coverer | both costs above + a ≈+0.017 family plateau offset | §4.4.2 measured: **+0.0330 win @512 tok** (s0; s1 queued) |
 | depth | + 2×2 top stream | a third scale to own | dead weight below the data's scale count; slower fixed-step convergence | §4.4.5 [EXPECTED: null vs 2-stage]; §4.5; per-pixel gate null (§4.4.1) |
 | allocation | span-first sizing | the win band + its measured edges | — | §4.3.6 measured |
 
@@ -386,18 +386,26 @@ prices the same 48-frame span at **24·16 + 2·64 = 512 tokens** — the budget 
 family *loses* (flat wins 512 two-seed, because six stride-1 coarse frames cannot span the loop).
 The pre-registered prediction is therefore a sign flip **at the same budget across families**.
 
-[EXPECTED-B1 (primary): hier-s2-min ALL ≈ 0.170–0.180 (a plateau member — the loop is covered);
-paired Δ vs flat-short ≈ +0.04 to +0.05, CI > 0, win in every horizon × hardness cell; the
-dt-gate signature of a true span mechanism (dt ≤ 48 HARD win, dt > 96 null). Text on
-confirmation: "the lower edge moved from 896 to 512 when the coarse tick halved, landing at its
-geometric prediction both times — the band's edges are arithmetic, not accidents of one
-configuration." ALTERNATIVE (null/loss): the stride-2 family's edge lies in (512, 896] — loop
-coverage is necessary but the family's fine floor or inter-anchor aliasing (momentum reversals
-between stride-2 anchors) sets the remainder; reported as a measured family-edge refinement.]
+**Measured (2026-07-10, seed 0; the pre-registered primary branch confirmed).** hier-s2-min
+scores ALL fg-MSE **0.1893** (sharp 0.0697) against flat-short's 0.2224 (0.0432): paired Δ ALL
+**+0.0330 [+0.0246, +0.0419]** — a win in **every** horizon × hardness cell (14/14, from h 1–8
+easy +0.0077 to h 25–60 HARD +0.0640 [+0.0450, +0.0827]), with the textbook span signature
+(dt ≤ 48 HARD +0.0643 [+0.0496, +0.0791] WIN; dt 49–96 HARD +0.0228 WIN; dt 97–192 null —
+beyond the 48-frame span). **The lower edge moved from 896 to 512 when the coarse tick halved,
+landing at its token-arithmetic prediction both times: the band's edges are arithmetic, not
+accidents of one configuration.** Two honest refinements, reported against the pre-registered
+expectation rather than smoothed away: the effect is smaller than the stride-1 edge win
+(+0.0330 vs +0.0399/+0.0358), and the arm sits ≈+0.017 *above* the stride-1 plateau
+(0.1893 vs hier-min's seed-mean 0.1725) — each family carries its **own plateau level**, the
+stride-2 family paying a real family cost for its sparser anchors (24 slots at tick 2 vs 48
+dense; inter-anchor blindness under momentum reversals). Per the binding rule, the seed-1
+replication is queued (the flat-short seed-1 partner already exists) before any headline
+escalation; the CH1/CH8 family clauses remain gated until it lands.
 
-[FIG ch4-5: family edge law — predicted vs measured lower edge per family (896 stride-1 measured
-two-seed; 512 stride-2 [EXPECTED]); upper bracket (1792, 2432) drawn for context. Asset:
-`docs/figures/fig13_family_edges.png` (QUEUED — script after B1 npz). Caption note, REQUIRED:
+[FIG ch4-5: family edge law — paired deltas per family with each family's token-arithmetic edge
+prediction marked (896 stride-1, two-seed; 512 stride-2, measured s0); upper bracket (1792,
+2432) shaded. Asset EXISTS: `docs/figures/fig13_family_edges.png`
+(`scripts/make_fig13_family_edges.py`; add the s1 point on replication). Caption note, REQUIRED:
 the 512-token stride-2 hier win coexists with the 512-token stride-1 flat win — two different
 families at the same budget, not a contradiction.]
 
@@ -636,9 +644,11 @@ abstraction cost.
 history + long window** (reg-long, 0.1682 at 1,152 tokens); at the short window the same recipe
 (spat18-reg, 672 tokens, 0.2008) matches the diffusion flat control at 1,152 tokens (0.2038).
 
-**The shape of the hierarchy (§4.4.2–4.4.5).** [EXPECTED-B1: the win band's lower edge is
-family-parametric — it moved from 896 tokens (stride-1 coarse) to 512 (stride-2 coarse), landing
-at its token-arithmetic prediction both times.] [EXPECTED-B2, primary branch: span-per-token is
+**The shape of the hierarchy (§4.4.2–4.4.5).** MEASURED (s0; s1 queued): the win band's lower
+edge is family-parametric — it moved from 896 tokens (stride-1 coarse, two-seed) to 512
+(stride-2 coarse, +0.0330 [+0.0246, +0.0419], every cell), landing at its token-arithmetic
+prediction both times; each family carries its own plateau level (the stride-2 family ≈+0.017
+above stride-1 — sparser anchors are a real cost). [EXPECTED-B2, primary branch: span-per-token is
 the frontier's currency — temporally subsampled full-resolution history reproduces the
 matched-budget win at the same price; the coarse level is its cheapest per-level-decodable
 implementation. / ALTERNATIVE branch: the coarse level's dense temporal coverage carries value

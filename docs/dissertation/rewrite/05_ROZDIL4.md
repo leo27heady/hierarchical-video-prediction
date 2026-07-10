@@ -797,7 +797,7 @@ masked metrics.
 |---|---|---|---|---|
 | просторова | грубий потік 4×4, крок 1 | 4× прольоту/токен; порівнева декодовність; щільне часове покриття | −0.008 (диф.) / ≈0 (регр.) за фіксованого вікна | §4.4.1 виміряно |
 | часова | повнороздільна історія, крок 4 | 4× прольоту/токен; повна деталізація в якорях | сліпота між якорями; без дешевого декодовного рівня | §4.4.3 [EXPECTED: ≈ hier-long ± 0.01] |
-| просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище | §4.4.2 [EXPECTED: виграш @512 ток.] |
+| просторова × часова | грубий потік, крок 2 | 8× прольоту/токен — найдешевше покриття циклу | обидві вартості вище + сімейний зсув плато ≈+0.017 | §4.4.2 виміряно: **+0.0330 @512 ток.** (s0; s1 у черзі) |
 | глибина | + верхній потік 2×2 | третій масштаб | баласт нижче кількості масштабів даних; повільніша збіжність за фіксованих кроків | §4.4.5 [EXPECTED: нуль проти 2-рівневої]; §4.5 |
 | розподіл | проліт передусім | смуга виграшу та її виміряні краї | — | §4.3.6 виміряно |
 
@@ -868,14 +868,19 @@ If the frontier's currency is span-per-token, the win band's lower edge is a con
 **family**, not of the testbed: edge(family) ≈ (loop / k_t) · tokens-per-frame(k_s) + fine floor.
 Stride-1 coarse: 48·16 + 2·64 = 896 tokens — measured, two seeds (§4.3.6). Stride-2 coarse
 (`hier-s2-min`, 24 slots + 2 fine) prices the same 48-frame span at **512 tokens** — exactly the
-budget where the stride-1 family *loses* two-seed. [EXPECTED-B1 (primary): hier-s2-min wins at
-512 (ALL ≈0.170–0.180; Δ ≈ +0.04..+0.05, CI > 0, every cell; dt-gate span signature) — «нижній
-край смуги рухається разом із часовим кроком грубого потоку точно за токен-арифметикою»
-[UA-PASS]. ALTERNATIVE (null/loss): the stride-2 family's edge lies in (512, 896] — fine floor or
-inter-anchor aliasing; reported as a measured refinement.] REQUIRED caption note wherever the
+budget where the stride-1 family *loses* two-seed. **MEASURED (2026-07-10, s0; primary branch
+confirmed):** hier-s2-min ALL **0.1893** vs flat-short 0.2224; Δ **+0.0330 [+0.0246, +0.0419]**,
+WIN in every horizon × hardness cell (14/14); dt-gate span signature (dt≤48 HARD +0.0643 WIN;
+dt 97–192 null) — «нижній край смуги рухається разом із часовим кроком грубого потоку точно за
+токен-арифметикою» [UA-PASS]. Honest refinements vs the pre-registered expectation: the effect
+is smaller than the stride-1 edge win (+0.0330 vs +0.0399/+0.0358) and the family sits ≈+0.017
+above the stride-1 plateau (сімейна вартість розріджених якорів) — each family carries its own
+plateau level. Seed-1 QUEUED per the binding rule before headline escalation. REQUIRED caption
+note wherever the
 frontier is drawn: the 512-token stride-2 hier point and the 512-token stride-1 flat win are
-different families at the same budget, not a contradiction. **[FIG 4-13 — PLACEHOLDER: family
-edge law, predicted vs measured per family; asset fig13_family_edges.png, QUEUED after B1.]**
+different families at the same budget, not a contradiction. **[FIG 4-13 — asset EXISTS:
+fig13_family_edges.png (family edge law, predicted vs measured per family; add s1 point on
+replication).]**
 
 ### 4.4.3 Грубий рівень чи просто проліт? Контроль зі стрибковою повнороздільною історією
 

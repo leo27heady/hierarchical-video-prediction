@@ -11,6 +11,7 @@ Persistence floor ≈ 0.2552. EBT column: characterized negative at reachable sc
 |---|---|---|---|---|---|---|---|---|
 | 480 | 2 | 1 | 2 | diff | hier-short — 6c+6f (span 6 < loop) | 30k | 0.2258 (0.2257–0.2260) | 0.0394 |
 | 512 | 1 | - | - | diff | flat-short | 30k | 0.2215 (0.2206–0.2224) | 0.0426 |
+| 512 | 2 | 2 | 2 | diff | hier-s2-min — 24c@s2+2f (span 48) [B1] | 30k | 0.1893 (1s) | 0.0697 |
 | 672 | 2 | 1 | 2 | diff | spat18 — 18c+6f (W18 factorial) | 30k | 0.2120 (1s) | 0.0498 |
 | 672 | 2 | 1 | 2 | reg | spat18-reg — 18c+6f | 30k | 0.2008 (1s) | 0.0480 |
 | 896 | 1 | - | - | diff | flat-min | 30k | 0.2104 (0.2102–0.2106) | 0.0515 |
@@ -23,8 +24,9 @@ Persistence floor ≈ 0.2552. EBT column: characterized negative at reachable sc
 | 1152 | 2 | 1 | 2 | reg | reg-long — 48c+6f | 30k | 0.1592 (0.1503–0.1682) | 0.0803 |
 | 1792 | 1 | - | - | diff | flat-c1 | 30k | 0.1876 (1s) | 0.0737 |
 | 1792 | 2 | 1 | 2 | diff | hier-c1 — 48c+16f | 30k | 0.1799 (1s) | 0.0779 |
+| 2432 | 1 | - | - | diff | flat-c2 | 30k | 0.1703 (1s) | 0.0893 |
 | 2432 | 2 | 1 | 2 | diff | hier-c2 — 48c+26f | 30k | 0.1820 (1s) | 0.0771 |
 | 3072 | 1 | - | - | diff | flat-long — B8x60k regime | B8x60k | 0.1572 (0.1564–0.1580) | 0.0993 |
 | 3072 | 2 | 1 | 2 | diff | hier-rich — 48c+36f, B8x60k regime | B8x60k | 0.1691 (0.1687–0.1695) | 0.0893 |
 
-Pending (no npz yet): flat-c2, hier-s2-min, hier3, strided-flat.
+Pending (no npz yet): hier3, strided-flat.

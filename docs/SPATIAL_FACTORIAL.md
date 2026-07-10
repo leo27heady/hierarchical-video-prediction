@@ -462,3 +462,27 @@ re-examination before any reporting.
 ### Cost ledger (estimates; VRAM all << the 11.8GB flat-c2 point)
 B1 ~2h train+~1h eval; B2 ~2.5h+1h; AE-top ~0.25h; B3 ~3h+1h; blinding 3x ~0.5h; compares
 minutes. Phase B total ~11-12 GPU-h. Phase C: AE ~0.3h + 2-3 arms x ~3-4h + evals ~ 1 GPU-day.
+
+### B1 MEASURED (2026-07-10 15:42; `logs_rhcp/cwstyle_phaseB.log`, B1_DONE;
+### npz `rhvd_eval_hier-s2-min_s0.npz`) — **PRIMARY BRANCH CONFIRMED: the edge moves with the
+### temporal factor**
+
+hier-s2-min (24c@stride2 + 2f = 512 tok, span 48) vs flat-short (512 tok, s0):
+- ALL fg-MSE **0.1893** / sharp 0.0697 vs 0.2224 / 0.0432; paired Δ ALL **+0.0330
+  [+0.0246, +0.0419]** — **WIN in EVERY horizon × hardness cell (14/14 + bg-only)**, from h1-8
+  easy +0.0077 to h25-60 HARD +0.0640 [+0.0450, +0.0827].
+- dt-gate span signature, textbook: dt≤48 HARD **+0.0643** [+0.0496,+0.0791] WIN; dt 49–96 HARD
+  +0.0228 WIN; dt 97–192 null — beyond-span, exactly the hier-min signature.
+- **The pre-registered primary reading is confirmed:** the win-band lower edge is
+  family-parametric — at 512 tokens, where the stride-1 coarse family LOSES two-seed
+  (−0.0036/−0.0051), the stride-2 family WINS CI-clean, at its token-arithmetic prediction
+  (24·16 + 2·64 = 512).
+- **Expectation-baseline comparison (honest):** sign + every-cell structure + dt signature as
+  predicted; magnitude BELOW the predicted range (Δ +0.0330 vs expected +0.04..+0.05; ALL 0.1893
+  vs expected 0.170–0.180). The stride-2 family sits ~+0.017 ABOVE the stride-1 plateau
+  (hier-s2-min 0.1893 vs hier-min seed-mean 0.1725) — a real FAMILY COST (24 sparser anchors vs
+  48 dense; inter-anchor blindness under momentum reversals). Refines the law: the edge moves
+  with the family arithmetic AND each family carries its own plateau level. Reported as
+  measured, not smoothed away.
+- Per the binding rule + amendment: CI-clean win → **seed-1 replication QUEUED** (flat-short s1
+  npz exists) before any headline escalation; CH1/CH8 clauses stay gated until then.
