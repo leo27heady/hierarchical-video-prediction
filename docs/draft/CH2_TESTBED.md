@@ -2,8 +2,9 @@
 
 ## 2.1 Motivation: why a purpose-built testbed
 
-The central claim of this work — that a hierarchical latent video model earns its keep only where the
-memory horizon demands it — cannot be tested on the standard synthetic video-prediction suites. On
+The central question of this work — how a bounded context-token budget should be packaged to cover
+task-relevant memory across temporal rate and spatial resolution — cannot be tested on the standard
+synthetic video-prediction suites. On
 Moving-MNIST-class data, nothing ever leaves the frame and returns: every future frame is either
 fully determined by a short context window or permanently unknowable, so there is no
 *hard-but-computable-with-memory* regime for a long-memory mechanism to win in. Our earlier
@@ -77,8 +78,10 @@ autoencoder (1.85 M parameters), trained once on the training clips and never fi
 encoder taps a *coarse* latent (16 channels at 4×4) and a *fine* latent (16 channels at 8×8), each
 independently decodable to the full 64×64 frame — the per-level-decodability property of
 hierarchical latent video models in the MilliVid mould [MilliVid26], in minimal form. The coarse
-level is the low-rate layout/pan code intended to carry long memory; the fine level carries
-texture. Final validation reconstruction error is 0.0020 (MSE, fine level).
+level is a compact layout/pan code that makes long spatially compressed history affordable; the
+fine level retains higher-resolution detail. Whether that spatial package is preferable to a
+temporally subsampled full-resolution package is an experimental question, not an architectural
+premise. Final validation reconstruction error is 0.0020 (MSE, fine level).
 
 Both latents pass through a tanh and are therefore small in scale (per-channel standard deviations
 average 0.121 coarse and 0.162 fine). The evaluation and training harness z-scores each latent

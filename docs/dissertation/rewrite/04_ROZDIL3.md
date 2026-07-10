@@ -976,13 +976,15 @@ natural next rung (Chapter 4, conclusions; ВИСНОВКИ).
 
 *(Conclusions to the chapter.)*
 
-1. In accordance with **Task 5** of the dissertation research, a hierarchical mathematical model
-   of multi-level video-data generation in a compact continuous hierarchical latent state space
-   has been developed. The state of the video process is decomposed (3.1) into a coarse
+1. In accordance with **Task 5** of the dissertation research, a mathematical model of
+   multi-stream video-data generation in a compact continuous hierarchical latent state space
+   has been developed. It supports streams with different temporal rates and spatial resolutions
+   over one shared attention backbone. Its measured spatial implementation decomposes the state
+   (3.1) into a coarse
    (macro) level — 16 channels at 4×4, independently decodable, standardized per channel — and a
-   fine (micro) level — 16 channels at 8×8 — over a frozen two-level autoencoder, and the upper
-   (coarse) level is designed as the carrier of the long-range temporal memory of the process:
-   it is the only level whose context extends over the full 48-frame memory horizon, at a cost
+   fine (micro) level — 16 channels at 8×8 — over a frozen two-level autoencoder. In that
+   implementation the coarse stream economically packages long-range history: it is the stream
+   whose context extends over the full 48-frame memory horizon, at a cost
    of 16 tokens per remembered frame against the fine level's 64 (eq. 3.16, a 4× per-frame and
    asymptotically ≈16× attention-cost advantage).
 

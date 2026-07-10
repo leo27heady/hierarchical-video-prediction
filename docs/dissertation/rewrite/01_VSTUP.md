@@ -50,12 +50,12 @@ author's own experimental investigations show that hierarchical video models bui
 *discrete* (vector-quantized) token spaces are unstable to train at practically reachable
 computational scale. This motivates the direction developed in this dissertation: hierarchical
 modeling of video generation processes in **compact continuous hierarchical latent state
-spaces**, in which the upper (coarse) level is a low-rate code that carries the long-range
-temporal memory of the process, context signals are transferred between levels unidirectionally
+spaces**, in which multiple context streams can package long-range information at different
+temporal rates and spatial resolutions, context signals are transferred unidirectionally
 (with gradient detachment), per-frame generation is performed by an iterative refinement
 (denoising diffusion) core selected by controlled mechanism analysis, and the memory barrier of
-long-horizon training is removed by reversible transformations that make backpropagation
-time-agnostic. **[AUTHOR: cross-reference where the VQ-instability finding will be documented in
+long-horizon activation-memory growth is bounded by reversible transformations that make
+backpropagation time-agnostic within their measured applicability domain. **[AUTHOR: cross-reference where the VQ-instability finding will be documented in
 Chapter 1 (own experiments); DISS_DIGEST Q1 authorizes using it as motivation.]**
 
 Thus an objective systemic contradiction arises between the necessity of ensuring multi-level
@@ -125,10 +125,10 @@ To achieve this purpose, the following scientific and practical tasks had to be 
    reversible mathematical transformations; extend it to stochastic multi-level recurrences and
    delimit its domain of applicability.
 
-5. Develop a hierarchical mathematical model of multi-level video data generation in compact
-   hierarchical latent state spaces, in which the upper (coarse) level carries the long-range
-   temporal memory of the process, with unidirectional inter-level transfer of context signals
-   (gradient detachment between abstraction levels) and a per-frame iterative-refinement
+5. Develop a mathematical model of multi-stream video generation in compact hierarchical latent
+   state spaces, supporting context streams at different temporal rates and spatial resolutions
+   over a shared attention backbone, with unidirectional transfer of context signals (gradient
+   detachment at the representation and rollout boundaries) and a per-frame iterative-refinement
    generation core selected by controlled mechanism analysis. *(Rewritten per DISS_DIGEST item 11
    + decision Q1: continuous-latent formulation, no Markov-optimization/energy commitment.)*
 
@@ -189,8 +189,7 @@ per the 124-alignment review — the strongest predictable committee objection. 
    context packaging** — a hierarchical allocation of a fixed context-token budget across
    spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
    hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
-   and strided full-resolution history the measured temporal form [EXPECTED-B2-s1: seed
-   replication queued] — restores content that re-enters the field of view beyond the horizon of
+   and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
    a flat context window at the same context-token budget, with the winning budgets predictable
    from token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
@@ -232,12 +231,12 @@ propositions, replace this block with one sentence stating exactly that.]**
 
 The following propositions are submitted for defense:
 
-1. The hierarchical organization of a compact latent state space, in which the upper (coarse)
-   level carries the long-range temporal memory of the process, improves the temporal
-   consistency of long generated video sequences at a matched context-token budget exactly in
-   the regime where the task's memory horizon exceeds the affordable flat context window — and
-   this regime is identified, measured, and bounded by the developed memory-horizon evaluation
-   methodology with re-entry-stratified analytic hardness labels.
+1. Packaging a bounded context-token budget across temporal rate and spatial resolution can
+   improve the temporal consistency of long generated video sequences when the package covers
+   the task-relevant memory horizon more economically than a contiguous flat window. The coarse
+   latent stream and temporally subsampled full-resolution history are distinct measured forms,
+   not synonyms; their operating region is identified, measured, and bounded by the developed
+   memory-horizon methodology with re-entry-stratified analytic hardness labels.
 
 2. Reversible transformations enable time-agnostic backpropagation with constant activation
    memory in the length of the modeled process; the method extends to stochastic multi-level
@@ -345,8 +344,8 @@ conclusions, a list of references, and appendices.
   RoPE-ND, reversible transformations with temporal chaining (TempVerseFormer), time-agnostic
   backpropagation, and the exactly invertible stochastic recurrence with the three-axis
   reversibility taxonomy.
-- **Chapter 3** develops the hierarchical mathematical model of video sequence generation with
-  long-range coarse-level memory in compact hierarchical latent state spaces: the two-level
+- **Chapter 3** develops the multi-stream mathematical model of video sequence generation with
+  context packaged across temporal rate and spatial resolution in compact hierarchical latent state spaces: the two-level
   latent state space, the iterative-refinement generation core, joint inter-level attention with
   unidirectional control (information-design asymmetry plus gradient detachment at the
   representation and rollout boundaries), the autoregressive rollout algorithm with its memory

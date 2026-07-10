@@ -943,10 +943,11 @@ multi-step video generation systems. The main results are as follows.
    apparatus of N-dimensional rotary positional embedding (RoPE-ND) was developed. It was proven
    that the method algebraically guarantees the preservation of the multidimensional
    spatio-temporal topology inside the attention mechanisms. A coordinate-scaling mechanism was
-   developed that provides the mathematical basis for the precise spatial localization of
-   cross-level cross-attention between the coarse and fine levels of hierarchical systems — the
-   basis of the inter-level context-signal transfer in the hierarchical generation model of
-   Chapter 3.
+   developed that provides an instrument for precise spatial localization of cross-level
+   cross-attention between abstraction levels. This is a level-appropriate instrument for
+   architectures that require spatial coordinate transfer; the measured Chapter 3 predictor
+   instead uses learned level/role/frame embeddings in joint attention, so its results do not
+   depend on RoPE-ND.
 
 3. In accordance with **Task 4**, the fundamental problem of computational uncertainty — the
    critical deficit of operating memory in BPTT optimization of long processes — was resolved.

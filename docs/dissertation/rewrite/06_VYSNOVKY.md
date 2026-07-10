@@ -64,9 +64,11 @@ architecture) with N-dimensional rotary positional embedding (RoPE-ND), which al
 allocation of computational resources to high-information zones of the scene and mathematical
 alignment of coordinate systems between abstraction levels of hierarchical models. Per-pixel
 byte-level entropy maps were shown to act as a reliable diagnostic indicator of complex
-kinematics, and the RoPE-ND coordinate-scaling mechanism provides the mathematical basis of
-cross-level attention localization — the inter-level context-signal transfer instrument of the
-hierarchical model.
+kinematics, and the RoPE-ND coordinate-scaling mechanism provides an instrument for cross-level
+attention localization in architectures that require spatial coordinate transfer. The measured
+Chapter 3 predictor uses learned level/role/frame embeddings in joint attention and therefore
+does not depend on RoPE-ND; the two results are complementary instruments rather than one being
+the implementation basis of the other.
 
 **4.** *(Task 4)* A method for the computationally efficient optimization of multi-step iterative
 systems has been developed based on reversible transformations for time-agnostic
@@ -246,7 +248,8 @@ present results: they extend the measured boundary, which is stated exactly.
 
 - The 7 numbered conclusions mirror `00_FRONT_MATTER.md` «Main scientific and practical results»
   items 1–7 one-to-one (which in turn map 1:1 to the 7 tasks of `01_VSTUP.md`); wording drift
-  between the three files must be resolved toward the front matter at the UA pass.
+  between the three files must be resolved toward the measured Chapter 4 evidence and this
+  post-reframe conclusions file; front matter is a synchronized output, not the authority.
 - Conclusion 5 carries the post-PAIR-OUTCOME scoping («and where the memory contents remain
   trustworthy») — this supersedes any earlier draft of the scoping sentence that mentioned only
   the memory horizon; the front-matter general-conclusions paragraph should be updated to match

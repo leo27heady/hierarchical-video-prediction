@@ -13,9 +13,11 @@ covers task-relevant memory more cheaply than a flat full-resolution window can;
 which this happens are predictable from token arithmetic; and spatial compression, temporal
 subsampling, and depth are distinct mechanisms with distinct, measured boundary conditions.**
 On a testbed whose memory demand is an exact label, the frontier of long-span packaging against
-flat context, measured at six matched budgets, has exactly the shape this account predicts:
-flat wins below the span threshold (≈500 tokens: no packaging can cover the ~48-frame loop;
-−0.0036 [−0.0063, −0.0010]); long-span packaging wins the band from the geometric threshold —
+flat context, measured at six matched budgets, has the bounded shape this account predicts:
+at ≈500 tokens the contiguous flat window and the stride-1 coarse family do not cover the
+~48-frame loop and flat wins that within-family comparison (−0.0036 [−0.0063, −0.0010]);
+the stride-2 coarse family does cover it at 512 tokens and wins its separate comparison. Dense
+long-span packaging wins from the geometric threshold —
 48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is largest (+0.0399
 [+0.0299, +0.0501] seed 0 and +0.0358 [+0.0267, +0.0454] seed 1 at 896 tokens — two seeds, every
 horizon × hardness cell on both) through the two-seed interior point at 1,152 (+0.0189 /
@@ -29,10 +31,10 @@ the diffusion head on this static-world testbed [EXPECTED-B2-s1/REG: seed and he
 queued]. The spatially coarse two-level model remains the per-level-decodable form of the claim
 and the first one measured; it is not the claim itself.
 
-## 8.2 The empirical laws, each under stated scope
+## 8.2 Empirical regularities under fixed conditions
 
-Every law below is scoped by construction — testbed, head, representation, seed level — with the
-single source of truth in the claim ledger (`docs/CLAIM_LEDGER.md`); a law appears in this
+Every regularity below is scoped by construction — testbed, head, representation, seed level — with the
+single source of truth in the claim ledger (`docs/CLAIM_LEDGER.md`); a regularity appears in this
 section only when its evidence row is complete, and its wording carries its scope.
 
 - **L1 — Span-threshold law.** Long-span packaging wins only once its span covers the task's
@@ -40,12 +42,15 @@ section only when its evidence row is complete, and its wording carries its scop
   896 (two-seed, every cell, +0.0399/+0.0358), the switch-on at the token-arithmetic prediction.
   Scope: loopmom; edges measured under the diffusion head (regression confirms the 1,152
   interior pair, not the edges).
-- **L2 — Saturation law.** Once flat full-resolution context covers the same span, the
+- **L2 — Saturation regularity.** Once flat full-resolution context covers the same span, the
   abstraction cost can dominate: flat wins at 3,072 (two-seed, −0.0131/−0.0107), and the
-  flat/hier crossover is measured to lie in (1,792, 2,432). Same scope as L1.
-- **L3 — Family-edge law.** The band's lower edge is a constant of the *family*, not the
+  flat/hier crossover at B16×30k is measured to lie in (1,792, 2,432). R-C shows that hierarchical
+  arms can mature later than flat partners, so a pre-registered B8×60k c2 control is required
+  before treating that bracket as optimization-budget robust. Same scope as L1.
+- **L3 — Family-edge regularity.** The band's lower edge is a property of the *family*, not the
   testbed: halving the coarse tick moved it from 896 to 512 tokens (+0.0330 [+0.0246, +0.0419],
-  every cell, span dt-signature), at the arithmetic prediction both times; each family carries
+  every cell, span dt-signature), consistent with the arithmetic prediction at both tested
+  budgets; each family carries
   its own plateau level (stride-2 ≈ +0.017 above stride-1). Status: seed 0; seed-1 replication
   queued before headline use.
 - **L4 — Shape law (resolving).** Spatial coarsening and temporal sparsification are not
@@ -61,7 +66,7 @@ section only when its evidence row is complete, and its wording carries its scop
   depth-plus-objective-allocation result with three inseparable mechanisms (loss dilution,
   optimization load, top-stream information floor), never as "depth hurts."
   A depth *law* requires the multi-timescale testbed of §8.5.
-- **L6 — Trustworthy-memory law.** A span sufficient for single-step retrieval can fail under
+- **L6 — Trustworthy-memory regularity.** A span sufficient for single-step retrieval can fail under
   self-fed rollout: at the ~213-frame-loop operating point, retrieval is real and
   span-threshold-gated (2/2 vs 0/4) yet inverts after ~24 self-fed frames — hierarchical memory
   pays where its contents remain trustworthy.
@@ -94,11 +99,12 @@ For a practitioner the frontier reads as a sizing rule: **spend tokens on span u
 horizon is covered — using the cheapest abstraction family that covers it — and only then on
 resolution and recency; add depth only when the data has scales left to own.** At the tightest budgets that cover the
 horizon, the hierarchical packaging delivers the largest gains (a quality that flat context
-reaches only at ≈2.3–3× the budget, with quadratic attention making the compute gap larger
-still); once the budget affords the full horizon at full resolution, the hierarchy's advantage
-inverts into a small abstraction cost. The cheapest strong recipe measured is regression head +
-coarse history + long window (reg-long: 0.1682 / 0.1503 across two seeds, mean 0.1593, at 1,152
-tokens — at seed level the best absolute rollout number of the campaign).
+reaches only at a larger token budget in the measured frontier, with quadratic attention making
+the compute gap larger still); the exact upper multiple remains optimization-budget-sensitive.
+Within the spatially coarse family, regression head + long history is the strongest replicated
+recipe (reg-long: 0.1682 / 0.1503 across two seeds, mean 0.1593, at 1,152 tokens). Across packaging
+families, strided full-resolution history is the best seed-0 diffusion result; its seed and head
+resolution are therefore reported before any global superlative.
 
 ## 8.5 Future work
 
@@ -111,7 +117,7 @@ estimated rather than exact), building on the OpenSTL bridge; (4) a sharp render
 frozen latents (the adversarial-renderer precedent) to lift the decoder-owned blur ceiling that
 bounds all arms equally. A fifth, cheaper item is measurement, not construction: mapping where
 between loop 48 (works) and loop 213 (fails) the trustworthy-memory boundary sits. A sixth
-follows from the shape study's depth null [EXPECTED-B3]: the arena where depth *can* win is a
+follows from the shape study's measured depth-plus-objective-allocation loss: the arena where depth *can* win is a
 **multi-scale testbed with a visible slow factor** — a slowly evolving, always-visible global
 variable (period ≫ the pan loop) layered under the fast re-entry dynamics. Slow-but-visible
 state is continuously refreshed, so a deep hierarchy's top level can own it without fighting the

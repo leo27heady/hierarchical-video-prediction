@@ -24,11 +24,12 @@ it must be remembered" is an exact, computable label. On this instrument we trea
 prediction as a **constrained context-packaging problem**: at a matched context-token budget,
 a fixed backbone consumes context streams parameterized by spatial resolution and temporal
 rate, and "hierarchy" is the family of multi-rate and/or multi-resolution packagings. The
-measured answer is a set of empirical laws under stated scope. Long-span packaging wins exactly
+measured answer is a set of empirical regularities under stated conditions. Long-span packaging wins
 the band of budgets in which its span covers the memory horizon while a flat window cannot —
 from the geometric span threshold (≈900 tokens, predicted before measurement; the largest
-effect, +0.0399/+0.0358 across two seeds) to window saturation at the measured upper edge in
-(1,792, 2,432) tokens — and inverts outside the band. The band's lower edge moves with the
+effect, +0.0399/+0.0358 across two seeds) to a B16×30k upper-edge bracket in
+(1,792, 2,432) tokens — and inverts outside that measured band. R-C shows the upper edge is
+potentially optimization-budget-sensitive, so a B8×60k c2 control is pre-registered. The band's lower edge moves with the
 packaging family's token arithmetic (896 → 512 tokens when the coarse tick halves;
 [EXPECTED-B1: two-seed on replication]). The packaging axes are not interchangeable: temporally
 subsampled full-resolution history matches or exceeds the spatially coarse hierarchy under the

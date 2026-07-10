@@ -88,11 +88,11 @@ it cannot (inner optimization loops, where the achievable saving versus gradient
 0.26% measured, with an analytic band of 0.6–1.0%). [UA-PASS: «часонезалежне зворотне розповсюдження помилки», «оборотні
 перетворення», «збереження шуму».]
 
-**Chapter 3** develops the hierarchical mathematical model of video sequence generation with
-long-range memory at the coarse level. The state space is a compact two-level hierarchical latent
+**Chapter 3** develops a mathematical model of multi-stream video sequence generation that
+packages long-range context across temporal rate and spatial resolution. The state space is a compact two-level hierarchical latent
 representation (a frozen two-level convolutional autoencoder interface with per-level decodable
-coarse and fine latents); the upper (coarse) level is the low-rate code that carries the long
-memory horizon of the process. Per-frame generation uses an iterative refinement (denoising
+coarse and fine latents); its coarse stream is the measured spatially compressed implementation
+of long-history packaging, not the only possible carrier of the memory horizon. Per-frame generation uses an iterative refinement (denoising
 diffusion) core, selected empirically by the matched-compute mechanism analysis of Chapter 4. The
 inter-level transfer of context signals is realized within a single joint attention mechanism
 with per-token level, role, and frame conditioning (generalizing the cross-level cross-attention
@@ -125,7 +125,7 @@ two-sided capability study of Energy-Based Transformers using the official imple
 characterized negative result: one published recipe yields a stably mis-ordered energy landscape,
 the other repairs the ordering, yet gradient descent from the prescribed initialization does not
 reach structured outputs at the scale reachable in this work. For the developed hierarchical
-model, single-step evaluation shows that long coarse-level memory reduces the error on hard
+model, single-step evaluation shows that spatially compressed long history reduces the error on hard
 re-entry frames by approximately 13% (two seeds, confidence intervals excluding zero), a
 capability that emerges only under a larger optimization budget (null at 6,000 steps, win at
 20,000; budget-matched schedules); in 152-frame autoregressive rollouts (after a 48-frame
@@ -174,12 +174,12 @@ mechanism is a characterized negative; reversibility is scoped by its applicabil
    (store-the-noise; gradients coincide with backpropagation through time), and delimited its
    applicability domain by a three-axis taxonomy. *(Task 4)*
 
-5. Developed a hierarchical mathematical model of multi-level video generation in compact
-   hierarchical latent state spaces in which the upper (coarse) level carries the long-range
-   temporal memory of the process, with unidirectional inter-level context transfer (gradient
-   detachment) and a per-frame iterative-refinement (diffusion) generation core selected by
-   controlled mechanism analysis; the model demonstrably restores content re-entering the field
-   of view beyond the horizon of a flat context window at a matched token budget. *(Task 5)*
+5. Developed a mathematical model of multi-stream video generation in compact hierarchical
+   latent state spaces, supporting context streams at different temporal rates and spatial
+   resolutions over a shared attention backbone, with unidirectional context transfer (gradient
+   detachment at the representation and rollout boundaries) and a per-frame iterative-refinement
+   generation core selected by controlled mechanism analysis; measured spatial and temporal
+   packages restore content beyond a contiguous flat window at bounded token budgets. *(Task 5)*
 
 6. Created an intelligent information technology and a software complex (Python/PyTorch) for the
    systems analysis of hierarchical video generation processes, integrating the developed methods
@@ -211,8 +211,7 @@ real list — see §3 below.]**
    context packaging** — a hierarchical allocation of a fixed context-token budget across
    spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
    hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
-   and strided full-resolution history the measured temporal form [EXPECTED-B2-s1: seed
-   replication queued] — restores content that re-enters the field of view beyond the horizon of
+   and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
    a flat context window at the same context-token budget, with the winning budgets predictable
    from token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
@@ -278,7 +277,7 @@ registration under a title without "HVEBT" (e.g., «Комплекс прогр�
 systems analysis; complex system; mathematical modeling; intelligent information technology;
 decision making; neural network; deep learning; artificial intelligence; video data generation;
 **hierarchical video generation**; **compact hierarchical latent state spaces**; **memory
-horizon**; **temporal consistency**; **coarse-level memory**; **reversible transformations**;
+horizon**; **temporal consistency**; **context packaging**; **reversible transformations**;
 **diffusion refinement core**; autoregressive prediction; state estimation; forecasting;
 consistency.
 

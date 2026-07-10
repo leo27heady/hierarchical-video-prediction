@@ -844,11 +844,12 @@ window grows.
 spat18 0.2120 (W18, 672 tokens): extending the window via coarse tokens buys −0.027 — an order
 that dwarfs the abstraction cost, the same window-ordering law as Table 4.5.
 
-**Combined-optimum readout (measured arm ordering, not a factorial claim).** spat18-reg (672
+**Within-family readout (measured arm ordering, not a factorial claim).** spat18-reg (672
 tokens) at 0.2008 matches or beats the diffusion flat control flat-budget (1,152 tokens) at
 0.2038 — regression + coarse history at 58% of the tokens; and with the long window (reg-long,
-0.1682 at 1,152 tokens) the recipe **regression head + coarse history + long window** is the
-cheapest strong configuration measured in this campaign.
+0.1682 at 1,152 tokens) is the strongest replicated spatially coarse recipe. It is not a global
+superlative: strided-flat is better at seed 0 under diffusion, with replication and its
+regression twin explicitly open.
 
 **Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
 study on Moving MNIST found that an upper spatial level engaged unstably and added no quality — a
@@ -1150,12 +1151,13 @@ The recipe transferred below is not a preference but the measured selection of �
 is regime-dependent, exactly as §4.2.5 concluded. For the **deterministic best-of-1
 autoregressive rollout** — the deployment regime of every long-horizon claim — the selected head
 is **regression** (it wins the rollout reversal, §4.2.3, and the memory win replicates under it,
-§4.3.5), combined with the **hierarchical coarse-plus-fine context** (long coarse memory + recent
-fine window, the §4.3 packaging) whose coarse history is statistically free under this head
+§4.3.5), combined with a context package selected to cover the relevant span with the least
+measured information loss. The coarse-plus-fine package (long coarse memory + recent fine
+window) is the replicated spatial option, whose coarse history is statistically free under this head
 (+0.0008 [−0.0013, +0.0029], Table 4.7), at the **largest affordable window** — window extension
 at fixed representation dwarfs the abstraction cost (−0.027 versus −0.008, read G-S3). The
-cheapest strong configuration measured is exactly this recipe (reg-long: 0.1682 at 1,152 tokens,
-§4.4). For the **single-step best-of-N coverage regime**, the selected head is **diffusion** (it
+strongest replicated spatial recipe is reg-long (seed mean 0.1593 at 1,152 tokens, §4.4), while
+the cross-family temporal option remains seed/head-gated. For the **single-step best-of-N coverage regime**, the selected head is **diffusion** (it
 wins every column at matched capacity and NFE, Table 4.2), with the same hierarchical context
 rule. Transfers below use the rollout recipe as primary and report the diffusion head where
 sampling diversity is part of the question; where a measured transfer predates this formulation,
@@ -1444,8 +1446,9 @@ insert the act copies — the current draft has headings only]**.
    diffusion head −0.0082 [−0.0115, −0.0050] at 42% token savings and is statistically free for
    the regression head (+0.0008 [−0.0013, +0.0029]); its real value is what the saved tokens
    buy — window extension at fixed representation is worth −0.027, dwarfing the abstraction
-   cost. The cheapest strong configuration measured is regression head + coarse history + long
-   window (0.1682 at 1,152 tokens) — a measured arm ordering, not a factorial interaction claim.
+   cost. Regression head + coarse history + long window is the strongest replicated spatial
+   recipe (seed mean 0.1593 at 1,152 tokens); the temporal package is reported separately until
+   its seed/head resolution lands.
 
 6. The temporal-capability boundary study at operating point B (§4.5) closed under its binding
    pre-committed rule with a **negative rollout outcome and a characterized single-step

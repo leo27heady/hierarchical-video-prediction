@@ -1,7 +1,7 @@
 # Chapter 4 — Results: when does hierarchy pay?
 
-This chapter reports the three experimental claims of the dissertation on the testbed family of
-Chapter 2, followed by the temporal-capability boundary study at the second operating point.
+This chapter reports the article's causal evidence program for context packaging on the testbed
+family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.
 Claim 2 (the generation head, §4.2) is settled first because every subsequent table depends on
 knowing how much of an arm's score is owed to its head rather than its memory; Claim 1 (the
 matched-token-budget memory result, §4.3) is the headline; Claim 3 (spatial abstraction, §4.4)
@@ -194,7 +194,7 @@ frames after the 48-frame GT warmup, seed 0).
 | hier-short (diff) | 6c+6f | 480 | 0.2260 | 0.0392 | memory ablation |
 | persistence | — | — | 0.2552 | — | floor |
 
-Three laws are visible in the ordering, and each is defended separately below: (i) **within each
+Three empirical regularities are visible in the ordering, and each is defended separately below: (i) **within each
 head, the hierarchical long-memory arm beats its token-matched flat control** (hier-long <
 flat-budget; reg-long < reg-flat); (ii) **across heads, regression wins the best-of-1 rollout**
 (§4.2.2); (iii) **the full-resolution long window wins outright at 2.7× the tokens** (§4.3.4).
@@ -340,14 +340,14 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 | lower edge, new arm | hier-min (48c+2f, 896 tok, B16×30k) | 0.1706 | 0.0861 | — | — |
 | lower edge, new arm | flat-min (14f, 896 tok, B16×30k) | 0.2106 | 0.0516 | — | — |
 | frontier top | flat-long vs hier-rich (equal 3,072 tok, equal regime) | — | — | −0.0131 | [−0.0201, −0.0069] **flat WINS** (REPLICATED seed 1: −0.0107 [−0.0163, −0.0058] — two-seed) |
-| frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** |
+| frontier bottom | flat-short vs hier-short (512 vs 480 tok) | — | — | −0.0036 | [−0.0063, −0.0010] **flat WINS** (REPLICATED seed 1: −0.0051 [−0.0079, −0.0024] — two-seed) |
 | frontier lower edge | flat-min vs hier-min (equal 896 tok, equal regime) | — | — | **+0.0399** | [+0.0299, +0.0501] **HIER WINS** (every bin; REPLICATED seed 1: +0.0358 [+0.0267, +0.0454], every bin — two-seed) |
 
 [FIG `docs/figures/fig9_frontier.png` — asset EXISTS (6-point curves, regenerated after
 R-F/R-G): quality-vs-token-budget (log-x), hier and flat curves at 512/896/1,152/1,792/2,432/
 3,072 tokens, seed-means where two seeds — measured shape: hierarchy wins the
 band [896, e) tokens with the upper edge e measured to lie in (1,792, 2,432) (bracket below), with the effect PEAKING
-at the lower edge, which sits exactly at the geometric span-threshold prediction (48×16 coarse
+at the lower edge, which is consistent with the geometric span-threshold prediction at the tested budgets (48×16 coarse
 tokens + minimal fine tail ≈ 830–896); flat wins below the threshold (512) and at window
 saturation (3072). Caption: the token-budget frontier — hierarchy wins exactly the band where
 its coarse span crosses the memory horizon while flat's window does not.]
@@ -366,7 +366,7 @@ abstraction cost (the −0.0131 loss is of the same kind as G-S1's −0.0082 at 
 bottom, the 6–8-frame window is below the memory-relevance scale, so coarse slots are
 redundancy and flat's extra fine frames win. The 1,152-token headline (§4.3.3, two seeds, both
 heads) is untouched. The claim of §4.3 therefore takes its final, bounded form: **hierarchy
-dominates the token-budget frontier exactly where window extension is both possible and
+dominates the 30k token-budget frontier where window extension is both possible and
 valuable** — a bounded, dose-response-supported efficiency claim, not dominance at every
 budget. Sharpness, same discipline: hier-rich 0.0898 vs flat-long 0.0996 and hier-short 0.0392
 vs flat-short 0.0432 — the window (token budget spent on frames) drives sharpness, and
@@ -490,10 +490,11 @@ grows.
 (W18, 672 tok): extending the window via coarse tokens buys −0.027 — an order that dwarfs the
 abstraction cost, the same window-ordering law as Table 4.2.
 
-**Combined-optimum readout.** spat18-reg (672 tokens) at 0.2008 matches or beats the diffusion
+**Within-family readout.** spat18-reg (672 tokens) at 0.2008 matches or beats the diffusion
 flat arm flat-budget (1,152 tokens) at 0.2038 — regression + coarse history at 58% of the tokens;
-and with the long window (reg-long 0.1682 at 1,152 tokens) the recipe **regression head + coarse
-history + long window** is the cheapest strong configuration measured in this campaign.
+and with the long window, reg-long is strong across two seeds. This is the best replicated
+spatially coarse recipe, not a global superlative: strided-flat is better at seed 0 under
+diffusion, with its replication and regression twin explicitly open.
 
 **Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
 study on Moving MNIST found that an upper spatial level engaged unstably and added no quality —
@@ -521,8 +522,8 @@ scores ALL fg-MSE **0.1893** (sharp 0.0697) against flat-short's 0.2224 (0.0432)
 easy +0.0077 to h 25–60 HARD +0.0640 [+0.0450, +0.0827]), with the textbook span signature
 (dt ≤ 48 HARD +0.0643 [+0.0496, +0.0791] WIN; dt 49–96 HARD +0.0228 WIN; dt 97–192 null —
 beyond the 48-frame span). **The lower edge moved from 896 to 512 when the coarse tick halved,
-landing at its token-arithmetic prediction both times: the band's edges are arithmetic, not
-accidents of one configuration.** A third family point is pre-registered: the stride-4 coarse
+consistent with its token-arithmetic prediction at both tested budgets: the band's edges track
+the registered family arithmetic rather than one configuration alone.** A third family point is pre-registered: the stride-4 coarse
 family prices the loop at **320 tokens** (12·16 + 2·64). [EXPECTED-E320: hier-s4-min beats
 flat-320 (ALL CI > 0; expected hier ≈ 0.19–0.22 with a larger family offset — anchors 4×
 sparser — vs flat-320 ≈ 0.23–0.245 at a 5-frame window), making the edge law a three-point
@@ -832,14 +833,17 @@ regression head (+0.0008 [−0.0013, +0.0029]) at the same savings. Its real val
 saved tokens buy: window extension at fixed representation is worth −0.027 (G-S3), dwarfing the
 abstraction cost.
 
-**Combined optimum.** The cheapest strong configuration measured is **regression head + coarse
-history + long window** (reg-long, 0.1682 at 1,152 tokens); at the short window the same recipe
-(spat18-reg, 672 tokens, 0.2008) matches the diffusion flat control at 1,152 tokens (0.2038).
+**Combined reading.** Within the spatially coarse family, **regression head + coarse history +
+long window** is the strongest replicated recipe (reg-long seed mean 0.1593 at 1,152 tokens);
+at the short window the same head/representation combination (spat18-reg, 672 tokens, 0.2008)
+matches the diffusion flat control at 1,152 tokens (0.2038). Across packaging families,
+strided-flat is better at seed 0 under diffusion; its replication and regression twin are kept
+explicitly open, so no global "cheapest strong" superlative is made here.
 
 **The shape of the hierarchy (§4.4.2–4.4.5).** MEASURED (s0; s1 queued): the win band's lower
 edge is family-parametric — it moved from 896 tokens (stride-1 coarse, two-seed) to 512
-(stride-2 coarse, +0.0330 [+0.0246, +0.0419], every cell), landing at its token-arithmetic
-prediction both times; each family carries its own plateau level (the stride-2 family ≈+0.017
+(stride-2 coarse, +0.0330 [+0.0246, +0.0419], every cell), consistent with its token-arithmetic
+prediction at both tested budgets; each family carries its own plateau level (the stride-2 family ≈+0.017
 above stride-1 — sparser anchors are a real cost). MEASURED (s0; s1 required and queued): span-per-token is
 the frontier's currency in its strongest form — temporally subsampled full-resolution history
 not only reproduces but EXCEEDS the coarse packaging under the diffusion head (strided-flat

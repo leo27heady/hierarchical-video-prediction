@@ -30,12 +30,14 @@ decision table, not a single model — every entry below is a measured result, n
   single-step at matched capacity and NFE (0.0512 vs 0.0664 ALL, best-of-8; monotone in NFE
   0.0546 → 0.0503 while regression is flat at 0.0680; §4.2.1) and carries the sharpness/LPIPS
   behaviour. The diffusion arm is retained on every dataset as the perceptual/coverage row.
-- **History packaging → hierarchical coarse + recent-fine at the largest affordable window.**
+- **History packaging → cover the relevant span with the least lossy measured family.**
   The window law dominates: extending the window via coarse tokens buys −0.027 (G-S3), an order
   above the abstraction cost; coarse history is statistically free under the regression head
   (+0.0008 [−0.0013, +0.0029] at 42% token savings, factorial G-S1) and a small real cost under
-  diffusion (−0.0082 [−0.0115, −0.0050]). The cheapest strong configuration measured is
-  **regression head + coarse history + long window** (reg-long, 0.1682 at 1,152 tokens; §4.4).
+  diffusion (−0.0082 [−0.0115, −0.0050]). Under the diffusion head, temporally subsampled
+  full-resolution history beats the coarse package at seed 0 while using fewer tokens; replication
+  and the regression-head twin are pending. Accordingly, coarse history is a measured economical
+  option with per-level decodability, not the universal transfer default (§4.4).
 - **Transfer rules carried from the boundary study (§4.5):** a *fresh autoencoder per dataset*
   (the AE-reuse trap destroyed positional landmarks on hgrid and is a standing rule); per-dataset
   persistence and AE-round-trip ceiling rows in every table (the honesty devices); the target

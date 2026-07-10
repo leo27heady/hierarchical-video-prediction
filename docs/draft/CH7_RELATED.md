@@ -89,6 +89,11 @@ the regime our measured 0.26% panel confirms.
 
 ## 7.5 Explicit non-claims
 
+Temporally sparse or keyframe-conditioned history is standard practice in video modeling; this
+article does not claim to invent it. The contribution is the matched-context-budget causal
+comparison against spatial coarsening, on a benchmark with exact re-entry labels, together with
+the measured interaction with prediction head and the resulting boundary conditions.
+
 For the record, this article does **not** claim:
 
 1. **No beats-checkpointing claim.** Reversibility is a constant-memory capability vs vanilla
@@ -98,7 +103,8 @@ For the record, this article does **not** claim:
    paper's setting.
 3. **No hierarchy-dominance claim.** Hierarchy wins a bounded budget band; flat wins outside it
    (below the span threshold and at window saturation) — measured, with CIs, at six budgets with
-   both edges located (the upper edge bracketed to (1,792, 2,432)).
+   both edges located at B16×30k (the upper edge bracketed to (1,792, 2,432)); a B8×60k c2
+   control tests whether that upper bracket is optimization-budget robust.
 3a. **No depth claim on single-scale data.** Measured (§4.4.5, s0): the three-stream probe
    COSTS at matched budget on this testbed, with the objective-allocation confound disclosed;
    depth is claimed only as bounded by the data's memory-scale count — never as generally

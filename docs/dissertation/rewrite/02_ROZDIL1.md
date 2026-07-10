@@ -654,19 +654,18 @@ hierarchical latent video diffusion model of the MilliVid class [REF: MilliVid-c
 latent video diffusion]: a compact hierarchy of continuous latents (a low-rate *coarse* level and
 a high-rate *fine* level, each independently decodable to pixels), a diffusion core that denoises
 the levels jointly with cross-level attention, and autoregressive rollout along physical time.
-The systemic significance of this construction follows directly from eq. (1.7): because the
+The systemic significance of this spatial construction follows directly from eq. (1.7): because the
 coarse level carries far fewer tokens per frame than the fine level, a *heterogeneous* context —
 long in coarse tokens, short in fine tokens — covers a memory horizon many times longer than a
 flat context of the same total token budget. The hierarchy converts the quadratic cost of horizon
-extension into a near-linear one along the cheap level, and the coarse level becomes the natural
-carrier of long-range temporal memory: exactly the systemic role assigned to the macro level by
-the hierarchical decomposition of §1.2.2. *(This is the paradigm adopted by this dissertation;
-Chapter 3 develops its mathematical model with a two-level continuous latent interface,
-unidirectional inter-level context transfer, and a coarse level that carries the long memory
-horizon; Chapter 4 validates it on a purpose-built memory-horizon testbed.)*
+extension into a near-linear one along the cheap level, making the coarse level one economical
+carrier of long-range temporal memory. Temporal subsampling provides a distinct route to the same
+span and is compared directly in Chapter 4. *(Chapter 3 develops the spatial form with a two-level
+continuous latent interface and unidirectional context transfer; Chapter 4 treats it as one point
+in the broader context-packaging design space.)*
 
 [FIG 1-12 — PLACEHOLDER]
-Content: Hierarchical latent video model with coarse-level long memory (MilliVid-class, shown in
+Content: Spatially hierarchical latent video model with coarse packaged long history (MilliVid-class, shown in
 the minimal two-level form used in this work): per-frame two-level latents (coarse = low-rate
 layout/composition code, fine = high-rate texture code, each independently decodable); the
 predictor's context assembled as LONG coarse-token history + SHORT fine-token history at a
@@ -1079,9 +1078,8 @@ re-entry cannot be trusted by the lower levels.
 Classical approaches — adding a ControlNet or a LoRA — attempt to solve these problems locally,
 by patching individual criteria with external mechanisms. The systems approach instead requires
 an architecture in which the observance of the consistency criteria follows from the structure of
-the process itself: **an explicit hierarchical decomposition of the latent state space, in which
-the coarse (macro) level carries the long-range temporal memory of the process and inter-level
-context transfer is strictly unidirectional** — so that hierarchical consistency is enforced by
+the process itself: **an explicit multi-stream decomposition of context across temporal rate and
+spatial resolution with unidirectional context transfer** — so that hierarchical consistency is enforced by
 construction (stop-gradient control, §1.4.4), long-range temporal and trajectory consistency are
 supplied with the memory they informationally require (§§1.3.1–1.3.2), and the whole is trainable
 within realistic resource constraints thanks to reversible computation (Chapter 2). Constructing
@@ -1180,11 +1178,10 @@ fixed vocabulary; «виконано у Розділі 1» notes added for tasks
    reversible mathematical transformations; extend it to stochastic multi-level recurrences and
    delimit its domain of applicability.
 
-5. Develop a hierarchical mathematical model of multi-level video data generation in compact
-   hierarchical latent state spaces, in which the upper (coarse) level carries the long-range
-   temporal memory of the process, with unidirectional inter-level transfer of context signals
-   (gradient detachment between abstraction levels) and a per-frame iterative-refinement
-   generation core selected by controlled mechanism analysis.
+5. Develop a mathematical model of multi-stream video data generation in compact hierarchical
+   latent state spaces, supporting context streams at different temporal rates and spatial
+   resolutions over a shared attention backbone, with unidirectional context-signal transfer
+   and a per-frame iterative-refinement generation core selected by controlled mechanism analysis.
 
 6. Create an intelligent information technology and a software complex for the systems analysis
    of hierarchical video generation processes, integrating the developed methods of adaptive
