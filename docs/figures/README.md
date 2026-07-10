@@ -16,7 +16,7 @@ Regenerable from the committed data.
 | fig8_mmnist_samples_hier.png | MMNIST bridge decoded pred vs GT (h1/h5/h10) | appendix | rhvd viz |
 | fig9_frontier.png | token-budget frontier: fg-MSE(ALL, 152-frame rollout) vs context tokens (log-x), 6-point flat vs hier curves (896/1152/1792 hier-win, 512/2432/3072 flat-win) + reg context points; hier wins the band [896, ~2000) with the upper edge bracketed to (1792,2432) by R-F/R-G (shaded; geometric span-threshold dashed), peak +0.0399/+0.0358 at the lower edge (two seeds), inverts outside | CH4 §4.3.x (→§4.3.6), Розділ 4 §4.3.6 [FIG 4-x] | Table 4.2 + `frontier_{top,bottom,low,c1,c2}.log` |
 
-| fig10_flat_vs_hier.png | flat vs hier at 4 matched budgets: (A) grouped bars seed-mean+min/max whiskers, per-budget winner; (B) paired Δ(flat−hier) per seed with 95% cluster CIs, shaded win band, sign flip at both ends; both edges+interior two-seed (512 single) | CH4 §4.3.6 companion, Розділ 4 §4.3.6 | rhvd_eval_*.npz + frontier_{bottom,low,top}.log + headline compares |
+| fig10_flat_vs_hier.png | flat vs hier at 6 matched budgets (512/896/1152/1792/2432/3072): (A) grouped bars seed-mean+min/max whiskers, per-budget winner; (B) paired Δ(flat−hier) per seed with 95% cluster CIs, shaded win band (896/1152/1792 hier), sign flip at both edges; two-seed except the 1792/2432 bracket | CH4 §4.3.6 companion, Розділ 4 §4.3.6 | rhvd_eval_*.npz + frontier_{bottom,low,top,c1,c2}.log + headline compares |
 
 ## Honesty notes carried in the figures
 - fig1(c) + fig7: sharpness fades for ALL arms; the hierarchy advantage is a modest average gain,
