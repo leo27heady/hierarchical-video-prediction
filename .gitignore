@@ -3,7 +3,9 @@ __pycache__/
 venv/
 wandb/
 hvp.egg-info/
-logs*/
-data/
+/logs*/
+/data/
+/runs/
+/gates/*.txt
 *.pt
 *.npy

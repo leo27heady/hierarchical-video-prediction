@@ -8,6 +8,13 @@ set -e
 PY=venv/Scripts/python.exe
 mark () { echo "=== $1 ($(date '+%F %T')) ==="; }
 
+# Scientific safety gate (2026-07-11): the legacy identity/trajectory/coverage evaluator is
+# invalid for Phase-C interpretation.  This fails closed before data generation or GPU work even
+# if an obsolete master queue reaches this script.  Use run_phasec_v2.ps1 only after its CPU,
+# classifier, protocol-freeze, authorization and post-c2 integration gates are satisfied.
+$PY scripts/check_experiment_gate.py phase-c-legacy
+exit 97
+
 # ---------- C0: data (CPU) + zero-action files + fresh AE + digit classifier ----------
 mark "C0 data gen (train 3000x100, test 500x348; OpenSTL-matched generator)"
 [ -f data/mmnistL_train_3000x100.npy ] || $PY scripts/gen_moving.py --src mnist --frames 100 \

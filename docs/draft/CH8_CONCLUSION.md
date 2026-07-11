@@ -1,5 +1,9 @@
 # Chapter 8 — Conclusion
 
+> **Historical conclusion; do not assemble unchanged.** The canonical conclusion is in
+> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`. “Laws,” exact switch points, legacy Phase C and
+> pooled regression-equivalence wording below are superseded by `docs/CLAIM_LEDGER.md`.
+
 > **Status (2026-07-08):** journal-register prose, content-complete; all numbers measured except
 > the Ch. 5 [EXPECTED] transfers (generalization campaign) and the R-C/R-D robustness reads.
 > R-A + R-B landed 2026-07-08: BOTH band edges (896 hier-win, 3,072 flat-win) are TWO-SEED.

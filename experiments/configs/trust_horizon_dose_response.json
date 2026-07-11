@@ -1,0 +1,13 @@
+{
+  "study": "trust-horizon-dose-response",
+  "status": "conditional-not-authorized",
+  "horizons": [24, 48, 96],
+  "conditions": [
+    "teacher-forced-addressable",
+    "self-fed-rollout",
+    "periodic-ground-truth-coarse-refresh",
+    "controlled-coarse-latent-corruption"
+  ],
+  "primary_estimand": "rollout penalty relative to addressable memory as a function of horizon",
+  "interpretation": "Tests reliability decay directly; replaces an undirected E-320 extension."
+}

@@ -1,5 +1,9 @@
 # Chapter 2 — A memory-horizon testbed and evaluation protocol
 
+> **Historical chapter source.** Assemble the fourth article from
+> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`; geometric observability replaces claims of
+> information-theoretic necessity, and complete false-positive-sensitive metrics are required.
+
 ## 2.1 Motivation: why a purpose-built testbed
 
 The central question of this work — how a bounded context-token budget should be packaged to cover
@@ -18,7 +22,7 @@ analytic label rather than a heuristic, and (iii) the whole benchmark is tractab
 Existing memory-oriented benchmarks satisfy (i) but not (ii) and (iii). Memory Maze [MemMaze22] and
 the TECO Minecraft benchmark [TECO23] pose genuine long-horizon memory problems, but their re-entry
 events arise from 3-D egomotion in a rendered environment: identifying *which* pixels of a target
-frame were information-theoretically determined by a given context requires geometry processing at
+frame were geometrically observable from a given context requires geometry processing at
 best and is ill-defined at worst, and the associated model scales are beyond a single-GPU budget.
 Recent evaluation protocols for spatial memory in world models — long-term spatial-memory
 benchmarks for video world models [LSSVWM25, arXiv 2505.20171], memory-augmented world-model
@@ -124,8 +128,10 @@ fraction of the target frame's sprite columns never covered by that context. Str
 always computed against a fixed 6-frame reference window ("novel-fg-at-6"), so that all arms —
 whatever their actual context length — are binned on the same hardness axis. Three bins are used:
 **easy** (novel-fg = 0: the sprite was fully visible in the short window), **mid** (0 < novel-fg
-≤ 0.1) and **hard re-entry** (novel-fg > 0.1: a substantial part of the sprite is
-information-theoretically unknowable from the short window and recoverable only from memory). The
+≤ 0.1) and **hard re-entry** (novel-fg > 0.1: a substantial part of the sprite was not
+geometrically visible in the short window but was visible to the compared longer context). Shared
+digit priors can still support statistical guesses, so this is an observability label rather than
+a necessity theorem. The
 single-step mechanism study of Chapter 3 uses the analogous *novel-strip* label, restricted to the
 newly revealed leading strip of the pan — the only genuinely generative region of a single
 predicted frame.

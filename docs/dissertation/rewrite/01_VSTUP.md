@@ -10,6 +10,12 @@
 
 ---
 
+> **Evidence posture added 2026-07-11.** The approved topic, purpose, seven tasks and publications
+> [A1]–[A3] remain unchanged. Their integration is presented as a layered research programme.
+> The final article [A4] tests context packaging; reach, fidelity and trust are explanatory axes,
+> not premises to be asserted before measurement. See
+> `docs/dissertation/REACH_FIDELITY_TRUST_SYNTHESIS_2026-07-11.md`.
+
 ## Обґрунтування вибору теми дослідження (Justification / relevance)
 
 The rapid development of information technologies and artificial-intelligence methods over the

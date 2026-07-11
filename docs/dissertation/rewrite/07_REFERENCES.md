@@ -77,12 +77,17 @@
 - **Harvey2022** — Harvey W., Naderiparizi S., Masrani V., Weilbach C., Wood F. Flexible Diffusion Modeling of Long Videos (FDM). *NeurIPS 35*, 2022. ✓
 - **Pasukonis2022** — Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022. ✓
 - **LSSVWM2025** — [Long-term spatial-memory / state-space video world model]. arXiv:2505.20171, 2025. **[VERIFY title/authors]**
-- **WorldPack2025** — [Memory-packing for video world models]. arXiv:2512.02473, 2025. **[VERIFY title/authors]**
+- **WorldPack2025** — Oshima Y., Iwasawa Y., Suzuki M., Matsuo Y., Furuta H. WorldPack: Compressed Memory Improves Spatial Consistency in Video World Modeling. arXiv:2512.02473, 2025. ✓
 - **VidMem2025** — [Video world models with long-term spatial memory]. arXiv:2506.05284, 2025. **[VERIFY title/authors]**
 - **Denton2018** — Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018. ✓
 - **Lee2018savp** — Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018. ✓
 - **Alonso2024** — Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024. ✓
-- **Huang2025selfforcing** — Huang X., et al. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS*, 2025. **[VERIFY authors/arXiv id]**
+- **Huang2025selfforcing** — Huang X., Li Z., He G., Zhou M., Shechtman E. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS 2025* (spotlight); arXiv:2506.08009. ✓
+- **Zhang2026mbench** — Zhang S., Zhang Z., Huang S., et al. MBench: A Comprehensive Benchmark on Memory Capability for Video World Models. arXiv:2606.00793, 2026. ✓
+- **Peng2026car** — Peng Z., Ma J., Sun H., et al. Compression and Retrieval: Implicit Memory Retrieval for Video World Models. arXiv:2606.23105, 2026. ✓
+- **Yu2026memlearner** — Yu J., Gao J., Bai J., et al. MemLearner: Learning to Query Context Memory for Video World Models. arXiv:2606.31734; ECCV 2026. ✓
+- **Wei2026gimworld** — Wei Z., Guo X., Li X., et al. Geometry-Aware Implicit Memory for Video World Models. arXiv:2606.02436, 2026. ✓
+- **Chen2026memobench** — Chen H., Zhou K., Hua H., et al. MemoBench: Benchmarking World Modeling in Dynamically Changing Environments. arXiv:2606.27537, 2026. ✓
 
 ### B5. Energy-based models
 

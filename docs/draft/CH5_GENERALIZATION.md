@@ -1,5 +1,9 @@
 # Chapter 5 — Generalization of the selected configuration across datasets
 
+> **Historical chapter source.** Moving-MNIST and TaxiBJ are descriptive boundary/competence
+> anchors. Legacy Phase C claims are blocked; only the persistent-object v2 protocol may support
+> identity, trajectory, coverage or equivalence language.
+
 > **Status (2026-07-06):** §5.3 (Moving-MNIST) is MEASURED and FINAL. All other dataset sections
 > are protocol + pre-registered expectation only: every unmeasured value is marked [EXPECTED],
 > [PENDING] or [AUTHOR: …] — no bare expected numbers anywhere in this chapter. Placement

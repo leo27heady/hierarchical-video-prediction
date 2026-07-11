@@ -1,5 +1,9 @@
 # Chapter 7 — Related work and honest scoping
 
+> **Historical chapter source.** Final positioning acknowledges recent memory benchmarks,
+> compression/retrieval systems and Self-Forcing-class work. Novelty is the controlled instrument
+> and package analysis, not the existence of memory-focused evaluation.
+
 > **Status (2026-07-07):** journal-register prose, content-complete. STANDING DEBT carried at the
 > end: every citation-mechanism claim below must be verified against the paper PDFs before
 > submission, plus a fresh prior-art sweep (<60-day collisions). [REF: …] tags resolve with the
@@ -50,14 +54,15 @@ controls.
 
 ## 7.2 Memory in world models
 
-Purpose-built memory benchmarks exist at scale: Memory Maze [REF], TECO-Minecraft [REF], and the
-recent long-context world-model evaluations [REF: LSSVWM 2505.20171; WorldPack 2512.02473;
-VidMem 2506.05284]. Our testbed is deliberately the *minimal fully-analytic member* of this
-family: a one-dimensional pan over a procedural torus, where hardness ("recoverable only from
-memory") is an exact label computed from recorded actions rather than an estimate, floors and
-ceilings are measured per operating point, and the whole protocol trains and evaluates on one
-16 GB GPU. We trade visual richness for exactness and reproducibility — the right trade for a
-mechanism study, and the wrong one for a capability demo (stated as a limitation in §2.9).
+Purpose-built memory benchmarks and retrieval/compression systems already exist at scale: Memory
+Maze [REF], TECO-Minecraft [REF], WorldPack/LoopNav [REF: WorldPack2025], MBench
+[REF: Zhang2026mbench], CaR/SceneFly [REF: Peng2026car], GIM-World [REF: Wei2026gimworld],
+MemLearner [REF: Yu2026memlearner], and the dynamic disappear/reappear MemoBench
+[REF: Chen2026memobench]. Our testbed is deliberately a minimal analytic member of this family: a
+one-dimensional pan over a procedural torus, where geometric observability is computed from
+recorded actions and the whole protocol fits one 16 GB GPU. Shared digit priors still permit
+statistical guesses, so observability is not called information-theoretic necessity. We trade
+visual richness for a controlled mechanism study and do not present it as a capability benchmark.
 
 ## 7.3 Prediction-mechanism comparisons
 

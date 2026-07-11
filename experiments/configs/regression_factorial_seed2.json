@@ -1,0 +1,11 @@
+{
+  "study": "head-by-package-factorial-seed2",
+  "status": "conditional-not-authorized",
+  "factors": {
+    "head": ["diffusion", "regression"],
+    "package": ["temporal-sparse-full-resolution", "spatial-coarse-dense"]
+  },
+  "seed": 2,
+  "primary_estimand": "difference in differences on paired clip-level rollout error",
+  "reporting": "all four cells and all seed-specific contrasts; no pooled equivalence claim"
+}

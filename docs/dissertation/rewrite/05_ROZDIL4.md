@@ -33,6 +33,12 @@
 
 ---
 
+> **Scientific-status correction, 2026-07-11.** This chapter preserves the dissertation topic and
+> the evidence supplied by [A1]–[A3], but interprets [A4] through reach, fidelity and trust. The
+> current loopmom pool is development evidence; tested edges are brackets; B1 is a configuration
+> result; c2 is a matched-example optimizer-regime control; legacy Phase C is blocked. Where older
+> paragraphs conflict, `docs/CLAIM_LEDGER.md` and the synthesis note govern final assembly.
+
 # РОЗДІЛ 4 — ЕКСПЕРИМЕНТАЛЬНЕ ДОСЛІДЖЕННЯ ТА ПРАКТИЧНЕ ЗАСТОСУВАННЯ
 
 *(EN: Experimental research and practical application.)*
@@ -1213,28 +1219,24 @@ Three readings, in the order of their epistemic weight.
 3. **The flat ≈ hier null (Δ ≈ 0.4 aggregate MSE ≈ 0) is the measured short-protocol boundary,
    not a failure.** Moving MNIST has no off-screen re-entry at 10→10, so this protocol does not
    expose the re-entry-defined demand isolated at operating point A. It does not prove that
-   persistent identity/velocity is irrelevant over long rollout; Phase C tests that separately.
+   persistent identity/velocity is irrelevant over long rollout; a valid persistent-object study
+   would test that separately.
    Thus the bridge supplies a short/no-re-entry boundary observation, while the matched-budget
    hierarchy win is two-seed CI-clean (§4.3.3). The question "when does hierarchy pay" receives
    its negative control from the standard benchmark itself. [UA-PASS: «передбачений негативний
    контроль»; «нульовий результат як межова умова, а не невдача».]
 
-**Довгогоризонтне розширення контролю (Phase C; mirrors article §5.3.1).** The 10→10 protocol
-tests the short-horizon regime; the hierarchical literature's canonical Moving-MNIST claim is
-long-horizon retention (CW-VAE: 1,000-frame rollouts). The control column is therefore extended:
-flat and two-stage configurations at the 1,152-token budget, retrained on standard bouncing-digit
-clips (zero-action conditioning, disclosed; the re-entry hardness axis is inert here), rolled out
-~300 frames under the full protocol; the SSIM display panel follows the §4.1.5/§2.8 carve-out
-(calibration with persistence and all-black floors, not evidence). [EXPECTED-PhaseC (primary —
-three-seed practical equivalence): for each seed the paired clip-cluster 95% CI on ALL fg-MSE
-must lie wholly within ±0.005; identity/trajectory/count margins are respectively ±0.02,
-±1.0 px and ±0.05 digit/frame; horizon bins are secondary diagnostics — «де
-ієрархія окуповується — властивість структури пам'яті даних, а не лише довжини розгортання»
-[UA-PASS]. ALTERNATIVE (a hier win): examination first; if sound, reported as a genuine finding — the
-short bridge did not expose a memory-relevant regime (persistent identity/velocity state) while
-the long-horizon factor metrics did — extending the boundary account; all three training seeds
-are unconditional (interpretation/replication amendments 2026-07-10).] **[FIG 4-16 — PLACEHOLDER: fg-MSE vs horizon, flat vs
-hier overlapping [EXPECTED] + floors; asset fig15_mmnist_control.png, QUEUED — Phase C.]**
+**Довгогоризонтне розширення контролю (Phase C v2; conditional future study).** The original
+long-horizon design was stopped before training because its factor evaluator inferred identity
+from horizontal component order, merged overlaps, used many-to-one trajectory matching and
+intersected frames scorable in both arms. Those choices cannot support identity, trajectory or
+equivalence conclusions. The corrected protocol stores persistent object and glyph identities,
+official train/test glyph splits and per-object trajectories; uses one-to-one Hungarian
+assignment; penalizes misses and extras; reports coverage as co-primary; and validates the digit
+classifier on rendered, overlapping and autoencoder-reconstructed crops. Equivalence is disabled
+until native-unit margins are justified. This conditional study is documented in
+`docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure is anticipated in the dissertation
+until its CPU, classifier and protocol-freeze gates pass.
 
 ### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
 

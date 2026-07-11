@@ -1,30 +1,82 @@
-# CLAIM LEDGER — single source of truth (created 2026-07-10, per external-review convergence)
+# Claim ledger — scientific source of truth
 
-**Rule (binding, reviewer-refined wording adopted verbatim):** *a claim may move from
-"observed" to "headline" only when its ledger row is complete; a claimed regularity must state the
-testbed, head, representation, seed level, and cost definition.* These are **empirical regularities
-under fixed conditions** — not universal laws; L5 is a HYPOTHESIS/probe until a multi-timescale
-test exists. This ledger drives the final drafting pass; texts cite rows, not vibes.
-Wording convention (global): claims are at **matched context-token budget**; "matched compute"
-is reserved for the mechanism study (same backbone/capacity/NFE), where it is literally true.
-Sequence length / step time / VRAM are reported separately (table columns to add to
-`docs/CWSTYLE_TABLE.md`).
+**Revision:** 2026-07-11 reach–fidelity–trust remediation
+**Rule:** a headline claim must name its testbed, intervention, comparator, metric population,
+representation, head, seeds, training regime, and evidence artifact.  Opposite signs are not
+equivalence; tested brackets are not continuous crossings; configuration changes are not pure
+factor interventions.
 
-| # | claim | evidence | status (2026-07-10 late) | scope |
+Context packaging is the manipulated design space.  **Reach, fidelity, and trust are explanatory
+axes to be tested**, not assumed laws:
+
+- reach: the relevant past is included in the package;
+- fidelity: relevant information survives the stored representation;
+- trust: stored information remains usable after self-fed generation.
+
+Status vocabulary: `MEASURED`, `CONFIRMATION_REQUIRED`, `EXPLORATORY_POST_HOC`,
+`BLOCKED_VALIDITY`, `CONDITIONAL`, and `FUTURE`.
+
+## Central article claims
+
+| ID | Defensible claim | Evidence now | Status | Required limitation / next gate |
 |---|---|---|---|---|
-| L1 | **Span-threshold law** (empirical, scoped): long-span packaging wins only once it covers the task's memory horizon while flat context cannot | 896 lower edge two-seed (+0.0399/+0.0358); 512 below-threshold two-seed flat-win | **CORE, complete** | loopmom primary point. **Edges measured under DIFFUSION only**; regression confirms the 1152 interior pair (two-seed), NOT the edges. REG twins will add a 512-edge reg point (hier-s2-min-reg) — scope expands only then |
-| L2 | **Saturation regularity**: when flat full-res context covers the same span, the abstraction cost can dominate | 3072 two-seed flat-win (−0.0131/−0.0107); B16×30k upper edge bracketed (1792, 2432) by R-F/R-G | **CORE at 30k; optimization robustness pending R-G60** (bracket interior single-seed, disclosed) | same; R-C showed hierarchy-specific late convergence, so the bracket is budget-qualified until the B8×60k c2 pair lands |
-| L3 | **Family edge law**: the band's lower edge moves with the family's token arithmetic | 896 (stride-1, 2 seeds) + 512 (stride-2, s0 +0.0330 every cell) | CORE **pending S1-a** (s1 queued); E-320 third point optional | same; family plateau offsets disclosed (+0.017 at stride 2) |
-| L4 | **Shape law** (empirical, scoped): spatial coarsening and temporal sparsification are not interchangeable | B2 s0 (strided-flat beats hier-long +0.0197); G-S1 factorial (abstraction −0.008 diff / ≈0 reg) | **pending S1-b + reg twins** (article-essential); until then: a shape difference under ONE static-world setting, s0, diffusion head. **Data-dependence is UNTESTED** (needs the rate-stress suite — future claim); head-dependence resolving | static world (kind to stride — qualifier binding); THIS frozen AE's 4×4 code |
-| L5 | **Depth HYPOTHESIS (allocation probe, not a law)**: depth should help only where the data contain another scale; loopmom can measure only the null branch | B3 MEASURED s0: −0.0196 [−0.0248, −0.0146] vs hier-long, null vs flat; class-lowest sharp = dilution signature; 3 confounds disclosed | **measured, ALT-loss branch; appendix-grade** (not weight-matched-clean); becomes a law only on a multi-timescale testbed (L10) | single-scale task; "depth-plus-objective-allocation probe" |
-| L6 | **Trustworthy-memory law**: span sufficient for single-step retrieval can fail under self-fed rollout | testbed B: 2/2 span>loop single-step wins; rollout gate RED, inversion ~24 frames | **CORE limitation, complete** | current self-fed rollout, loop ≫ warm window |
-| L7 | Mechanism is regime-dependent (diffusion = coverage; regression = best-of-1 rollout; EBT = characterized negative) | CH3/T-panels; reg reversal two-seed; EBT two-sided w/ reference control | **complete** | 16GB-reachable scale; config-gap table |
-| L8 | **External boundary test:** short-horizon/no-re-entry regimes show measured null or economy-only behavior; Phase C tests whether persistent identity/velocity creates a distinct long-horizon memory demand | T7 10→10 (measured null); TaxiBJ (in-band competence + economy-only); Phase C long-horizon, 3 seeds + factor metrics + equivalence CIs (queued) | T7/TaxiBJ complete; Phase C pending (a hier win = examine then report if sound; a null requires replicated equivalence, not non-significance) | not natural-video transfer; a replicated Phase-C win would be positive **synthetic cross-dataset** evidence; natural-video re-entry remains future work |
-| L9 | Reversibility: exact constant-memory gradients; enabler not win; inner-loop axis closed (0.26%) | CH6 measured panels | **complete; NON-CORE for article** | vs BPTT; ~Pareto with checkpointing |
-| L10 | CW-style multiscale depth benefit | none yet | **FUTURE CLAIM** — multi-timescale testbed (visible slow factor); not required for the current thesis | new paper |
+| R1 | On loopmom under the diffusion head, packages whose reach includes the ~48-frame re-entry past can outperform shorter token-matched packages on the tested development set. | 896-token `hier-min` effects +0.0399/+0.0358 across seeds 0/1; 1,152-token replicated interior effects. | `MEASURED; CONFIRMATION_REQUIRED` | Current test pool informed development. Confirm once on a new hash-pinned holdout with complete metrics. |
+| R2 | The effect is concentrated in records visible to the longer package but outside the comparator's reach. | `hier-min` vs `flat-min`, `14 < dt <= 48`: +0.0880 and +0.0809; B1 vs `flat-short`, `8 < dt <= 48`: +0.0675 and +0.0709, clip-bootstrap intervals excluding zero. | `EXPLORATORY_POST_HOC` | Preregister these geometry-derived bands as primary on the untouched confirmation set. |
+| F1 | At B16x30k, 1,792 is the largest tested budget favouring the spatial package and 2,432 the smallest tested budget favouring flat full-resolution context. | R-F/R-G tested points; flat also wins at 3,072 on two seeds. | `MEASURED; REGIME_QUALIFIED` | No monotonicity, uniqueness, or continuous crossing is established. c2 is a matched-example changed-regime control. |
+| F2 | The stride-2 B1 configuration strongly outperforms its compared short-flat configuration. | Diffusion +0.0330/+0.0338; regression seed 0 +0.0639 [0.0516, 0.0763]. | `MEASURED_CONFIGURATION_EFFECT` | Context stride, target slots, auxiliary loss, sequence length and optimization difficulty change together. Fixed-target control is prepared. |
+| F3 | Temporal subsampling and spatial coarsening are not empirically interchangeable at the tested static-world operating point. | Diffusion temporal advantage +0.0197/+0.0046; regression package signs +0.0107/−0.0104. | `MEASURED; SEED_AND_HEAD_SENSITIVE` | The regression mean cancellation is not equivalence. Report seed-specific head × package contrasts; complete seed 2 only if central. |
+| T1 | Memory addressable under teacher forcing can become unreliable under self-fed rollout at the tested long-loop operating point. | Retrieval gate wins when span covers the loop; rollout inversion appears after roughly 24 frames in the decisive seed-0 programme. | `MEASURED_BOUNDARY; REPLICATION_REQUIRED` | Do not call a general trustworthy-memory law. Replicate or demote; add refresh/corruption and 24/48/96 horizon diagnostics. |
 
-**Escalation queue feeding this ledger:** B3 → blinding → S1-a (L3) → S1-b (L4) → regression
-`core` (L4, including unconditional strided-flat-reg s0/s1) → unconditional diffusion S2 trio →
-R-G60 c2 optimization control (L2) → three-seed Phase C (L8) → regression `optional`
-(hier3-reg, E-320). Representation sensitivity
-and the rate-stress/multi-timescale suites remain separately gated future claims.
+## Supporting and boundary claims
+
+| ID | Defensible claim | Evidence now | Status | Scope |
+|---|---|---|---|---|
+| M1 | Generation-head preference depends on evaluation regime. | Regression wins deterministic best-of-1 rollout; diffusion has different coverage behaviour; seed-resolved package interaction. | `MEASURED` | Fixed backbone/representation and reachable scale; protocol allocation must be reported. |
+| M2 | EBT is a characterized negative at the tested scale: ordering and descent reachability dissociate. | Official-code controls and two recipes. | `MEASURED_NONCORE` | Does not establish impossibility at paper scale. Move from main fourth article. |
+| D1 | Adding a third level at fixed budget costs performance on the single-scale loopmom probe. | B3 seed 0 −0.0196 [−0.0248, −0.0146] versus two-level arm; disclosed objective/allocation confounds. | `MEASURED_APPENDIX` | A depth-plus-objective-allocation probe, never a general statement that depth hurts. |
+| X1 | Short-horizon Moving-MNIST and TaxiBJ are competence/boundary anchors, not strong equivalence or transfer evidence. | T7 descriptive near-null; TaxiBJ in-band competence/economy. | `MEASURED_DESCRIPTIVE` | Moving-MNIST uses one seed/unequal budgets/no paired equivalence test; TaxiBJ is not a memory-re-entry test. |
+| V1 | The stochastic reversible recurrence supports exact reverse replay and constant activation memory relative to BPTT. | Reconstruction/gradient/memory panels. | `MEASURED_DISSERTATION_STRAND` | Enabler, not cause of Chapter 4 gains; novelty scoped against reversible RNNs. Move out of core fourth article. |
+
+## Invalid, blocked, or retired claims
+
+| ID | Retired wording or analysis | Status | Remedy |
+|---|---|---|---|
+| P1 | Legacy Phase C identity, trajectory, coverage and replicated equivalence. | `BLOCKED_VALIDITY` | Persistent IDs/classes/trajectories; official train/test glyph split; Hungarian assignment; miss/extra penalties; coverage; classifier validation; justified margins. |
+| P2 | “Exact arithmetic edge,” “switch occurs at 896,” or a unique crossing in (1792,2432). | `RETIRED_OVERCLAIM` | Use largest/smallest tested winning configurations and tested brackets only. |
+| P3 | B1 as a pure context-stride intervention. | `RETIRED_CAUSAL_OVERCLAIM` | Call it a whole-configuration result until the fixed-target-interface control lands. |
+| P4 | B8x60k as twice the data or closer to asymptotic training. | `RETIRED_REGIME_OVERCLAIM` | Same examples; changed batch, updates, noise, grouping and effective EMA horizon. |
+| P5 | Two-seed regression “tie” or equivalence. | `RETIRED_EQUIVALENCE` | Report +0.0107 and −0.0104 separately plus the same-direction difference-in-differences. |
+| P6 | Geometric labels as information-theoretic necessity. | `RETIRED_TERMINOLOGY` | Use exact geometric observability. Reserve necessity for paired counterfactual worlds. |
+| P7 | OOD blinding loss as a lower bound on stream contribution. | `RETIRED_INTERPRETATION` | OOD corruption can inflate loss. Prefer in-distribution shuffle/freeze/cross-clip or trained missing-stream controls. |
+
+## Cost and comparison vocabulary
+
+Every table must report separately:
+
+- context tokens;
+- target tokens;
+- total sequence length;
+- parameters;
+- training examples;
+- optimizer updates;
+- batch size and EMA;
+- per-step and total NFE;
+- runtime and peak VRAM when measured.
+
+Use “matched context-token budget,” “parameter-matched,” “matched examples,” or “matched total NFE”
+only when literally true.  Do not use “matched compute” as a substitute for these distinctions.
+
+## Confirmation and expansion order
+
+1. Finish the already-running seed-2 trio and c2; stop before Phase C.
+2. Freeze current claims and analysis/table shells.
+3. Validate the complete metric suite and immutable provenance on CPU.
+4. Evaluate the untouched confirmation set once.
+5. Run the fixed-target B1 control if F2 remains central.
+6. Replicate/isolate trust if T1 remains title-level.
+7. Complete the regression seed-2 factorial only if F3 remains central.
+8. Run redesigned Phase C only after its validity and classifier gates.
+9. Treat counterfactual/dynamic-content and natural re-entry studies as future work.
+
+Pre-C seed-2 and c2 results must be integrated as new evidence rows without silently upgrading the
+scope of these claims.

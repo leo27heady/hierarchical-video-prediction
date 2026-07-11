@@ -1,0 +1,16 @@
+{
+  "study": "phase-c-persistent-object-v2",
+  "status": "blocked-pending-validation",
+  "source_split_policy": "train clips use official MNIST train glyphs; evaluation clips use official MNIST test glyphs",
+  "required_dataset_schema": "moving-mnist-persistent-v1",
+  "assignment": "one-to-one Hungarian over normalized centroid distance and bbox overlap",
+  "co_primary_endpoints": [
+    "full-frame and union-mask error",
+    "intention-to-score trajectory error with miss penalty",
+    "identity accuracy over all labelled ground-truth objects",
+    "object scoring coverage and missed/extra counts"
+  ],
+  "equivalence": "disabled until margins are justified from reliability and native-unit pilot data",
+  "seeds": [0, 1, 2],
+  "launch_condition": "authorization ledger status changed only after CPU, classifier and protocol freeze gates"
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "updated": "2026-07-11",
+  "policy": "One execution owner; fail closed; status changes require user approval and a dated claim-ledger entry.",
+  "experiments": {
+    "pre-c-seed2-trio": {
+      "status": "AUTHORIZED_FINISH",
+      "meaning": "Completes the already-running seed-2 diffusion cells without changing their code path.",
+      "required_files": ["docs/SPATIAL_FACTORIAL.md"]
+    },
+    "frontier-c2-b8x60k": {
+      "status": "AUTHORIZED_RUN_ALONE",
+      "meaning": "Matched-example, changed-batch/update/EMA-regime robustness control.",
+      "required_files": ["scripts/run_frontier_c2_60k.sh"]
+    },
+    "phase-c-legacy": {
+      "status": "PROHIBITED_INVALID_ENDPOINTS",
+      "meaning": "Legacy identity, trajectory, coverage and equivalence semantics are invalid.",
+      "required_files": []
+    },
+    "confirmation-holdout": {
+      "status": "BLOCKED_PENDING_FREEZE",
+      "meaning": "One-time confirmation of frozen reach/fidelity claims on a new hash-pinned set.",
+      "required_files": [
+        "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"
+      ],
+      "required_markers": [
+        {"path": "gates/confirmation_protocol_frozen.txt", "contains": "FROZEN"},
+        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"}
+      ]
+    },
+    "b1-fixed-target": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "meaning": "Isolates context stride while target slots and loss interface remain fixed.",
+      "required_files": ["experiments/configs/b1_fixed_target.json"],
+      "required_markers": [
+        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"}
+      ]
+    },
+    "regression-factorial-seed2": {
+      "status": "CONDITIONAL_NOT_AUTHORIZED",
+      "meaning": "Completes the head by package interaction at seed 2 only if retained centrally.",
+      "required_files": ["experiments/configs/regression_factorial_seed2.json"]
+    },
+    "trust-horizon-dose-response": {
+      "status": "CONDITIONAL_NOT_AUTHORIZED",
+      "meaning": "Separates addressability from self-fed reliability over 24/48/96-frame horizons.",
+      "required_files": ["experiments/configs/trust_horizon_dose_response.json"]
+    },
+    "phase-c-v2": {
+      "status": "BLOCKED_PENDING_VALIDATION",
+      "meaning": "Persistent-object Phase C with one-to-one assignment and coverage co-primary.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json"
+      ],
+      "required_markers": [
+        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"},
+        {"path": "gates/phase_c_classifier_validated.txt", "contains": "CLASSIFIER_VALIDATED"},
+        {"path": "gates/phase_c_protocol_frozen.txt", "contains": "FROZEN"}
+      ]
+    }
+  }
+}

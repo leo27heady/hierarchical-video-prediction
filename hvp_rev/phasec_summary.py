@@ -65,12 +65,19 @@ def metric_result(seed, name, margin, paths, field, higher_better=False, mask_fn
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--allow_invalid_legacy", action="store_true",
+                    help="forensic reproduction only; output must not support scientific claims")
     ap.add_argument("--seeds", default="0,1,2")
     ap.add_argument("--fg_margin", type=float, default=0.005)
     ap.add_argument("--identity_margin", type=float, default=0.02)
     ap.add_argument("--trajectory_margin", type=float, default=1.0)
     ap.add_argument("--count_margin", type=float, default=0.05)
     args = ap.parse_args()
+    if not args.allow_invalid_legacy:
+        raise SystemExit(
+            "Legacy Phase C summary is retired: its arm-wise finite intersection and margins do "
+            "not support identity, trajectory or equivalence claims. Use Phase C v2."
+        )
     seeds = [int(x) for x in args.seeds.split(",") if x.strip()]
     results = []
     for seed in seeds:

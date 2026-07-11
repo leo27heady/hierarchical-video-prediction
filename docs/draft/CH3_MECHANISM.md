@@ -1,5 +1,9 @@
 # Chapter 3 — Prediction mechanisms at matched capacity: regression, diffusion and energy-based descent
 
+> **Historical chapter source.** Mechanism material is supplementary to the canonical
+> reach–fidelity–trust article. Preserve measured negatives; do not imply matched total compute
+> where only capacity or per-step settings are matched.
+
 ## 3.1 Question and design
 
 Before building a hierarchical system around any one generative mechanism, this chapter asks the

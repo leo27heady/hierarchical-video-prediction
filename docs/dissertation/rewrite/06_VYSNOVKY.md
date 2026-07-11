@@ -20,6 +20,12 @@
 
 ---
 
+> **Evidence-status correction, 2026-07-11.** The approved topic, seven tasks and the content of
+> [A1]–[A3] are preserved. Conclusions about [A4] use the scoped claim ledger: context packaging is
+> manipulated; reach, fidelity and trust organize interpretation; legacy Phase C and universal-law
+> wording are excluded. The programme is layered and is not described as one fully integrated
+> executable pipeline unless the demonstrator is completed.
+
 # ВИСНОВКИ
 
 *(EN: General conclusions.)*
@@ -174,8 +180,8 @@ each family's token arithmetic (896 tokens for the stride-1 coarse family, two s
 the stride-2 family, +0.0330 [+0.0246, +0.0419] every cell at seed 0 [EXPECTED-B1-s1: queued]),
 and temporally subsampled full-resolution history beats the coarse packaging under the diffusion
 head at seed 0 (+0.0197 [+0.0143, +0.0252]; [EXPECTED-B2-s1/REG: seed and regression-head
-resolution queued]) — the findings consolidating into the empirical laws of §4.8 (ledger:
-`docs/CLAIM_LEDGER.md`), whose conclusion is a conditional design rule rather than universal
+resolution queued]) — the findings motivating the scoped empirical regularities of §4.8 (ledger:
+`docs/CLAIM_LEDGER.md`), whose conclusion is a testable conditional design rule rather than universal
 superiority: allocate context tokens to cover the task-relevant span with the least lossy family
 that achieves it; spend the remainder on resolution and recency; add depth only where the data
 contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations,

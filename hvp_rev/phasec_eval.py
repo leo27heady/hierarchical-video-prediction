@@ -32,6 +32,8 @@ DEV = "cuda" if torch.cuda.is_available() else "cpu"
 @torch.no_grad()
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--allow_invalid_legacy", action="store_true",
+                    help="for forensic reproduction only; never use for scientific claims")
     ap.add_argument("--arm", required=True, choices=[a for a in ARMS if a.startswith("mmL-")])
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--steps", type=int, default=30000)
@@ -43,6 +45,13 @@ def main():
     ap.add_argument("--test_path", required=True)
     ap.add_argument("--ae_path", required=True)
     args = ap.parse_args()
+
+    if not args.allow_invalid_legacy:
+        raise SystemExit(
+            "Legacy Phase C evaluator is scientifically blocked: order-based identity, "
+            "many-to-one trajectory matching and survivorship coverage are invalid. "
+            "Use the persistent-object Phase C v2 protocol."
+        )
 
     n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(args.arm)
     assert n_ctx_t == 0 and n_hist_f == 0 and stride_c == 1, "Phase-C arms are plain 2-level"

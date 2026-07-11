@@ -1,0 +1,17 @@
+{
+  "study": "b1-fixed-target-interface",
+  "status": "prepared-not-authorized",
+  "primary_contrast": "hier-s2-fixed-target minus flat-short-fixed-target",
+  "context_tokens": 512,
+  "target_interface": {
+    "coarse_target_slots": 4,
+    "fine_target_slots": 4,
+    "coarse_target_stride": 1,
+    "loss_weights": [0.0, 1.0, 1.0]
+  },
+  "arms": ["hier-s2-fixed-target", "flat-short-fixed-target"],
+  "seeds": [0, 1, 2],
+  "primary_endpoint": "paired non-empty answerable union-mask and GT-foreground error",
+  "mechanistic_endpoint": "pair-derived 8 < dt <= 48 reach band",
+  "interpretation": "Incremental context-packaging effect under a fixed prediction interface."
+}

@@ -1,4 +1,9 @@
-# ARTICLE SKELETON — working master (draft)
+# ARTICLE SKELETON — historical source map
+
+> **Canonical fourth-article structure changed 2026-07-11.** Use
+> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md` for the submission narrative. This file remains a
+> source/evidence map so measured material is not lost. Older law, exact-edge and Phase-C wording
+> here does not override `docs/CLAIM_LEDGER.md`.
 
 > **Spine:** *Hierarchy earns its keep where the memory horizon demands it.* A hierarchical latent
 > video diffusion model whose coarse level carries long-range memory, studied with controlled
