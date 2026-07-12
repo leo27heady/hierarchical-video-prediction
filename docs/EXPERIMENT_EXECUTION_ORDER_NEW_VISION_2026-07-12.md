@@ -194,6 +194,40 @@ decision here before any new training launch.
   has the same 5-hour cap. Continue unchanged unless loss departs materially from the legacy
   envelope, the log stalls, W&B fails, or a per-cell/budget limit is reached.
 
+#### Intermediate audit E4-I1 — 2026-07-13 02:05 Europe/Kyiv
+
+- **Progress/throughput:** `reg-long` seed 2 reached update 17,000/30,000 (56.7%) in approximately
+  1.82 wall-clock hours including data setup. Update time is stable at 0.37–0.40 s with no WDDM
+  spill. At the observed 0.378 s/update, the remaining training is approximately 1.37 hours;
+  evaluation and cloud artifact upload should keep the cell near 3.3–3.5 total hours and below
+  its 5-hour maximum.
+- **Optimization trend:** the warm-up/convergence shape matches the legacy regime: loss
+  0.7273/0.7001/0.5371/0.1804 at 500/1,000/1,500/2,000, bracketed closely by legacy seeds at the
+  decisive warm-up transition. It falls to 0.0317 at 6,000 and 0.0176 at 17,000. Across the 34
+  matched 500-step intervals it averages 0.0023 below the legacy seed-0/1 mean; the maximum
+  absolute deviation is 0.0111 and is consistent with training-seed variation rather than a
+  regime shift. There are no non-finite values or loss explosions.
+- **Validation:** fixed-seed h4 foreground MSE progresses 0.2627 → 0.0534 → 0.0421 → 0.0400 →
+  0.0393 → 0.0349 → 0.0313 → 0.0299 at updates 2k…16k. The legacy seed-1 values at 14k/16k are
+  0.0340/0.0344, so seed 2 is converging slightly better, not degrading. Training loss cannot by
+  itself predict the eventual 152-frame package contrast; the registered rollout remains
+  necessary.
+- **Checkpoint/provenance:** the atomic v2 checkpoint is present at update 17,000 (355,264,107
+  bytes), format 2, RunSpec-bound, with model/optimizer/EMA, Python/NumPy/Torch CPU+CUDA RNG,
+  latent statistics and sampler state (`examples_seen=272000`, `next_update=17001`). Eight
+  immutable diagnostic grids exist through 16k.
+- **Cloud health:** W&B state is `running`; 33 history rows, eight validation images and current
+  summaries are uploaded. The initial empty `scan_history` response was API query lag/selection,
+  not a logging failure; local filestream records continuous successful history uploads and no
+  errors.
+- **GPU/process health:** controller and trainer trees are alive. GPU utilization is 100%, board
+  memory approximately 8.27/16.38 GB, temperature 63°C and draw 113 W. Low unused VRAM is not a
+  throughput fault because compute is saturated, and the frozen B16×30k factorial forbids a batch
+  change.
+- **Decision:** continue unchanged. No stop, resume, redesign or budget trigger fires. The likely
+  operational outcome is successful completion of cell 1 followed by cell 2; the scientific
+  interaction sign remains unknowable until both seed-2 rollout artifacts are paired.
+
 ## 2. Current handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
