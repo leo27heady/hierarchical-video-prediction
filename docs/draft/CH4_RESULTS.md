@@ -1,8 +1,9 @@
 # Chapter 4 — Results: when does hierarchy pay?
 
-> **Historical chapter source.** Canonical result language is in
-> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md` and `docs/CLAIM_LEDGER.md`. Treat edges as tested
-> brackets, B1 as a configuration effect, and regression sign reversal as heterogeneity.
+> **Canonical fourth-article source.** This is the authoritative result chapter, governed by
+> `docs/CLAIM_LEDGER.md` and the chronological evidence in `docs/SPATIAL_FACTORIAL.md`. The
+> reach–fidelity–trust draft supplies discussion language only. Treat edges as tested brackets,
+> B1 as a configuration effect, and regression sign reversal as heterogeneity.
 
 This chapter reports the article's causal evidence program for context packaging on the testbed
 family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.

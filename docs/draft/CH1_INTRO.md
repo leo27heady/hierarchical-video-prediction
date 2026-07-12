@@ -1,8 +1,9 @@
 # Chapter 1 — Introduction
 
-> **Historical chapter source.** The canonical fourth-article narrative is now
-> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`. Reuse measured material only after applying
-> `docs/CLAIM_LEDGER.md`; older law, exact-edge and Phase-C wording is retired.
+> **Canonical fourth-article source.** This chapter belongs to the authoritative CH1–CH8 article
+> record. Apply `docs/CLAIM_LEDGER.md` to every claim. The separate reach–fidelity–trust draft is a
+> discussion/restructuring resource, not a replacement manuscript; older law, exact-edge and
+> invalid Phase-C wording remains retired.
 
 > **Status (2026-07-07):** journal-register prose, content-complete. Written from
 > `ARTICLE_SKELETON.md` §0.1/§1 and updated to the measured 2026-07-07 state (frontier band with

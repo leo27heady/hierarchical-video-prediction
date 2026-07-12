@@ -1,17 +1,32 @@
-"""Strict consistency gate for canonical reach–fidelity–trust texts."""
+"""Strict consistency gate for canonical packaging texts and R/F/T discussion resources."""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
 
-CANONICAL = [
+ARTICLE_CHAPTERS = [
+    Path("docs/draft/CH1_INTRO.md"),
+    Path("docs/draft/CH2_TESTBED.md"),
+    Path("docs/draft/CH3_MECHANISM.md"),
+    Path("docs/draft/CH4_RESULTS.md"),
+    Path("docs/draft/CH5_GENERALIZATION.md"),
+    Path("docs/draft/CH6_REVERSIBILITY.md"),
+    Path("docs/draft/CH7_RELATED.md"),
+    Path("docs/draft/CH8_CONCLUSION.md"),
+]
+
+AUTHORITATIVE = [
     Path("README.md"),
     Path("docs/CLAIM_LEDGER.md"),
-    Path("docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md"),
-    Path("docs/dissertation/REACH_FIDELITY_TRUST_SYNTHESIS_2026-07-11.md"),
+    *ARTICLE_CHAPTERS,
     Path("docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"),
     Path("docs/PHASE_C_V2_PROTOCOL_2026-07-11.md"),
+]
+
+DISCUSSION_RESOURCES = [
+    Path("docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md"),
+    Path("docs/dissertation/REACH_FIDELITY_TRUST_SYNTHESIS_2026-07-11.md"),
 ]
 
 PROHIBITED = {
@@ -23,12 +38,11 @@ PROHIBITED = {
     r"\[EXPECTED-PhaseC": "legacy Phase C is blocked rather than projected",
 }
 
-REQUIRED_ARTICLE = [
+REQUIRED_ARTICLE_RECORD = [
     "context packaging",
-    "Reach",
-    "Fidelity",
-    "Trust",
-    "development evidence",
+    "reach",
+    "fidelity",
+    "trust",
     "untouched",
     "configuration effect",
     "coverage",
@@ -37,7 +51,8 @@ REQUIRED_ARTICLE = [
 
 def main() -> None:
     failures = []
-    for path in CANONICAL:
+    checked = AUTHORITATIVE + DISCUSSION_RESOURCES
+    for path in checked:
         if not path.is_file():
             failures.append(f"missing canonical text: {path}")
             continue
@@ -53,10 +68,14 @@ def main() -> None:
                         or any(word in line_text for word in ("retired", "do not", "does not", "avoid"))):
                     continue
                 failures.append(f"{path}:{line}: {match.group(0)!r}: {reason}")
-    article = CANONICAL[2].read_text(encoding="utf-8")
-    for phrase in REQUIRED_ARTICLE:
+    article = "\n".join(path.read_text(encoding="utf-8") for path in ARTICLE_CHAPTERS)
+    for phrase in REQUIRED_ARTICLE_RECORD:
         if phrase.lower() not in article.lower():
-            failures.append(f"canonical article lacks required concept {phrase!r}")
+            failures.append(f"canonical CH1-CH8 record lacks required concept {phrase!r}")
+    for path in ARTICLE_CHAPTERS:
+        header = "\n".join(path.read_text(encoding="utf-8").splitlines()[:8]).lower()
+        if "canonical" not in header:
+            failures.append(f"article chapter is not marked canonical: {path}")
     introduction = Path("docs/dissertation/rewrite/01_VSTUP.md").read_text(encoding="utf-8")
     for publication in ("[A1]", "[A2]", "[A3]", "[A4]"):
         if publication not in introduction:
@@ -68,7 +87,10 @@ def main() -> None:
         for failure in failures:
             print("  ", failure)
         raise SystemExit(1)
-    print(f"RFT CONSISTENCY PASS: {len(CANONICAL)} canonical texts; fixed publication/task strands present")
+    print(
+        f"PACKAGING/RFT CONSISTENCY PASS: {len(AUTHORITATIVE)} authoritative texts, "
+        f"{len(DISCUSSION_RESOURCES)} discussion resources; fixed publication/task strands present"
+    )
 
 
 if __name__ == "__main__":

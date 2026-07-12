@@ -1,8 +1,9 @@
 # Chapter 2 — A memory-horizon testbed and evaluation protocol
 
-> **Historical chapter source.** Assemble the fourth article from
-> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`; geometric observability replaces claims of
-> information-theoretic necessity, and complete false-positive-sensitive metrics are required.
+> **Canonical fourth-article source.** Assemble the focused paper from the authoritative CH1–CH8
+> record. Use the reach–fidelity–trust draft only as a discussion/restructuring resource. Geometric
+> observability replaces claims of information-theoretic necessity, and complete
+> false-positive-sensitive metrics are required.
 
 ## 2.1 Motivation: why a purpose-built testbed
 

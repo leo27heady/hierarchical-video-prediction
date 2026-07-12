@@ -16,6 +16,27 @@ axes to be tested**, not assumed laws:
 Status vocabulary: `MEASURED`, `CONFIRMATION_REQUIRED`, `EXPLORATORY_POST_HOC`,
 `BLOCKED_VALIDITY`, `CONDITIONAL`, and `FUTURE`.
 
+## Stable L1–L10 compatibility map
+
+The public article/dissertation identifiers L1–L10 remain stable. The R/F/T/M/D/X/V rows below
+are finer-grained evidence views, not replacements that invalidate existing citations.
+
+| Stable ID | Current evidence rows | Stable meaning / status |
+|---|---|---|
+| L1 | R1, R2 | Reach threshold and comparator-specific observability mechanism; measured on the current pool, untouched confirmation required. |
+| L2 | F1 | Upper-budget saturation/inversion regularity; tested configurations and optimizer regimes, never an exact crossing law. |
+| L3 | F2 | Stride-family 512-token configuration effect; causal stride isolation remains conditional on the fixed-target control. |
+| L4 | F3 | Spatial-versus-temporal package shape; diffusion replicated, regression head/seed-sensitive. |
+| L5 | D1 | Depth-plus-objective/allocation probe on a single-scale testbed; appendix evidence, not a general depth law. |
+| L6 | T1 | Addressable-versus-trustworthy memory boundary; replication required before generalization. |
+| L7 | M1, M2 | Prediction-mechanism regime dependence and the EBT characterized negative. |
+| L8 | X1, P1 | External boundary programme; short controls measured, legacy Phase C factor claims invalid, hybrid Phase C conditional. |
+| L9 | V1 | Reversible temporal optimization as a dissertation enabler, not the cause of package gains. |
+| L10 | future counterfactual/multiscale study | A genuine multiscale/depth or counterfactual hidden-state benefit remains a future claim, not required for present closure. |
+
+Old prose may cite L1–L10 through this map. New evidence discussions may append sublabels such as
+L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
+
 ## Central article claims
 
 | ID | Defensible claim | Evidence now | Status | Required limitation / next gate |

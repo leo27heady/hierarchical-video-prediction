@@ -1,8 +1,9 @@
 # Chapter 3 — Prediction mechanisms at matched capacity: regression, diffusion and energy-based descent
 
-> **Historical chapter source.** Mechanism material is supplementary to the canonical
-> reach–fidelity–trust article. Preserve measured negatives; do not imply matched total compute
-> where only capacity or per-step settings are matched.
+> **Canonical fourth-article source.** Mechanism material belongs to the authoritative CH1–CH8
+> record, although the venue-length assembly may move detail to a supplement. Preserve measured
+> negatives; do not imply matched total compute where only capacity or per-step settings are
+> matched.
 
 ## 3.1 Question and design
 

@@ -1226,17 +1226,25 @@ Three readings, in the order of their epistemic weight.
    its negative control from the standard benchmark itself. [UA-PASS: «передбачений негативний
    контроль»; «нульовий результат як межова умова, а не невдача».]
 
-**Довгогоризонтне розширення контролю (Phase C v2; conditional future study).** The original
-long-horizon design was stopped before training because its factor evaluator inferred identity
-from horizontal component order, merged overlaps, used many-to-one trajectory matching and
-intersected frames scorable in both arms. Those choices cannot support identity, trajectory or
-equivalence conclusions. The corrected protocol stores persistent object and glyph identities,
-official train/test glyph splits and per-object trajectories; uses one-to-one Hungarian
-assignment; penalizes misses and extras; reports coverage as co-primary; and validates the digit
-classifier on rendered, overlapping and autoencoder-reconstructed crops. Equivalence is disabled
-until native-unit margins are justified. This conditional study is documented in
-`docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure is anticipated in the dissertation
-until its CPU, classifier and protocol-freeze gates pass.
+**Історична попередня реєстрація Phase C (2026-07-10; до будь-якого результату).** The original
+long-horizon design registered `mmL-flat` and `mmL-hier` at seeds 0/1/2, a 48-frame warm-up and
+approximately 300 self-fed frames. Its continuity primary was paired foreground-MSE: replicated
+practical equivalence required every seed's complete clip-cluster interval to lie inside ±0.005,
+with horizon bins secondary. The design also proposed digit identity, trajectory and count
+endpoints with preliminary margins ±0.02 accuracy, ±1 pixel and ±0.05 digit/frame. A sound
+positive hierarchical effect was to be examined and reported. **The study did not launch.**
+
+**Поправка щодо валідності (2026-07-11; до запуску).** The registered foreground-MSE question is
+retained narrowly. The legacy factor evaluator inferred identity from horizontal component order,
+merged overlaps, used many-to-one trajectory matching and intersected frames scorable in both
+arms; those choices cannot support identity, trajectory, coverage or equivalence conclusions. The
+corrected hybrid protocol stores persistent object/glyph IDs, official train/test glyph splits,
+boxes and per-object trajectories; uses one-to-one Hungarian assignment; penalizes misses and
+extras; reports coverage; validates the digit classifier on rendered, overlapping and
+autoencoder-reconstructed crops; and justifies native-unit margins. The original registration and
+this amendment are both retained in the scientific record. The conditional protocol is documented
+in `docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure enters the dissertation until its
+CPU, classifier and protocol-freeze gates pass.
 
 ### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
 

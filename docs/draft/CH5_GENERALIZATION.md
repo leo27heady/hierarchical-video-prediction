@@ -1,7 +1,8 @@
 # Chapter 5 — Generalization of the selected configuration across datasets
 
-> **Historical chapter source.** Moving-MNIST and TaxiBJ are descriptive boundary/competence
-> anchors. Legacy Phase C claims are blocked; only the persistent-object v2 protocol may support
+> **Canonical fourth-article source.** Moving-MNIST and TaxiBJ are descriptive
+> boundary/competence anchors in the authoritative CH1–CH8 record. Legacy Phase C factor claims
+> are blocked; only the dated hybrid protocol with persistent-object evaluation may support
 > identity, trajectory, coverage or equivalence language.
 
 > **Status (2026-07-06):** §5.3 (Moving-MNIST) is MEASURED and FINAL. All other dataset sections
@@ -166,22 +167,29 @@ protocol. Two protocol notes are inherited and disclosed: the re-entry hardness 
 here (nothing leaves the frame), and the SSIM display panel follows the §2.8 carve-out
 (calibration with persistence and all-black floors, not evidence).
 
-[EXPECTED-PhaseC (primary — extending the measured 10→10 null): replicated practical
-equivalence over three training seeds. For fg-MSE, each seed's paired clip-cluster 95% CI must
-lie wholly within ±0.005 on the primary ALL endpoint; horizon bins are secondary diagnostics.
-Factor-metric margins fixed before launch: identity ±0.02 accuracy, trajectory ±1.0 pixel, count
-deviation ±0.05 digit/frame. Text on confirmation: "persistent identity and velocity remained
-recoverable from recent context under this protocol, so the spatial long-span stream bought no
-measurable advantage and the two configurations degraded together." ALTERNATIVE (a hier win):
-triggers a data/protocol examination first; if the run is sound,
-it is reported as a genuine finding — the short 10→10 bridge did not expose a memory-relevant
-regime (Moving MNIST carries persistent identity and velocity state), while the long-horizon
-factor metrics did — extending the boundary account rather than contradicting it; all three
-training seeds are already unconditional (pre-registered amendments, 2026-07-10).]
+**Historical registration (2026-07-10; no model output existed).** The original Phase C design
+registered three seeds of `mmL-flat` and `mmL-hier`, a 48-frame warm-up and approximately
+300-frame self-fed rollouts. Its continuity primary was paired foreground-MSE, with replicated
+practical equivalence requiring every seed's complete clip-cluster interval to lie inside ±0.005;
+horizon bins were secondary. It additionally proposed identity accuracy, trajectory error and
+digit-count endpoints, with preliminary margins ±0.02, ±1 pixel and ±0.05 digit/frame. A sound
+hierarchical win was to be examined and then reported rather than forced into the short-horizon
+null story. **No Phase C arm launched.**
 
-[FIG ch5-2: fg-MSE vs horizon, flat vs hier overlapping [EXPECTED], persistence + all-black
-floors; optional SSIM calibration panel. Asset: `docs/figures/fig15_mmnist_control.png`
-(QUEUED — Phase C).]
+**Dated validity amendment (2026-07-11, before launch).** The registered foreground-MSE question
+is retained narrowly as protocol-defined foreground fidelity. The legacy identity/trajectory/count
+implementation cannot support its intended factor interpretation: it inferred identity from
+horizontal order, merged overlaps, used many-to-one trajectory association and selected the
+intersection of frames scorable in both arms. The hybrid v2 protocol must instead save persistent
+object/glyph IDs, boxes and trajectories from the generator; use the official MNIST train/test
+glyph split, one-to-one Hungarian assignment, miss/extra penalties and coverage; validate the
+classifier on rendered, overlapping and AE-reconstructed domains; and justify native-unit margins.
+The historical registration remains visible, but no identity, trajectory, coverage or replicated
+equivalence result may be claimed from the legacy evaluator. Phase C remains optional to the
+focused article and requires all CPU/classifier/protocol gates before launch.
+
+[FIG ch5-2: conditional Phase C hybrid result only after execution; no projected overlapping
+curves or queued-result wording belongs in the assembled manuscript.]
 
 ## 5.4 Author's 2D rotations — the [A2] testbed
 
@@ -281,9 +289,9 @@ upsample-equivalent build; SSIM deficit stated.
 Three measured statements close the article's external scope, each already stated in its own
 section and gathered here without projection. First, the **short-protocol boundary control**:
 on standard Moving MNIST with no off-screen re-entry, flat ≈ hierarchical at 10→10 (§5.3,
-measured); the long-horizon extension separately tests persistent-state demand (§5.3.1,
-[EXPECTED-PhaseC] with identity/trajectory
-metrics per the pre-registered mandate). Second, the **competence anchor**: the unchanged 22 M
+measured); the conditional long-horizon hybrid would separately test persistent-state demand
+(§5.3.1) only after its persistent-object, classifier and protocol gates. Second, the
+**competence anchor**: the unchanged 22 M
 generalist stack lands inside the OpenSTL TaxiBJ leaderboard band on MAE/PSNR (§5.7, measured),
 answering "is this system a toy?" without claiming leaderboard superiority anywhere (§5.2
 standing rule; measured concession: 180.91 vs 26.69 aggregate MSE on MMNIST). Third, the

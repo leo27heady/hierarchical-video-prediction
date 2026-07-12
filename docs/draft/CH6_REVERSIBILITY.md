@@ -1,7 +1,9 @@
 # Chapter 6 — Reversibility: the exactly invertible stochastic recurrence and its limits
 
-> **Historical source retained for the dissertation and supplement.** Reversibility is an enabling
-> strand, not an asserted cause of context-packaging effects or part of the core fourth article.
+> **Canonical source retained for the dissertation and article supplement.** This chapter remains
+> part of the authoritative CH1–CH8 record, while the venue-length main paper may move it to an
+> appendix or supplement. Reversibility is an enabling strand, not an asserted cause of
+> context-packaging effects.
 
 > **Status (2026-07-07):** journal-register prose, content-complete; all numbers measured
 > (sources: `docs/THEORY_CHAPTER_D.md` / `hvp_rev/theory.py` for T6a; `hvp_rev/mem_frontier.py`

@@ -1,61 +1,56 @@
 # Experiment control and ownership
 
-**Policy date:** 2026-07-11
+**Policy date:** 2026-07-12 post-c2 handoff
 **Launch authority:** `experiments/authorization.json`
 **Principle:** exactly one execution owner; all other contributors are read-only with respect to
 GPU launches and queue mutation.
 
 ## Current ownership boundary
 
-The pre-Phase-C queue predates the remediation plan and remains under its existing watcher until
-the following sequence is complete:
+The pre-Phase-C queue is complete and archived. The verified boundary is recorded in
+`docs/HANDOFF_POST_C2_2026-07-12.md`; raw evidence is hash-pinned in
+`artifacts/post_c2_evidence_manifest_2026-07-12.json` and independently backed up.
 
-1. finish the running seed-2 trio;
-2. terminate the old master queue before Phase C;
-3. run c2 B8x60k alone;
-4. verify the GPU is idle, Phase C is absent, the old controller is gone, and the stale lock is
-   removed;
-5. deliver logs, artifacts, hashes, resume history, commands, and worktree state.
-
-No file used by that live queue may be semantically changed before the handoff.  In particular,
-`hvp_rev/rhvd.py`, `scripts/run_newvision_queue.sh`, and `scripts/run_frontier_c2_60k.sh` remain the
-legacy execution path until c2 completes.
-
-After the handoff, the current remediation task becomes the sole experiment execution owner.  No
-new GPU run is implied by the transfer: the first work is CPU-only validation and protocol freeze.
+The **author retains scientific and GPU-launch authority**. Codex has time-bounded execution
+autonomy only inside an author-approved tranche and the fail-closed authorization ledger. No
+handoff grants blanket permission for the experiment portfolio. The current allowed work is
+evidence/text integration and CPU-only preparation of the untouched confirmation path.
 
 ## Authorized live work
 
 | Study | Status | Meaning |
 |---|---|---|
-| seed-2 trio | finish only | closes already-running registered cells without a code change |
-| c2 B8x60k | run alone | matched-example batch/update/EMA-regime control |
+| seed-2 trio | completed | registered cells completed; evidence integrated and hash-pinned |
+| c2 B8x60k | completed | matched-example changed-batch/update/noise/EMA control; evidence integrated |
 | legacy Phase C | prohibited | endpoint semantics are invalid |
-| all later studies | blocked or conditional | require ledger status change plus gates |
+| untouched loopmom E2 | preparation only | H3a/H4 CPU gates and frozen analysis required before launch authorization |
+| all later studies | blocked or conditional | require claim trigger, budget allocation, H3b for training, ledger change and gates |
 
 ## Handoff checklist
 
-- [ ] Final branch, commit and dirty-file list recorded.
-- [ ] Seed-2 trio completion marker present.
-- [ ] Old controller and children absent.
-- [ ] c2 completion marker present, or failure explicitly documented.
-- [ ] No process/command line contains the Phase C launcher.
-- [ ] GPU idle.
-- [ ] Queue lock removed.
-- [ ] Checkpoints, NPZs, figures, tables and logs enumerated.
-- [ ] SHA-256 manifest generated for new evidence.
-- [ ] Resume/retry history recorded, including non-restored legacy RNG state.
-- [ ] Current preregistrations attached.
-- [ ] Explicit ownership transfer recorded below.
+- [x] Final branch, commit and dirty-file list recorded.
+- [x] Seed-2 trio completion attested in the preserved log.
+- [x] Old controller and children absent.
+- [x] c2 completion and exit 0 attested in preserved logs.
+- [x] No project process/command line contains the Phase C launcher.
+- [x] No project GPU process; unrelated GPU activity is out of scope.
+- [x] Queue lock removed.
+- [x] Checkpoints, NPZs, figures, tables and logs enumerated.
+- [x] SHA-256 manifest generated and independent backup verified.
+- [x] Resume/retry history recorded, including non-restored legacy RNG state and W&B reuse.
+- [x] Current preregistrations attached.
+- [x] Time-bounded delegation recorded below.
 
 ## Ownership record
 
 | Interval | Owner | Authority |
 |---|---|---|
 | through seed-2+c2 completion | existing pre-C watcher/agent | monitor and finish only the authorized live sequence |
-| after verified handoff | current remediation task | sole authority to propose launches; still constrained by the authorization ledger |
+| after verified handoff | author | retains scientific and launch authority |
+| approved execution tranches | Codex | time-bounded execution autonomy constrained by protocol, budget and authorization ledger |
 
-**Transfer marker:** pending c2 completion.  Until it is filled, no second controller may launch.
+**Transfer marker:** verified 2026-07-12 in `docs/HANDOFF_POST_C2_2026-07-12.md`. The next allowed
+action is CPU-only H3a/H4 preparation; no GPU experiment is yet launchable.
 
 ## Status-change procedure
 

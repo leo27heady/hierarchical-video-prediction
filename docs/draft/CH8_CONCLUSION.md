@@ -1,8 +1,9 @@
 # Chapter 8 — Conclusion
 
-> **Historical conclusion; do not assemble unchanged.** The canonical conclusion is in
-> `ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`. “Laws,” exact switch points, legacy Phase C and
-> pooled regression-equivalence wording below are superseded by `docs/CLAIM_LEDGER.md`.
+> **Canonical fourth-article source; revise before assembly.** This conclusion belongs to the
+> authoritative CH1–CH8 record and is governed by `docs/CLAIM_LEDGER.md`. The RFT draft is a
+> discussion aid. “Laws,” exact switch points, invalid Phase C factor claims and pooled
+> regression-equivalence wording remain superseded.
 
 > **Status (2026-07-08):** journal-register prose, content-complete; all numbers measured except
 > the Ch. 5 [EXPECTED] transfers (generalization campaign) and the R-C/R-D robustness reads.

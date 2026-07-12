@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-11",
-  "policy": "One execution owner; fail closed; status changes require user approval and a dated claim-ledger entry.",
+  "updated": "2026-07-12-post-c2-handoff",
+  "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
-      "status": "AUTHORIZED_FINISH",
-      "meaning": "Completes the already-running seed-2 diffusion cells without changing their code path.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "Seed-2 diffusion cells completed; evidence verified, hash-pinned and integrated.",
       "required_files": ["docs/SPATIAL_FACTORIAL.md"]
     },
     "frontier-c2-b8x60k": {
-      "status": "AUTHORIZED_RUN_ALONE",
-      "meaning": "Matched-example, changed-batch/update/EMA-regime robustness control.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "Matched-example, changed-batch/update/noise/grouping/EMA control completed; evidence verified, hash-pinned and integrated.",
       "required_files": ["scripts/run_frontier_c2_60k.sh"]
     },
     "phase-c-legacy": {
