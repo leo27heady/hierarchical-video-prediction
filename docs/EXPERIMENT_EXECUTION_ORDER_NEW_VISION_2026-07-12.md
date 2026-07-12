@@ -2,8 +2,9 @@
 
 **Frozen:** 2026-07-12
 
-**Authority:** the author owns scientific and GPU-launch authority. Codex may execute autonomously
-only after the author supplies the current-run handoff and explicitly transfers execution control.
+**Authority:** the author retains scientific and GPU-launch authority. After the current-run
+handoff, the author may grant Codex time-bounded execution autonomy within an explicitly approved
+tranche. Delegation expires at the tranche stop condition or when the author withdraws it.
 
 **Scientific identity:** context packaging is the manipulated design space. Reach, fidelity and
 trust are explanatory axes. The approved article remains about when hierarchical/multirate context
@@ -30,6 +31,12 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
    replaced by another run.
 10. Generated tables and figures come from artifact manifests, never hand-entered manuscript
     numbers.
+11. GPU time is charged mechanically as wall-clock time while any project process owns the GPU,
+    including pilots, evaluation, failed runs and retries. Every run records its authorized maximum
+    and actual consumption; c2's planning estimate is replaced by measured time at handoff.
+12. The programme has three envelopes: at most 181 GPU hours for closure, at most 150 for optional
+    extension, and 50 protected reserve hours. The reserve cannot fund discretionary experiments.
+13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
 ## 2. Current handoff boundary — E0
 
@@ -50,8 +57,10 @@ constant but batch size, optimizer updates, gradient noise and effective EMA hor
 
 **Remaining time:** approximately **3.8–4.5 GPU hours**, including rollout and comparison.
 
-**Handoff gate:** c2 completion marker; old controller absent; no Phase C process; GPU idle; queue
-lock absent; logs/checkpoints/NPZs enumerated; result-generation worktree recorded.
+**Handoff gate:** c2 completion marker; old controller absent; no project-scoped Phase C or other
+project GPU process; project launch permission inactive; queue lock absent; logs/checkpoints/NPZs
+enumerated; measured GPU time and result-generation worktree recorded. Unrelated GPU activity does
+not block the handoff.
 
 ## 3. Evidence and implementation freeze — E1
 
@@ -114,6 +123,12 @@ Evaluate all available matched-budget partners/checkpoints on the same holdout:
 No interpolation is fitted unless a separately preregistered model is justified. Report the largest
 tested spatial-package win and smallest tested flat-package win by regime.
 
+The selected pairs and their reach bands are the confirmatory primary hypotheses. The frozen
+frontier is a family-level secondary confirmation using a simultaneous max-statistic clip-cluster
+bootstrap because its contrasts share clips. A predeclared Holm procedure is an acceptable simpler
+fallback. Complete false-positive-sensitive metrics are corroborating endpoints. c2 optimizer
+regimes are reported separately, and no post-result cell may be promoted to a new primary.
+
 **Additional GPU time:** **6–10 hours**.
 
 **E2 total:** **10–18 GPU hours + 1–2 CPU hours**.
@@ -148,7 +163,9 @@ change the value of the spatial package?
 
 **GPU time:** **14–20 hours**.
 
-**E3 total:** **28–38 GPU hours**.
+**Portfolio status:** deferred outside the current ≤400-hour programme. E3a is launched only if the
+assembled article retains a causal stride/temporal-rate statement; otherwise legacy B1 remains a
+whole-configuration result. E3b belongs to a later head-stability study.
 
 ## 6. Head × package interaction — E4
 
@@ -170,11 +187,15 @@ despite seed-sensitive signs within regression?
 
 ### E4b — Heterogeneity expansion to seeds 3–4
 
-Run all four factorial cells at seeds 3 and 4 only under the prewritten precision rule: expand if
-the three-seed interaction interval remains too wide for the planned statement or seed variance is
-scientifically material. This rule is based on uncertainty, not desired sign.
+Run all four factorial cells at seeds 3 and 4 only under a prewritten **training-seed** rule. The
+trigger must use seed-level heterogeneity or a defined across-seed precision target. Clip-cluster
+bootstrap intervals quantify evaluation-set uncertainty conditional on trained models and cannot
+trigger additional training seeds. Desired sign or an "interesting" result is never a trigger.
 
 **GPU time if triggered:** **28–36 hours**.
+
+**Budget rule:** E4b has no standing allocation. If triggered, its authorized maximum must replace
+or reduce E6, E8c or E9; it cannot consume protected reserve.
 
 ## 7. Addressable versus trustworthy memory — E5
 
@@ -215,7 +236,11 @@ short-horizon fidelity?
 
 **GPU time:** **24–45 hours**.
 
-**E5 total:** **52–87 GPU hours**.
+**Portfolio status:** E5c is deferred. The current programme measures and diagnoses the trust
+boundary; it does not expand into a new rollout-aware training paper. E5a runs before E5b. If the
+boundary does not replicate, shorten the diagnostic programme and demote the empirical trust claim.
+
+**Current E5 allocation:** **28–42 GPU hours** for E5a/E5b.
 
 ## 8. Long Moving-MNIST boundary study — E6
 
@@ -255,6 +280,9 @@ do flat and hierarchical packages differ in foreground fidelity, identity, traje
 
 **GPU time:** six arm×seed training runs plus long evaluation, approximately **30–40 hours**.
 
+**Launch gate:** prepare and CPU-validate E6, but authorize training only if the evidence-frozen
+article shows that this recognizable cross-dataset boundary materially improves the argument.
+
 ## 9. Representation and sampler robustness — E7
 
 ### E7a — Alternate autoencoder seed
@@ -282,6 +310,9 @@ trade-off under simpler codecs?
 
 **GPU time:** **12–24 hours**.
 
+**Portfolio status:** deferred in favor of the stronger alternate-AE and cheaper sampler/NFE
+controls.
+
 ### E7c — Sampler/NFE robustness
 
 Evaluate central diffusion arms across sampler seeds and a small NFE grid, reporting both per-step
@@ -289,7 +320,7 @@ and total inference allocation.
 
 **GPU time:** **4–8 hours**.
 
-**E7 total:** **40–68 GPU hours**.
+**Current E7 allocation:** **28–44 GPU hours** for E7a/E7c.
 
 ## 10. Retrieval and external architecture baselines — E8
 
@@ -313,6 +344,9 @@ budget?
 
 **Time:** **3–7 development days + 20–40 GPU hours**.
 
+**Portfolio status:** deferred. Classical retrieval and a tightly audited CW-VAE bridge cover the
+present baseline question without opening a separate learned-retrieval research programme.
+
 ### E8c — CW-VAE-style baseline/protocol bridge
 
 Mandatory output regardless of training: an architecture/protocol comparison table with CW-VAE,
@@ -329,7 +363,12 @@ hierarchy rather than only the project's flat controls?
 
 **Time:** **3–7 development days + 25–50 GPU hours**.
 
-**E8 total:** **45–94 GPU hours + 1–3 development weeks**.
+**Launch gate:** first complete a protocol-equivalence audit covering data, decoder, context and
+target budgets, training horizon, rollout, NFE and metrics. If a defensible bridge cannot be built
+within the 50-hour maximum, retain the transparent comparison table and do not train an ambiguous
+baseline.
+
+**Current E8 allocation:** **25–54 GPU hours** for E8a/E8c.
 
 ## 11. Counterfactual Dynamic LoopWorld — E9
 
@@ -356,8 +395,7 @@ Compare flat contiguous, spatially coarse and temporally sparse full-resolution 
 static/dynamic × low/high-detail cells, initially under diffusion and at two seeds. Add regression
 only after the primary factorial is complete.
 
-**GPU time:** **60–100 hours** for the primary factorial; **30–50 additional hours** for the head
-extension.
+**GPU time:** **60–100 hours** for the primary factorial. The head extension is deferred.
 
 ### E9c — Retrieval baselines on counterfactual worlds
 
@@ -365,7 +403,11 @@ Evaluate classical and learned retrieval baselines from E8 on the same paired wo
 
 **GPU time:** **10–25 hours** depending on reuse.
 
-**E9 total:** **70–175 GPU hours + 1–2 development weeks**.
+**Portfolio status:** E9c is deferred. E9 is an extension phase after the current article is
+internally frozen, not a dissertation-closure prerequisite. It requires a validated CPU
+counterfactual oracle, one timing/variance pilot and a frozen minimal factorial. The absolute study
+cap is **100 GPU hours**. If the causal question cannot be answered cleanly inside that cap, defer
+the study rather than shrink it into an ambiguous experiment.
 
 ## 12. Natural/3-D re-entry extension — E10
 
@@ -376,60 +418,74 @@ package budgets and self-fed evaluation.
 **Question:** do the synthetic reach/fidelity/trust relationships transfer when geometry,
 appearance and hidden dynamics are realistic?
 
-This is a separate flagship study, not required for the existing dissertation/article claim.
+This is a separate flagship study, not required for the existing dissertation/article claim and
+deferred outside the current ≤400-hour programme.
 
 **Estimated time:** **2–5 development weeks + 80–160 GPU hours** for a first controlled study.
 
 ## 13. Execution order summary
 
-| Order | ID | Experiment/workstream | Status after current handoff | GPU estimate | CPU/development estimate |
+This is a decision tree, not a promise to exhaust the portfolio. H3a precedes evaluation-only E2;
+the H3b trainer/provenance integration and its numerical-parity gate precede every new training run.
+
+| Order | ID | Experiment/workstream | Portfolio status | GPU maximum | CPU/development estimate |
 |---:|---|---|---|---:|---:|
-| 0 | E0 | Finish c2-only control | already running | 3.8–4.5 h remaining | — |
+| 0 | E0 | Finish c2-only control | already running; replace estimate with actual | 4.5 h planning allowance | — |
 | 1 | E1 | Evidence freeze, swap pass, governance repair | required | 0 | 8–16 h |
 | 2 | E2 | Untouched loopmom confirmation, selected + full frontier | required | 10–18 h | 1–2 h plus evaluator integration |
-| 3 | E3 | Fixed-target B1, diffusion + regression | core causal control | 28–38 h | 1–2 d integration/QA |
-| 4 | E4a | Complete seed-2 head × package factorial | core interaction | 7–10 h | 2–4 h |
-| 5 | E4b | Seeds 3–4 factorial expansion | precision-gated | 28–36 h | 2–4 h |
-| 6 | E5 | Trust replication, dose response, rollout-aware intervention | core if trust is headline | 52–87 h | 2–5 d |
-| 7 | E6 | Phase C hybrid on long Moving-MNIST | cross-dataset boundary | 30–40 h | 1–3 d |
-| 8 | E7 | Representation, codec and sampler robustness | generality | 40–68 h | 2–5 d |
-| 9 | E8 | Classical/learned retrieval + CW-VAE bridge | baseline defensibility | 45–94 h | 1–3 wk |
-| 10 | E9 | Counterfactual Dynamic LoopWorld | strongest new synthetic study | 70–175 h | 1–2 wk |
-| 11 | E10 | Natural/3-D re-entry | separate flagship | 80–160 h | 2–5 wk |
+| 3 | E4a | Complete seed-2 head × package factorial | closure; run after H3b | 7–10 h | 2–4 h |
+| 4 | E3a | Fixed-target diffusion B1 | claim-gated causal control | 14–18 h | 1–2 d integration/QA |
+| 5 | E5a/b | Trust replication, then dose response | closure while trust is central | 28–42 h | 2–5 d |
+| 6 | E7a/c | Alternate-AE and sampler/NFE robustness | closure robustness | 28–44 h | 2–5 d |
+| 7 | E8a | Classical pose-indexed retrieval | closure baseline | 0–4 h | 2–5 d |
+| 8 | E6 | Phase C hybrid on long Moving-MNIST | article-utility gated | 30–40 h | 1–3 d |
+| 9 | E8c | CW-VAE protocol bridge | equivalence-audit gated extension | 25–50 h | 3–7 d |
+| 10 | E9 | Counterfactual Dynamic LoopWorld primary factorial | post-freeze extension | 60–100 h | 1–2 wk |
+| — | E4b | Seeds 3–4 factorial expansion | replacement-only seed trigger | 28–36 h | 2–4 h |
+| — | E3b/E5c/E7b/E8b/E9c/E10 | Additional methods/extensions | deferred outside portfolio | — | future work |
 
 ## 14. Totals
 
-All totals assume one GPU and sequential runs. CPU/document work can overlap GPU execution.
+All totals assume one GPU and sequential project ownership. CPU/document work can overlap GPU
+execution. GPU-hour consumption is wall-clock project ownership, not successful-training time.
 
-### Current article/dissertation causal-completion set
+### Pool A — committed/claim-gated closure
 
-Includes E0, E2, E3, E4a and E5a/E5b; excludes rollout-aware training, optional seed expansion,
-Phase C and external/future studies.
+The closure envelope contains E0, E2, E4a, claim-gated E3a, E5a/E5b while trust remains central,
+E7a/E7c, E8a and article-utility-gated E6.
 
-- **GPU:** approximately **77–113 hours** including the remaining c2 work;
-- **continuous single-GPU time:** approximately **3.2–4.7 days**;
-- **CPU/integration:** approximately **4–8 working days**.
+- **maximum allocation:** approximately **181 GPU hours**;
+- **without E6:** approximately **141 GPU hours**;
+- E6 preparation does not imply launch;
+- actual c2 consumption replaces its 4.5-hour planning allowance at handoff; any excess reduces a
+  later conditional Pool-A allocation rather than increasing the 181-hour envelope.
 
-### Full dissertation robustness set
+### Pool B — optional extension
 
-Adds E4b if triggered, E5c, E6 and E7.
+The extension envelope contains only a protocol-audited E8c and the post-freeze E9 primary
+factorial.
 
-- **GPU:** approximately **199–302 hours** from the current snapshot;
-- **continuous single-GPU time:** approximately **8.3–12.6 days**;
-- **CPU/development:** approximately **2–4 weeks**, overlapping GPU work.
+- **maximum allocation:** **150 GPU hours**;
+- E8c: at most 50 hours;
+- E9: at most 100 hours;
+- unused closure budget does not automatically authorize extension work.
 
-### Complete extended new-vision programme
+### Pool C — protected reserve
 
-Adds E8, E9 and E10.
+- **allocation:** **50 GPU hours**;
+- covers pilots, failed runs, retries and estimation error;
+- cannot fund discretionary experiments or broaden a completed study.
 
-- **GPU:** approximately **394–731 total hours** from the current snapshot;
-- **continuous single-GPU time:** approximately **16–30.5 days** at perfect utilization;
-- **realistic calendar time:** approximately **6–12 weeks**, dominated by implementation,
-  validation, failures/recovery and text integration rather than raw training alone.
+### Hard ceiling and replacement rule
 
-These are planning envelopes. Before each phase, replace them with measured probe timings and a
-run-count ledger. The programme may be scientifically complete without E10 because E10 is a
-separate realism/flagship paper.
+The expected maximum is approximately **381 GPU hours**, leaving about 19 hours below the absolute
+400-hour ceiling. Plan toward roughly **330 hours of scientific runs**, not 400 hours of spending.
+E4b has no additive allocation: if its preregistered training-seed trigger fires, it replaces or
+reduces E6, E8c or E9. E3b, E5c, E7b, E8b, E9c and E10 are outside this portfolio.
+
+Before each tranche, replace estimates with measured probes and a run-count ledger. A tranche is
+not authorized unless its maximum fits the remaining non-reserve envelope. Stop when the claims are
+resolved; unused GPU hours indicate successful governance, not incomplete work.
 
 ## 15. Expected article/dissertation evidence products
 
@@ -457,9 +513,10 @@ When E0 finishes, the author should provide:
 - final c2 log and comparison;
 - new/modified artifact paths;
 - current branch/commit/worktree;
-- process/GPU/lock state;
+- project process/GPU/lock state and measured c2 GPU-hour consumption;
 - resume/retry history and W&B caveats;
-- explicit authorization for Codex to become the sole executing agent under this plan.
+- explicit time-bounded authorization for Codex to execute the next approved tranche under this
+  plan while the author retains scientific and launch authority.
 
 Codex should then begin at E1, not by launching E2 immediately. The evidence swap and immutable
 backup come first.

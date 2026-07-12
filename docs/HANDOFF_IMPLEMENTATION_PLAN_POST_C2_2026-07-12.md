@@ -103,10 +103,11 @@ Before Codex changes any scientific code or result text, the handoff must contai
 - current branch, HEAD and full worktree status;
 - confirmation that the old master controller and all children are absent;
 - confirmation that no Phase C process or launch marker exists;
-- GPU idle state;
+- project-scoped GPU process/permission state; unrelated GPU activity need not be idle;
 - queue-lock state;
 - explicit treatment of the live CW table, Figure 12 and independent review file;
-- explicit author message transferring sole execution authority to Codex under the frozen plan.
+- explicit author message granting Codex time-bounded execution autonomy for the next approved
+  tranche while the author retains scientific and GPU-launch authority.
 
 If any of these is unavailable, Stage H0 records the gap. Missing metadata does not justify
 reconstructing facts from memory.
@@ -123,7 +124,8 @@ Establish a verified, immutable boundary between the old queue and all future wo
 
 1. Record current time, branch, HEAD and `git status --short`.
 2. Enumerate relevant process trees; verify no old queue, c2, Phase C or orphan trainer remains.
-3. Verify GPU utilization/memory is idle.
+3. Verify no project process owns the GPU and project launch permission is inactive; record but do
+   not disturb unrelated GPU activity.
 4. Verify the queue lock is absent or explain why it remains.
 5. Verify `S2TRIO_DONE`, c2 completion and watcher stop markers.
 6. Confirm both `_60k` NPZs align on clip/horizon keys and contain the expected metadata fields.
@@ -148,7 +150,7 @@ Create `docs/HANDOFF_POST_C2_<date>.md` containing:
 - no Phase C launch;
 - c2 result artifacts readable;
 - live outputs assigned to an owner;
-- author transfer recorded.
+- time-bounded author delegation state recorded.
 
 Failure means stop and ask the author; do not infer authority or start cleanup.
 
@@ -277,8 +279,12 @@ Update `docs/EXPERIMENT_CONTROL.md`:
 
 **Estimated time:** 1–2 working days.
 
-This stage integrates the useful remediation code without a high-risk rewrite of the 1,000-line
-trainer before confirmation.
+This stage has two independently gated parts. **H3a** is the evaluation-critical path required
+before checkpoint-only E2: legacy readers, correct record-level metrics, immutable evaluation
+identity, dataset-purpose enforcement and comparison checks. **H3b** is required before any new
+training: full RunSpec integration, explicit RNG/sampler resume, W&B/run identity, arm registry and
+controller redesign. H3b does not block evaluation-only confirmation, but no E3/E4/E5/E7 training
+may begin without it.
 
 ### H3.1 Freeze legacy readers
 
@@ -292,6 +298,8 @@ Integrate `hvp_rev/provenance.py` incrementally:
 1. Resolve a `RunSpec` before model/data construction.
 2. Include dataset, actions/positions, AE, arm config, seed, examples, updates, batch, precision,
    NFE, warm-up, rollout horizon, evaluation population, metric version, commit and dirty hash.
+   Resume compatibility must also compare optimizer, scheduler, EMA and sampler mappings rather
+   than checking identity fields while accepting changed training dynamics.
 3. Write new runs under content-addressed directories.
 4. Refuse completed-run overwrite.
 5. Keep a compatibility flag for explicitly reading legacy checkpoints; never silently resume
@@ -377,12 +385,29 @@ Replace engineered exit-97 flow with an explicit clean stop state:
 - queue/gate dry-run tests;
 - dataset split/collision checks.
 
+### H3b numerical-parity gate
+
+E4a completes a factorial begun on the legacy trainer, so provenance improvements must not silently
+create a new scientific regime. On CPU and fixed seeds, compare the legacy and H3b paths for:
+
+- sampled batch indices and tensors;
+- model construction and initial parameters;
+- loss inputs, weights and first fixed-seed losses;
+- optimizer, warm-up, clipping and EMA updates;
+- sampler/NFE behavior and saved evaluation metadata.
+
+Require exact equality where deterministic and a predeclared tight tolerance where kernels differ.
+If parity fails, classify H3b outputs as a new regime and either rerun the necessary factorial
+partners under H3b or retain the legacy trainer inside a guarded compatibility path. Never mix the
+two regimes as if they were exchangeable.
+
 ### Acceptance gate H3
 
 - default CPU suite passes with CUDA hidden;
 - legacy result regeneration remains unchanged;
 - new runs cannot overwrite or silently resume;
 - no canonical trainer change lacks a golden test;
+- H3b numerical parity is demonstrated or the new regime/rerun consequence is recorded;
 - queue can stop cleanly before Phase C.
 
 ## 8. Stage H4 — implement the correct untouched loopmom confirmation path
@@ -432,6 +457,12 @@ misrepresented as failed replication.
 Create explicit no-training RunSpecs for every available frontier checkpoint and seed. Confirm
 compatibility of dataset/AE/stats/warm-up/NFE before evaluation. Freeze table and figure shells.
 
+Selected central pairs and their pair-specific reach bands are confirmatory primary hypotheses.
+The complete frozen frontier is a family-level secondary confirmation. Use a simultaneous
+max-statistic clip-cluster bootstrap for the correlated frontier contrasts; a predeclared Holm
+procedure is an acceptable simpler fallback. c2 regimes remain separate, complete metrics remain
+corroborating, and no post-result frontier cell may be promoted to a new primary.
+
 ### H4.4 Holdout access controls
 
 - explicit `--confirmation-eval` switch;
@@ -454,6 +485,13 @@ compatibility of dataset/AE/stats/warm-up/NFE before evaluation. Freeze table an
 
 The implementation edits CH1–CH8 directly. The RFT draft is mined for language but does not replace
 them.
+
+H5 has two deliverables: (1) corrected, canonical CH1–CH8 source chapters preserving the complete
+scientific record, and (2) a focused venue-length manuscript assembled from them. The assembled
+paper should use approximately six main sections: problem/instrument; package definitions and cost;
+frontier; spatial/temporal/head factorial; trust and external boundaries; related work,
+limitations and conclusion. Detailed EBT and reversibility material moves to appendices,
+supplement or dissertation unless the selected venue requires it in the main text.
 
 ### CH1 — Introduction
 
@@ -541,7 +579,8 @@ them.
 - every result sentence maps to ledger/evidence;
 - no unresolved result projection remains in main prose;
 - abstract/conclusion scopes match tables;
-- article can be assembled without the separate RFT draft.
+- article can be assembled without the separate RFT draft;
+- a venue-length six-section manuscript exists in addition to the canonical source chapters.
 
 ## 10. Stage H6 — direct dissertation integration
 
@@ -649,7 +688,8 @@ File: `07_REFERENCES.md`.
 
 The governing sequence is `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md`.
 
-For each next experiment (E2, then E3, E4, E5, E6, E7, E8, E9, E10):
+The experiments form a claim-driven decision tree, not a mandatory E2–E10 sequence. For each
+authorized tranche:
 
 1. Write/finalize the JSON/Markdown design.
 2. Declare required and reused checkpoints/data.
@@ -661,23 +701,45 @@ For each next experiment (E2, then E3, E4, E5, E6, E7, E8, E9, E10):
 8. Run a short timing/VRAM probe where architecture changes.
 9. Update authorization status only after author approval.
 10. Launch one guarded queue; record PID/process tree and command.
+11. Record the authorized maximum and actual GPU-hour consumption. GPU hours are wall-clock time
+    while any project process owns the GPU, including pilots, evaluation, failures and retries.
 
 ### Specific preparation corrections
 
 - E2: use loopmom confirmation, not Moving-MNIST.
-- E3: validate exact reuse of flat-short checkpoints; context and target stride must be separate.
-- E4: complete seed-2 cells before precision-gated seed expansion.
-- E5: reproduce the trust boundary before rollout-aware training.
-- E6: build the actual classifier-domain fixture and evaluator wiring; do not accept marker-only
-  scaffolding.
-- E7–E10: treat as robustness/follow-up layers and keep their claims out of current text until
-  measured.
+- E3a: run only if the article retains a causal stride/temporal-rate claim; validate exact reuse of
+  flat-short checkpoints and separate context from target stride. Defer E3b.
+- E4a: run after H3b. E4b can trigger only from preregistered training-seed heterogeneity or an
+  across-seed precision target—not clip-bootstrap uncertainty—and must replace another allocation.
+- E5a/E5b: reproduce the trust boundary before diagnostics; defer rollout-aware E5c.
+- E6: build the actual classifier-domain fixture/evaluator, but launch only if the assembled article
+  needs the cross-dataset boundary.
+- E7: retain alternate-AE and sampler/NFE robustness; defer simple-codec proliferation.
+- E8: prioritize classical retrieval. Run a CW-VAE bridge only after protocol-equivalence audit;
+  defer learned retrieval.
+- E9: begin only after the current article is internally frozen, with a CPU oracle, pilot, frozen
+  minimal factorial and 100-hour cap. Defer extensions if the question cannot be answered cleanly.
+- E10: separate flagship future work outside the current portfolio.
+
+### GPU budget pools and stop rules
+
+- closure envelope: at most **181 GPU hours**;
+- optional E8c/E9 extension envelope: at most **150 GPU hours**;
+- protected failure/retry reserve: **50 GPU hours**;
+- expected maximum: approximately **381 GPU hours**, below the absolute 400-hour ceiling;
+- reserve cannot fund discretionary experiments;
+- E4b replaces/reduces E6, E8c or E9 rather than adding to the ceiling;
+- stop when claims are resolved, even if budget remains.
+
+At H0, measured c2 consumption replaces its planning allowance. Any excess is absorbed by reducing
+a later conditional allocation; it does not enlarge the closure envelope.
 
 ### Acceptance gate H7
 
 - gate can be satisfied through real generated artifacts, not impossible placeholders;
 - all launch configs resolve and dry-run;
 - author approves cost and scope;
+- the tranche maximum fits the remaining non-reserve envelope;
 - exactly one controller is prepared.
 
 ## 12. Stage H8 — table, figure and artifact generation system
@@ -771,7 +833,8 @@ Provide the next reviewer:
 
 ### Before any new GPU run
 
-Required: H0 → H1 → H2 → relevant parts of H3 → H4 → E2 authorization.
+For checkpoint-only E2, required: H0 → H1 → H2 → H3a → H4 → E2 authorization. Before any new
+training, H3b and its numerical-parity gate are additionally mandatory.
 
 **Estimated elapsed work:** approximately **2–5 focused working days**, depending on legacy-output
 integration and article swap scope. Article/dissertation work can continue while E2 evaluates.
@@ -828,6 +891,10 @@ commit. Never stage unrelated live outputs by broad `git add`.
 13. Are [A1]–[A3] and dissertation tasks genuinely unchanged?
 14. Is the Ukrainian/admin path treated as first-class completion work?
 15. Does each future experiment add a distinct estimand rather than merely more configurations?
+16. Does GPU-hour accounting include pilots, evaluation, failures and retries, and does every
+    tranche fit the 181/150/50 envelope without converting reserve into discretionary work?
+17. Did H3b preserve numerical parity with legacy partners, or were affected results correctly
+    classified and rerun as a new regime?
 
 ## 17. Requested independent-review response format
 
@@ -857,6 +924,10 @@ The handoff implementation is successful when:
 - new scientific runs use immutable provenance, explicit resume and complete metrics;
 - central confirmation uses a fresh loopmom holdout;
 - Phase C can only run under a valid hybrid protocol;
+- new training cannot begin until H3b numerical parity is demonstrated or its rerun consequence is
+  accepted;
+- the experiment portfolio remains below 400 project GPU hours with 50 hours protected for
+  failures and retries;
 - all tables/figures are artifact-generated;
 - the author owns launch authority and Codex executes one reviewed queue at a time;
 - the next reviewer can trace every decision, number and code path without relying on chat memory.
