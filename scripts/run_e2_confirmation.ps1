@@ -59,6 +59,12 @@ foreach ($run in $configValue.runs) {
     $started = Get-Date
     $header = "=== E2 $($run.arm) seed=$($run.seed) steps=$($run.steps) START $($started.ToString('o')) ==="
     $header | Tee-Object -FilePath $Log -Append
+    # Windows PowerShell 5 surfaces a native program's stderr records as
+    # NativeCommandError when they pass through a pipeline. W&B writes normal
+    # status messages to stderr, so keep fail-closed handling on our explicit
+    # exit-code check while allowing the evaluator to finish its pipeline.
+    $savedErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     & .\venv\Scripts\python.exe -u -m hvp_rev.rhvd `
         --arm $run.arm --seed $run.seed --steps $run.steps --batch $run.batch --bf16 `
         --eval_only --complete_metrics --metric_threshold $configValue.evaluation.metric_threshold `
@@ -69,6 +75,7 @@ foreach ($run in $configValue.runs) {
         --wandb_project $configValue.evaluation.wandb_project --wandb_group $group --wandb_required `
         --run_log $Log --authorized_gpu_hours $run.max_gpu_hours 2>&1 | Tee-Object -FilePath $Log -Append
     $code = $LASTEXITCODE
+    $ErrorActionPreference = $savedErrorActionPreference
     $ended = Get-Date
     $hours = ($ended - $started).TotalHours
     $consumed += $hours
@@ -94,13 +101,17 @@ foreach ($run in $configValue.runs) {
     }
 }
 
+$savedErrorActionPreference = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 & .\venv\Scripts\python.exe scripts\analyze_e2_confirmation.py `
     --config $Config --manifest $Manifest --run-root artifacts/runs `
     --out-json artifacts/confirmation_e2/results.json `
     --out-md docs/confirmation/E2_RESULTS.md `
     --wandb-project $configValue.evaluation.wandb_project --wandb-group $group 2>&1 |
     Tee-Object -FilePath $Log -Append
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$analysisCode = $LASTEXITCODE
+$ErrorActionPreference = $savedErrorActionPreference
+if ($analysisCode -ne 0) { exit $analysisCode }
 
 "=== E2_CONFIRMATION_DONE total_gpu_hours=$($consumed.ToString('F3')) ===" |
     Tee-Object -FilePath $Log -Append
