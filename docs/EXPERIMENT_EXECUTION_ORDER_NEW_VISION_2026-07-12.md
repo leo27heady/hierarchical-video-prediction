@@ -54,11 +54,12 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E0 | c2-only optimizer-regime control | Finish without entering Phase C; replace stale runtime estimate | **COMPLETE**; 14.223 measured project GPU-hours; flat beats hierarchy by 0.00773, 95% CI [0.00304, 0.01233] in flat's direction | Retain as optimizer-regime robustness, not more-data/asymptotic evidence |
 | E1 | Evidence freeze and governance repair | 8–16 CPU hours; no GPU | **COMPLETE**; evidence manifest/independent backup, result integration, canonical text/claim governance and Phase-C amendment restored | E2 preparation permitted |
 | H3a/H4 | Confirmation evaluator, provenance, metrics and CPU gates | Exact checkpoint readers, immutable artifacts, complete metrics, clean CPU/hash gates | **COMPLETE**; 35 tests plus design/schema/consistency/compile gates; frozen dataset and checkpoint hashes pass | E2 authorized on commit `b9d91da` |
+| H3b | Safe new-training baseline and numerical parity | Same scientific kernel plus RunSpec, RNG-complete explicit resume, immutable artifacts and cloud identity | **COMPLETE**; 38 tests, exact first-update/batch/model/optimizer/EMA parity and uninterrupted-versus-resumed trajectory; report bound to `c0ab78c` | New training may use only the provenance-v2 wrapper |
 | E2a | Untouched LoopMom holdout | 1–2 CPU hours | **COMPLETE**; 500×200 set, seed 20260712, dataset ID `loopmom-confirmation_holdout-20260712-e033abee6e04`; no train/test glyph collisions | Dataset is now accessed and permanently frozen |
 | E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Both registered reach-band effects confirm on both seeds with clip-bootstrap intervals excluding zero |
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
-| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **GATED / NOT STARTED** | Next planned training study unless E2 changes priority |
+| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **RUNNING**; `reg-long` seed 2 started 2026-07-13 00:15 Kyiv under RunSpec `c1eefc99257e1a3a` | Complete exactly two B16×30k regression cells; no optimizer-regime change |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -172,6 +173,26 @@ decision here before any new training launch.
   F3 remains central and unresolved under regression; **E4a fires next**, but only after the H3b
   numerical-parity/provenance gate. T1 remains title-relevant and E5a follows E4a. No E4b, E3a,
   Phase C or optional extension is authorized by E2 alone.
+
+#### Intermediate audit E4-I0 — 2026-07-13 00:20 Europe/Kyiv
+
+- **Launch gates:** PASS on clean commit `ab88a4f`; H3b parity, frozen E4 protocol, frozen
+  data/AE hashes, two-cell design, 10 allocated/11 authorized GPU-hours and online W&B write all
+  passed before launch.
+- **Active cell:** spatially coarse dense regression package, `reg-long`, seed 2, B16×30k,
+  RunSpec `c1eefc99257e1a3a`; W&B run
+  `e4-head-package-seed2-c1eefc99257e1a3a`.
+- **First trend:** updates 1–500 average loss 0.7273 at 0.40 s/update and 6.46 GB measured peak.
+  This is bracketed by the legacy seed-0/1 first intervals (0.7263/0.7280), while throughput and
+  peak memory exactly match the legacy regime (0.38–0.40 s/update; 6.46 GB). No parity drift is
+  visible.
+- **GPU:** 99–100% compute utilization, approximately 8.19/16.38 GB board memory, 64°C and 113 W.
+  Compute is saturated; forcing 14 GB through a larger batch would change the frozen factorial's
+  optimizer regime and is prohibited.
+- **Projection:** approximately 3.3–3.5 hours for this training plus evaluation/upload, within the
+  5-hour cell maximum. The temporal regression cell historically runs at about 0.35 s/update and
+  has the same 5-hour cap. Continue unchanged unless loss departs materially from the legacy
+  envelope, the log stalls, W&B fails, or a per-cell/budget limit is reached.
 
 ## 2. Current handoff boundary — E0
 
