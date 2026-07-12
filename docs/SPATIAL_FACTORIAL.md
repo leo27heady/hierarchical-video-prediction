@@ -297,6 +297,30 @@ remains a one-seed bracket and is not called an asymptotic law.
 **Mixed reading.** A null aggregate with horizon-dependent signs is reported cell-by-cell and
 the upper edge is described as unresolved at 60k. No interpolation from the two regimes.
 
+### R-G60 MEASURED (2026-07-12; `logs_rhcp/frontier_c2_60k.log`; C2_60K_DONE) — **ALTERNATIVE: TESTED FLAT ADVANTAGE SURVIVES THE CHANGED REGIME**
+
+At B8×60k, seed 0, flat-c2 scores **0.1708** / sharp **0.0889** and hier-c2 scores
+**0.1785** / **0.0795**. With positive delta defined as hierarchy better, paired ALL delta is
+**−0.0077 [−0.0123, −0.0030]** over 15,200 records and 100 clip clusters. The flat arm remains
+a CI-clean winner. At the earlier B16×30k regime, the corresponding delta was **−0.0116
+[−0.0162, −0.0073]** (flat 0.1703; hierarchy 0.1820).
+
+The pre-registered alternative branch applies narrowly: **at the tested 2,432-token configuration,
+flat full-resolution context wins under both tested optimization regimes at seed 0**, although the
+magnitude narrows because hierarchy improves by about 0.0035 while flat changes by about 0.0004.
+This does not prove monotonicity, a unique/continuous crossing, an asymptotic frontier or “twice the
+data.” B8×60k holds training examples approximately fixed while changing batch size, optimizer
+updates, gradient noise, example grouping and effective EMA horizon. Report 1,792 as the largest
+tested B16×30k budget favoring spatial packaging and 2,432 as the smallest tested budget favoring
+flat packaging; do not interpolate an exact edge.
+
+The controller ran from 2026-07-11 23:22:31 to 2026-07-12 13:35:55 (14.223 project GPU-hours,
+including both arms/evaluation). The 60k checkpoints contain model/optimizer/EMA/step but no RNG or
+sampler state. W&B reused the legacy 30k run IDs, so local logs are the complete trajectory and the
+cloud history carries a provenance caveat. Raw artifacts are hash-pinned in
+`artifacts/post_c2_evidence_manifest_2026-07-12.json` and independently copied to the post-c2
+evidence backup.
+
 ### R-E (pre-registered 2026-07-09, BEFORE the run): the 512-token pair seed-1 (completeness)
 
 **Motivation:** 896/1152/3072 all carry two seeds; only the 512-token below-threshold point
@@ -688,3 +712,70 @@ hier3 (48 top(2×2) + 24c + 9f = 1,152 tok; factor-2 pyramid), seed 0:
   nothing usable while its presence cost −0.0196 through dilution/optimization; the stream is
   worse than useless at this design point).
 Assets: `docs/figures/fig14_level_blinding.png` (5 series); npz `*_blind-{coarse,fine,top}.npz`.
+
+### S1-a MEASURED (2026-07-11; `logs_rhcp/cwstyle_seed1.log`) — **B1 CONFIGURATION EFFECT REPLICATES**
+
+The 512-context-token stride-2 hierarchy versus short-flat comparison is:
+
+| head | seed | hierarchy | flat | hierarchy advantage (95% clip-cluster CI) |
+|---|---:|---:|---:|---:|
+| diffusion | 0 | 0.1893 | 0.2224 | **+0.0330 [+0.0246, +0.0419]** |
+| diffusion | 1 | 0.1869 | 0.2206 | **+0.0338 [+0.0251, +0.0430]** |
+| regression | 0 | 0.1566 | 0.2205 | **+0.0639 [+0.0516, +0.0763]** |
+
+The diffusion result is unusually stable across two training seeds, and the regression control has
+the same sign with a larger magnitude. The binding interpretation remains a **whole-configuration
+effect**: legacy B1 changes context stride/reach, coarse target slots, auxiliary loss allocation,
+target tokens, total sequence length and optimization difficulty together. It does not isolate
+temporal stride. The fixed-target-interface E3a control is required only if causal stride wording
+remains in the assembled article.
+
+### S1-b + S2 MEASURED (2026-07-11; `cwstyle_seed1.log`, `newvision_queue.log`) — **DIFFUSION TEMPORAL PACKAGE WINS THREE SEEDS**
+
+`strided-flat` uses 1,088 context tokens, 11 full-resolution history anchors at stride 4 plus six
+recent fine frames, and no coarse spatial stream. Against the 1,152-token `hier-long` package:
+
+| seed | strided-flat | hier-long | temporal advantage (95% clip-cluster CI) |
+|---:|---:|---:|---:|
+| 0 | 0.1652 | 0.1848 | **+0.0197 [+0.0143, +0.0252]** |
+| 1 | 0.1644 | 0.1690 | **+0.0046 [+0.0007, +0.0084]** |
+| 2 | 0.1636 | 0.1747 | **+0.0111 [+0.0070, +0.0151]** |
+
+Every tested diffusion seed has the same sign. The three-seed means are strided-flat **0.1644**,
+hier-long **0.1762**, and flat-budget **0.2042**. At seed 2, hier-long beats flat-budget by
+**+0.0299 [+0.0217, +0.0386]**, while strided-flat beats flat-budget by **+0.0410
+[+0.0308, +0.0518]**. Thus two claims are separated:
+
+1. Long reach matters: both long-span packages beat the short-reach flat package.
+2. Once approximately 48-frame reach is available, the diffusion head on loopmom consistently
+   favors the tested sparse full-resolution temporal anchors over spatial coarsening, despite using
+   64 fewer context tokens.
+
+Scope is fixed to the loopmom static-world generator, frozen representation, diffusion head,
+existing adaptively used evaluation pool and these packages. It is not a universal temporal or
+anti-hierarchy result. The untouched E2 confirmation is required before submission.
+
+### REG-1/REG-2 MEASURED (2026-07-11; `cwstyle_regtwins.log`, `newvision_queue.log`) — **HEAD × PACKAGE × SEED HETEROGENEITY**
+
+For temporally sparse full-resolution versus spatially coarse long-reach packaging under regression:
+
+| seed | strided-flat-reg | reg-long | temporal advantage (95% clip-cluster CI) |
+|---:|---:|---:|---:|
+| 0 | 0.1574 | 0.1682 | **+0.0107 [+0.0062, +0.0158]** |
+| 1 | 0.1606 | 0.1503 | **−0.0104 [−0.0146, −0.0062]** |
+
+Both seed-specific effects exclude zero and have opposite signs. Their cancellation is **not
+equivalence**. Relative to diffusion, changing the head shifts the package contrast toward spatial
+packaging on both available seeds, but two seeds do not establish a general interaction law. E4a
+completes the seed-2 four-cell factorial only after H3b trainer parity.
+
+The separate 512-token regression pair (`hier-s2-min-reg` 0.1566 versus `flat-short-reg` 0.2205)
+strongly reproduces the B1 configuration sign, with **+0.0639 [+0.0516, +0.0763]**. It inherits
+the same target-interface confound and cannot be used as causal stride isolation.
+
+### PRE-PHASE-C QUEUE CLOSURE (2026-07-12)
+
+S1-a, S1-b, REG-1, REG-2, the unconditional seed-2 diffusion trio and R-G60 completed with exit
+code 0. The original controller was stopped before Phase C; `hier3-reg`, E-320 and legacy Phase C
+were not launched. The queue lock is absent and no project process remains. The verified handoff is
+`docs/HANDOFF_POST_C2_2026-07-12.md`.

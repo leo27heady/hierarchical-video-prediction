@@ -1,5 +1,5 @@
 {
-  "status": "development evidence; pre-C seed2 and c2 pending",
+  "status": "verified post-c2 evidence; untouched confirmation pending",
   "configurations": [
     {"arm": "hier-min", "package": "spatial coarse + fine tail", "reach": 48, "context_tokens": 896, "target_tokens": 320, "total_tokens": 1216, "target_interface": "4 coarse + 4 fine", "status": "measured"},
     {"arm": "flat-min", "package": "single-stream full resolution", "reach": 14, "context_tokens": 896, "target_tokens": 320, "total_tokens": 1216, "target_interface": "4 coarse + 4 fine", "status": "measured"},
@@ -8,20 +8,23 @@
     {"arm": "hier-s2-fixed-target", "package": "stride-2 coarse + fine tail", "reach": 48, "context_tokens": 512, "target_tokens": 320, "total_tokens": 832, "target_interface": "4 coarse + 4 fine", "status": "prepared-not-authorized"},
     {"arm": "flat-short-fixed-target", "package": "single-stream full resolution", "reach": 8, "context_tokens": 512, "target_tokens": 320, "total_tokens": 832, "target_interface": "4 coarse + 4 fine", "status": "prepared-not-authorized"},
     {"arm": "hier-c1 / flat-c1", "package": "spatial versus flat", "reach": "48 / 28", "context_tokens": 1792, "target_tokens": 320, "total_tokens": 2112, "target_interface": "matched", "status": "largest tested B16x30k budget favouring spatial"},
-    {"arm": "hier-c2 / flat-c2", "package": "spatial versus flat", "reach": "48 / 38", "context_tokens": 2432, "target_tokens": 320, "total_tokens": 2752, "target_interface": "matched", "status": "smallest tested B16x30k budget favouring flat"}
+    {"arm": "hier-c2 / flat-c2", "package": "spatial versus flat", "reach": "48 / 38", "context_tokens": 2432, "target_tokens": 320, "total_tokens": 2752, "target_interface": "matched", "status": "flat favoured at seed 0 under B16x30k and B8x60k"}
   ],
   "claims": [
     {"id": "R1", "contrast": "hier-min vs flat-min", "seed": 0, "effect": 0.0399, "interval": "development headline interval in source artifact", "analysis": "all registered records", "status": "measured-development"},
     {"id": "R1", "contrast": "hier-min vs flat-min", "seed": 1, "effect": 0.0358, "interval": "development headline interval in source artifact", "analysis": "all registered records", "status": "measured-development"},
     {"id": "R2", "contrast": "hier-min vs flat-min", "seed": 0, "effect": 0.0880, "interval": "[0.0668, 0.1083]", "analysis": "14 < dt <= 48", "status": "post-hoc"},
     {"id": "R2", "contrast": "hier-min vs flat-min", "seed": 1, "effect": 0.0809, "interval": "[0.0621, 0.0998]", "analysis": "14 < dt <= 48", "status": "post-hoc"},
-    {"id": "F2", "contrast": "hier-s2-min vs flat-short (diffusion)", "seed": 0, "effect": 0.0330, "interval": "source artifact", "analysis": "configuration effect", "status": "measured"},
-    {"id": "F2", "contrast": "hier-s2-min vs flat-short (diffusion)", "seed": 1, "effect": 0.0338, "interval": "source artifact", "analysis": "configuration effect", "status": "measured"},
+    {"id": "F2", "contrast": "hier-s2-min vs flat-short (diffusion)", "seed": 0, "effect": 0.0330, "interval": "[0.0246, 0.0419]", "analysis": "configuration effect", "status": "measured"},
+    {"id": "F2", "contrast": "hier-s2-min vs flat-short (diffusion)", "seed": 1, "effect": 0.0338, "interval": "[0.0251, 0.0430]", "analysis": "configuration effect", "status": "measured"},
     {"id": "F2", "contrast": "hier-s2-min-reg vs flat-short-reg", "seed": 0, "effect": 0.0639, "interval": "[0.0516, 0.0763]", "analysis": "configuration effect", "status": "measured"},
-    {"id": "F3", "contrast": "temporal vs spatial (diffusion)", "seed": 0, "effect": 0.0197, "interval": "source artifact", "analysis": "package effect", "status": "measured"},
-    {"id": "F3", "contrast": "temporal vs spatial (diffusion)", "seed": 1, "effect": 0.0046, "interval": "source artifact", "analysis": "package effect", "status": "measured"},
-    {"id": "F3", "contrast": "temporal vs spatial (regression)", "seed": 0, "effect": 0.0107, "interval": "excludes zero", "analysis": "package effect", "status": "measured-sign-sensitive"},
-    {"id": "F3", "contrast": "temporal vs spatial (regression)", "seed": 1, "effect": -0.0104, "interval": "excludes zero", "analysis": "package effect", "status": "measured-sign-sensitive"}
+    {"id": "F3", "contrast": "temporal vs spatial (diffusion)", "seed": 0, "effect": 0.0197, "interval": "[0.0143, 0.0252]", "analysis": "package effect", "status": "measured"},
+    {"id": "F3", "contrast": "temporal vs spatial (diffusion)", "seed": 1, "effect": 0.0046, "interval": "[0.0007, 0.0084]", "analysis": "package effect", "status": "measured"},
+    {"id": "F3", "contrast": "temporal vs spatial (diffusion)", "seed": 2, "effect": 0.0111, "interval": "[0.0070, 0.0151]", "analysis": "package effect", "status": "measured"},
+    {"id": "F3", "contrast": "temporal vs spatial (regression)", "seed": 0, "effect": 0.0107, "interval": "[0.0062, 0.0158]", "analysis": "package effect", "status": "measured-sign-sensitive"},
+    {"id": "F3", "contrast": "temporal vs spatial (regression)", "seed": 1, "effect": -0.0104, "interval": "[-0.0146, -0.0062]", "analysis": "package effect", "status": "measured-sign-sensitive"},
+    {"id": "F1", "contrast": "hier-c2 vs flat-c2 (B16x30k)", "seed": 0, "effect": -0.0116, "interval": "[-0.0162, -0.0073]", "analysis": "optimizer-regime-specific package effect", "status": "measured-regime-qualified"},
+    {"id": "F1", "contrast": "hier-c2 vs flat-c2 (B8x60k)", "seed": 0, "effect": -0.0077, "interval": "[-0.0123, -0.0030]", "analysis": "matched-example changed-batch/update/noise/EMA control", "status": "measured-regime-qualified"}
   ],
   "prior_art": [
     {"work": "WorldPack / LoopNav", "memory": "compressed trajectory packing + retrieval", "matched_budget": "no", "analytic_observability": "no", "dynamic_reentry": "primarily spatial consistency", "self_fed": "yes", "role": "strong retrieval/compression comparator"},
