@@ -779,3 +779,49 @@ S1-a, S1-b, REG-1, REG-2, the unconditional seed-2 diffusion trio and R-G60 comp
 code 0. The original controller was stopped before Phase C; `hier3-reg`, E-320 and legacy Phase C
 were not launched. The queue lock is absent and no project process remains. The verified handoff is
 `docs/HANDOFF_POST_C2_2026-07-12.md`.
+
+### E2 UNTOUCHED CONFIRMATION (2026-07-12; frozen before access) — **CENTRAL REACH EFFECT AND FRONTIER SHAPE CONFIRM**
+
+The frozen dataset is `loopmom-confirmation_holdout-20260712-e033abee6e04` (500×200 clips; 100
+evaluation clips; warm-up 48; 152 self-fed frames). All 26 checkpoint-only evaluations completed
+with immutable RunSpecs and complete frame/component metrics. The registered analysis uses paired
+clip-cluster bootstrap intervals for selected contrasts and one simultaneous studentized
+max-statistic family over all 12 frontier contrasts. Positive effects favour the candidate.
+
+| Registered comparison | Seed | Whole-population effect | Pair-specific reach-band effect |
+|---|---:|---:|---:|
+| `hier-min` vs `flat-min` | 0 | +0.0474 [0.0354, 0.0595] | `14 < dt <= 48`: **+0.0980 [0.0788, 0.1179]** |
+| `hier-min` vs `flat-min` | 1 | +0.0436 [0.0326, 0.0549] | `14 < dt <= 48`: **+0.0914 [0.0736, 0.1098]** |
+| `hier-s2-min` vs `flat-short` | 0 | +0.0340 [0.0249, 0.0438] | `8 < dt <= 48`: **+0.0692 [0.0543, 0.0845]** |
+| `hier-s2-min` vs `flat-short` | 1 | +0.0381 [0.0285, 0.0482] | `8 < dt <= 48`: **+0.0743 [0.0588, 0.0899]** |
+
+The first pair improves union error, full-frame error, background error, precision, recall, F1,
+misses, extras and component coverage on both seeds in the registered reach band. B1 improves
+union/full/background error, recall, F1, misses and coverage on both seeds; its precision and
+extra-component intervals include zero. Thus hallucination-sensitive endpoints corroborate the
+central reach result, while the narrower B1 statement remains a whole-configuration effect.
+
+The simultaneous frontier family (critical value 2.741) returns:
+
+| Tested regime | Simultaneous verdict |
+|---|---|
+| near-bottom 480-vs-512 | seed 0 unresolved; seed 1 flat wins |
+| 896, B16×30k | hierarchy wins, seeds 0/1 |
+| 1,152, B16×30k | hierarchy wins, seeds 0/1/2 |
+| 1,792, B16×30k | direction favours hierarchy; simultaneous interval includes zero |
+| 2,432, B16×30k | flat wins |
+| 2,432, B8×60k | flat wins |
+| 3,072, B8×60k | flat wins, seeds 0/1 |
+
+The earlier development wording “1,792 is the largest tested hierarchy-favouring point” remains a
+descriptive sign statement but is not family-wise confirmed. The stronger submission wording is:
+**1,152 is the largest tested budget with a simultaneous-family-confirmed hierarchy win, and
+2,432 is the smallest tested budget with a simultaneous-family-confirmed flat win.** The interval
+between tested configurations is not interpolated, and c2 optimizer regimes remain separate.
+
+Successful evaluations consumed 4.2169 GPU-hours. One earlier frozen-protocol launcher attempt
+opened the manifest, then aborted before producing metrics; it informed no decision and is
+disclosed in the completion validator, with approximately 0.01 hour charged conservatively.
+Evidence: `docs/confirmation/E2_RESULTS.md`,
+`artifacts/confirmation_e2/results.json`, and
+`artifacts/confirmation_e2/completion_validation.json`.

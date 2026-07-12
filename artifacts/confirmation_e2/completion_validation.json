@@ -1,0 +1,259 @@
+{
+  "access_records": 27,
+  "additional_aborted_accesses": [
+    {
+      "dataset_id": "loopmom-confirmation_holdout-20260712-e033abee6e04",
+      "dataset_manifest_hash": "3374d72f268667529d240934516ed114871ea547c1cae483913567828d5aba58",
+      "run_spec_hash": "3d64d75e2f780e3f",
+      "timestamp_utc": "2026-07-12T15:11:57.827934+00:00"
+    }
+  ],
+  "analysis_sha256": "85d01085e9ac074cd099e7b611101b30b7b7112b1f0230ea9163d9825cf2166e",
+  "caveats": [
+    "1 additional frozen-protocol access(es) had no completed artifact; the aborted launch must be disclosed and charged conservatively"
+  ],
+  "completed_runs": 26,
+  "config_sha256": "ca2225bc61293312c38d908bd4fdbaae5c9283bc86a493f93462214dac244cb4",
+  "dataset_manifest_sha256": "3374d72f268667529d240934516ed114871ea547c1cae483913567828d5aba58",
+  "expected_runs": 26,
+  "failures": [],
+  "runs": [
+    {
+      "key": [
+        "flat-budget",
+        0,
+        30000
+      ],
+      "run_spec_hash": "372cd85971a698fa",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-budget",
+        1,
+        30000
+      ],
+      "run_spec_hash": "901a1148b2b5c94c",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-budget",
+        2,
+        30000
+      ],
+      "run_spec_hash": "45c1c1371a8122b0",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-c1",
+        0,
+        30000
+      ],
+      "run_spec_hash": "1968b8492a2ef8fd",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-c2",
+        0,
+        30000
+      ],
+      "run_spec_hash": "e6972c426f97fcd3",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-c2",
+        0,
+        60000
+      ],
+      "run_spec_hash": "d28bca2ad6a87f2d",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-long",
+        0,
+        60000
+      ],
+      "run_spec_hash": "ab8663e4760ea461",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-long",
+        1,
+        60000
+      ],
+      "run_spec_hash": "5769e1f050defa47",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-min",
+        0,
+        30000
+      ],
+      "run_spec_hash": "617815fd5cad4e80",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-min",
+        1,
+        30000
+      ],
+      "run_spec_hash": "be5fa71d94290c46",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-short",
+        0,
+        30000
+      ],
+      "run_spec_hash": "bd5c607c9c389761",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "flat-short",
+        1,
+        30000
+      ],
+      "run_spec_hash": "ad3028cc17109673",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-c1",
+        0,
+        30000
+      ],
+      "run_spec_hash": "ac084c8f4070b9fb",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-c2",
+        0,
+        30000
+      ],
+      "run_spec_hash": "e8cb069fb1d88890",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-c2",
+        0,
+        60000
+      ],
+      "run_spec_hash": "ecc170b9995e7848",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-long",
+        0,
+        30000
+      ],
+      "run_spec_hash": "076ac30f2bdf56c1",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-long",
+        1,
+        30000
+      ],
+      "run_spec_hash": "df4a2254fd936929",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-long",
+        2,
+        30000
+      ],
+      "run_spec_hash": "f5fc6fc51656f895",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-min",
+        0,
+        30000
+      ],
+      "run_spec_hash": "25cb3370d9379859",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-min",
+        1,
+        30000
+      ],
+      "run_spec_hash": "824996832b8ea489",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-rich",
+        0,
+        60000
+      ],
+      "run_spec_hash": "f06417caf48e8752",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-rich",
+        1,
+        60000
+      ],
+      "run_spec_hash": "b7b7014564ae4dcd",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-s2-min",
+        0,
+        30000
+      ],
+      "run_spec_hash": "5fbb138f287d9b67",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-s2-min",
+        1,
+        30000
+      ],
+      "run_spec_hash": "3ce74f952b668591",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-short",
+        0,
+        30000
+      ],
+      "run_spec_hash": "5d17562b3c62e215",
+      "status": "PASS"
+    },
+    {
+      "key": [
+        "hier-short",
+        1,
+        30000
+      ],
+      "run_spec_hash": "bcf40e4b75099943",
+      "status": "PASS"
+    }
+  ],
+  "schema_version": 1,
+  "status": "PASS",
+  "successful_gpu_hours": 4.216888230833333
+}

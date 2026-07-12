@@ -4,8 +4,8 @@
 > **Canonical fourth-article direction, 2026-07-11.** This document changes neither the
 > dissertation topic nor the subject matter of the three existing articles. It reorganizes the
 > final article around the questions the experiments can actually answer. Current-pool analyses
-> are development evidence. Confirmation clauses remain unavailable until the untouched protocol
-> is frozen and evaluated once.
+> remain development evidence; the separately frozen E2 protocol has now been evaluated once and
+> supplies the confirmation clauses explicitly labelled below.
 
 ## Abstract
 
@@ -167,8 +167,8 @@ labelled GT objects. Matched-only performance is diagnostic; coverage is co-prim
 
 For reaches $r_s < r_l$, the mechanistic band is $r_s < \Delta t \le r_l$, restricted to
 non-empty, geometrically answerable records. For `hier-min` versus `flat-min`, it is
-`14 < dt <= 48`; for stride-2 B1 versus `flat-short`, `8 < dt <= 48`. Current results in these
-bands are post-hoc. The same geometry-derived definitions are primary on untouched confirmation.
+`14 < dt <= 48`; for stride-2 B1 versus `flat-short`, `8 < dt <= 48`. These definitions were
+post-hoc on the development pool and were frozen as primary before the untouched E2 evaluation.
 
 ### 3.4 Statistical protocol
 
@@ -220,6 +220,17 @@ programme. This shows addressability and rollout reliability can diverge. Becaus
 rollout result is seed-scoped and protocol allocation changes, it is a measured boundary. A
 title-level trust claim requires another seed or horizon/task plus refresh/corruption diagnostics.
 
+### 4.6 Untouched confirmation
+
+On the frozen E2 holdout, `hier-min` versus `flat-min` yields +0.0980 [0.0788, 0.1179] and
++0.0914 [0.0736, 0.1098] in `14 < dt <= 48` across seeds 0/1. B1 versus `flat-short` yields
++0.0692 [0.0543, 0.0845] and +0.0743 [0.0588, 0.0899] in `8 < dt <= 48`. Whole-population,
+union/full-frame, recall/F1, missed-component and coverage endpoints corroborate the signs.
+
+The simultaneous frontier family confirms hierarchy at 896 and 1,152 tokens, leaves 1,792
+unresolved, and confirms flat full-resolution context at 2,432 and 3,072. Thus the evidence
+supports a tested reach–fidelity phase structure without claiming a smooth or unique crossing.
+
 ## 5. Boundaries and positioning
 
 The study does not establish a universal hierarchy advantage, a unique token crossing, a pure B1
@@ -246,16 +257,16 @@ package reaches the relevant past; full-resolution fidelity can recover after re
 and self-fed generation can make addressable memory unreliable. Context packaging is the
 intervention; reach, fidelity and trust organize the explanation.
 
-The highest-value remaining test is a one-time untouched confirmation using endpoints that expose
-hallucinations, misses, extras and coverage. The next causal control holds B1's target interface
-fixed. The next trust study varies horizon and refresh/corruption directly. Results that fail these
-tests will narrow the account rather than being explained away; that outcome-independent
-structure is part of the contribution.
+The one-time untouched confirmation is complete and supports the central reach–fidelity account.
+The next causal control holds B1's target interface fixed only if causal stride wording remains;
+the next interaction test completes regression seed 2, and the next trust study varies horizon
+and refresh/corruption directly. Results that fail these tests will narrow the account rather than
+being explained away; that outcome-independent structure is part of the contribution.
 
 ## Required pre-submission inserts
 
 - [ ] integrate seed-2 trio and c2 with regime-correct wording;
-- [ ] insert untouched-confirmation and metric-decomposition results;
+- [x] insert untouched-confirmation and metric-decomposition results;
 - [ ] decide whether trust has sufficient replication for the title;
 - [ ] decide whether the regression interaction merits seed 2+;
 - [ ] add the fixed-target B1 control or retain configuration-only wording;

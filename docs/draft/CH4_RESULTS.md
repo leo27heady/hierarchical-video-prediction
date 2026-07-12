@@ -812,6 +812,38 @@ completes the boundary-condition section; the §4.3 matched-budget result is una
 
 ---
 
+### 4.5.7 Untouched confirmation: reach, fidelity, and the tested frontier
+
+The development pool used above had influenced qualitative monitoring and arm selection. We
+therefore evaluated every frozen frontier checkpoint once on a newly generated, hash-pinned
+LoopMom holdout (`loopmom-confirmation_holdout-20260712-e033abee6e04`) after freezing the selected
+pairs, reach bands, complete metrics and simultaneous family analysis. No retraining or model
+selection used this set. The 26 evaluations contain 100 paired clips and 15,200 rollout-frame
+records per arm.
+
+The comparator-specific mechanism confirms more strongly than on the development pool. For
+`hier-min` versus `flat-min`, the registered `14 < dt <= 48` band gives +0.0980
+[0.0788, 0.1179] at seed 0 and +0.0914 [0.0736, 0.1098] at seed 1. For the stride-2 B1
+configuration versus `flat-short`, `8 < dt <= 48` gives +0.0692 [0.0543, 0.0845] and +0.0743
+[0.0588, 0.0899]. Whole-population effects retain the same signs (+0.0474/+0.0436 and
++0.0340/+0.0381). Union- and full-frame errors, recall/F1, missed components and component
+coverage corroborate both comparisons. Precision and extra-component improvements are clear for
+the 48-versus-14 pair but unresolved for B1, so B1 is not described as improving every endpoint.
+
+The frozen 12-contrast max-statistic family resolves the frontier without interpolation. The
+hierarchical package wins simultaneously at 896 tokens (two seeds) and 1,152 tokens (three
+seeds). The 1,792-token effect points toward hierarchy but its simultaneous interval includes
+zero. Flat full-resolution context wins at 2,432 tokens in both tested optimizer regimes and at
+3,072 tokens on both seeds. Thus 1,152 is the largest tested budget with a family-wise-confirmed
+hierarchy win and 2,432 the smallest with a family-wise-confirmed flat win. This is a tested
+bracket, not a continuous or unique crossing.
+
+The scientific interpretation is consequently narrower and stronger. Reach explains why the
+lower/interior packages win; once both packages cover the relevant past, full-resolution fidelity
+can dominate. The confirmation establishes this reach–fidelity phase structure on the controlled
+LoopMom testbed. It does not remove B1's target-interface confound, establish natural-video
+generalization, or turn the self-fed trust boundary of §4.5.6 into a universal law.
+
 ## 4.6 Chapter conclusions
 
 **Claim 1 — hierarchical memory at matched token budget: CONFIRMED, two seeds, both heads.** At

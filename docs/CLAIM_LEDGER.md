@@ -1,6 +1,6 @@
 # Claim ledger — scientific source of truth
 
-**Revision:** 2026-07-12 verified post-c2 evidence integration
+**Revision:** 2026-07-12 E2 untouched-confirmation integration
 **Rule:** a headline claim must name its testbed, intervention, comparator, metric population,
 representation, head, seeds, training regime, and evidence artifact.  Opposite signs are not
 equivalence; tested brackets are not continuous crossings; configuration changes are not pure
@@ -13,7 +13,7 @@ axes to be tested**, not assumed laws:
 - fidelity: relevant information survives the stored representation;
 - trust: stored information remains usable after self-fed generation.
 
-Status vocabulary: `MEASURED`, `CONFIRMATION_REQUIRED`, `EXPLORATORY_POST_HOC`,
+Status vocabulary: `CONFIRMED`, `MEASURED`, `CONFIRMATION_REQUIRED`, `EXPLORATORY_POST_HOC`,
 `BLOCKED_VALIDITY`, `CONDITIONAL`, and `FUTURE`.
 
 ## Stable L1–L10 compatibility map
@@ -23,7 +23,7 @@ are finer-grained evidence views, not replacements that invalidate existing cita
 
 | Stable ID | Current evidence rows | Stable meaning / status |
 |---|---|---|
-| L1 | R1, R2 | Reach threshold and comparator-specific observability mechanism; measured on the current pool, untouched confirmation required. |
+| L1 | R1, R2 | Reach threshold and comparator-specific observability mechanism; confirmed on the frozen untouched LoopMom holdout. |
 | L2 | F1 | Upper-budget saturation/inversion regularity; tested configurations and optimizer regimes, never an exact crossing law. |
 | L3 | F2 | Stride-family 512-token configuration effect; causal stride isolation remains conditional on the fixed-target control. |
 | L4 | F3 | Spatial-versus-temporal package shape; diffusion replicated, regression head/seed-sensitive. |
@@ -41,10 +41,10 @@ L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
 
 | ID | Defensible claim | Evidence now | Status | Required limitation / next gate |
 |---|---|---|---|---|
-| R1 | On loopmom under the diffusion head, packages whose reach includes the ~48-frame re-entry past can outperform shorter token-matched packages on the tested development set. | 896-token `hier-min` effects +0.0399/+0.0358 across seeds 0/1; at 1,152 tokens `hier-long` beats `flat-budget` by +0.0189/+0.0354/+0.0299 across seeds 0/1/2. | `MEASURED; CONFIRMATION_REQUIRED` | Current test pool informed development. Confirm once on a new hash-pinned holdout with complete metrics. |
-| R2 | The effect is concentrated in records visible to the longer package but outside the comparator's reach. | `hier-min` vs `flat-min`, `14 < dt <= 48`: +0.0880 and +0.0809; B1 vs `flat-short`, `8 < dt <= 48`: +0.0675 and +0.0709, clip-bootstrap intervals excluding zero. | `EXPLORATORY_POST_HOC` | Preregister these geometry-derived bands as primary on the untouched confirmation set. |
-| F1 | At B16x30k, 1,792 is the largest tested budget favouring the spatial package and 2,432 the smallest tested budget favouring flat full-resolution context. | R-F/R-G tested points; at 2,432 flat wins at seed 0 under B16x30k by 0.0116 and under B8x60k by 0.0077; flat also wins at 3,072 on two seeds. | `MEASURED; REGIME_QUALIFIED` | No monotonicity, uniqueness, continuous crossing or asymptotic edge is established. c2 holds examples approximately fixed while changing batch/update/noise/grouping/EMA regime. |
-| F2 | The stride-2 B1 configuration strongly outperforms its compared short-flat configuration. | Diffusion +0.0330/+0.0338; regression seed 0 +0.0639 [0.0516, 0.0763]. | `MEASURED_CONFIGURATION_EFFECT` | Context stride, target slots, auxiliary loss, sequence length and optimization difficulty change together. Fixed-target control is prepared. |
+| R1 | On LoopMom under the diffusion head, packages whose reach includes the ~48-frame re-entry past outperform shorter token-matched packages at the tested lower/interior budgets. | Untouched E2 whole-population effects: `hier-min` vs `flat-min` +0.0474 [0.0354, 0.0595] and +0.0436 [0.0326, 0.0549] across seeds 0/1. The simultaneous frontier also confirms `hier-long` over `flat-budget` at 1,152 tokens on seeds 0/1/2. | `CONFIRMED; LOOPMOM_SCOPE` | This is controlled synthetic evidence under one frozen representation/head, not a universal hierarchy advantage or natural-video generalization. |
+| R2 | The effect is largest in records visible to the longer package but outside the comparator's reach. | Untouched E2 registered bands: `hier-min` vs `flat-min`, `14 < dt <= 48`, +0.0980 [0.0788, 0.1179] and +0.0914 [0.0736, 0.1098]; B1 vs `flat-short`, `8 < dt <= 48`, +0.0692 [0.0543, 0.0845] and +0.0743 [0.0588, 0.0899]. | `CONFIRMED_MECHANISTIC_INSTRUMENT` | Geometric observability is exact for the generator; it is not information-theoretic necessity. B1 remains a whole-configuration comparison. |
+| F1 | The tested reach–fidelity frontier has a lower/interior hierarchy-favouring region and an upper flat-fidelity inversion. | E2 simultaneous max-statistic family: hierarchy wins at 896 and 1,152 on every tested seed; 1,792 is unresolved; flat wins at 2,432 under B16x30k and B8x60k and at 3,072 on two seeds. | `CONFIRMED_TESTED_BRACKET; REGIME_QUALIFIED` | The family-wise-confirmed bracket is 1,152 (largest confirmed hierarchy win) to 2,432 (smallest confirmed flat win). No monotonicity, uniqueness, continuous crossing or asymptotic edge is established. |
+| F2 | The stride-2 B1 configuration strongly outperforms its compared short-flat configuration. | Development diffusion +0.0330/+0.0338 and regression seed 0 +0.0639; untouched E2 diffusion +0.0340/+0.0381 overall and +0.0692/+0.0743 in the registered reach band. | `CONFIRMED_CONFIGURATION_EFFECT` | Context stride, target slots, auxiliary loss, sequence length and optimization difficulty change together. Fixed-target control is required only for causal stride wording. |
 | F3 | Temporal subsampling and spatial coarsening are not empirically interchangeable at the tested static-world operating point. | Diffusion temporal advantage +0.0197/+0.0046/+0.0111 at seeds 0/1/2; regression package signs +0.0107/−0.0104 at seeds 0/1. | `MEASURED; DIFFUSION_REPLICATED; HEAD_AND_SEED_SENSITIVE` | Diffusion has the same sign in three seeds. Regression cancellation is not equivalence. Report every seed-specific contrast; complete regression seed 2 only after H3b parity because it extends a legacy factorial. |
 | T1 | Memory addressable under teacher forcing can become unreliable under self-fed rollout at the tested long-loop operating point. | Retrieval gate wins when span covers the loop; rollout inversion appears after roughly 24 frames in the decisive seed-0 programme. | `MEASURED_BOUNDARY; REPLICATION_REQUIRED` | Do not call a general trustworthy-memory law. Replicate or demote; add refresh/corruption and 24/48/96 horizon diagnostics. |
 
@@ -92,10 +92,10 @@ only when literally true.  Do not use “matched compute” as a substitute for 
 1. Finish the already-running seed-2 trio and c2; stop before Phase C.
 2. Freeze current claims and analysis/table shells.
 3. Validate the complete metric suite and immutable provenance on CPU.
-4. Evaluate the untouched confirmation set once.
-5. Run the fixed-target B1 control if F2 remains central.
-6. Replicate/isolate trust if T1 remains title-level.
-7. Complete the regression seed-2 factorial only if F3 remains central.
+4. Evaluate the untouched confirmation set once. **COMPLETE: E2 PASS.**
+5. Complete the regression seed-2 factorial because F3 remains central, after H3b parity.
+6. Replicate/isolate trust because T1 remains title-level.
+7. Run the fixed-target B1 control only if the assembled article retains causal stride wording.
 8. Run redesigned Phase C only after its validity and classifier gates.
 9. Treat counterfactual/dynamic-content and natural re-entry studies as future work.
 

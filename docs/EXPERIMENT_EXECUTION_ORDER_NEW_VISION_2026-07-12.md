@@ -47,7 +47,7 @@ hours, deviations and the resulting gate decision. Raw logs, W&B and immutable a
 the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
 `GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
 
-#### Programme status at 2026-07-12 22:03 Europe/Kyiv
+#### Programme status at 2026-07-12 23:58 Europe/Kyiv
 
 | ID | Workstream | Expected before execution | Actual/status | Decision |
 |---|---|---|---|---|
@@ -55,8 +55,8 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E1 | Evidence freeze and governance repair | 8–16 CPU hours; no GPU | **COMPLETE**; evidence manifest/independent backup, result integration, canonical text/claim governance and Phase-C amendment restored | E2 preparation permitted |
 | H3a/H4 | Confirmation evaluator, provenance, metrics and CPU gates | Exact checkpoint readers, immutable artifacts, complete metrics, clean CPU/hash gates | **COMPLETE**; 35 tests plus design/schema/consistency/compile gates; frozen dataset and checkpoint hashes pass | E2 authorized on commit `b9d91da` |
 | E2a | Untouched LoopMom holdout | 1–2 CPU hours | **COMPLETE**; 500×200 set, seed 20260712, dataset ID `loopmom-confirmation_holdout-20260712-e033abee6e04`; no train/test glyph collisions | Dataset is now accessed and permanently frozen |
-| E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Await registered cluster-bootstrap analysis; provisional signs replicate both effects |
-| E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **RUNNING**; 16/18 evaluations complete, run 25 active, run 26 pending | Continue unchanged; final aggregate analysis is automatic |
+| E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Both registered reach-band effects confirm on both seeds with clip-bootstrap intervals excluding zero |
+| E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **GATED / NOT STARTED** | Next planned training study unless E2 changes priority |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
@@ -93,10 +93,10 @@ and are reconciled in the final analysis.
 | 20 | flat-c2 | 0 | 30k | COMPLETE | 0.245 | 0.1639 | 0.1703 | -0.0065 |
 | 21 | hier-c2 | 0 | 60k | COMPLETE | 0.252 | 0.1743 | 0.1785 | -0.0042 |
 | 22 | flat-c2 | 0 | 60k | COMPLETE | 0.246 | 0.1620 | 0.1708 | -0.0087 |
-| 23 | hier-rich | 0 | 60k | COMPLETE | 0.318 | 0.1627 | pending reconciliation | — |
-| 24 | flat-long | 0 | 60k | COMPLETE | 0.313 | 0.1498 | pending reconciliation | — |
-| 25 | hier-rich | 1 | 60k | RUNNING | — | running 0.1711 at 64/100 clips | pending reconciliation | — |
-| 26 | flat-long | 1 | 60k | PENDING | — | — | pending reconciliation | — |
+| 23 | hier-rich | 0 | 60k | COMPLETE | 0.318 | 0.1627 | 0.1695 | -0.0068 |
+| 24 | flat-long | 0 | 60k | COMPLETE | 0.313 | 0.1498 | 0.1564 | -0.0066 |
+| 25 | hier-rich | 1 | 60k | COMPLETE | 0.330 | 0.1638 | 0.1687 | -0.0049 |
+| 26 | flat-long | 1 | 60k | COMPLETE | 0.312 | 0.1504 | 0.1580 | -0.0076 |
 
 #### Intermediate audit E2-I1 — 2026-07-12 22:03 Europe/Kyiv
 
@@ -129,6 +129,49 @@ and are reconciled in the final analysis.
 At E2 completion, replace the two remaining row statuses, append the registered max-statistic
 results and complete-metric summary, record exact total GPU hours, and issue the E3/E4/E5 gate
 decision here before any new training launch.
+
+#### Final audit E2-F — 2026-07-12 23:58 Europe/Kyiv
+
+- **Operational verdict:** PASS. All 26 frozen evaluations completed with exit code zero. The
+  successful-run ledger charges **4.2169 GPU-hours**, far below the 18-hour tranche maximum.
+  Twenty-six W&B evaluation runs and the analysis run are cloud-finished with complete summaries.
+  The result JSON and Markdown reproduced byte-for-byte in an independent CPU rerun.
+- **Artifact verdict:** PASS. `artifacts/confirmation_e2/completion_validation.json` verifies 26
+  unique content-addressed RunSpecs, checkpoint/config/data bindings, COMPLETE markers, every
+  artifact hash, 15,200 aligned records per run, required finite metrics on their defined
+  populations, exactly one successful access per RunSpec, 48 selected-pair rows and 12 frontier
+  contrasts. Analysis SHA-256 is
+  `85d01085e9ac074cd099e7b611101b30b7b7112b1f0230ea9163d9825cf2166e`.
+- **Access/accounting caveat:** the access log contains one additional entry at 18:11:57 Kyiv from
+  the aborted Windows/W&B launcher attempt (`3d64d75e2f780e3f`). It generated no metric artifact
+  and informed no decision, so it does not contaminate the frozen confirmation. The earlier claim
+  that the failed attempt never opened the holdout was too strong. Conservatively charge roughly
+  0.01 additional process/GPU-hour, giving **approximately 4.23 total E2 project GPU-hours**.
+- **Primary reach result:** `hier-min` versus `flat-min` in the frozen `14 < dt <= 48` band is
+  +0.0980 [0.0788, 0.1179] at seed 0 and +0.0914 [0.0736, 0.1098] at seed 1. The whole-population
+  continuity effects are +0.0474 [0.0354, 0.0595] and +0.0436 [0.0326, 0.0549].
+- **Primary B1-configuration result:** `hier-s2-min` versus `flat-short` in the frozen
+  `8 < dt <= 48` band is +0.0692 [0.0543, 0.0845] and +0.0743 [0.0588, 0.0899]. Whole-population
+  effects are +0.0340 [0.0249, 0.0438] and +0.0381 [0.0285, 0.0482]. This confirms the
+  configuration effect, not a pure context-stride intervention.
+- **False-positive-sensitive corroboration:** both reach comparisons improve union/full-frame
+  error, foreground recall/F1, missed-component count and component coverage on both seeds. The
+  48-versus-14 comparison also improves precision and extra-component count on both seeds. For
+  B1, precision and extra-component differences remain inconclusive, preventing an over-broad
+  “every metric improves” claim.
+- **Frontier family:** the 95% simultaneous max-statistic family (critical value 2.741) confirms
+  hierarchy at 896 and 1,152 tokens on every tested seed; the 1,792 interval includes zero. Flat
+  wins at 2,432 in both optimizer regimes and at 3,072 on both seeds. Near-bottom is flat-favouring
+  at seed 1 and unresolved at seed 0. Therefore the defensible bracket is now: **1,152 is the
+  largest tested budget with a family-wise-confirmed hierarchy win, while 2,432 is the smallest
+  tested budget with a family-wise-confirmed flat win**; 1,792 is directionally hierarchical but
+  not family-wise resolved. No continuous crossing is inferred.
+- **Scientific decision:** R1/R2 no longer require untouched confirmation. The core reach effect,
+  comparator-specific observability mechanism and reach–fidelity inversion survive confirmation.
+  F2 remains configuration-level, so E3a stays conditional on retaining causal stride language.
+  F3 remains central and unresolved under regression; **E4a fires next**, but only after the H3b
+  numerical-parity/provenance gate. T1 remains title-relevant and E5a follows E4a. No E4b, E3a,
+  Phase C or optional extension is authorized by E2 alone.
 
 ## 2. Current handoff boundary — E0
 

@@ -1,0 +1,618 @@
+{
+  "config_sha256": "ca2225bc61293312c38d908bd4fdbaae5c9283bc86a493f93462214dac244cb4",
+  "dataset_id": "loopmom-confirmation_holdout-20260712-e033abee6e04",
+  "dataset_manifest_sha256": "3374d72f268667529d240934516ed114871ea547c1cae483913567828d5aba58",
+  "effect_convention": "baseline error minus candidate error; positive favors candidate",
+  "frontier": {
+    "clusters": 100,
+    "confidence": 0.95,
+    "contrasts": {
+      "b1152-s0": {
+        "bootstrap_se": 0.004561435764514451,
+        "hi": 0.03195595967780425,
+        "lo": 0.006953572575630706,
+        "mean": 0.01945476612671748
+      },
+      "b1152-s1": {
+        "bootstrap_se": 0.005848874401491341,
+        "hi": 0.0549029347394512,
+        "lo": 0.022843769720463723,
+        "mean": 0.03887335222995746
+      },
+      "b1152-s2": {
+        "bootstrap_se": 0.005406231188342935,
+        "hi": 0.045518252428346936,
+        "lo": 0.0158853272019666,
+        "mean": 0.03070178981515677
+      },
+      "b1792-s0": {
+        "bootstrap_se": 0.003547272402888085,
+        "hi": 0.018115072421376825,
+        "lo": -0.001328427904513655,
+        "mean": 0.008393322258431585
+      },
+      "b2432-30k-s0": {
+        "bootstrap_se": 0.004025026391982093,
+        "hi": -0.003949484044683831,
+        "lo": -0.02601167523713472,
+        "mean": -0.014980579640909274
+      },
+      "b2432-60k-s0": {
+        "bootstrap_se": 0.0032863704322091966,
+        "hi": -0.003238994560441206,
+        "lo": -0.021252424969008653,
+        "mean": -0.01224570976472493
+      },
+      "b3072-s0": {
+        "bootstrap_se": 0.0032121457478622157,
+        "hi": -0.004102725612047511,
+        "lo": -0.021709311687736932,
+        "mean": -0.012906018649892222
+      },
+      "b3072-s1": {
+        "bootstrap_se": 0.002948644548685522,
+        "hi": -0.005318924721007338,
+        "lo": -0.02148119384830191,
+        "mean": -0.013400059284654625
+      },
+      "b896-s0": {
+        "bootstrap_se": 0.006143995897170884,
+        "hi": 0.06418914517929203,
+        "lo": 0.030512344341653966,
+        "mean": 0.047350744760473
+      },
+      "b896-s1": {
+        "bootstrap_se": 0.0057037231348112775,
+        "hi": 0.05922419890168727,
+        "lo": 0.027960644814270602,
+        "mean": 0.04359242185797894
+      },
+      "near-bottom-s0": {
+        "bootstrap_se": 0.0015697962181930583,
+        "hi": 0.0005483105327384855,
+        "lo": -0.008056140948114236,
+        "mean": -0.003753915207687875
+      },
+      "near-bottom-s1": {
+        "bootstrap_se": 0.0016402984002866865,
+        "hi": -0.0015462312500084292,
+        "lo": -0.010537123084130151,
+        "mean": -0.00604167716706929
+      }
+    },
+    "critical_value": 2.7406268982979927,
+    "method": "studentized max-statistic clip-cluster bootstrap",
+    "replicates": 10000
+  },
+  "primary": [
+    {
+      "clusters": 100,
+      "hi": 0.059471350167566155,
+      "lo": 0.035446707473040184,
+      "mean": 0.047350744760473,
+      "metric": "legacy_fg",
+      "pair": "reach-48-vs-14",
+      "population": "legacy-all",
+      "records": 15200,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.11793094826843672,
+      "lo": 0.07880991283337516,
+      "mean": 0.09803080494528559,
+      "metric": "fg",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.11793094845934178,
+      "lo": 0.07880991259468463,
+      "mean": 0.09803080504804583,
+      "metric": "mse_gt_fg_nonempty",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.09868594686678217,
+      "lo": 0.06324418399538452,
+      "mean": 0.08080860091906567,
+      "metric": "mse_union",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.005776995127305031,
+      "lo": 0.003330127913173738,
+      "mean": 0.004517162046272867,
+      "metric": "mse_full",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.001935473546527712,
+      "lo": 0.0006470603492088956,
+      "mean": 0.0012850739782770616,
+      "metric": "mse_gt_bg",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.20663707754686447,
+      "lo": 0.10266246086074314,
+      "mean": 0.1550173152216838,
+      "metric": "fg_precision",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.3237527060619366,
+      "lo": 0.2179841888188296,
+      "mean": 0.2707701839694557,
+      "metric": "fg_recall",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.2953543542824976,
+      "lo": 0.19745137324234174,
+      "mean": 0.2458483655594482,
+      "metric": "fg_f1",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.6101520605090084,
+      "lo": 0.3685702984945679,
+      "mean": 0.49105367793240556,
+      "metric": "missed_components",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.4915101050634758,
+      "lo": 0.15300432463514033,
+      "mean": 0.3230616302186879,
+      "metric": "extra_components",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 96,
+      "hi": 0.3263650841308416,
+      "lo": 0.1967611678202822,
+      "mean": 0.2622100728959576,
+      "metric": "component_coverage",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 0
+    },
+    {
+      "clusters": 100,
+      "hi": 0.054860351979505,
+      "lo": 0.032595232474132665,
+      "mean": 0.04359242185797894,
+      "metric": "legacy_fg",
+      "pair": "reach-48-vs-14",
+      "population": "legacy-all",
+      "records": 15200,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.10982789149333619,
+      "lo": 0.07357729830307286,
+      "mean": 0.09140056318966357,
+      "metric": "fg",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.10982789187646709,
+      "lo": 0.07357729834458757,
+      "mean": 0.09140056326326212,
+      "metric": "mse_gt_fg_nonempty",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.09400533658088718,
+      "lo": 0.06130094959758785,
+      "mean": 0.07728230813055283,
+      "metric": "mse_union",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.005192554593504751,
+      "lo": 0.0031866007080287397,
+      "mean": 0.004180939940345834,
+      "metric": "mse_full",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.0017290138151582872,
+      "lo": 0.0006046829640182624,
+      "mean": 0.001158654826500518,
+      "metric": "mse_gt_bg",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.13166404416353367,
+      "lo": 0.005147063013057855,
+      "mean": 0.0690625235058782,
+      "metric": "fg_precision",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.3028542630528022,
+      "lo": 0.20601798986096143,
+      "mean": 0.2539215877903977,
+      "metric": "fg_recall",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.28012976240819537,
+      "lo": 0.18929068702575175,
+      "mean": 0.23415368771139777,
+      "metric": "fg_f1",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.6699122433367526,
+      "lo": 0.4314991461216942,
+      "mean": 0.5526838966202783,
+      "metric": "missed_components",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.37013131241907155,
+      "lo": 0.033391245491144805,
+      "mean": 0.19681908548707752,
+      "metric": "extra_components",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 96,
+      "hi": 0.3605092159391024,
+      "lo": 0.23704345933647278,
+      "mean": 0.29918820410868124,
+      "metric": "component_coverage",
+      "pair": "reach-48-vs-14",
+      "population": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1006,
+      "seed": 1
+    },
+    {
+      "clusters": 100,
+      "hi": 0.04381551715314981,
+      "lo": 0.02493195081976094,
+      "mean": 0.03400481532805495,
+      "metric": "legacy_fg",
+      "pair": "b1-config-48-vs-8",
+      "population": "legacy-all",
+      "records": 15200,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.08453155964419194,
+      "lo": 0.05426033810952573,
+      "mean": 0.06924749485065664,
+      "metric": "fg",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.08453155968423143,
+      "lo": 0.054260338139674985,
+      "mean": 0.0692474948852926,
+      "metric": "mse_gt_fg_nonempty",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.06735454924468913,
+      "lo": 0.041342293991707905,
+      "mean": 0.05430133353993194,
+      "metric": "mse_union",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.004444370324712015,
+      "lo": 0.0027092561523917756,
+      "mean": 0.0035676600592691623,
+      "metric": "mse_full",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.0018669301117975833,
+      "lo": 0.0005277221307955671,
+      "mean": 0.0011828077879629346,
+      "metric": "mse_gt_bg",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.09521581467429702,
+      "lo": -0.02536698342608489,
+      "mean": 0.033854603473630736,
+      "metric": "fg_precision",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.22785770269822683,
+      "lo": 0.15162656351366394,
+      "mean": 0.18947930896741957,
+      "metric": "fg_recall",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.21272535308789045,
+      "lo": 0.1382323953284491,
+      "mean": 0.17511967133240616,
+      "metric": "fg_f1",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.551049360384054,
+      "lo": 0.3069284692809295,
+      "mean": 0.4297520661157025,
+      "metric": "missed_components",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.2162033568240079,
+      "lo": -0.12283221147336812,
+      "mean": 0.046831955922865015,
+      "metric": "extra_components",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 99,
+      "hi": 0.28224221014083656,
+      "lo": 0.16520514639747377,
+      "mean": 0.2246900826446281,
+      "metric": "component_coverage",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 0
+    },
+    {
+      "clusters": 100,
+      "hi": 0.048177157618068546,
+      "lo": 0.028537803129024885,
+      "mean": 0.038106010619033945,
+      "metric": "legacy_fg",
+      "pair": "b1-config-48-vs-8",
+      "population": "legacy-all",
+      "records": 15200,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.08986094670223084,
+      "lo": 0.05882778731837832,
+      "mean": 0.07427014333939856,
+      "metric": "fg",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.08986094667985439,
+      "lo": 0.05882778739077213,
+      "mean": 0.07427014325445225,
+      "metric": "mse_gt_fg_nonempty",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.07364213303109532,
+      "lo": 0.04792916408063229,
+      "mean": 0.06078193350643761,
+      "metric": "mse_union",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.004238188462967839,
+      "lo": 0.002405418784305114,
+      "mean": 0.0033061278409751284,
+      "metric": "mse_full",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.0014502017885088874,
+      "lo": 0.0001635662539779475,
+      "mean": 0.0007908020063164246,
+      "metric": "mse_gt_bg",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.09740440047622331,
+      "lo": -0.039196489280013035,
+      "mean": 0.02931509715679407,
+      "metric": "fg_precision",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.23771656265877886,
+      "lo": 0.16077373723392283,
+      "mean": 0.1988002668653125,
+      "metric": "fg_recall",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.22450765900502517,
+      "lo": 0.14902121192734757,
+      "mean": 0.18656359890478436,
+      "metric": "fg_f1",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.6503740374499757,
+      "lo": 0.3881433372695068,
+      "mean": 0.5179063360881543,
+      "metric": "missed_components",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.1686521869847469,
+      "lo": -0.20438663024560555,
+      "mean": -0.01721763085399449,
+      "metric": "extra_components",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    },
+    {
+      "clusters": 99,
+      "hi": 0.3257209733201581,
+      "lo": 0.20305468804181717,
+      "mean": 0.2643939393939394,
+      "metric": "component_coverage",
+      "pair": "b1-config-48-vs-8",
+      "population": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "records": 1452,
+      "seed": 1
+    }
+  ],
+  "schema_version": 1
+}
