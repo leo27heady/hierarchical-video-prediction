@@ -7,12 +7,12 @@
     "python -m compileall -q hvp_rev scripts tests",
     "git diff --check"
   ],
-  "commit": "a093f2e4685d584e65d94086821ef173bf5ea86f",
+  "commit": "3a4473a8e308989e0da62de1edc56592aa5aad9e",
   "cuda_visible_devices": "-1",
   "e2_config_sha256": "ca2225bc61293312c38d908bd4fdbaae5c9283bc86a493f93462214dac244cb4",
   "schema_version": 1,
   "status": "CPU_VALIDATION_PASS",
-  "timestamp_utc": "2026-07-12T12:42:21.088397+00:00",
+  "timestamp_utc": "2026-07-12T15:10:38.787800+00:00",
   "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "untracked_files_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

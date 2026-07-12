@@ -1,8 +1,8 @@
 {
-  "created_utc": "2026-07-12T12:42:40.057962+00:00",
+  "created_utc": "2026-07-12T15:10:55.238391+00:00",
   "schema_version": 1,
-  "source_commit": "a093f2e4685d584e65d94086821ef173bf5ea86f",
+  "source_commit": "3a4473a8e308989e0da62de1edc56592aa5aad9e",
   "status": "CPU_VALIDATION_PASS",
   "subject": "gates/e2_cpu_validation_report.json",
-  "subject_sha256": "1862c8f86f2a4eced3a69939461fdc80e86a405206ddc21f08ba977c77a58800"
+  "subject_sha256": "8b13e51d6550971729994959fbe3c68ebf07d8ce3f8efe842b8e51a5cffa1b21"
 }
