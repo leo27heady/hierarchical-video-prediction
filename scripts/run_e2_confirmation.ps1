@@ -33,7 +33,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & .\venv\Scripts\python.exe scripts\validate_e2_design.py `
     --config $Config --manifest $Manifest --out gates/e2_design_validation.json
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-$wandbGateId = "e2-gate-$($manifestValue.dataset_id)-$($sourceCommit.Substring(0,8))"
+$wandbGateId = "e2-gate-$($manifestValue.dataset_id)-$($sourceCommit.Substring(0,8))-$(Get-Date -Format yyyyMMddHHmmss)"
 & .\venv\Scripts\python.exe scripts\check_wandb_online.py `
     --project $configValue.evaluation.wandb_project --group $group --run-id $wandbGateId
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -14,10 +14,10 @@ def main() -> None:
 
     import wandb
 
-    api = wandb.Api(timeout=30)
-    viewer = api.viewer
-    if not viewer:
-        raise RuntimeError("W&B viewer/authentication unavailable")
+    # Exercise the operation required by the scientific run itself.  The public
+    # ``Api.viewer`` query is not part of the logging path and can fail for an
+    # otherwise valid login (observed with W&B 0.27.2), so it is not a sound
+    # fail-closed launch criterion.
     run = wandb.init(
         project=args.project,
         name=args.run_id,
@@ -29,6 +29,8 @@ def main() -> None:
         config={"gate": "wandb-online-write", "unix_time": time.time()},
         settings=wandb.Settings(init_timeout=60, _disable_stats=True),
     )
+    if run is None or not run.url:
+        raise RuntimeError("W&B online run creation unavailable")
     run.log({"gate/pass": 1})
     run.summary["gate_status"] = "PASS"
     url = run.url
