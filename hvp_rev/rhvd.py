@@ -31,6 +31,8 @@ import copy
 import math
 import os
 import time
+from datetime import datetime, timezone
+from pathlib import Path
 
 import numpy as np
 import torch
@@ -40,9 +42,19 @@ import torch.nn.functional as F
 from hvp_rev import hier_convae, viz, wb
 import hvp_rev.step1_mech as M
 from hvp_rev.step1_mech import (ActionHierData, cosine_alphas, decode01, fg_mse_px_frames,
-                                fg_sharp, load_ckpt, save_ckpt)
+                                fg_sharp, fg_sharp_per_frame, load_ckpt, save_ckpt)
 from hvp_rev.faithful_nets import LAT, DiTBlock, LatentTokenizer, TimestepEmbedder, modulate
 from hvp_rev.step1 import rel_positions
+from hvp_rev.evaluation.frame_metrics import evaluate_frames
+from hvp_rev.provenance import (
+    ArtifactStore,
+    RunSpec,
+    assert_dataset_purpose,
+    atomic_save_npz,
+    atomic_write_json,
+    log_holdout_access,
+    sha256_file,
+)
 
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 WIN = 4          # predicted frames per step
@@ -675,7 +687,8 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
 # ================================================================================================
 @torch.no_grad()
 def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48,
-                 oracle=False, tag="", blind=""):
+                 oracle=False, tag="", blind="", complete_metrics=False,
+                 metric_threshold=0.5, output_path=None):
     """warm: UNIVERSAL GT warmup across arms of one campaign — every arm starts rollout at the
     same frame so (clip, horizon) records pair exactly. Legacy campaign: 48. H-grid (testbed B):
     192 (= one full loop seen in GT before rollout).
@@ -706,8 +719,18 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
     clips = data.val_idx[:n_clips]
     dtl = DtLabeler(data, WARM)
     recs = dict(h=[], hard=[], fg=[], sharp=[], pers_fg=[], clip=[], dt=[], seen=[])
+    complete_keys = (
+        "fg_nonempty", "pred_fg_nonempty", "mse_full", "mse_gt_fg_nonempty", "mse_gt_bg",
+        "mse_union", "fg_laplacian_energy_nonempty", "fg_precision", "fg_recall", "fg_f1", "gt_component_count",
+        "pred_component_count", "missed_components", "extra_components",
+        "matched_component_iou", "matched_centroid_l2",
+    )
+    if complete_metrics:
+        recs["legacy_sharp_batch"] = []
+        recs.update({key: [] for key in complete_keys})
     viz_h = {1, WIN, 48, 96, 192, min(288, n_steps_roll * WIN)}     # rollout strip horizons
     viz_rows = []
+    eval_started = time.time()
     for c0 in range(0, len(clips), chunk):
         cs = clips[c0:c0 + chunk]
         B = len(cs)
@@ -772,6 +795,11 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
                 fg = fg_mse_px_frames(p01, gt01)
                 pfg = fg_mse_px_frames(pers01, gt01)
                 sh = fg_sharp(p01, gt01)
+                sh_per = fg_sharp_per_frame(p01, gt01).detach().cpu().numpy()
+                frame_metrics = evaluate_frames(
+                    p01.detach().cpu().numpy(), gt01.detach().cpu().numpy(),
+                    threshold=metric_threshold,
+                ) if complete_metrics else None
                 for bi_, ci in enumerate(cs):
                     recs["h"].append(tf - WARM + 1)
                     # hardness axis is ARM-INDEPENDENT (always the 6-frame short window) so the
@@ -782,18 +810,36 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
                     recs["seen"].append(seen)
                     recs["fg"].append(float(fg[bi_]))
                     recs["pers_fg"].append(float(pfg[bi_]))
-                    recs["sharp"].append(sh)              # batch-mean sharp per frame (coarse record)
+                    recs["sharp"].append(float(sh_per[bi_]) if complete_metrics else sh)
+                    if complete_metrics:
+                        recs["legacy_sharp_batch"].append(sh)
+                        for key in complete_keys:
+                            recs[key].append(frame_metrics[key][bi_])
                     recs["clip"].append(int(ci))
                 if c0 == 0 and (tf - WARM + 1) in viz_h:
                     viz_rows.append((tf - WARM + 1, p01[:6].cpu(), gt01[:6].cpu()))
-        log(f"  [rollout {arm}] clips {c0}..{c0+B-1} done ({n_steps_roll} steps x {WIN} frames)")
+        elapsed = time.time() - eval_started
+        running_fg = float(np.mean(recs["fg"]))
+        log(f"  [rollout {arm}] clips {c0}..{c0+B-1} done ({n_steps_roll} steps x {WIN} "
+            f"frames; elapsed {elapsed/3600:.2f}h; running fg {running_fg:.4f})")
+        wb.log({
+            "health/clips_complete": int(c0 + B),
+            "health/clips_total": int(len(clips)),
+            "health/progress": float((c0 + B) / len(clips)),
+            "health/elapsed_hours": float(elapsed / 3600),
+            "health/running_fg_mse": running_fg,
+        }, step=int(c0 + B))
     out = {k: np.asarray(v) for k, v in recs.items()}
-    path = f"logs_rhcp/rhvd_eval_{arm}_s{seed}{'_oracle' if oracle else ''}{tag}.npz"
-    np.savez(path, **out)
+    path = str(output_path or
+               f"logs_rhcp/rhvd_eval_{arm}_s{seed}{'_oracle' if oracle else ''}{tag}.npz")
+    if os.path.exists(path):
+        raise FileExistsError(f"evaluation output exists; refusing overwrite: {path}")
+    atomic_save_npz(path, **out)
     log(f"[rollout {arm}{' ORACLE' if oracle else ''}] saved {path}: {len(out['fg'])} "
         f"frame-records, mean fg {out['fg'].mean():.4f} (persistence {out['pers_fg'].mean():.4f})")
     if viz_rows:
-        vpath = f"logs_rhcp/rhvd_rollout_{arm}_s{seed}.png"
+        viz_suffix = ("_oracle" if oracle else "") + tag + (f"_blind-{blind}" if blind else "")
+        vpath = f"logs_rhcp/rhvd_rollout_{arm}_s{seed}{viz_suffix}.png"
         panels = []
         for h, p, g in sorted(viz_rows, key=lambda r: r[0]):
             panels += [(f"pred_h{h}", p), (f"GT_h{h}", g)]
@@ -801,11 +847,12 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
         log(f"[rollout {arm}] strip {vpath}")
         wb.image("eval/rollout_strip", vpath)
     hs, fgs = out["h"], out["fg"]
+    h49_192 = (hs > 48) & (hs <= 192)
     wb.summary({"eval/fg_mse_all": float(fgs.mean()),
                 "eval/pers_fg": float(out["pers_fg"].mean()),
                 "eval/sharp": float(out["sharp"].mean()),
                 "eval/fg_mse_h1_48": float(fgs[hs <= 48].mean()),
-                "eval/fg_mse_h49_192": float(fgs[(hs > 48) & (hs <= 192)].mean()),
+                "eval/fg_mse_h49_192": float(fgs[h49_192].mean()) if h49_192.any() else 0.0,
                 "eval/fg_mse_h193plus": float(fgs[hs > 192].mean()) if (hs > 192).any() else 0.0,
                 "eval/fg_mse_beyondwin_hard": float(
                     fgs[(out["dt"] > 48) & (out["hard"] > 0.1) & (out["seen"] >= 0.5)].mean())
@@ -935,6 +982,20 @@ def main():
                          "pass the campaign's own ceiling if it differs)")
     ap.add_argument("--eval_tag", default="", help="suffix for the eval npz (mid-training trend "
                     "probes write _probe10k etc. so the final eval is never overwritten)")
+    ap.add_argument("--complete_metrics", action="store_true",
+                    help="write record-level false-positive-sensitive metrics and sharpness")
+    ap.add_argument("--metric_threshold", type=float, default=0.5)
+    ap.add_argument("--confirmation_manifest", default="",
+                    help="purpose-locked loopmom manifest; requires --eval_only and immutable output")
+    ap.add_argument("--confirmation_access_log", default="artifacts/confirmation_e2/access.jsonl")
+    ap.add_argument("--artifact_root", default="artifacts/runs")
+    ap.add_argument("--source_commit", default="")
+    ap.add_argument("--wandb_project", default="hgrid")
+    ap.add_argument("--wandb_run_id", default="")
+    ap.add_argument("--wandb_group", default="")
+    ap.add_argument("--wandb_required", action="store_true")
+    ap.add_argument("--run_log", default="")
+    ap.add_argument("--authorized_gpu_hours", type=float, default=0.0)
     ap.add_argument("--compare", default="", help="comma list of arms to compare from saved npz")
     # ---- H-grid campaign args (defaults = legacy loopmom campaign, unchanged) ----
     ap.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
@@ -957,6 +1018,86 @@ def main():
         if not args.eval_tag:
             args.eval_tag = f"_blind-{args.blind}"
 
+    confirmation = None
+    eval_spec = None
+    store = None
+    active_registry = Path("artifacts/active_experiment.json")
+    train_sidecar = Path(args.train_path).with_name(Path(args.train_path).stem + ".manifest.json")
+    test_sidecar = Path(args.test_path).with_name(Path(args.test_path).stem + ".manifest.json")
+    if train_sidecar.is_file():
+        assert_dataset_purpose(
+            train_sidecar, allowed={"training", "development", "development_fixture"},
+            operation="predictor training"
+        )
+    if test_sidecar.is_file() and not args.confirmation_manifest:
+        sidecar = assert_dataset_purpose(
+            test_sidecar, allowed={"development_test", "development_fixture"},
+            operation="ordinary evaluation"
+        )
+        if sidecar.get("purpose") == "confirmation_holdout":
+            raise PermissionError("confirmation holdout requires --confirmation_manifest")
+    if args.confirmation_manifest:
+        if not args.eval_only or args.compare or args.smoke or args.go_gate or args.blind:
+            raise ValueError("confirmation evaluation requires plain --eval_only")
+        if args.no_wandb:
+            raise ValueError("confirmation evaluation requires online W&B logging")
+        if not args.complete_metrics:
+            raise ValueError("confirmation evaluation requires --complete_metrics")
+        if not args.source_commit:
+            raise ValueError("confirmation evaluation requires --source_commit")
+        confirmation = assert_dataset_purpose(
+            args.confirmation_manifest,
+            allowed={"confirmation_holdout"},
+            operation="confirmation evaluation",
+        )
+        if not args.eval_tag:
+            args.eval_tag = f"_e2_{confirmation['dataset_id'].split('-')[-1]}"
+        if Path(args.confirmation_manifest).resolve() != test_sidecar.resolve():
+            raise ValueError("--confirmation_manifest must be the test array's canonical sidecar")
+        expected_test = Path(confirmation["artifacts"]["clips"]["path"]).resolve()
+        if Path(args.test_path).resolve() != expected_test:
+            raise ValueError(f"--test_path does not match manifest: {args.test_path} != {expected_test}")
+        cfg = arm_cfg(args.arm)
+        ckpt = Path(f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt")
+        if not ckpt.is_file():
+            raise FileNotFoundError(f"evaluation checkpoint missing: {ckpt}")
+        eval_spec = RunSpec(
+            study="confirmation-e2",
+            arm=args.arm,
+            seed=args.seed,
+            dataset_hash=confirmation["artifacts"]["clips"]["sha256"],
+            ae_hash=sha256_file(args.ae_path),
+            arm_config={
+                "legacy_tuple": list(cfg),
+                "checkpoint": ckpt.as_posix(),
+                "checkpoint_sha256": sha256_file(ckpt),
+                "dataset_id": confirmation["dataset_id"],
+            },
+            train_examples=args.steps * args.batch,
+            optimizer_updates=args.steps,
+            batch_size=args.batch,
+            precision="bf16" if args.bf16 else "fp32",
+            nfe=args.nfe,
+            warmup_frames=args.warm,
+            rollout_frames=int(confirmation["configuration"]["frames"] - args.warm),
+            evaluation_clips=args.n_eval_clips,
+            source_commit=args.source_commit,
+            metric_version="complete-v2-thr0.5",
+            optimizer={"name": "AdamW", "lr": 3e-4, "weight_decay": 1e-4,
+                       "warmup_updates": 2000},
+            ema={"decay": 0.999, "evaluation": "EMA"},
+            sampler={"name": "DDIM" if cfg[2] == "diff" else "deterministic-regression",
+                     "nfe": args.nfe, "crn": "100000 + 1000*chunk + rollout_step"},
+            tag="untouched-confirmation",
+        )
+        # Record access before hashing/opening the holdout array itself.
+        log_holdout_access(
+            args.confirmation_manifest, args.confirmation_access_log,
+            run_spec_hash=eval_spec.identity,
+        )
+        if sha256_file(args.test_path) != confirmation["artifacts"]["clips"]["sha256"]:
+            raise ValueError("confirmation clip hash differs from frozen manifest")
+
     if args.compare:
         compare([a.strip() for a in args.compare.split(",")], args.seed,
                 test_path=args.test_path, warm=args.warm, tag=args.eval_tag)
@@ -968,13 +1109,43 @@ def main():
 
     if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
         n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_, n_ctx_t_, stride_t_ = arm_cfg(args.arm)
-        run_name = f"rhvd-{args.arm}-s{args.seed}" + ("-smoke" if args.smoke else "")
-        wb.init(run_name,
-                config=dict(vars(args), n_ctx_c=n_ctx_c_, n_ctx_f=n_ctx_f_, mode=mode_,
-                            stride_c=stride_c_, n_hist_f=n_hist_f_, n_ctx_t=n_ctx_t_,
-                            stride_t=stride_t_,
-                            win=WIN, campaign="hgrid" if args.warm == 192 else "loopmom"),
-                tags=["hgrid" if args.warm == 192 else "loopmom", mode_])
+        if eval_spec is not None:
+            run_name = f"e2-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
+            run_id = args.wandb_run_id or f"e2-{eval_spec.identity}"
+            wb_config = {"run_spec": eval_spec.resolved(), "cli": vars(args)}
+            tags = ["loopmom", "untouched-confirmation", mode_, "eval-only"]
+        else:
+            run_name = (f"rhvd-{args.arm}-s{args.seed}-t{args.steps}{args.eval_tag}"
+                        + ("-smoke" if args.smoke else ""))
+            run_id = args.wandb_run_id or run_name
+            wb_config = dict(vars(args), n_ctx_c=n_ctx_c_, n_ctx_f=n_ctx_f_, mode=mode_,
+                             stride_c=stride_c_, n_hist_f=n_hist_f_, n_ctx_t=n_ctx_t_,
+                             stride_t=stride_t_, win=WIN,
+                             campaign="hgrid" if args.warm == 192 else "loopmom")
+            tags = ["hgrid" if args.warm == 192 else "loopmom", mode_]
+        wb.init(
+            run_name, config=wb_config, project=args.wandb_project, run_id=run_id, tags=tags,
+            resume="never" if eval_spec is not None else "allow",
+            group=args.wandb_group or (confirmation["dataset_id"] if confirmation else None),
+            job_type="confirmation-eval" if eval_spec is not None else None,
+            required=args.wandb_required or eval_spec is not None,
+        )
+        if eval_spec is not None:
+            store = ArtifactStore(args.artifact_root, eval_spec)
+            atomic_write_json(active_registry, {
+                "schema_version": 1,
+                "status": "running",
+                "study": eval_spec.study,
+                "arm": args.arm,
+                "seed": args.seed,
+                "pid": os.getpid(),
+                "started_utc": datetime.now(timezone.utc).isoformat(),
+                "run_spec_hash": eval_spec.identity,
+                "run_dir": store.path.as_posix(),
+                "run_log": args.run_log,
+                "wandb_url": wb.active_url(),
+                "authorized_gpu_hours": args.authorized_gpu_hours,
+            })
 
     ae = hier_convae.load(args.ae_path)
     data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
@@ -1048,9 +1219,53 @@ def main():
         log(f"[eval_only] loaded {ckpt} @ step {st['step']}")
     else:
         wrap, ema = train(args.arm, data, test, ae, steps, args.batch, args.seed)
-    rollout_eval(args.arm, wrap, ema, test, ae, args.seed,
-                 n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm,
-                 tag=args.eval_tag, blind=args.blind)
+    output_path = store.path / "metrics/rollout_complete.npz" if store is not None else None
+    result_path = rollout_eval(
+        args.arm, wrap, ema, test, ae, args.seed,
+        n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm,
+        tag=args.eval_tag, blind=args.blind, complete_metrics=args.complete_metrics,
+        metric_threshold=args.metric_threshold, output_path=output_path,
+    )
+    if store is not None:
+        store.write_json("evaluation.json", {
+            "result_path": str(result_path),
+            "confirmation_manifest": str(Path(args.confirmation_manifest).resolve()),
+            "confirmation_manifest_sha256": sha256_file(args.confirmation_manifest),
+            "access_log": str(Path(args.confirmation_access_log).resolve()),
+            "wandb_url": wb.active_url(),
+        })
+        store.finalize()
+        wb.artifact(
+            name=f"e2-{eval_spec.identity}",
+            artifact_type="confirmation-evaluation",
+            paths=[
+                str(store.path / "run_spec.json"),
+                str(store.path / "metrics/rollout_complete.npz"),
+                str(store.path / "evaluation.json"),
+                str(store.path / "manifest.json"),
+                args.confirmation_manifest,
+            ],
+            metadata={
+                "run_spec_hash": eval_spec.identity,
+                "dataset_id": confirmation["dataset_id"],
+                "arm": args.arm,
+                "seed": args.seed,
+            },
+            aliases=["latest", f"{args.arm}-s{args.seed}"],
+        )
+        atomic_write_json(active_registry, {
+            "schema_version": 1,
+            "status": "complete",
+            "study": eval_spec.study,
+            "arm": args.arm,
+            "seed": args.seed,
+            "pid": os.getpid(),
+            "completed_utc": datetime.now(timezone.utc).isoformat(),
+            "run_spec_hash": eval_spec.identity,
+            "run_dir": store.path.as_posix(),
+            "wandb_url": wb.active_url(),
+            "authorized_gpu_hours": args.authorized_gpu_hours,
+        })
     wb.finish()
     log("RHVD DONE")
 

@@ -1,6 +1,8 @@
 import numpy as np
+import torch
 
 from hvp_rev.evaluation.frame_metrics import evaluate_frames
+from hvp_rev.step1_mech import fg_sharp, fg_sharp_per_frame
 
 
 def test_empty_foreground_is_not_full_frame_fallback():
@@ -42,3 +44,14 @@ def test_metric_is_record_level():
     assert metrics["mse_full"].shape == (6,)
     assert metrics["mse_full"][-1] > metrics["mse_full"][:-1].max()
     assert metrics["fg_laplacian_energy_nonempty"].shape == (6,)
+
+
+def test_legacy_sharpness_exposes_record_values_without_changing_batch_mean():
+    gt = torch.zeros(2, 1, 8, 8)
+    gt[:, :, 2:6, 2:6] = 1
+    pred = gt.clone()
+    pred[1, :, 1:7, 1:7] = 0.5
+    per_record = fg_sharp_per_frame(pred, gt)
+    assert per_record.shape == (2,)
+    assert per_record[0] != per_record[1]
+    assert fg_sharp(pred, gt) == float(per_record.mean())

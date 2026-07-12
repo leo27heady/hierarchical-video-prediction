@@ -1,6 +1,8 @@
 """Cluster-aware effects and factorial contrasts for record-level evaluation."""
 from __future__ import annotations
 
+from typing import Mapping
+
 import numpy as np
 
 
@@ -77,3 +79,58 @@ def head_package_interaction(
         "convention": "negative interaction = regression shifts toward spatial packaging",
     })
     return result
+
+
+def simultaneous_cluster_intervals(
+    contrasts: Mapping[str, np.ndarray],
+    clusters: np.ndarray,
+    *,
+    n_boot: int = 10000,
+    seed: int = 0,
+    confidence: float = 0.95,
+) -> dict:
+    """Studentized max-statistic intervals for correlated record-aligned contrasts."""
+    if not contrasts:
+        raise ValueError("at least one contrast is required")
+    names = list(contrasts)
+    arrays = [np.asarray(contrasts[name], dtype=np.float64) for name in names]
+    clusters = np.asarray(clusters)
+    _aligned(*arrays, clusters)
+    finite = np.isfinite(clusters)
+    for values in arrays:
+        finite &= np.isfinite(values)
+    arrays = [values[finite] for values in arrays]
+    clusters = clusters[finite]
+    unique = np.unique(clusters)
+    if not len(unique):
+        raise ValueError("no finite clusters")
+    counts = np.asarray([(clusters == cluster).sum() for cluster in unique], dtype=np.float64)
+    sums = np.asarray([
+        [values[clusters == cluster].sum() for cluster in unique] for values in arrays
+    ], dtype=np.float64)
+    observed = np.asarray([values.mean() for values in arrays])
+    rng = np.random.RandomState(seed)
+    pick = rng.randint(0, len(unique), (n_boot, len(unique)))
+    denominator = counts[pick].sum(axis=1)
+    boot = np.stack([row[pick].sum(axis=1) / denominator for row in sums], axis=1)
+    scale = boot.std(axis=0, ddof=1)
+    if np.any(scale <= 0):
+        raise ValueError("a contrast has zero bootstrap variance")
+    max_stat = np.max(np.abs((boot - observed) / scale), axis=1)
+    critical = float(np.quantile(max_stat, confidence))
+    return {
+        "method": "studentized max-statistic clip-cluster bootstrap",
+        "confidence": confidence,
+        "critical_value": critical,
+        "replicates": n_boot,
+        "clusters": int(len(unique)),
+        "contrasts": {
+            name: {
+                "mean": float(observed[index]),
+                "lo": float(observed[index] - critical * scale[index]),
+                "hi": float(observed[index] + critical * scale[index]),
+                "bootstrap_se": float(scale[index]),
+            }
+            for index, name in enumerate(names)
+        },
+    }

@@ -1,6 +1,6 @@
 import numpy as np
 
-from hvp_rev.analysis import head_package_interaction, paired_effect
+from hvp_rev.analysis import head_package_interaction, paired_effect, simultaneous_cluster_intervals
 
 
 def test_paired_effect_bootstraps_clips_and_uses_explicit_sign():
@@ -23,3 +23,16 @@ def test_factorial_reports_shift_without_calling_it_equivalence():
     assert np.isclose(result["diffusion_temporal_advantage"], 0.02)
     assert np.isclose(result["regression_temporal_advantage"], -0.01)
     assert np.isclose(result["mean"], -0.03)
+
+
+def test_simultaneous_intervals_preserve_shared_cluster_dependence():
+    clips = np.repeat(np.arange(8), 3)
+    base = np.repeat(np.linspace(-1, 1, 8), 3)
+    result = simultaneous_cluster_intervals(
+        {"a": base + 0.2, "b": 0.5 * base - 0.1}, clips, n_boot=2000, seed=7
+    )
+    assert result["clusters"] == 8
+    assert result["critical_value"] > 1
+    assert set(result["contrasts"]) == {"a", "b"}
+    assert result["contrasts"]["a"]["lo"] < result["contrasts"]["a"]["mean"]
+    assert result["contrasts"]["a"]["hi"] > result["contrasts"]["a"]["mean"]

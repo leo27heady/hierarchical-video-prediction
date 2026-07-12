@@ -251,17 +251,19 @@ def fg_mse_px_frames(pred01, gt01):
     return long_eval.fg_mse(p, g, thr=FG_THR)[:, 0]
 
 
-def fg_sharp(frames01, gt_frames01):
-    """[RT-sharp] PER-IMAGE Laplacian energy on the per-image FOREGROUND mask (gt>0.1 of sprite;
-    we use FG_THR to match the sprite). Returns mean over batch of
-        sum(lap^2 * fgmask) / sum(fgmask).
-    NOT a global batch variance (that would reward inter-sample diversity, not per-frame detail)."""
+def fg_sharp_per_frame(frames01, gt_frames01):
+    """[RT-sharp] One foreground Laplacian-energy value per image."""
     k = _LAP_KERNEL.to(frames01.device, frames01.dtype)
     lap = F.conv2d(frames01, k, padding=1)                 # (B,1,64,64)
     fgmask = (gt_frames01 > FG_THR).float()
     num = (lap.pow(2) * fgmask).sum(dim=(1, 2, 3))
     den = fgmask.sum(dim=(1, 2, 3)).clamp_min(1.0)
-    return float((num / den).mean())
+    return num / den
+
+
+def fg_sharp(frames01, gt_frames01):
+    """Legacy batch mean of the record-level sharpness values."""
+    return float(fg_sharp_per_frame(frames01, gt_frames01).mean())
 
 
 def best_of_N(sample_fn, N, ae, gt_zf, gt_frame01):

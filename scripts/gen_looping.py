@@ -24,8 +24,8 @@ V = 64            # viewport size
 DIGIT = 28
 
 
-def load_mnist():
-    with gzip.open(MNIST, "rb") as f:
+def load_mnist(path=MNIST):
+    with gzip.open(path, "rb") as f:
         return np.frombuffer(f.read(), np.uint8, offset=16).reshape(-1, 28, 28).astype(np.float32)
 
 
@@ -83,17 +83,21 @@ def make_background(Ww, Hh, rng, unique_amp=0.0, texture_unique=False):
     return (0.15 + 0.35 * bg).astype(np.float32)     # dim background in [0.15, 0.5]
 
 
-def build_world(Ww, Hh, digits, rng, num_digits, unique_amp=0.0, texture_unique=False):
+def build_world(Ww, Hh, digits, rng, num_digits, unique_amp=0.0, texture_unique=False,
+                return_metadata=False):
     """Torus world image (Hh, Ww) in [0,1]: background texture + sprites at fixed world positions (max-composite)."""
     world = make_background(Ww, Hh, rng, unique_amp=unique_amp, texture_unique=texture_unique)
-    for _ in range(num_digits):
-        d = digits[rng.randint(len(digits))] / 255.0
+    metadata = []
+    for object_id in range(num_digits):
+        glyph_index = int(rng.randint(len(digits)))
+        d = digits[glyph_index] / 255.0
         wx = rng.randint(0, Ww)                        # torus x (wraps)
         wy = rng.randint(0, Hh - DIGIT)
+        metadata.append((object_id, glyph_index, int(wx), int(wy)))
         for dy in range(DIGIT):
             xs = (wx + np.arange(DIGIT)) % Ww          # wrap in x
             world[wy + dy, xs] = np.maximum(world[wy + dy, xs], d[dy])
-    return world
+    return (world, metadata) if return_metadata else world
 
 
 def pan_trajectory(T, Ww, rng, p_hold=0.2, speed=2, p_cont=None):

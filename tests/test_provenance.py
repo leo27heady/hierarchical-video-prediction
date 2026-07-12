@@ -64,3 +64,15 @@ def test_rng_capture_restores_python_numpy_and_torch():
 def test_incompatible_specs_fail_closed():
     with pytest.raises(ValueError, match="seed"):
         _spec(seed=1).assert_compatible(_spec(seed=2))
+
+
+def test_optimizer_ema_and_sampler_changes_are_resume_incompatible():
+    base = _spec()
+    for field, value in (
+        ("optimizer", {"lr": 3e-4}),
+        ("ema", {"decay": 0.999}),
+        ("sampler", {"kind": "ddim", "eta": 0.0}),
+    ):
+        changed = RunSpec(**{**base.resolved(), field: value})
+        with pytest.raises(ValueError, match=field):
+            base.assert_compatible(changed)

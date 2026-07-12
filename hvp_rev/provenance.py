@@ -20,6 +20,7 @@ SCIENTIFIC_FIELDS = (
     "dataset_hash", "ae_hash", "arm", "arm_config", "seed", "train_examples",
     "optimizer_updates", "batch_size", "precision", "nfe", "warmup_frames",
     "rollout_frames", "evaluation_clips", "source_commit", "metric_version",
+    "optimizer", "ema", "sampler",
 )
 
 
@@ -116,6 +117,20 @@ def atomic_save_npz(path: str | Path, **arrays: np.ndarray) -> Path:
     os.close(fd)
     try:
         np.savez_compressed(tmp_name, **arrays)
+        os.replace(tmp_name, path)
+    finally:
+        if os.path.exists(tmp_name):
+            os.unlink(tmp_name)
+    return path
+
+
+def atomic_save_npy(path: str | Path, array: np.ndarray) -> Path:
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".npy", dir=path.parent)
+    os.close(fd)
+    try:
+        np.save(tmp_name, array)
         os.replace(tmp_name, path)
     finally:
         if os.path.exists(tmp_name):
