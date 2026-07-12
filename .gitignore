@@ -7,5 +7,10 @@ hvp.egg-info/
 /data/
 /runs/
 /gates/*.txt
+/artifacts/active_experiment.json
+/artifacts/gpu_hours.jsonl
+/artifacts/monitoring/
+/artifacts/runs/
+/artifacts/confirmation_e2/access.jsonl
 *.pt
 *.npy
