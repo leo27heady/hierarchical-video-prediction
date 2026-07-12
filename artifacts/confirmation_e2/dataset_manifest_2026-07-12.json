@@ -1,0 +1,57 @@
+{
+  "access_policy": {
+    "confirmation_evaluation": "explicit switch and access log required",
+    "monitoring_grid": "forbidden",
+    "training": "forbidden"
+  },
+  "artifacts": {
+    "actions": {
+      "bytes": 100128,
+      "path": "data/confirmation/loopmom_confirmation_500x200_actions.npy",
+      "sha256": "9ee5ef71f7017477b6b20494ca31f20063e6f5661731c3ee57b323beb19b414a"
+    },
+    "clips": {
+      "bytes": 409600128,
+      "path": "data/confirmation/loopmom_confirmation_500x200.npy",
+      "sha256": "e033abee6e048bd0ba90c9e2a1819cf2607b8b87852759342475d815f65414b7"
+    },
+    "objects": {
+      "bytes": 8934,
+      "path": "data/confirmation/loopmom_confirmation_500x200_objects.npz",
+      "sha256": "3ede5cf130c6d09996b4d9068ba9489ad74cf2bc9801c39220898dfbee56de05"
+    },
+    "positions": {
+      "bytes": 400128,
+      "path": "data/confirmation/loopmom_confirmation_500x200_positions.npy",
+      "sha256": "c0ff81dc24278dab056ad82e433ee6b6ad22d10d9c38ac6d8d0ac5e4c4bba8a6"
+    }
+  },
+  "configuration": {
+    "digits": 3,
+    "frames": 200,
+    "n": 500,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "speed": 4,
+    "viewport": 64,
+    "world": 192
+  },
+  "dataset_id": "loopmom-confirmation_holdout-20260712-e033abee6e04",
+  "generator": {
+    "commit": "266f7cdba86a4a39df88af87f93ad6c04d64929d",
+    "dirty_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "legacy_pixel_path": "scripts/gen_looping.py",
+    "path": "scripts/generate_loopmom_confirmation.py",
+    "rng": "numpy.random.RandomState/MT19937",
+    "seed": 20260712
+  },
+  "purpose": "confirmation_holdout",
+  "schema_version": 1,
+  "source_glyph_pool": {
+    "bytes": 9912422,
+    "file_name": "train-images-idx3-ubyte.gz",
+    "indices_artifact": "data/confirmation/loopmom_confirmation_500x200_objects.npz",
+    "sha256": "440fcabf73cc546fa21475e81ea370265605f56be210a4024d2ca8f203523609",
+    "split": "train"
+  }
+}

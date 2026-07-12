@@ -9,6 +9,10 @@ markers remain ignored. Their absence or a subject-hash mismatch is intentionall
 - `cpu_validation.json` — hash-bound attestation of that report.
 - `confirmation_protocol_frozen.json` — hash-bound untouched-confirmation protocol attestation.
 - `e2_design_frozen.json` — hash-bound E2 run-matrix attestation.
+- `e2_dataset_validation.json` / `e2_dataset_validated.json` — structural, distribution,
+  action-position, uniqueness and legacy-collision report plus attestation.
+- `e2_design_validation.json` / `e2_manifest_design_validated.json` — exact manifest/config/run
+  matrix compatibility report plus attestation.
 - `cpu_validation.txt` — legacy human-readable mirror, ignored by Git and not sufficient alone.
 - `phase_c_classifier_validated.txt` — classifier validation passed on clean, translated,
   overlapping, and reconstruction-domain crops.

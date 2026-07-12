@@ -39,6 +39,14 @@
         {
           "path": "gates/cpu_validation.json",
           "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e2_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e2_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e2_dataset_validation.json"}
+        },
+        {
+          "path": "gates/e2_manifest_design_validated.json",
+          "attests": {"status": "DESIGN_DATA_MATCH", "subject": "gates/e2_design_validation.json"}
         }
       ]
     },

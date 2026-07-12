@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-12T12:46:15.768212+00:00",
+  "schema_version": 1,
+  "source_commit": "9f1d759b75ce5c9e5f7fc49c283e3e9b974cb464",
+  "status": "DESIGN_DATA_MATCH",
+  "subject": "gates/e2_design_validation.json",
+  "subject_sha256": "a9272f8ac42a8ecbf5d27bb5dcd539082da24c4a129da70ede45cd9df33bf5b9"
+}

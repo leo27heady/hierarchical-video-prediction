@@ -1,0 +1,11 @@
+{
+  "allocated_gpu_hours": 16.2,
+  "authorized_gpu_hours": 18.0,
+  "config": "experiments/configs/e2_untouched_confirmation.json",
+  "config_sha256": "ca2225bc61293312c38d908bd4fdbaae5c9283bc86a493f93462214dac244cb4",
+  "failures": [],
+  "manifest_sha256": "3374d72f268667529d240934516ed114871ea547c1cae483913567828d5aba58",
+  "runs": 26,
+  "schema_version": 1,
+  "status": "PASS"
+}
