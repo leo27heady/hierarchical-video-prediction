@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "study": "confirmation-e2",
+  "status": "FROZEN",
+  "dataset": {
+    "purpose": "confirmation_holdout",
+    "seed": 20260712,
+    "clips": 500,
+    "frames": 200,
+    "evaluation_pool": "indices 250..349 (first 100 of n_val=250)",
+    "world": 192,
+    "viewport": 64,
+    "digits": 3,
+    "speed": 4,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "source_glyph_split": "MNIST train images; distribution continuity with legacy loopmom"
+  },
+  "evaluation": {
+    "warmup_frames": 48,
+    "rollout_frames": 152,
+    "evaluation_clips": 100,
+    "nfe": 16,
+    "metric_threshold": 0.5,
+    "min_component_pixels": 4,
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 0,
+    "frontier_family_method": "studentized max-statistic clip-cluster bootstrap",
+    "frontier_family_confidence": 0.95,
+    "effect_convention": "baseline error minus candidate error; positive favors candidate",
+    "wandb_project": "hgrid",
+    "wandb_group_prefix": "e2-loopmom-confirmation"
+  },
+  "budget": {
+    "pool": "closure",
+    "authorized_max_gpu_hours": 18.0,
+    "accounting": "wall clock while each project process owns the GPU, including evaluation, failures and retries"
+  },
+  "frozen_artifacts": {
+    "autoencoder": {
+      "path": "logs_rhcp/hier_ae_mom.pt",
+      "sha256": "3769200d6f9346a2c7cbfa6cff42113da883a052dfa216d3b60f78d8e3684245"
+    },
+    "checkpoint_hashes": "declared per run below",
+    "legacy_evidence_manifest": "artifacts/post_c2_evidence_manifest_2026-07-12.json"
+  },
+  "primary_pairs": [
+    {
+      "id": "reach-48-vs-14",
+      "candidate": "hier-min",
+      "baseline": "flat-min",
+      "seeds": [0, 1],
+      "candidate_reach": 48,
+      "baseline_reach": 14,
+      "primary_band": "14 < dt <= 48; seen >= 0.5; GT foreground non-empty"
+    },
+    {
+      "id": "b1-config-48-vs-8",
+      "candidate": "hier-s2-min",
+      "baseline": "flat-short",
+      "seeds": [0, 1],
+      "candidate_reach": 48,
+      "baseline_reach": 8,
+      "primary_band": "8 < dt <= 48; seen >= 0.5; GT foreground non-empty",
+      "limitation": "whole-configuration replication; target interface is not isolated"
+    }
+  ],
+  "frontier_pairs": [
+    {"id": "near-bottom-s0", "candidate": "hier-short", "baseline": "flat-short", "seed": 0, "regime": "B16x30k", "context_tokens": "480 vs 512; near-match disclosed"},
+    {"id": "near-bottom-s1", "candidate": "hier-short", "baseline": "flat-short", "seed": 1, "regime": "B16x30k", "context_tokens": "480 vs 512; near-match disclosed"},
+    {"id": "b896-s0", "candidate": "hier-min", "baseline": "flat-min", "seed": 0, "regime": "B16x30k", "context_tokens": 896},
+    {"id": "b896-s1", "candidate": "hier-min", "baseline": "flat-min", "seed": 1, "regime": "B16x30k", "context_tokens": 896},
+    {"id": "b1152-s0", "candidate": "hier-long", "baseline": "flat-budget", "seed": 0, "regime": "B16x30k", "context_tokens": 1152},
+    {"id": "b1152-s1", "candidate": "hier-long", "baseline": "flat-budget", "seed": 1, "regime": "B16x30k", "context_tokens": 1152},
+    {"id": "b1152-s2", "candidate": "hier-long", "baseline": "flat-budget", "seed": 2, "regime": "B16x30k", "context_tokens": 1152},
+    {"id": "b1792-s0", "candidate": "hier-c1", "baseline": "flat-c1", "seed": 0, "regime": "B16x30k", "context_tokens": 1792},
+    {"id": "b2432-30k-s0", "candidate": "hier-c2", "baseline": "flat-c2", "seed": 0, "regime": "B16x30k", "context_tokens": 2432, "steps": 30000},
+    {"id": "b2432-60k-s0", "candidate": "hier-c2", "baseline": "flat-c2", "seed": 0, "regime": "B8x60k", "context_tokens": 2432, "steps": 60000},
+    {"id": "b3072-s0", "candidate": "hier-rich", "baseline": "flat-long", "seed": 0, "regime": "B8x60k", "context_tokens": 3072},
+    {"id": "b3072-s1", "candidate": "hier-rich", "baseline": "flat-long", "seed": 1, "regime": "B8x60k", "context_tokens": 3072}
+  ],
+  "runs": [
+    {"arm": "hier-min", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "706710935ad2a8dc201084d099ea8d5db38ec18716e5ef8bc3fdc6fa2b44e515"},
+    {"arm": "flat-min", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "e8b94c2f03592a413b27099c2e92c1964416ec92a3ac1ddb7bc25bf81386f88d"},
+    {"arm": "hier-min", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "b94da431154bda1ce6574a368470c250d7a57baec3bbb386ae44c81955901794"},
+    {"arm": "flat-min", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "0b1808a4b10240d3332c6170db1d794eb7dcbe692cff0d255e82e441a2641c18"},
+    {"arm": "hier-s2-min", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "ee7ed9b584433bbea2318ad76e703e715af5d9443843324dd631f1d369e09524"},
+    {"arm": "flat-short", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "2448202c41bc190d5f8a589af107a568ab1db325cefc235553ae61f0bea31fb4"},
+    {"arm": "hier-s2-min", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "4b0ee794571ee9f4b026b8dbeb53efcca5925ddf5b83124e9a82cf2bc9024975"},
+    {"arm": "flat-short", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "f3943815ff8abf6c19fb453b9090afdc2ec682b7714d93dba5d5728c80bf264d"},
+    {"arm": "hier-short", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "2b95af940b82b86c23589a0acb8b593ec1998ced5e7c57a66705684d4d3faedc"},
+    {"arm": "hier-short", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.4, "checkpoint_sha256": "e33591172a64219dbaeae2885f98692bf39bc3aa8ed5ad2ad96c56f40dc0c97b"},
+    {"arm": "hier-long", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "8e243d6ad46004a760328d2b1583128318699d4c688024c500dcabedbcbc1b6e"},
+    {"arm": "flat-budget", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "a568610f0ab8c0b11ffaafb046b97b3ce83e730a84491f4b9cef42ab9c4c457d"},
+    {"arm": "hier-long", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "dcf13e88df60c7697bbede26dfbb16783a68100ae8d888beda0746b3df2817e8"},
+    {"arm": "flat-budget", "seed": 1, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "0d6b04ec73610b6bba53ba08cc1151c06b8fad21d5a5a18b50238f061fd7c609"},
+    {"arm": "hier-long", "seed": 2, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "ef1486b74a69efd73bf4e9450f40359d9bf86052a4fb225bbb5938ca1d931a38"},
+    {"arm": "flat-budget", "seed": 2, "steps": 30000, "batch": 16, "max_gpu_hours": 0.5, "checkpoint_sha256": "8be62af4f2d3c50a0d498186672e37141f7184095d927ef018c9e428f8c2c310"},
+    {"arm": "hier-c1", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.6, "checkpoint_sha256": "99f1541bfdfbc2d852710d31c4ce8f6c1e46cafacf29e277e624f001ee321150"},
+    {"arm": "flat-c1", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.6, "checkpoint_sha256": "0979a3ed190a359763dd18140a6b4e299c64dcbc1397cf9bd6b0219e086826cb"},
+    {"arm": "hier-c2", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.8, "checkpoint_sha256": "b3d3120f37130e9ba70e1cf1fddb616f15d6733dc7f0f1606fe43d3c5c74ba2b"},
+    {"arm": "flat-c2", "seed": 0, "steps": 30000, "batch": 16, "max_gpu_hours": 0.8, "checkpoint_sha256": "576d2b3fd284fef94c55426073b300b6798b587d2c4c79c17b039220d3981081"},
+    {"arm": "hier-c2", "seed": 0, "steps": 60000, "batch": 8, "max_gpu_hours": 0.8, "checkpoint_sha256": "e0c7a162ea7fd6e71daba214bbc6b4472603ab884369014c3bfc2e885cb37e94"},
+    {"arm": "flat-c2", "seed": 0, "steps": 60000, "batch": 8, "max_gpu_hours": 0.8, "checkpoint_sha256": "398e7e84739624895623c1b7326413b393e25bb245b157325646f09f7d6fe82f"},
+    {"arm": "hier-rich", "seed": 0, "steps": 60000, "batch": 8, "max_gpu_hours": 1.2, "checkpoint_sha256": "6dba7152d06c72f3a841b4c0ab8c4cf55406cd0bc80ba836b32c1354f3e2b347"},
+    {"arm": "flat-long", "seed": 0, "steps": 60000, "batch": 8, "max_gpu_hours": 1.2, "checkpoint_sha256": "3761884b781b33711bafc5128c135c16160548d64dacf9c212bafb500375f7ea"},
+    {"arm": "hier-rich", "seed": 1, "steps": 60000, "batch": 8, "max_gpu_hours": 1.2, "checkpoint_sha256": "38165b170ef8137a93253159e9cab877bf09a6727104aff8c840e163301364c7"},
+    {"arm": "flat-long", "seed": 1, "steps": 60000, "batch": 8, "max_gpu_hours": 1.2, "checkpoint_sha256": "a86d141a307ecd9ddfb37f6a0c8c57db50d3c57ce3978363d51165fa62efe885"}
+  ]
+}

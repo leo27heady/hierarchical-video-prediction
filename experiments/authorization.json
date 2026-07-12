@@ -22,11 +22,24 @@
       "status": "BLOCKED_PENDING_FREEZE",
       "meaning": "One-time confirmation of frozen reach/fidelity claims on a new hash-pinned set.",
       "required_files": [
-        "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"
+        "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md",
+        "experiments/configs/e2_untouched_confirmation.json",
+        "docs/confirmation/E2_TABLE_SHELL.md",
+        "scripts/run_e2_confirmation.ps1"
       ],
       "required_markers": [
-        {"path": "gates/confirmation_protocol_frozen.txt", "contains": "FROZEN"},
-        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"}
+        {
+          "path": "gates/confirmation_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"}
+        },
+        {
+          "path": "gates/e2_design_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/e2_untouched_confirmation.json"}
+        },
+        {
+          "path": "gates/cpu_validation.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e2_cpu_validation_report.json"}
+        }
       ]
     },
     "b1-fixed-target": {

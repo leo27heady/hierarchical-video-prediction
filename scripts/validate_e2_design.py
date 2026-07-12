@@ -31,6 +31,10 @@ def main() -> None:
     maximum = float(config["budget"]["authorized_max_gpu_hours"])
     if allocated > maximum:
         failures.append(f"per-run allocation {allocated:.3f} exceeds tranche maximum {maximum:.3f}")
+    ae = config.get("frozen_artifacts", {}).get("autoencoder", {})
+    ae_path = Path(ae.get("path", ""))
+    if not ae_path.is_file() or sha256_file(ae_path) != ae.get("sha256"):
+        failures.append(f"frozen autoencoder missing/hash mismatch: {ae_path}")
 
     available = set()
     for run in runs:
