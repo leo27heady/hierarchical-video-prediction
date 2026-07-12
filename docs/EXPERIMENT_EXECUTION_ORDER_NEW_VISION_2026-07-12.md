@@ -38,16 +38,108 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
     extension, and 50 protected reserve hours. The reserve cannot fund discretionary experiments.
 13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
+### 1.1 Canonical execution and status ledger
+
+This document is also the single canonical live ledger for the programme. Do not create a second
+execution-order document. Each four-hour audit appends a dated entry here containing expected
+versus actual progress, metric/throughput/health trends, projected completion, cumulative GPU
+hours, deviations and the resulting gate decision. Raw logs, W&B and immutable artifacts remain
+the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
+`GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
+
+#### Programme status at 2026-07-12 22:03 Europe/Kyiv
+
+| ID | Workstream | Expected before execution | Actual/status | Decision |
+|---|---|---|---|---|
+| E0 | c2-only optimizer-regime control | Finish without entering Phase C; replace stale runtime estimate | **COMPLETE**; 14.223 measured project GPU-hours; flat beats hierarchy by 0.00773, 95% CI [0.00304, 0.01233] in flat's direction | Retain as optimizer-regime robustness, not more-data/asymptotic evidence |
+| E1 | Evidence freeze and governance repair | 8–16 CPU hours; no GPU | **COMPLETE**; evidence manifest/independent backup, result integration, canonical text/claim governance and Phase-C amendment restored | E2 preparation permitted |
+| H3a/H4 | Confirmation evaluator, provenance, metrics and CPU gates | Exact checkpoint readers, immutable artifacts, complete metrics, clean CPU/hash gates | **COMPLETE**; 35 tests plus design/schema/consistency/compile gates; frozen dataset and checkpoint hashes pass | E2 authorized on commit `b9d91da` |
+| E2a | Untouched LoopMom holdout | 1–2 CPU hours | **COMPLETE**; 500×200 set, seed 20260712, dataset ID `loopmom-confirmation_holdout-20260712-e033abee6e04`; no train/test glyph collisions | Dataset is now accessed and permanently frozen |
+| E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Await registered cluster-bootstrap analysis; provisional signs replicate both effects |
+| E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **RUNNING**; 16/18 evaluations complete, run 25 active, run 26 pending | Continue unchanged; final aggregate analysis is automatic |
+| E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
+| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **GATED / NOT STARTED** | Next planned training study unless E2 changes priority |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
+| E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
+
+#### E2 run ledger
+
+Foreground values below are provisional raw all-record means, not the registered inferential
+analysis. `Δdev` is confirmation minus the matching development-pool mean. It is a drift/health
+diagnostic, not a hypothesis test. The 3,072-token legacy files use their historical untagged names
+and are reconciled in the final analysis.
+
+| # | Arm | Seed | Updates | Status | Actual GPU h | Confirmation FG | Development FG | Δdev |
+|---:|---|---:|---:|---|---:|---:|---:|---:|
+| 1 | hier-min | 0 | 30k | COMPLETE | 0.112 | 0.1625 | 0.1706 | -0.0082 |
+| 2 | flat-min | 0 | 30k | COMPLETE | 0.102 | 0.2098 | 0.2106 | -0.0007 |
+| 3 | hier-min | 1 | 30k | COMPLETE | 0.107 | 0.1666 | 0.1744 | -0.0078 |
+| 4 | flat-min | 1 | 30k | COMPLETE | 0.102 | 0.2102 | 0.2102 | -0.0001 |
+| 5 | hier-s2-min | 0 | 30k | COMPLETE | 0.065 | 0.1872 | 0.1893 | -0.0021 |
+| 6 | flat-short | 0 | 30k | COMPLETE | 0.066 | 0.2212 | 0.2224 | -0.0011 |
+| 7 | hier-s2-min | 1 | 30k | COMPLETE | 0.065 | 0.1821 | 0.1869 | -0.0048 |
+| 8 | flat-short | 1 | 30k | COMPLETE | 0.066 | 0.2202 | 0.2206 | -0.0004 |
+| 9 | hier-short | 0 | 30k | COMPLETE | 0.064 | 0.2250 | 0.2260 | -0.0010 |
+| 10 | hier-short | 1 | 30k | COMPLETE | 0.063 | 0.2262 | 0.2257 | +0.0005 |
+| 11 | hier-long | 0 | 30k | COMPLETE | 0.130 | 0.1825 | 0.1848 | -0.0023 |
+| 12 | flat-budget | 0 | 30k | COMPLETE | 0.125 | 0.2020 | 0.2038 | -0.0018 |
+| 13 | hier-long | 1 | 30k | COMPLETE | 0.130 | 0.1640 | 0.1690 | -0.0050 |
+| 14 | flat-budget | 1 | 30k | COMPLETE | 0.125 | 0.2029 | 0.2044 | -0.0016 |
+| 15 | hier-long | 2 | 30k | COMPLETE | 0.130 | 0.1725 | 0.1747 | -0.0022 |
+| 16 | flat-budget | 2 | 30k | COMPLETE | 0.125 | 0.2032 | 0.2046 | -0.0014 |
+| 17 | hier-c1 | 0 | 30k | COMPLETE | 0.190 | 0.1729 | 0.1799 | -0.0070 |
+| 18 | flat-c1 | 0 | 30k | COMPLETE | 0.183 | 0.1813 | 0.1876 | -0.0063 |
+| 19 | hier-c2 | 0 | 30k | COMPLETE | 0.250 | 0.1789 | 0.1820 | -0.0031 |
+| 20 | flat-c2 | 0 | 30k | COMPLETE | 0.245 | 0.1639 | 0.1703 | -0.0065 |
+| 21 | hier-c2 | 0 | 60k | COMPLETE | 0.252 | 0.1743 | 0.1785 | -0.0042 |
+| 22 | flat-c2 | 0 | 60k | COMPLETE | 0.246 | 0.1620 | 0.1708 | -0.0087 |
+| 23 | hier-rich | 0 | 60k | COMPLETE | 0.318 | 0.1627 | pending reconciliation | — |
+| 24 | flat-long | 0 | 60k | COMPLETE | 0.313 | 0.1498 | pending reconciliation | — |
+| 25 | hier-rich | 1 | 60k | RUNNING | — | running 0.1711 at 64/100 clips | pending reconciliation | — |
+| 26 | flat-long | 1 | 60k | PENDING | — | — | pending reconciliation | — |
+
+#### Intermediate audit E2-I1 — 2026-07-12 22:03 Europe/Kyiv
+
+- **Progress:** 24/26 runs complete; 3.575 charged GPU-hours. The active run reached 64/100 clips
+  in 0.20 hours. Including its elapsed time, project GPU ownership is approximately 3.78 hours.
+- **Throughput:** actual evaluation is substantially faster than the conservative 10–18-hour E2
+  estimate. Projected E2 evaluation total is approximately 4.2–4.5 GPU-hours, followed by CPU
+  aggregation/bootstrap and artifact upload. This projection is plausible if the final two arms
+  retain observed throughput.
+- **Health:** every completed run exited zero and remained below its per-run authorization. The
+  active evaluator and controller are alive; W&B is online. At the audit instant the GPU was 100%
+  utilized, 4,080/16,380 MiB allocated, 68°C and approximately 129 W.
+- **Metric trends:** confirmation-to-development shifts are small (mostly modest improvements),
+  finite and coherent. Provisional raw pair differences preserve the two primary hierarchy signs:
+  `flat-min - hier-min` = +0.0473/+0.0436 and `flat-short - hier-s2-min` =
+  +0.0340/+0.0381 for seeds 0/1. The provisional frontier also retains the expected inversion:
+  hierarchy wins at 896, 1,152 and 1,792 tested-token regimes, while flat wins at 2,432 and the
+  completed 3,072 seed-0 cell. These are health observations only until simultaneous registered
+  intervals are computed.
+- **GPU-memory decision:** do **not** change E2. It is checkpoint-only evaluation, not training;
+  there is no learning rate. The GPU is compute-saturated despite low VRAM occupancy. Increasing
+  rollout `chunk` would change the preregistered batching and the CRN seed schedule
+  (`100000 + 1000 * chunk_index + rollout_step`) after 24 completed runs, breaking exact
+  comparability. Future training tranches may benchmark larger batches/microbatches, but batch,
+  update count, LR and EMA horizon must be treated as an optimizer regime and frozen before the
+  first compared arm.
+- **Decision:** continue E2 unchanged. No scientific or operational trigger currently justifies
+  intervention.
+
+At E2 completion, replace the two remaining row statuses, append the registered max-statistic
+results and complete-metric summary, record exact total GPU hours, and issue the E3/E4/E5 gate
+decision here before any new training launch.
+
 ## 2. Current handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
 
-**Current state at 2026-07-12 09:56 Kyiv:**
+**Final state at 2026-07-12 15:15 Kyiv:**
 
 - seed-2 diffusion trio: complete (`S2TRIO_DONE`, 2026-07-11 23:22);
 - original master queue: terminated by the watcher before c2/Phase C;
 - `hier-c2` B8x60k: trained and evaluated;
-- `flat-c2` B8x60k: approximately 30k/60k;
+- `flat-c2` B8x60k: trained and evaluated;
 - Phase C: not launched.
 
 **Question:** does the 2,432-token result change when the number of examples is approximately held
@@ -55,7 +147,8 @@ constant but batch size, optimizer updates, gradient noise and effective EMA hor
 
 **Interpretation:** optimizer-regime robustness, not “twice the data” and not asymptotic proof.
 
-**Remaining time:** approximately **3.8–4.5 GPU hours**, including rollout and comparison.
+**Measured time:** **14.223 project GPU-hours**, including both arms, rollout and comparison. This
+replaces the stale 4.5-hour planning allowance and reduces later conditional Pool-A capacity.
 
 **Handoff gate:** c2 completion marker; old controller absent; no project-scoped Phase C or other
 project GPU process; project launch permission inactive; queue lock absent; logs/checkpoints/NPZs
@@ -81,6 +174,10 @@ Tasks:
    Moving-MNIST.
 
 **Time:** **8–16 CPU hours**.
+
+**Status:** **COMPLETE.** The evidence manifest and independent backup, result integration,
+canonical text/claim governance, Phase-C amendment, frozen confirmation design and fail-closed
+launcher are recorded in the post-c2 commits and handoff dossier.
 
 ## 4. Untouched central confirmation — E2
 
