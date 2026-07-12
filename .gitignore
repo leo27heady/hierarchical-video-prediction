@@ -11,6 +11,8 @@ hvp.egg-info/
 /artifacts/gpu_hours.jsonl
 /artifacts/monitoring/
 /artifacts/runs/
+/artifacts/training/
+/artifacts/e4_head_package/gpu_hours.jsonl
 /artifacts/confirmation_e2/access.jsonl
 *.pt
 *.npy

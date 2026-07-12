@@ -469,7 +469,7 @@ def ctx_reach(n_ctx_c, n_ctx_f, stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1):
 
 
 def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False,
-                 stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1):
+                 stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1, return_indices=False):
     """Context ends at frame tj-1. Coarse: n_ctx_c slots at stride_c (anchors tj-1-s*(m) block
     ends; stride 1 = legacy contiguous). Top [hier3]: n_ctx_t slots at stride_t, same block-end
     anchoring, from data.zt (attach_top required). Fine: n_hist_f strided full-res slots (anchors
@@ -491,9 +491,13 @@ def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False,
     tgt_t = torch.empty(B, n_tgt_t, LAT, 2, 2) if n_tgt_t > 0 else None
     acts = torch.empty(B, WIN, dtype=torch.long)
     gt = torch.empty(B, WIN, 1, 64, 64) if frames else None
+    sampled_clips = np.empty(B, dtype=np.int64)
+    sampled_starts = np.empty(B, dtype=np.int64)
     for b in range(B):
         ci = int(pool[rng.randint(len(pool))])
         tj = int(rng.randint(n_frames, data.T - WIN + 1))
+        sampled_clips[b] = ci
+        sampled_starts[b] = tj
         if n_ctx_c > 0:
             ctx_c[b] = data.zc[ci, tj - span_c + stride_c - 1:tj:stride_c]
         if n_ctx_t > 0:
@@ -522,6 +526,9 @@ def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False,
         out["tgt_t"] = tgt_t.to(DEV)
     if frames:
         out["gt"] = gt.to(DEV)
+    if return_indices:
+        out["sampled_clips"] = sampled_clips
+        out["sampled_starts"] = sampled_starts
     return out
 
 
@@ -609,6 +616,22 @@ class EMA:
             bs.copy_(b)
 
 
+def training_update(wrap, net, ema, opt, batch, step, *, lr=3e-4, warmup=2000):
+    """One legacy RHVD optimizer/EMA update, shared by legacy and provenance-v2 controllers."""
+    for group in opt.param_groups:
+        group["lr"] = lr * min(1.0, step / warmup)
+    loss = wrap.loss(
+        batch["ctx_c"], batch["ctx_f"], batch["tgt_c"], batch["tgt_f"], batch["actions"],
+        ctx_t=batch.get("ctx_t"), tgt_t=batch.get("tgt_t"),
+    )
+    opt.zero_grad(set_to_none=True)
+    loss.backward()
+    torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
+    opt.step()
+    ema.update(net)
+    return loss
+
+
 def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=500,
           save_every=1000, grid_every=2000):
     n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
@@ -637,15 +660,9 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
         torch.cuda.reset_peak_memory_stats()
     net.train(); run, t_last = 0.0, time.time()
     for s in range(start, steps + 1):
-        for g in opt.param_groups:
-            g["lr"] = lr * min(1.0, s / warmup)
         bt = window_batch(data, B, n_ctx_c, n_ctx_f, train=True, stride_c=stride_c,
                           n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t)
-        loss = wrap.loss(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"], bt["actions"],
-                         ctx_t=bt.get("ctx_t"), tgt_t=bt.get("tgt_t"))
-        opt.zero_grad(set_to_none=True); loss.backward()
-        torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
-        opt.step(); ema.update(net)
+        loss = training_update(wrap, net, ema, opt, bt, s, lr=lr, warmup=warmup)
         run += float(loss.detach())
         dt = time.time() - t_last; t_last = time.time()
         if dt > SPILL_SEC and s > start + 3:
