@@ -19,7 +19,7 @@
       "required_files": []
     },
     "confirmation-holdout": {
-      "status": "BLOCKED_PENDING_FREEZE",
+      "status": "AUTHORIZED",
       "meaning": "One-time confirmation of frozen reach/fidelity claims on a new hash-pinned set.",
       "required_files": [
         "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md",

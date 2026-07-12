@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-12T12:42:38.047056+00:00",
+  "schema_version": 1,
+  "source_commit": "a093f2e4685d584e65d94086821ef173bf5ea86f",
+  "status": "FROZEN",
+  "subject": "experiments/configs/e2_untouched_confirmation.json",
+  "subject_sha256": "ca2225bc61293312c38d908bd4fdbaae5c9283bc86a493f93462214dac244cb4"
+}
