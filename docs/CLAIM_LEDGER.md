@@ -93,7 +93,7 @@ only when literally true.  Do not use “matched compute” as a substitute for 
 2. Freeze current claims and analysis/table shells.
 3. Validate the complete metric suite and immutable provenance on CPU.
 4. Evaluate the untouched confirmation set once. **COMPLETE: E2 PASS.**
-5. Complete the regression seed-2 factorial because F3 remains central, after H3b parity. **COMPLETE: E4a PASS; E4b trigger fired.**
+5. Complete the regression seed-2 factorial because F3 remains central, after H3b parity. **COMPLETE: E4a PASS; triggered E4b seeds 3–4 expansion authorized as an E8c replacement.**
 6. Replicate/isolate trust because T1 remains title-level.
 7. Run the fixed-target B1 control only if the assembled article retains causal stride wording.
 8. Run redesigned Phase C only after its validity and classifier gates.

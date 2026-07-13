@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **PREPARING / NOT YET AUTHORIZED OR STARTED** | Frozen eight-cell design replaces E8c; CPU/parity/data/W&B gates must pass before launch |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **AUTHORIZED / NOT STARTED**; frozen config hash `91546ce4…`, 45 tests and immutable CPU/design/parity gates pass | Live W&B write gate and clean-worktree check remain launch-time requirements |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -336,9 +336,14 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   zero. Regression package stability requires the same material sign on all five seeds; otherwise
   report sign counts and heterogeneity.
 - **Terminal rule:** E4b ends after seeds 3–4 for every result. It cannot authorize seeds 5+.
-- **Current gate:** implementation is prepared but fail-closed authorization remains pending a
-  clean preparation commit, full CPU suite, H3b source-hash parity, design/data/budget validation,
-  immutable attestations and a live W&B write test. No GPU launch occurs before all pass.
+- **Authorization gate:** preparation commit `f8de000` passes the full CPU suite (45 tests), Python
+  compilation, PowerShell parsing, exact H3b scientific-source hashes, design/data/AE/trigger
+  validation and the 36-hour budget/replacement check. The frozen config hash is
+  `91546ce4499c580dffe7340dd8a1401c89254c3cb88afd324d44a3faeb72610d`; hash-bound protocol and
+  design attestations are `gates/e4b_protocol_frozen.json` and
+  `gates/e4b_design_validated.json`. E4b is authorized. A clean worktree, no competing project
+  trainer, a repeated design check and a live W&B write remain mandatory immediately before GPU
+  launch.
 
 ## 2. Historical handoff boundary — E0
 

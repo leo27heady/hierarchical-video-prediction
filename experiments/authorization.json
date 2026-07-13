@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-13-e4b-preparation",
+  "updated": "2026-07-13-e4b-authorization",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -83,13 +83,14 @@
       ]
     },
     "head-package-seeds3-4": {
-      "status": "PREPARED_NOT_AUTHORIZED",
+      "status": "AUTHORIZED",
       "meaning": "Triggered E4b expansion: exact four-cell factorial at seeds 3 and 4, replacing E8c GPU allocation and terminating after seed 4.",
       "required_files": [
         "experiments/configs/regression_factorial_seeds3_4.json",
         "hvp_rev/rhvd_train_v2.py",
         "scripts/run_e4b_factorial.ps1",
         "scripts/analyze_e4b_factorial.py",
+        "scripts/validate_e4b_design.py",
         "scripts/validate_e4b_completion.py",
         "docs/confirmation/E4B_TABLE_SHELL.md"
       ],
