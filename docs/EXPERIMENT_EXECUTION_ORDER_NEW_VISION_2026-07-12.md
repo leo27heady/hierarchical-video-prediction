@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **AUTHORIZED / LAUNCH GATES PASS / NOT YET STARTED**; frozen config hash `91546ce4…`, 45 tests, CPU/design/parity and W&B write gates pass | Launch sequentially from a clean commit; first cell `hier-long` seed 3 |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING** from source commit `fa4906f`; first cell `hier-long` seed 3, RunSpec `e6ff5f95708c15ce` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -360,6 +360,28 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
 - Frozen launch order: complete all four seed-3 cells, then all four seed-4 cells; each cell has a
   4.5-hour cap and the tranche has a 36-hour cap. No automatic retry, tuning, extension or seed-5
   branch is allowed.
+
+#### E4b launch audit E4b-I1 — 2026-07-13 09:58 Europe/Kyiv
+
+- **Launch:** hidden sequential controller PID 22476 started from clean source commit `fa4906f` at
+  09:53:09. The launch-time authorization, repeated design/data/parity check and second live W&B
+  write all passed. No other project trainer was active.
+- **Active cell:** diffusion spatial package `hier-long`, seed 3, RunSpec `e6ff5f95708c15ce`;
+  active trainer PID 24632. Its RunSpec is bound to the frozen train/test/action/AE hashes,
+  B16×30k, LR 3e-4, warm-up 2k, EMA 0.999, bf16, NFE 16 and source commit `fa4906f`.
+- **First interval:** updates 1–500 average loss **1.5590** at 0.40 s/update and 6.46 GB measured
+  peak. This is essentially identical to the seed-2 legacy-kernel interval (1.5590 at 0.38
+  s/update) and bracketed by seeds 0/1 (1.5641/1.5620). No numerical drift or instability signal
+  is present.
+- **GPU/throughput:** 100% compute utilization, approximately 8.05/16.38 GB board memory, 63°C and
+  113.5 W. Compute is saturated. Increasing batch to consume 14 GB remains scientifically
+  prohibited because it would change the frozen optimizer/noise/EMA regime.
+- **Cloud/provenance:** W&B run
+  `https://wandb.ai/leo27heady/hgrid/runs/e4b-head-package-seeds3-4-e6ff5f95708c15ce`
+  is online; the active registry records the same RunSpec, PID, source commit and 4.5-hour cap.
+- **Projection:** at 0.40 s/update, training is approximately 3.33 hours plus rollout/upload. The
+  cell should remain below 4.5 hours; the initial eight-cell projection is approximately 27–31
+  project GPU-hours, within the frozen 36-hour replacement maximum. Continue unchanged.
 
 ## 2. Historical handoff boundary — E0
 
