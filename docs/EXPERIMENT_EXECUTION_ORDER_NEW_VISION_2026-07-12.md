@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING** from source commit `fa4906f`; first cell `hier-long` seed 3, RunSpec `e6ff5f95708c15ce` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 1/8 complete** from source commit `fa4906f`; active cell `strided-flat` seed 3, RunSpec `7251715870f7fc9a` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -422,6 +422,53 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   evaluation geometry and adaptive-development-pool disclosure remain exactly frozen. No early
   metric is used for selection. Continue unchanged; no stop, restart, tuning or design trigger
   fires.
+
+#### Intermediate audit E4b-I3 — 2026-07-13 14:14 Europe/Kyiv
+
+- **Completed-cell acceptance:** `hier-long` seed 3 completed training, the frozen 100-clip ×
+  152-frame rollout and cloud upload with exit code zero in **3.2963 project GPU-hours**, below
+  its 4.5-hour cell cap. Final loss was 0.0438, fixed-grid h4 foreground MSE 0.0267 and rollout
+  foreground MSE 0.1713 (h1–48 0.0992; h49–192 0.2046). The rollout lies inside the prior
+  seed-0/1/2 range 0.1690–0.1848 and is close to seeds 1–2, so it is plausible training-seed
+  variation rather than a regime shift.
+- **Artifact and pairing gate:** PASS. RunSpec `e6ff5f95708c15ce` is COMPLETE and source-bound to
+  `fa4906f`. All **19** manifest entries reproduce their byte counts and SHA-256 hashes. The NPZ
+  contains exactly 15,200 unique `(clip,horizon)` records over 100 clips × 152 horizons; pairing
+  fields and the registered foreground metric are complete and finite. NaNs occur only in
+  auxiliary metrics whose populations are semantically undefined (for example non-empty-mask or
+  matched-component endpoints). The checkpoint is 355,264,107 bytes. Its final diagnostic and
+  long-rollout strip are coherent and show expected self-fed horizon degradation, not corruption.
+- **Completed-cell convergence:** all 60 logged loss intervals are finite and smooth. Relative to
+  the three legacy seeds, the average interval difference is +0.0027 and the maximum absolute
+  difference is 0.0165 at the warm-up boundary. Final loss 0.0438 is inside the legacy
+  0.0414–0.0444 range. The first-cell outcome therefore passes the frozen-regime plausibility
+  check without using its result for selection.
+- **Cloud acceptance:** W&B state is `finished` with 60 history rows, 15 validation grids, the
+  final evaluation summary/media and a committed `training-run` artifact. W&B rejected only the
+  optional per-chunk rollout-progress rows because their clip counters were lower than the 30k
+  training step; the immutable NPZ, final summary, strip and artifact uploaded successfully, so
+  this is a telemetry nuisance rather than missing scientific evidence.
+- **Active cell and expected-versus-actual trend:** `strided-flat` seed 3 reached 10,000/30,000 at
+  0.35–0.38 s/update and 6.26 GB measured peak. The 2k–6k training losses were above the legacy
+  envelope after the full-LR transition, but the excess contracted from +0.0439 at 2k to +0.0041
+  at 6k and +0.0068 relative to the legacy mean at 10k. More importantly, the fixed-grid h4
+  trajectory is healthy: 0.2591 at 2k is within the legacy range, 0.0510 at 4k is essentially at
+  the prior upper edge, and 0.0331/0.0287 at 6k/8k is better than all three prior seeds. This is a
+  slower training-loss transition with good validation convergence, not a divergence or stall.
+- **Active provenance/cloud state:** the 10k atomic checkpoint is present, format 2 and bound to
+  RunSpec `7251715870f7fc9a`; it includes model/optimizer/EMA, Python/NumPy/Torch CPU+CUDA RNG,
+  latent statistics and sampler state `examples_seen=160000`, `next_update=10001`. W&B is online
+  and state `running`; its short local-to-cloud lag is below one 500-step interval. Controller PID
+  22476 and trainer PID 20132 are alive and responsive in the expected parent chain.
+- **GPU, budget and completion projection:** the audit sample showed 100% utilization,
+  7,949/16,380 MiB board memory, 64°C and approximately 115.6 W with no WDDM spill. At current
+  throughput the active cell should finish near 3.1–3.3 hours. Extrapolating measured diffusion
+  and E4a regression rates places the eight-cell tranche near **25–28 GPU-hours**, approximately
+  2026-07-14 11:00–14:00 Europe/Kyiv, with substantial margin below the 36-hour cap.
+- **Scientific validity/decision:** no target, batch, LR, update, EMA, sampler, evaluation or data
+  geometry changed, no retry occurred and no early result selected a branch. Seed 3's diffusion
+  package effect remains unknown until the active rollout is paired with the accepted spatial
+  cell. Continue unchanged; no stop, relaunch, tuning or budget trigger fires.
 
 ## 2. Historical handoff boundary — E0
 
