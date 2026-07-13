@@ -1,0 +1,100 @@
+{
+  "config_sha256": "284bda366cf769b76841fdbbd2ab55b3f41234a7895a39e4836812d785cafc90",
+  "consistent_negative_interaction": true,
+  "e4b_trigger": {
+    "fired": true,
+    "reason": "opposite material seed effects; across-seed SD 0.0161 > 0.010",
+    "regression_effects": [
+      0.010732475335032871,
+      -0.010362613288173238,
+      -0.020792052416377927
+    ],
+    "sample_sd": 0.016060156778496468
+  },
+  "effect_convention": "spatial error minus temporal error; positive favors temporal packaging",
+  "schema_version": 1,
+  "seeds": [
+    {
+      "diffusion": {
+        "clusters": 100,
+        "hi": 0.025156985340210655,
+        "lo": 0.014340403454032915,
+        "mean": 0.01967432868715165,
+        "records": 15200
+      },
+      "interaction": {
+        "clusters": 100,
+        "convention": "negative interaction = regression shifts toward spatial packaging",
+        "diffusion_temporal_advantage": 0.01967432868715165,
+        "hi": -0.0024526308802345796,
+        "lo": -0.015058812852709397,
+        "mean": -0.00894185335211878,
+        "records": 15200,
+        "regression_temporal_advantage": 0.010732475335032871
+      },
+      "regression": {
+        "clusters": 100,
+        "hi": 0.01579722684587721,
+        "lo": 0.006217828172026504,
+        "mean": 0.010732475335032871,
+        "records": 15200
+      },
+      "seed": 0
+    },
+    {
+      "diffusion": {
+        "clusters": 100,
+        "hi": 0.008397148256967538,
+        "lo": 0.000697848293398869,
+        "mean": 0.004601666083322031,
+        "records": 15200
+      },
+      "interaction": {
+        "clusters": 100,
+        "convention": "negative interaction = regression shifts toward spatial packaging",
+        "diffusion_temporal_advantage": 0.004601666083322031,
+        "hi": -0.010350728398646447,
+        "lo": -0.019941231880148784,
+        "mean": -0.014964279371495269,
+        "records": 15200,
+        "regression_temporal_advantage": -0.010362613288173238
+      },
+      "regression": {
+        "clusters": 100,
+        "hi": -0.006221921492371831,
+        "lo": -0.014571753457097004,
+        "mean": -0.010362613288173238,
+        "records": 15200
+      },
+      "seed": 1
+    },
+    {
+      "diffusion": {
+        "clusters": 100,
+        "hi": 0.01512389639554596,
+        "lo": 0.006991316730640741,
+        "mean": 0.011072696749687623,
+        "records": 15200
+      },
+      "interaction": {
+        "clusters": 100,
+        "convention": "negative interaction = regression shifts toward spatial packaging",
+        "diffusion_temporal_advantage": 0.011072696749687623,
+        "hi": -0.0245074487191725,
+        "lo": -0.040108245758047285,
+        "mean": -0.03186474916606555,
+        "records": 15200,
+        "regression_temporal_advantage": -0.020792052416377927
+      },
+      "regression": {
+        "clusters": 100,
+        "hi": -0.014987125510879508,
+        "lo": -0.026985306854167362,
+        "mean": -0.020792052416377927,
+        "records": 15200
+      },
+      "seed": 2
+    }
+  ],
+  "study": "e4-head-package-seed2"
+}

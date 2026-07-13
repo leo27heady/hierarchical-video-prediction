@@ -1,0 +1,173 @@
+{
+  "authorized_max_gpu_hours": 11.0,
+  "config_sha256": "284bda366cf769b76841fdbbd2ab55b3f41234a7895a39e4836812d785cafc90",
+  "e4b_trigger": {
+    "fired": true,
+    "sample_sd": 0.016060156778496468
+  },
+  "gpu_hours": 6.1228226645833335,
+  "independent_statistics": [
+    {
+      "clips": 100,
+      "diffusion": {
+        "hi": 0.025156985340210655,
+        "lo": 0.014340403454032915,
+        "mean": 0.01967432868715165
+      },
+      "interaction": {
+        "hi": -0.0024526308802345796,
+        "lo": -0.015058812852709397,
+        "mean": -0.00894185335211878
+      },
+      "records": 15200,
+      "regression": {
+        "hi": 0.01579722684587721,
+        "lo": 0.006217828172026504,
+        "mean": 0.010732475335032871
+      },
+      "seed": 0
+    },
+    {
+      "clips": 100,
+      "diffusion": {
+        "hi": 0.008397148256967538,
+        "lo": 0.000697848293398869,
+        "mean": 0.004601666083322031
+      },
+      "interaction": {
+        "hi": -0.010350728398646447,
+        "lo": -0.019941231880148784,
+        "mean": -0.014964279371495269
+      },
+      "records": 15200,
+      "regression": {
+        "hi": -0.006221921492371831,
+        "lo": -0.014571753457097004,
+        "mean": -0.010362613288173238
+      },
+      "seed": 1
+    },
+    {
+      "clips": 100,
+      "diffusion": {
+        "hi": 0.01512389639554596,
+        "lo": 0.006991316730640741,
+        "mean": 0.011072696749687623
+      },
+      "interaction": {
+        "hi": -0.0245074487191725,
+        "lo": -0.040108245758047285,
+        "mean": -0.03186474916606555
+      },
+      "records": 15200,
+      "regression": {
+        "hi": -0.014987125510879508,
+        "lo": -0.026985306854167362,
+        "mean": -0.020792052416377927
+      },
+      "seed": 2
+    }
+  ],
+  "input_artifacts": [
+    {
+      "bytes": 974736,
+      "cell": "diffusion_temporal",
+      "path": "logs_rhcp/rhvd_eval_strided-flat_s0.npz",
+      "seed": 0,
+      "sha256": "b8e4b4b1798f3792863c6b733fe9d045bce4f6386cc418f4d20e7c92011e1422"
+    },
+    {
+      "bytes": 731060,
+      "cell": "diffusion_spatial",
+      "path": "logs_rhcp/rhvd_eval_hier-long_s0.npz",
+      "seed": 0,
+      "sha256": "ffee8866e85425f2538bbb277833b2c877cf3a6870863b588b3d7764e604b0f1"
+    },
+    {
+      "bytes": 974736,
+      "cell": "regression_temporal",
+      "path": "logs_rhcp/rhvd_eval_strided-flat-reg_s0.npz",
+      "seed": 0,
+      "sha256": "743650937e16fa35f53d198526d91d4459eb9c5bb0a9e3ede000126123e61654"
+    },
+    {
+      "bytes": 731060,
+      "cell": "regression_spatial",
+      "path": "logs_rhcp/rhvd_eval_reg-long_s0.npz",
+      "seed": 0,
+      "sha256": "2708c5e8cac232594df1d56e9f207a9edd2234daaaefe7d3ff836c593da3cad6"
+    },
+    {
+      "bytes": 974736,
+      "cell": "diffusion_temporal",
+      "path": "logs_rhcp/rhvd_eval_strided-flat_s1.npz",
+      "seed": 1,
+      "sha256": "aa049ee2c1390c3a862e253ad6dac6f65f9e4495969300f9dcd7f592517b9eda"
+    },
+    {
+      "bytes": 974736,
+      "cell": "diffusion_spatial",
+      "path": "logs_rhcp/rhvd_eval_hier-long_s1.npz",
+      "seed": 1,
+      "sha256": "6376882b0f50d096abf34c244acc1549726ab9e34f399a5c47e6c1f279c5a523"
+    },
+    {
+      "bytes": 974736,
+      "cell": "regression_temporal",
+      "path": "logs_rhcp/rhvd_eval_strided-flat-reg_s1.npz",
+      "seed": 1,
+      "sha256": "4efe5a7eb3b1f1a03f5ca25c8d1ed140d4fe1434126a1f9de27dbd16eb3595e0"
+    },
+    {
+      "bytes": 974736,
+      "cell": "regression_spatial",
+      "path": "logs_rhcp/rhvd_eval_reg-long_s1.npz",
+      "seed": 1,
+      "sha256": "2d2cd642528edf79e044ccb936061e9b8f2d245bcfb7ca8294ff50d8d8d21a28"
+    },
+    {
+      "bytes": 974736,
+      "cell": "diffusion_temporal",
+      "path": "logs_rhcp/rhvd_eval_strided-flat_s2.npz",
+      "seed": 2,
+      "sha256": "d5388e9de644f2a8d2be643c6c75517c1795a68f3b5b4088e10e25bc30785abc"
+    },
+    {
+      "bytes": 974736,
+      "cell": "diffusion_spatial",
+      "path": "logs_rhcp/rhvd_eval_hier-long_s2.npz",
+      "seed": 2,
+      "sha256": "5a6ea75e672e73fddd71cb893fd5ebf061145889b837389987df3b71e26ec3ce"
+    },
+    {
+      "bytes": 549452,
+      "cell": "regression_temporal",
+      "path": "artifacts/training/e4-head-package-seed2/strided-flat-reg/seed-2/cf50f37223afbf33/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "65e26768f7488d67677b3c25ca5379835231637ba2a04c150aace12da36e560d"
+    },
+    {
+      "bytes": 560696,
+      "cell": "regression_spatial",
+      "path": "artifacts/training/e4-head-package-seed2/reg-long/seed-2/c1eefc99257e1a3a/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "ad5e0983b88faf121c673bccff381bb8f985e44cb3e8d4a3fddb40ee3265fe6b"
+    }
+  ],
+  "manifests": {
+    "reg-long": {
+      "artifact_count": 19,
+      "manifest_sha256": "579b90bbf126eb8de05b494b85a0117059ba4746402ed286c4c15763d0b26f56",
+      "run_spec_hash": "c1eefc99257e1a3a"
+    },
+    "strided-flat-reg": {
+      "artifact_count": 19,
+      "manifest_sha256": "7f8e914816ccb5e7b7cb9b53783ebe00c06a7f8c58504ab4d14562e5636e08f1",
+      "run_spec_hash": "cf50f37223afbf33"
+    }
+  },
+  "results_sha256": "f052a7e0f09046319d8868db3773df47976a29b01280aca18d069b373b460e4e",
+  "schema_version": 1,
+  "status": "PASS",
+  "study": "e4-head-package-seed2"
+}

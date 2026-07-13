@@ -59,7 +59,8 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Both registered reach-band effects confirm on both seeds with clip-bootstrap intervals excluding zero |
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
-| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **RUNNING**; `reg-long` seed 2 started 2026-07-13 00:15 Kyiv under RunSpec `c1eefc99257e1a3a` | Complete exactly two B16×30k regression cells; no optimizer-regime change |
+| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **TRIGGERED / NOT AUTHORIZED OR STARTED** | Must replace/reduce E6, E8c or E9; freeze and re-gate before launch |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -264,7 +265,62 @@ decision here before any new training launch.
   checkpoint. Final acceptance requires the second immutable artifact, paired seed-2 analysis and
   the preregistered E4b trigger calculation.
 
-## 2. Current handoff boundary — E0
+#### Final audit E4-F — 2026-07-13 09:28 Europe/Kyiv
+
+- **Training and budget:** both frozen B16×30k cells completed without a retry, checkpoint
+  selection, extension or optimizer change. `reg-long` RunSpec `c1eefc99257e1a3a` used 3.1733
+  project GPU-hours and produced ALL foreground MSE 0.1528. `strided-flat-reg` RunSpec
+  `cf50f37223afbf33` used 2.9495 hours and produced 0.1736. The E4a total is **6.1228 GPU-hours**
+  against the 11-hour authorized maximum. Project GPU ownership ended after the second upload;
+  no subsequent experiment launched.
+- **Training health:** the second cell's late fixed-grid warning correctly anticipated a weaker
+  seed-2 temporal-regression model, but its training remained finite, smooth and operationally
+  healthy. Final loss was 0.0173, fixed-grid h4 foreground MSE 0.0401, stable throughput 0.35
+  s/update and 6.26 GB measured peak. This is scientific training-seed variation, not a spill,
+  stall or wrapper failure: H3b parity was exact, the spatial v2 cell matched the legacy envelope,
+  and both qualitative rollouts remained coherent.
+- **Artifact and cloud integrity:** each v2 run has a COMPLETE marker, 19-item immutable manifest,
+  15,200 finite paired records and verified byte counts/SHA-256 hashes. Both W&B training runs and
+  analysis run `e4-analysis-284bda366cf7` are cloud-state `finished`, with final summaries and
+  artifacts present.
+- **Analysis compatibility incident:** the launcher's first post-training analysis stopped before
+  writing results because the legacy hierarchical NPZs predate arm-independent `dt/seen` fields.
+  This did not affect training or metric artifacts. The adapter now requires and verifies the
+  actual paired estimand geometry (`clip`, `h`, `hard`, `fg`) and cross-checks `dt/seen` wherever
+  present. Three focused regression tests and the full CPU suite (**41 passed**) validate the
+  repair. The analyzer was then rerun once; no model evaluation or holdout access was repeated.
+- **Independent completion gate:** `scripts/validate_e4_completion.py` independently verifies both
+  RunSpec identities, frozen hyperparameters, COMPLETE markers, every manifest artifact, GPU
+  ledger limits, paired geometry, all observed effects/bootstrap intervals and the E4b rule.
+  Result: `E4_COMPLETION_PASS` in
+  `artifacts/e4_head_package/completion_validation.json`.
+- **Registered results:** positive package effects favor temporally sparse full-resolution
+  history; negative interactions mean regression shifts toward spatial coarsening.
+
+  | Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+  |---:|---:|---:|---:|
+  | 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | −0.0089 [−0.0151, −0.0025] |
+  | 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | −0.0150 [−0.0199, −0.0104] |
+  | 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | −0.0319 [−0.0401, −0.0245] |
+
+- **Scientific verdict:** E4a resolves the three tested seeds in favor of a consistent
+  head-induced shift: every interaction is negative and every within-seed conditional interval
+  excludes zero. It does **not** establish that regression always favors spatial packaging;
+  regression's package sign varies by seed. Report the two statements together. All factorial
+  cells use the existing adaptively used evaluation pool, so E4a remains development evidence and
+  is not a second untouched confirmation.
+- **Preregistered next gate:** E4b fires for both registered reasons—regression effects include a
+  value ≥ +0.005 and values ≤ −0.005, and their sample SD is 0.0161 > 0.010. E4b remains
+  replacement-only and is **not automatically authorized**. Before another launch, choose which
+  of E6/E8c/E9 it replaces, freeze its eight-cell RunSpec ledger and confirm the revised
+  sub-400-hour envelope. T1 remains article/title-relevant, so E5a remains the next independent
+  closure study if E4b is not taken immediately.
+
+Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.json`,
+`artifacts/e4_head_package/completion_validation.json`, and W&B group
+`e4-head-package-seed2`.
+
+## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
 

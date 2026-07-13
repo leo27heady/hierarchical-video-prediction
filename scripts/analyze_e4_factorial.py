@@ -41,10 +41,29 @@ def _load(path: Path) -> dict[str, np.ndarray]:
 
 
 def _aligned(*runs: dict[str, np.ndarray]) -> None:
-    for key in ("clip", "h", "hard", "dt", "seen"):
+    if not runs:
+        raise ValueError("at least one factorial cell is required")
+    # clip/h/hard define the paired record geometry used by every E4 estimand. The oldest
+    # hierarchical rollout files predate the arm-independent dt/seen instrumentation, so those
+    # labels are corroborating alignment checks when available rather than required inputs.
+    for index, run in enumerate(runs):
+        missing = {"clip", "h", "hard", "fg"} - set(run)
+        if missing:
+            raise ValueError(f"factorial cell {index} is missing required fields: {sorted(missing)}")
+        expected_shape = run["clip"].shape
+        for key in ("h", "hard", "fg"):
+            if run[key].shape != expected_shape:
+                raise ValueError(f"factorial cell {index} has unaligned {key} shape")
+    for key in ("clip", "h", "hard"):
         first = runs[0][key]
         if any(not np.array_equal(first, run[key]) for run in runs[1:]):
             raise ValueError(f"factorial cells are not paired on {key}")
+    for key in ("dt", "seen"):
+        available = [run[key] for run in runs if key in run]
+        if len(available) > 1 and any(
+            not np.array_equal(available[0], values) for values in available[1:]
+        ):
+            raise ValueError(f"available factorial labels are not paired on {key}")
 
 
 def _markdown(result: dict) -> str:

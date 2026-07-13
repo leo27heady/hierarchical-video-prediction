@@ -825,3 +825,36 @@ disclosed in the completion validator, with approximately 0.01 hour charged cons
 Evidence: `docs/confirmation/E2_RESULTS.md`,
 `artifacts/confirmation_e2/results.json`, and
 `artifacts/confirmation_e2/completion_validation.json`.
+
+### E4a HEAD × PACKAGE FACTORIAL COMPLETE (2026-07-13; H3b parity-gated) — **CONSISTENT HEAD SHIFT, HETEROGENEOUS REGRESSION WINNER**
+
+The two missing B16×30k regression cells were trained at seed 2 through the parity-gated
+provenance-v2 wrapper. `reg-long` completed in 3.1733 GPU-hours (ALL 0.1528) and
+`strided-flat-reg` in 2.9495 GPU-hours (ALL 0.1736), for 6.1228 hours total against the frozen
+11-hour maximum. Both immutable manifests, all artifact hashes, paired 15,200-record geometry and
+the registered statistics pass the independent completion validator. The analysis-only first
+attempt correctly stopped because legacy hierarchical NPZs predate arm-independent `dt/seen`
+fields; the repaired adapter requires and verifies the actual estimand geometry (`clip`, `h`,
+`hard`) and compares `dt/seen` wherever available. No training or metric values changed.
+
+Positive package effects favor temporally sparse full-resolution context; negative interactions
+mean regression shifts that contrast toward spatial coarsening.
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
+| 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
+| 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
+
+The formal E4a answer is therefore two-part. Changing to regression shifts the package contrast
+toward spatial coarsening on all three tested training seeds, with each conditional interval below
+zero. But regression does not select one package robustly across seeds: one seed favors temporal
+anchors and two favor spatial coarsening. The preregistered E4b trigger fires both because the
+regression effects cross +0.005/−0.005 and because their sample SD is 0.0161 > 0.010. Clip-cluster
+intervals quantify evaluation uncertainty conditional on a model and are not used to justify
+additional training seeds. All E4 factorial cells use the existing adaptively used evaluation
+pool; this is development evidence and is not presented as another untouched confirmation.
+
+Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.json`,
+`artifacts/e4_head_package/completion_validation.json`; W&B group
+`e4-head-package-seed2`. E4b is a replacement-only decision gate, not an automatic additive run.

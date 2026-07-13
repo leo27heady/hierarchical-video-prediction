@@ -25,15 +25,17 @@ inside its 48-frame reach but outside theirs: the post-hoc pair-specific effects
 +0.0809 for the 14-to-48-frame band across two seeds. At larger tested budgets, full-resolution
 context recovers and can become preferable. A stride-2 package wins at 512 tokens across diffusion
 seeds, but the legacy implementation also changes its target interface, so this is reported as a
-configuration effect pending a fixed-target control. Temporal subsampling versus spatial
-coarsening is head- and seed-sensitive under regression, and self-fed rollout exposes a boundary
-between addressable and reliable memory.
+configuration effect pending a fixed-target control. A three-seed factorial shows that changing
+from diffusion to regression consistently shifts the temporal-versus-spatial package contrast
+toward spatial coarsening, while regression's package winner remains seed-sensitive. Self-fed
+rollout exposes a separate boundary between addressable and reliable memory.
 
 These results support a scoped account: context reach explains where memory can help; fidelity
 explains why compression can lose after reach is saturated; trust limits what addressable memory
 can deliver during rollout. They do not establish universal laws or a unique continuous crossing.
-The final confirmatory analysis is preregistered for a new hash-pinned holdout and includes
-false-positive-sensitive, component and coverage endpoints.
+The central reach–fidelity comparisons were confirmed once on a hash-pinned untouched holdout,
+with false-positive-sensitive, component and coverage endpoints. All claims remain scoped to the
+procedural static-world testbed, frozen representation and tested training regimes.
 
 ## 1. Introduction
 
@@ -207,10 +209,17 @@ configuration-level wording until the fixed-target control lands.
 ### 4.4 Temporal versus spatial packages and head interaction
 
 Under diffusion, temporally subsampled full-resolution history beats the spatially coarse package
-by +0.0197 and +0.0046 across two seeds. Under regression the package contrast is +0.0107 at seed 0
-and −0.0104 at seed 1, both intervals excluding zero. Averaging them would hide a sign reversal
-and is not equivalence. The head-induced shift points toward spatial packaging on both seeds,
-which motivates—but does not yet establish—a formal head × package interaction.
+by +0.0197, +0.0046 and +0.0111 across seeds 0–2. Under regression the same temporal-package
+advantage is +0.0107, −0.0104 and −0.0208; every seed-specific interval excludes zero, but the
+winner changes with training seed. Averaging these effects would hide heterogeneity and is not
+equivalence. The registered head × package interactions are −0.0089 [−0.0151, −0.0025], −0.0150
+[−0.0199, −0.0104] and −0.0319 [−0.0401, −0.0245]. Thus regression shifts the contrast toward
+spatial coarsening on all three tested seeds, while the package preference *within regression*
+is not seed-invariant. These clip-cluster intervals condition on each trained model; they do not
+quantify a population of training seeds. The preregistered heterogeneity trigger fires because
+the regression effects cross both material-sign thresholds and have sample SD 0.0161. Unlike E2,
+this factorial uses the existing adaptively used evaluation pool and is therefore measured
+development evidence, not a new untouched confirmation.
 
 ### 4.5 Addressability and trust
 
@@ -257,18 +266,20 @@ package reaches the relevant past; full-resolution fidelity can recover after re
 and self-fed generation can make addressable memory unreliable. Context packaging is the
 intervention; reach, fidelity and trust organize the explanation.
 
-The one-time untouched confirmation is complete and supports the central reach–fidelity account.
-The next causal control holds B1's target interface fixed only if causal stride wording remains;
-the next interaction test completes regression seed 2, and the next trust study varies horizon
-and refresh/corruption directly. Results that fail these tests will narrow the account rather than
-being explained away; that outcome-independent structure is part of the contribution.
+The one-time untouched confirmation supports the central reach–fidelity account, and the
+three-seed factorial supports a consistent head-induced shift without turning regression's
+heterogeneous package effects into an equivalence claim. The next causal control holds B1's target
+interface fixed only if causal stride wording remains. The triggered training-seed expansion and
+the trust replication remain separate gates; the latter varies horizon and refresh/corruption
+directly. Results that fail these tests will narrow the account rather than being explained away;
+that outcome-independent structure is part of the contribution.
 
 ## Required pre-submission inserts
 
-- [ ] integrate seed-2 trio and c2 with regime-correct wording;
+- [x] integrate seed-2 trio and c2 with regime-correct wording;
 - [x] insert untouched-confirmation and metric-decomposition results;
 - [ ] decide whether trust has sufficient replication for the title;
-- [ ] decide whether the regression interaction merits seed 2+;
+- [x] complete regression seed 2 and report the three-seed interaction; E4b heterogeneity trigger fired;
 - [ ] add the fixed-target B1 control or retain configuration-only wording;
 - [ ] replace reference keys with verified primary citations;
 - [ ] generate configuration/cost, claim/evidence and prior-art tables from artifacts;

@@ -3,7 +3,8 @@
 > **Canonical fourth-article source.** This is the authoritative result chapter, governed by
 > `docs/CLAIM_LEDGER.md` and the chronological evidence in `docs/SPATIAL_FACTORIAL.md`. The
 > reach–fidelity–trust draft supplies discussion language only. Treat edges as tested brackets,
-> B1 as a configuration effect, and regression sign reversal as heterogeneity.
+> B1 as a configuration effect, and regression package signs as training-seed heterogeneity
+> within a three-seed-consistent head × package shift.
 
 This chapter reports the article's causal evidence program for context packaging on the testbed
 family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.
@@ -497,10 +498,10 @@ grows.
 abstraction cost, the same window-ordering law as Table 4.2.
 
 **Within-family readout.** spat18-reg (672 tokens) at 0.2008 matches or beats the diffusion
-flat arm flat-budget (1,152 tokens) at 0.2038 — regression + coarse history at 58% of the tokens;
-and with the long window, reg-long is strong across two seeds. This is the best replicated
-spatially coarse recipe, not a global superlative: strided-flat is better at seed 0 under
-diffusion, with its replication and regression twin explicitly open.
+flat arm flat-budget (1,152 tokens) at 0.2038 — regression + coarse history at 58% of the tokens.
+With the long window, reg-long is strong but seed-variable. It is not a global superlative:
+the complete package factorial below shows a stable head-induced shift alongside a heterogeneous
+winner within regression.
 
 **Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
 study on Moving MNIST found that an upper spatial level engaged unstably and added no quality —
@@ -559,25 +560,35 @@ full-resolution slots at stride 4 (span 48) plus the standard 6 recent fine fram
 tokens, deliberately 64 short of the 1,152 pair so the token deficit *favors the control*. It is
 compared against both members of the two-seed 1,152 pairing.
 
-**Measured (2026-07-10, seed 0) — a third outcome, stronger than the pre-registered primary:
-the control doesn't just match the coarse hierarchy, it beats it.** strided-flat scores ALL
-**0.1652** with the sharpest non-flat-long output of the campaign (fg-sharp **0.0919**): against
-hier-long (0.1848/0.0729) the paired Δ is **+0.0197 [+0.0143, +0.0252] WIN**, and against
-flat-budget (0.2038) **+0.0386 [+0.0290, +0.0488] WIN** — both at a 64-token *deficit*. The win
-covers the hard re-entry bins at every horizon (h 1–8 HARD +0.0482; h 25–60 HARD +0.0389): the
-full-resolution anchors retain re-entry identity detail that the coarse code loses — the §4.4.1
-abstraction cost expressed at rollout scale. The pre-registered primary expected a null-ish tie;
-the alternative expected a hier-long win; the measurement resolves in the primary's *direction*
-at greater strength: **span is the currency, and at this operating point temporal subsampling of
-full-resolution history is the better packaging under the diffusion head.** Honest single-seed
-caveats, stated before any escalation: hier-long's seed 0 is its weaker seed (s1 0.1690;
-seed-mean 0.1769 — against the seed-mean the margin is ≈0.012), strided-flat is one seed, and
-memory arms spread ~0.016; per the pre-registered amendment the positive claim requires the
-seed-1 replication, which is now **queued as required** (S1-b). The conservative Claim-1 wording
-softening is applied at seed 0 per the amendment; if seed 1 confirms, the coarse level's defense
-narrows to per-level decodability, dense temporal coverage, and the regression head — where
-§4.4.1 measured abstraction as free, exactly what the pre-registered regression twin
-(strided-flat-reg) now tests directly.
+**Measured three-seed head × package factorial.** The diffusion control first replicated its
+direction: temporal subsampling beats spatial coarsening by +0.0197, +0.0046 and +0.0111 on seeds
+0–2. The regression twin does not reproduce one package winner: its temporal advantage is
++0.0107, −0.0104 and −0.0208. Each seed-specific clip-cluster interval excludes zero, so their
+average is neither a tie nor equivalence. Instead, the registered difference-in-differences is
+negative at every seed:
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
+| 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
+| 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
+
+Thus the generation head consistently changes package shape at this operating point: regression
+shifts the contrast toward spatial coarsening on all three tested training seeds. That is not a
+seed-invariant claim that spatial packaging wins under regression; one regression seed favors
+temporal anchors and two favor spatial coarsening (sample SD 0.0161). The preregistered
+training-seed heterogeneity trigger therefore fires. The intervals above quantify evaluation-set
+uncertainty conditional on each trained model, not uncertainty over a population of training
+seeds.
+
+All factorial cells use the existing adaptively used evaluation pool. These intervals therefore
+support seed-resolved development evidence; they are not an additional untouched confirmation.
+
+The seed-0 qualitative mechanism remains useful but scoped. Temporally sparse full-resolution
+history retains re-entry detail that the frozen 4×4 coarse code can lose, while regression's
+different prediction bias reduces or reverses that advantage. This supports a head-conditional
+package interaction, not “hierarchy unnecessary” or “regression prefers hierarchy” as universal
+rules.
 
 Three scope qualifiers are binding on this reading. **First, the world is static by
 construction** (§2.9): nothing changes in world coordinates between stride-4 anchors, so
@@ -871,23 +882,19 @@ regression head (+0.0008 [−0.0013, +0.0029]) at the same savings. Its real val
 saved tokens buy: window extension at fixed representation is worth −0.027 (G-S3), dwarfing the
 abstraction cost.
 
-**Combined reading.** Within the spatially coarse family, **regression head + coarse history +
-long window** is the strongest replicated recipe (reg-long seed mean 0.1593 at 1,152 tokens);
-at the short window the same head/representation combination (spat18-reg, 672 tokens, 0.2008)
-matches the diffusion flat control at 1,152 tokens (0.2038). Across packaging families,
-strided-flat is better at seed 0 under diffusion; its replication and regression twin are kept
-explicitly open, so no global "cheapest strong" superlative is made here.
+**Combined reading.** At the short window, regression plus coarse history (spat18-reg, 672 tokens,
+0.2008) matches the diffusion flat control at 1,152 tokens (0.2038). At the long window, diffusion
+consistently favors sparse full-resolution anchors, whereas regression's winner varies by seed.
+The robust statement is the three-seed negative head × package interaction, not a global
+“cheapest strong” recipe.
 
-**The shape of the hierarchy (§4.4.2–4.4.5).** MEASURED (s0; s1 queued): the win band's lower
-edge is family-parametric — it moved from 896 tokens (stride-1 coarse, two-seed) to 512
-(stride-2 coarse, +0.0330 [+0.0246, +0.0419], every cell), consistent with its token-arithmetic
-prediction at both tested budgets; each family carries its own plateau level (the stride-2 family ≈+0.017
-above stride-1 — sparser anchors are a real cost). MEASURED (s0; s1 required and queued): span-per-token is
-the frontier's currency in its strongest form — temporally subsampled full-resolution history
-not only reproduces but EXCEEDS the coarse packaging under the diffusion head (strided-flat
-0.1652 beats hier-long +0.0197 [+0.0143, +0.0252] at fewer tokens, sharper by 0.019); the
-coarse level's remaining defense is per-level decodability, dense coverage, and the regression
-head (twin queued). MEASURED (s0, ALT-loss branch): the three-stream
+**The shape of the hierarchy (§4.4.2–4.4.5).** The win band's lower edge is family-parametric:
+the stride-2 512-token configuration wins strongly, but remains a whole-configuration effect
+until its target interface is fixed. Span-per-token is the frontier's currency in its strongest
+diffusion-head form: temporally subsampled full-resolution history beats the coarse package on all
+three seeds. Completing the regression twins reveals the central qualification—regression shifts
+the package contrast toward spatial coarsening on all three seeds, while its package winner itself
+is seed-heterogeneous. MEASURED (s0, ALT-loss branch): the three-stream
 probe COSTS at fixed budget (−0.0196 vs the two-stream arm; null vs flat) with the allocation
 confound disclosed — reported as a depth-plus-objective-allocation result, not "depth hurts";
 the depth hypothesis (single-scale data cannot reward a third scale) stands. Together with the blinding attribution (§4.4.4), the chapter's answer to "which

@@ -854,10 +854,9 @@ that dwarfs the abstraction cost, the same window-ordering law as Table 4.5.
 
 **Within-family readout (measured arm ordering, not a factorial claim).** spat18-reg (672
 tokens) at 0.2008 matches or beats the diffusion flat control flat-budget (1,152 tokens) at
-0.2038 — regression + coarse history at 58% of the tokens; and with the long window (reg-long,
-0.1682 at 1,152 tokens) is the strongest replicated spatially coarse recipe. It is not a global
-superlative: strided-flat is better at seed 0 under diffusion, with replication and its
-regression twin explicitly open.
+0.2038 — regression + coarse history at 58% of the tokens. At the long window, the complete
+three-seed factorial below shows that the head reliably shifts the package contrast but does not
+select one regression package invariantly across training seeds.
 
 **Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
 study on Moving MNIST found that an upper spatial level engaged unstably and added no quality — a
@@ -908,16 +907,29 @@ replication).]**
 
 The control `strided-flat` keeps NO coarse level: 11 full-resolution slots at stride 4 (span 48)
 + 6 recent fine = 1,088 tokens — 64 short of the 1,152 pairing, a deficit that *favors the
-control*. **MEASURED (2026-07-10, s0) — a third outcome, stronger than the primary:** strided-flat
-ALL **0.1652** / sharp 0.0919 BEATS hier-long (0.1848): Δ **+0.0197 [+0.0143, +0.0252]**, and
-flat-budget by +0.0386 — at fewer tokens, winning the hard re-entry bins at every horizon (the
-§4.4.1 abstraction cost expressed at rollout scale). «Валютою фронтиру є проліт-на-токен — і за
-дифузійного ядра часове проріджування повнороздільної історії є КРАЩИМ пакуванням, а не лише
-рівноцінним» [UA-PASS]. Single-seed caveats disclosed (hier-long s0 is its weaker seed; seed-mean
-margin ≈0.012; memory-arm spread ~0.016) → per the pre-registered amendment **seed-1 is REQUIRED
-and queued (S1-b)** before the positive claim escalates; the conservative claim softening is
-applied at s0. The coarse level's remaining defense: per-level decodability, dense coverage, and
-the regression head (strided-flat-reg twin queued). Three binding scope qualifiers (mirror of
+control*. The complete three-seed factorial returns the following package effects (positive means
+the temporal package wins; negative interaction means regression shifts toward spatial
+coarsening):
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
+| 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
+| 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
+
+Thus the diffusion result replicates on all three seeds, and the head-induced shift toward spatial
+coarsening is likewise negative on all three. Regression's *own* package winner remains
+heterogeneous: one seed favors temporal anchors and two favor the spatial package (sample SD
+0.0161), firing the preregistered E4b training-seed trigger. The clip-cluster intervals condition
+on each trained model and cannot substitute for across-training-seed uncertainty. The measured
+statement is «за цієї робочої точки регресійна голівка послідовно зміщує контраст на користь
+просторового стискання, але не визначає інваріантного переможця пакування»—not a universal
+preference for either hierarchy.
+
+All cells in this factorial use the existing adaptively used evaluation pool; E4a is
+seed-resolved development evidence, not a second untouched confirmation.
+
+Three binding scope qualifiers (mirror of
 the article §4.4.3): (1) **static world** — nothing changes between stride-4 anchors, so the
 testbed is maximally kind to temporal subsampling; on data with inter-anchor dynamics the stride
 aliases what a dense stream tracks (the §8.5/§4.7 multi-scale arena measures that cost) — «за
@@ -1483,14 +1495,15 @@ insert the act copies — the current draft has headings only]**.
    the frozen decoder); and flat-long at 2.7× the tokens is the outright Pareto frontier
    (0.1564) — at operating point A, hierarchy is an efficiency point, not a capability necessity.
 
-5. The spatial-abstraction factorial (§4.4) isolated the resolution factor from the window
-   confound and returned an **economic, head-conditional** verdict: coarse history costs the
-   diffusion head −0.0082 [−0.0115, −0.0050] at 42% token savings and is statistically free for
-   the regression head (+0.0008 [−0.0013, +0.0029]); its real value is what the saved tokens
-   buy — window extension at fixed representation is worth −0.027, dwarfing the abstraction
-   cost. Regression head + coarse history + long window is the strongest replicated spatial
-   recipe (seed mean 0.1593 at 1,152 tokens); the temporal package is reported separately until
-   its seed/head resolution lands.
+5. The spatial-abstraction factorial (§4.4) returned an **economic, head-conditional** verdict.
+   At the fixed 18-frame window, coarse history costs diffusion −0.0082 [−0.0115, −0.0050] at
+   42% token savings and is statistically free for regression (+0.0008 [−0.0013, +0.0029]); its
+   value is what the savings buy. At 48-frame reach, temporal full-resolution anchors beat spatial
+   coarsening under diffusion on all three seeds, while regression has one temporal and two
+   spatial winners. The head × package interaction is nevertheless negative on every seed
+   (−0.0089, −0.0150, −0.0319; all conditional intervals below zero). The robust conclusion is a
+   consistent head-induced shift plus regression training-seed heterogeneity, not one universally
+   optimal package.
 
 6. The temporal-capability boundary study at operating point B (§4.5) closed under its binding
    pre-committed rule with a **negative rollout outcome and a characterized single-step
@@ -1542,11 +1555,11 @@ numbered publication list; add conference theses covering the experimental campa
    measured under the diffusion head; regression confirms the interior pair); **(L2)
    saturation** — where flat full-resolution context covers the same span, the abstraction cost
    can dominate (crossover measured in (1,792, 2,432) tokens); **(L3) family edge** — the band's
-   lower edge follows each family's token arithmetic (896 stride-1 two-seed; 512 stride-2 seed-0,
-   seed-1 queued), with a family-specific plateau level; **(L4) shape, resolving** — spatial
-   coarsening and temporal sparsification are not interchangeable (strided full-resolution
-   history beats the coarse packaging under the diffusion head at seed 0; seed-1 and the
-   regression twins pending — the head interaction is the open half; static-world scope binding);
+   lower edge follows each family's tested token arithmetic, with a family-specific plateau level;
+   **(L4) shape** — spatial coarsening and temporal sparsification are not interchangeable:
+   sparse full-resolution history wins under diffusion on three seeds, while regression shifts
+   the contrast toward spatial coarsening on all three but retains heterogeneous package signs
+   (static-world and frozen-representation scope binding);
    **(L5) depth — hypothesis, not law** — a depth-plus-objective-allocation probe on single-scale
    data (only the null branch measurable here); **(L6) trustworthy memory** — a span sufficient
    for single-step retrieval can fail under self-fed rollout (§4.5). Разом ці закони складають
