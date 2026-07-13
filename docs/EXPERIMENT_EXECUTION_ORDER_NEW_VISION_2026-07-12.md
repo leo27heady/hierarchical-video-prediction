@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 1/8 complete** from source commit `fa4906f`; active cell `strided-flat` seed 3, RunSpec `7251715870f7fc9a` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 2/8 complete** from source commit `fa4906f`; active cell `reg-long` seed 3, RunSpec `64efc369b0e6c931` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -469,6 +469,59 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   geometry changed, no retry occurred and no early result selected a branch. Seed 3's diffusion
   package effect remains unknown until the active rollout is paired with the accepted spatial
   cell. Continue unchanged; no stop, relaunch, tuning or budget trigger fires.
+
+#### Intermediate audit E4b-I4 — 2026-07-13 18:11 Europe/Kyiv
+
+- **Second-cell acceptance:** `strided-flat` seed 3 completed the frozen training/evaluation/upload
+  path with exit code zero in **3.0668 project GPU-hours**, below its 4.5-hour cap. Final loss was
+  0.0628, fixed-grid h4 foreground MSE 0.0216 and rollout foreground MSE 0.1638 (h1–48 0.0897;
+  h49–192 0.1980). The rollout is inside the narrow legacy seed-0/1/2 range 0.1636–0.1652 and the
+  final fixed-grid value is likewise inside the 0.0207–0.0219 range.
+- **Second-cell artifact/cloud gate:** PASS. RunSpec `7251715870f7fc9a` reproduces its
+  content-addressed directory identity and frozen source/configuration. All 19 manifest entries
+  reproduce their byte counts and SHA-256 hashes. The rollout contains exactly 15,200 paired
+  records, all registered foreground values are finite, and `clip`, `h`, `hard`, `dt` and `seen`
+  align exactly with the accepted `hier-long` cell. W&B is `finished` with 60 history rows, 15
+  validation grids, final summary/media and a committed training-run artifact.
+- **Second-cell convergence assessment:** seed 3's training loss remained approximately 0.0075
+  above the legacy-seed mean on average and ended at 0.0628, slightly above the prior 0.0558–0.0608
+  range. This does not indicate regime drift: throughput/VRAM stayed at 0.35 s/update and 6.26 GB,
+  the fixed-grid endpoint matched the legacy envelope, the immutable long rollout matched the
+  legacy outcome envelope, and no non-finite value, stall or qualitative corruption occurred.
+  The evidence supports a slower seed-specific training-loss path with normal generalization.
+- **Provisional seed-3 diffusion pair:** applying the registered clip bootstrap to the aligned
+  immutable pair gives `hier-long − strided-flat` = **+0.0075 [0.0037, 0.0114]**, so temporally
+  sparse full-resolution packaging wins this seed. This continues the positive diffusion signs at
+  seeds 0–2 (+0.0197, +0.0046, +0.0111). Full-frame and union error, precision, recall/F1,
+  misses/extras and matched-component IoU also favor `strided-flat`. This is a within-tranche
+  health result on the disclosed adaptive development pool, not a queue-selection event or final
+  five-seed conclusion.
+- **Active regression cell:** `reg-long` seed 3 reached 18,000/30,000 at 0.37–0.40 s/update and
+  6.46 GB measured peak. Across 36 intervals its loss averages +0.0039 above the three legacy
+  seeds; the largest deviation is +0.0293 at 1.5k, before the warm-up transition. After 2k the
+  absolute excess is at most 0.0060 and the curve continues downward to 0.0218 without explosion,
+  oscillatory growth or a plateau in training loss.
+- **Active validation warning, bounded:** the 2k/4k fixed-grid values 0.2565/0.0510 match legacy
+  seeds 1–2. Values at 6k–16k are modestly worse, peaking at +0.0048 above the legacy maximum at
+  12k and narrowing to +0.0007 by 16k (0.0352 versus 0.0344). Legacy seed 0 did not preserve this
+  fixed-grid series. The 16k qualitative grid remains aligned and recognizable. This is a real
+  slower-validation signal worth tracking, but it neither predicts the 152-frame package effect
+  nor meets a failure/intervention criterion.
+- **Active provenance/cloud/process state:** the 18k checkpoint is format 2, RunSpec-bound and
+  complete with model/optimizer/EMA, Python/NumPy/Torch CPU+CUDA RNG, latent statistics and
+  sampler state `examples_seen=288000`, `next_update=18001`. W&B is online and `running` with 35
+  history rows; the public summary lags the newest local validation grid by one interval. The
+  controller and trainer chain is alive and responsive.
+- **GPU/budget/projection:** the two accepted cells charge **6.3630 GPU-hours**. Including the
+  active cell's elapsed ownership gives approximately 8.3 hours at the audit boundary. Six GPU
+  samples ranged from 86–100% utilization, 8.21–8.25/16.38 GB board memory, 62–65°C and
+  approximately 112–114 W; stable 0.38 s/update and fixed measured allocation show no WDDM spill.
+  The active cell should finish near 19:25 Kyiv. The tranche remains projected at **25–28 total
+  GPU-hours**, completing around 2026-07-14 11:00–14:00 Kyiv and below the 36-hour cap.
+- **Registered decision state:** seed 3's head × package interaction is not estimable until both
+  regression cells finish, and the robust-shift rule is not evaluated until all five training
+  seeds are available. The frozen terminal rule still ends after seed 4 for every outcome.
+  Continue unchanged; no stop, retry, tuning, budget or validity trigger fires.
 
 ## 2. Historical handoff boundary — E0
 
