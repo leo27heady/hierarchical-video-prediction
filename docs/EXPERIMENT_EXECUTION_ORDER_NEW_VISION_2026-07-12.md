@@ -228,6 +228,42 @@ decision here before any new training launch.
   operational outcome is successful completion of cell 1 followed by cell 2; the scientific
   interaction sign remains unknowable until both seed-2 rollout artifacts are paired.
 
+#### Intermediate audit E4-I2 — 2026-07-13 06:05 Europe/Kyiv
+
+- **Cell 1 complete:** `reg-long` seed 2 finished training, evaluation and cloud artifact upload
+  with exit code zero in **3.173 GPU-hours**, below its 5-hour maximum. Final loss is 0.0130,
+  fixed-grid h4 foreground MSE 0.0268, and 152-frame rollout foreground MSE 0.1528. The rollout
+  lies between legacy seed 0 (0.1682) and seed 1 (0.1503), so it is plausible training-seed
+  variation rather than a new regime.
+- **Cell 1 integrity:** RunSpec `c1eefc99257e1a3a` is COMPLETE; its manifest contains 19
+  artifacts and every byte count/hash verifies. The rollout has 15,200 finite foreground records.
+  W&B is `finished` with 60 training intervals, 15 validation grids, rollout summary/media and
+  the checkpoint/result artifact.
+- **Cell 2 progress:** `strided-flat-reg` seed 2 reached 27,000/30,000 at 0.35 s/update, 6.26 GB
+  measured peak and RunSpec `cf50f37223afbf33`. Its atomic checkpoint is at 27,000 with complete
+  CPU/CUDA RNG and sampler state (`examples_seen=432000`, `next_update=27001`); 13 grids exist
+  through 26k. Controller, trainer and W&B are alive, with no spill, stall or non-finite loss.
+- **Cell 2 trend versus legacy:** the early warm-up follows the same shape, and loss declines
+  smoothly to 0.0190 at 27k. It is about 0.004 above the two legacy seeds late in training.
+  More importantly, fixed-grid h4 error is 0.0377 at 26k versus 0.0212/0.0210 for legacy seeds.
+  The qualitative grid remains recognizable and aligned, but the quantitative plateau is a real
+  seed-2 warning, not something to average away. H3b exact parity and the healthy v2 spatial cell
+  make a wrapper/regime fault unlikely; material training-seed heterogeneity is the leading
+  explanation. The last 3k updates may still improve it, and only the registered rollout can
+  determine the package effect.
+- **Cloud/GPU/budget:** both W&B streams are continuous; the active run has 53 uploaded training
+  intervals and 13 validation images. GPU is 99–100% utilized, approximately 8.08/16.38 GB board
+  memory, 63°C and 115 W. Cell 2 has used approximately 2.65 hours and should finish training in
+  about 0.29 hour plus evaluation/upload. Projected tranche consumption is approximately
+  6.1–6.4 hours, safely below 11.
+- **Scientific implication:** the current trend raises the probability that regression seed 2
+  will favor the spatial package, but no result is inferred from training/short-grid metrics.
+  If the final rollout is materially worse for the temporal cell, it will strengthen the
+  preregistered across-training-seed heterogeneity trigger rather than invalidate the run.
+- **Decision:** continue unchanged to the frozen endpoint. Do not tune, extend, restart or select a
+  checkpoint. Final acceptance requires the second immutable artifact, paired seed-2 analysis and
+  the preregistered E4b trigger calculation.
+
 ## 2. Current handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
