@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 2/8 complete** from source commit `fa4906f`; active cell `reg-long` seed 3, RunSpec `64efc369b0e6c931` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 3/8 complete** from source commit `fa4906f`; active cell `strided-flat-reg` seed 3, RunSpec `cde73e5f05f5acfc` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -522,6 +522,55 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   regression cells finish, and the robust-shift rule is not evaluated until all five training
   seeds are available. The frozen terminal rule still ends after seed 4 for every outcome.
   Continue unchanged; no stop, retry, tuning, budget or validity trigger fires.
+
+#### Intermediate audit E4b-I5 — 2026-07-13 22:10 Europe/Kyiv
+
+- **Third-cell acceptance:** `reg-long` seed 3 completed the frozen training, deterministic
+  rollout and cloud-upload path with exit code zero in **3.1784 project GPU-hours**, below its
+  4.5-hour cap. Final loss was 0.0168, fixed-grid h4 foreground MSE 0.0291 and rollout foreground
+  MSE 0.1870 (h1–48 0.1133; h49–192 0.2210). The run is operationally valid, but its rollout is
+  materially worse than the earlier seed-0/1/2 range 0.1503–0.1682 and its decoded sharpness
+  0.0600 is below their 0.0741–0.0865 range.
+- **Third-cell heterogeneity interpretation:** the warning seen during training was informative.
+  Across all 60 intervals, seed-3 loss averaged +0.0035 above the three legacy seeds and ended
+  above their 0.0130–0.0152 range. Its final fixed-grid value was also worse than preserved seeds
+  1–2 (0.0242/0.0268). The immutable rollout strip shows coherent early predictions followed by
+  excess fading/missed content at long horizons, not file corruption or model explosion. Treat
+  this as genuine training-seed variation in spatial regression—the uncertainty E4b was designed
+  to measure—not as a failed or selectable run.
+- **Third-cell artifact/cloud gate:** PASS. RunSpec `64efc369b0e6c931` reproduces its directory
+  identity and frozen source/configuration. All 19 manifest entries reproduce their byte counts
+  and SHA-256 hashes. The NPZ has 15,200 finite registered foreground records and aligns exactly
+  with the accepted diffusion cells on `clip`, `h`, `hard`, `dt` and `seen`. W&B is `finished`
+  with 60 history rows, 15 validation grids, final summary/media and a committed training-run
+  artifact.
+- **Active temporal-regression trend:** `strided-flat-reg` seed 3 reached 27,500/30,000 locally
+  (27,000 in the W&B history snapshot) at 0.35–0.36 s/update and 6.26 GB measured peak. Across 54
+  cloud-visible intervals, its loss averages −0.0008 relative to the three legacy seeds and the
+  maximum deviation is 0.0143 at 1.5k. At 27k, loss 0.0151 is within the legacy 0.0149–0.0190
+  range. There is no non-finite value, stall, late growth or numerical-regime warning.
+- **Active validation trajectory:** the 4k grid was temporarily worse than every legacy seed
+  (0.0595 versus 0.0520–0.0532). It re-entered or improved on the legacy envelope thereafter:
+  0.0411 at 8k, 0.0401 at 10k, 0.0277/0.0252 at 20k/22k and 0.0228/0.0218 at 24k/26k. Unlike
+  seed 2's late 0.037–0.040 plateau, seed 3 has reached the seed-0/1 neighborhood. The 26k grid is
+  aligned and visually coherent. Only the frozen 152-frame rollout can determine its package
+  effect.
+- **Active provenance/cloud/process state:** the active RunSpec hash reproduces
+  `cde73e5f05f5acfc` and is source-bound to `fa4906f`. The 27k atomic checkpoint is format 2 with
+  model/optimizer/EMA, all Python/NumPy/Torch CPU+CUDA RNG state, latent statistics and sampler
+  state `examples_seen=432000`, `next_update=27001`. W&B is online and `running` with 54 history
+  rows and validations through 26k. The controller and trainer chain remains alive and responsive.
+- **GPU/budget/projection:** three accepted cells charge **9.5414 GPU-hours**. Including active
+  ownership gives approximately 12.3 hours at the audit boundary. Six samples were 99–100%
+  utilized at 8,175/16,380 MiB board memory, 65–66°C and approximately 119 W; throughput and
+  measured allocation are stable with no WDDM spill. Cell 4 should complete around 22:25 Kyiv,
+  placing the full seed-3 block near 12.5 hours. The tranche remains projected at **approximately
+  25–27 total GPU-hours**, completing around 2026-07-14 11:00–13:00 Kyiv below the 36-hour cap.
+- **Registered decision state:** the poor `reg-long` seed-3 outcome is retained without
+  checkpoint selection or extension. Seed 3's regression package effect and head interaction
+  remain unknown until the active immutable rollout exists; the five-seed t interval and robust
+  all-negative rule remain unavailable until seed 4 completes. Continue unchanged; no stop,
+  retry, tuning, budget or validity trigger fires.
 
 ## 2. Historical handoff boundary — E0
 
