@@ -383,6 +383,46 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   cell should remain below 4.5 hours; the initial eight-cell projection is approximately 27–31
   project GPU-hours, within the frozen 36-hour replacement maximum. Continue unchanged.
 
+#### Intermediate audit E4b-I2 — 2026-07-13 10:08 Europe/Kyiv
+
+- **Progress and liveness:** `hier-long` seed 3 reached update 2,000/30,000 (6.7%) approximately
+  13.5 minutes after cell start. Controller PID 22476, venv shim PID 10880 and trainer PID 24632
+  remain alive in the correct parent chain. The experiment registry, process arguments and
+  RunSpec all agree on study/cell/seed/source commit and the 4.5-hour cell cap. No spill, stall,
+  non-finite value or unexpected process is present.
+- **Expected versus actual convergence:** every observed interval follows the legacy warm-up
+  envelope. The small 2k excess is 0.9% above the largest prior seed and is not a divergence.
+
+  | Update | Seed 3 actual loss | Legacy seeds 0/1/2 | Assessment |
+  |---:|---:|---:|---|
+  | 500 | 1.5590 | 1.5641 / 1.5620 / 1.5590 | inside envelope |
+  | 1,000 | 1.1988 | 1.1813 / 1.2038 / 1.1941 | inside envelope |
+  | 1,500 | 0.8495 | 0.7900 / 0.8450 / 0.8639 | inside envelope |
+  | 2,000 | 0.3995 | 0.3895 / 0.3960 / 0.3749 | +0.0035 above prior maximum; immaterial |
+
+- **Validation/qualitative state:** the fixed-seed 2k grid exists and shows the expected noisy,
+  partially localized warm-up-boundary predictions; it is comparable to the legacy 2k grids and
+  is too early for a rollout/package inference. The local trainer logged the 2k grid while the
+  W&B public API was visible through update 1,500 at the audit cutoff. This short queue lag is not
+  a cloud outage; the run remains state `running`, with the exact 500/1,000/1,500 losses, LR
+  warm-up, throughput and 6.461 GB peak present online.
+- **Checkpoint/provenance:** the 2,000-update atomic checkpoint is 355,264,107 bytes, format 2,
+  bound to RunSpec `e6ff5f95708c15ce`. It contains model, AdamW, EMA, Python/NumPy/Torch
+  CPU+CUDA RNG, four latent-stat tensors and sampler state `examples_seen=32000`,
+  `next_update=2001`. The run is explicitly recoverable but no resume is currently needed.
+- **GPU and throughput:** current utilization is 95–100%, board memory approximately
+  8.15/16.38 GB, 63°C and 113.5 W; observed intervals are 0.38–0.40 s/update, matching the modern
+  legacy seeds. The GPU is compute-saturated, so unused VRAM is not evidence of an unexploited
+  speed path. Frozen B16 remains mandatory.
+- **Budget/projection:** no completed-cell ledger row exists yet, as expected. At the observed
+  rate, remaining training is approximately 2.96 hours plus diffusion rollout/upload, keeping
+  the cell near 3.3–3.6 hours and below 4.5. The tranche remains projected at 27–31 hours below
+  its 36-hour replacement cap.
+- **Scientific validity/decision:** the manipulated factors, target interface, optimizer, EMA,
+  evaluation geometry and adaptive-development-pool disclosure remain exactly frozen. No early
+  metric is used for selection. Continue unchanged; no stop, restart, tuning or design trigger
+  fires.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
