@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **TRIGGERED / NOT AUTHORIZED OR STARTED** | Must replace/reduce E6, E8c or E9; freeze and re-gate before launch |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **PREPARING / NOT YET AUTHORIZED OR STARTED** | Frozen eight-cell design replaces E8c; CPU/parity/data/W&B gates must pass before launch |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -319,6 +319,26 @@ decision here before any new training launch.
 Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.json`,
 `artifacts/e4_head_package/completion_validation.json`, and W&B group
 `e4-head-package-seed2`.
+
+#### E4b preparation decision — 2026-07-13 09:45 Europe/Kyiv
+
+- **Authority and replacement:** the author approved the preregistered recommendation to proceed.
+  E4b is replacement-only: its **36-hour maximum replaces E8c's 50-hour GPU allocation**. The
+  architecture/protocol comparison table remains mandatory CPU-only work. Protected reserve is
+  unavailable to E4b.
+- **Frozen design:** all four head × package cells run at seeds 3 and 4 under the unchanged
+  B16×30k, LR 3e-4, warm-up 2k, EMA 0.999, bf16, NFE-16, 100-clip/152-frame development-pool
+  regime. There are eight sequential cells with 4.5 hours maximum each. Batch enlargement to fill
+  VRAM remains prohibited because it would change the factorial's optimizer regime.
+- **Training-seed analysis:** report every conditional clip-bootstrap interval, then treat the five
+  training seeds as units for mean, sample SD and a two-sided Student-t interval (df=4). A robust
+  head shift requires all five interaction estimates negative and the seed-level interval below
+  zero. Regression package stability requires the same material sign on all five seeds; otherwise
+  report sign counts and heterogeneity.
+- **Terminal rule:** E4b ends after seeds 3–4 for every result. It cannot authorize seeds 5+.
+- **Current gate:** implementation is prepared but fail-closed authorization remains pending a
+  clean preparation commit, full CPU suite, H3b source-hash parity, design/data/budget validation,
+  immutable attestations and a live W&B write test. No GPU launch occurs before all pass.
 
 ## 2. Historical handoff boundary — E0
 
@@ -634,7 +654,7 @@ budget?
 **Portfolio status:** deferred. Classical retrieval and a tightly audited CW-VAE bridge cover the
 present baseline question without opening a separate learned-retrieval research programme.
 
-### E8c — CW-VAE-style baseline/protocol bridge
+### E8c — CW-VAE-style baseline/protocol bridge — GPU allocation replaced by E4b
 
 Mandatory output regardless of training: an architecture/protocol comparison table with CW-VAE,
 DLH, TECO, WorldPack, CaR/SceneFly, MemLearner, GIM-World, Self Forcing and this work.
@@ -655,7 +675,8 @@ target budgets, training horizon, rollout, NFE and metrics. If a defensible brid
 within the 50-hour maximum, retain the transparent comparison table and do not train an ambiguous
 baseline.
 
-**Current E8 allocation:** **25–54 GPU hours** for E8a/E8c.
+**Current E8 allocation:** E8a retains 0–4 GPU hours. E8c training is removed from the active
+portfolio and replaced by E4b; its architecture/protocol comparison table remains CPU-only.
 
 ## 11. Counterfactual Dynamic LoopWorld — E9
 
@@ -726,9 +747,9 @@ the H3b trainer/provenance integration and its numerical-parity gate precede eve
 | 6 | E7a/c | Alternate-AE and sampler/NFE robustness | closure robustness | 28–44 h | 2–5 d |
 | 7 | E8a | Classical pose-indexed retrieval | closure baseline | 0–4 h | 2–5 d |
 | 8 | E6 | Phase C hybrid on long Moving-MNIST | article-utility gated | 30–40 h | 1–3 d |
-| 9 | E8c | CW-VAE protocol bridge | equivalence-audit gated extension | 25–50 h | 3–7 d |
+| 9 | E4b | Seeds 3–4 factorial expansion | triggered; replaces E8c | 28–36 h | 2–4 h |
 | 10 | E9 | Counterfactual Dynamic LoopWorld primary factorial | post-freeze extension | 60–100 h | 1–2 wk |
-| — | E4b | Seeds 3–4 factorial expansion | replacement-only seed trigger | 28–36 h | 2–4 h |
+| — | E8c | CW-VAE protocol bridge training | removed/replaced by E4b; table remains CPU-only | 0 | 3–7 d table/audit |
 | — | E3b/E5c/E7b/E8b/E9c/E10 | Additional methods/extensions | deferred outside portfolio | — | future work |
 
 ## 14. Totals
@@ -749,11 +770,11 @@ E7a/E7c, E8a and article-utility-gated E6.
 
 ### Pool B — optional extension
 
-The extension envelope contains only a protocol-audited E8c and the post-freeze E9 primary
-factorial.
+The extension envelope contains triggered E4b in place of E8c training, plus the post-freeze E9
+primary factorial.
 
-- **maximum allocation:** **150 GPU hours**;
-- E8c: at most 50 hours;
+- **maximum allocation:** **136 GPU hours**;
+- E4b: at most 36 hours, replacing E8c;
 - E9: at most 100 hours;
 - unused closure budget does not automatically authorize extension work.
 
@@ -765,10 +786,10 @@ factorial.
 
 ### Hard ceiling and replacement rule
 
-The expected maximum is approximately **381 GPU hours**, leaving about 19 hours below the absolute
-400-hour ceiling. Plan toward roughly **330 hours of scientific runs**, not 400 hours of spending.
-E4b has no additive allocation: if its preregistered training-seed trigger fires, it replaces or
-reduces E6, E8c or E9. E3b, E5c, E7b, E8b, E9c and E10 are outside this portfolio.
+The revised expected maximum is approximately **367 GPU hours**, leaving about 33 hours below the
+absolute 400-hour ceiling. Plan toward roughly **316 hours of scientific runs**, not 400 hours of
+spending. E4b has replaced E8c rather than adding to the portfolio. E3b, E5c, E7b, E8b, E9c and
+E10 remain outside this portfolio.
 
 Before each tranche, replace estimates with measured probes and a run-count ledger. A tranche is
 not authorized unless its maximum fits the remaining non-reserve envelope. Stop when the claims are

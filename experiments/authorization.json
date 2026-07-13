@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-12-post-e2-e4a-authorization",
+  "updated": "2026-07-13-e4b-preparation",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -59,8 +59,8 @@
       ]
     },
     "regression-factorial-seed2": {
-      "status": "AUTHORIZED",
-      "meaning": "E2 retained F3 centrally; run exactly the two frozen seed-2 regression cells under the parity-proven provenance-v2 wrapper.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E4a completed, independently validated and integrated; its trigger evidence is immutable.",
       "required_files": [
         "experiments/configs/regression_factorial_seed2.json",
         "hvp_rev/rhvd_train_v2.py",
@@ -79,6 +79,32 @@
         {
           "path": "gates/e4_design_validated.json",
           "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e4_design_validation.json"}
+        }
+      ]
+    },
+    "head-package-seeds3-4": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "meaning": "Triggered E4b expansion: exact four-cell factorial at seeds 3 and 4, replacing E8c GPU allocation and terminating after seed 4.",
+      "required_files": [
+        "experiments/configs/regression_factorial_seeds3_4.json",
+        "hvp_rev/rhvd_train_v2.py",
+        "scripts/run_e4b_factorial.ps1",
+        "scripts/analyze_e4b_factorial.py",
+        "scripts/validate_e4b_completion.py",
+        "docs/confirmation/E4B_TABLE_SHELL.md"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/h3b_parity.json",
+          "attests": {"status": "H3B_PARITY_PASS", "subject": "gates/h3b_parity_report.json"}
+        },
+        {
+          "path": "gates/e4b_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/regression_factorial_seeds3_4.json"}
+        },
+        {
+          "path": "gates/e4b_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e4b_design_validation.json"}
         }
       ]
     },
