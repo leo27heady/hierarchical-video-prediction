@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **AUTHORIZED / NOT STARTED**; frozen config hash `91546ce4…`, 45 tests and immutable CPU/design/parity gates pass | Live W&B write gate and clean-worktree check remain launch-time requirements |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **AUTHORIZED / LAUNCH GATES PASS / NOT YET STARTED**; frozen config hash `91546ce4…`, 45 tests, CPU/design/parity and W&B write gates pass | Launch sequentially from a clean commit; first cell `hier-long` seed 3 |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -344,6 +344,22 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   `gates/e4b_design_validated.json`. E4b is authorized. A clean worktree, no competing project
   trainer, a repeated design check and a live W&B write remain mandatory immediately before GPU
   launch.
+
+#### E4b launch gate E4b-I0 — 2026-07-13 09:52 Europe/Kyiv
+
+- Authorization ledger: `head-package-seeds3-4 = AUTHORIZED`; all three required hash-bound
+  attestations pass.
+- Repeated design/data/parity/budget validation: PASS with zero existing E4b RunSpecs and exact
+  36/36 replacement-hour allocation.
+- W&B online write: PASS at
+  `https://wandb.ai/leo27heady/hgrid/runs/e4b-gate-54814fdf-20260713095143`, using `_netrc`
+  after removing only the inherited process-level API key.
+- CPU/software state: 45 tests pass; Python compilation and PowerShell parser pass; worktree is
+  otherwise clean. No project Python trainer is active and no competing project controller was
+  detected.
+- Frozen launch order: complete all four seed-3 cells, then all four seed-4 cells; each cell has a
+  4.5-hour cap and the tranche has a 36-hour cap. No automatic retry, tuning, extension or seed-5
+  branch is allowed.
 
 ## 2. Historical handoff boundary — E0
 
