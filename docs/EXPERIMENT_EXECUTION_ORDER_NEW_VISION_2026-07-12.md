@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 3/8 complete** from source commit `fa4906f`; active cell `strided-flat-reg` seed 3, RunSpec `cde73e5f05f5acfc` | Eight cells sequential; four-hour deep audits; no regime changes or automatic retry |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 5/8 complete** from source commit `fa4906f`; active cell `strided-flat` seed 4, RunSpec `b9e170d46d96db84` | Seed-3 all-negative interaction criterion failed; complete frozen seed-4 block for five-seed estimate; no regime changes or automatic retry |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -571,6 +571,61 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   remain unknown until the active immutable rollout exists; the five-seed t interval and robust
   all-negative rule remain unavailable until seed 4 completes. Continue unchanged; no stop,
   retry, tuning, budget or validity trigger fires.
+
+#### Intermediate audit E4b-I6 — 2026-07-14 02:12 Europe/Kyiv
+
+- **Fourth-cell acceptance:** `strided-flat-reg` seed 3 completed with exit code zero in **2.9710
+  project GPU-hours**, below its 4.5-hour cap. Final loss was 0.0148, fixed-grid h4 foreground MSE
+  0.0219 and rollout foreground MSE 0.1622 (h1–48 0.0882; h49–192 0.1963). The rollout is within
+  the earlier temporal-regression seed range and sharply better than seed 3's accepted
+  `reg-long` result. Its W&B run is `finished` with 60 history rows, 15 grids, final summary/media
+  and a committed training-run artifact.
+- **Seed-3 four-cell integrity:** PASS. Every one of the four RunSpecs reproduces its
+  content-addressed identity and COMPLETE marker; all 76 manifest entries reproduce byte counts
+  and SHA-256 hashes. All four NPZs contain 15,200 finite registered foreground records and align
+  exactly on `clip`, `h`, `hard`, `dt` and `seen`. There was no retry, checkpoint selection,
+  extension or data/evaluation geometry change.
+- **Seed-3 registered effects:** the registered clip bootstrap gives:
+
+  | Effect (`spatial − temporal`) | Estimate | 95% conditional CI | Interpretation |
+  |---|---:|---:|---|
+  | Diffusion package | +0.0075 | [+0.0037, +0.0114] | temporal package better |
+  | Regression package | +0.0248 | [+0.0181, +0.0323] | temporal package better |
+  | Head × package interaction | **+0.0173** | **[+0.0106, +0.0245]** | regression shifts toward temporal, opposite to seeds 0–2 |
+
+- **Preregistered robustness verdict already determined:** the robust negative head-shift rule
+  requires all five interactions to be negative *and* the across-seed t interval below zero.
+  Seed 3 is conclusively positive, so this conjunctive criterion cannot pass regardless of seed
+  4. The seeds-0–2 finding remains accurate but must be described as three-seed-local, not a
+  stable head-induced shift. Regression package signs through seed 3 are `+ / − / − / +`, so a
+  stable regression package preference is also ruled out. Seed 4 remains mandatory to estimate
+  the five-seed mean, SD and t interval and to complete the frozen terminal design.
+- **Fifth-cell acceptance:** `hier-long` seed 4 completed with exit code zero in **3.2961
+  GPU-hours**. Final loss was 0.0447, fixed-grid h4 foreground MSE 0.0361 and rollout foreground
+  MSE 0.1682 (h1–48 0.0966; h49–192 0.2012). Training loss averaged +0.0038 relative to seeds
+  0–3 and the final fixed-grid value is modestly worse, but the long-rollout result is inside the
+  prior outcome envelope and the strip is coherent. All 19 manifest artifacts verify, pairing
+  fields are complete, and W&B is `finished` with a committed artifact. This is accepted seed
+  variation, not operational drift.
+- **Active sixth cell:** `strided-flat` seed 4 reached 4,500/30,000 at 0.35 s/update and 6.26 GB
+  measured peak. Loss was above all prior seeds at 1.5k (1.0217 versus 0.9642–0.9893), then crossed
+  below the prior envelope at 3k/3.5k and returned inside it at 4k. Fixed-grid h4 MSE is healthy:
+  0.2404 at 2k lies inside the prior range and 0.0458 at 4k is better than every prior seed. This
+  is a transient warm-up-shape difference, not divergence.
+- **Active provenance/cloud/process state:** RunSpec `b9e170d46d96db84` reproduces its identity
+  and frozen source commit. The 4k checkpoint is format 2 with model/optimizer/EMA, complete
+  Python/NumPy/Torch CPU+CUDA RNG, latent statistics and sampler state `examples_seen=64000`,
+  `next_update=4001`. W&B is online and `running` with eight history rows and two validation
+  grids. The controller/trainer chain is alive and responsive.
+- **GPU/budget/projection:** five accepted cells charge **15.8085 GPU-hours**; including active
+  ownership gives approximately 16.3 hours. Six samples were 95–100% utilized at about
+  8.05–8.06/16.38 GB board memory, 63–65°C and 114–115 W. Stable throughput/allocation show no
+  WDDM spill. The current cell should finish near 04:45 Kyiv; the full tranche remains projected
+  at **approximately 24.5–26 GPU-hours**, completing around 2026-07-14 10:45–12:00 Kyiv and below
+  the 36-hour cap.
+- **Decision:** continue the three remaining seed-4 cells unchanged. They can refine the
+  five-seed estimand but cannot rescue the failed all-negative robustness criterion. No stop,
+  retry, tuning, budget or validity trigger fires, and no subsequent study is authorized here.
 
 ## 2. Historical handoff boundary — E0
 
