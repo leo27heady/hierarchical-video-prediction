@@ -855,8 +855,8 @@ that dwarfs the abstraction cost, the same window-ordering law as Table 4.5.
 **Within-family readout (measured arm ordering, not a factorial claim).** spat18-reg (672
 tokens) at 0.2008 matches or beats the diffusion flat control flat-budget (1,152 tokens) at
 0.2038 — regression + coarse history at 58% of the tokens. At the long window, the complete
-three-seed factorial below shows that the head reliably shifts the package contrast but does not
-select one regression package invariantly across training seeds.
+five-seed factorial below separates a stable diffusion package effect from regression and
+cross-head training-seed heterogeneity.
 
 **Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
 study on Moving MNIST found that an upper spatial level engaged unstably and added no quality — a
@@ -907,7 +907,7 @@ replication).]**
 
 The control `strided-flat` keeps NO coarse level: 11 full-resolution slots at stride 4 (span 48)
 + 6 recent fine = 1,088 tokens — 64 short of the 1,152 pairing, a deficit that *favors the
-control*. The complete three-seed factorial returns the following package effects (positive means
+control*. The complete five-seed factorial returns the following package effects (positive means
 the temporal package wins; negative interaction means regression shifts toward spatial
 coarsening):
 
@@ -916,17 +916,19 @@ coarsening):
 | 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
 | 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
 | 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
+| 3 | +0.0075 [+0.0037, +0.0114] | +0.0248 [+0.0181, +0.0323] | **+0.0173 [+0.0106, +0.0245]** |
+| 4 | +0.0060 [+0.0027, +0.0092] | −0.0166 [−0.0229, −0.0108] | **−0.0226 [−0.0297, −0.0160]** |
 
-Thus the diffusion result replicates on all three seeds, and the head-induced shift toward spatial
-coarsening is likewise negative on all three. Regression's *own* package winner remains
-heterogeneous: one seed favors temporal anchors and two favor the spatial package (sample SD
-0.0161), firing the preregistered E4b training-seed trigger. The clip-cluster intervals condition
-on each trained model and cannot substitute for across-training-seed uncertainty. The measured
-statement is «за цієї робочої точки регресійна голівка послідовно зміщує контраст на користь
-просторового стискання, але не визначає інваріантного переможця пакування»—not a universal
-preference for either hierarchy.
+Diffusion favors temporal subsampling on all five seeds (mean +0.0098, SD 0.0060, t95 [+0.0023,
++0.0173]). Regression has two temporal and three spatial material winners (mean −0.0024, SD
+0.0195, t95 [−0.0266, +0.0217]). The head interaction changes sign and has mean −0.0122 with t95
+[−0.0353, +0.0109], so the preregistered robust negative-shift rule fails. The clip-cluster
+intervals condition on each trained model; the t intervals use training seeds as units. The
+measured statement is «за цієї робочої точки дифузійна голівка стабільно використовує часово
+розріджене повнороздільне пакування, тоді як регресійна голівка демонструє залежність від
+навчального зерна»—not a universal preference or directional head law.
 
-All cells in this factorial use the existing adaptively used evaluation pool; E4a is
+All cells in this factorial use the existing adaptively used evaluation pool; E4a/E4b is
 seed-resolved development evidence, not a second untouched confirmation.
 
 Three binding scope qualifiers (mirror of
@@ -1499,11 +1501,11 @@ insert the act copies — the current draft has headings only]**.
    At the fixed 18-frame window, coarse history costs diffusion −0.0082 [−0.0115, −0.0050] at
    42% token savings and is statistically free for regression (+0.0008 [−0.0013, +0.0029]); its
    value is what the savings buy. At 48-frame reach, temporal full-resolution anchors beat spatial
-   coarsening under diffusion on all three seeds, while regression has one temporal and two
-   spatial winners. The head × package interaction is nevertheless negative on every seed
-   (−0.0089, −0.0150, −0.0319; all conditional intervals below zero). The robust conclusion is a
-   consistent head-induced shift plus regression training-seed heterogeneity, not one universally
-   optimal package.
+   coarsening under diffusion on all five seeds, while regression has two temporal and three
+   spatial material winners. The head × package interaction changes sign and its five-seed t95
+   crosses zero. The robust conclusion is a stable diffusion package result plus regression and
+   cross-head training-seed heterogeneity, not a directional head law or one universally optimal
+   package.
 
 6. The temporal-capability boundary study at operating point B (§4.5) closed under its binding
    pre-committed rule with a **negative rollout outcome and a characterized single-step

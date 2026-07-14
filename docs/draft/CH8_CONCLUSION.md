@@ -58,12 +58,12 @@ section only when its evidence row is complete, and its wording carries its scop
   budgets; each family carries
   its own plateau level (stride-2 ≈ +0.017 above stride-1). Status: seed 0; seed-1 replication
   queued before headline use.
-- **L4 — Shape law (resolving).** Spatial coarsening and temporal sparsification are not
-  interchangeable: at this operating point, strided full-resolution history beats the coarse
-  hierarchy under the diffusion head (+0.0197 [+0.0143, +0.0252], seed 0; seed-1 required and
-  queued; regression twins queued — the head interaction is the open half). Scope: one
-  static-world setting (maximally kind to temporal subsampling), this autoencoder's 4×4 code;
-  data-dependence untested (a rate-stress suite is future work).
+- **L4 — Package-shape boundary.** Spatial coarsening and temporal sparsification are not
+  interchangeable under the diffusion head at this operating point: strided full-resolution
+  history wins on all five seeds (mean +0.0098, t95 [+0.0023, +0.0173]). Regression has two
+  temporal and three spatial material winners, and the cross-head interaction t95 crosses zero.
+  Scope: one adaptively used static-world pool (maximally kind to temporal subsampling) and this
+  autoencoder's 4×4 code; diffusion is stable, but cross-head generalization is unsupported.
 - **L5 — Depth hypothesis (allocation probe, not a law).** Depth should pay only where the data
   contain another scale to own. Measured (seed 0): the three-stage probe *costs* at fixed budget
   on single-scale loopmom (−0.0196 [−0.0248, −0.0146] vs the two-stage arm; null vs flat; the

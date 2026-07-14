@@ -47,7 +47,7 @@ hours, deviations and the resulting gate decision. Raw logs, W&B and immutable a
 the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
 `GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
 
-#### Programme status at 2026-07-12 23:58 Europe/Kyiv
+#### Programme status at 2026-07-14 14:12 Europe/Kyiv
 
 | ID | Workstream | Expected before execution | Actual/status | Decision |
 |---|---|---|---|---|
@@ -58,10 +58,10 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2a | Untouched LoopMom holdout | 1–2 CPU hours | **COMPLETE**; 500×200 set, seed 20260712, dataset ID `loopmom-confirmation_holdout-20260712-e033abee6e04`; no train/test glyph collisions | Dataset is now accessed and permanently frozen |
 | E2b | Two primary confirmation pairs | 4–8 GPU-hours | **COMPLETE**; all 8 evaluations succeeded in 0.687 GPU-hours | Both registered reach-band effects confirm on both seeds with clip-bootstrap intervals excluding zero |
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
-| E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
-| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 7/8 complete** from source commit `fa4906f`; final cell `strided-flat-reg` seed 4, RunSpec `88a6f1f4707eb85c`, is active | Diffusion temporal-package advantage is positive on all five seeds; cross-head all-negative criterion failed at seed 3; finish the frozen terminal cell and registered five-seed analysis |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
+| E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
+| E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NEXT CPU PREPARATION; NOT STARTED** | E2/H3b prerequisites pass; freeze and validate E5a replication design before any new launch; E5b remains contingent on E5a |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -717,6 +717,59 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   sign counts. The failed all-negative rule is a scoped negative/boundary result, not a blocker
   for the primary diffusion claim. No stop, retry, tuning, budget or estimand-validity trigger
   fires, and no subsequent experiment is authorized before final E4b validation and integration.
+
+#### Final audit E4b-I9 — 2026-07-14 14:12 Europe/Kyiv
+
+- **Final-cell acceptance:** `strided-flat-reg` seed 4 completed with exit code zero in **2.9534
+  project GPU-hours**, below its 4.5-hour cap. Final loss was 0.0177, fixed-grid h4 foreground MSE
+  0.0234 and rollout foreground MSE **0.1745** (h1–48 0.1038; h49–192 0.2071). Its rollout strip
+  is coherent and exhibits ordinary long-horizon errors rather than collapse.
+- **Final-cell training health:** all 60 loss intervals are finite. Relative to seeds 0–3, mean
+  loss difference is −0.0025; 18/60 intervals fall outside the prior min–max envelope, principally
+  because seed 4 converged much faster during warm-up. After 3.5k, 42/54 intervals are inside the
+  envelope; isolated late highs recover without growth or stall. Validation was briefly above
+  the prior range at 16k/18k, then improved monotonically enough to finish at 0.0234 inside the
+  prior range. Mean throughput was 0.351 s/update (range 0.349–0.372) at 6.26 GB measured peak;
+  no numerical drift or WDDM spill occurred.
+- **Seed-4 paired result:** all four seed-4 cells align exactly on 15,200 finite records. The
+  regression spatial-minus-temporal effect is **−0.0166 [−0.0229, −0.0108]**, favoring spatial
+  coarsening for this seed. After subtracting the diffusion effect, the head × package interaction
+  is **−0.0226 [−0.0297, −0.0160]**.
+- **Registered five-seed result:**
+
+  | Estimand | Seed effects | Mean | SD | Across-seed t95 |
+  |---|---|---:|---:|---:|
+  | Diffusion temporal advantage | `+0.0197 / +0.0046 / +0.0111 / +0.0075 / +0.0060` | +0.0098 | 0.0060 | **[+0.0023, +0.0173]** |
+  | Regression temporal advantage | `+0.0107 / −0.0104 / −0.0208 / +0.0248 / −0.0166` | −0.0024 | 0.0195 | [−0.0266, +0.0217] |
+  | Head × package interaction | `−0.0089 / −0.0150 / −0.0319 / +0.0173 / −0.0226` | −0.0122 | 0.0186 | [−0.0353, +0.0109] |
+
+  Diffusion favors temporal packaging on all five tested training seeds. Regression has two
+  temporal and three spatial material winners. Because the interaction changes sign and its
+  training-seed interval crosses zero, the preregistered robust negative head-shift rule is
+  **false**. The E4a three-seed pattern remains historically accurate but is not a robust
+  directional head law.
+- **Immutable/cloud completion:** independent validation status is PASS. The frozen config SHA-256
+  is `91546ce4499c580dffe7340dd8a1401c89254c3cb88afd324d44a3faeb72610d`; result SHA-256 is
+  `eb917d948d852d022b872532b826bdb20fc1f17ecfddb55a76446f1821bc9e89`. All eight new RunSpec
+  identities, COMPLETE markers and **152/152 manifest artifacts** reproduce; all 20 factorial
+  inputs align on the registered geometry. W&B shows eight finished scientific-training runs and
+  one finished factorial-analysis run, each with a committed primary artifact. Rollout chunk
+  progress produced non-monotonic-step warnings and was omitted from W&B history, but final
+  metrics, media, summaries and immutable artifacts are present; this is a telemetry-maintenance
+  issue with no effect on the estimand.
+- **Budget/terminal state:** E4b consumed **24.9922 project GPU-hours** against 36 authorized, with
+  no failed attempt, resume or retry. The controller exited after `E4B_FACTORIAL_DONE`; the active
+  registry is terminal `complete`, no project experiment process remains, and the GPU is idle for
+  this project.
+- **Claim integration:** `docs/CLAIM_LEDGER.md`, the canonical article sources, dissertation
+  Chapter 4 and `docs/SPATIAL_FACTORIAL.md` now separate the five-seed-stable diffusion result
+  from regression/cross-head heterogeneity. The directional head-shift claim is demoted, not
+  hidden; E4b is terminal and authorizes no seeds 5+.
+- **Next decision-tree gate:** E3a remains deferred because current prose consistently calls B1 a
+  whole-configuration effect. The next title-level scientific question is E5a trust replication.
+  Only CPU preparation is now in scope: freeze the decisive H-grid3 pair, seeds 1–2, estimand,
+  artifact reuse, runtime probe and stop rule; then run design/provenance/oracle gates. This audit
+  grants no new GPU launch authority, and E5b remains outcome-contingent on E5a replication.
 
 ## 2. Historical handoff boundary — E0
 

@@ -25,10 +25,10 @@ inside its 48-frame reach but outside theirs: the post-hoc pair-specific effects
 +0.0809 for the 14-to-48-frame band across two seeds. At larger tested budgets, full-resolution
 context recovers and can become preferable. A stride-2 package wins at 512 tokens across diffusion
 seeds, but the legacy implementation also changes its target interface, so this is reported as a
-configuration effect pending a fixed-target control. A three-seed factorial shows that changing
-from diffusion to regression consistently shifts the temporal-versus-spatial package contrast
-toward spatial coarsening, while regression's package winner remains seed-sensitive. Self-fed
-rollout exposes a separate boundary between addressable and reliable memory.
+configuration effect pending a fixed-target control. A five-seed factorial finds a stable
+temporal-package advantage under diffusion, but sign-changing package effects under regression
+and no training-seed-robust directional head interaction. Self-fed rollout exposes a separate
+boundary between addressable and reliable memory.
 
 These results support a scoped account: context reach explains where memory can help; fidelity
 explains why compression can lose after reach is saturated; trust limits what addressable memory
@@ -102,7 +102,8 @@ The fourth article contributes:
 2. tested rate-versus-resolution packages at explicit context-token budgets;
 3. pair-specific reach-differential analysis derived from comparator geometry;
 4. lower- and upper-regime inversions reported as tested configurations, not interpolated laws;
-5. seed-resolved evidence that the generation head changes package contrasts;
+5. a five-seed package factorial that separates a stable diffusion result from regression and
+   cross-head heterogeneity;
 6. a separation between addressable memory and self-fed reliability;
 7. an untouched-confirmation protocol with false-positive-sensitive and coverage endpoints;
 8. explicit reporting of negative, confounded and seed-sensitive outcomes.
@@ -208,18 +209,27 @@ configuration-level wording until the fixed-target control lands.
 
 ### 4.4 Temporal versus spatial packages and head interaction
 
-Under diffusion, temporally subsampled full-resolution history beats the spatially coarse package
-by +0.0197, +0.0046 and +0.0111 across seeds 0–2. Under regression the same temporal-package
-advantage is +0.0107, −0.0104 and −0.0208; every seed-specific interval excludes zero, but the
-winner changes with training seed. Averaging these effects would hide heterogeneity and is not
-equivalence. The registered head × package interactions are −0.0089 [−0.0151, −0.0025], −0.0150
-[−0.0199, −0.0104] and −0.0319 [−0.0401, −0.0245]. Thus regression shifts the contrast toward
-spatial coarsening on all three tested seeds, while the package preference *within regression*
-is not seed-invariant. These clip-cluster intervals condition on each trained model; they do not
-quantify a population of training seeds. The preregistered heterogeneity trigger fires because
-the regression effects cross both material-sign thresholds and have sample SD 0.0161. Unlike E2,
-this factorial uses the existing adaptively used evaluation pool and is therefore measured
-development evidence, not a new untouched confirmation.
+The five-seed factorial gives a clean result under diffusion and a boundary under regression:
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | −0.0089 [−0.0151, −0.0025] |
+| 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | −0.0150 [−0.0199, −0.0104] |
+| 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | −0.0319 [−0.0401, −0.0245] |
+| 3 | +0.0075 [+0.0037, +0.0114] | +0.0248 [+0.0181, +0.0323] | +0.0173 [+0.0106, +0.0245] |
+| 4 | +0.0060 [+0.0027, +0.0092] | −0.0166 [−0.0229, −0.0108] | −0.0226 [−0.0297, −0.0160] |
+
+All five diffusion effects favor temporally sparse full-resolution context. Their across-training-
+seed mean is +0.0098, SD 0.0060, with t95 [+0.0023, +0.0173]. Regression instead has two
+temporal and three spatial material winners; its mean is −0.0024 with t95 [−0.0266, +0.0217].
+The interaction also changes sign, with mean −0.0122 and t95 [−0.0353, +0.0109]. Consequently,
+the preregistered robust negative head-shift rule fails. The defensible conclusion is that the
+diffusion package result is stable across the five tested seeds, whereas package utilization
+under regression and cross-head generalization are training-seed-sensitive. This is not
+equivalence and not evidence for a directional head law. Clip-cluster intervals condition on
+each trained model; the t intervals use training seeds as units. Unlike E2, this factorial uses
+the existing adaptively used evaluation pool and is measured development evidence, not a new
+untouched confirmation.
 
 ### 4.5 Addressability and trust
 
@@ -266,20 +276,22 @@ package reaches the relevant past; full-resolution fidelity can recover after re
 and self-fed generation can make addressable memory unreliable. Context packaging is the
 intervention; reach, fidelity and trust organize the explanation.
 
-The one-time untouched confirmation supports the central reach–fidelity account, and the
-three-seed factorial supports a consistent head-induced shift without turning regression's
-heterogeneous package effects into an equivalence claim. The next causal control holds B1's target
-interface fixed only if causal stride wording remains. The triggered training-seed expansion and
-the trust replication remain separate gates; the latter varies horizon and refresh/corruption
-directly. Results that fail these tests will narrow the account rather than being explained away;
-that outcome-independent structure is part of the contribution.
+The one-time untouched confirmation supports the central reach–fidelity account. The five-seed
+factorial strengthens the diffusion temporal-package result while rejecting a training-seed-
+robust directional head shift; regression remains a sign-changing scope boundary rather than an
+equivalence result. Because the article retains configuration-level B1 wording, the fixed-target
+control is not required for its present causal scope. Trust replication is the next title-level
+gate and varies horizon and refresh/corruption directly. Results that fail these tests will narrow
+the account rather than being explained away; that outcome-independent structure is part of the
+contribution.
 
 ## Required pre-submission inserts
 
 - [x] integrate seed-2 trio and c2 with regime-correct wording;
 - [x] insert untouched-confirmation and metric-decomposition results;
 - [ ] decide whether trust has sufficient replication for the title;
-- [x] complete regression seed 2 and report the three-seed interaction; E4b heterogeneity trigger fired;
+- [x] complete the five-seed E4a/E4b factorial; retain stable diffusion packaging and demote the
+      directional head-shift claim;
 - [ ] add the fixed-target B1 control or retain configuration-only wording;
 - [ ] replace reference keys with verified primary citations;
 - [ ] generate configuration/cost, claim/evidence and prior-art tables from artifacts;

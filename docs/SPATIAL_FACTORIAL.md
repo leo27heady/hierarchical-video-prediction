@@ -858,3 +858,29 @@ pool; this is development evidence and is not presented as another untouched con
 Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.json`,
 `artifacts/e4_head_package/completion_validation.json`; W&B group
 `e4-head-package-seed2`. E4b is a replacement-only decision gate, not an automatic additive run.
+
+### E4b FIVE-SEED FACTORIAL COMPLETE (2026-07-14) — **STABLE DIFFUSION PACKAGE, HETEROGENEOUS REGRESSION AND HEAD INTERACTION**
+
+Seeds 3–4 completed all four frozen cells through the provenance-v2 wrapper in **24.9922 project
+GPU-hours**, below the 36-hour replacement cap. All eight new manifests (152 artifacts), pairing
+geometry, registered statistics and W&B training/analysis artifacts pass the independent
+completion gate.
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 | +0.0107 | −0.0089 |
+| 1 | +0.0046 | −0.0104 | −0.0150 |
+| 2 | +0.0111 | −0.0208 | −0.0319 |
+| 3 | +0.0075 | +0.0248 | +0.0173 |
+| 4 | +0.0060 | −0.0166 | −0.0226 |
+
+Diffusion is positive on all five seeds: mean **+0.0098**, SD 0.0060, t95 **[+0.0023,
++0.0173]**. Regression has two temporal and three spatial material winners: mean −0.0024, SD
+0.0195, t95 [−0.0266, +0.0217]. The interaction changes sign: mean −0.0122, SD 0.0186, t95
+[−0.0353, +0.0109]. Therefore the preregistered robust negative head-shift rule fails. E4b is
+terminal: no seeds 5+ are authorized. The article retains the stable diffusion result and reports
+regression/cross-head behavior as a training-seed-sensitive scope boundary.
+
+Evidence: `docs/confirmation/E4B_RESULTS.md`, `artifacts/e4b_head_package/results.json`,
+`artifacts/e4b_head_package/completion_validation.json`; W&B group
+`e4b-head-package-seeds3-4`.

@@ -3,8 +3,8 @@
 > **Canonical fourth-article source.** This is the authoritative result chapter, governed by
 > `docs/CLAIM_LEDGER.md` and the chronological evidence in `docs/SPATIAL_FACTORIAL.md`. The
 > reach–fidelity–trust draft supplies discussion language only. Treat edges as tested brackets,
-> B1 as a configuration effect, and regression package signs as training-seed heterogeneity
-> within a three-seed-consistent head × package shift.
+> B1 as a configuration effect, a five-seed-stable diffusion package result, and regression plus
+> head × package effects as training-seed heterogeneity.
 
 This chapter reports the article's causal evidence program for context packaging on the testbed
 family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.
@@ -560,26 +560,25 @@ full-resolution slots at stride 4 (span 48) plus the standard 6 recent fine fram
 tokens, deliberately 64 short of the 1,152 pair so the token deficit *favors the control*. It is
 compared against both members of the two-seed 1,152 pairing.
 
-**Measured three-seed head × package factorial.** The diffusion control first replicated its
-direction: temporal subsampling beats spatial coarsening by +0.0197, +0.0046 and +0.0111 on seeds
-0–2. The regression twin does not reproduce one package winner: its temporal advantage is
-+0.0107, −0.0104 and −0.0208. Each seed-specific clip-cluster interval excludes zero, so their
-average is neither a tie nor equivalence. Instead, the registered difference-in-differences is
-negative at every seed:
+**Measured five-seed head × package factorial.** Positive effects favor temporal subsampling;
+negative interactions mean regression shifts the contrast toward spatial coarsening.
 
 | Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
 |---:|---:|---:|---:|
 | 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
 | 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
 | 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
+| 3 | +0.0075 [+0.0037, +0.0114] | +0.0248 [+0.0181, +0.0323] | **+0.0173 [+0.0106, +0.0245]** |
+| 4 | +0.0060 [+0.0027, +0.0092] | −0.0166 [−0.0229, −0.0108] | **−0.0226 [−0.0297, −0.0160]** |
 
-Thus the generation head consistently changes package shape at this operating point: regression
-shifts the contrast toward spatial coarsening on all three tested training seeds. That is not a
-seed-invariant claim that spatial packaging wins under regression; one regression seed favors
-temporal anchors and two favor spatial coarsening (sample SD 0.0161). The preregistered
-training-seed heterogeneity trigger therefore fires. The intervals above quantify evaluation-set
-uncertainty conditional on each trained model, not uncertainty over a population of training
-seeds.
+Diffusion favors temporal subsampling on all five seeds (mean +0.0098, SD 0.0060, t95 [+0.0023,
++0.0173]). Regression has two temporal and three spatial material winners (mean −0.0024, SD
+0.0195, t95 [−0.0266, +0.0217]). The interaction is negative on four seeds but positive on seed 3;
+its mean is −0.0122 with t95 [−0.0353, +0.0109]. The preregistered robust directional head-shift
+rule therefore fails. The stable result is diffusion's temporal-package advantage; regression
+and cross-head transfer are training-seed-sensitive boundaries. The clip intervals quantify
+evaluation-set uncertainty conditional on each model, while the t intervals use training seeds
+as units.
 
 All factorial cells use the existing adaptively used evaluation pool. These intervals therefore
 support seed-resolved development evidence; they are not an additional untouched confirmation.
@@ -587,8 +586,8 @@ support seed-resolved development evidence; they are not an additional untouched
 The seed-0 qualitative mechanism remains useful but scoped. Temporally sparse full-resolution
 history retains re-entry detail that the frozen 4×4 coarse code can lose, while regression's
 different prediction bias reduces or reverses that advantage. This supports a head-conditional
-package interaction, not “hierarchy unnecessary” or “regression prefers hierarchy” as universal
-rules.
+scope boundary, not a stable directional interaction, “hierarchy unnecessary,” or “regression
+prefers hierarchy” as universal rules.
 
 Three scope qualifiers are binding on this reading. **First, the world is static by
 construction** (§2.9): nothing changes in world coordinates between stride-4 anchors, so
@@ -885,16 +884,16 @@ abstraction cost.
 **Combined reading.** At the short window, regression plus coarse history (spat18-reg, 672 tokens,
 0.2008) matches the diffusion flat control at 1,152 tokens (0.2038). At the long window, diffusion
 consistently favors sparse full-resolution anchors, whereas regression's winner varies by seed.
-The robust statement is the three-seed negative head × package interaction, not a global
-“cheapest strong” recipe.
+The robust statement is the five-seed diffusion result plus a cross-head generalization boundary,
+not a directional head law or global “cheapest strong” recipe.
 
 **The shape of the hierarchy (§4.4.2–4.4.5).** The win band's lower edge is family-parametric:
 the stride-2 512-token configuration wins strongly, but remains a whole-configuration effect
 until its target interface is fixed. Span-per-token is the frontier's currency in its strongest
 diffusion-head form: temporally subsampled full-resolution history beats the coarse package on all
-three seeds. Completing the regression twins reveals the central qualification—regression shifts
-the package contrast toward spatial coarsening on all three seeds, while its package winner itself
-is seed-heterogeneous. MEASURED (s0, ALT-loss branch): the three-stream
+five seeds. Completing the regression twins reveals the central qualification—regression has no
+seed-stable package ordering, and the cross-head shift is not directionally robust. MEASURED (s0,
+ALT-loss branch): the three-stream
 probe COSTS at fixed budget (−0.0196 vs the two-stream arm; null vs flat) with the allocation
 confound disclosed — reported as a depth-plus-objective-allocation result, not "depth hurts";
 the depth hypothesis (single-scale data cannot reward a third scale) stands. Together with the blinding attribution (§4.4.4), the chapter's answer to "which
