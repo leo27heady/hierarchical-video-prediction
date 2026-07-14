@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 complete, cell 2/4 `d0-diff-long` seed 1 at approximately 11k/40k at 2026-07-14 19:31 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 complete, cell 2/4 `d0-diff-long` seed 1 at 38k/40k at 2026-07-14 23:31 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -870,6 +870,43 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   operational formatting/telemetry details already seen in E4b; training histories, summaries,
   immutable artifacts and the scientific records are intact. No intervention or E5b authorization
   is justified.
+
+#### Intermediate audit E5-I3 — 2026-07-14 23:31 Europe/Kyiv
+
+- **Controller/current state:** controller PID 2988 and the sole project trainer PID 2972 are
+  healthy. Cell 2/4, `d0-diff-long` seed 1, reached **38,000/40,000** updates under the unchanged
+  RunSpec `25bc12c6a4bd3b71`. The update-38,000 checkpoint is readable and provenance-complete:
+  format version 2, the expected RunSpec hash, all Python/NumPy/CPU/CUDA RNG states, four latent
+  statistics tensors, 304,000 examples seen and sampler next update 38,001. There is no restart,
+  resume, process conflict or geometry change.
+- **Training versus the matching seed-0 arm:** all 76 available 500-update intervals are finite.
+  Seed-1 mean loss is **1.021×** seed 0 over the common trace and **1.038×** over the last 10k
+  updates; the current 37.5k cloud value is 0.08273 versus 0.0736. This small seed-level offset is
+  not mirrored by validation deterioration. The eighteen fixed-grid reads average **0.01893 versus
+  0.01842**, range 0.00680–0.16128 versus 0.0069–0.1640, and the latest value is 0.00790 versus
+  0.0071. Loss and validation remain decreasing, bounded and consistent with ordinary training-seed
+  variation.
+- **Throughput/GPU health:** mean observed throughput is **0.5283 s/update** versus 0.5727 for the
+  seed-0 run, with a tight 0.5239–0.5660-second interval and no analogue of the legacy 1.12-second
+  WDDM stall. Peak allocated VRAM remains exactly 7.386 GiB. Board telemetry is 8.87/16.38 GB,
+  100% utilization, approximately 68 °C and 120 W; the trainer is the only project compute
+  process and there is no spill or numerical warning. W&B is live through `C:\Users\leoni\_netrc`,
+  reports the correct run as `running`, and appropriately has no terminal training artifact before
+  rollout/completion.
+- **Expected versus actual:** the preceding audit projected the end of cell 2 near 00:00 Kyiv. At
+  38k, approximately 17.6 minutes of training plus the previously measured roughly 0.22-hour
+  rollout/upload remain, so the projection is holding. Reusing measured cell durations places
+  seed-2 hierarchy completion near 02:30–02:45 and terminal E5a validation near **08:30–09:15 Kyiv**
+  on 2026-07-15. Project GPU ownership consumed by this point is approximately **8.0 hours**;
+  expected terminal consumption remains about **17.1 hours** (conservatively approximately 19),
+  comfortably inside the registered 28-hour maximum.
+- **Scientific gate:** the seed-1 hierarchy artifact is valid, but neither the registered early
+  h1–24 effect nor late h61–256 effect is evaluated until this seed-matched comparator produces its
+  complete 25,600-record rollout. Single-arm health values cannot trigger the two-window decision.
+  The estimand, paired clip pool, batch/LR/update/EMA/NFE regime and source commit remain intact.
+- **Decision:** continue unchanged. No intervention, frozen-regime modification or E5b
+  authorization is justified. The next audit should first validate the completed seed-1 paired
+  effects and content-addressed cloud artifacts, then examine the active seed-2 cell.
 
 ## 2. Historical handoff boundary — E0
 
