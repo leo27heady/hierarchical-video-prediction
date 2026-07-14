@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 `d1-56-diff` seed 1 launched at 2026-07-14 15:26 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 complete, cell 2/4 `d0-diff-long` seed 1 at approximately 11k/40k at 2026-07-14 19:31 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -828,6 +828,48 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   task. Each audit compares loss, validation, throughput and VRAM with the same-arm seed-0 trace,
   checks content-addressed checkpoints/cloud artifacts and GPU-hour headroom, and updates this
   ledger without altering the frozen regime.
+
+#### Intermediate audit E5-I2 — 2026-07-14 19:31 Europe/Kyiv
+
+- **Controller/current state:** controller PID 2988 is healthy. Cell 1/4, `d1-56-diff` seed 1,
+  completed normally in **2.4362 project GPU-hours** versus 2.4914 hours at seed 0 and 4.5 hours
+  authorized. Cell 2/4, `d0-diff-long` seed 1, is active at approximately 11k/40k under RunSpec
+  `25bc12c6a4bd3b71`; its RNG-complete checkpoint is valid at update 11,000 with Python, NumPy,
+  CPU and CUDA RNG state plus the correct next-update sampler state.
+- **Completed hierarchy training versus seed 0:** all 80 logged 500-update intervals are finite.
+  Mean observed throughput is **0.1969 s/update** versus 0.2011, maximum 0.2060; peak allocated
+  VRAM is exactly 3.635 GiB. Seed-1 training loss is on average 1.128× seed 0 and ends at 0.09988
+  versus 0.0847. This is not accompanied by validation degradation: across the twenty fixed-grid
+  reads, mean h4 foreground MSE is **0.05129 versus 0.05108**, with overlapping ranges
+  0.0330–0.1803 versus 0.0309–0.1752; the final values are 0.0380 versus 0.0343. The trace is
+  decreasing and stable, with no NaN, stall, restart or spill.
+- **Completed hierarchy rollout/artifacts:** evaluation contains exactly **25,600 records**, 100
+  clips 150–249 and horizons 1–256, paired labels and every complete-v2 metric. Primary and
+  false-positive-sensitive arrays are finite where defined; matched-component quantities are
+  finite on their 8,384 scorable records rather than through survivorship intersection. Mean
+  foreground MSE is 0.22414 versus 0.22771 for the seed-0 hierarchy; h1–48 is 0.19309, h49–192
+  0.23348, h193+ 0.22640 and answerable HARD dt>48 0.31852. These single-arm values are health
+  checks only—the registered E5a effect remains unreadable until its seed-matched comparator lands.
+  The content-addressed COMPLETE marker and all **24/24 manifest artifacts** independently hash,
+  and W&B is terminal `finished` with a 357.2 MB `training-run` artifact under aliases `latest`
+  and `d1-56-diff-s1`.
+- **Active comparator versus seed 0:** through 10.5k common updates, loss is only 1.013× the seed-0
+  trajectory; at 10k it is 0.12651 versus 0.1330. The five fixed-grid values through 10k average
+  0.04702 versus 0.04512 and end at **0.00852 versus 0.0085**. Mean throughput is 0.5277 s/update
+  versus 0.5495 over the same early interval, peak allocated VRAM is 7.386 GiB and the latest
+  observed interval remains normal. Board telemetry is 8.75/16.38 GB, 97–100% compute,
+  approximately 67–69 °C and 120 W. No WDDM spill, competing compute process or numerical anomaly
+  is present; W&B is live and current.
+- **Projection/budget:** cell 2 should finish near **2026-07-15 00:00 Kyiv** if 0.528 s/update and
+  the measured approximately 0.22-hour rollout persist. Reusing observed cell times projects seed-2
+  hierarchy completion near 02:30 and terminal E5a analysis/validation near **08:30–09:00 Kyiv**.
+  Expected total is approximately **17.1 GPU-hours** (conservatively still about 19 hours), leaving
+  roughly 9–11 hours below the frozen 28-hour maximum. The estimand, source commit, batch/LR/update/
+  EMA/NFE geometry and clip pool remain unchanged.
+- **Decision:** continue unchanged. The UTF-16 controller log and W&B rollout-step warnings are
+  operational formatting/telemetry details already seen in E4b; training histories, summaries,
+  immutable artifacts and the scientific records are intact. No intervention or E5b authorization
+  is justified.
 
 ## 2. Historical handoff boundary — E0
 
