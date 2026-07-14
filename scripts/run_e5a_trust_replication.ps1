@@ -35,7 +35,8 @@ if ($Resume -and $entries.Count -gt 0) {
     $scientificPaths = @(
         "hvp_rev/arm_registry.py", "hvp_rev/provenance.py", "hvp_rev/rhvd.py",
         "hvp_rev/rhvd_train_v2.py", $Config, "scripts/analyze_e5a_trust_replication.py",
-        "scripts/validate_e5a_completion.py"
+        "scripts/validate_e5a_completion.py", "scripts/validate_e5a_design.py",
+        "scripts/run_e5a_trust_replication.ps1"
     )
     & git diff --quiet $sourceCommit $currentCommit -- $scientificPaths
     if ($LASTEXITCODE -ne 0) {
@@ -43,10 +44,15 @@ if ($Resume -and $entries.Count -gt 0) {
     }
 }
 
+$selfProcess = Get-CimInstance Win32_Process -Filter "ProcessId=$PID"
+$parentPid = [int]$selfProcess.ParentProcessId
 $projectProcesses = @(Get-CimInstance Win32_Process | Where-Object {
     $_.CommandLine -and
-    $_.CommandLine -match 'hvp_rev\.rhvd_train_v2|run_e5a_trust_replication|run_e4b_factorial' -and
-    $_.ProcessId -ne $PID
+    $_.ProcessId -notin @($PID, $parentPid) -and (
+        ($_.Name -match '^python(?:\.exe)?$' -and $_.CommandLine -match 'hvp_rev\.rhvd_train_v2') -or
+        ($_.Name -match 'powershell' -and
+         $_.CommandLine -match '-File\s+[^\r\n]*run_(?:e5a_trust_replication|e4b_factorial)\.ps1')
+    )
 })
 if ($projectProcesses.Count -ne 0) { throw "Another project controller/trainer is active" }
 
@@ -92,7 +98,8 @@ foreach ($run in $configValue.new_training_runs) {
     }
 
     $projectProcesses = @(Get-CimInstance Win32_Process | Where-Object {
-        $_.CommandLine -and $_.CommandLine -match 'hvp_rev\.rhvd_train_v2' -and
+        $_.CommandLine -and $_.Name -match '^python(?:\.exe)?$' -and
+        $_.CommandLine -match 'hvp_rev\.rhvd_train_v2' -and
         $_.ProcessId -ne $PID
     })
     if ($projectProcesses.Count -ne 0) { throw "Another project trainer appeared" }

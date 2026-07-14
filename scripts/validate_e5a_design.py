@@ -173,7 +173,8 @@ def main() -> None:
 
     required = [
         "hvp_rev/rhvd_train_v2.py", "scripts/analyze_e5a_trust_replication.py",
-        "scripts/run_e5a_trust_replication.ps1", "scripts/validate_e5a_completion.py",
+        "scripts/run_e5a_trust_replication.ps1", "scripts/validate_e5a_design.py",
+        "scripts/validate_e5a_completion.py",
         "docs/confirmation/E5A_TABLE_SHELL.md",
     ]
     for path in required:
@@ -193,6 +194,9 @@ def main() -> None:
         "resolved_arms": resolved, "data_hashes": data_hashes, "ae_sha256": ae_hash,
         "pinned_prior_hashes": pinned, "seed0_reference": reference,
         "h3b_parity_sha256": sha256_file(h3b_path) if h3b_path.is_file() else "",
+        "implementation_hashes": {
+            path: sha256_file(path) for path in required if Path(path).is_file()
+        },
         "existing_runs": existing, "failures": failures,
     }
     atomic_write_json(args.out, report)
