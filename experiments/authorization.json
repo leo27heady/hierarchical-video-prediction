@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-13-e4b-authorization",
+  "updated": "2026-07-14-e5a-authorization",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -83,8 +83,8 @@
       ]
     },
     "head-package-seeds3-4": {
-      "status": "AUTHORIZED",
-      "meaning": "Triggered E4b expansion: exact four-cell factorial at seeds 3 and 4, replacing E8c GPU allocation and terminating after seed 4.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E4b completed at seeds 3 and 4; evidence is frozen and no seed 5+ is authorized.",
       "required_files": [
         "experiments/configs/regression_factorial_seeds3_4.json",
         "hvp_rev/rhvd_train_v2.py",
@@ -106,6 +106,33 @@
         {
           "path": "gates/e4b_design_validated.json",
           "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e4b_design_validation.json"}
+        }
+      ]
+    },
+    "trust-replication-seeds1-2": {
+      "status": "AUTHORIZED",
+      "meaning": "E5a replication of the frozen H-grid3 long-rollout pair at seeds 1 and 2; terminal after four cells regardless of outcome.",
+      "required_files": [
+        "experiments/configs/trust_replication_seeds1_2.json",
+        "hvp_rev/rhvd_train_v2.py",
+        "scripts/run_e5a_trust_replication.ps1",
+        "scripts/analyze_e5a_trust_replication.py",
+        "scripts/validate_e5a_design.py",
+        "scripts/validate_e5a_completion.py",
+        "docs/confirmation/E5A_TABLE_SHELL.md"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/h3b_parity.json",
+          "attests": {"status": "H3B_PARITY_PASS", "subject": "gates/h3b_parity_report.json"}
+        },
+        {
+          "path": "gates/e5a_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/trust_replication_seeds1_2.json"}
+        },
+        {
+          "path": "gates/e5a_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e5a_design_validation.json"}
         }
       ]
     },

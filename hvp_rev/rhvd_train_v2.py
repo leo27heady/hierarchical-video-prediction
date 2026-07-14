@@ -25,15 +25,25 @@ from hvp_rev.provenance import (
 from hvp_rev.step1_mech import ActionHierData, decode01, fg_mse_px_frames
 
 
-def resolved_spec(args: argparse.Namespace) -> RunSpec:
-    train_actions = args.train_path.replace(".npy", "_actions.npy")
-    test_actions = args.test_path.replace(".npy", "_actions.npy")
-    artifacts = {
-        "train_clips": sha256_file(args.train_path),
-        "train_actions": sha256_file(train_actions),
-        "test_clips": sha256_file(args.test_path),
-        "test_actions": sha256_file(test_actions),
+def _data_artifacts(train_path: str, test_path: str) -> dict[str, str]:
+    """Hash every array that can affect training, rollout records, or geometric labels."""
+    train_actions = train_path.replace(".npy", "_actions.npy")
+    test_actions = test_path.replace(".npy", "_actions.npy")
+    paths = {
+        "train_clips": train_path,
+        "train_actions": train_actions,
+        "test_clips": test_path,
+        "test_actions": test_actions,
     }
+    for split, clip_path in (("train", train_path), ("test", test_path)):
+        positions = clip_path.replace(".npy", "_positions.npy")
+        if Path(positions).is_file():
+            paths[f"{split}_positions"] = positions
+    return {name: sha256_file(path) for name, path in paths.items()}
+
+
+def resolved_spec(args: argparse.Namespace) -> RunSpec:
+    artifacts = _data_artifacts(args.train_path, args.test_path)
     registered = arm_registry.from_legacy_mapping(rhvd.ARMS)[args.arm].resolved()
     registered["data_artifacts"] = artifacts
     test_shape = np.load(args.test_path, mmap_mode="r").shape
@@ -65,7 +75,7 @@ def resolved_spec(args: argparse.Namespace) -> RunSpec:
             "nfe": args.nfe,
             "rollout_crn": "100000 + 1000*chunk_index + rollout_step",
         },
-        tag="h3b-provenance-v2",
+        tag=args.provenance_tag,
     )
 
 
@@ -207,6 +217,8 @@ def main() -> None:
     parser.add_argument("--source_commit", required=True)
     parser.add_argument("--wandb_project", default="hgrid")
     parser.add_argument("--wandb_group", required=True)
+    parser.add_argument("--dataset_tag", default="loopmom")
+    parser.add_argument("--provenance_tag", default="h3b-provenance-v2")
     parser.add_argument("--run_log", default="")
     parser.add_argument("--authorized_gpu_hours", type=float, required=True)
     parser.add_argument("--val_every", type=int, default=500)
@@ -230,7 +242,7 @@ def main() -> None:
         config={"run_spec": spec.resolved(), "cli": vars(args)},
         project=args.wandb_project,
         run_id=f"{args.study}-{spec.identity}",
-        tags=["loopmom", "training-v2", "h3b-parity", rhvd.arm_cfg(args.arm)[2]],
+        tags=[args.dataset_tag, "training-v2", args.provenance_tag, rhvd.arm_cfg(args.arm)[2]],
         resume="allow" if args.resume else "never",
         group=args.wandb_group,
         job_type="scientific-training",

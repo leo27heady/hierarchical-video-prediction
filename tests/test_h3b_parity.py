@@ -6,6 +6,7 @@ import torch
 
 from hvp_rev import arm_registry, rhvd
 from hvp_rev.provenance import RunSpec, load_training_checkpoint, save_training_checkpoint
+from hvp_rev.rhvd_train_v2 import _data_artifacts
 
 
 class _FixtureData:
@@ -90,6 +91,21 @@ def test_arm_registry_is_exact_legacy_adapter():
             spec.coarse_context_stride, spec.fine_history_slots,
             spec.top_context_slots, spec.top_context_stride,
         ) == (n_c, n_f, head, stride_c, n_hist, n_top, stride_top)
+
+
+def test_v2_dataset_identity_includes_optional_geometric_labels(tmp_path):
+    train = tmp_path / "fixture_train.npy"
+    test = tmp_path / "fixture_test.npy"
+    for path in (train, test):
+        np.save(path, np.zeros((2, 3), dtype=np.uint8))
+        np.save(path.with_name(path.stem + "_actions.npy"), np.zeros((2, 3), dtype=np.int8))
+        np.save(path.with_name(path.stem + "_positions.npy"), np.zeros((2, 3), dtype=np.int32))
+    artifacts = _data_artifacts(str(train), str(test))
+    assert set(artifacts) == {
+        "train_clips", "train_actions", "train_positions",
+        "test_clips", "test_actions", "test_positions",
+    }
+    assert all(len(value) == 64 for value in artifacts.values())
 
 
 def _resume_spec():

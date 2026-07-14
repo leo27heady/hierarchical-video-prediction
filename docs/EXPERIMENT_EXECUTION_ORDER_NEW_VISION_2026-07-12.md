@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NEXT CPU PREPARATION; NOT STARTED** | E2/H3b prerequisites pass; freeze and validate E5a replication design before any new launch; E5b remains contingent on E5a |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a IMPLEMENTED / AUTHORIZED; CPU attestation and launch pending** | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -770,6 +770,42 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   Only CPU preparation is now in scope: freeze the decisive H-grid3 pair, seeds 1–2, estimand,
   artifact reuse, runtime probe and stop rule; then run design/provenance/oracle gates. This audit
   grants no new GPU launch authority, and E5b remains outcome-contingent on E5a replication.
+
+#### Intermediate audit E5-I0 — 2026-07-14 15:30 Europe/Kyiv
+
+- **Authorization received:** the author explicitly authorized continuation under the agreed plan
+  and allowed GPU use. E5a is the next decision-tree tranche; E5b remains separately gated.
+- **Frozen cells/order:** `d1-56-diff` then `d0-diff-long` at seed 1, followed by the same pair at
+  seed 2. Every cell preserves the H-grid3 B8×40k, LR 3e-4, 2k warmup, EMA 0.999, bf16 and NFE-16
+  regime. The configuration comparison intentionally differs in reach, spatial fidelity, token
+  count and the legacy coupled coarse target interface; it is not described as a pure stride or
+  equal-token intervention.
+- **Registered estimand:** effect is comparator foreground error minus long-reach-hierarchy error
+  on non-empty GT-foreground records. The two primary windows are early h1–24 (required positive)
+  and late h61–256 (required negative), with paired 10,000-replicate clip-cluster intervals. A new
+  seed is CI-clean only when the early lower bound is above zero and the late upper bound is below
+  zero. Both new seeds must pass for `REPLICATED`; secondary HARD/reach rows cannot rescue failure.
+- **Seed-0 reconstruction:** the frozen legacy artifacts reproduce early **+0.02042
+  [+0.01334,+0.02795]** on 1,746 records and late **−0.00636 [−0.00955,−0.00320]** on 13,781
+  records. The separately measured GT-fed addressability result remains an external prerequisite,
+  not an E5a endpoint. Thus E5a tests replication of self-fed benefit-to-inversion, not a null or
+  equivalence claim for long-range retrieval.
+- **Provenance/code preparation:** RunSpec identity now hashes optional position arrays because
+  those arrays determine H-grid geometric labels. Dataset and provenance tags are explicit in
+  W&B. The fail-closed design validator pins all six data arrays, the AE, single-step evidence,
+  seed-0 checkpoints/metrics/oracles, interfaces, clip pool, budget and parity sources. The
+  independent completion validator re-hashes manifests, checks the GPU ledger and recomputes the
+  registered decision.
+- **Runtime/budget:** measured seed-0 wall time was 2.491 h for the long-reach arm and 6.940 h for
+  the contiguous fine arm, projecting approximately 18.9 GPU-hours for two new seeds. Authorized
+  per-cell maxima are 4.5/9.5 hours, totaling **28.0 GPU-hours**. Batch or LR changes to fill VRAM
+  are prohibited because they would change the replication regime; the measured 3.64/7.39 GiB
+  allocations are accepted.
+- **CPU status:** JSON/schema, compile, PowerShell parse, targeted provenance tests and the full
+  suite pass (**48 tests**). The only expected pre-attestation failure is that H3b correctly detects
+  the just-edited provenance wrapper/test hashes. Commit the implementation, regenerate H3b, bind
+  protocol/design attestations, run W&B connectivity and `-CheckOnly`, then launch. No GPU process
+  has started at this audit.
 
 ## 2. Historical handoff boundary — E0
 
