@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 5/8 complete** from source commit `fa4906f`; active cell `strided-flat` seed 4, RunSpec `b9e170d46d96db84` | Seed-3 all-negative interaction criterion failed; complete frozen seed-4 block for five-seed estimate; no regime changes or automatic retry |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 6/8 complete** from source commit `fa4906f`; active cell `reg-long` seed 4, RunSpec `a50e6c1b15304ce6` | Diffusion temporal-package advantage is positive on all five seeds; cross-head all-negative criterion failed at seed 3; complete the frozen regression pair for the terminal interaction estimate |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -626,6 +626,53 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
 - **Decision:** continue the three remaining seed-4 cells unchanged. They can refine the
   five-seed estimand but cannot rescue the failed all-negative robustness criterion. No stop,
   retry, tuning, budget or validity trigger fires, and no subsequent study is authorized here.
+
+#### Intermediate audit E4b-I7 — 2026-07-14 06:13 Europe/Kyiv
+
+- **Sixth-cell acceptance:** `strided-flat` seed 4 completed with exit code zero in **3.0591
+  project GPU-hours**, below its 4.5-hour cap. Final loss was 0.0616, fixed-grid h4 foreground MSE
+  0.0210 and rollout foreground MSE 0.1622. Its content-addressed RunSpec
+  `b9e170d46d96db84` and all 19 manifest entries independently reproduce their byte counts and
+  SHA-256 hashes; the COMPLETE marker is valid. W&B is `finished` with 60 history rows, 15
+  validation grids, final media/summary and a committed run artifact. There was no retry,
+  extension or checkpoint selection.
+- **Seed-4 diffusion pair:** the `hier-long` and `strided-flat` rollouts align exactly on all
+  15,200 finite records (`clip`, `h`, `hard`, `dt` and `seen`). The registered spatial-minus-
+  temporal package effect is **+0.0060 [0.0027, 0.0092]** by paired clip bootstrap, again favoring
+  the temporal package.
+- **Five-seed diffusion result:** seed-level effects for seeds 0–4 are `+0.0197`, `+0.0046`,
+  `+0.0111`, `+0.0075` and `+0.0060`. All five favor temporal packaging. Their mean is
+  **+0.0098**, sample SD **0.0060**, with a five-seed t interval **[+0.0023, +0.0173]**. This is
+  now a stable diffusion package result across the five tested training seeds. It remains
+  development-pool evidence and is kept distinct from the failed cross-head robustness claim;
+  it does not restore untouched confirmatory status to this adaptive pool.
+- **Active seventh-cell training:** `reg-long` seed 4 reached 13,500/30,000 at 0.37–0.38
+  s/update with a 6.46 GB measured peak. Its unusually fast 1.5k transition (loss 0.4558 versus
+  0.5023–0.5590 previously) is seed-specific warm-up shape, not sustained numerical drift. Across
+  the 27 logged 500-update intervals its mean loss difference from seeds 0–3 is -0.0043; after
+  warm-up it is mostly inside the prior envelope, finite and without late growth or a stall.
+- **Active validation and qualitative health:** fixed-grid h4 foreground MSE is 0.2525, 0.0546,
+  0.0446, 0.0424, 0.0404 and 0.0393 at 2k–12k. The 4k/6k values are mildly above the prior
+  maximum, but the trajectory re-enters the seed-3 envelope by 8k–12k. The frozen 12k grid is
+  aligned and visually coherent, including foreground placement and legitimate empty rows. This
+  bounded early delay cannot determine the long-rollout package effect and does not justify
+  intervention.
+- **Active provenance/cloud/process state:** RunSpec `a50e6c1b15304ce6` reproduces its canonical
+  identity and frozen source commit `fa4906f`. The 13k atomic checkpoint is format 2 with
+  model/optimizer/EMA, Python/NumPy/Torch CPU+CUDA RNG state, latent statistics and sampler state
+  `examples_seen=208000`, `next_update=13001`. W&B is online and `running` with history through
+  13k and validation through 12k. Controller PID 22476, environment shim PID 18136 and trainer PID
+  6980 are alive and responsive.
+- **GPU/budget/projection:** six accepted cells charge **18.8676 GPU-hours**; including active
+  ownership gives approximately **20.3 hours** at the audit boundary. The GPU is at 100%
+  utilization with 8,324/16,380 MiB board memory, 63°C and 113 W; throughput and allocation remain
+  stable with no WDDM spill. The active cell should finish near 08:00 Kyiv and the final
+  `strided-flat-reg` cell near 11:00 Kyiv. The tranche is projected at approximately **25.0
+  GPU-hours**, safely below its 36-hour cap.
+- **Decision:** continue the final two frozen cells unchanged. The active and final regression
+  rollouts are still required for the seed-4 and five-seed interaction estimates, even though the
+  preregistered all-negative robustness rule already cannot pass. No stop, retry, tuning, budget
+  or estimand-validity trigger fires, and no later study is authorized by this audit.
 
 ## 2. Historical handoff boundary — E0
 
