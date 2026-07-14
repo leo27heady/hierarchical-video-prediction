@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-14T12:23:57.577562+00:00",
+  "schema_version": 1,
+  "source_commit": "7c8bf8615ab7f350c069f62716c82cdd0b4116ca",
+  "status": "FROZEN",
+  "subject": "experiments/configs/trust_replication_seeds1_2.json",
+  "subject_sha256": "7feef9236e7312e4aa424285096cc21b2e2b514dbb6f99a1cecb7172794bf04b"
+}
