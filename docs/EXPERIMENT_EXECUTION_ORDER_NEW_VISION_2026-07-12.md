@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a IMPLEMENTED / AUTHORIZED; CPU attestation and launch pending** | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 `d1-56-diff` seed 1 launched at 2026-07-14 15:26 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -806,6 +806,28 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   the just-edited provenance wrapper/test hashes. Commit the implementation, regenerate H3b, bind
   protocol/design attestations, run W&B connectivity and `-CheckOnly`, then launch. No GPU process
   has started at this audit.
+
+#### Intermediate audit E5-I1 — 2026-07-14 15:28 Europe/Kyiv
+
+- **All gates passed:** H3b was regenerated from committed source (`7c8bf86`) and again passed exact
+  batch/update/model/optimizer/EMA and resume parity plus the full 48-test suite. The E5a design
+  validator passed with zero failures; protocol and report are hash-attested. A complete no-GPU
+  launcher rehearsal passed authorization, data/evidence hashes, seed-0 reconstruction and W&B
+  connectivity through `C:\Users\leoni\_netrc`.
+- **Launch:** controller PID 2988 started from source commit `6a6332c`. Cell 1/4 is
+  `d1-56-diff`, seed 1, RunSpec `c82816c7f0818744`, W&B run
+  `https://wandb.ai/leo27heady/hgrid/runs/e5a-trust-replication-c82816c7f0818744`.
+  E5b is not part of this controller and cannot start automatically.
+- **Startup health:** H-grid3 train/test encoding completed in 23.8/6.0 seconds, matching the
+  22.0/5.7-second seed-0 reference closely. Latent standard deviations reproduce exactly
+  (coarse 0.1363, fine 0.1921), the split remains 900/300 train-validation and 150/150 test split,
+  and the model reports 22.26M parameters. Initial board usage is approximately 4.9 GB at full GPU
+  utilization; no competing trainer, numerical warning beyond the known bf16 LayerNorm fallback,
+  or WDDM spill is present.
+- **Monitoring:** heartbeat `e5a-four-hour-health-audit` is active every four hours in this same
+  task. Each audit compares loss, validation, throughput and VRAM with the same-arm seed-0 trace,
+  checks content-addressed checkpoints/cloud artifacts and GPU-hour headroom, and updates this
+  ledger without altering the frozen regime.
 
 ## 2. Historical handoff boundary — E0
 
