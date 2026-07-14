@@ -60,7 +60,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E2c | Frozen frontier confirmation | 6–10 additional GPU-hours | **COMPLETE**; all 18 evaluations succeeded; 26/26 E2 runs complete | Simultaneous frontier confirms lower/interior hierarchy wins and upper flat inversion; no interpolation |
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **GATED / NOT STARTED** | Reassess after E2 and manuscript claim freeze |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Three-seed head shift is consistently negative; regression package effects remain heterogeneous |
-| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 6/8 complete** from source commit `fa4906f`; active cell `reg-long` seed 4, RunSpec `a50e6c1b15304ce6` | Diffusion temporal-package advantage is positive on all five seeds; cross-head all-negative criterion failed at seed 3; complete the frozen regression pair for the terminal interaction estimate |
+| E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **RUNNING: 7/8 complete** from source commit `fa4906f`; final cell `strided-flat-reg` seed 4, RunSpec `88a6f1f4707eb85c`, is active | Diffusion temporal-package advantage is positive on all five seeds; cross-head all-negative criterion failed at seed 3; finish the frozen terminal cell and registered five-seed analysis |
 | E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **GATED / NOT STARTED** | Requires E2 final verdict and H3b |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
@@ -673,6 +673,50 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   rollouts are still required for the seed-4 and five-seed interaction estimates, even though the
   preregistered all-negative robustness rule already cannot pass. No stop, retry, tuning, budget
   or estimand-validity trigger fires, and no later study is authorized by this audit.
+
+#### Intermediate audit E4b-I8 — 2026-07-14 10:15 Europe/Kyiv
+
+- **Seventh-cell acceptance:** `reg-long` seed 4 completed with exit code zero in **3.1713 project
+  GPU-hours**, below its 4.5-hour cap. Final loss was 0.0141, fixed-grid h4 foreground MSE 0.0248
+  and rollout foreground MSE **0.1579** (h1–48 0.0887; h49–192 0.1899). The rollout is inside the
+  prior `reg-long` seed range of 0.1503–0.1870 and its qualitative strip shows the expected
+  mixture of correct persistence/re-entry and long-horizon failures rather than collapse.
+- **Seventh-cell integrity/cloud:** all 15,200 foreground records are finite and its pairing
+  fields align exactly with the preceding factorial cells. RunSpec `a50e6c1b15304ce6`, COMPLETE
+  marker and all 19 manifest artifacts independently reproduce their identities, byte counts and
+  SHA-256 hashes. W&B is `finished` with 60 history rows, 15 validation grids, final summary/media,
+  a committed 355.8 MB training-run artifact and committed history artifact. There was no retry,
+  resume, extension or checkpoint selection.
+- **Active eighth-cell loss trajectory:** the final `strided-flat-reg` seed 4 cell reached
+  23,500/30,000. Across the first 45 complete 500-update intervals, its mean loss difference from
+  seeds 0–3 is -0.0038; 15 intervals lie outside the prior min–max envelope, driven principally by
+  a much faster warm-up transition at 1.5k (0.3732 versus 0.4554–0.5408). After 3.5k, 34/39
+  intervals are inside the prior envelope. The isolated highs at 6k, 9.5k, 19k and 22.5k are
+  followed by recovery; loss is 0.0198 at 23.5k. There is no non-finite value, monotonic growth,
+  optimizer stall or numerical-regime break.
+- **Active validation/qualitative trajectory:** fixed-grid h4 foreground MSE is 0.2550, 0.0535,
+  0.0436, 0.0427, 0.0424, 0.0412 and 0.0418 at 2k–14k, all within the four-seed envelope. It rises
+  above that envelope at 16k/18k (0.0426/0.0406), then improves to 0.0382/0.0355 at 20k/22k and
+  re-enters the prior range. The 22k grid is aligned and visually coherent. The temporary
+  validation delay is real but resolving; it does not predict the immutable long-rollout result
+  closely enough to infer the seed-4 package sign before evaluation.
+- **Active provenance/checkpoint/cloud:** the file, checkpoint and registry identities all equal
+  `88a6f1f4707eb85c` and bind to source commit `fa4906f`. The audited 23k format-2 checkpoint has
+  model/optimizer/EMA, Python/NumPy/Torch CPU+CUDA RNG state and sampler state
+  `examples_seen=368000`, `next_update=23001`. W&B is online and `running` with 45 history rows and
+  validation through 22k; no remote artifact is expected before completion. The controller and
+  trainer process chain is alive and responsive.
+- **GPU/budget/projection:** seven accepted cells charge **22.0388 GPU-hours**; including active
+  ownership gives approximately **24.3 hours**. Six telemetry samples were 94–100% utilized at
+  8.06–8.15/16.38 GB board memory, 63–65°C and 115–116 W. Throughput is predominantly 0.35
+  s/update, with 0.37 s/update in the two latest intervals but no WDDM spill or sustained
+  slowdown. Training, evaluation and upload should finish around **10:55–11:05 Kyiv**, with the
+  tranche near **25.0 GPU-hours**, safely below the 36-hour cap.
+- **Decision:** continue the final cell unchanged. Its rollout is required to determine the
+  seed-4 regression package effect, the terminal five-seed interaction interval and regression
+  sign counts. The failed all-negative rule is a scoped negative/boundary result, not a blocker
+  for the primary diffusion claim. No stop, retry, tuning, budget or estimand-validity trigger
+  fires, and no subsequent experiment is authorized before final E4b validation and integration.
 
 ## 2. Historical handoff boundary — E0
 
