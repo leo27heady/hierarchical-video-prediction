@@ -11,7 +11,11 @@
     "train_clips": "b5757a77c3e354c70ede510b67c5d1e1fbd6d08337ef91242926eb601db10e7a",
     "train_positions": "7a2e8e37900f03027195e4a26963958a77607c8b7f7130302780e1f29d1ffdee"
   },
-  "existing_runs": [],
+  "existing_runs": [
+    "artifacts/training/e5a-trust-replication/d0-diff-long/seed-1/25bc12c6a4bd3b71/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-1/c82816c7f0818744/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/run_spec.json"
+  ],
   "failures": [],
   "h3b_parity_sha256": "cb1eb14aa7d4b31b9f50155d899e378f324e6318864ef8559dace36b60f467c0",
   "implementation_hashes": {

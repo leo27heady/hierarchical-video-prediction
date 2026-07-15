@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cell 1/4 complete, cell 2/4 `d0-diff-long` seed 1 at 38k/40k at 2026-07-14 23:31 Kyiv | Four frozen H-grid3 cells at seeds 1–2; 28-hour maximum; E5b remains outcome-contingent and unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a RESTART RECOVERY**; cells 1–2 complete, cell 3/4 `d1-56-diff` seed 2 interrupted by a planned OS restart after its valid update-26k checkpoint | Seed 1 fails the registered late-inversion direction; resume seed 2 unchanged under the 28-hour maximum; E5b remains unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -907,6 +907,43 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
 - **Decision:** continue unchanged. No intervention, frozen-regime modification or E5b
   authorization is justified. The next audit should first validate the completed seed-1 paired
   effects and content-addressed cloud artifacts, then examine the active seed-2 cell.
+
+#### Restart recovery E5-I4 — 2026-07-15 08:00 Europe/Kyiv
+
+- **Restart boundary:** Windows initiated a planned servicing restart (system event 1074 at
+  01:44:11 Kyiv), shut down at 01:45:58 and restarted twice during servicing. The E5a controller
+  and trainer are absent after boot, the GPU is idle, and no competing project process exists.
+  This is an infrastructure interruption rather than a numerical or scientific failure.
+- **Completed seed-1 comparator:** `d0-diff-long` seed 1 finished normally before the restart in
+  **6.4141 GPU-hours**, versus 6.940 hours for seed 0 and 9.5 authorized. Its rollout contains the
+  required 25,600 paired records and its 24-artifact manifest independently hashes under RunSpec
+  `25bc12c6a4bd3b71` (manifest SHA-256
+  `beaf29a619e832fb7cc900e949161ed55e7fd6914cabc4c92b70d6a8768a6b7d`). W&B is terminal
+  `finished` with the content-addressed 356.1 MB `training-run` artifact.
+- **Registered seed-1 result:** early h1–24 remains positive at **+0.00816
+  [+0.00350,+0.01329]**, but late h61–256 is also positive at **+0.00745
+  [+0.00377,+0.01123]** rather than negative. Seed 1 therefore fails both the directional and
+  CI-clean early-benefit-to-late-inversion boundary. This already precludes the registered
+  two-new-seed `REPLICATED` verdict, but it does not authorize stopping or reinterpretation:
+  seed 2 remains required by the frozen terminal rule and will determine whether the outcome is
+  `HETEROGENEOUS_PARTIAL` or `NOT_REPLICATED`.
+- **Interrupted seed-2 hierarchy:** cell 3/4, `d1-56-diff` seed 2, reached update **26,000** under
+  RunSpec `f8fc583e62c6ea0a`. The 356,345,643-byte checkpoint hashes to
+  `013484c06f69b9d5e6831401d99929731214fc9977509537ac191e3ecddd1974` and passes native format-v2
+  loading: model/optimizer/EMA state, four latent-statistics tensors, Python/NumPy/CPU/CUDA RNG,
+  208,000 examples seen and next update 26,001 are present and consistent. W&B correctly marks the
+  interrupted attempt `crashed`; there is no terminal artifact yet.
+- **Gates and accounting:** the authorization gate and frozen design validator pass with zero
+  failures, including all pinned data, AE, prior evidence, arm definitions and implementation
+  hashes. The interrupted attempt is conservatively charged from controller start through the
+  recorded shutdown: **1.476890 hours**, not merely the 1.414 cloud runtime. Completed plus
+  interrupted ownership is now **10.3272 hours**. Cell 3 retains 3.0231 authorized hours, ample for
+  updates 26,001–40,000 and rollout; expected terminal E5a consumption remains below 19 hours and
+  below the frozen 28-hour maximum.
+- **Recovery decision:** commit this immutable interruption row and audit, rerun the launcher's
+  CPU/W&B `-Resume -CheckOnly` path from a clean worktree, then resume the same RunSpec. The resume
+  may restore the exact RNG/sampler trajectory and continue the W&B run; it may not change batch,
+  LR, updates, EMA, NFE, clip geometry or source. No E5b launch is authorized.
 
 ## 2. Historical handoff boundary — E0
 
