@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE / ATTESTED RESUME**; cells 1–2 complete, cell 3/4 `d1-56-diff` seed 2 resumed from its exact update-26k checkpoint at 2026-07-15 08:05 Kyiv | Seed 1 fails the registered late-inversion direction; seed 2 continues unchanged under the 28-hour maximum; E5b remains unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cells 1–3 complete, final cell `d0-diff-long` seed 2 at 19k/40k at 2026-07-15 11:56 Kyiv | Seed 1 fails the registered late-inversion direction; seed 2 comparator continues unchanged under the 28-hour maximum; E5b remains unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -979,6 +979,52 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
 - **Decision:** continue the exact resumed trajectory. Seed 1's failed late-inversion direction is
   retained as the registered result; seed 2 remains necessary for the terminal heterogeneous-partial
   versus not-replicated decision. No E5b action is authorized.
+
+#### Intermediate audit E5-I6 — 2026-07-15 11:56 Europe/Kyiv
+
+- **Expected versus actual recovery:** E5-I5 projected the resumed hierarchy cell to finish at
+  09:00–09:15 Kyiv; it completed normally at **09:06:15**. The resumed attempt consumed 1.0151
+  GPU-hours. Including the conservatively charged OS-interrupted attempt and the fail-closed probe,
+  total cell-3 ownership is **2.4935 hours**, essentially identical to the seed-0 reference of
+  2.4914 hours and well below its 4.5-hour authorization.
+- **Completed seed-2 hierarchy health:** the post-resume trace remains continuous and finite through
+  40k. Final loss is **0.09054**, between seed 0 (0.08470) and seed 1 (0.09988); final fixed-grid
+  foreground MSE is **0.03451**, matched to seed 0 (0.03428) and better than seed 1 (0.03804).
+  Across cloud-visible common intervals, mean loss is 1.040× seed 0 and 0.964× seed 1, while mean
+  validation is only 1.042×/1.035×. Throughput is stable at 0.1976 s/update, with 3.635 GiB peak
+  allocation and no resumed-run stall or numerical discontinuity.
+- **Completed rollout/provenance:** rollout has exactly **25,600 records**, clips 150–249 and
+  horizons 1–256, with mean foreground MSE 0.22051. The COMPLETE marker and all **24/24** artifacts
+  independently hash under RunSpec `f8fc583e62c6ea0a`; manifest SHA-256 is
+  `d74c691f9feaf007750bbef9bc12dde5055f8d8c7ac3bc11fb17063e0c676639`. W&B is terminal
+  `finished` with the 357.2 MB content-addressed artifact and alias `d1-56-diff-s2`. The servicing
+  interruption left two training and one validation telemetry rows unsynced in cloud history, but
+  the local log and RNG-complete checkpoint cover that interval and the scientific rollout artifact
+  is complete; this is a disclosed telemetry gap, not missing scientific data.
+- **Final comparator state:** cell 4/4, `d0-diff-long` seed 2, is healthy at **19,000/40,000** under
+  RunSpec `8df2dfe3e392b652`. Its format-v2 checkpoint hashes to
+  `fcdf2540d6f689d4dd0a141f7e04ef8254874ce338c91f918e7f31ca3a676fa6` and contains the exact
+  152,000-example sampler position, next update 19,001 and all Python/NumPy/CPU/CUDA RNG states.
+  Controller PID 19032 and trainer PID 1588 are healthy and W&B is current through 18k.
+- **Comparator trends versus prior seeds:** through 18k common cloud intervals, mean training loss
+  is only **1.027× seed 0 and 1.020× seed 1**; its latest 0.09986 is below seed 0's 0.10575 and
+  effectively seed-1 matched at 0.09942. Nine validation reads average 0.03331 versus 0.02932/0.03008;
+  this 11–14% average offset is driven by the initial 2k value (range 0.00715–0.16958), while the
+  latest 0.00833 is better than seed 0's 0.00976 and equal to seed 1's 0.00834. The trajectory is
+  convergent rather than divergent.
+- **Throughput/GPU health:** mean current throughput is **0.5303 s/update**, versus 0.5287 for seed 1
+  and 0.5726 for the seed-0 run containing a legacy WDDM stall. The current cloud range is
+  0.5263–0.5398 s/update; the local 19k interval is 0.56 seconds and remains below the spill guard.
+  Allocated VRAM is exactly 7.386 GiB; board telemetry is 8.72/16.38 GB, 100% utilization, 67 °C
+  and approximately 120 W. There is no competing trainer, NaN, restart or WDDM spill.
+- **Projection/budget:** completed charged ownership is **11.3438 GPU-hours** and active cell
+  ownership is approximately 2.8 hours at this audit. The remaining 21k updates plus rollout project
+  cell-4 completion near **15:15–15:35 Kyiv**, followed by registered analysis and validation within
+  minutes. Terminal E5a consumption remains approximately **17.7–19 hours**, leaving about 9–10
+  hours below the frozen 28-hour maximum.
+- **Decision:** continue unchanged. The paired seed-2 early/late effect remains unreadable until the
+  comparator's complete 25,600-record rollout lands. The estimand, clip alignment, source RunSpec,
+  batch/LR/update/EMA/NFE regime and decision rule remain valid. No E5b authorization is implied.
 
 ## 2. Historical handoff boundary — E0
 
