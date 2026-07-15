@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "E5A_RESUME_RECOVERY_REVIEWED",
+  "study": "e5a-trust-replication",
+  "original_source_commit": "6a6332c744b344453ccc03bf8475296a2e5a598a",
+  "recovery_code_commit": "1e0aee03865d84ad745a6ce4ac8da1daca1db840",
+  "review_basis_commit": "b109bb6d22cffffba4570f64925e40060a42a7e5",
+  "failure": {
+    "kind": "canonical JSON container-type mismatch while reopening a partial ArtifactStore",
+    "observed": "run_spec.json loss_weights is a JSON list while the identical in-memory RunSpec uses a tuple",
+    "scope": "provenance wrapper before model/checkpoint loading; no GPU training update or evaluation occurred",
+    "failed_probe_gpu_hours": 0.0014816953055555556
+  },
+  "repair": {
+    "statement": "Compare existing and resolved RunSpecs through canonical JSON rather than Python list-versus-tuple equality.",
+    "scientific_effect": "none: run identity, data, model, batches, loss, optimizer, EMA, RNG, sampler, NFE and evaluation geometry are unchanged",
+    "collision_policy": "canonical-equivalent partial specs reopen; genuinely changed specs still fail closed"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/checkpoint.pt",
+    "sha256": "013484c06f69b9d5e6831401d99929731214fc9977509537ac191e3ecddd1974",
+    "run_spec_hash": "f8fc583e62c6ea0a",
+    "step": 26000,
+    "examples_seen": 208000,
+    "next_update": 26001,
+    "rng_complete": true
+  },
+  "h3b": {
+    "path": "gates/h3b_parity_report.json",
+    "sha256": "09fa4c7fa6721ef41d09ec3ce30bae7172ef1fb04672d64522967b610e258aba",
+    "status": "H3B_PARITY_PASS",
+    "tests": "4 dedicated parity tests and 50 full-suite tests passed on CPU"
+  },
+  "scientific_hashes": {
+    "hvp_rev/arm_registry.py": "2dd7675ee18a7e76f29271960cf8eb9365a9e0c2c9fb077c5b05d21600ae1dae",
+    "hvp_rev/provenance.py": "cdc8bde91e0f35380d29f68e3064d7051c5ed75f57e648a14540c05c1508d0b9",
+    "hvp_rev/rhvd.py": "d2e38371fcdf96b65efc2cfb23f5c2e168bf139de4c9003ed2552fbb08e6c474",
+    "hvp_rev/rhvd_train_v2.py": "b76b90747d421559e663866e43b6aa08b056b35c8d2733e94c9d01a7adaef9ab",
+    "experiments/configs/trust_replication_seeds1_2.json": "7feef9236e7312e4aa424285096cc21b2e2b514dbb6f99a1cecb7172794bf04b",
+    "scripts/analyze_e5a_trust_replication.py": "e9fcabf5e9a3359d69a08f8e1392883cc410102533111ce0b4e561ef14e2be0d",
+    "scripts/validate_e5a_completion.py": "9748c7a92c3e127d2fba89ac835b403a1c07ad95cb222ada1f0b72a583c298c3",
+    "scripts/validate_e5a_design.py": "686dd902ccd5bc3f600f2bc0e8a7a5f2544599a1c59fb7dddfec1f214c239fca",
+    "scripts/run_e5a_trust_replication.ps1": "b2ae743beee2d31b4c7778b6e6a2f00c0d4240d3814499902e782a71c6212ef9",
+    "tests/test_provenance.py": "42011efd331bef8e00c2664e5c701bda660ed2fb171509b5877f3a921cc1a1e0",
+    "tests/test_h3b_parity.py": "db13ccb715c50e69983173e7a80a3bb8bf925598d6432cd77f67837711dc73bf"
+  },
+  "resume_constraints": [
+    "preserve the original RunSpec source_commit and content identity",
+    "restore update 26000 optimizer, EMA, sampler and RNG state",
+    "charge interrupted and failed attempts to the frozen GPU-hour budget",
+    "do not change batch, learning rate, updates, warmup, EMA, NFE or evaluation geometry",
+    "do not authorize E5b automatically"
+  ]
+}
