@@ -1098,6 +1098,20 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   project process, repeated design check and successful online W&B write. No GPU process has yet
   launched.
 
+#### E7c final prelaunch gate E7c-I2 — 2026-07-15 19:26 Europe/Kyiv
+
+- **Clean boundary:** commit `abac094`; clean worktree; no project controller/evaluator; no stale
+  E7c RunSpec or GPU ledger; GPU has desktop-only occupancy.
+- **Repeated gates:** authorization and all hash-bound markers PASS; 35-cell design/data/checkpoint
+  validation PASS with dataset-manifest SHA-256 `135f999f13ce...`; CPU sampler parity remains
+  bit-exact at NFE 16/sampler seed 0.
+- **Cloud gate:** online W&B write PASS using `_netrc` after removing only the inherited process-
+  level `WANDB_API_KEY`: `https://wandb.ai/leo27heady/hgrid/runs/e7c-gate-loopmom-
+  robustness_holdout-20260715-477845150808-abac0945-20260715192535`.
+- **Frozen launch:** one hidden controller, command
+  `scripts/run_e7c_sampler_nfe.ps1 -Manifest data/robustness/loopmom_e7c_500x200.manifest.json`.
+  It cannot train, alter the matrix, launch E7a, or exceed the 8-hour tranche without failing.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
