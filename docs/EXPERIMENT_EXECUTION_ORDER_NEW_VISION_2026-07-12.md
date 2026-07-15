@@ -1130,6 +1130,37 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
 - **Decision:** continue unchanged. The four-hour same-task heartbeat is active as
   `e7c-four-hour-health-audit`; no E7a authorization is implied.
 
+#### E7c four-hour audit E7c-I4 — 2026-07-15 23:28 Europe/Kyiv
+
+- **Progress and identity:** 27/35 cells are complete; the 28th is `hier-c2`/NFE 32/sampler 0,
+  RunSpec `dc89c303df49a187`, at 80/100 clips. All 28 RunSpecs share one frozen source commit,
+  dataset hash and AE hash. The controller and one evaluator tree are alive; no competing project
+  process exists.
+- **Expected versus actual runtime:** completed cells charge **3.632616 GPU-hours** versus
+  **3.676550 expected** (−1.2%). Every cell exited zero and remains below its twice-reference stop.
+  Eight cells including the active one remain with 2.347 expected hours. Current scaling projects
+  approximately **5.95–6.2 total GPU-hours**, completion around **2026-07-16 02:00–02:30 Kyiv**,
+  and at least 1.8 hours of headroom below the 8-hour maximum.
+- **Compute/stability:** the active NFE-32 cell is at 100% sampled utilization, approximately
+  3.37/16.38 GB board memory, 66°C and 127 W. Its running foreground MSE moves 0.2269 → 0.1874 as
+  the clip population fills, consistent with completed `hier-c2` NFE-8/16 means 0.1866/0.1885.
+  Encoding time and latent statistics remain invariant; no nonfinite value, timeout, WDDM spill,
+  stall, traceback or disabled-cloud condition is present.
+- **Immutable/cloud audit:** 27 COMPLETE directories contain every required metric/evaluation/
+  manifest artifact; all **81 manifest-declared SHA-256 hashes** and COMPLETE identities verify.
+  The purpose-locked access log has 28 unique rows for 28 unique RunSpecs and one dataset. W&B
+  group state is 29 finished runs (including gates) and one running evaluation; completed cells
+  uploaded their metric artifact and rollout strip.
+- **Provisional paired health, not the terminal decision:** all 15 currently complete registered
+  pair×variant effects are positive with ordinary clip-cluster 95% intervals excluding zero:
+  896 reach +0.0465 to +0.0482, 1,152 interior +0.0140 to +0.0201, and temporal package shape
+  +0.0221 to +0.0292. Full-frame, union-mask and recall directions corroborate them; every paired
+  key and all 15,200 complete-metric records align. The 2,432 inversion is not readable until its
+  flat partners land, and only the frozen 20-effect simultaneous family may issue the verdict.
+- **Decision:** continue unchanged. Do not edit scientific files, alter the factorial, inspect a
+  partial terminal family, or authorize E7a. The expected untracked live-output directory is the
+  only worktree change; this audit commits documentation only.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
