@@ -1,0 +1,14 @@
+{
+  "arms": 7,
+  "authorized_gpu_hours": 8.0,
+  "config": "experiments/configs/sampler_nfe_robustness.json",
+  "config_sha256": "6071adce5c125e93554392ed022a462082dd87d2cfdb4bd921277b7c76a5daca",
+  "dataset_id": "loopmom-robustness_holdout-20260715-477845150808",
+  "evaluations": 35,
+  "expected_gpu_hours": 6.0236,
+  "failures": [],
+  "manifest_sha256": "135f999f13cef036502fd49fe5f403a73a4ae2f7f58a9313ea5caf5a485c6954",
+  "schema_version": 1,
+  "status": "DESIGN_VALIDATION_PASS",
+  "variants": 5
+}

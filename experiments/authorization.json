@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-15-e7c-preparation",
+  "updated": "2026-07-15-e7c-authorization",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -142,12 +142,13 @@
       "required_files": ["experiments/configs/trust_horizon_dose_response.json"]
     },
     "sampler-nfe-robustness": {
-      "status": "PREPARED_NOT_AUTHORIZED",
+      "status": "AUTHORIZED",
       "meaning": "E7c checkpoint-only robustness across a frozen NFE grid and sampler seeds on a separate purpose-locked LoopMom dataset.",
       "required_files": [
         "docs/E7C_SAMPLER_NFE_ROBUSTNESS_PROTOCOL_2026-07-15.md",
         "experiments/configs/sampler_nfe_robustness.json",
         "docs/confirmation/E7C_TABLE_SHELL.md",
+        "experiments/manifests/loopmom_e7c_robustness_2026-07-15.json",
         "scripts/generate_e7c_robustness_set.ps1",
         "scripts/run_e7c_sampler_nfe.ps1",
         "scripts/analyze_e7c_sampler_nfe.py",
@@ -172,6 +173,10 @@
         {
           "path": "gates/e7c_design_validated.json",
           "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e7c_design_validation.json"}
+        },
+        {
+          "path": "gates/e7c_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e7c_dataset_validation.json"}
         }
       ]
     },

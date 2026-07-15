@@ -1083,6 +1083,21 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   The next steps are an implementation commit, clean-commit CPU/parity attestations, dataset
   generation and collision validation, final authorization, W&B/clean-worktree check, then launch.
 
+#### E7c data/design gate E7c-I1 — 2026-07-15 19:25 Europe/Kyiv
+
+- **Independent set:** generated 500 × 200 clips with seed 20260715 from clean commit `9947ba4`;
+  dataset ID `loopmom-robustness_holdout-20260715-477845150808`, clip SHA-256
+  `477845150808b667...`. Its purpose is `robustness_holdout`; training and monitoring are forbidden.
+- **Structural/distribution gate:** PASS. Shape/dtype/action-position consistency are exact;
+  measured hold probability is 0.09991 and nonzero-direction continuation is 0.90115. All 500
+  clips are unique with zero exact collisions against legacy training and test pools.
+- **Design gate:** PASS for all 35 registered cells, seven frozen checkpoint hashes, AE/training-
+  data hashes, independent-from-E2 dataset hash, 6.0236-hour projection and 8.0-hour maximum.
+- **Authorization:** E7c is authorized only under its committed protocol/config/CPU/data/design
+  attestations. The remaining immediate launch gates are a clean committed worktree, no competing
+  project process, repeated design check and successful online W&B write. No GPU process has yet
+  launched.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
