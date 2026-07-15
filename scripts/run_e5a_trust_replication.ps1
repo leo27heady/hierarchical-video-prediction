@@ -1,6 +1,7 @@
 param(
     [string]$Config = "experiments/configs/trust_replication_seeds1_2.json",
     [string]$Log = "logs_rhcp/e5a_trust_replication.log",
+    [string]$RecoveryAttestation = "gates/e5a_resume_recovery_validated.json",
     [switch]$CheckOnly,
     [switch]$Resume
 )
@@ -28,6 +29,8 @@ if (Test-Path $ledger) {
         ForEach-Object { $_ | ConvertFrom-Json })
 }
 $sourceCommit = $currentCommit
+$recoveryApplied = $false
+$recoveryAttestationHash = $null
 if ($Resume -and $entries.Count -gt 0) {
     $commits = @($entries | Select-Object -ExpandProperty source_commit -Unique)
     if ($commits.Count -ne 1) { throw "E5a ledger has multiple source commits" }
@@ -40,7 +43,47 @@ if ($Resume -and $entries.Count -gt 0) {
     )
     & git diff --quiet $sourceCommit $currentCommit -- $scientificPaths
     if ($LASTEXITCODE -ne 0) {
-        throw "Scientific sources changed since the original E5a launch commit"
+        if (-not (Test-Path -LiteralPath $RecoveryAttestation)) {
+            throw "Scientific sources changed since the original E5a launch commit and no recovery attestation exists"
+        }
+        $marker = Get-Content -LiteralPath $RecoveryAttestation -Raw | ConvertFrom-Json
+        if ($marker.schema_version -ne 1 -or $marker.status -ne "E5A_RESUME_RECOVERY_REVIEWED") {
+            throw "Invalid E5a recovery attestation marker"
+        }
+        $subjectPath = [string]$marker.subject
+        if ($subjectPath -ne "gates/e5a_resume_recovery.json" -or -not (Test-Path -LiteralPath $subjectPath)) {
+            throw "E5a recovery attestation binds the wrong or missing subject"
+        }
+        $subjectHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $subjectPath).Hash.ToLowerInvariant()
+        if ($subjectHash -ne ([string]$marker.subject_sha256).ToLowerInvariant()) {
+            throw "E5a recovery subject hash mismatch"
+        }
+        $recovery = Get-Content -LiteralPath $subjectPath -Raw | ConvertFrom-Json
+        if ($recovery.schema_version -ne 1 -or $recovery.status -ne "E5A_RESUME_RECOVERY_REVIEWED") {
+            throw "Invalid E5a recovery subject"
+        }
+        if ([string]$recovery.original_source_commit -ne $sourceCommit) {
+            throw "E5a recovery subject binds the wrong original source commit"
+        }
+        foreach ($property in $recovery.scientific_hashes.PSObject.Properties) {
+            if (-not (Test-Path -LiteralPath $property.Name)) {
+                throw "E5a recovery-bound scientific file is missing: $($property.Name)"
+            }
+            $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $property.Name).Hash.ToLowerInvariant()
+            if ($actual -ne ([string]$property.Value).ToLowerInvariant()) {
+                throw "E5a recovery scientific hash mismatch: $($property.Name)"
+            }
+        }
+        $h3bHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $recovery.h3b.path).Hash.ToLowerInvariant()
+        if ($h3bHash -ne ([string]$recovery.h3b.sha256).ToLowerInvariant()) {
+            throw "E5a recovery H3b report hash mismatch"
+        }
+        $checkpointHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $recovery.checkpoint.path).Hash.ToLowerInvariant()
+        if ($checkpointHash -ne ([string]$recovery.checkpoint.sha256).ToLowerInvariant()) {
+            throw "E5a recovery checkpoint hash mismatch"
+        }
+        $recoveryApplied = $true
+        $recoveryAttestationHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $RecoveryAttestation).Hash.ToLowerInvariant()
     }
 }
 
@@ -148,6 +191,7 @@ foreach ($run in $configValue.new_training_runs) {
         cell_authorized_max_gpu_hours = [double]$run.max_gpu_hours
         tranche_authorized_max_gpu_hours = $maximum; exit_code = $code
         source_commit = $sourceCommit; resumed = [bool]($specs.Count -eq 1)
+        execution_commit = $currentCommit; recovery_attestation_sha256 = $recoveryAttestationHash
     } | ConvertTo-Json -Compress | Add-Content -Encoding utf8 -Path $ledger
     "=== E5a $($run.arm) seed=$($run.seed) END code=$code hours=$($hours.ToString('F3')) ===" |
         Tee-Object -FilePath $Log -Append

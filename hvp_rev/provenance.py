@@ -152,7 +152,10 @@ class ArtifactStore:
             spec_path = self.path / "run_spec.json"
             if spec_path.exists():
                 old = json.loads(spec_path.read_text(encoding="utf-8"))
-                if old != spec.resolved():
+                # JSON round-trips tuples as lists. Compare the canonical serialized
+                # representation so an interrupted run can reopen its own identical
+                # content-addressed directory without weakening collision detection.
+                if canonical_json(old) != canonical_json(spec.resolved()):
                     raise FileExistsError(f"run identity collision with different spec: {self.path}")
             else:
                 atomic_write_json(spec_path, spec.resolved())

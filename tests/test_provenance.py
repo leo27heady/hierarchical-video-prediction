@@ -51,6 +51,28 @@ def test_artifact_store_refuses_completed_overwrite(tmp_path):
         ArtifactStore(tmp_path, spec)
 
 
+def test_artifact_store_reopens_partial_with_json_equivalent_sequences(tmp_path):
+    base = _spec()
+    spec = RunSpec(**{
+        **base.resolved(),
+        "arm_config": {"context_tokens": 512, "loss_weights": (0.0, 1.0, 1.0)},
+    })
+    first = ArtifactStore(tmp_path, spec)
+    second = ArtifactStore(tmp_path, spec)
+    assert second.path == first.path
+
+
+def test_artifact_store_still_rejects_real_partial_spec_collision(tmp_path):
+    spec = _spec()
+    store = ArtifactStore(tmp_path, spec)
+    path = store.path / "run_spec.json"
+    changed = json.loads(path.read_text(encoding="utf-8"))
+    changed["batch_size"] += 1
+    path.write_text(json.dumps(changed), encoding="utf-8")
+    with pytest.raises(FileExistsError, match="collision"):
+        ArtifactStore(tmp_path, spec)
+
+
 def test_rng_capture_restores_python_numpy_and_torch():
     random.seed(11); np.random.seed(12); torch.manual_seed(13)
     state = capture_rng_state()
