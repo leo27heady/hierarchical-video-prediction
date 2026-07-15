@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a RESTART RECOVERY**; cells 1–2 complete, cell 3/4 `d1-56-diff` seed 2 interrupted by a planned OS restart after its valid update-26k checkpoint | Seed 1 fails the registered late-inversion direction; resume seed 2 unchanged under the 28-hour maximum; E5b remains unauthorized |
+| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE / ATTESTED RESUME**; cells 1–2 complete, cell 3/4 `d1-56-diff` seed 2 resumed from its exact update-26k checkpoint at 2026-07-15 08:05 Kyiv | Seed 1 fails the registered late-inversion direction; seed 2 continues unchanged under the 28-hour maximum; E5b remains unauthorized |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -944,6 +944,41 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   CPU/W&B `-Resume -CheckOnly` path from a clean worktree, then resume the same RunSpec. The resume
   may restore the exact RNG/sampler trajectory and continue the W&B run; it may not change batch,
   LR, updates, EMA, NFE, clip geometry or source. No E5b launch is authorized.
+
+#### Attested resume E5-I5 — 2026-07-15 08:07 Europe/Kyiv
+
+- **Fail-closed probe:** the first five-second resume attempt stopped before data loading or any GPU
+  update because `ArtifactStore` compared the JSON-round-tripped `loss_weights` list with the
+  identical in-memory tuple using Python container equality. The content identity remained
+  `f8fc583e62c6ea0a`; this was a provenance-wrapper false collision, not a checkpoint or numerical
+  mismatch. The failed attempt is explicitly charged **0.001482 GPU-hours** in the immutable
+  ledger.
+- **Minimal repair:** partial-store reopening now compares canonical JSON representations. Two new
+  tests prove that tuple/list-equivalent specifications reopen while a real scientific-field
+  change still fails closed. No model, data, batch, target, loss, optimizer, EMA, RNG, sampler,
+  precision, NFE or evaluation code changed. The repair is commit `1e0aee0`; the original RunSpec
+  continues to name source commit `6a6332c` so its content identity is preserved.
+- **Numerical and governance gates:** the mandatory H3b suite passes all four parity tests and the
+  full CPU suite passes **50/50 tests**, including uninterrupted-versus-resumed RNG trajectory.
+  The recovery subject binds the exact checkpoint, new H3b report and every scientific file hash;
+  its hash-bound marker is committed at `581d268`. The refreshed E5a design validator again passes
+  all data, AE, prior-evidence, implementation, arm and budget checks and is re-attested for future
+  recovery.
+- **Live resume:** controller PID 19032 and trainer PID 17188 started at 08:05 Kyiv. W&B reopened
+  the same run `e5a-trust-replication-f8fc583e62c6ea0a`; both datasets reproduce their latent
+  standard deviations exactly, the native loader reports checkpoint update 26,000, and training
+  begins at **26,001/40,000** with RunSpec `f8fc583e62c6ea0a`. The frozen batch 8, LR 3e-4, warmup
+  2k, EMA 0.999, bf16, NFE-16 and rollout geometry are unchanged. The first post-resume interval
+  reaches 26,500 with loss **0.1083**, 0.21 s/update and 3.63 GiB allocated, continuous with the
+  pre-restart 26,000 loss 0.1071 and free of numerical or throughput discontinuity.
+- **Budget/projection:** charged ownership before this successful resume is **10.3287 GPU-hours**;
+  cell 3 retains 3.0216 authorized hours. At the observed approximately 0.20 s/update, its remaining
+  training plus rollout should finish near 09:00–09:15 Kyiv. Reusing the measured seed-1 comparator
+  duration projects terminal E5a analysis near **15:30–16:00 Kyiv**, at roughly 17.7–19 total
+  GPU-hours versus 28 authorized.
+- **Decision:** continue the exact resumed trajectory. Seed 1's failed late-inversion direction is
+  retained as the registered result; seed 2 remains necessary for the terminal heterogeneous-partial
+  versus not-replicated decision. No E5b action is authorized.
 
 ## 2. Historical handoff boundary — E0
 

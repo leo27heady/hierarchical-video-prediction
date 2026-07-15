@@ -11,14 +11,18 @@
     "train_clips": "b5757a77c3e354c70ede510b67c5d1e1fbd6d08337ef91242926eb601db10e7a",
     "train_positions": "7a2e8e37900f03027195e4a26963958a77607c8b7f7130302780e1f29d1ffdee"
   },
-  "existing_runs": [],
+  "existing_runs": [
+    "artifacts/training/e5a-trust-replication/d0-diff-long/seed-1/25bc12c6a4bd3b71/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-1/c82816c7f0818744/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/run_spec.json"
+  ],
   "failures": [],
-  "h3b_parity_sha256": "cb1eb14aa7d4b31b9f50155d899e378f324e6318864ef8559dace36b60f467c0",
+  "h3b_parity_sha256": "09fa4c7fa6721ef41d09ec3ce30bae7172ef1fb04672d64522967b610e258aba",
   "implementation_hashes": {
     "docs/confirmation/E5A_TABLE_SHELL.md": "59ddafc11872c0652e6298c7d30f3471aa2716f568528d256a46cce5b487ce0e",
     "hvp_rev/rhvd_train_v2.py": "b76b90747d421559e663866e43b6aa08b056b35c8d2733e94c9d01a7adaef9ab",
     "scripts/analyze_e5a_trust_replication.py": "e9fcabf5e9a3359d69a08f8e1392883cc410102533111ce0b4e561ef14e2be0d",
-    "scripts/run_e5a_trust_replication.ps1": "d79d817fb7249449f78a1b1aa71712d9fb30c0b056fc7dfda307706d69d3cf0f",
+    "scripts/run_e5a_trust_replication.ps1": "b2ae743beee2d31b4c7778b6e6a2f00c0d4240d3814499902e782a71c6212ef9",
     "scripts/validate_e5a_completion.py": "9748c7a92c3e127d2fba89ac835b403a1c07ad95cb222ada1f0b72a583c298c3",
     "scripts/validate_e5a_design.py": "686dd902ccd5bc3f600f2bc0e8a7a5f2544599a1c59fb7dddfec1f214c239fca"
   },
