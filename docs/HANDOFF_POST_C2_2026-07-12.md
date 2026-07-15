@@ -1,5 +1,9 @@
 # Verified post-c2 handoff
 
+> **Historical handoff record.** Superseded for current ownership, status and launch order by
+> `docs/EXPERIMENT_CONTROL.md`, `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md` and
+> `experiments/authorization.json`.
+
 **Handoff supplied:** 2026-07-12 15:05 Europe/Kyiv
 
 **Independent verification:** 2026-07-12 15:07–15:15 Europe/Kyiv

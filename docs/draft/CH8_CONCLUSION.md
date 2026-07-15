@@ -1,8 +1,8 @@
 # Chapter 8 — Conclusion
 
-> **Canonical fourth-article source; revise before assembly.** This conclusion belongs to the
-> authoritative CH1–CH8 record and is governed by `docs/CLAIM_LEDGER.md`. The RFT draft is a
-> discussion aid. “Laws,” exact switch points, invalid Phase C factor claims and pooled
+> **Detailed fourth-article source chapter; not the binding submission narrative.** Revise before
+> assembly under `docs/CLAIM_LEDGER.md` and the binding compact
+> reach–fidelity specification. “Laws,” exact switch points, invalid Phase C factor claims and pooled
 > regression-equivalence wording remain superseded.
 
 > **Status (2026-07-08):** journal-register prose, content-complete; all numbers measured except

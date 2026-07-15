@@ -271,9 +271,16 @@ def assert_dataset_purpose(manifest_path: str | Path, *, allowed: set[str], oper
     return manifest
 
 
-def log_holdout_access(manifest_path: str | Path, access_log: str | Path, *, run_spec_hash: str) -> None:
+def log_holdout_access(
+    manifest_path: str | Path,
+    access_log: str | Path,
+    *,
+    run_spec_hash: str,
+    allowed_purpose: str = "confirmation_holdout",
+    operation: str = "confirmation evaluation",
+) -> None:
     manifest = assert_dataset_purpose(
-        manifest_path, allowed={"confirmation_holdout"}, operation="confirmation evaluation"
+        manifest_path, allowed={allowed_purpose}, operation=operation
     )
     entry = canonical_json({
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),

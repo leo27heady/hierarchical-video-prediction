@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "study": "robustness-e7c",
+  "status": "FROZEN",
+  "scope_guard": "Checkpoint-only robustness of four already-supported LoopMom diffusion contrasts. This study cannot select models, reopen E2, or establish natural-video generality.",
+  "dataset": {
+    "purpose": "robustness_holdout",
+    "seed": 20260715,
+    "clips": 500,
+    "frames": 200,
+    "evaluation_pool": "indices 250..349 (first 100 of n_val=250)",
+    "world": 192,
+    "viewport": 64,
+    "digits": 3,
+    "speed": 4,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "source_glyph_split": "MNIST train images; independent clips from E2"
+  },
+  "evaluation": {
+    "warmup_frames": 48,
+    "rollout_frames": 152,
+    "evaluation_clips": 100,
+    "chunk_size": 16,
+    "metric_threshold": 0.5,
+    "metric_version": "complete-v2-thr0.5",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 0,
+    "family_method": "studentized max-statistic clip-cluster bootstrap",
+    "family_confidence": 0.95,
+    "effect_convention": "baseline error minus candidate error; positive favors the registered candidate",
+    "wandb_project": "hgrid",
+    "wandb_group_prefix": "e7c-sampler-nfe-robustness"
+  },
+  "variants": [
+    {"id": "nfe8-ss0", "nfe": 8, "sampler_seed": 0},
+    {"id": "nfe16-ss0", "nfe": 16, "sampler_seed": 0, "legacy_parity_cell": true},
+    {"id": "nfe32-ss0", "nfe": 32, "sampler_seed": 0},
+    {"id": "nfe16-ss1", "nfe": 16, "sampler_seed": 1},
+    {"id": "nfe16-ss2", "nfe": 16, "sampler_seed": 2}
+  ],
+  "arms": [
+    {"arm": "hier-min", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.1123, "checkpoint_sha256": "706710935ad2a8dc201084d099ea8d5db38ec18716e5ef8bc3fdc6fa2b44e515"},
+    {"arm": "flat-min", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.1024, "checkpoint_sha256": "e8b94c2f03592a413b27099c2e92c1964416ec92a3ac1ddb7bc25bf81386f88d"},
+    {"arm": "hier-long", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.1302, "checkpoint_sha256": "8e243d6ad46004a760328d2b1583128318699d4c688024c500dcabedbcbc1b6e"},
+    {"arm": "flat-budget", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.1253, "checkpoint_sha256": "a568610f0ab8c0b11ffaafb046b97b3ce83e730a84491f4b9cef42ab9c4c457d"},
+    {"arm": "strided-flat", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.1300, "checkpoint_sha256": "a1b90c99c2bc7f7882f69c939695599f3d2ff19d965829063847a08912604a9b"},
+    {"arm": "hier-c2", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.2503, "checkpoint_sha256": "b3d3120f37130e9ba70e1cf1fddb616f15d6733dc7f0f1606fe43d3c5c74ba2b"},
+    {"arm": "flat-c2", "seed": 0, "steps": 30000, "batch": 16, "reference_hours_nfe16": 0.2447, "checkpoint_sha256": "576d2b3fd284fef94c55426073b300b6798b587d2c4c79c17b039220d3981081"}
+  ],
+  "contrasts": [
+    {"id": "b896-reach", "candidate": "hier-min", "baseline": "flat-min", "expected_direction": "positive", "meaning": "lower-budget reach advantage"},
+    {"id": "b1152-interior", "candidate": "hier-long", "baseline": "flat-budget", "expected_direction": "positive", "meaning": "interior reach-fidelity advantage"},
+    {"id": "b1152-package-shape", "candidate": "strided-flat", "baseline": "hier-long", "expected_direction": "positive", "meaning": "temporal full-resolution package advantage under diffusion"},
+    {"id": "b2432-inversion", "candidate": "flat-c2", "baseline": "hier-c2", "expected_direction": "positive", "meaning": "upper-budget full-resolution inversion"}
+  ],
+  "decision": {
+    "primary_metric": "legacy foreground MSE on all registered records",
+    "robust_ci_clean": "all 20 expected-direction point estimates and simultaneous 95% lower bounds are above zero",
+    "directionally_robust": "all 20 point estimates are above zero but at least one simultaneous lower bound includes zero",
+    "sensitive": "one or more registered point estimates are zero or negative",
+    "corroborating_metrics": ["mse_gt_fg_nonempty", "mse_full", "mse_gt_bg", "mse_union", "fg_precision", "fg_recall", "fg_f1", "missed_components", "extra_components"],
+    "no_adaptive_extension": "No extra NFE, sampler seed, checkpoint or contrast may be added after results are visible."
+  },
+  "budget": {
+    "pool": "closure",
+    "expected_gpu_hours": 6.03,
+    "authorized_max_gpu_hours": 8.0,
+    "single_run_runtime_multiplier_stop": 2.0,
+    "accounting": "wall clock while each E7c project process owns the GPU, including failed runs, retries, analysis uploads and gates"
+  },
+  "frozen_artifacts": {
+    "autoencoder": {"path": "logs_rhcp/hier_ae_mom.pt", "sha256": "3769200d6f9346a2c7cbfa6cff42113da883a052dfa216d3b60f78d8e3684245"},
+    "training_data": {"path": "data/loopmom_train_3000x100.npy", "sha256": "3bc69430542975486d33506e6a2a3d64a8c1789d76fd7ffbe774a5f8dad1f84a"},
+    "training_actions": {"path": "data/loopmom_train_3000x100_actions.npy", "sha256": "a0b39d07aa56ffcb062bcdd73a46b85b6926fdc34dc106ceb701e452b0a0729c"}
+  }
+}

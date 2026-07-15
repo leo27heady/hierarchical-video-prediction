@@ -1,7 +1,7 @@
 # Chapter 3 — Prediction mechanisms at matched capacity: regression, diffusion and energy-based descent
 
-> **Canonical fourth-article source.** Mechanism material belongs to the authoritative CH1–CH8
-> record, although the venue-length assembly may move detail to a supplement. Preserve measured
+> **Detailed fourth-article source chapter; not the binding submission narrative.** Mechanism
+> material remains an evidence source, although the venue-length assembly may move detail to a supplement. Preserve measured
 > negatives; do not imply matched total compute where only capacity or per-step settings are
 > matched.
 

@@ -1,6 +1,7 @@
-# Generated reach–fidelity–trust tables
+# Generated reach–fidelity tables
 
-> Status: verified post-c2 evidence; untouched confirmation pending. Generated from `experiments/evidence_snapshot_2026-07-11.json`; pending values remain explicit.
+> Status: synchronized through terminal E5a on 2026-07-15. E2/E4/E5 values below are bound to
+> their immutable result artifacts; E7 rows remain explicitly pending.
 
 ## Configuration and interface
 
@@ -19,20 +20,28 @@
 
 | Claim | Contrast | Seed | Effect | 95% interval | Analysis | Status |
 |---|---|---|---|---|---|---|
-| R1 | hier-min vs flat-min | 0 | 0.0399 | development headline interval in source artifact | all registered records | measured-development |
-| R1 | hier-min vs flat-min | 1 | 0.0358 | development headline interval in source artifact | all registered records | measured-development |
-| R2 | hier-min vs flat-min | 0 | 0.088 | [0.0668, 0.1083] | 14 < dt <= 48 | post-hoc |
-| R2 | hier-min vs flat-min | 1 | 0.0809 | [0.0621, 0.0998] | 14 < dt <= 48 | post-hoc |
-| F2 | hier-s2-min vs flat-short (diffusion) | 0 | 0.033 | [0.0246, 0.0419] | configuration effect | measured |
-| F2 | hier-s2-min vs flat-short (diffusion) | 1 | 0.0338 | [0.0251, 0.0430] | configuration effect | measured |
+| R1 | hier-min vs flat-min | 0 | 0.0474 | [0.0354, 0.0595] | E2 all registered records | confirmed |
+| R1 | hier-min vs flat-min | 1 | 0.0436 | [0.0326, 0.0549] | E2 all registered records | confirmed |
+| R2 | hier-min vs flat-min | 0 | 0.0980 | [0.0788, 0.1179] | E2 registered 14 < dt <= 48 | confirmed |
+| R2 | hier-min vs flat-min | 1 | 0.0914 | [0.0736, 0.1098] | E2 registered 14 < dt <= 48 | confirmed |
+| F2 | hier-s2-min vs flat-short (diffusion) | 0 | 0.0340 | E2 source artifact | configuration effect | confirmed |
+| F2 | hier-s2-min vs flat-short (diffusion) | 1 | 0.0381 | E2 source artifact | configuration effect | confirmed |
 | F2 | hier-s2-min-reg vs flat-short-reg | 0 | 0.0639 | [0.0516, 0.0763] | configuration effect | measured |
 | F3 | temporal vs spatial (diffusion) | 0 | 0.0197 | [0.0143, 0.0252] | package effect | measured |
 | F3 | temporal vs spatial (diffusion) | 1 | 0.0046 | [0.0007, 0.0084] | package effect | measured |
 | F3 | temporal vs spatial (diffusion) | 2 | 0.0111 | [0.0070, 0.0151] | package effect | measured |
+| F3 | temporal vs spatial (diffusion) | 3 | 0.0075 | E4b source artifact | package effect | measured |
+| F3 | temporal vs spatial (diffusion) | 4 | 0.0060 | E4b source artifact | package effect | measured |
 | F3 | temporal vs spatial (regression) | 0 | 0.0107 | [0.0062, 0.0158] | package effect | measured-sign-sensitive |
 | F3 | temporal vs spatial (regression) | 1 | -0.0104 | [-0.0146, -0.0062] | package effect | measured-sign-sensitive |
+| F3 | temporal vs spatial (regression) | 2 | -0.0208 | E4 source artifact | package effect | measured-sign-sensitive |
+| F3 | temporal vs spatial (regression) | 3 | 0.0248 | E4b source artifact | package effect | measured-sign-sensitive |
+| F3 | temporal vs spatial (regression) | 4 | -0.0166 | E4b source artifact | package effect | measured-sign-sensitive |
 | F1 | hier-c2 vs flat-c2 (B16x30k) | 0 | -0.0116 | [-0.0162, -0.0073] | optimizer-regime-specific package effect | measured-regime-qualified |
 | F1 | hier-c2 vs flat-c2 (B8x60k) | 0 | -0.0077 | [-0.0123, -0.0030] | matched-example changed-batch/update/noise/EMA control | measured-regime-qualified |
+| T1 early | d1-diff vs d0-diff-long | 0/1/2 | +0.0204 / +0.0082 / +0.0230 | see E5a artifact | h1–24 | three-seed positive |
+| T1 late | d1-diff vs d0-diff-long | 0/1/2 | −0.0064 / +0.0074 / +0.0087 | see E5a artifact | h61–256 | late inversion not replicated |
+| F4 | four frozen diffusion contrasts | 0 | PENDING | PENDING | E7c NFE × sampler robustness | preregistered, not evidence |
 
 ## Prior-art positioning
 

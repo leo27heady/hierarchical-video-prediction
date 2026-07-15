@@ -16,16 +16,17 @@ ARTICLE_CHAPTERS = [
     Path("docs/draft/CH8_CONCLUSION.md"),
 ]
 
+BINDING_ARTICLE = Path("docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md")
+
 AUTHORITATIVE = [
     Path("README.md"),
     Path("docs/CLAIM_LEDGER.md"),
-    *ARTICLE_CHAPTERS,
+    BINDING_ARTICLE,
     Path("docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"),
     Path("docs/PHASE_C_V2_PROTOCOL_2026-07-11.md"),
 ]
 
 DISCUSSION_RESOURCES = [
-    Path("docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md"),
     Path("docs/dissertation/REACH_FIDELITY_TRUST_SYNTHESIS_2026-07-11.md"),
 ]
 
@@ -51,7 +52,7 @@ REQUIRED_ARTICLE_RECORD = [
 
 def main() -> None:
     failures = []
-    checked = AUTHORITATIVE + DISCUSSION_RESOURCES
+    checked = AUTHORITATIVE + ARTICLE_CHAPTERS + DISCUSSION_RESOURCES
     for path in checked:
         if not path.is_file():
             failures.append(f"missing canonical text: {path}")
@@ -65,17 +66,22 @@ def main() -> None:
                 line_end = text.find("\n", match.end())
                 line_text = text[line_start:line_end if line_end >= 0 else len(text)].lower()
                 if (any(word in context for word in ("retired", "avoid", "not establish", "does not establish"))
-                        or any(word in line_text for word in ("retired", "do not", "does not", "avoid"))):
+                        or any(word in line_text for word in ("retired", "do not", "does not", "not a", "avoid"))):
                     continue
                 failures.append(f"{path}:{line}: {match.group(0)!r}: {reason}")
-    article = "\n".join(path.read_text(encoding="utf-8") for path in ARTICLE_CHAPTERS)
+    article = BINDING_ARTICLE.read_text(encoding="utf-8") + "\n" + "\n".join(
+        path.read_text(encoding="utf-8") for path in ARTICLE_CHAPTERS
+    )
     for phrase in REQUIRED_ARTICLE_RECORD:
         if phrase.lower() not in article.lower():
             failures.append(f"canonical CH1-CH8 record lacks required concept {phrase!r}")
     for path in ARTICLE_CHAPTERS:
         header = "\n".join(path.read_text(encoding="utf-8").splitlines()[:8]).lower()
-        if "canonical" not in header:
-            failures.append(f"article chapter is not marked canonical: {path}")
+        if "detailed" not in header or "not the binding" not in header:
+            failures.append(f"article chapter lacks the detailed/non-binding authority marker: {path}")
+    binding_header = "\n".join(BINDING_ARTICLE.read_text(encoding="utf-8").splitlines()[:10]).lower()
+    if "binding fourth-article" not in binding_header:
+        failures.append("compact reach–fidelity article is not marked as the binding specification")
     introduction = Path("docs/dissertation/rewrite/01_VSTUP.md").read_text(encoding="utf-8")
     for publication in ("[A1]", "[A2]", "[A3]", "[A4]"):
         if publication not in introduction:
@@ -89,7 +95,8 @@ def main() -> None:
         raise SystemExit(1)
     print(
         f"PACKAGING/RFT CONSISTENCY PASS: {len(AUTHORITATIVE)} authoritative texts, "
-        f"{len(DISCUSSION_RESOURCES)} discussion resources; fixed publication/task strands present"
+        f"{len(ARTICLE_CHAPTERS)} detailed source chapters and {len(DISCUSSION_RESOURCES)} "
+        "discussion resources; fixed publication/task strands present"
     )
 
 

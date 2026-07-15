@@ -1,7 +1,7 @@
 # Chapter 6 — Reversibility: the exactly invertible stochastic recurrence and its limits
 
-> **Canonical source retained for the dissertation and article supplement.** This chapter remains
-> part of the authoritative CH1–CH8 record, while the venue-length main paper may move it to an
+> **Detailed source; not the binding fourth-article narrative.** Retain this chapter for the
+> dissertation and article supplement; the venue-length main paper may move it to an
 > appendix or supplement. Reversibility is an enabling strand, not an asserted cause of
 > context-packaging effects.
 

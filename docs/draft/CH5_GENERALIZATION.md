@@ -1,7 +1,7 @@
 # Chapter 5 — Generalization of the selected configuration across datasets
 
-> **Canonical fourth-article source.** Moving-MNIST and TaxiBJ are descriptive
-> boundary/competence anchors in the authoritative CH1–CH8 record. Legacy Phase C factor claims
+> **Detailed fourth-article source chapter; not the binding submission narrative.** Moving-MNIST
+> and TaxiBJ are descriptive boundary/competence anchors. Legacy Phase C factor claims
 > are blocked; only the dated hybrid protocol with persistent-object evaluation may support
 > identity, trajectory, coverage or equivalence language.
 

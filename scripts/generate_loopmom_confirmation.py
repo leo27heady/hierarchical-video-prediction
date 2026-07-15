@@ -39,8 +39,11 @@ def main() -> None:
     parser.add_argument("--seed", required=True, type=int)
     parser.add_argument("--generator-commit", required=True)
     parser.add_argument("--dirty-hash", required=True)
-    parser.add_argument("--purpose", choices=("confirmation_holdout", "development_fixture"),
-                        required=True)
+    parser.add_argument(
+        "--purpose",
+        choices=("confirmation_holdout", "robustness_holdout", "development_fixture"),
+        required=True,
+    )
     parser.add_argument("--mnist", default=MNIST)
     parser.add_argument("--source-split", choices=("train",), default="train")
     parser.add_argument("--n", type=int, default=500)
@@ -162,7 +165,7 @@ def main() -> None:
         "access_policy": {
             "training": "forbidden",
             "monitoring_grid": "forbidden",
-            "confirmation_evaluation": "explicit switch and access log required",
+            "locked_evaluation": "explicit purpose-matched switch and access log required",
         },
     }
     atomic_write_json(manifest_path, manifest)

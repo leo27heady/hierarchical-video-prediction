@@ -1,5 +1,9 @@
 # Implementation report: reach–fidelity–trust remediation
 
+> **Historical implementation record.** Superseded for live status and launch order by
+> `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md` and
+> `experiments/authorization.json`. Preserve it as provenance, not authority.
+
 **Date:** 2026-07-11
 **Scope:** code, experiment control, evaluation, data, provenance, tests, fourth article,
 dissertation synthesis, literature, and remaining studies

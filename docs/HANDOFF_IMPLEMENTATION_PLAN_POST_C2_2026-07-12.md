@@ -1,5 +1,9 @@
 # Post-c2 handoff implementation plan
 
+> **Historical planning record.** Superseded for live status and launch order by
+> `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md` and
+> `experiments/authorization.json`. Do not use this file to authorize work.
+
 **Prepared:** 2026-07-12
 
 **Purpose:** exact implementation specification for the moment the current c2-only run finishes

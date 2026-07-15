@@ -1,11 +1,12 @@
 # Reach and Fidelity in Budgeted Video Memory:
 # A Controlled Context-Packaging Study
 
-> **Canonical fourth-article direction, updated 2026-07-15.** This document changes neither the
-> dissertation topic nor the subject matter of the three existing articles. It reorganizes the
-> final article around the questions the experiments can actually answer. Current-pool analyses
-> remain development evidence; the separately frozen E2 protocol has now been evaluated once and
-> supplies the confirmation clauses explicitly labelled below.
+> **Binding fourth-article narrative/title/claim specification, updated 2026-07-15.** This document
+> changes neither the dissertation topic nor the subject matter of the three existing articles.
+> CH1–CH8 remain detailed evidence/prose sources; they are not a competing canonical manuscript.
+> After E7/E8 integration, one assembled article will become the sole submission source. Current-
+> pool analyses remain development evidence; E2 supplies the clauses explicitly labelled as
+> confirmation.
 
 ## Abstract
 

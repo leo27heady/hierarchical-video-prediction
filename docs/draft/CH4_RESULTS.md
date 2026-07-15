@@ -1,8 +1,8 @@
 # Chapter 4 — Results: when does hierarchy pay?
 
-> **Canonical fourth-article source.** This is the authoritative result chapter, governed by
-> `docs/CLAIM_LEDGER.md` and the chronological evidence in `docs/SPATIAL_FACTORIAL.md`. The
-> reach–fidelity–trust draft supplies discussion language only. Treat edges as tested brackets,
+> **Detailed fourth-article result source; not the binding submission narrative.** This chapter is
+> governed by `docs/CLAIM_LEDGER.md`, the binding reach–fidelity specification and the chronological
+> evidence in `docs/SPATIAL_FACTORIAL.md`. Treat edges as tested brackets,
 > B1 as a configuration effect, a five-seed-stable diffusion package result, and regression plus
 > head × package effects as training-seed heterogeneity.
 

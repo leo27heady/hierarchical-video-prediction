@@ -45,6 +45,10 @@ measured systematically.
 - E5a did not replicate the seed-0 late inversion: early hierarchy benefit is positive at all
   three seeds, while both new seeds show positive rather than negative late effects;
 - no stable approximately-24-frame trust boundary or title-level trust claim is supported;
+- E7c and E7a are robustness tests of the confirmed reach–fidelity account, not new dissertation
+  topics; E7c varies sampling computation/randomness and E7a varies learned latent geometry;
+- the classical pose-indexed E8a system is a privileged reference unless a separately reported
+  storage-matched variant is constructed; it is not a like-for-like learned-model leaderboard;
 - Phase C v2 is future/conditional until persistent-object and classifier gates pass.
 
 ## Binding language for conclusions

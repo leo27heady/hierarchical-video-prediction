@@ -60,6 +60,17 @@ DEV = "cuda" if torch.cuda.is_available() else "cpu"
 WIN = 4          # predicted frames per step
 SPILL_SEC = 10.0
 
+
+def rollout_crn_seed(sampler_seed: int, chunk_index: int, rollout_step: int) -> int:
+    """Deterministic common-random-number seed for a rollout cell.
+
+    ``sampler_seed=0`` is deliberately identical to the legacy formula.  Additional registered
+    sampler seeds occupy disjoint million-seed blocks while remaining common across compared arms.
+    """
+    if sampler_seed < 0 or chunk_index < 0 or rollout_step < 0:
+        raise ValueError("rollout seed coordinates must be non-negative")
+    return 100000 + 1_000_000 * sampler_seed + 1000 * chunk_index + rollout_step
+
 ARMS = {
     # name: (n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f)
     #   stride_c: temporal stride of the coarse context/target (1 = legacy per-frame; 4 = slow
@@ -705,7 +716,7 @@ def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=5
 @torch.no_grad()
 def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48,
                  oracle=False, tag="", blind="", complete_metrics=False,
-                 metric_threshold=0.5, output_path=None):
+                 metric_threshold=0.5, output_path=None, sampler_seed=0, max_hours=0.0):
     """warm: UNIVERSAL GT warmup across arms of one campaign — every arm starts rollout at the
     same frame so (clip, horizon) records pair exactly. Legacy campaign: 48. H-grid (testbed B):
     192 (= one full loop seen in GT before rollout).
@@ -749,6 +760,15 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
     viz_rows = []
     eval_started = time.time()
     for c0 in range(0, len(clips), chunk):
+        elapsed_before = time.time() - eval_started
+        if max_hours > 0 and c0 > 0:
+            chunks_done = c0 // chunk
+            projected_next = elapsed_before + elapsed_before / chunks_done
+            if projected_next / 3600 > max_hours:
+                raise TimeoutError(
+                    f"rollout projected to exceed its {max_hours:.4f}h authorization before "
+                    f"clips {c0}..{min(c0 + chunk, len(clips)) - 1}"
+                )
         cs = clips[c0:c0 + chunk]
         B = len(cs)
         if n_ctx_c > 0:
@@ -769,7 +789,7 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
         pers01 = decode01(ae, data.zf[cs, WARM - 1].to(DEV))           # persistence reference
         for srn in range(n_steps_roll):
             tj = WARM + srn * WIN
-            torch.manual_seed(100000 + 1000 * (c0 // chunk) + srn)     # CRN across arms
+            torch.manual_seed(rollout_crn_seed(sampler_seed, c0 // chunk, srn))  # CRN across arms
             acts = torch.from_numpy(data.acts[cs, tj:tj + WIN].astype(np.int64)).to(DEV)
             ctx_c = buf_c[:, -n_ctx_c:] if n_ctx_c > 0 else buf_c[:, :0]
             ctx_t = buf_t[:, -n_ctx_t:] if n_ctx_t > 0 else None
@@ -846,6 +866,8 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
             "health/elapsed_hours": float(elapsed / 3600),
             "health/running_fg_mse": running_fg,
         }, step=int(c0 + B))
+        if max_hours > 0 and elapsed / 3600 > max_hours:
+            raise TimeoutError(f"rollout exceeded its {max_hours:.4f}h authorization")
     out = {k: np.asarray(v) for k, v in recs.items()}
     path = str(output_path or
                f"logs_rhcp/rhvd_eval_{arm}_s{seed}{'_oracle' if oracle else ''}{tag}.npz")
@@ -987,6 +1009,8 @@ def main():
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--nfe", type=int, default=16)
+    ap.add_argument("--sampler_seed", type=int, default=0,
+                    help="registered rollout-noise seed; zero preserves the legacy CRN stream")
     ap.add_argument("--n_eval_clips", type=int, default=100)
     ap.add_argument("--bf16", action="store_true")
     ap.add_argument("--probe_steps", type=int, default=0, help=">0: timing/VRAM probe, then exit")
@@ -1005,6 +1029,9 @@ def main():
     ap.add_argument("--confirmation_manifest", default="",
                     help="purpose-locked loopmom manifest; requires --eval_only and immutable output")
     ap.add_argument("--confirmation_access_log", default="artifacts/confirmation_e2/access.jsonl")
+    ap.add_argument("--robustness_manifest", default="",
+                    help="purpose-locked E7c robustness manifest; eval-only, immutable output")
+    ap.add_argument("--robustness_access_log", default="artifacts/e7c_sampler_nfe/access.jsonl")
     ap.add_argument("--artifact_root", default="artifacts/runs")
     ap.add_argument("--source_commit", default="")
     ap.add_argument("--wandb_project", default="hgrid")
@@ -1036,6 +1063,9 @@ def main():
             args.eval_tag = f"_blind-{args.blind}"
 
     confirmation = None
+    locked_purpose = None
+    locked_manifest = ""
+    locked_access_log = ""
     eval_spec = None
     store = None
     active_registry = Path("artifacts/active_experiment.json")
@@ -1046,31 +1076,39 @@ def main():
             train_sidecar, allowed={"training", "development", "development_fixture"},
             operation="predictor training"
         )
-    if test_sidecar.is_file() and not args.confirmation_manifest:
+    if args.confirmation_manifest and args.robustness_manifest:
+        raise ValueError("choose exactly one locked evaluation manifest")
+    locked_manifest = args.confirmation_manifest or args.robustness_manifest
+    if test_sidecar.is_file() and not locked_manifest:
         sidecar = assert_dataset_purpose(
             test_sidecar, allowed={"development_test", "development_fixture"},
             operation="ordinary evaluation"
         )
-        if sidecar.get("purpose") == "confirmation_holdout":
-            raise PermissionError("confirmation holdout requires --confirmation_manifest")
-    if args.confirmation_manifest:
+        if sidecar.get("purpose") in {"confirmation_holdout", "robustness_holdout"}:
+            raise PermissionError("locked holdout requires its explicit manifest switch")
+    if locked_manifest:
         if not args.eval_only or args.compare or args.smoke or args.go_gate or args.blind:
-            raise ValueError("confirmation evaluation requires plain --eval_only")
+            raise ValueError("locked evaluation requires plain --eval_only")
         if args.no_wandb:
-            raise ValueError("confirmation evaluation requires online W&B logging")
+            raise ValueError("locked evaluation requires online W&B logging")
         if not args.complete_metrics:
-            raise ValueError("confirmation evaluation requires --complete_metrics")
+            raise ValueError("locked evaluation requires --complete_metrics")
         if not args.source_commit:
-            raise ValueError("confirmation evaluation requires --source_commit")
+            raise ValueError("locked evaluation requires --source_commit")
+        locked_purpose = "confirmation_holdout" if args.confirmation_manifest else "robustness_holdout"
+        locked_access_log = (args.confirmation_access_log if args.confirmation_manifest
+                             else args.robustness_access_log)
         confirmation = assert_dataset_purpose(
-            args.confirmation_manifest,
-            allowed={"confirmation_holdout"},
-            operation="confirmation evaluation",
+            locked_manifest,
+            allowed={locked_purpose},
+            operation=f"{locked_purpose} evaluation",
         )
         if not args.eval_tag:
-            args.eval_tag = f"_e2_{confirmation['dataset_id'].split('-')[-1]}"
-        if Path(args.confirmation_manifest).resolve() != test_sidecar.resolve():
-            raise ValueError("--confirmation_manifest must be the test array's canonical sidecar")
+            prefix = "e2" if locked_purpose == "confirmation_holdout" else "e7c"
+            args.eval_tag = (f"_{prefix}_{confirmation['dataset_id'].split('-')[-1]}"
+                             f"_nfe{args.nfe}_ss{args.sampler_seed}")
+        if Path(locked_manifest).resolve() != test_sidecar.resolve():
+            raise ValueError("locked manifest must be the test array's canonical sidecar")
         expected_test = Path(confirmation["artifacts"]["clips"]["path"]).resolve()
         if Path(args.test_path).resolve() != expected_test:
             raise ValueError(f"--test_path does not match manifest: {args.test_path} != {expected_test}")
@@ -1079,7 +1117,8 @@ def main():
         if not ckpt.is_file():
             raise FileNotFoundError(f"evaluation checkpoint missing: {ckpt}")
         eval_spec = RunSpec(
-            study="confirmation-e2",
+            study=("confirmation-e2" if locked_purpose == "confirmation_holdout"
+                   else "robustness-e7c"),
             arm=args.arm,
             seed=args.seed,
             dataset_hash=confirmation["artifacts"]["clips"]["sha256"],
@@ -1089,6 +1128,7 @@ def main():
                 "checkpoint": ckpt.as_posix(),
                 "checkpoint_sha256": sha256_file(ckpt),
                 "dataset_id": confirmation["dataset_id"],
+                "training_seed": args.seed,
             },
             train_examples=args.steps * args.batch,
             optimizer_updates=args.steps,
@@ -1104,13 +1144,17 @@ def main():
                        "warmup_updates": 2000},
             ema={"decay": 0.999, "evaluation": "EMA"},
             sampler={"name": "DDIM" if cfg[2] == "diff" else "deterministic-regression",
-                     "nfe": args.nfe, "crn": "100000 + 1000*chunk + rollout_step"},
-            tag="untouched-confirmation",
+                     "nfe": args.nfe, "sampler_seed": args.sampler_seed,
+                     "crn": "100000 + 1000000*sampler_seed + 1000*chunk + rollout_step"},
+            tag=("untouched-confirmation" if locked_purpose == "confirmation_holdout"
+                 else "sampler-nfe-robustness"),
         )
         # Record access before hashing/opening the holdout array itself.
         log_holdout_access(
-            args.confirmation_manifest, args.confirmation_access_log,
+            locked_manifest, locked_access_log,
             run_spec_hash=eval_spec.identity,
+            allowed_purpose=locked_purpose,
+            operation=f"{locked_purpose} evaluation",
         )
         if sha256_file(args.test_path) != confirmation["artifacts"]["clips"]["sha256"]:
             raise ValueError("confirmation clip hash differs from frozen manifest")
@@ -1127,10 +1171,12 @@ def main():
     if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
         n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_, n_ctx_t_, stride_t_ = arm_cfg(args.arm)
         if eval_spec is not None:
-            run_name = f"e2-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
-            run_id = args.wandb_run_id or f"e2-{eval_spec.identity}"
+            prefix = "e2" if locked_purpose == "confirmation_holdout" else "e7c"
+            run_name = (f"{prefix}-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
+                        f"-nfe{args.nfe}-ss{args.sampler_seed}")
+            run_id = args.wandb_run_id or f"{prefix}-{eval_spec.identity}"
             wb_config = {"run_spec": eval_spec.resolved(), "cli": vars(args)}
-            tags = ["loopmom", "untouched-confirmation", mode_, "eval-only"]
+            tags = ["loopmom", eval_spec.tag, mode_, "eval-only"]
         else:
             run_name = (f"rhvd-{args.arm}-s{args.seed}-t{args.steps}{args.eval_tag}"
                         + ("-smoke" if args.smoke else ""))
@@ -1144,7 +1190,8 @@ def main():
             run_name, config=wb_config, project=args.wandb_project, run_id=run_id, tags=tags,
             resume="never" if eval_spec is not None else "allow",
             group=args.wandb_group or (confirmation["dataset_id"] if confirmation else None),
-            job_type="confirmation-eval" if eval_spec is not None else None,
+            job_type=("confirmation-eval" if locked_purpose == "confirmation_holdout"
+                      else "robustness-eval") if eval_spec is not None else None,
             required=args.wandb_required or eval_spec is not None,
         )
         if eval_spec is not None:
@@ -1243,31 +1290,37 @@ def main():
         n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm,
         tag=args.eval_tag, blind=args.blind, complete_metrics=args.complete_metrics,
         metric_threshold=args.metric_threshold, output_path=output_path,
+        sampler_seed=args.sampler_seed,
+        max_hours=args.authorized_gpu_hours,
     )
     if store is not None:
         store.write_json("evaluation.json", {
             "result_path": str(result_path),
-            "confirmation_manifest": str(Path(args.confirmation_manifest).resolve()),
-            "confirmation_manifest_sha256": sha256_file(args.confirmation_manifest),
-            "access_log": str(Path(args.confirmation_access_log).resolve()),
+            "dataset_manifest": str(Path(locked_manifest).resolve()),
+            "dataset_manifest_sha256": sha256_file(locked_manifest),
+            "dataset_purpose": locked_purpose,
+            "access_log": str(Path(locked_access_log).resolve()),
             "wandb_url": wb.active_url(),
         })
         store.finalize()
         wb.artifact(
-            name=f"e2-{eval_spec.identity}",
-            artifact_type="confirmation-evaluation",
+            name=f"{'e2' if locked_purpose == 'confirmation_holdout' else 'e7c'}-{eval_spec.identity}",
+            artifact_type=("confirmation-evaluation" if locked_purpose == "confirmation_holdout"
+                           else "robustness-evaluation"),
             paths=[
                 str(store.path / "run_spec.json"),
                 str(store.path / "metrics/rollout_complete.npz"),
                 str(store.path / "evaluation.json"),
                 str(store.path / "manifest.json"),
-                args.confirmation_manifest,
+                locked_manifest,
             ],
             metadata={
                 "run_spec_hash": eval_spec.identity,
                 "dataset_id": confirmation["dataset_id"],
                 "arm": args.arm,
                 "seed": args.seed,
+                "nfe": args.nfe,
+                "sampler_seed": args.sampler_seed,
             },
             aliases=["latest", f"{args.arm}-s{args.seed}"],
         )

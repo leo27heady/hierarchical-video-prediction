@@ -1,7 +1,7 @@
 # Chapter 7 — Related work and honest scoping
 
-> **Canonical fourth-article source.** Final positioning in the authoritative CH1–CH8 record
-> acknowledges recent memory benchmarks, compression/retrieval systems and Self-Forcing-class
+> **Detailed fourth-article source chapter; not the binding submission narrative.** Final
+> positioning acknowledges recent memory benchmarks, compression/retrieval systems and Self-Forcing-class
 > work. Novelty is the controlled instrument and package analysis, not the existence of
 > memory-focused evaluation.
 

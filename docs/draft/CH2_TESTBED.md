@@ -1,7 +1,7 @@
 # Chapter 2 — A memory-horizon testbed and evaluation protocol
 
-> **Canonical fourth-article source.** Assemble the focused paper from the authoritative CH1–CH8
-> record. Use the reach–fidelity–trust draft only as a discussion/restructuring resource. Geometric
+> **Detailed fourth-article source chapter; not the binding submission narrative.** Assemble the
+> focused paper through the binding reach–fidelity specification and claim ledger. Geometric
 > observability replaces claims of information-theoretic necessity, and complete
 > false-positive-sensitive metrics are required.
 
