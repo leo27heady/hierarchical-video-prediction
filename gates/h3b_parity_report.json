@@ -45,14 +45,14 @@
     "RNG-complete uninterrupted-versus-resumed trajectory"
   ],
   "schema_version": 1,
-  "source_commit": "7c8bf8615ab7f350c069f62716c82cdd0b4116ca",
+  "source_commit": "1e0aee03865d84ad745a6ce4ac8da1daca1db840",
   "source_hashes": {
     "hvp_rev/arm_registry.py": "2dd7675ee18a7e76f29271960cf8eb9365a9e0c2c9fb077c5b05d21600ae1dae",
-    "hvp_rev/provenance.py": "0fed41785b40a93018dacb47c9bb310da2c656211220a36fb34ce10e11836ad9",
+    "hvp_rev/provenance.py": "cdc8bde91e0f35380d29f68e3064d7051c5ed75f57e648a14540c05c1508d0b9",
     "hvp_rev/rhvd.py": "d2e38371fcdf96b65efc2cfb23f5c2e168bf139de4c9003ed2552fbb08e6c474",
     "hvp_rev/rhvd_train_v2.py": "b76b90747d421559e663866e43b6aa08b056b35c8d2733e94c9d01a7adaef9ab",
     "tests/test_h3b_parity.py": "db13ccb715c50e69983173e7a80a3bb8bf925598d6432cd77f67837711dc73bf"
   },
   "status": "H3B_PARITY_PASS",
-  "timestamp_utc": "2026-07-14T12:23:32.868123+00:00"
+  "timestamp_utc": "2026-07-15T05:02:51.028712+00:00"
 }
