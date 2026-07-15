@@ -14,7 +14,7 @@ architecture that has already integrated every method:
 | representation and adaptive decomposition | [A1], V-BLT / entropy-guided hierarchy | adaptive local/global representation and tokenization | separate published strand; not the exact final predictor interface | fidelity and resource allocation |
 | long-horizon optimization | [A2], TempVerseFormer / reversible temporal modelling | reversible processing and long-sequence memory accounting | enabler; not a demonstrated cause of [A4] gains | computational feasibility of testing trust |
 | consistency criteria | [A3] | systems-analysis criteria for generative consistency | criteria apparatus, not a substitute for construct-valid endpoints | defines what reliability must mean |
-| budgeted video memory | [A4], final article | controlled temporal-rate/spatial-resolution/depth packages | synthetic development evidence; untouched confirmation required | direct reach–fidelity–trust study |
+| budgeted video memory | [A4], final article | controlled temporal-rate/spatial-resolution/depth packages plus a preregistered self-fed replication | reach/fidelity confirmed on the untouched E2 holdout; the E5a late trust inversion did not replicate | direct reach–fidelity study; trust retained as a negative replication |
 | external applicability | OpenSTL/TaxiBJ and proposed Phase C v2 | competence/boundary probes | no current natural re-entry confirmation; legacy Phase C invalid | generalization boundary |
 
 ## Research posture
@@ -36,13 +36,15 @@ measured systematically.
 ## Binding language for Chapter 4
 
 - context packaging is the manipulated experimental design;
-- reach, fidelity and trust are explanatory axes;
+- reach and fidelity are the confirmed explanatory axes; trust is a tested robustness question;
 - “exact” applies to generator geometry/observability, not statistical necessity;
 - current test reuse makes the main pool developmental;
 - B1 is a configuration effect until the target interface is controlled;
 - c2 changes the optimizer regime at matched examples;
 - tested budget inversions do not prove a unique continuous crossing;
-- trust is a measured boundary until replicated;
+- E5a did not replicate the seed-0 late inversion: early hierarchy benefit is positive at all
+  three seeds, while both new seeds show positive rather than negative late effects;
+- no stable approximately-24-frame trust boundary or title-level trust claim is supported;
 - Phase C v2 is future/conditional until persistent-object and classifier gates pass.
 
 ## Binding language for conclusions

@@ -1,7 +1,7 @@
-# Reach, Fidelity, and Trust in Budgeted Video Memory:
+# Reach and Fidelity in Budgeted Video Memory:
 # A Controlled Context-Packaging Study
 
-> **Canonical fourth-article direction, 2026-07-11.** This document changes neither the
+> **Canonical fourth-article direction, updated 2026-07-15.** This document changes neither the
 > dissertation topic nor the subject matter of the three existing articles. It reorganizes the
 > final article around the questions the experiments can actually answer. Current-pool analyses
 > remain development evidence; the separately frozen E2 protocol has now been evaluated once and
@@ -10,11 +10,11 @@
 ## Abstract
 
 A bounded-context video predictor must decide not only how much history to retain, but how to
-represent it. More temporal reach can be purchased by reducing spatial fidelity or temporal rate;
-the stored evidence must then remain usable during self-fed generation. We study this as a
-controlled **context-packaging** problem. The manipulated factors are temporal sampling rate,
-spatial resolution and package depth; the explanatory questions are whether a package reaches the
-memory-relevant past, preserves sufficient fidelity, and remains trustworthy during rollout.
+represent it. More temporal reach can be purchased by reducing spatial fidelity or temporal rate.
+We study this as a controlled **context-packaging** problem. The manipulated factors are temporal
+sampling rate, spatial resolution and package depth; the main explanatory questions are whether a
+package reaches the memory-relevant past and preserves sufficient fidelity. We separately test
+whether an apparent self-fed reliability boundary is robust across training seeds.
 
 We construct a procedural panning-world instrument in which foreground content exits and re-enters
 the viewport and its geometric observability is known from recorded camera motion. A shared
@@ -27,12 +27,15 @@ context recovers and can become preferable. A stride-2 package wins at 512 token
 seeds, but the legacy implementation also changes its target interface, so this is reported as a
 configuration effect pending a fixed-target control. A five-seed factorial finds a stable
 temporal-package advantage under diffusion, but sign-changing package effects under regression
-and no training-seed-robust directional head interaction. Self-fed rollout exposes a separate
-boundary between addressable and reliable memory.
+and no training-seed-robust directional head interaction. In a preregistered three-seed rollout
+study, the early hierarchy advantage is positive at every seed, but a late inversion observed at
+seed 0 reverses to a late hierarchy advantage at seeds 1 and 2. The proposed trust boundary is
+therefore not replicated.
 
-These results support a scoped account: context reach explains where memory can help; fidelity
-explains why compression can lose after reach is saturated; trust limits what addressable memory
-can deliver during rollout. They do not establish universal laws or a unique continuous crossing.
+These results support a scoped account: context reach explains where memory can help, while
+fidelity explains why compression can lose after reach is saturated. Addressability and self-fed
+reliability remain distinct constructs, but the present data do not locate a stable trust
+boundary. They do not establish universal laws or a unique continuous crossing.
 The central reach–fidelity comparisons were confirmed once on a hash-pinned untouched holdout,
 with false-positive-sensitive, component and coverage endpoints. All claims remain scoped to the
 procedural static-world testbed, frozen representation and tested training regimes.
@@ -48,11 +51,13 @@ different prediction target, uses more inference work, or is evaluated on a metr
 its hallucinations. Conversely, a hierarchy can appear useless on a benchmark where every
 relevant object remains visible to a short context.
 
-This article begins with three questions rather than a claim that hierarchy must win:
+This article begins with two primary explanatory questions and one robustness question rather
+than a claim that hierarchy must win:
 
 1. **Reach:** when does the supplied context contain the past that determines a re-entering event?
 2. **Fidelity:** when reach is available, how much task-relevant information survives the package?
-3. **Trust:** when information is stored, does repeated self-fed generation preserve its utility?
+3. **Self-fed reliability:** does an apparent late failure of stored information replicate across
+   training seeds?
 
 The experimental object is context packaging. “Hierarchy” denotes one family of packages—multiple
 rates, resolutions or depths—rather than the conclusion. This distinction lets a flat window, a
@@ -90,9 +95,10 @@ buy reach? Not necessarily: static off-screen content may favour sparse full-res
 dynamically evolving or lower-detail content may favour another package. The present testbed
 locates one operating point rather than proving data-independent ordering.
 
-**RQ4 — Trust.** Does information usable under teacher forcing remain usable during self-fed
-rollout? Rollout may introduce a reliability boundary distinct from addressability. Its location
-should vary with horizon and refresh/corruption interventions.
+**RQ4 — Self-fed reliability.** Does the seed-0 early-benefit/late-inversion pattern replicate
+under the same long-loop protocol? The preregistered prediction is an early positive and late
+negative hierarchy effect in at least one new seed; a failed replication demotes the boundary
+rather than triggering post-hoc localization experiments.
 
 ### 1.4 Contributions
 
@@ -104,7 +110,8 @@ The fourth article contributes:
 4. lower- and upper-regime inversions reported as tested configurations, not interpolated laws;
 5. a five-seed package factorial that separates a stable diffusion result from regression and
    cross-head heterogeneity;
-6. a separation between addressable memory and self-fed reliability;
+6. an outcome-independent negative replication showing that the proposed late trust inversion is
+   training-seed-specific under this protocol;
 7. an untouched-confirmation protocol with false-positive-sensitive and coverage endpoints;
 8. explicit reporting of negative, confounded and seed-sensitive outcomes.
 
@@ -231,13 +238,25 @@ each trained model; the t intervals use training seeds as units. Unlike E2, this
 the existing adaptively used evaluation pool and is measured development evidence, not a new
 untouched confirmation.
 
-### 4.5 Addressability and trust
+### 4.5 Addressability and self-fed reliability: a negative replication
 
 At a longer-loop operating point, single-step teacher-forced retrieval succeeds when span covers
-the loop, while pure self-fed rollout loses the advantage after roughly 24 frames in the decisive
-programme. This shows addressability and rollout reliability can diverge. Because the decisive
-rollout result is seed-scoped and protocol allocation changes, it is a measured boundary. A
-title-level trust claim requires another seed or horizon/task plus refresh/corruption diagnostics.
+the loop. Seed 0 then shows an early hierarchy benefit followed by a late inversion during pure
+self-fed rollout. E5a preregistered that horizon pattern and repeated the same pair at two new
+training seeds. Positive effects below favor the 224-frame-reach hierarchy:
+
+| Training seed | Early h1–24 effect [95% CI] | Late h61–256 effect [95% CI] |
+|---:|---:|---:|
+| 0 | +0.0204 [+0.0133, +0.0279] | −0.0064 [−0.0095, −0.0032] |
+| 1 | +0.0082 [+0.0035, +0.0133] | +0.0074 [+0.0038, +0.0112] |
+| 2 | +0.0230 [+0.0150, +0.0315] | +0.0087 [+0.0035, +0.0139] |
+
+The early advantage is positive and CI-clean at all three seeds. Neither new seed reproduces the
+required late-negative direction; both instead show a positive, CI-clean late hierarchy effect.
+The registered verdict is **NOT_REPLICATED**, so the gated horizon/refresh/corruption programme is
+not authorized. This result preserves the conceptual distinction between addressability and
+self-fed reliability while rejecting a stable approximately-24-frame trust boundary in the
+current evidence.
 
 ### 4.6 Untouched confirmation
 
@@ -261,7 +280,8 @@ Prior work already studies slow latent state, compressed trajectory memory, retr
 benchmarks and autoregressive mismatch [CW-VAE; FDM; TECO; recent spatial-memory world models;
 WorldPack; MBench; CaR/SceneFly; MemLearner; GIM-World; Self Forcing]. The novelty is narrower: an
 analytic observability instrument, matched-budget rate-versus-resolution tests, measured
-inversions, pair-specific reach bands, and separation of addressable from self-fed memory.
+inversions, pair-specific reach bands, and an outcome-independent replication test of self-fed
+reliability.
 
 A strong follow-up would use paired counterfactual worlds identical over the short visible context
 but differing in an off-screen texture/barcode that determines re-entry. Crossing static/dynamic
@@ -271,25 +291,25 @@ baselines, would test whether the preferred package follows the information stru
 ## 6. Conclusion
 
 The project is a controlled search for boundaries, not proof that one architecture always wins.
-Current evidence supports three scoped propositions: effects are largest where only the longer
-package reaches the relevant past; full-resolution fidelity can recover after reach is saturated;
-and self-fed generation can make addressable memory unreliable. Context packaging is the
-intervention; reach, fidelity and trust organize the explanation.
+Current evidence supports two central scoped propositions: effects are largest where only the
+longer package reaches the relevant past, and full-resolution fidelity can recover after reach is
+saturated. Context packaging is the intervention; reach and fidelity organize the confirmed
+explanation. Self-fed reliability remains an important question, not a third empirical law.
 
 The one-time untouched confirmation supports the central reach–fidelity account. The five-seed
 factorial strengthens the diffusion temporal-package result while rejecting a training-seed-
 robust directional head shift; regression remains a sign-changing scope boundary rather than an
 equivalence result. Because the article retains configuration-level B1 wording, the fixed-target
-control is not required for its present causal scope. Trust replication is the next title-level
-gate and varies horizon and refresh/corruption directly. Results that fail these tests will narrow
-the account rather than being explained away; that outcome-independent structure is part of the
-contribution.
+control is not required for its present causal scope. E5a failed its preregistered late-inversion
+replication rule, so trust is removed from the title and the gated E5b diagnostic programme is not
+run. The three-seed early benefit and seed-0-only late failure are reported together. This
+outcome-independent narrowing is part of the contribution.
 
 ## Required pre-submission inserts
 
 - [x] integrate seed-2 trio and c2 with regime-correct wording;
 - [x] insert untouched-confirmation and metric-decomposition results;
-- [ ] decide whether trust has sufficient replication for the title;
+- [x] remove trust from the title after E5a returned `NOT_REPLICATED`;
 - [x] complete the five-seed E4a/E4b factorial; retain stable diffusion packaging and demote the
       directional head-shift claim;
 - [ ] add the fixed-target B1 control or retain configuration-only wording;

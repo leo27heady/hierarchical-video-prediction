@@ -1,6 +1,6 @@
 # Claim ledger — scientific source of truth
 
-**Revision:** 2026-07-14 E4b five-training-seed integration
+**Revision:** 2026-07-15 E5a registered negative-replication integration
 **Rule:** a headline claim must name its testbed, intervention, comparator, metric population,
 representation, head, seeds, training regime, and evidence artifact.  Opposite signs are not
 equivalence; tested brackets are not continuous crossings; configuration changes are not pure
@@ -13,8 +13,8 @@ axes to be tested**, not assumed laws:
 - fidelity: relevant information survives the stored representation;
 - trust: stored information remains usable after self-fed generation.
 
-Status vocabulary: `CONFIRMED`, `MEASURED`, `CONFIRMATION_REQUIRED`, `EXPLORATORY_POST_HOC`,
-`BLOCKED_VALIDITY`, `CONDITIONAL`, and `FUTURE`.
+Status vocabulary: `CONFIRMED`, `MEASURED`, `NOT_REPLICATED`, `CONFIRMATION_REQUIRED`,
+`EXPLORATORY_POST_HOC`, `BLOCKED_VALIDITY`, `CONDITIONAL`, and `FUTURE`.
 
 ## Stable L1–L10 compatibility map
 
@@ -28,7 +28,7 @@ are finer-grained evidence views, not replacements that invalidate existing cita
 | L3 | F2 | Stride-family 512-token configuration effect; causal stride isolation remains conditional on the fixed-target control. |
 | L4 | F3 | Spatial-versus-temporal package shape; diffusion replicated, regression head/seed-sensitive. |
 | L5 | D1 | Depth-plus-objective/allocation probe on a single-scale testbed; appendix evidence, not a general depth law. |
-| L6 | T1 | Addressable-versus-trustworthy memory boundary; replication required before generalization. |
+| L6 | T1, P8 | Addressability and self-fed reliability are distinct questions, but the seed-0 late inversion did not replicate at seeds 1–2; no stable trust boundary is established. |
 | L7 | M1, M2 | Prediction-mechanism regime dependence and the EBT characterized negative. |
 | L8 | X1, P1 | External boundary programme; short controls measured, legacy Phase C factor claims invalid, hybrid Phase C conditional. |
 | L9 | V1 | Reversible temporal optimization as a dissertation enabler, not the cause of package gains. |
@@ -46,7 +46,7 @@ L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
 | F1 | The tested reach–fidelity frontier has a lower/interior hierarchy-favouring region and an upper flat-fidelity inversion. | E2 simultaneous max-statistic family: hierarchy wins at 896 and 1,152 on every tested seed; 1,792 is unresolved; flat wins at 2,432 under B16x30k and B8x60k and at 3,072 on two seeds. | `CONFIRMED_TESTED_BRACKET; REGIME_QUALIFIED` | The family-wise-confirmed bracket is 1,152 (largest confirmed hierarchy win) to 2,432 (smallest confirmed flat win). No monotonicity, uniqueness, continuous crossing or asymptotic edge is established. |
 | F2 | The stride-2 B1 configuration strongly outperforms its compared short-flat configuration. | Development diffusion +0.0330/+0.0338 and regression seed 0 +0.0639; untouched E2 diffusion +0.0340/+0.0381 overall and +0.0692/+0.0743 in the registered reach band. | `CONFIRMED_CONFIGURATION_EFFECT` | Context stride, target slots, auxiliary loss, sequence length and optimization difficulty change together. Fixed-target control is required only for causal stride wording. |
 | F3 | At the tested static-world operating point, temporal subsampling and spatial coarsening are not interchangeable under diffusion; cross-head generalization is training-seed-sensitive. | Diffusion temporal advantages are +0.0197/+0.0046/+0.0111/+0.0075/+0.0060 at seeds 0–4: all five are positive, with across-seed mean +0.0098, SD 0.0060 and t95 [+0.0023, +0.0173]. Regression effects are +0.0107/−0.0104/−0.0208/+0.0248/−0.0166; interactions are −0.0089/−0.0150/−0.0319/+0.0173/−0.0226. | `MEASURED; FIVE_SEED_DIFFUSION_STABLE; REGRESSION_AND_INTERACTION_HETEROGENEITY` | Development-pool evidence. Regression has two temporal and three spatial material winners; its mean is −0.0024 with t95 [−0.0266, +0.0217]. The interaction mean is −0.0122 with t95 [−0.0353, +0.0109], so the preregistered robust negative head-shift rule fails. Claim the stable diffusion package result and the cross-head scope boundary separately; do not claim a directional head law. |
-| T1 | Memory addressable under teacher forcing can become unreliable under self-fed rollout at the tested long-loop operating point. | Retrieval gate wins when span covers the loop; rollout inversion appears after roughly 24 frames in the decisive seed-0 programme. | `MEASURED_BOUNDARY; REPLICATION_REQUIRED` | Do not call a general trustworthy-memory law. Replicate or demote; add refresh/corruption and 24/48/96 horizon diagnostics. |
+| T1 | Addressable memory and self-fed reliability are experimentally separable, but the tested long-loop pair does not exhibit a training-seed-stable late trust boundary. | E5a registered primary effects (positive favors hierarchy): early h1–24 is +0.0204 [+0.0133,+0.0279], +0.0082 [+0.0035,+0.0133], +0.0230 [+0.0150,+0.0315] at seeds 0/1/2. Late h61–256 is −0.0064 [−0.0095,−0.0032], +0.0074 [+0.0038,+0.0112], +0.0087 [+0.0035,+0.0139]. Neither new seed reproduces the registered early-positive/late-negative direction. | `NOT_REPLICATED; EARLY_BENEFIT_THREE_SEED; SEED0_LATE_FAILURE_ONLY` | Do not claim or title a general trustworthy-memory boundary. E5b is not authorized. If trust is studied again, preregister a new multi-seed/task design rather than localizing the unreplicated seed-0 inversion. |
 
 ## Supporting and boundary claims
 
@@ -69,6 +69,7 @@ L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
 | P5 | Averaged regression “tie”/equivalence or a stable regression-induced shift toward spatial packaging. | `RETIRED_EQUIVALENCE_AND_HEAD_LAW` | Report all five regression effects (+0.0107/−0.0104/−0.0208/+0.0248/−0.0166), the two-temporal/three-spatial sign counts and the interaction t95 [−0.0353, +0.0109]. |
 | P6 | Geometric labels as information-theoretic necessity. | `RETIRED_TERMINOLOGY` | Use exact geometric observability. Reserve necessity for paired counterfactual worlds. |
 | P7 | OOD blinding loss as a lower bound on stream contribution. | `RETIRED_INTERPRETATION` | OOD corruption can inflate loss. Prefer in-distribution shuffle/freeze/cross-clip or trained missing-stream controls. |
+| P8 | A stable self-fed trust boundary located after approximately 24 frames, or a general late inversion of the hierarchy advantage. | `NOT_REPLICATED` | Report the complete E5a seed table: early hierarchy benefit is positive at all three seeds, while the late inversion occurs only at seed 0 and reverses at seeds 1–2. |
 
 ## Cost and comparison vocabulary
 
@@ -94,7 +95,7 @@ only when literally true.  Do not use “matched compute” as a substitute for 
 3. Validate the complete metric suite and immutable provenance on CPU.
 4. Evaluate the untouched confirmation set once. **COMPLETE: E2 PASS.**
 5. Complete the regression seed-2 factorial because F3 remains central, after H3b parity. **COMPLETE: E4a and E4b PASS; diffusion is five-seed-stable, while regression and the head interaction are heterogeneous. E4b is terminal and authorizes no seeds 5+.**
-6. Replicate/isolate trust because T1 remains title-level.
+6. Replicate/isolate trust. **COMPLETE: E5a NOT_REPLICATED; E5b/E5c not authorized; remove trust from the title-level empirical claim.**
 7. Run the fixed-target B1 control only if the assembled article retains causal stride wording.
 8. Run redesigned Phase C only after its validity and classifier gates.
 9. Treat counterfactual/dynamic-content and natural re-entry studies as future work.

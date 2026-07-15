@@ -109,9 +109,9 @@ negatives (Ch. 3, Ch. 6) that scope it.
    tokens), its upper edge is bracketed by measurement to (1,792, 2,432) — and inverts outside
    the band. The frontier question is then posed across hierarchy *shapes* (§4.4): spatial and
    temporal abstraction, depth, and allocation, compared as budget-matched families. A second
-   operating point with a ~213-frame loop bounds the mechanism from above: single-step retrieval
-   over slot memory is real and span-threshold-gated, but does not survive pure self-feeding at
-   this scale (the trustworthy-memory boundary).
+   operating point with a ~213-frame loop tests self-fed robustness: single-step retrieval over
+   slot memory is real and span-threshold-gated, but the seed-0 late inversion does not replicate
+   at seeds 1–2. This is a negative replication and scope condition, not a trustworthy-memory law.
 4. **Supporting theory** (Ch. 6). An exactly invertible stochastic recurrence (store-the-noise):
    closed-form inverse, reconstruction exact to numerical precision, reverse-replay gradients
    equal to BPTT (cosine similarity 1.000000), activation memory constant in rollout length —
@@ -131,8 +131,9 @@ negatives (Ch. 3, Ch. 6) that scope it.
   extrapolation risk explicit (Ch. 3).
 - **C4.** The frontier result: hierarchy wins the token-budget band whose edges are predictable
   from geometry — measured at six budgets (two seeds everywhere except the upper-edge bracket),
-  both heads (mechanism-agnostic), with the trustworthy-memory boundary from the second operating
-  point (Ch. 4) and the negative control on the field's own benchmark (Ch. 5). [EXPECTED-B1,
+  both heads at the interior pair, with an outcome-independent negative replication of the
+  proposed late trust inversion at the second operating point (Ch. 4) and the negative control on
+  the field's own benchmark (Ch. 5). [EXPECTED-B1,
   add on two-seed confirmation only: "…and the band's lower edge is family-parametric, moving
   from 896 to 512 tokens when the coarse tick halves, at the token-arithmetic prediction both
   times."]

@@ -71,10 +71,10 @@ section only when its evidence row is complete, and its wording carries its scop
   depth-plus-objective-allocation result with three inseparable mechanisms (loss dilution,
   optimization load, top-stream information floor), never as "depth hurts."
   A depth *law* requires the multi-timescale testbed of §8.5.
-- **L6 — Trustworthy-memory regularity.** A span sufficient for single-step retrieval can fail under
-  self-fed rollout: at the ~213-frame-loop operating point, retrieval is real and
-  span-threshold-gated (2/2 vs 0/4) yet inverts after ~24 self-fed frames — hierarchical memory
-  pays where its contents remain trustworthy.
+- **L6 — Self-fed reliability: negative replication, not a law.** Single-step retrieval is real
+  and span-threshold-gated (2/2 above-loop versus 0/4 at-or-below-loop), and the early self-fed
+  hierarchy benefit is positive at all three seeds. The late inversion appears only at seed 0;
+  seeds 1–2 instead show positive, CI-clean late effects. No stable trust boundary is established.
 
 **Supporting boundary conditions (measured):** retrieval *emerges* only under a sufficient
 optimization budget (null at 6k steps, two-seed win at 20k; matched-budget delta doubles at 2×
@@ -114,18 +114,17 @@ resolution are therefore reported before any global superlative.
 ## 8.5 Future work
 
 Four directions follow from the measured boundaries rather than from speculation: (1) paper-scale
-EBT — the ordering-repaired branch leaves scale as the open variable; (2) distribution-matching
-rollout objectives (Self-Forcing-class) whose long-horizon training memory the store-the-noise
-recurrence makes affordable — the direct route to pushing the trustworthy-memory boundary
-outward; (3) a natural-video instantiation of the re-entry-stratified protocol (hardness labels
-estimated rather than exact), building on the OpenSTL bridge; (4) a sharp renderer over the
+EBT — the ordering-repaired branch leaves scale as the open variable; (2) a newly preregistered,
+multi-seed and multi-task self-fed reliability study, if this question remains important, crossing
+teacher-forced, self-fed and controlled-refresh conditions rather than extending the unreplicated
+seed-0 boundary; (3) a natural-video instantiation of the re-entry-stratified protocol (hardness
+labels estimated rather than exact), building on the OpenSTL bridge; (4) a sharp renderer over the
 frozen latents (the adversarial-renderer precedent) to lift the decoder-owned blur ceiling that
-bounds all arms equally. A fifth, cheaper item is measurement, not construction: mapping where
-between loop 48 (works) and loop 213 (fails) the trustworthy-memory boundary sits. A sixth
+bounds all arms equally. A fifth
 follows from the shape study's measured depth-plus-objective-allocation loss: the arena where depth *can* win is a
 **multi-scale testbed with a visible slow factor** — a slowly evolving, always-visible global
 variable (period ≫ the pan loop) layered under the fast re-entry dynamics. Slow-but-visible
-state is continuously refreshed, so a deep hierarchy's top level can own it without fighting the
-trustworthy-memory boundary that self-fed occluded recall runs into; this is the CW-VAE slowness
-regime rather than the retrieval regime, and the natural home for the re-based factor-4 pyramid
+state is continuously refreshed, so a deep hierarchy's top level can own it without depending on
+long occluded recall; this is the CW-VAE slowness regime rather than the retrieval regime, and the
+natural home for the re-based factor-4 pyramid
 (16×16 / 4×4 / 1×1) that a 16 GB budget cannot pair with long flat windows.

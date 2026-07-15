@@ -144,9 +144,11 @@ rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are reported as the receipts
 reversibility method; no new TaxiBJ/KTH commitments are made for the hierarchical model.
 
 The general conclusions present the main results of the dissertation research, confirming the
-fulfillment of all the set tasks, with honest scoping: the hierarchy is validated *where the
-memory horizon demands it and where the memory contents remain trustworthy*; the energy-based
-mechanism is a characterized negative; reversibility is scoped by its applicability taxonomy.
+fulfillment of all the set tasks, with honest scoping: the hierarchy is validated where its reach
+covers memory-relevant history under a bounded budget, while full-resolution fidelity can recover
+at larger tested budgets. A seed-0 late self-fed inversion did not replicate at two new training
+seeds and is therefore not stated as a general trust boundary. The energy-based mechanism is a
+characterized negative; reversibility is scoped by its applicability taxonomy.
 
 ### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
 

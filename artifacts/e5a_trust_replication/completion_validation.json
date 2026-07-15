@@ -1,0 +1,146 @@
+{
+  "authorized_max_gpu_hours": 28.0,
+  "config_sha256": "7feef9236e7312e4aa424285096cc21b2e2b514dbb6f99a1cecb7172794bf04b",
+  "decision": {
+    "e5b_gate": "FULL_E5B_NOT_AUTHORIZED",
+    "verdict": "NOT_REPLICATED"
+  },
+  "gpu_hours": 17.785247252166666,
+  "independent_primary_statistics": [
+    {
+      "ci_clean_boundary": true,
+      "directional_boundary": true,
+      "early_benefit": {
+        "bootstrap_replicates": 10000,
+        "clips": 95,
+        "hi": 0.027948601702973037,
+        "lo": 0.0133393890731178,
+        "mean": 0.020417659365431218,
+        "records": 1746
+      },
+      "late_inversion": {
+        "bootstrap_replicates": 10000,
+        "clips": 100,
+        "hi": -0.0031998616677584818,
+        "lo": -0.009546808215143653,
+        "mean": -0.0063627647782138865,
+        "records": 13781
+      },
+      "seed": 0
+    },
+    {
+      "ci_clean_boundary": false,
+      "directional_boundary": false,
+      "early_benefit": {
+        "bootstrap_replicates": 10000,
+        "clips": 95,
+        "hi": 0.013294094305315945,
+        "lo": 0.0035033912195021593,
+        "mean": 0.00815766567619302,
+        "records": 1746
+      },
+      "late_inversion": {
+        "bootstrap_replicates": 10000,
+        "clips": 100,
+        "hi": 0.011231978599148094,
+        "lo": 0.0037736835242906455,
+        "mean": 0.007448748281280926,
+        "records": 13781
+      },
+      "seed": 1
+    },
+    {
+      "ci_clean_boundary": false,
+      "directional_boundary": false,
+      "early_benefit": {
+        "bootstrap_replicates": 10000,
+        "clips": 95,
+        "hi": 0.03149466221565184,
+        "lo": 0.015008836901035714,
+        "mean": 0.022985472607496754,
+        "records": 1746
+      },
+      "late_inversion": {
+        "bootstrap_replicates": 10000,
+        "clips": 100,
+        "hi": 0.01394359535093915,
+        "lo": 0.0035480429211389086,
+        "mean": 0.008709609719558885,
+        "records": 13781
+      },
+      "seed": 2
+    }
+  ],
+  "input_artifacts": [
+    {
+      "bytes": 1640336,
+      "cell": "long_reach_hierarchy",
+      "path": "logs_rhcp/rhvd_eval_d1-56-diff_s0.npz",
+      "seed": 0,
+      "sha256": "567c5c450a1588946335c288ff244d37d5c83c1e23682f592d0f293bec11ec23"
+    },
+    {
+      "bytes": 1640336,
+      "cell": "contiguous_fine_comparator",
+      "path": "logs_rhcp/rhvd_eval_d0-diff-long_s0.npz",
+      "seed": 0,
+      "sha256": "b6b9a9e83d58419c2f132bc02e4d409dfcd13859735febefcad2f3e5dae5a88f"
+    },
+    {
+      "bytes": 870562,
+      "cell": "long_reach_hierarchy",
+      "path": "artifacts/training/e5a-trust-replication/d1-56-diff/seed-1/c82816c7f0818744/metrics/rollout_complete.npz",
+      "seed": 1,
+      "sha256": "19828bd70b00e425720f127dbb15863b13ffa2fc10595bdbfd827ee8bbeb86a3"
+    },
+    {
+      "bytes": 858540,
+      "cell": "contiguous_fine_comparator",
+      "path": "artifacts/training/e5a-trust-replication/d0-diff-long/seed-1/25bc12c6a4bd3b71/metrics/rollout_complete.npz",
+      "seed": 1,
+      "sha256": "522145fcb8f279e92b07c397f9dc0e61e084ea0eabbc0d5edde3051d38323a6b"
+    },
+    {
+      "bytes": 872945,
+      "cell": "long_reach_hierarchy",
+      "path": "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "48b9edacd046d4dbbbd2444e50d14f6e37d0464432f7211c935530c7f2a41677"
+    },
+    {
+      "bytes": 842256,
+      "cell": "contiguous_fine_comparator",
+      "path": "artifacts/training/e5a-trust-replication/d0-diff-long/seed-2/8df2dfe3e392b652/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "88e8121d411a12671441bbdcd149b7a64ed42db194a30a4ab93f16df126b53c2"
+    }
+  ],
+  "manifests": {
+    "d0-diff-long-s1": {
+      "artifact_count": 24,
+      "manifest_sha256": "beaf29a619e832fb7cc900e949161ed55e7fd6914cabc4c92b70d6a8768a6b7d",
+      "run_spec_hash": "25bc12c6a4bd3b71"
+    },
+    "d0-diff-long-s2": {
+      "artifact_count": 24,
+      "manifest_sha256": "f48257f71550d2c2787b4245d1d9b67a6a47519de6eacbb58ada5e0262f34c48",
+      "run_spec_hash": "8df2dfe3e392b652"
+    },
+    "d1-56-diff-s1": {
+      "artifact_count": 24,
+      "manifest_sha256": "4e815c9ad597f3fa4bf16ddee1fcbd60bbdaff6c2b08d660315a452605680a64",
+      "run_spec_hash": "c82816c7f0818744"
+    },
+    "d1-56-diff-s2": {
+      "artifact_count": 24,
+      "manifest_sha256": "d74c691f9feaf007750bbef9bc12dde5055f8d8c7ac3bc11fb17063e0c676639",
+      "run_spec_hash": "f8fc583e62c6ea0a"
+    }
+  },
+  "results_markdown_sha256": "e38354deae611dbded6ee0bc344717f7360687d544c29b2ab6322ac48e0a15fb",
+  "results_sha256": "c38244c207c24c17d6081a2dc75004b6ae96c63c7814d1cfdfbd87bb8ab5414b",
+  "schema_version": 1,
+  "status": "PASS",
+  "study": "e5a-trust-replication",
+  "terminal_rule": "No E5a seed beyond 2 is authorized."
+}

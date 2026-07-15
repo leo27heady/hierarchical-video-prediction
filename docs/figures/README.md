@@ -10,7 +10,7 @@ Regenerable from the committed data.
 | fig2_claim1_winmap.png | horizon×hardness Δ(flat−hier) heatmap, seed 0 & seed 1 | CH4 §4.3.3 [FIG ch4-3] | hier-long/flat-budget s0,s1 |
 | fig3_rollout_matrix.png | 7-arm ALL fg-MSE ordering + sharpness bars | CH4 §4.3.2 Table 4.2 companion | all loopmom npz |
 | fig4_claim3_factorial.png | spatial factorial: diffusion (coarse loses) vs regression (coarse ~free) | CH4 §4.4 Table 4.4 | spat18{,-reg}, flat-budget, reg-flat |
-| fig5_hgrid_pair_crossover.png | testbed B: d1 vs d0 rollout, early win → late inversion, both hit persistence | CH4 §4.5.5 | d1-56-diff, d0-diff-long |
+| fig5_hgrid_pair_crossover.png | historical seed-0 testbed-B profile: early win → late inversion; must be paired with E5a, where the late inversion does not recur at seeds 1–2 | CH4 §4.5.5 | d1-56-diff, d0-diff-long; `docs/confirmation/E5A_RESULTS.md` |
 | fig6_mmnist_bridge.png | T7 MMNIST negative control: flat ≈ hier (MSE/SSIM/LPIPS) | CH4 §4.1.3 / appendix | mmnist_bridge_chain.log |
 | fig7_samples_claim1.png | qualitative GT vs hier-long vs flat-budget at h=1..148 (HONEST: both blur late) | CH4 §4.3.3 [FIG ch4-4] | GPU decode, seed 1 |
 | fig8_mmnist_samples_hier.png | MMNIST bridge decoded pred vs GT (h1/h5/h10) | appendix | rhvd viz |
@@ -22,8 +22,10 @@ Regenerable from the committed data.
 - fig1(c) + fig7: sharpness fades for ALL arms; the hierarchy advantage is a modest average gain,
   not a dramatic per-frame difference. The CH4 [FIG ch4-4] caption "hier re-places the digit / flat
   hallucinates" OVER-CLAIMS — replace with fig7's honest reading.
-- fig5: on testbed B both arms degrade below persistence at long horizon (the capability claim is
-  RED / ALL-null); the win is short-horizon only.
+- fig5 is seed-0-only and cannot support a stable trust boundary; E5a reproduces the early benefit
+  at seeds 1–2 but gives positive late hierarchy effects. On seed 0 both arms degrade below
+  persistence at long horizon, the capability gate is RED/ALL-null, and the win is short-horizon
+  only.
 - fig2: horizon-gated onset is seed-0-specific; seed-1 wins everywhere. Report "win + mid-horizon
   peak," not the exact onset.
 

@@ -6,10 +6,10 @@
 handoff, the author may grant Codex time-bounded execution autonomy within an explicitly approved
 tranche. Delegation expires at the tranche stop condition or when the author withdraws it.
 
-**Scientific identity:** context packaging is the manipulated design space. Reach, fidelity and
-trust are explanatory axes. The approved article remains about when hierarchical/multirate context
-pays under bounded budgets; reach–fidelity–trust structures the mechanism and discussion rather
-than forcing a new title.
+**Scientific identity:** context packaging is the manipulated design space. Reach and fidelity are
+the confirmed explanatory axes; self-fed trust remains a falsifiable robustness question. The
+article is about when hierarchical/multirate context pays under bounded budgets. E5a showed that
+the seed-0 late trust inversion is not a stable third title-level result.
 
 **Dataset roles:** loopmom is the primary causal memory instrument. Moving-MNIST is retained as a
 standard boundary/generalization dataset, not replaced by loopmom. A future counterfactual Dynamic
@@ -47,7 +47,7 @@ hours, deviations and the resulting gate decision. Raw logs, W&B and immutable a
 the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
 `GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
 
-#### Programme status at 2026-07-14 14:12 Europe/Kyiv
+#### Programme status at 2026-07-15 15:55 Europe/Kyiv
 
 | ID | Workstream | Expected before execution | Actual/status | Decision |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E3a | Fixed-target diffusion B1 | 14–18 GPU-hours only if causal stride claim remains central | **DEFERRED / NOT STARTED** | Current article uses whole-configuration wording, so E3a is not required for present scope; reconsider only if causal stride language returns |
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
-| E5a/b | Trust replication and dose response | 28–42 GPU-hours while trust remains central | **E5a ACTIVE**; cells 1–3 complete, final cell `d0-diff-long` seed 2 at 19k/40k at 2026-07-15 11:56 Kyiv | Seed 1 fails the registered late-inversion direction; seed 2 comparator continues unchanged under the 28-hour maximum; E5b remains unauthorized |
+| E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7–E9 | Robustness, baseline, Phase C and optional extensions | Claim-triggered only | **NOT STARTED / DEFERRED as specified below** | No launch authority yet |
 
 #### E2 run ledger
@@ -1026,6 +1026,41 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   comparator's complete 25,600-record rollout lands. The estimand, clip alignment, source RunSpec,
   batch/LR/update/EMA/NFE regime and decision rule remain valid. No E5b authorization is implied.
 
+#### Terminal audit E5-I7 — 2026-07-15 15:55 Europe/Kyiv
+
+- **Expected versus actual:** E5-I6 projected cell-4 completion at 15:15–15:35 Kyiv. Training and
+  rollout completed normally at **15:32:44**, followed within minutes by the frozen registered
+  analysis and the independent completion validator. All four E5a cells are terminal.
+- **Artifact and cloud gate:** every new rollout contains exactly 25,600 aligned records and every
+  content-addressed manifest contains **24/24** files. All four W&B training runs and the registered
+  analysis run are `finished`; their cloud artifacts match the local RunSpecs. The independent
+  validator reports `PASS` in `artifacts/e5a_trust_replication/completion_validation.json`. The
+  already disclosed seed-2 hierarchy telemetry gap from the Windows interruption does not affect
+  its RNG-complete checkpoint, rollout or manifest.
+- **Primary registered results:** positive effects favor the 224-frame-reach hierarchy.
+
+  | Training seed | Early h1–24 effect [95% CI] | Late h61–256 effect [95% CI] | Registered boundary |
+  |---:|---:|---:|:---:|
+  | 0 | +0.0204 [+0.0133, +0.0279] | −0.0064 [−0.0095, −0.0032] | yes |
+  | 1 | +0.0082 [+0.0035, +0.0133] | +0.0074 [+0.0038, +0.0112] | no |
+  | 2 | +0.0230 [+0.0150, +0.0315] | +0.0087 [+0.0035, +0.0139] | no |
+
+- **Decision rule:** zero of the two new seeds reproduce the required early-positive/late-negative
+  direction, and zero reproduce it CI-clean. The registered verdict is **NOT_REPLICATED** and the
+  frozen gate returns **FULL_E5B_NOT_AUTHORIZED**. Secondary HARD and answerable-HARD rows cannot
+  rescue the failed primary gate.
+- **Scientific interpretation:** the early hierarchy advantage is positive and CI-clean in all
+  three training seeds. The late seed-0 inversion is not robust: both new seeds instead have a
+  positive, CI-clean late hierarchy advantage. Addressability and self-fed reliability remain
+  distinct constructs, but this experiment does not locate a reproducible trust boundary or phase
+  transition. The title-level empirical story is therefore **reach and fidelity**; trust is retained
+  as a seed-sensitive robustness question and a transparent negative replication.
+- **Accounting and next gate:** exact charged ownership is **17.785247 project GPU-hours** versus
+  28 authorized. Unspent E5 capacity does not transfer automatically. E5b and E5c are closed under
+  their frozen gates. The next portfolio item is E7a/c robustness, but it requires its own CPU
+  freeze, estimand review and explicit launch authorization; no subsequent study is launched by
+  this audit.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
@@ -1200,7 +1235,11 @@ the frozen H-grid3 protocol.
 **Question:** does the single-step retrieval success followed by self-fed inversion replicate
 beyond seed 0?
 
-**GPU time:** **20–28 hours**.
+**Final result (2026-07-15):** **COMPLETE / NOT_REPLICATED** in **17.785247 GPU-hours**. The early
+benefit is positive and CI-clean at seeds 0, 1 and 2; the late inversion occurs only at seed 0 and
+reverses to positive late hierarchy effects at seeds 1 and 2.
+
+**GPU time:** **17.785247 hours actual** against a 28-hour authorization.
 
 ### E5b — Horizon dose-response and diagnostic interventions
 
@@ -1217,23 +1256,28 @@ horizons under:
 **Question:** where does stored information cease to be reliable, and is failure caused primarily
 by memory-state corruption, decoding or stochastic sampling?
 
-**GPU time:** **8–14 hours**.
+**Terminal gate:** **NOT AUTHORIZED / CANCELLED.** E5a produced zero directional replications among
+the two new seeds, so the frozen condition for a full dose-response is not met. Any future
+self-fed-reliability study must be designed and preregistered as a new study rather than presented
+as localization of a replicated boundary.
+
+**GPU time:** **0 hours actual**.
 
 ### E5c — Rollout-aware/Self-Forcing-class intervention
 
-Train a scoped rollout-aware version only after E5a/E5b identify a reproducible trust boundary.
-Compare against the same checkpoints and horizons.
+This originally proposed a scoped rollout-aware version only after E5a/E5b identified a
+reproducible trust boundary. That prerequisite failed.
 
-**Question:** can training on self-generated context move the trust boundary without sacrificing
-short-horizon fidelity?
+**Historical question:** can training on self-generated context improve self-fed reliability
+without sacrificing short-horizon fidelity?
 
 **GPU time:** **24–45 hours**.
 
-**Portfolio status:** E5c is deferred. The current programme measures and diagnoses the trust
-boundary; it does not expand into a new rollout-aware training paper. E5a runs before E5b. If the
-boundary does not replicate, shorten the diagnostic programme and demote the empirical trust claim.
+**Portfolio status:** E5c is deferred and not authorized. E5a did not replicate the boundary, so
+the programme stops this branch and demotes the empirical trust claim as precommitted.
 
-**Current E5 allocation:** **28–42 GPU hours** for E5a/E5b.
+**Closed E5 accounting:** **17.785247 GPU-hours actual** for E5a; E5b/E5c consumed zero. The unused
+allocation is released, not transferred to a discretionary study.
 
 ## 8. Long Moving-MNIST boundary study — E6
 
@@ -1429,7 +1473,7 @@ the H3b trainer/provenance integration and its numerical-parity gate precede eve
 | 2 | E2 | Untouched loopmom confirmation, selected + full frontier | required | 10–18 h | 1–2 h plus evaluator integration |
 | 3 | E4a | Complete seed-2 head × package factorial | closure; run after H3b | 7–10 h | 2–4 h |
 | 4 | E3a | Fixed-target diffusion B1 | claim-gated causal control | 14–18 h | 1–2 d integration/QA |
-| 5 | E5a/b | Trust replication, then dose response | closure while trust is central | 28–42 h | 2–5 d |
+| 5 | E5a/b | Trust replication, then gated dose response | **E5a complete / not replicated; E5b cancelled by gate** | 17.785247 h actual | complete |
 | 6 | E7a/c | Alternate-AE and sampler/NFE robustness | closure robustness | 28–44 h | 2–5 d |
 | 7 | E8a | Classical pose-indexed retrieval | closure baseline | 0–4 h | 2–5 d |
 | 8 | E6 | Phase C hybrid on long Moving-MNIST | article-utility gated | 30–40 h | 1–3 d |
@@ -1445,8 +1489,8 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Pool A — committed/claim-gated closure
 
-The closure envelope contains E0, E2, E4a, claim-gated E3a, E5a/E5b while trust remains central,
-E7a/E7c, E8a and article-utility-gated E6.
+The closure envelope contains E0, E2, E4a, claim-gated E3a, completed E5a, E7a/E7c, E8a and
+article-utility-gated E6. E5b is removed after its failed authorization gate.
 
 - **maximum allocation:** approximately **181 GPU hours**;
 - **without E6:** approximately **141 GPU hours**;

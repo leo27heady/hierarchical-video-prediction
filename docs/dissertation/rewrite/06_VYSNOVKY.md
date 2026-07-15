@@ -6,8 +6,8 @@
 > **Sources of truth:** `docs/dissertation/rewrite/00_FRONT_MATTER.md` (the 7 results and 4
 > novelty items — the 7 numbered conclusions below mirror the front-matter results 1:1 against
 > the 7 tasks of `01_VSTUP.md`; the two files must stay in sync), `docs/draft/CH4_RESULTS.md`
-> (audited numbers, including the §4.5 PAIR OUTCOME of 2026-07-06 — the boundary study closed
-> RED; the honest-scoping sentences below carry the trustworthy-memory boundary),
+> (audited numbers, including the §4.5 E5a registered replication of 2026-07-15 — the seed-0
+> late inversion did not replicate at seeds 1–2),
 > `docs/SPATIAL_FACTORIAL.md` (incl. the FRONTIER COMPLETION pre-registration),
 > `docs/draft/T7_BRIDGE.md` (the MEASURED OpenSTL bridge — authoritative for the bridge numbers
 > in result 7), `docs/draft/VALIDITY_AUDIT.md`,
@@ -119,18 +119,17 @@ pairing wins every bin at both seeds, ALL +0.0334 [+0.0248, +0.0423] and +0.0501
 [+0.0396, +0.0612]), and the underlying single-step retrieval
 capability reduces the hard re-entry error by ≈13% on both seeds (+0.0135 [+0.0080, +0.0196] and
 +0.0143 [+0.0083, +0.0208]), emerging only at the larger optimization budget (null at 6,000
-steps, win at 20,000). The claim is honestly scoped: **the hierarchy is validated where the
-memory horizon demands it *and* where the memory contents remain trustworthy** — within the
-continuously refreshed recent window of the primary operating point, or near a ground-truth
-anchor at the capability operating point — while at the primary operating point a flat model
+steps, win at 20,000). The claim is honestly scoped: **the hierarchy is validated where its
+package reaches memory-relevant history under the tested budget, while full-resolution fidelity
+can recover at larger tested budgets**. At the primary operating point a flat model
 paying 2.7× the tokens remains the outright Pareto frontier (0.1564), so hierarchy there is an
 efficiency point, not a capability necessity; and at the capability operating point the
 single-step span-threshold capability (memory span exceeding the effective loop
 $L_{\mathrm{eff}} = \mathrm{world}/(\mathrm{speed}(1 - p_{\mathrm{hold}}))$ enables retrieval
-learning in 2/2 runs versus 0/4 below the threshold) does not yet convert to a self-fed rollout
-capability across a 213-frame loop (all pre-registered rollout gate cells null over 256 frames).
-[UA-PASS: «ієрархія підтверджена там, де цього вимагає горизонт пам'яті і де вміст пам'яті
-залишається достовірним».]
+learning in 2/2 runs versus 0/4 below the threshold). In self-fed rollout, the hierarchy's early
+benefit is positive and CI-clean at all three training seeds, but the late inversion appears only
+at seed 0 and reverses to a positive late hierarchy effect at seeds 1–2. The registered E5a
+verdict is NOT_REPLICATED; no general trust boundary is claimed.
 
 **6.** *(Task 6)* An intelligent information technology and a software complex (Python/PyTorch)
 have been created for the systems analysis of hierarchical video generation processes,
@@ -160,10 +159,10 @@ reproduction failure). The spatial-abstraction factorial isolated resolution fro
 and returned an economic, head-conditional verdict (coarse history costs the diffusion head
 −0.0082 [−0.0115, −0.0050] at 42% token savings and is statistically free for the regression head,
 +0.0008 [−0.0013, +0.0029]; window extension at fixed representation is worth −0.027 and dwarfs
-the abstraction cost). The temporal-capability boundary study at the second operating point
-closed under its binding pre-committed rule with the trustworthy-memory boundary statement
-(conclusion 5) and three transferable methodology lessons (effective-loop span sizing; the
-autoencoder-reuse trap; evaluation power against plausible effect sizes). Memory-consumption
+the abstraction cost). The temporal-capability study at the second operating point closed with a
+registered negative replication of the seed-0 late trust inversion (conclusion 5) and three
+transferable methodology lessons (effective-loop span sizing; the autoencoder-reuse trap;
+evaluation power against plausible effect sizes). Memory-consumption
 measurements confirmed the constant-memory rollout capability (conclusion 4). The measured two-level spatial
 package outperforms the token-budget-matched flat control exactly in the memory-horizon regime
 (the shape comparison across packagings is conclusion 7's separate, seed-gated statement),
@@ -234,14 +233,14 @@ been filed — do not mention one; if a new registration is filed before defense
 and number here and in the front matter.]**
 
 **Prospects for further research** follow directly from the measured boundary conditions rather
-than from speculation. First, the **capability regime at scale**: the boundary study established
-that single-step span-threshold retrieval exists at the capability operating point but does not
-yet survive pure self-feeding across a 213-frame effective loop — the open question is whether
-larger model/data scale, larger optimization budgets (retrieval was measured to be a
-late-emerging capability), or training objectives that keep the memory contents trustworthy along
-the rollout (distribution-matching rollout objectives, whose long-horizon training memory the
-constant-memory reversible method of Chapter 2 makes affordable [REF: Self-Forcing-class rollout
-training]) convert the single-step capability into a rollout capability. Second, the **extension
+than from speculation. First, **self-fed reliability across tasks and seeds**: single-step
+span-threshold retrieval exists, but the proposed late rollout inversion is training-seed-sensitive
+rather than a replicated boundary. A future study, if pursued, must be newly preregistered across
+multiple tasks, horizons and training seeds; it should compare teacher-forced, self-fed and
+controlled-refresh conditions instead of treating E5b as localization of an established
+boundary. Distribution-matching rollout objectives remain a possible intervention, with the
+constant-memory reversible method of Chapter 2 providing an implementation path [REF:
+Self-Forcing-class rollout training]. Second, the **extension
 of the memory-horizon protocol to real video**: transferring the re-entry-stratified evaluation
 methodology from the analytic testbed family to natural-video data of the KTH class (where
 hardness labels must be estimated rather than computed exactly), building on the completed
@@ -256,10 +255,8 @@ present results: they extend the measured boundary, which is stated exactly.
   items 1–7 one-to-one (which in turn map 1:1 to the 7 tasks of `01_VSTUP.md`); wording drift
   between the three files must be resolved toward the measured Chapter 4 evidence and this
   post-reframe conclusions file; front matter is a synchronized output, not the authority.
-- Conclusion 5 carries the post-PAIR-OUTCOME scoping («and where the memory contents remain
-  trustworthy») — this supersedes any earlier draft of the scoping sentence that mentioned only
-  the memory horizon; the front-matter general-conclusions paragraph should be updated to match
-  at the next front-matter pass. **[AUTHOR: confirm.]**
+- Conclusion 5 carries the terminal E5a negative replication: retain the three-seed early benefit,
+  state that the late inversion is seed-0-only, and do not restore a trustworthy-memory law.
 - All CIs are 95% paired clip-level cluster bootstrap unless the chapter text discloses otherwise
   (single-step gates: see §4.3.1 design-effect widening; §4.5.4 sample-iid disclosure).
 - Deliberately absent per the rules: any capability headline for operating point B (the study

@@ -805,20 +805,26 @@ rollout pair (§4.5.6 below): single-step PASS, rollout RED.]*
    power argument against the plausible effect size, not just a CI spanning zero — and both the
    underpowered and widened reads are disclosed.
 
-### 4.5.6 The decisive rollout pair: closure and the rollout-level conclusion
+### 4.5.6 The decisive rollout pair and its registered replication
 
-The pre-registered decisive pair returned RED: over 256 self-fed rollout frames the gate cells
-are null (dt 49–96 HARD +0.0020 [−0.0071,+0.0111]; dt 97–192 −0.0028 [−0.0088,+0.0035]; dt>192
-−0.0018 [−0.0065,+0.0027]), so the single-step capability does NOT convert to a rollout
-capability at this scale, and no further capability experiments were run (binding rule). The
-horizon profile is the finding: d1-56 wins every h1–24 bin CI-clean (HARD +0.0211/+0.0224)
-while its slot memory still carries near-ground-truth content, fades to null by h25–60, and
-inverts to small systematic losses beyond h61 as the buffer fills with self-generated,
-degraded content. Read together with §4.3: hierarchical slot memory pays where its contents
-remain trustworthy — continuously refreshed within the recent window (testbed A, matched-budget
-win over 152 frames) or near a ground-truth anchor (testbed B, h≤24) — and cannot yet be
-sustained by pure self-feeding across a 213-frame loop. This bounds the mechanism honestly and
-completes the boundary-condition section; the §4.3 matched-budget result is unaffected.
+The original seed-0 pair returned RED on the pre-registered reach-gate cells over 256 self-fed
+frames. Its exploratory horizon profile showed an early hierarchy win followed by a small late
+inversion. E5a preregistered that early-positive/late-negative pattern and repeated the same
+224-frame-reach hierarchy and comparator at training seeds 1 and 2. Positive effects favor the
+hierarchy:
+
+| Seed | h1–24 effect [95% CI] | h61–256 effect [95% CI] |
+|---:|---:|---:|
+| 0 | +0.0204 [+0.0133,+0.0279] | −0.0064 [−0.0095,−0.0032] |
+| 1 | +0.0082 [+0.0035,+0.0133] | +0.0074 [+0.0038,+0.0112] |
+| 2 | +0.0230 [+0.0150,+0.0315] | +0.0087 [+0.0035,+0.0139] |
+
+The early benefit replicates at both new seeds and is CI-clean at all three. The late inversion
+does not replicate: both new seeds instead show a positive, CI-clean late hierarchy effect. The
+registered verdict is **NOT_REPLICATED**, and the gated horizon/refresh diagnostic extension is
+not authorized. The experiment therefore separates addressability from the question of self-fed
+reliability, but it does not establish a stable trust boundary or phase transition. The §4.3
+matched-budget result is unaffected.
 
 ---
 
@@ -852,7 +858,7 @@ The scientific interpretation is consequently narrower and stronger. Reach expla
 lower/interior packages win; once both packages cover the relevant past, full-resolution fidelity
 can dominate. The confirmation establishes this reach–fidelity phase structure on the controlled
 LoopMom testbed. It does not remove B1's target-interface confound, establish natural-video
-generalization, or turn the self-fed trust boundary of §4.5.6 into a universal law.
+generalization, or turn the seed-0 self-fed failure pattern of §4.5.6 into a trust law.
 
 ## 4.6 Chapter conclusions
 
@@ -901,18 +907,14 @@ hierarchy?" is a sizing rule, not an architecture: cover the horizon with the ch
 that spans it, spend the remainder on recency, and add depth only when the data has scales left
 to own.
 
-**The capability boundary (operating point B) — RESOLVED (2026-07-05/06).** The pre-committed
-rule of §4.5.4 resolved in two stages. First, the span-threshold hypothesis was CONFIRMED at the
-single-step level (R1 ∧ R2 passed: 2/2 span>loop runs CI-positive vs 0/4 span≤loop). Second, the
-thereby-authorized decisive rollout pair returned **RED**: over 256 self-fed frames every
-pre-registered gate cell is null, the early-horizon win (h1–24, CI-clean while the slot memory
-still carries near-ground-truth content) fades and inverts to small systematic losses beyond
-h61 as the buffer fills with self-generated, degraded content — so no capability headline is
-claimed, per the binding rule. The closure statement, read together with §4.3: **hierarchical
-slot memory pays where its contents remain trustworthy** — continuously refreshed within the
-recent window (testbed A) or near a ground-truth anchor (testbed B, h ≤ 24) — and cannot yet be
-sustained by pure self-feeding across a 213-frame loop at this scale. The matched-budget result
-of §4.3 stands unchanged, with the H-grid as its boundary-condition section.
+**Self-fed robustness at operating point B — NEGATIVE REPLICATION (2026-07-15).** The
+span-threshold hypothesis remains confirmed at the single-step teacher-forced level (2/2
+span>loop runs CI-positive versus 0/4 span≤loop). The original seed-0 rollout showed an early win
+and a late inversion, but the registered E5a repetition at seeds 1 and 2 reproduced only the early
+win; both new seeds produced positive, CI-clean late hierarchy effects. Accordingly, no stable
+approximately-24-frame trust boundary is claimed and the gated E5b dose-response is not run. The
+H-grid now contributes a transparent seed-sensitive failure pattern and negative replication,
+while the matched-budget and reach–fidelity results of §4.3 remain unchanged.
 
 ---
 

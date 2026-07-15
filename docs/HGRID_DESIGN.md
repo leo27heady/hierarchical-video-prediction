@@ -343,3 +343,18 @@ d1-56-diff vs d0-diff-long, 256-frame self-fed rollout after WARM=224, cluster C
   window, memory purely self-generated) TOGETHER bound the mechanism: hierarchical slot memory
   pays where its contents remain trustworthy. Boundary-condition section as pre-registered;
   "When Does Hierarchy Pay?" branch title stands.
+
+### TERMINAL E5a REPLICATION ADDENDUM — 2026-07-15
+
+The historical closure statement above records the seed-0 decision and remains as provenance; its
+cross-seed interpretation is superseded by the registered E5a replication. Positive effects favor
+the hierarchy:
+
+- seed 0: early +0.0204 [+0.0133,+0.0279], late −0.0064 [−0.0095,−0.0032];
+- seed 1: early +0.0082 [+0.0035,+0.0133], late +0.0074 [+0.0038,+0.0112];
+- seed 2: early +0.0230 [+0.0150,+0.0315], late +0.0087 [+0.0035,+0.0139].
+
+Neither new seed reproduces the late inversion. Registered verdict: **NOT_REPLICATED**; E5b gate:
+**FULL_E5B_NOT_AUTHORIZED**. The early hierarchy benefit is three-seed positive, but the late
+failure is seed-0-specific. Therefore the H-grid supports a distinction between addressability and
+self-fed reliability as constructs, not a stable approximately-24-frame trust boundary.

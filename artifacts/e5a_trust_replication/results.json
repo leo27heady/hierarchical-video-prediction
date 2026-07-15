@@ -1,0 +1,1123 @@
+{
+  "config_sha256": "7feef9236e7312e4aa424285096cc21b2e2b514dbb6f99a1cecb7172794bf04b",
+  "decision": {
+    "e5b_gate": "FULL_E5B_NOT_AUTHORIZED",
+    "new_seed_ci_clean_count": 0,
+    "new_seed_directional_count": 0,
+    "terminal_rule": "No E5a seed beyond 2 is authorized regardless of outcome.",
+    "verdict": "NOT_REPLICATED"
+  },
+  "effect_convention": "comparator error minus long-reach-hierarchy error; positive favors hierarchy",
+  "input_artifacts": [
+    {
+      "bytes": 1640336,
+      "cell": "long_reach_hierarchy",
+      "path": "logs_rhcp/rhvd_eval_d1-56-diff_s0.npz",
+      "seed": 0,
+      "sha256": "567c5c450a1588946335c288ff244d37d5c83c1e23682f592d0f293bec11ec23"
+    },
+    {
+      "bytes": 1640336,
+      "cell": "contiguous_fine_comparator",
+      "path": "logs_rhcp/rhvd_eval_d0-diff-long_s0.npz",
+      "seed": 0,
+      "sha256": "b6b9a9e83d58419c2f132bc02e4d409dfcd13859735febefcad2f3e5dae5a88f"
+    },
+    {
+      "bytes": 870562,
+      "cell": "long_reach_hierarchy",
+      "path": "artifacts/training/e5a-trust-replication/d1-56-diff/seed-1/c82816c7f0818744/metrics/rollout_complete.npz",
+      "seed": 1,
+      "sha256": "19828bd70b00e425720f127dbb15863b13ffa2fc10595bdbfd827ee8bbeb86a3"
+    },
+    {
+      "bytes": 858540,
+      "cell": "contiguous_fine_comparator",
+      "path": "artifacts/training/e5a-trust-replication/d0-diff-long/seed-1/25bc12c6a4bd3b71/metrics/rollout_complete.npz",
+      "seed": 1,
+      "sha256": "522145fcb8f279e92b07c397f9dc0e61e084ea0eabbc0d5edde3051d38323a6b"
+    },
+    {
+      "bytes": 872945,
+      "cell": "long_reach_hierarchy",
+      "path": "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "48b9edacd046d4dbbbd2444e50d14f6e37d0464432f7211c935530c7f2a41677"
+    },
+    {
+      "bytes": 842256,
+      "cell": "contiguous_fine_comparator",
+      "path": "artifacts/training/e5a-trust-replication/d0-diff-long/seed-2/8df2dfe3e392b652/metrics/rollout_complete.npz",
+      "seed": 2,
+      "sha256": "88e8121d411a12671441bbdcd149b7a64ed42db194a30a4ab93f16df126b53c2"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "E5a tests the self-fed rollout boundary. It does not re-estimate the separately measured single-step addressability effect and it cannot establish a universal trust law.",
+  "seeds": [
+    {
+      "ci_clean_boundary": true,
+      "directional_boundary": true,
+      "horizon_by_hardness": [
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 77,
+            "hi": 0.005613096057622289,
+            "lo": 0.0006850613404554227,
+            "mean": 0.0028829381855285316,
+            "records": 439
+          },
+          "hardness": "easy",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 34,
+            "hi": 0.032279557734237685,
+            "lo": 0.010950271862893839,
+            "mean": 0.02125570340787323,
+            "records": 103
+          },
+          "hardness": "mid",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 18,
+            "hi": 0.045101852550355245,
+            "lo": -0.0003124302156783378,
+            "mean": 0.019716087488397475,
+            "records": 31
+          },
+          "hardness": "HARD",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 92,
+            "hi": 0.03898123229794706,
+            "lo": 0.018503688354442684,
+            "mean": 0.028585354281683375,
+            "records": 872
+          },
+          "hardness": "easy",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 67,
+            "hi": 0.03552098640968374,
+            "lo": 0.01426458178165581,
+            "mean": 0.024552897913506747,
+            "records": 223
+          },
+          "hardness": "mid",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 43,
+            "hi": 0.03342832364350262,
+            "lo": -0.003620433255190944,
+            "mean": 0.015145667398778291,
+            "records": 78
+          },
+          "hardness": "HARD",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 96,
+            "hi": 0.01729261633642676,
+            "lo": 0.0038141437737848802,
+            "mean": 0.010495238843795345,
+            "records": 2009
+          },
+          "hardness": "easy",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": 0.012270237436987762,
+            "lo": -0.0038036812552313622,
+            "mean": 0.004029600400826894,
+            "records": 512
+          },
+          "hardness": "mid",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 60,
+            "hi": 0.00946725475709668,
+            "lo": -0.015058594262990627,
+            "mean": -0.0033130608354659044,
+            "records": 129
+          },
+          "hardness": "HARD",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": -0.0018908148255953317,
+            "lo": -0.009960514562099522,
+            "mean": -0.00597577773237262,
+            "records": 3198
+          },
+          "hardness": "easy",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 97,
+            "hi": 0.00025069506746175217,
+            "lo": -0.0110421149251317,
+            "mean": -0.005550136478164479,
+            "records": 867
+          },
+          "hardness": "mid",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": -0.00045674630804430876,
+            "lo": -0.01321263192776604,
+            "mean": -0.006798930526389901,
+            "records": 232
+          },
+          "hardness": "HARD",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": -0.0012383106721849393,
+            "lo": -0.011401174253687044,
+            "mean": -0.006420276862307036,
+            "records": 3816
+          },
+          "hardness": "easy",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 98,
+            "hi": -0.0019218621400987305,
+            "lo": -0.013621339925901524,
+            "mean": -0.00777395601143579,
+            "records": 998
+          },
+          "hardness": "mid",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 91,
+            "hi": 0.0002644853126084067,
+            "lo": -0.013038949812087083,
+            "mean": -0.006364926159711781,
+            "records": 271
+          },
+          "hardness": "HARD",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": -0.0019389458742101184,
+            "lo": -0.012839799810590333,
+            "mean": -0.007307986569617214,
+            "records": 3252
+          },
+          "hardness": "easy",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.002716230377530518,
+            "lo": -0.009496199393559024,
+            "mean": -0.003355514208254005,
+            "records": 896
+          },
+          "hardness": "mid",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 84,
+            "hi": 0.0028999676102888007,
+            "lo": -0.014180654514933902,
+            "mean": -0.005698053233058329,
+            "records": 251
+          },
+          "hardness": "HARD",
+          "horizon": "193-256"
+        }
+      ],
+      "nonempty_records": 18177,
+      "primary": {
+        "early_benefit": {
+          "bootstrap_replicates": 10000,
+          "clips": 95,
+          "hi": 0.027948601702973037,
+          "lo": 0.0133393890731178,
+          "mean": 0.020417659365431218,
+          "records": 1746
+        },
+        "late_inversion": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": -0.0031998616677584818,
+          "lo": -0.009546808215143653,
+          "mean": -0.0063627647782138865,
+          "records": 13781
+        }
+      },
+      "records": 25600,
+      "secondary": {
+        "answerable_hard_dt_gt48": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.002345212679286132,
+          "lo": -0.006954165980065843,
+          "mean": -0.002328566730013011,
+          "records": 791
+        },
+        "early_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 57,
+          "hi": 0.03158731429247314,
+          "lo": 0.0010977616529479358,
+          "mean": 0.016445511644449802,
+          "records": 109
+        },
+        "late_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": -0.0019105903703946774,
+          "lo": -0.010688710460420716,
+          "mean": -0.006276469804909802,
+          "records": 754
+        }
+      },
+      "seed": 0
+    },
+    {
+      "ci_clean_boundary": false,
+      "complete_metric_corroboration": {
+        "early_benefit": {
+          "extra_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.24796116456455172,
+            "lo": -0.16610908808675398,
+            "mean": 0.035509736540664374,
+            "records": 1746
+          },
+          "fg_precision": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": -0.01280609816724466,
+            "lo": -0.12579541284916615,
+            "mean": -0.06907153150006992,
+            "records": 1746
+          },
+          "fg_recall": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.037617856350608485,
+            "lo": 0.009580631107237426,
+            "mean": 0.022887153037714922,
+            "records": 1746
+          },
+          "missed_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.28847215344538296,
+            "lo": 0.12700273980084106,
+            "mean": 0.20389461626575028,
+            "records": 1746
+          },
+          "mse_full": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.00029792360449125194,
+            "lo": -0.0009721834284320853,
+            "mean": -0.00035653883870933174,
+            "records": 1746
+          },
+          "mse_gt_bg": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": -2.492325622843549e-05,
+            "lo": -0.0014939236877202766,
+            "mean": -0.0007688154130445315,
+            "records": 1746
+          },
+          "mse_union": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.017556879914333086,
+            "lo": 0.004353944000017764,
+            "mean": 0.010833541049759617,
+            "records": 1746
+          }
+        },
+        "late_inversion": {
+          "extra_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.09086343427466294,
+            "lo": -0.13050419683916717,
+            "mean": -0.019882446847108336,
+            "records": 13781
+          },
+          "fg_precision": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.03155516759363836,
+            "lo": -0.038926723406505485,
+            "mean": -0.004149194262016506,
+            "records": 13781
+          },
+          "fg_recall": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.004883918444922977,
+            "lo": -0.0029561199691515573,
+            "mean": 0.001017499577293794,
+            "records": 13781
+          },
+          "missed_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.02248216258243235,
+            "lo": -0.037642090979816106,
+            "mean": -0.007836876859444163,
+            "records": 13781
+          },
+          "mse_full": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.0005503977862992507,
+            "lo": -0.00025321449928972326,
+            "mean": 0.00015044874569710527,
+            "records": 13781
+          },
+          "mse_gt_bg": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.0003158001427962982,
+            "lo": -0.0005823347763158792,
+            "mean": -0.00013123477021855743,
+            "records": 13781
+          },
+          "mse_union": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.008865867703225554,
+            "lo": 0.0020831936929057797,
+            "mean": 0.005448057793562519,
+            "records": 13781
+          }
+        }
+      },
+      "directional_boundary": false,
+      "horizon_by_hardness": [
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 77,
+            "hi": 0.00247977396054695,
+            "lo": -0.0010993769357915974,
+            "mean": 0.0005211344695223626,
+            "records": 439
+          },
+          "hardness": "easy",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 34,
+            "hi": 0.016803438095763946,
+            "lo": 0.0022250569113777055,
+            "mean": 0.008938994909663803,
+            "records": 103
+          },
+          "hardness": "mid",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 18,
+            "hi": 0.030590446063227215,
+            "lo": -0.0003074944924547112,
+            "mean": 0.011507020001449892,
+            "records": 31
+          },
+          "hardness": "HARD",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 92,
+            "hi": 0.01752447628684762,
+            "lo": 0.004635041486339428,
+            "mean": 0.010838758707721503,
+            "records": 872
+          },
+          "hardness": "easy",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 67,
+            "hi": 0.022426934330657997,
+            "lo": 0.0042373904817107405,
+            "mean": 0.013184754528740062,
+            "records": 223
+          },
+          "hardness": "mid",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 43,
+            "hi": 0.024036501530654626,
+            "lo": -0.010405348918229146,
+            "mean": 0.004429157560643477,
+            "records": 78
+          },
+          "hardness": "HARD",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 96,
+            "hi": 0.01998800277883975,
+            "lo": 0.0067358525239075845,
+            "mean": 0.013041849929103216,
+            "records": 2009
+          },
+          "hardness": "easy",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": 0.015662598106762533,
+            "lo": 0.001536005424220795,
+            "mean": 0.00862731973757036,
+            "records": 512
+          },
+          "hardness": "mid",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 60,
+            "hi": 0.030389787575629476,
+            "lo": -0.0020915741661223283,
+            "mean": 0.01336701633047688,
+            "records": 129
+          },
+          "hardness": "HARD",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.012407842830133534,
+            "lo": 0.0019997760989734774,
+            "mean": 0.0072059194290028505,
+            "records": 3198
+          },
+          "hardness": "easy",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 97,
+            "hi": 0.010762231481901242,
+            "lo": -0.0004077839493608008,
+            "mean": 0.005183041568377164,
+            "records": 867
+          },
+          "hardness": "mid",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": 0.0139652708321035,
+            "lo": -0.001747888146252076,
+            "mean": 0.006112531158703797,
+            "records": 232
+          },
+          "hardness": "HARD",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.014490721474510327,
+            "lo": 0.003788048102816258,
+            "mean": 0.009073421752083552,
+            "records": 3816
+          },
+          "hardness": "easy",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 98,
+            "hi": 0.015316359330274202,
+            "lo": 0.0018367797102863815,
+            "mean": 0.008433888948154831,
+            "records": 998
+          },
+          "hardness": "mid",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 91,
+            "hi": 0.013068811215539562,
+            "lo": -0.004672521329913082,
+            "mean": 0.004349127638658914,
+            "records": 271
+          },
+          "hardness": "HARD",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.013111210195485798,
+            "lo": 0.0012683026950310744,
+            "mean": 0.007256216103231665,
+            "records": 3252
+          },
+          "hardness": "easy",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.011636122536758477,
+            "lo": 0.00021630413376273476,
+            "mean": 0.005918072137449469,
+            "records": 896
+          },
+          "hardness": "mid",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 84,
+            "hi": 0.010612657813835538,
+            "lo": -0.006321990358374533,
+            "mean": 0.00229181630529493,
+            "records": 251
+          },
+          "hardness": "HARD",
+          "horizon": "193-256"
+        }
+      ],
+      "nonempty_records": 18177,
+      "primary": {
+        "early_benefit": {
+          "bootstrap_replicates": 10000,
+          "clips": 95,
+          "hi": 0.013294094305315945,
+          "lo": 0.0035033912195021593,
+          "mean": 0.00815766567619302,
+          "records": 1746
+        },
+        "late_inversion": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.011231978599148094,
+          "lo": 0.0037736835242906455,
+          "mean": 0.007448748281280926,
+          "records": 13781
+        }
+      },
+      "records": 25600,
+      "secondary": {
+        "answerable_hard_dt_gt48": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.010916976715438538,
+          "lo": 1.5579413871475165e-06,
+          "mean": 0.005376627438556869,
+          "records": 791
+        },
+        "early_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 57,
+          "hi": 0.021408703613616083,
+          "lo": -0.005271286269118964,
+          "mean": 0.006442127612615944,
+          "records": 109
+        },
+        "late_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.00944087498453642,
+          "lo": -0.0008554057556788135,
+          "mean": 0.004206852402552883,
+          "records": 754
+        }
+      },
+      "seed": 1
+    },
+    {
+      "ci_clean_boundary": false,
+      "complete_metric_corroboration": {
+        "early_benefit": {
+          "extra_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": -0.09041421232041164,
+            "lo": -0.4623928867227319,
+            "mean": -0.27835051546391754,
+            "records": 1746
+          },
+          "fg_precision": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": -0.05729893001966639,
+            "lo": -0.1892112151715857,
+            "mean": -0.12184285009301184,
+            "records": 1746
+          },
+          "fg_recall": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.0830343866776906,
+            "lo": 0.036312114142483684,
+            "mean": 0.05868204375238233,
+            "records": 1746
+          },
+          "missed_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.4708897082760615,
+            "lo": 0.25495800511951316,
+            "mean": 0.3602520045819015,
+            "records": 1746
+          },
+          "mse_full": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.00041421096783757346,
+            "lo": -0.0008229984659044,
+            "mean": -0.00022433291955592134,
+            "records": 1746
+          },
+          "mse_gt_bg": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": -0.0003218664316850858,
+            "lo": -0.0019258431839917097,
+            "mean": -0.001122722830418627,
+            "records": 1746
+          },
+          "mse_union": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.031105807944809154,
+            "lo": 0.016474949522029256,
+            "mean": 0.023591027560431556,
+            "records": 1746
+          }
+        },
+        "late_inversion": {
+          "extra_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": -0.1640610373287281,
+            "lo": -0.3451750225257672,
+            "mean": -0.25484362528118426,
+            "records": 13781
+          },
+          "fg_precision": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": -0.04638293340500685,
+            "lo": -0.10274247819860473,
+            "mean": -0.07479733517631014,
+            "records": 13781
+          },
+          "fg_recall": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.010660482384054603,
+            "lo": 0.0020053638283297655,
+            "mean": 0.00622649735296166,
+            "records": 13781
+          },
+          "missed_components": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.0713882609351201,
+            "lo": 0.009104247178821445,
+            "mean": 0.04012771206733909,
+            "records": 13781
+          },
+          "mse_full": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.0010047254193435624,
+            "lo": 0.00035200588584298703,
+            "mean": 0.0006761802693332361,
+            "records": 13781
+          },
+          "mse_gt_bg": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.0006467283755238072,
+            "lo": 6.742879720106653e-05,
+            "mean": 0.000355610775660578,
+            "records": 13781
+          },
+          "mse_union": {
+            "bootstrap_replicates": 10000,
+            "clips": 100,
+            "hi": 0.01569720745104941,
+            "lo": 0.006477781727359371,
+            "mean": 0.011067270349737401,
+            "records": 13781
+          }
+        }
+      },
+      "directional_boundary": false,
+      "horizon_by_hardness": [
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 77,
+            "hi": 0.006102997287699822,
+            "lo": -0.0004006524642157954,
+            "mean": 0.002494283759826476,
+            "records": 439
+          },
+          "hardness": "easy",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 34,
+            "hi": 0.03599151578379748,
+            "lo": 0.01029270255916682,
+            "mean": 0.0222603237184072,
+            "records": 103
+          },
+          "hardness": "mid",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 18,
+            "hi": 0.04367730281196044,
+            "lo": 0.005727631044423869,
+            "mean": 0.022822002249379313,
+            "records": 31
+          },
+          "hardness": "HARD",
+          "horizon": "1-8"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 92,
+            "hi": 0.04143642909843132,
+            "lo": 0.01892611527191747,
+            "mean": 0.029852436653310603,
+            "records": 872
+          },
+          "hardness": "easy",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 67,
+            "hi": 0.048026359298760764,
+            "lo": 0.021588353406147072,
+            "mean": 0.03396746639011954,
+            "records": 223
+          },
+          "hardness": "mid",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 43,
+            "hi": 0.05768988213437615,
+            "lo": 0.006067834195007623,
+            "mean": 0.031170249009170592,
+            "records": 78
+          },
+          "hardness": "HARD",
+          "horizon": "9-24"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 96,
+            "hi": 0.025454118861005653,
+            "lo": 0.00847476946301527,
+            "mean": 0.01683246103871471,
+            "records": 2009
+          },
+          "hardness": "easy",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": 0.020075746091472668,
+            "lo": 0.004529721952336175,
+            "mean": 0.012268102713278495,
+            "records": 512
+          },
+          "hardness": "mid",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 60,
+            "hi": 0.019857125669820817,
+            "lo": -0.011161639530364743,
+            "mean": 0.004096163934919723,
+            "records": 129
+          },
+          "hardness": "HARD",
+          "horizon": "25-60"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.015256184222628165,
+            "lo": 0.001327225981936932,
+            "mean": 0.008274626580903947,
+            "records": 3198
+          },
+          "hardness": "easy",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 97,
+            "hi": 0.02032240490354308,
+            "lo": 0.005487230915346801,
+            "mean": 0.013112769158172497,
+            "records": 867
+          },
+          "hardness": "mid",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 89,
+            "hi": 0.020191675455661175,
+            "lo": 0.0012839302339328587,
+            "mean": 0.010809420238666493,
+            "records": 232
+          },
+          "hardness": "HARD",
+          "horizon": "61-120"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.015556428522819504,
+            "lo": 0.0009684674808805589,
+            "mean": 0.008307893451281767,
+            "records": 3816
+          },
+          "hardness": "easy",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 98,
+            "hi": 0.01351683756502104,
+            "lo": -0.0024409777796201696,
+            "mean": 0.005547716392424398,
+            "records": 998
+          },
+          "hardness": "mid",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 91,
+            "hi": 0.012289609594953888,
+            "lo": -0.005539677148038718,
+            "mean": 0.0033732107754563053,
+            "records": 271
+          },
+          "hardness": "HARD",
+          "horizon": "121-192"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 99,
+            "hi": 0.01586809157568619,
+            "lo": 0.0025723253885505015,
+            "mean": 0.009163575733783867,
+            "records": 3252
+          },
+          "hardness": "easy",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 95,
+            "hi": 0.01773293845819823,
+            "lo": 0.0025929561610079227,
+            "mean": 0.010009772077734982,
+            "records": 896
+          },
+          "hardness": "mid",
+          "horizon": "193-256"
+        },
+        {
+          "effect": {
+            "bootstrap_replicates": 10000,
+            "clips": 84,
+            "hi": 0.02102179978808341,
+            "lo": 0.0009672350625692165,
+            "mean": 0.01101965269405929,
+            "records": 251
+          },
+          "hardness": "HARD",
+          "horizon": "193-256"
+        }
+      ],
+      "nonempty_records": 18177,
+      "primary": {
+        "early_benefit": {
+          "bootstrap_replicates": 10000,
+          "clips": 95,
+          "hi": 0.03149466221565184,
+          "lo": 0.015008836901035714,
+          "mean": 0.022985472607496754,
+          "records": 1746
+        },
+        "late_inversion": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.01394359535093915,
+          "lo": 0.0035480429211389086,
+          "mean": 0.008709609719558885,
+          "records": 13781
+        }
+      },
+      "records": 25600,
+      "secondary": {
+        "answerable_hard_dt_gt48": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.015994551519103808,
+          "lo": 0.003490338188659509,
+          "mean": 0.009847401548294743,
+          "records": 791
+        },
+        "early_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 57,
+          "hi": 0.048619039202708464,
+          "lo": 0.009863923890216614,
+          "mean": 0.028795976994918027,
+          "records": 109
+        },
+        "late_hard": {
+          "bootstrap_replicates": 10000,
+          "clips": 100,
+          "hi": 0.014627001957213741,
+          "lo": 0.0016619713450899184,
+          "mean": 0.008206708808658047,
+          "records": 754
+        }
+      },
+      "seed": 2
+    }
+  ],
+  "study": "e5a-trust-replication",
+  "training_seed_summaries": {
+    "early_benefit": {
+      "df": 2,
+      "hi": 0.0368719271693472,
+      "lo": -0.0024980620699332073,
+      "mean": 0.017186932549706997,
+      "method": "descriptive two-sided 95% Student-t interval across three training seeds",
+      "sample_sd": 0.007924276712507233,
+      "seeds": 3
+    },
+    "late_inversion": {
+      "df": 2,
+      "hi": 0.024037207566140043,
+      "lo": -0.01750681208438943,
+      "mean": 0.003265197740875308,
+      "method": "descriptive two-sided 95% Student-t interval across three training seeds",
+      "sample_sd": 0.008361859218700939,
+      "seeds": 3
+    }
+  }
+}

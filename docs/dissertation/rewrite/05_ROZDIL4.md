@@ -992,10 +992,11 @@ launch **[AUTHOR: attach the pre-registration document (`docs/HGRID_DESIGN.md` +
 dissertation appendix — it is the pre-registration trail for this section]**: in a regime where
 **no affordable flat window covers the memory horizon** (hgrid3, effective loop ≈196–213 frames),
 does temporal abstraction — a strided, slow-rate coarse level — deliver what flat context cannot?
-The study closed with a **negative rollout outcome under a binding pre-committed decision rule**,
-and this section reports it as what it is: a boundary characterization, not a capability claim —
-with a genuine single-step positive characterized inside it, three diagnosed methodology lessons,
-and the trustworthy-memory boundary statement as the closing result. The §4.3 matched-budget
+The seed-0 study closed with a **negative rollout outcome under a binding pre-committed decision
+rule**. The registered E5a repetition then retained the genuine single-step positive and the early
+self-fed benefit, but did not reproduce the late inversion at either new training seed. This
+section therefore reports a negative replication and three diagnosed methodology lessons, not a
+trust boundary or capability law. The §4.3 matched-budget
 result is unaffected under every branch of this study, and remains the headline of the
 dissertation. [UA-PASS: «межа часової здатності»; «характеризація граничних умов».]
 
@@ -1102,34 +1103,32 @@ design-effect widening, and a clip-clustered recomputation is reported alongside
 teacher-forced caveat is stated where it belongs: the single-step study conditions on
 ground-truth context, and the rollout pair of §4.5.5 is the real test.
 
-### 4.5.5 Вирішальна розгортальна пара: негативний результат і межа довіри до вмісту пам'яті
+### 4.5.5 Вирішальна розгортальна пара та зареєстрована негативна реплікація
 
-*(The decisive rollout pair: the negative outcome and the trustworthy-memory boundary.)*
+*(The decisive rollout pair and its registered negative replication.)*
 
 The pre-registered decisive pair (the span-224 strided arm versus the long-context diffusion
 baseline on hgrid3; warm-up 224 frames; uniform B = 8 × 40k training) returned **RED**: over 256
 self-fed rollout frames the pre-registered gate cells are null — dt 49–96 HARD +0.0020
 [−0.0071, +0.0111]; dt 97–192 −0.0028 [−0.0088, +0.0035]; dt > 192 −0.0018 [−0.0065, +0.0027] —
-so **the single-step capability does not convert to a rollout capability at this scale**, and, by
-the binding rule, no further capability experiments were run.
+so the seed-0 programme did not establish rollout capability on its registered gate. Its horizon
+profile nevertheless suggested an early hierarchy benefit followed by a late inversion.
 
-The horizon profile is the finding. The strided arm wins every h 1–24 bin CI-clean (HARD +0.0211
-and +0.0224 in the two bands) while its slot memory still carries near-ground-truth content;
-fades to null by h 25–60; and inverts to small systematic losses beyond h 61 as the buffer fills
-with self-generated, degraded content. Read together with §4.3, this bounds the mechanism
-honestly: **hierarchical slot memory pays where its contents remain trustworthy — continuously
-refreshed within the recent window (operating point A: the matched-budget win over 152 frames) or
-near a ground-truth anchor (operating point B: h ≤ 24) — and cannot yet be sustained by pure
-self-feeding across a 213-frame loop.** This statement completes the boundary-condition study;
-the §4.3 matched-budget result is unaffected. [UA-PASS: «межа довіри до вмісту пам'яті» — the
-trustworthy-memory boundary; keep the full sentence as the section's quotable verdict.]
+E5a preregistered this early-positive/late-negative pattern and repeated the same pair at training
+seeds 1 and 2. Positive effects favor the hierarchy: seed 0 is +0.0204
+[+0.0133,+0.0279] at h 1–24 and −0.0064 [−0.0095,−0.0032] at h 61–256; seed 1 is +0.0082
+[+0.0035,+0.0133] and +0.0074 [+0.0038,+0.0112]; seed 2 is +0.0230
+[+0.0150,+0.0315] and +0.0087 [+0.0035,+0.0139]. Thus the early benefit is CI-clean at all
+three seeds, but neither new seed reproduces the late-negative direction. The registered verdict
+is **NOT_REPLICATED**, and the gated dose-response is not authorized. Addressability and self-fed
+reliability remain distinct constructs, but the present study does not establish a stable
+approximately-24-frame trust boundary. The §4.3 matched-budget result is unaffected.
 
 **[FIG 4-11 — PLACEHOLDER]**
-*Content:* operating-point-B rollout horizon profile: paired Δ (strided − baseline) vs rollout
-horizon with cluster-CI bands, annotated in three zones — CI-clean wins at h 1–24 (memory
-contents near ground truth), null at h 25–60, small systematic losses at h 61+ (buffer filled
-with self-generated content); the pre-registered dt-gate cells marked as null.
-*Source:* **NEW** (plot from the decisive-pair rollout records).
+*Content:* seed-resolved paired Δ (strided − baseline) versus rollout horizon with cluster-CI
+bands: early hierarchy benefit at seeds 0–2, late inversion at seed 0 only, and positive late
+effects at seeds 1–2; the registered primary windows are highlighted.
+*Source:* E5a manifests and `docs/confirmation/E5A_RESULTS.md`.
 
 ### 4.5.6 Методологічні уроки дослідження межі
 
@@ -1507,18 +1506,16 @@ insert the act copies — the current draft has headings only]**.
    cross-head training-seed heterogeneity, not a directional head law or one universally optimal
    package.
 
-6. The temporal-capability boundary study at operating point B (§4.5) closed under its binding
-   pre-committed rule with a **negative rollout outcome and a characterized single-step
-   positive**: retrieval beyond the flat window exists on the position-unique wide world and is
+6. The temporal-capability study at operating point B (§4.5) closed with a characterized
+   single-step positive and a **registered negative replication of the proposed late trust
+   boundary**: retrieval beyond the flat window exists on the position-unique wide world and is
    reach-causal (dose-response with the internal contiguous control), a memory span exceeding the
    effective loop $L_{\mathrm{eff}}$ (eq. 4.1) reliably enables single-step retrieval learning
-   (2/2 span > loop runs CI-positive vs 0/4 span ≤ loop), but the capability does not convert to
-   a self-fed rollout capability at this scale (all pre-registered dt-gate cells null over 256
-   frames; wins confined to h ≤ 24 where the slot contents are near ground truth). The resulting
-   boundary statement — hierarchical slot memory pays where its contents remain trustworthy, and
-   cannot yet be sustained by pure self-feeding across a 213-frame loop — together with the three
-   methodology lessons (effective-loop sizing; the autoencoder-reuse trap; evaluation power)
-   constitutes the honest delimitation of the dissertation's central mechanism.
+   (2/2 span > loop runs CI-positive vs 0/4 span ≤ loop). The early rollout benefit is positive
+   at all three training seeds, whereas the late inversion appears only at seed 0 and reverses at
+   seeds 1–2. No stable trust boundary is therefore claimed. The negative replication, together
+   with the three methodology lessons (effective-loop sizing; the autoencoder-reuse trap;
+   evaluation power), constitutes the honest delimitation of this mechanism.
 
 7. The generalization study (§4.6) carries the measured per-regime configuration selection —
    regression head for the deterministic best-of-1 rollout, diffusion for the single-step
@@ -1563,8 +1560,9 @@ numbered publication list; add conference theses covering the experimental campa
    the contrast toward spatial coarsening on all three but retains heterogeneous package signs
    (static-world and frozen-representation scope binding);
    **(L5) depth — hypothesis, not law** — a depth-plus-objective-allocation probe on single-scale
-   data (only the null branch measurable here); **(L6) trustworthy memory** — a span sufficient
-   for single-step retrieval can fail under self-fed rollout (§4.5). Разом ці закони складають
+   data (only the null branch measurable here); **(L6) self-fed reliability — negative
+   replication, not law** — the seed-0 late inversion is not reproduced at seeds 1–2 (§4.5).
+   Разом підтверджені закони та явно зафіксовані межі складають
    обмежену, фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу
    [UA-PASS].
 

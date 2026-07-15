@@ -1,10 +1,16 @@
 # Master implementation plan: Reach, Fidelity, and Trust
 
 **Date:** 2026-07-11
-**Status:** governing remediation and completion plan
+**Status:** historical governing plan; live authority moved to
+`docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md`
 **Scope:** experiments, evaluation, code, evidence, article, dissertation, repository, and long-term maintenance
 **Supersedes for prioritisation:** the execution ordering in older completion/experiment plans where they conflict with this document
 **Does not supersede:** measured artifacts, preregistrations, or the historical record
+
+> **Terminal update, 2026-07-15:** E5a did not replicate the seed-0 late trust inversion. The
+> canonical fourth-article title is now **Reach and Fidelity in Budgeted Video Memory: A Controlled
+> Context-Packaging Study**. The reach–fidelity–trust formulation below is retained as the original
+> planning hypothesis, not as the terminal claim state.
 
 ## 1. Decision summary
 
