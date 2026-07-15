@@ -1112,6 +1112,24 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   `scripts/run_e7c_sampler_nfe.ps1 -Manifest data/robustness/loopmom_e7c_500x200.manifest.json`.
   It cannot train, alter the matrix, launch E7a, or exceed the 8-hour tranche without failing.
 
+#### E7c launch health E7c-I3 — 2026-07-15 19:29 Europe/Kyiv
+
+- **Live identity:** controller PID 23536; first cell `hier-min`/training-seed 0/NFE 8/sampler 0,
+  RunSpec `d58c544280c45de3`, W&B `https://wandb.ai/leo27heady/hgrid/runs/e7c-
+  d58c544280c45de3`. The RunSpec binds commit `07ae403`, dataset/AE/checkpoint hashes, complete-v2
+  metrics, 48+152 geometry and the explicit CRN formula.
+- **Expected versus actual:** after 48/100 clips, elapsed rollout time is 0.03 hours and running
+  foreground MSE is 0.1731, converging toward the frozen seed-0 NFE-16 reference region rather
+  than diverging. This projects about 0.06–0.07 hours plus encoding/upload, inside the 0.1123-hour
+  per-cell stop and consistent with the 6.0236-hour tranche estimate.
+- **Health:** 83–94% sampled GPU utilization, approximately 3.3/16.38 GB board memory, 64–67°C and
+  about 116 W. Low VRAM occupancy is expected for checkpoint-only sequential evaluation; compute
+  is saturated and changing batch/evaluation geometry would invalidate the frozen estimand.
+  Latent statistics match the frozen training reference (coarse 0.1213, fine 0.1618); no nonfinite
+  metric, stall, spill, pairing change or cloud failure is present.
+- **Decision:** continue unchanged. The four-hour same-task heartbeat is active as
+  `e7c-four-hour-health-audit`; no E7a authorization is implied.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
