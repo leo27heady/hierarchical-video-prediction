@@ -58,12 +58,12 @@ def resolved_spec(args: argparse.Namespace) -> RunSpec:
         optimizer_updates=args.steps,
         batch_size=args.batch,
         precision="bf16" if args.bf16 else "fp32",
-        nfe=args.nfe,
+        nfe=(0 if args.train_only else args.nfe),
         warmup_frames=args.warm,
-        rollout_frames=int(test_shape[1] - args.warm),
-        evaluation_clips=args.n_eval_clips,
+        rollout_frames=(0 if args.train_only else int(test_shape[1] - args.warm)),
+        evaluation_clips=(0 if args.train_only else args.n_eval_clips),
         source_commit=args.source_commit,
-        metric_version="complete-v2-thr0.5",
+        metric_version=("checkpoint-only-v1" if args.train_only else "complete-v2-thr0.5"),
         optimizer={
             "name": "AdamW", "lr": args.lr, "weight_decay": 1e-4,
             "warmup_updates": args.warmup, "gradient_clip_norm": 1.0,
@@ -71,9 +71,12 @@ def resolved_spec(args: argparse.Namespace) -> RunSpec:
         ema={"decay": 0.999, "evaluation": "EMA"},
         sampler={
             "training_order": "global NumPy RNG; clip then target-start per sample",
-            "rollout": "DDIM" if rhvd.arm_cfg(args.arm)[2] == "diff" else "deterministic-regression",
-            "nfe": args.nfe,
-            "rollout_crn": "100000 + 1000*chunk_index + rollout_step",
+            "rollout": ("not-run" if args.train_only else
+                        "DDIM" if rhvd.arm_cfg(args.arm)[2] == "diff" else
+                        "deterministic-regression"),
+            "nfe": (0 if args.train_only else args.nfe),
+            "rollout_crn": ("not-run" if args.train_only else
+                            "100000 + 1000*chunk_index + rollout_step"),
         },
         tag=args.provenance_tag,
     )
@@ -206,6 +209,8 @@ def main() -> None:
     parser.add_argument("--n_eval_clips", type=int, default=100)
     parser.add_argument("--bf16", action="store_true")
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--train_only", action="store_true",
+                        help="finalize an immutable RNG-complete checkpoint without a rollout")
     parser.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
     parser.add_argument("--test_path", default="data/loopmom_test_500x200.npy")
     parser.add_argument("--world", type=int, default=192)
@@ -268,23 +273,37 @@ def main() -> None:
             n_ctx=6, k=4, n_val=args.n_val, W=args.world, speed=args.wspeed, stats=data.stats,
         )
         wrap, ema = train(args, spec, store, data, test, ae)
-        result = store.path / "metrics" / "rollout_complete.npz"
-        rhvd.rollout_eval(
-            args.arm, wrap, ema, test, ae, args.seed,
-            n_clips=args.n_eval_clips, nfe=args.nfe, warm=args.warm,
-            tag=f"_v2-{spec.identity}", complete_metrics=True, output_path=result,
-        )
-        store.write_json("evaluation.json", {
-            "result_path": str(result), "wandb_url": wb.active_url(),
-            "metric_version": spec.metric_version,
-        })
+        if args.train_only:
+            store.write_json("training.json", {
+                "checkpoint_path": str(store.path / "checkpoint.pt"),
+                "wandb_url": wb.active_url(),
+                "optimizer_updates": args.steps,
+                "train_examples": args.steps * args.batch,
+                "evaluation_performed": False,
+            })
+            result = None
+        else:
+            result = store.path / "metrics" / "rollout_complete.npz"
+            rhvd.rollout_eval(
+                args.arm, wrap, ema, test, ae, args.seed,
+                n_clips=args.n_eval_clips, nfe=args.nfe, warm=args.warm,
+                tag=f"_v2-{spec.identity}", complete_metrics=True, output_path=result,
+            )
+            store.write_json("evaluation.json", {
+                "result_path": str(result), "wandb_url": wb.active_url(),
+                "metric_version": spec.metric_version,
+            })
         store.finalize()
+        artifact_paths = [
+            str(store.path / "run_spec.json"), str(store.path / "checkpoint.pt"),
+            str(store.path / ("training.json" if args.train_only else "evaluation.json")),
+            str(store.path / "manifest.json"),
+        ]
+        if result is not None:
+            artifact_paths.append(str(result))
         wb.artifact(
             f"{args.study}-{spec.identity}", "training-run",
-            [
-                str(store.path / "run_spec.json"), str(store.path / "checkpoint.pt"),
-                str(result), str(store.path / "evaluation.json"), str(store.path / "manifest.json"),
-            ],
+            artifact_paths,
             metadata={"run_spec_hash": spec.identity, "arm": args.arm, "seed": args.seed},
             aliases=["latest", f"{args.arm}-s{args.seed}"],
         )
@@ -295,7 +314,7 @@ def main() -> None:
             "run_spec_hash": spec.identity, "run_dir": store.path.as_posix(),
             "wandb_url": wb.active_url(), "authorized_gpu_hours": args.authorized_gpu_hours,
         })
-        rhvd.log(f"RHVD_V2_DONE {args.arm} {spec.identity}")
+        rhvd.log(f"RHVD_V2_{'TRAIN_ONLY_' if args.train_only else ''}DONE {args.arm} {spec.identity}")
     except Exception:
         atomic_write_json(active, {
             "schema_version": 1, "status": "failed", "study": args.study,

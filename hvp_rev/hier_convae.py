@@ -7,6 +7,8 @@ Trained with random-level dropout. The coarse level is the low-entropy "layout/p
 from __future__ import annotations
 
 import argparse
+import time
+from collections.abc import Callable
 
 import numpy as np
 import torch
@@ -55,8 +57,14 @@ class HierConvAE(nn.Module):
         return self.decode_coarse(zc), self.decode_fine(zf), zc, zf
 
 
-def train(path, out, steps=7000, batch=64, lr=3e-4):
-    torch.manual_seed(0)
+def train(path, out, steps=7000, batch=64, lr=3e-4, seed=0,
+          progress_callback: Callable[[dict], None] | None = None):
+    """Train the legacy two-level codec with an explicit initialization/data RNG seed.
+
+    ``seed=0`` preserves the historical training path.  E7a varies only this seed while
+    holding the architecture, data, optimizer, scheduler, objective and update count fixed.
+    """
+    torch.manual_seed(seed)
     ae = HierConvAE().to(DEV)
     data = FramePool(path)
     opt = torch.optim.Adam(ae.parameters(), lr=lr)
@@ -64,6 +72,7 @@ def train(path, out, steps=7000, batch=64, lr=3e-4):
     print(f"HierConvAE train: {path} params={sum(p.numel() for p in ae.parameters())/1e6:.2f}M "
           f"coarse 4x4 / fine 8x8", flush=True)
     run = 0.0
+    started = time.time()
     for s in range(1, steps + 1):
         x = data.batch(batch)
         rc, rf, _, _ = ae(x)
@@ -80,11 +89,31 @@ def train(path, out, steps=7000, batch=64, lr=3e-4):
                 rc, rf, _, _ = ae(xv)
                 vc = F.mse_loss(rc, xv).item(); vf = F.mse_loss(rf, xv).item()
             print(f"  [step {s:5d}] loss {run/1000:.4f}  val recon coarse {vc:.4f} fine {vf:.4f}", flush=True)
+            if progress_callback is not None:
+                progress_callback({
+                    "step": s,
+                    "train_loss": run / 1000,
+                    "val_coarse_mse": vc,
+                    "val_fine_mse": vf,
+                    "lr": float(opt.param_groups[0]["lr"]),
+                    "elapsed_hours": (time.time() - started) / 3600,
+                    "peak_vram_gb": (
+                        torch.cuda.max_memory_allocated() / 2**30 if DEV == "cuda" else 0.0
+                    ),
+                })
             run = 0.0
     import os
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    torch.save({"model": ae.state_dict()}, out)
+    torch.save({
+        "model": ae.state_dict(),
+        "training": {
+            "seed": int(seed), "steps": int(steps), "batch": int(batch), "lr": float(lr),
+            "optimizer": "Adam", "scheduler": "OneCycleLR(pct_start=0.05)",
+            "objective": "random-level L1+MSE; coarse multiplier 4.0",
+        },
+    }, out)
     print(f"saved {out}")
+    return ae
 
 
 def load(path):
@@ -102,6 +131,9 @@ if __name__ == "__main__":
     ap.add_argument("--data", default="data/loop_train_3000x100.npy")
     ap.add_argument("--out", default="logs_rhcp/hier_ae.pt")
     ap.add_argument("--steps", type=int, default=7000)
+    ap.add_argument("--batch", type=int, default=64)
+    ap.add_argument("--lr", type=float, default=3e-4)
+    ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
     if args.train:
-        train(args.data, args.out, steps=args.steps)
+        train(args.data, args.out, steps=args.steps, batch=args.batch, lr=args.lr, seed=args.seed)

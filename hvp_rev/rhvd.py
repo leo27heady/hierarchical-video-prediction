@@ -1032,6 +1032,11 @@ def main():
     ap.add_argument("--robustness_manifest", default="",
                     help="purpose-locked E7c robustness manifest; eval-only, immutable output")
     ap.add_argument("--robustness_access_log", default="artifacts/e7c_sampler_nfe/access.jsonl")
+    ap.add_argument("--codec_manifest", default="",
+                    help="purpose-locked E7a codec-robustness manifest; eval-only, immutable output")
+    ap.add_argument("--codec_access_log", default="artifacts/e7a_codec_robustness/access.jsonl")
+    ap.add_argument("--checkpoint_path", default="",
+                    help="explicit immutable checkpoint; required by E7a codec robustness")
     ap.add_argument("--artifact_root", default="artifacts/runs")
     ap.add_argument("--source_commit", default="")
     ap.add_argument("--wandb_project", default="hgrid")
@@ -1066,6 +1071,12 @@ def main():
     locked_purpose = None
     locked_manifest = ""
     locked_access_log = ""
+    locked_prefix = None
+    locked_study = None
+    locked_tag = None
+    locked_job_type = None
+    locked_artifact_type = None
+    locked_checkpoint = None
     eval_spec = None
     store = None
     active_registry = Path("artifacts/active_experiment.json")
@@ -1076,15 +1087,23 @@ def main():
             train_sidecar, allowed={"training", "development", "development_fixture"},
             operation="predictor training"
         )
-    if args.confirmation_manifest and args.robustness_manifest:
+    locked_switches = [
+        value for value in (
+            args.confirmation_manifest, args.robustness_manifest, args.codec_manifest
+        ) if value
+    ]
+    if len(locked_switches) > 1:
         raise ValueError("choose exactly one locked evaluation manifest")
-    locked_manifest = args.confirmation_manifest or args.robustness_manifest
+    locked_manifest = (args.confirmation_manifest or args.robustness_manifest or
+                       args.codec_manifest)
     if test_sidecar.is_file() and not locked_manifest:
         sidecar = assert_dataset_purpose(
             test_sidecar, allowed={"development_test", "development_fixture"},
             operation="ordinary evaluation"
         )
-        if sidecar.get("purpose") in {"confirmation_holdout", "robustness_holdout"}:
+        if sidecar.get("purpose") in {
+            "confirmation_holdout", "robustness_holdout", "codec_robustness_holdout"
+        }:
             raise PermissionError("locked holdout requires its explicit manifest switch")
     if locked_manifest:
         if not args.eval_only or args.compare or args.smoke or args.go_gate or args.blind:
@@ -1095,17 +1114,36 @@ def main():
             raise ValueError("locked evaluation requires --complete_metrics")
         if not args.source_commit:
             raise ValueError("locked evaluation requires --source_commit")
-        locked_purpose = "confirmation_holdout" if args.confirmation_manifest else "robustness_holdout"
-        locked_access_log = (args.confirmation_access_log if args.confirmation_manifest
-                             else args.robustness_access_log)
+        if args.confirmation_manifest:
+            locked_purpose, locked_access_log = (
+                "confirmation_holdout", args.confirmation_access_log
+            )
+            locked_prefix, locked_study = "e2", "confirmation-e2"
+            locked_tag, locked_job_type = "untouched-confirmation", "confirmation-eval"
+            locked_artifact_type = "confirmation-evaluation"
+        elif args.robustness_manifest:
+            locked_purpose, locked_access_log = (
+                "robustness_holdout", args.robustness_access_log
+            )
+            locked_prefix, locked_study = "e7c", "robustness-e7c"
+            locked_tag, locked_job_type = "sampler-nfe-robustness", "robustness-eval"
+            locked_artifact_type = "robustness-evaluation"
+        else:
+            locked_purpose, locked_access_log = (
+                "codec_robustness_holdout", args.codec_access_log
+            )
+            locked_prefix, locked_study = "e7a", "robustness-e7a"
+            locked_tag, locked_job_type = "alternate-codec-robustness", "codec-robustness-eval"
+            locked_artifact_type = "codec-robustness-evaluation"
+            if not args.checkpoint_path:
+                raise ValueError("E7a codec robustness requires --checkpoint_path")
         confirmation = assert_dataset_purpose(
             locked_manifest,
             allowed={locked_purpose},
             operation=f"{locked_purpose} evaluation",
         )
         if not args.eval_tag:
-            prefix = "e2" if locked_purpose == "confirmation_holdout" else "e7c"
-            args.eval_tag = (f"_{prefix}_{confirmation['dataset_id'].split('-')[-1]}"
+            args.eval_tag = (f"_{locked_prefix}_{confirmation['dataset_id'].split('-')[-1]}"
                              f"_nfe{args.nfe}_ss{args.sampler_seed}")
         if Path(locked_manifest).resolve() != test_sidecar.resolve():
             raise ValueError("locked manifest must be the test array's canonical sidecar")
@@ -1113,12 +1151,13 @@ def main():
         if Path(args.test_path).resolve() != expected_test:
             raise ValueError(f"--test_path does not match manifest: {args.test_path} != {expected_test}")
         cfg = arm_cfg(args.arm)
-        ckpt = Path(f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt")
+        ckpt = Path(args.checkpoint_path or
+                    f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt")
         if not ckpt.is_file():
             raise FileNotFoundError(f"evaluation checkpoint missing: {ckpt}")
+        locked_checkpoint = ckpt
         eval_spec = RunSpec(
-            study=("confirmation-e2" if locked_purpose == "confirmation_holdout"
-                   else "robustness-e7c"),
+            study=locked_study,
             arm=args.arm,
             seed=args.seed,
             dataset_hash=confirmation["artifacts"]["clips"]["sha256"],
@@ -1146,8 +1185,7 @@ def main():
             sampler={"name": "DDIM" if cfg[2] == "diff" else "deterministic-regression",
                      "nfe": args.nfe, "sampler_seed": args.sampler_seed,
                      "crn": "100000 + 1000000*sampler_seed + 1000*chunk + rollout_step"},
-            tag=("untouched-confirmation" if locked_purpose == "confirmation_holdout"
-                 else "sampler-nfe-robustness"),
+            tag=locked_tag,
         )
         # Record access before hashing/opening the holdout array itself.
         log_holdout_access(
@@ -1171,10 +1209,11 @@ def main():
     if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
         n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_, n_ctx_t_, stride_t_ = arm_cfg(args.arm)
         if eval_spec is not None:
-            prefix = "e2" if locked_purpose == "confirmation_holdout" else "e7c"
-            run_name = (f"{prefix}-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
+            codec_suffix = (f"-ae{eval_spec.ae_hash[:8]}" if locked_prefix == "e7a" else "")
+            run_name = (f"{locked_prefix}-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
+                        f"{codec_suffix}"
                         f"-nfe{args.nfe}-ss{args.sampler_seed}")
-            run_id = args.wandb_run_id or f"{prefix}-{eval_spec.identity}"
+            run_id = args.wandb_run_id or f"{locked_prefix}-{eval_spec.identity}"
             wb_config = {"run_spec": eval_spec.resolved(), "cli": vars(args)}
             tags = ["loopmom", eval_spec.tag, mode_, "eval-only"]
         else:
@@ -1190,8 +1229,7 @@ def main():
             run_name, config=wb_config, project=args.wandb_project, run_id=run_id, tags=tags,
             resume="never" if eval_spec is not None else "allow",
             group=args.wandb_group or (confirmation["dataset_id"] if confirmation else None),
-            job_type=("confirmation-eval" if locked_purpose == "confirmation_holdout"
-                      else "robustness-eval") if eval_spec is not None else None,
+            job_type=locked_job_type if eval_spec is not None else None,
             required=args.wandb_required or eval_spec is not None,
         )
         if eval_spec is not None:
@@ -1278,7 +1316,9 @@ def main():
                         n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t).to(DEV)
         wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
         ema = EMA(net)
-        ckpt = f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt"
+        ckpt = str(locked_checkpoint or Path(
+            f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt"
+        ))
         st = torch.load(ckpt, map_location=DEV, weights_only=False)
         ema.shadow.load_state_dict(st["ema"])
         log(f"[eval_only] loaded {ckpt} @ step {st['step']}")
@@ -1304,9 +1344,8 @@ def main():
         })
         store.finalize()
         wb.artifact(
-            name=f"{'e2' if locked_purpose == 'confirmation_holdout' else 'e7c'}-{eval_spec.identity}",
-            artifact_type=("confirmation-evaluation" if locked_purpose == "confirmation_holdout"
-                           else "robustness-evaluation"),
+            name=f"{locked_prefix}-{eval_spec.identity}",
+            artifact_type=locked_artifact_type,
             paths=[
                 str(store.path / "run_spec.json"),
                 str(store.path / "metrics/rollout_complete.npz"),

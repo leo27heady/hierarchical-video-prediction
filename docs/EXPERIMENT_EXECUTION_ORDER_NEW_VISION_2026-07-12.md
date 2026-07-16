@@ -64,7 +64,35 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a/E8a/E6/E9 | Codec robustness, retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **GATED / PRELAUNCH**; protocol, code, CPU tests, numerical parity and mechanical budget pass; dataset/final authorization pending | Generate/validate the independent set, bind attestations, then launch only on a clean commit and online W&B |
+| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
+
+#### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
+
+- **Frozen estimand:** whole alternate-codec-training-seed robustness, conditional on predictor
+  seed 0. The intervention includes codec weights, latent geometry, codec-specific normalization
+  statistics and retrained predictors; it does not isolate one representation component.
+- **Matrix:** exactly seven alternate-codec B16x30k diffusion predictors and four registered
+  contrasts: 896 reach, 1,152 interior, 1,152 package shape and 2,432 inversion. The same new
+  holdout evaluates seven frozen original-codec controls and seven alternate-codec rows. No
+  second predictor seed is included because the high-budget pair makes that incompatible with
+  the 36-hour tranche; training-seed robustness is supplied by the earlier programme.
+- **Decision:** the eight codec-by-contrast effects form one studentized max-statistic
+  clip-cluster family. Outcome categories are holdout-control failure, codec-sensitive,
+  directionally robust or CI-clean. No codec retry, third codec, extra seed, arm or threshold may
+  be added after results are visible.
+- **Validity floor:** before any predictor or locked-data access, seed-1 reconstruction and latent
+  non-collapse must pass fixed 4,000-frame training-tail limits relative to the original codec.
+  Failure closes E7a without retraining.
+- **Code/CPU gate:** 56 tests pass; article/dissertation consistency and scientific-config gates
+  pass; PowerShell and Python compile gates pass. The explicit codec seed-0 path is bit-exact to
+  two legacy CPU updates, while seed 1 is distinct and checkpoint metadata is complete.
+- **Budget:** expected 31.2 GPU-hours. Frozen components are 0.6 shared by codec training/floor,
+  31.4 across predictor cells and 3.3 across fourteen evaluations: **35.3 allocated within a
+  36.0-hour hard maximum**. Failed attempts and resumes remain charged.
+- **Launch decision:** not yet launched at this audit. Generate/hash/collision-check the
+  purpose-locked seed-20260716 set, create hash-bound protocol/config/CPU/data attestations,
+  verify clean-commit authorization and W&B online access, then start the controller.
 
 #### E2 run ledger
 
@@ -1479,18 +1507,26 @@ no post-result extension and qualifies only the precision of the upper inversion
 
 ### E7a — Alternate autoencoder seed (second)
 
-Train a second AE seed and rerun the minimal central package set:
+Train codec seed 1 under an otherwise identical codec regime and retrain exactly seven seed-0
+diffusion predictors:
 
 - 896-token lower regime;
 - 1,152-token interior;
-- one high-budget fidelity regime;
+- the 2,432-token high-budget fidelity inversion;
 - spatial versus temporal package comparison.
 
-Use two predictor seeds where feasible.
+Evaluate both the original-codec controls and alternate-codec predictors on the same new locked
+holdout. Use one fixed predictor seed; this isolates the codec-seed pipeline cleanly inside the
+budget, while prior studies carry training-seed robustness. Apply one simultaneous family across
+all eight codec-by-contrast effects. The frozen reconstruction/latent non-collapse floor precedes
+predictor training; no failed codec may be retrained or replaced.
 
 **Question:** is the frontier specific to one learned codec/latent geometry?
 
 **GPU time:** **24–36 hours**.
+
+**Protocol:** `docs/E7A_ALTERNATE_CODEC_ROBUSTNESS_PROTOCOL_2026-07-16.md`.
+**Frozen design:** `experiments/configs/alternate_codec_robustness.json`.
 
 ### E7b — Simple codec controls
 
@@ -1631,7 +1667,7 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 |---:|---|---|---|---:|---:|
 | 0 | E0/E1/E2/E4a/E4b/E5a/E7c | Completed evidence and governance programme | **complete/frozen** | 73.338 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
-| 2 | E7a | Alternate-AE seed and minimal predictor matrix | next closure robustness; separately gated and not launched | 36 h | 2–5 d |
+| 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **gated/prelaunch; CPU/parity/budget pass, data/final authorization pending** | 36 h | 2–5 d |
 | 3 | E8a | Classical pose-indexed retrieval | closure reference baseline | 0–4 h | 2–5 d |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
 | 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
@@ -1705,7 +1741,8 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 ## 17. Current execution instruction
 
 E7c is terminal and frozen as `DIRECTIONALLY_ROBUST`; do not add sampler/NFE cells after observing
-the result. Begin only E7a's separate protocol, alternate-AE provenance, reconstruction-floor,
-latent-statistics, data, numerical-regime, budget and W&B preparation. E7a remains unlaunched until
-its own fail-closed authorization is recorded. Its design tests codec/latent-geometry robustness
-and must not be adapted to repair the two E7c upper-inversion intervals.
+the result. E7a's separate protocol, seven-arm matrix, whole-codec estimand, reconstruction floor,
+provenance, numerical-parity gate and 35.3/36.0-hour allocation are frozen. Generate and validate
+only the new purpose-locked dataset, then bind the fail-closed authorization and launch from a
+clean commit with W&B online. E7a tests codec/latent-geometry robustness and cannot be adapted to
+repair the two E7c upper-inversion intervals.

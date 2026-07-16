@@ -41,7 +41,8 @@ def main() -> None:
     parser.add_argument("--dirty-hash", required=True)
     parser.add_argument(
         "--purpose",
-        choices=("confirmation_holdout", "robustness_holdout", "development_fixture"),
+        choices=("confirmation_holdout", "robustness_holdout", "codec_robustness_holdout",
+                 "development_fixture"),
         required=True,
     )
     parser.add_argument("--mnist", default=MNIST)
