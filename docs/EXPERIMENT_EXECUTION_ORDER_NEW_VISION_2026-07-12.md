@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictor 1/7 (`hier-min`) complete and predictor 2/7 (`flat-min`) active | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–2/7 complete and predictor 3/7 (`hier-long`) at 28k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -182,6 +182,51 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   tranche near 30–32 hours, still below 36, with a provisional terminal window around 2026-07-17
   11:00–13:00 Kyiv. The whole-codec estimand remains valid. Continue unchanged; no user action or
   adaptive branch is warranted.
+
+#### Four-hour audit E7a-I4 — 2026-07-16 12:43 Europe/Kyiv
+
+- **Expected versus actual:** expected `flat-min` to finish and `hier-long` to be well underway.
+  Actual progress is ahead: `flat-min` completed 30,000/30,000 and `hier-long` reached
+  28,000/30,000 (93.3%). Controller PID 10464 and the one active scientific child remain healthy;
+  the pinned source commit, alternate-codec checkpoint, predictor seed 0 and all frozen training
+  geometry remain unchanged.
+- **Completed `flat-min`:** final training loss is 0.06939 versus the original-codec 0.05987
+  (+15.9%; +11.5% averaged over all 60 intervals). This persistent objective-scale shift is paired
+  with better, not worse, fixed-grid reconstruction: alternate validation foreground MSE averaged
+  12.1% lower over the fifteen grids and ended 23.9% lower, 0.00709 versus 0.00932. Every grid from
+  6k through 30k favored the alternate codec, and visual inspection shows stable, aligned glyph
+  predictions. The result is consistent with codec-dependent standardized latent geometry rather
+  than optimizer failure.
+- **Active `hier-long`:** all values remain finite and the loss decreased from 1.5757 at 500 to
+  0.0459 at 28k. Against the actual local legacy B16 log, loss differs by only +1.0% on average and
+  is 2.8% lower at 28k; model peak memory is identically 6.46 GB. Against the immutable
+  provenance-v2 seed-3/4 runs, mean loss differs by only +0.08%/+0.25% and throughput by
+  +0.34%/+0.27%, respectively. The 26k validation grid is higher at 0.04231 than the seed-3/4
+  references (0.02618/0.03180), and the matched-grid mean is approximately 15% higher. This is a
+  mild representation-specific validation shift to monitor, not a numerical-validity failure:
+  training convergence is matched, the saved grid remains structurally coherent, and the locked
+  rollout—not this noisy eight-row grid—is the registered endpoint.
+- **Reference correction:** the W&B ID `rhvd-hier-long-s0` contains telemetry from a later reused
+  regime and therefore falsely suggested 3.49 GB and 0.22 seconds/update. The immutable local
+  original B16 log records 6.46 GB and 0.73–0.76 seconds/update, while the provenance-v2 references
+  record approximately 0.376–0.377 seconds/update at 6.46 GB. The active 0.376–0.381 seconds/update
+  is the expected v2 regime. This is a legacy cloud-identity caveat only; E7a's content-addressed
+  RunSpecs and scientific estimand are unaffected.
+- **Artifacts/cloud:** `flat-min` RunSpec `019fd82cf6963442` has a matching COMPLETE marker and
+  18/18 manifest hashes, including its 355,055,211-byte checkpoint. Its W&B run is finished with a
+  COMMITTED training artifact. `hier-long` RunSpec `c483500021b83d2e` is active and syncing; no
+  failed or duplicate scientific child is present.
+- **Hardware/budget/projection:** current telemetry is 99–100% compute, 87% memory-controller
+  utilization, 7.88/16.38 GB board memory, 63–66°C, 114–117 W and P2. There is no allocation
+  growth, thermal throttle, stall or WDDM spill signal. `flat-min` used 2.4689 hours versus 2.752
+  expected and 3.2 authorized. Completed consumption is 5.0890 hours; including active
+  `hier-long`, approximately 8.07 hours have elapsed. The active cell projects to approximately
+  3.20 hours, below its 3.5-hour maximum. The tranche remains projected at roughly 30–32 hours,
+  below 36, with the provisional terminal window still around 2026-07-17 11:00–13:00 Kyiv.
+- **Isolation/decision:** predictor RunSpecs still reference only the frozen legacy development
+  validation array. No E7a evaluation or access-log artifact exists, so the locked outcome set has
+  not been evaluated early. Continue unchanged. There is no blocker, estimand change or
+  justification for an adaptive cell.
 
 #### E2 run ledger
 
