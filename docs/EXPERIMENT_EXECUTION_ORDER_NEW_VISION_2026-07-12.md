@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–4/7 complete and predictor 5/7 (`strided-flat`) at 6k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–5/7 complete and predictor 6/7 (`hier-c2`) at 7.5k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -272,6 +272,44 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   locked outcome set has not been evaluated. The higher hierarchical validation grid is a
   possible scientific outcome, not a validity or health blocker. Continue the frozen queue
   unchanged; no adaptive checkpoint, seed, codec or package is justified.
+
+#### Four-hour audit E7a-I6 — 2026-07-16 20:42 Europe/Kyiv
+
+- **Expected versus actual:** expected `strided-flat` to complete and the first high-budget arm to
+  begin. Actual progress matches or slightly exceeds that expectation: `strided-flat` completed
+  30,000/30,000 and `hier-c2` reached 7,500/30,000 (25%). The controller and one active child
+  retain the frozen source commit, seed, alternate-codec hash, B16×30k optimizer geometry and
+  development-validation hashes.
+- **Completed `strided-flat`:** final loss is 0.05764, which is 5.3% below original seed 0,
+  8.3% below provenance-v2 seed 3 and 6.4% below provenance-v2 seed 4. Final validation
+  foreground MSE is 0.02209 versus 0.02155/0.02163/0.02102 for those references, a small
+  +2.1–5.1% difference. Although early validation grids produced a higher all-grid mean, the gap
+  closed by 30k and the final qualitative grid is structurally matched. This is stable completion,
+  not representation collapse.
+- **Active `hier-c2`:** loss is finite and decreases from 1.5925 at 500 to 0.0823 at 7.5k.
+  Across the fourteen intervals available through 7k, loss differs from original seed 0 by only
+  +0.46% on average (range −6.1% to +6.9%) and is 2.9% lower at the latest matched interval.
+  Validation foreground MSE averages 6.9% above the original across the first three grids and is
+  0.04816 versus 0.04599 at 6k. The saved grid remains coherent. Throughput averages 2.35% faster
+  than the original B16 run, at approximately 0.80–0.81 seconds/update, with identical 11.68 GB
+  allocated model peak.
+- **Artifacts/cloud:** completed `strided-flat` RunSpec `fb603c2f0565f70c` has a matching COMPLETE
+  marker and 18/18 verified manifest hashes; its 355,264,043-byte checkpoint is intact. Its W&B
+  run is finished with a COMMITTED training artifact. Active `hier-c2` RunSpec
+  `7e3621066377f579` is syncing normally and has no duplicate or failed scientific child.
+- **Hardware/high-budget headroom:** telemetry is 97–100% compute, 68–72% memory-controller
+  utilization, 13.34/16.38 GB board memory, 67°C, 120 W and P2. Model peak is the expected
+  11.68 GB, leaving approximately 3.0 GB of board headroom after desktop allocations. There is no
+  monotonic memory growth, thermal throttle, utilization collapse or WDDM spill indicator.
+- **Budget/projection:** `strided-flat` used 2.9546 hours versus 2.838 expected and 3.3 maximum.
+  Completed tranche consumption is 14.3384 hours; including active `hier-c2`, approximately
+  16.04 hours have elapsed. At the observed 0.80–0.81 seconds/update, `hier-c2` projects to
+  approximately 6.7 hours, below its 7.4-hour maximum. Allowing the same pace for `flat-c2` plus
+  all fourteen evaluations leaves the full tranche near 31–32 hours and below the 36-hour cap,
+  with the terminal window still approximately 2026-07-17 11:00–13:00 Kyiv.
+- **Isolation/decision:** no E7a evaluation/result/access-log artifact exists and the locked
+  outcome set remains unevaluated. No numerical, operational, budget or scientific-validity
+  blocker is present. Continue unchanged into the high-budget pair; no adaptive cell is warranted.
 
 #### E2 run ledger
 
