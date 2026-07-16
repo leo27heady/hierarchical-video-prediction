@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–2/7 complete and predictor 3/7 (`hier-long`) at 28k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–4/7 complete and predictor 5/7 (`strided-flat`) at 6k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -227,6 +227,51 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   validation array. No E7a evaluation or access-log artifact exists, so the locked outcome set has
   not been evaluated early. Continue unchanged. There is no blocker, estimand change or
   justification for an adaptive cell.
+
+#### Four-hour audit E7a-I5 — 2026-07-16 16:42 Europe/Kyiv
+
+- **Expected versus actual:** expected `hier-long` to complete and `flat-budget` to be well
+  underway. Actual progress is ahead: both completed 30,000/30,000 and predictor 5/7,
+  `strided-flat`, reached 6,000/30,000. The controller remains the sole launch owner and the
+  active RunSpec retains the frozen alternate codec, predictor seed 0, B16×30k geometry, learning
+  rate, warmup, bf16 precision and legacy development-validation hashes.
+- **Completed `hier-long`:** final loss is 0.04446. It differs by +4.2% from the original local
+  B16 seed-0 final loss (0.0427), by +1.5% from provenance-v2 seed 3 (0.04378), and by −0.6% from
+  provenance-v2 seed 4 (0.04470); the all-interval mean is only +1.4% versus the local original.
+  Final validation foreground MSE is 0.04646, higher than the available original/provenance-v2
+  seed-1–4 finals (0.02670–0.03605). This is an honest codec-dependent package response, not a
+  numerical failure: loss convergence, finite values, model memory and saved glyph structure all
+  remain normal. It may weaken the hierarchical arm on the locked rollout, which is precisely the
+  registered robustness question; no intervention is permitted.
+- **Completed `flat-budget`:** final loss is 0.06854 versus the local original 0.0698 (−1.9%;
+  +3.5% averaged over all intervals), at identical 6.47 GB model peak. Its final validation
+  foreground MSE is 0.07546, inside the observed original seed envelope represented by seed 1
+  (0.07330) and seed 2 (0.07933). Visual inspection shows aligned glyph predictions and expected
+  background uncertainty, with no collapse or missing-output pattern.
+- **Active `strided-flat`:** loss decreases normally from 1.5865 at 500 to 0.1353 at 6k. At 5.5k
+  it is −1.0% versus original seed 0, −2.3% versus provenance-v2 seed 3 and +4.2% versus seed 4.
+  Throughput is 0.350–0.352 seconds/update and 6.26 GB, matching the v2 references
+  (0.350–0.352 seconds/update, 6.26 GB). The 4k validation grid is 0.05801, 14–27% above the three
+  matching references, but only two early grids exist; the 6k qualitative grid is coherent and
+  this early difference is not a stop criterion.
+- **Artifacts/cloud:** `hier-long` RunSpec `c483500021b83d2e` and `flat-budget` RunSpec
+  `e7edc69a480412a7` each have matching COMPLETE markers and 18/18 verified manifest hashes.
+  Their 355,264,107-byte and 355,079,723-byte checkpoints are intact. Both W&B runs are finished
+  with COMMITTED training artifacts; active `strided-flat` RunSpec `fb603c2f0565f70c` is syncing
+  normally.
+- **Hardware/budget:** telemetry is 97–100% compute, 81–83% memory-controller utilization,
+  7.70/16.38 GB board memory, 68°C, 119 W and P2, with no stall, thermal throttle, allocation
+  growth or WDDM spill signal. `hier-long` used 3.1822 hours versus 3.01 expected/3.5 maximum;
+  `flat-budget` used 3.1126 versus 2.924 expected/3.4 maximum. Both exceeded the planning estimate
+  by approximately 6% but remained safely inside their hard cell limits. Completed tranche
+  consumption is 11.3838 hours; including the active cell, approximately 12.02 hours have elapsed.
+  `strided-flat` projects near 2.9–3.0 hours versus its 3.3 maximum. The full tranche remains
+  projected near 30–32 hours, below 36, with a provisional terminal window around
+  2026-07-17 11:00–13:00 Kyiv.
+- **Isolation/decision:** no E7a evaluation/result/access-log artifact exists and the purpose-
+  locked outcome set has not been evaluated. The higher hierarchical validation grid is a
+  possible scientific outcome, not a validity or health blocker. Continue the frozen queue
+  unchanged; no adaptive checkpoint, seed, codec or package is justified.
 
 #### E2 run ledger
 
