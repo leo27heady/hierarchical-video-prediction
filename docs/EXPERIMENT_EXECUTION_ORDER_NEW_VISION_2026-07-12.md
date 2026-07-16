@@ -99,6 +99,29 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   from the final clean commit after the controller's live W&B write gate; the codec floor remains
   an outcome-independent stop before predictors or semantic holdout access.
 
+#### Intermediate audit E7a-I1 — 2026-07-16 04:40 Europe/Kyiv
+
+- **Launch:** PASS from clean commit `d75d12f` after the controller repeated the authorization,
+  14-cell design, data/hash and live W&B write gates. The pinned execution commit is
+  `d75d12f0322a657f727a6be7a1beda18f4731b53`; later documentation commits cannot alter resume
+  identity. Controller PID 10464 owns the sole scientific child.
+- **Active phase:** alternate `HierConvAE` seed 1, 7,000 updates, B64, Adam 0.0003 and unchanged
+  random-level objective; RunSpec `460d2f4a301438d9`. W&B run:
+  `https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-seed1-460d2f4a301438d9`.
+- **Initial numerical trend:** at 1k/2k/3k updates, loss is 0.2631/0.1135/0.0737, coarse validation
+  MSE 0.0178/0.0090/0.0063 and fine validation MSE 0.0083/0.0040/0.0027. The legacy seed-0
+  reference is loss 0.2786/0.1143/0.0774, coarse 0.0192/0.0094/0.0072 and fine
+  0.0069/0.0038/0.0030. The seed-1 trajectory is finite, convergent and within the expected
+  representation-seed envelope; the small early fine difference has already narrowed/reversed.
+- **Hardware/runtime:** 94–96% GPU compute, approximately 2.66/16.38 GB board memory, 64°C and
+  117 W. Low codec VRAM is expected for this small convolutional model and cannot be converted
+  into a batch change because B64 is the frozen intervention. Three thousand updates completed
+  in roughly 80 seconds, projecting codec training plus floor comfortably inside their shared
+  0.6-hour allocation.
+- **Isolation:** no E7a GPU-ledger row exists until the codec process exits, no predictor has
+  started, and the purpose-locked holdout has not been semantically opened. Continue unchanged;
+  the next automatic stop is the registered reconstruction/latent non-collapse floor.
+
 #### E2 run ledger
 
 Foreground values below are provisional raw all-record means, not the registered inferential
