@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **AUTHORIZED / READY TO LAUNCH**; protocol, code, 57 CPU tests, seed-0 numerical parity, data/collision/design and budget gates pass | Launch the fail-closed controller from the final clean commit after its live W&B write gate |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; alternate codec and registered codec floor complete/PASS; predictor 1/7 (`hier-min`) is active | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -121,6 +121,26 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 - **Isolation:** no E7a GPU-ledger row exists until the codec process exits, no predictor has
   started, and the purpose-locked holdout has not been semantically opened. Continue unchanged;
   the next automatic stop is the registered reconstruction/latent non-collapse floor.
+
+#### Intermediate audit E7a-I2 — 2026-07-16 04:43 Europe/Kyiv
+
+- **Codec completion:** seed-1 training completed normally at 7,000/7,000 updates in 0.05385
+  project GPU-hours. Final loss was 0.0452, with coarse/fine validation MSE 0.00468/0.00197;
+  all values remained finite and the checkpoint/artifact upload completed.
+- **Registered floor:** `CODEC_FLOOR_PASS`. Alternate versus original full-frame MSE was
+  0.001202 versus 0.001265 at the coarse level and 0.000509 versus 0.000516 at the fine level;
+  foreground MSE was 0.02907 versus 0.03009 and 0.01253 versus 0.01254. Every latent-channel
+  standard deviation exceeded 0.1075, far above the frozen 0.005 non-collapse floor. These are
+  gate diagnostics, not evidence for selecting the alternate codec.
+- **Advance:** the unchanged controller correctly entered predictor 1/7, `hier-min` seed 0,
+  RunSpec `993ee4b6535259e3`, at 04:41:57. Training geometry remains B16×30k, learning rate
+  0.0003, warmup 2,000, bf16 and predictor seed 0. W&B run:
+  `https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-993ee4b6535259e3`.
+- **Health/budget:** training initialization, latent encoding and standardization completed
+  without exception. GPU telemetry reached 100% compute, 6.72/16.38 GB board memory, 63°C and
+  112 W. Measured codec plus floor consumption is 0.05769 hours versus their 0.6-hour shared
+  maximum; no budget or validity deviation exists. Continue unchanged to the first four-hour
+  audit. The locked E7a outcome evaluation remains downstream of all seven predictor trainings.
 
 #### E2 run ledger
 
