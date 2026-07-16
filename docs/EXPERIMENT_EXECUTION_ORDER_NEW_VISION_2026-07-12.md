@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **GATED / PRELAUNCH**; protocol, code, CPU tests, numerical parity and mechanical budget pass; dataset/final authorization pending | Generate/validate the independent set, bind attestations, then launch only on a clean commit and online W&B |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **AUTHORIZED / READY TO LAUNCH**; protocol, code, 57 CPU tests, seed-0 numerical parity, data/collision/design and budget gates pass | Launch the fail-closed controller from the final clean commit after its live W&B write gate |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -90,9 +90,14 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 - **Budget:** expected 31.2 GPU-hours. Frozen components are 0.6 shared by codec training/floor,
   31.4 across predictor cells and 3.3 across fourteen evaluations: **35.3 allocated within a
   36.0-hour hard maximum**. Failed attempts and resumes remain charged.
-- **Launch decision:** not yet launched at this audit. Generate/hash/collision-check the
-  purpose-locked seed-20260716 set, create hash-bound protocol/config/CPU/data attestations,
-  verify clean-commit authorization and W&B online access, then start the controller.
+- **Final prelaunch gate:** the independently generated 500×200 set is
+  `loopmom-codec_robustness_holdout-20260716-77a4ec5aee94`. Shape/dtype, action-position
+  consistency, persistent-object metadata, empirical hold/continuation rates and all artifact
+  hashes pass. There are zero exact clip collisions internally or against development train/test,
+  E2 and E7c. Hash-bound protocol/config/CPU/design/data attestations pass.
+- **Launch decision:** E7a is authorized under the user's standing tranche autonomy. Start only
+  from the final clean commit after the controller's live W&B write gate; the codec floor remains
+  an outcome-independent stop before predictors or semantic holdout access.
 
 #### E2 run ledger
 
@@ -1667,7 +1672,7 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 |---:|---|---|---|---:|---:|
 | 0 | E0/E1/E2/E4a/E4b/E5a/E7c | Completed evidence and governance programme | **complete/frozen** | 73.338 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
-| 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **gated/prelaunch; CPU/parity/budget pass, data/final authorization pending** | 36 h | 2–5 d |
+| 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **authorized / ready to launch; all prelaunch gates pass** | 36 h | 2–5 d |
 | 3 | E8a | Classical pose-indexed retrieval | closure reference baseline | 0–4 h | 2–5 d |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
 | 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
@@ -1742,7 +1747,7 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 
 E7c is terminal and frozen as `DIRECTIONALLY_ROBUST`; do not add sampler/NFE cells after observing
 the result. E7a's separate protocol, seven-arm matrix, whole-codec estimand, reconstruction floor,
-provenance, numerical-parity gate and 35.3/36.0-hour allocation are frozen. Generate and validate
-only the new purpose-locked dataset, then bind the fail-closed authorization and launch from a
-clean commit with W&B online. E7a tests codec/latent-geometry robustness and cannot be adapted to
-repair the two E7c upper-inversion intervals.
+provenance, numerical-parity gate and 35.3/36.0-hour allocation are frozen. The purpose-locked
+dataset and all hash-bound prelaunch gates pass. Launch E7a from the final clean commit with W&B
+online, and preserve the outcome-independent codec-floor stop. E7a tests codec/latent-geometry
+robustness and cannot be adapted to repair the two E7c upper-inversion intervals.

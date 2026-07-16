@@ -40,7 +40,8 @@ def main() -> None:
     implementation = [
         "hvp_rev/hier_convae.py", "hvp_rev/hier_convae_v2.py", "hvp_rev/rhvd.py",
         "hvp_rev/rhvd_train_v2.py", "scripts/generate_loopmom_confirmation.py",
-        "scripts/generate_e7a_codec_set.ps1", "scripts/evaluate_e7a_codec_floor.py",
+        "scripts/generate_e7a_codec_set.ps1", "scripts/validate_loopmom_confirmation.py",
+        "scripts/evaluate_e7a_codec_floor.py",
         "scripts/analyze_e7a_codec_robustness.py", "scripts/validate_e7a_design.py",
         "scripts/validate_e7a_completion.py", "scripts/run_e7a_codec_robustness.ps1",
         "tests/test_e7a_codec.py",

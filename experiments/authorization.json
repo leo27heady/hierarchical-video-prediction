@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-16-e7a-prelaunch-preparation",
+  "updated": "2026-07-16-e7a-final-prelaunch-authorization",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -181,14 +181,16 @@
       ]
     },
     "alternate-autoencoder-robustness": {
-      "status": "PREPARED_NOT_AUTHORIZED",
-      "meaning": "E7a is frozen as a seven-arm, predictor-seed-0 whole-codec intervention with fourteen same-holdout evaluations and a 36-hour hard maximum. Dataset and final clean-commit/W&B launch gates remain.",
+      "status": "AUTHORIZED",
+      "meaning": "User-authorized E7a is frozen as a seven-arm, predictor-seed-0 whole-codec intervention with fourteen same-holdout evaluations. CPU/parity/data/collision/design gates pass for dataset loopmom-codec_robustness_holdout-20260716-77a4ec5aee94; 35.3 hours are allocated within a 36-hour hard maximum.",
       "required_files": [
         "docs/E7A_ALTERNATE_CODEC_ROBUSTNESS_PROTOCOL_2026-07-16.md",
         "experiments/configs/alternate_codec_robustness.json",
         "docs/confirmation/E7A_TABLE_SHELL.md",
+        "experiments/manifests/loopmom_e7a_codec_robustness_2026-07-16.json",
         "hvp_rev/hier_convae_v2.py",
         "scripts/generate_e7a_codec_set.ps1",
+        "scripts/validate_loopmom_confirmation.py",
         "scripts/run_e7a_codec_robustness.ps1",
         "scripts/analyze_e7a_codec_robustness.py",
         "scripts/validate_e7a_design.py",
@@ -210,6 +212,10 @@
         {
           "path": "gates/e7a_design_validated.json",
           "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e7a_design_validation.json"}
+        },
+        {
+          "path": "gates/e7a_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e7a_dataset_validation.json"}
         }
       ]
     },

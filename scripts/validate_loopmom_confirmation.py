@@ -24,6 +24,8 @@ def main() -> None:
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--legacy-train", default="data/loopmom_train_3000x100.npy")
     parser.add_argument("--legacy-test", default="data/loopmom_test_500x200.npy")
+    parser.add_argument("--comparison-manifest", action="append", default=[],
+                        help="additional locked dataset manifest to audit for exact clip collisions")
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
 
@@ -58,6 +60,23 @@ def main() -> None:
     if positions.min() < 0 or positions.max() >= world:
         failures.append("position outside torus")
 
+    with np.load(artifacts["objects"]["path"]) as objects:
+        digits = int(config["dataset"]["digits"])
+        expected_objects_shape = (config["dataset"]["clips"], digits)
+        for key in ("object_id", "glyph_index", "world_x", "world_y"):
+            if key not in objects or objects[key].shape != expected_objects_shape:
+                failures.append(f"object metadata schema mismatch: {key}")
+        if "object_id" in objects and objects["object_id"].shape == expected_objects_shape:
+            expected_ids = np.broadcast_to(np.arange(digits), expected_objects_shape)
+            if not np.array_equal(objects["object_id"], expected_ids):
+                failures.append("persistent object IDs are not canonical within clips")
+        if "glyph_index" in objects and np.any(objects["glyph_index"] < 0):
+            failures.append("negative source glyph index")
+        if "world_x" in objects and (objects["world_x"].min() < 0 or objects["world_x"].max() >= world):
+            failures.append("object world_x outside torus")
+        if "world_y" in objects and (objects["world_y"].min() < 0 or objects["world_y"].max() >= expected_shape[-2]):
+            failures.append("object world_y outside viewport height")
+
     p_hold = float((actions == 0).mean())
     nonzero = actions != 0
     continuations = []
@@ -81,6 +100,14 @@ def main() -> None:
         collision_counts[label] = collisions
         if collisions:
             failures.append(f"{collisions} exact clip collisions with {label}")
+    for manifest_arg in args.comparison_manifest:
+        other_manifest = json.loads(Path(manifest_arg).read_text(encoding="utf-8"))
+        label = other_manifest.get("dataset_id", Path(manifest_arg).stem)
+        other = np.load(other_manifest["artifacts"]["clips"]["path"], mmap_mode="r")
+        collisions = len(confirmation_hashes & _clip_hashes(other))
+        collision_counts[label] = collisions
+        if collisions:
+            failures.append(f"{collisions} exact clip collisions with {label}")
 
     report = {
         "schema_version": 1,
@@ -92,6 +119,7 @@ def main() -> None:
         "p_hold": p_hold,
         "p_continue_nonzero": p_continue,
         "position_action_consistency": not any("positions are inconsistent" in f for f in failures),
+        "object_metadata_valid": not any("object" in f for f in failures),
         "unique_confirmation_clips": len(confirmation_hashes),
         "collisions": collision_counts,
         "failures": failures,
