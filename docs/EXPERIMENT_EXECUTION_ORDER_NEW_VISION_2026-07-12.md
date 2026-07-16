@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; alternate codec and registered codec floor complete/PASS; predictor 1/7 (`hier-min`) is active | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictor 1/7 (`hier-min`) complete and predictor 2/7 (`flat-min`) active | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -141,6 +141,47 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   112 W. Measured codec plus floor consumption is 0.05769 hours versus their 0.6-hour shared
   maximum; no budget or validity deviation exists. Continue unchanged to the first four-hour
   audit. The locked E7a outcome evaluation remains downstream of all seven predictor trainings.
+
+#### Four-hour audit E7a-I3 — 2026-07-16 08:44 Europe/Kyiv
+
+- **Expected versus actual:** expected the codec/floor to be closed and the first predictor to be
+  complete or nearly complete. Actual progress is slightly ahead: the codec floor remains PASS,
+  `hier-min` completed 30,000/30,000, and `flat-min` reached 17,500/30,000 (58.3%). The sole
+  controller and sole scientific child remain alive with the frozen source commit, codec hash,
+  seed, batch, learning rate, warmup, precision and update count.
+- **Completed `hier-min` trajectory:** all 60 logged loss/throughput intervals are finite. Relative
+  to the original-codec seed-0 run, training loss averaged 4.1% lower (interval range −15.5% to
+  +4.6%) and ended 1.3% lower, 0.04859 versus 0.04923. Validation foreground MSE averaged 1.3%
+  lower over the fifteen matched grids. Its final 0.03364 is above the original's final 0.02670
+  but remains inside the original late-training 0.0267–0.0423 fluctuation band and follows several
+  alternate-codec grids that were lower than the original; this is grid noise, not sustained
+  numerical drift. Visual grids show matched glyph structure without collapse.
+- **Active `flat-min` trajectory:** loss is finite, decreasing from 1.5809 at 500 to 0.0840 at
+  17,500, and is approximately 9% above the original-codec trajectory on average. That difference
+  is compatible with the registered whole-codec intervention: after per-channel standardization,
+  alternate latent geometry can still change the diffusion objective scale. The directly useful
+  grid diagnostic does not deteriorate: after the warmup grids, alternate validation foreground
+  MSE is lower at every matched 6k–16k checkpoint (12–26% below the original), reaching 0.00724
+  versus 0.00870 at 16k. Do not treat the loss-scale shift as an outcome or alter training.
+- **Throughput/hardware:** `hier-min` used 2.5624 GPU-hours versus 2.752 expected and 3.2
+  authorized; it averaged 3.4% faster than legacy. `flat-min` is averaging 0.291–0.299 seconds per
+  update, approximately 2.2% faster than legacy, and projects to about 2.45–2.55 hours. Current
+  telemetry is 100% compute, 89% memory-controller utilization, 6.75/16.38 GB board memory,
+  66°C, 118 W and P2. Allocated model peak is the frozen 5.43 GB. There is no stall, thermal
+  throttling, allocation growth or WDDM spill signal.
+- **Artifacts/cloud:** the completed `hier-min` RunSpec is `993ee4b6535259e3`; its 18/18 manifest
+  entries, including the 355,264,107-byte checkpoint, rehash exactly and its COMPLETE marker
+  matches the RunSpec. Codec, codec-floor and `hier-min` W&B runs are finished with COMMITTED
+  artifacts; active `flat-min` RunSpec `019fd82cf6963442` is syncing normally. The recurring
+  PowerShell `NativeCommandError` text is W&B's stderr stream classification; all completed native
+  children exited zero and it has no operational effect.
+- **Isolation/budget/projection:** predictor training continues to use the frozen legacy
+  development validation hash; no E7a evaluation/access-log artifact exists and the locked outcome
+  evaluation has not started. Completed ledger consumption is 2.6201 hours; including the active
+  cell, approximately 4.09 project GPU-hours have elapsed. Observed throughput projects the full
+  tranche near 30–32 hours, still below 36, with a provisional terminal window around 2026-07-17
+  11:00–13:00 Kyiv. The whole-codec estimand remains valid. Continue unchanged; no user action or
+  adaptive branch is warranted.
 
 #### E2 run ledger
 
