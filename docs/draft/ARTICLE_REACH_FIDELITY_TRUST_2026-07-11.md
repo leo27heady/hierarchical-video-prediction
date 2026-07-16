@@ -31,7 +31,10 @@ temporal-package advantage under diffusion, but sign-changing package effects un
 and no training-seed-robust directional head interaction. In a preregistered three-seed rollout
 study, the early hierarchy advantage is positive at every seed, but a late inversion observed at
 seed 0 reverses to a late hierarchy advantage at seeds 1 and 2. The proposed trust boundary is
-therefore not replicated.
+therefore not replicated. A separate checkpoint-only robustness study preserves all four central
+diffusion directions across NFE 8/16/32 and three sampler seeds at the point-estimate level.
+Eighteen of 20 simultaneous family-wise lower bounds are positive; the two unresolved intervals
+are the upper-budget flat-fidelity inversion under alternate sampler seeds.
 
 These results support a scoped account: context reach explains where memory can help, while
 fidelity explains why compression can lose after reach is saturated. Addressability and self-fed
@@ -114,7 +117,8 @@ The fourth article contributes:
 6. an outcome-independent negative replication showing that the proposed late trust inversion is
    training-seed-specific under this protocol;
 7. an untouched-confirmation protocol with false-positive-sensitive and coverage endpoints;
-8. explicit reporting of negative, confounded and seed-sensitive outcomes.
+8. a preregistered NFE/sampler-seed robustness family on a separate purpose-locked set;
+9. explicit reporting of negative, confounded and seed-sensitive outcomes.
 
 Energy-based modelling and stochastic reversibility remain dissertation strands and supplementary
 context; they are not required to make this article's central claim.
@@ -188,6 +192,13 @@ autocorrelated frames. Reports show each seed, record/clip counts and coverage. 
 seed-specific effects are heterogeneity even when their mean is near zero. Equivalence requires a
 justified smallest effect of interest and reliable measurement; otherwise a null interval is
 inconclusive.
+
+Sampling robustness is evaluated separately from training-seed robustness. E7c freezes four
+already-supported seed-0 diffusion contrasts and five variants before evaluation: NFE 8/16/32 at
+sampler seed 0 and NFE 16 at sampler seeds 1/2. A 10,000-replicate studentized max-statistic
+clip-cluster bootstrap covers the resulting 20-effect family. This checkpoint-only design can
+test sensitivity to inference allocation and randomness; it cannot establish robustness to
+training seed, representation seed or another dataset family.
 
 ## 4. Development evidence
 
@@ -270,6 +281,29 @@ The simultaneous frontier family confirms hierarchy at 896 and 1,152 tokens, lea
 unresolved, and confirms flat full-resolution context at 2,432 and 3,072. Thus the evidence
 supports a tested reach–fidelity phase structure without claiming a smooth or unique crossing.
 
+### 4.7 Sampler and inference-allocation robustness
+
+E7c evaluates seven frozen seed-0 diffusion checkpoints on a separate purpose-locked LoopMom
+robustness set. Four contrasts—896-token reach, 1,152-token interior reach–fidelity,
+1,152-token temporal-versus-spatial package shape and the 2,432-token flat-fidelity inversion—are
+crossed with five frozen NFE/sampler variants. Positive effects favor the registered candidate.
+
+All 20 point estimates retain their expected direction. The 896 reach effects range from +0.0465
+to +0.0482; the 1,152 interior effects from +0.0140 to +0.0201; the package-shape effects from
++0.0221 to +0.0292; and the 2,432 inversion effects from +0.0077 to +0.0122. The simultaneous
+family-wise lower bound is positive for every variant of the first three contrasts and for the
+inversion at NFE 8/16/32 with sampler seed 0. At NFE 16, the inversion remains positive but is
+family-wise unresolved under sampler seed 1 (+0.0098 [−0.0001,+0.0196]) and sampler seed 2
+(+0.0077 [−0.0013,+0.0167]). The registered verdict is therefore
+**DIRECTIONALLY_ROBUST**, not `ROBUST_CI_CLEAN`.
+
+Non-empty foreground, full-frame, background and union-mask errors favor the registered candidate
+in all 20 variants, as do recall and F1. Component-count diagnostics are not uniformly favorable,
+so the result is not described as improvement on every endpoint. This study rules out a simple
+explanation based on the default NFE-16 allocation or one sampling-noise realization for the
+observed directions. It does not establish universal sampler invariance: it is checkpoint-only,
+uses seed-0 predictors, one frozen codec and one procedural dataset family.
+
 ## 5. Boundaries and positioning
 
 The study does not establish a universal hierarchy advantage, a unique token crossing, a pure B1
@@ -281,8 +315,8 @@ Prior work already studies slow latent state, compressed trajectory memory, retr
 benchmarks and autoregressive mismatch [CW-VAE; FDM; TECO; recent spatial-memory world models;
 WorldPack; MBench; CaR/SceneFly; MemLearner; GIM-World; Self Forcing]. The novelty is narrower: an
 analytic observability instrument, matched-budget rate-versus-resolution tests, measured
-inversions, pair-specific reach bands, and an outcome-independent replication test of self-fed
-reliability.
+inversions, pair-specific reach bands, an outcome-independent replication test of self-fed
+reliability, and a frozen simultaneous inference-robustness family.
 
 A strong follow-up would use paired counterfactual worlds identical over the short visible context
 but differing in an off-screen texture/barcode that determines re-entry. Crossing static/dynamic
@@ -300,7 +334,10 @@ explanation. Self-fed reliability remains an important question, not a third emp
 The one-time untouched confirmation supports the central reach–fidelity account. The five-seed
 factorial strengthens the diffusion temporal-package result while rejecting a training-seed-
 robust directional head shift; regression remains a sign-changing scope boundary rather than an
-equivalence result. Because the article retains configuration-level B1 wording, the fixed-target
+equivalence result. E7c further shows that all four central diffusion directions survive the
+registered fourfold NFE range and sampler-seed variations as point estimates. Three contrasts are
+simultaneous-CI clean throughout; the upper flat-fidelity inversion is directionally retained but
+family-wise unresolved at two alternate sampler seeds. Because the article retains configuration-level B1 wording, the fixed-target
 control is not required for its present causal scope. E5a failed its preregistered late-inversion
 replication rule, so trust is removed from the title and the gated E5b diagnostic programme is not
 run. The three-seed early benefit and seed-0-only late failure are reported together. This
@@ -313,6 +350,8 @@ outcome-independent narrowing is part of the contribution.
 - [x] remove trust from the title after E5a returned `NOT_REPLICATED`;
 - [x] complete the five-seed E4a/E4b factorial; retain stable diffusion packaging and demote the
       directional head-shift claim;
+- [x] integrate E7c as directional sampler/NFE robustness, including the two unresolved
+      upper-inversion intervals and checkpoint-only scope;
 - [ ] add the fixed-target B1 control or retain configuration-only wording;
 - [ ] replace reference keys with verified primary citations;
 - [ ] generate configuration/cost, claim/evidence and prior-art tables from artifacts;

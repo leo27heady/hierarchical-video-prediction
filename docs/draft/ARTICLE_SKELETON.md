@@ -47,8 +47,9 @@
 Hierarchical latent video models are usually motivated by efficiency, yet controlled evidence that
 the hierarchy itself — rather than added context — improves prediction is scarce. We build a
 memory-horizon testbed in which content verifiably exits a panning viewport and re-enters ~48
-frames later at an analytically known position, so that "hard because it must be remembered" is an
-exact label. At matched capacity and compute we compare prediction mechanisms (regression,
+frames later at an analytically known position, so that geometric observability from a specified
+context is exact. This does not imply information-theoretic necessity. At matched capacity and
+NFE where stated we compare prediction mechanisms (regression,
 diffusion, energy-based descent): regression averages over futures, diffusion commits sharply, and
 Energy-Based Transformers dissociate into a two-sided result — the S1 recipe learns a correctly
 *ordered* energy landscape, yet descent never *reaches* a structured output at our scale. We then

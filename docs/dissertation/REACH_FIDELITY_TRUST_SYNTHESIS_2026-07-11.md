@@ -14,7 +14,7 @@ architecture that has already integrated every method:
 | representation and adaptive decomposition | [A1], V-BLT / entropy-guided hierarchy | adaptive local/global representation and tokenization | separate published strand; not the exact final predictor interface | fidelity and resource allocation |
 | long-horizon optimization | [A2], TempVerseFormer / reversible temporal modelling | reversible processing and long-sequence memory accounting | enabler; not a demonstrated cause of [A4] gains | computational feasibility of testing trust |
 | consistency criteria | [A3] | systems-analysis criteria for generative consistency | criteria apparatus, not a substitute for construct-valid endpoints | defines what reliability must mean |
-| budgeted video memory | [A4], final article | controlled temporal-rate/spatial-resolution/depth packages plus a preregistered self-fed replication | reach/fidelity confirmed on the untouched E2 holdout; the E5a late trust inversion did not replicate | direct reach–fidelity study; trust retained as a negative replication |
+| budgeted video memory | [A4], final article | controlled temporal-rate/spatial-resolution/depth packages, preregistered self-fed replication and frozen inference-robustness family | reach/fidelity confirmed on the untouched E2 holdout; the E5a late trust inversion did not replicate; E7c retained all 20 expected directions with 18 simultaneous lower bounds positive | direct reach–fidelity study; trust retained as a negative replication; sampler/NFE robustness directionally supported |
 | external applicability | OpenSTL/TaxiBJ and proposed Phase C v2 | competence/boundary probes | no current natural re-entry confirmation; legacy Phase C invalid | generalization boundary |
 
 ## Research posture
@@ -46,7 +46,11 @@ measured systematically.
   three seeds, while both new seeds show positive rather than negative late effects;
 - no stable approximately-24-frame trust boundary or title-level trust claim is supported;
 - E7c and E7a are robustness tests of the confirmed reach–fidelity account, not new dissertation
-  topics; E7c varies sampling computation/randomness and E7a varies learned latent geometry;
+  topics; terminal E7c is `DIRECTIONALLY_ROBUST` across its frozen NFE/sampler family (20/20
+  positive effects, 18/20 simultaneous lower bounds positive), while E7a separately varies learned
+  latent geometry;
+- E7c does not justify universal sampler invariance: the 2,432-token inversion is family-wise
+  unresolved at alternate sampler seeds 1/2, and all E7c predictors use training seed 0;
 - the classical pose-indexed E8a system is a privileged reference unless a separately reported
   storage-matched variant is constructed; it is not a like-for-like learned-model leaderboard;
 - Phase C v2 is future/conditional until persistent-object and classifier gates pass.

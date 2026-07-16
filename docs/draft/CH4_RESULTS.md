@@ -4,7 +4,9 @@
 > governed by `docs/CLAIM_LEDGER.md`, the binding reach–fidelity specification and the chronological
 > evidence in `docs/SPATIAL_FACTORIAL.md`. Treat edges as tested brackets,
 > B1 as a configuration effect, a five-seed-stable diffusion package result, and regression plus
-> head × package effects as training-seed heterogeneity.
+> head × package effects as training-seed heterogeneity. E7c is a checkpoint-only
+> inference-robustness result: directionally robust across its frozen NFE/sampler family, with
+> upper-inversion precision qualified at two alternate sampler seeds.
 
 This chapter reports the article's causal evidence program for context packaging on the testbed
 family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.
@@ -173,11 +175,11 @@ recorded, and the 20k extension was then run and replicated on both seeds — th
 part of the record, and the claim rests on the twice-replicated 20k result, not on a selected
 read. The methodological moral carries through this whole chapter: retrieval-from-memory needs
 a *large optimization budget*, and short-budget ablations (6k steps here) would have spuriously
-killed it. The rollout-level version of the same pattern is confirmed directly in §4.3.6:
-retraining the headline pair at twice the budget (60k steps) leaves the flat control unchanged
-(0.2038 → 0.2032 — budget-saturated) while the hierarchical arm keeps improving (0.1848 →
-0.1666), so the matched-budget delta nearly doubles (+0.0189 → +0.0366) — memory is the arm that
-still has something to learn.
+killed it. A related regime sensitivity appears in §4.3.6: moving from B16×30k to B8×60k keeps
+training examples approximately matched but changes batch size, update count, noise/grouping and
+effective EMA horizon. In that regime the flat control is nearly unchanged (0.2038 → 0.2032)
+while the hierarchical arm improves (0.1848 → 0.1666), so the paired delta grows. This is an
+optimizer-regime robustness result, not evidence from twice the data or an asymptotic optimum.
 
 [FIG ch4-1: hard-bin Δ with CIs at 6k vs 20k × 2 seeds (data DONE, T3; plot QUEUED). Caption:
 retrieval emerges under the larger optimization budget — null at 6k on both seeds, CI-clean win
@@ -352,12 +354,10 @@ sharp 0.0996 (3,072 tok; B8×60k); hier-short 0.2260 / 0.0392 (480 tok) — both
 
 [FIG `docs/figures/fig9_frontier.png` — asset EXISTS (6-point curves, regenerated after
 R-F/R-G): quality-vs-token-budget (log-x), hier and flat curves at 512/896/1,152/1,792/2,432/
-3,072 tokens, seed-means where two seeds — measured shape: hierarchy wins the
-band [896, e) tokens with the upper edge e measured to lie in (1,792, 2,432) (bracket below), with the effect PEAKING
-at the lower edge, which is consistent with the geometric span-threshold prediction at the tested budgets (48×16 coarse
-tokens + minimal fine tail ≈ 830–896); flat wins below the threshold (512) and at window
-saturation (3072). Caption: the token-budget frontier — hierarchy wins exactly the band where
-its coarse span crosses the memory horizon while flat's window does not.]
+3,072 tokens, seed-means where available. Caption: the simultaneous confirmation family supports
+hierarchy at the tested 896/1,152-token points, leaves 1,792 unresolved, and supports flat at
+2,432/3,072. The large 896-token effect is consistent with the reach prediction. Lines between
+tested budgets are visual guides, not evidence of monotonicity, an exact edge or a unique crossing.]
 
 **Reading (measured resolution of the pre-registered dual branch — a third outcome; reported
 under the no-soft-reads rule, the §4.5.4 default-to-FAIL discipline applied to wording).**
@@ -372,10 +372,10 @@ longer buy window — they merely displace full-resolution frames and pay the di
 abstraction cost (the −0.0131 loss is of the same kind as G-S1's −0.0082 at W18); at the
 bottom, the 6–8-frame window is below the memory-relevance scale, so coarse slots are
 redundancy and flat's extra fine frames win. The 1,152-token headline (§4.3.3, two seeds, both
-heads) is untouched. The claim of §4.3 therefore takes its final, bounded form: **hierarchy
-dominates the 30k token-budget frontier where window extension is both possible and
-valuable** — a bounded, dose-response-supported efficiency claim, not dominance at every
-budget. Sharpness, same discipline: hier-rich 0.0898 vs flat-long 0.0996 and hier-short 0.0392
+heads) is untouched. The claim of §4.3 therefore takes its final, bounded form: **hierarchy wins
+the tested lower/interior configurations where extra reach is valuable, while flat fidelity wins
+at tested saturated upper configurations** — a dose-response-supported efficiency account, not
+dominance at every budget. Sharpness, same discipline: hier-rich 0.0898 vs flat-long 0.0996 and hier-short 0.0392
 vs flat-short 0.0432 — the window (token budget spent on frames) drives sharpness, and
 hierarchy does NOT retain sharpness better at matched saturation.
 
@@ -389,14 +389,15 @@ hardness cell**, ALL **+0.0399 [+0.0299, +0.0501]** — the largest hierarchy de
 campaign (vs +0.0189/+0.0354 at 1,152) — with the dt-stratified gates showing the reach
 signature exactly where the mechanism lives (dt ≤ 48 HARD +0.0750 WIN; dt 49–96 HARD +0.0282
 WIN; dt 97–192, beyond the 48-frame span, null). Two structural readings follow. First, the
-win band's **lower edge is at the geometric prediction**: flat wins at 512, hierarchy wins at
-896 — the switch-on is bracketed to (512, 896] and coincides with the span-threshold arithmetic
-written before the run. Second, the **effect peaks at the lower edge**: moving down-budget
+896-token point is the smallest tested dense-family budget favoring hierarchy; the next smaller
+dense-family point favors flat. This tested ordering is consistent with the span-threshold
+arithmetic written before the run, but does not locate a continuous switch. Second, the
+**largest tested dense-family effect occurs at 896 tokens**: moving down-budget
 inside the band, flat's window falls away from the horizon faster than the hierarchy's
 abstraction cost grows, so the efficiency argument is strongest exactly where budgets are
 tightest — hier-min at 896 tokens (0.1706) reaches a quality that the flat curve only attains
-between 1,152 and 3,072 tokens (≈2.3–3× the budget; the upper band edge is measured to lie in
-(1,792, 2,432) tokens — R-F wins at 1,792 +0.0077, R-G loses at 2,432 −0.0116). The fine-context question resolved with the seeds: hier-min's
+between 1,152 and 3,072 tokens (≈2.3–3× the budget in this measured curve; R-F favors hierarchy
+at 1,792 while R-G favors flat at 2,432). The fine-context question resolved with the seeds: hier-min's
 seed-mean (0.1725) sits within hier-long's seed band (0.1690–0.1848, mean 0.1769) — the
 pre-registered "fine-context floor" alternative is refuted at w_f = 2 (two seeds), and the hier
 curve from 896 tokens on reads as a plateau at ≈0.17 rather than a dip. Disclosures resolved: the pre-registered seed-1 replication (R-A, `frontier_low_s1.log`)
@@ -404,14 +405,13 @@ REPLICATED the result — every cell WIN again, ALL +0.0358 [+0.0267, +0.0454], 
 reach signature (dt≤48 HARD +0.0666; beyond-span null) — so the 896-token point is TWO-SEED
 CONFIRMED (seed-mean Δ ≈ +0.0379, the campaign's largest two-seed effect; hier-min seed spread
 0.0038, flat-min 0.0004). Both the 896 and 1,152 budgets now carry two seeds. The 3,072-token upper edge is likewise
-two-seed (R-B: flat wins at seed 1 too, −0.0107 [−0.0163, −0.0058]). The final claim form is
-unchanged but now edge-measured: hierarchy wins **the band of budgets where its span crosses the
-memory horizon and flat's window does not** — [896, e) tokens with e measured to lie in (1,792, 2,432), on
-this testbed — and inverts outside it.
+two-seed (R-B: flat wins at seed 1 too, −0.0107 [−0.0163, −0.0058]). The final claim uses tested
+brackets: E2 confirms hierarchy at 896/1,152, leaves 1,792 unresolved, and confirms flat at
+2,432/3,072. No interval, exact edge or outside-band law is inferred.
 
-**Budget robustness of the 1,152-token headline (R-C, `frontier_mid_60k.log`).** Retraining the
-headline pair at twice the budget (both arms B8×60k, seed 0) confirms the pre-registered
-prediction that the matched-budget delta *grows* with optimization budget: the flat control is
+**Optimizer-regime robustness of the 1,152-token headline (R-C, `frontier_mid_60k.log`).**
+Retraining both arms at B8×60k, seed 0 processes approximately the same examples as B16×30k but
+changes update count, batch/noise/grouping and effective EMA horizon. In this regime the flat control is
 budget-saturated (0.2038 → 0.2032) while the hierarchical arm keeps improving (0.1848 → 0.1666),
 doubling the ALL delta to +0.0366 [+0.0272, +0.0465] (win in every horizon × hardness cell). At
 60k the mid-budget hierarchical point reaches the ≈0.17 plateau floor from below, so the seed-0
@@ -528,28 +528,19 @@ scores ALL fg-MSE **0.1893** (sharp 0.0697) against flat-short's 0.2224 (0.0432)
 **+0.0330 [+0.0246, +0.0419]** — a win in **every** horizon × hardness cell (14/14, from h 1–8
 easy +0.0077 to h 25–60 HARD +0.0640 [+0.0450, +0.0827]), with the textbook span signature
 (dt ≤ 48 HARD +0.0643 [+0.0496, +0.0791] WIN; dt 49–96 HARD +0.0228 WIN; dt 97–192 null —
-beyond the 48-frame span). **The lower edge moved from 896 to 512 when the coarse tick halved,
-consistent with its token-arithmetic prediction at both tested budgets: the band's edges track
-the registered family arithmetic rather than one configuration alone.** A third family point is pre-registered: the stride-4 coarse
-family prices the loop at **320 tokens** (12·16 + 2·64). [EXPECTED-E320: hier-s4-min beats
-flat-320 (ALL CI > 0; expected hier ≈ 0.19–0.22 with a larger family offset — anchors 4×
-sparser — vs flat-320 ≈ 0.23–0.245 at a 5-frame window), making the edge law a three-point
-dose–response (896/512/320); ALTERNATIVE: stride-4 inter-anchor aliasing breaks the family —
-reported as the measured stride limit of the law.] Two honest refinements, reported against the pre-registered
-expectation rather than smoothed away: the effect is smaller than the stride-1 edge win
-(+0.0330 vs +0.0399/+0.0358), and the arm sits ≈+0.017 *above* the stride-1 plateau
-(0.1893 vs hier-min's seed-mean 0.1725) — each family carries its **own plateau level**, the
-stride-2 family paying a real family cost for its sparser anchors (24 slots at tick 2 vs 48
-dense; inter-anchor blindness under momentum reversals). Per the binding rule, the seed-1
-replication is queued (the flat-short seed-1 partner already exists) before any headline
-escalation; the CH1/CH8 family clauses remain gated until it lands.
+beyond the 48-frame span). The stride-2 configuration wins on both development seeds
+(+0.0330/+0.0338) and on the untouched E2 holdout (+0.0340/+0.0381). This is consistent with
+buying 48-frame reach at 512 context tokens, but it does not establish that context stride alone
+moved a causal edge: the legacy arm also changes target slots, target tokens, auxiliary
+supervision and total sequence length. The effect is smaller than the dense-family 896-token win,
+and the stride-2 arm sits above the dense-family plateau, so each family retains a fidelity and
+optimization cost. A third 320-token point is not part of the frozen closure portfolio; any future
+stride dose-response must hold the target interface fixed and be registered as a new study.
 
-[FIG ch4-5: family edge law — paired deltas per family with each family's token-arithmetic edge
-prediction marked (896 stride-1, two-seed; 512 stride-2, measured s0); upper bracket (1792,
-2432) shaded. Asset EXISTS: `docs/figures/fig13_family_edges.png`
-(`scripts/make_fig13_family_edges.py`; add the s1 point on replication). Caption note, REQUIRED:
-the 512-token stride-2 hier win coexists with the 512-token stride-1 flat win — two different
-families at the same budget, not a contradiction.]
+[FIG ch4-5: family configuration comparison — measured paired deltas for the dense 896-token and
+stride-2 512-token configurations, with the target-interface confound stated in the caption.
+Asset EXISTS: `docs/figures/fig13_family_edges.png`; regenerate before submission so the visual
+does not imply a continuous upper edge or an unmeasured 320-token point.]
 
 ### 4.4.3 Is it the coarse level, or just span? The strided-flat control
 
@@ -646,12 +637,11 @@ and carries no rollout cells by design.
 `scripts/make_cwstyle_table.py` as cells land).** [PLACEHOLDER: paste the generated table at
 integration; currently 17 measured rows + B1/B2/B3 pending.]
 
-The head axis is crossed with every shape cell: the three new configurations carry pre-registered
-**regression twins** (hier-s2-min-reg vs a trained flat-short-reg partner; strided-flat-reg and
-hier3-reg vs the two-seed reg-flat/reg-long pair). [EXPECTED-REG (from the §4.4.1 "coarse ≈ free
-under regression" result and the §4.2.2 reversal): the diffusion-head shape verdicts reproduce or
-enlarge under the regression head; any sign flip across heads is the headline-grade surprise and
-triggers seed-1 on the flipped cell before wording.]
+The head axis is complete for the article-critical temporal-versus-spatial package comparison:
+five diffusion and five regression training seeds are reported in §4.4.3. Diffusion is
+sign-stable; regression and the interaction are heterogeneous. The B1 regression seed-0 cell is
+a strong configuration result, while an unmeasured `hier3-reg` cell is future work and is not
+projected into the article's conclusions.
 
 The **depth row** is the grid's most instructive cell. A three-stage arm (`hier3`, 2×2/4×4/8×8
 factor-2 pyramid: 48 top + 24 coarse + 9 fine = the same 1,152 tokens as the headline pair) tests
@@ -860,6 +850,32 @@ can dominate. The confirmation establishes this reach–fidelity phase structure
 LoopMom testbed. It does not remove B1's target-interface confound, establish natural-video
 generalization, or turn the seed-0 self-fed failure pattern of §4.5.6 into a trust law.
 
+### 4.5.8 Frozen sampler/NFE robustness family
+
+The untouched E2 result rules out adaptive reuse of the development pool, but the seed-0
+diffusion comparisons still shared one default DDIM sampling seed and NFE-16 allocation. E7c
+therefore evaluates seven frozen checkpoints on a second, purpose-locked 500-clip LoopMom set,
+using 100 paired evaluation clips. Four preselected contrasts are crossed with NFE 8/16/32 at
+sampler seed 0 and NFE 16 at sampler seeds 1/2. The decision is based on one studentized
+max-statistic clip-cluster bootstrap over all 20 effects; no variant is selected after observation.
+
+All 20 point estimates retain the registered direction. The 896-token reach contrast ranges from
++0.0465 to +0.0482; the 1,152-token interior contrast from +0.0140 to +0.0201; temporal
+full-resolution versus spatially coarse packaging from +0.0221 to +0.0292; and the 2,432-token
+flat-fidelity inversion from +0.0077 to +0.0122. Eighteen simultaneous lower bounds exceed zero.
+The only exceptions are the inversion at NFE 16 with sampler seeds 1 and 2: +0.0098
+[−0.0001,+0.0196] and +0.0077 [−0.0013,+0.0167]. Thus the registered category is
+**DIRECTIONALLY_ROBUST**. The lower/interior/package-shape directions are family-wise clean across
+all variants; the upper inversion is sign-stable but not family-wise resolved at two alternate
+sampling-noise realizations.
+
+False-positive-sensitive errors corroborate the directional reading: non-empty foreground,
+full-frame, background and union-mask effects favor the registered candidate in all 20 variants,
+as do foreground recall and F1. Miss/extra component diagnostics are not uniformly favorable and
+are reported as such. E7c closes a sampler/NFE alternative explanation for the central signs, but
+does not test training-seed or codec robustness because all checkpoints use predictor seed 0 and
+the original frozen autoencoder.
+
 ## 4.6 Chapter conclusions
 
 **Claim 1 — hierarchical memory at matched token budget: CONFIRMED, two seeds, both heads.** At
@@ -915,6 +931,13 @@ win; both new seeds produced positive, CI-clean late hierarchy effects. Accordin
 approximately-24-frame trust boundary is claimed and the gated E5b dose-response is not run. The
 H-grid now contributes a transparent seed-sensitive failure pattern and negative replication,
 while the matched-budget and reach–fidelity results of §4.3 remain unchanged.
+
+**Sampler/NFE robustness — DIRECTIONALLY ROBUST (2026-07-16).** On a separate locked set, all four
+central diffusion contrasts retain their point-estimate direction over the registered fourfold
+per-step NFE range and three sampler seeds. Eighteen of 20 simultaneous intervals are positive;
+the upper 2,432-token inversion is unresolved at sampler seeds 1/2. This supports the central
+reach–fidelity directions without claiming universal sampler invariance. Alternate-codec
+robustness remains the separate E7a question.
 
 ---
 

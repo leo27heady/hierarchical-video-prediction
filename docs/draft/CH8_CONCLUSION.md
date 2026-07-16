@@ -5,36 +5,32 @@
 > reach–fidelity specification. “Laws,” exact switch points, invalid Phase C factor claims and pooled
 > regression-equivalence wording remain superseded.
 
-> **Status (2026-07-08):** journal-register prose, content-complete; all numbers measured except
-> the Ch. 5 [EXPECTED] transfers (generalization campaign) and the R-C/R-D robustness reads.
-> R-A + R-B landed 2026-07-08: BOTH band edges (896 hier-win, 3,072 flat-win) are TWO-SEED.
+> **Status (2026-07-16):** detailed source synchronized through E7c. Expected transfer shells are
+> future work and do not enter conclusions. The claim ledger and binding compact govern wording.
 
 ## 8.1 One claim
 
-**Under bounded context and computation, long-horizon consistency depends on how a fixed
-context-token budget is allocated across temporal rate and spatial resolution. Hierarchical
-packaging — any multi-rate and/or multi-resolution allocation — earns its budget exactly when it
-covers task-relevant memory more cheaply than a flat full-resolution window can; the budgets at
-which this happens are predictable from token arithmetic; and spatial compression, temporal
-subsampling, and depth are distinct mechanisms with distinct, measured boundary conditions.**
-On a testbed whose memory demand is an exact label, the frontier of long-span packaging against
-flat context, measured at six matched budgets, has the bounded shape this account predicts:
-at ≈500 tokens the contiguous flat window and the stride-1 coarse family do not cover the
-~48-frame loop and flat wins that within-family comparison (−0.0036 [−0.0063, −0.0010]);
-the stride-2 coarse family does cover it at 512 tokens and wins its separate comparison. Dense
-long-span packaging wins from the geometric threshold —
-48×16 coarse tokens plus a minimal fine tail ≈ 900 — where the effect is largest (+0.0399
-[+0.0299, +0.0501] seed 0 and +0.0358 [+0.0267, +0.0454] seed 1 at 896 tokens — two seeds, every
-horizon × hardness cell on both) through the two-seed interior point at 1,152 (+0.0189 /
-+0.0354); and flat wins again at window saturation (3,072 tokens, −0.0131 / −0.0107 — two
-seeds), where full-resolution memory information-dominates any coarse record of the same span.
-Within the band, the *shape* of the packaging matters and is not interchangeable: the band's
-lower edge follows each family's token arithmetic (896 → 512 when the coarse tick halves;
-[EXPECTED-B1: s1 queued]), and a temporally-subsampled full-resolution packaging — itself a
-two-rate hierarchy in the clockwork sense — matches or exceeds the spatially coarse form under
-the diffusion head on this static-world testbed [EXPECTED-B2-s1/REG: seed and head resolution
-queued]. The spatially coarse two-level model remains the per-level-decodable form of the claim
-and the first one measured; it is not the claim itself.
+**Under bounded context, long-horizon prediction depends on how a context-token budget is packaged
+across temporal reach and representational fidelity.** Context packaging is the manipulated design
+space; reach and fidelity are the explanatory axes supported by the controlled evidence. The
+project does not assert that a hierarchy always wins, that token arithmetic alone fixes an exact
+edge, or that the sampled frontier is monotone.
+
+On LoopMom, packages that include the memory-relevant approximately 48-frame past outperform
+shorter token-matched packages at the tested lower/interior budgets. On the untouched holdout, the
+registered `hier-min` versus `flat-min` reach-band effects are +0.0980 and +0.0914 across seeds
+0/1. The simultaneous frontier confirms hierarchy at 896 and 1,152 tokens, leaves 1,792
+unresolved, and confirms flat full-resolution context at 2,432 and 3,072. Therefore 1,152 is the
+largest tested budget with a family-wise-confirmed hierarchy win and 2,432 the smallest with a
+confirmed flat win; no continuous or unique crossing is inferred.
+
+Package shape is also conditional. Temporally sparse full-resolution history beats the spatially
+coarse package under diffusion on all five training seeds, whereas regression and the cross-head
+interaction change sign. The stride-2 512-token arm is retained as a whole-configuration effect
+because its target interface also changes. E7c shows that four central diffusion directions retain
+their point-estimate signs across the frozen NFE/sampler family, while qualifying the precision of
+the upper inversion at two alternate sampler seeds. The spatially coarse two-level model is one
+measured implementation of the design space, not the conclusion itself.
 
 ## 8.2 Empirical regularities under fixed conditions
 
@@ -42,22 +38,19 @@ Every regularity below is scoped by construction — testbed, head, representati
 single source of truth in the claim ledger (`docs/CLAIM_LEDGER.md`); a regularity appears in this
 section only when its evidence row is complete, and its wording carries its scope.
 
-- **L1 — Span-threshold law.** Long-span packaging wins only once its span covers the task's
-  memory horizon while flat context cannot: flat wins at 512 tokens (two-seed), hierarchy from
-  896 (two-seed, every cell, +0.0399/+0.0358), the switch-on at the token-arithmetic prediction.
-  Scope: loopmom; edges measured under the diffusion head (regression confirms the 1,152
-  interior pair, not the edges).
-- **L2 — Saturation regularity.** Once flat full-resolution context covers the same span, the
-  abstraction cost can dominate: flat wins at 3,072 (two-seed, −0.0131/−0.0107), and the
-  flat/hier crossover at B16×30k is measured to lie in (1,792, 2,432). R-C shows that hierarchical
-  arms can mature later than flat partners, so a pre-registered B8×60k c2 control is required
-  before treating that bracket as optimization-budget robust. Same scope as L1.
-- **L3 — Family-edge regularity.** The band's lower edge is a property of the *family*, not the
-  testbed: halving the coarse tick moved it from 896 to 512 tokens (+0.0330 [+0.0246, +0.0419],
-  every cell, span dt-signature), consistent with the arithmetic prediction at both tested
-  budgets; each family carries
-  its own plateau level (stride-2 ≈ +0.017 above stride-1). Status: seed 0; seed-1 replication
-  queued before headline use.
+- **L1 — Reach regularity.** Long-reach packages win at tested lower/interior budgets when they
+  include the relevant re-entry past and their comparators do not. The registered pair-specific
+  reach bands confirm this on the untouched holdout across seeds 0/1. Scope: LoopMom and the
+  frozen diffusion representation; geometric observability is exact, statistical necessity is not.
+- **L2 — Fidelity inversion regularity.** Once the flat full-resolution package approaches the
+  relevant span, abstraction cost can dominate. The simultaneous family confirms hierarchy
+  through the tested 1,152-token point and flat at the tested 2,432- and 3,072-token points;
+  1,792 is unresolved. This is a tested bracket, not a crossover interval or monotone law. The
+  B8×60k result is a matched-example changed-optimizer-regime control, not more-data evidence.
+- **L3 — Stride-family configuration effect.** The stride-2 512-token configuration wins strongly
+  across diffusion seeds, consistent with its larger span per token. It also changes target
+  slots, target-token count, auxiliary supervision and total sequence length, so it does not
+  isolate context stride. A fixed-target control is required only if causal stride wording returns.
 - **L4 — Package-shape boundary.** Spatial coarsening and temporal sparsification are not
   interchangeable under the diffusion head at this operating point: strided full-resolution
   history wins on all five seeds (mean +0.0098, t95 [+0.0023, +0.0173]). Regression has two
@@ -75,6 +68,10 @@ section only when its evidence row is complete, and its wording carries its scop
   and span-threshold-gated (2/2 above-loop versus 0/4 at-or-below-loop), and the early self-fed
   hierarchy benefit is positive at all three seeds. The late inversion appears only at seed 0;
   seeds 1–2 instead show positive, CI-clean late effects. No stable trust boundary is established.
+- **F4 — Inference robustness.** On a separate purpose-locked set, all 20 registered E7c effects
+  retain direction across NFE 8/16/32 and sampler seeds 0/1/2; 18 simultaneous lower bounds are
+  positive. The 2,432-token inversion is family-wise unresolved at alternate sampler seeds 1/2.
+  Scope: frozen seed-0 checkpoints and one codec; this is not training-seed or codec robustness.
 
 **Supporting boundary conditions (measured):** retrieval *emerges* only under a sufficient
 optimization budget (null at 6k steps, two-seed win at 20k; matched-budget delta doubles at 2×
@@ -82,9 +79,9 @@ budget — short-budget ablations spuriously kill memory mechanisms); the matche
 mechanism-agnostic at the interior point (both heads, two seeds); the generation head is
 regime-dependent (diffusion wins coverage, regression wins best-of-1 rollout; no "one best
 head" survives); and the negative control holds — on standard Moving MNIST, with no memory
-horizon, flat ≈ hierarchical (180.91 vs 181.29), exactly as the thesis predicts. [EXPECTED-
-PhaseC: the null extends to ~300-frame rollouts with identity/trajectory metrics per the
-pre-registered mandate.]
+horizon, flat ≈ hierarchical (180.91 vs 181.29), as the scoped account predicts. Legacy Phase C
+identity/trajectory conclusions are excluded; a redesigned Phase C remains conditional on its
+persistent-object, assignment, classifier and article-utility gates.
 
 ## 8.3 The two honest negatives that scope the claim
 
@@ -106,10 +103,11 @@ resolution and recency; add depth only when the data has scales left to own.** A
 horizon, the hierarchical packaging delivers the largest gains (a quality that flat context
 reaches only at a larger token budget in the measured frontier, with quadratic attention making
 the compute gap larger still); the exact upper multiple remains optimization-budget-sensitive.
-Within the spatially coarse family, regression head + long history is the strongest replicated
-recipe (reg-long: 0.1682 / 0.1503 across two seeds, mean 0.1593, at 1,152 tokens). Across packaging
-families, strided full-resolution history is the best seed-0 diffusion result; its seed and head
-resolution are therefore reported before any global superlative.
+Within the spatially coarse family, regression plus long history is a strong measured arm, but the
+five-seed factorial shows that package ordering under regression is heterogeneous. Across
+packaging families, sparse full-resolution history is stable under diffusion across five seeds.
+E7c makes this practical reading less dependent on a single inference allocation, while E7a must
+still test whether it depends on one learned latent geometry.
 
 ## 8.5 Future work
 

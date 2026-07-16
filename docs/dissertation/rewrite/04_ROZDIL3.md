@@ -45,7 +45,7 @@ coarse (spatially downsampled) stream being its measured spatial implementation 
 multi-stream family of §3.1/§3.3.5 — context signals are
 transferred between abstraction levels within a single joint attention mechanism, and per-frame
 generation is performed by an iterative-refinement (denoising diffusion) core whose selection is
-justified empirically by the matched-compute mechanism study of Chapter 4.
+justified empirically by the matched-capacity and matched-NFE mechanism study of Chapter 4.
 
 Two methodological commitments frame the chapter. First, the model is described exactly as
 implemented and verified in the software complex (module `hvp_rev/rhvd.py` of the developed
@@ -134,7 +134,7 @@ Two systemic decisions about this autoencoder follow the unidirectional-control 
    fine-tuned afterwards; during the training and operation of the predictive core its parameters
    are algorithmically excluded from the gradient graph. The latent space is therefore a *fixed
    coordinate system* for the entire study — every predictive mechanism compared in Chapter 4
-   operates in literally the same state space, which is a precondition for a valid matched-compute
+   operates in literally the same state space, which is a precondition for a valid matched-NFE
    comparison. This decision retains, in the new architecture, exactly the systemic function that
    the old design assigned to its frozen semantic encoder: invariance of the state coordinates
    during generation.
@@ -284,7 +284,7 @@ distinguished by *what it remembers*, not by *when it runs*.
 
 The per-frame generation mechanism of the developed model is an iterative-refinement (denoising
 diffusion) core. This choice is not aesthetic: Chapter 4 (§4.2) selects it by a matched-capacity,
-matched-compute comparison of three mechanisms sharing this chapter's backbone — direct
+matched-capacity and matched-NFE comparison of three mechanisms sharing this chapter's backbone — direct
 regression, denoising diffusion, and energy-based gradient descent — in which diffusion commits
 to sharp, correctly located content where regression hedges toward the conditional mean and the
 energy-based alternative fails in a two-sided, characterized manner. This chapter presents the
@@ -872,12 +872,13 @@ $$
 \tag{3.18}
 $$
 
-the fraction of the target sprite that is information-theoretically unknowable from that
-context. The protocol fixes the reference window at $m = 6$ frames for *all* systems regardless
+the fraction of the target sprite that is geometrically unobserved in that context. It is an exact
+observability label for the generator, not information-theoretic necessity: a shared digit prior
+can still support a statistical guess. The protocol fixes the reference window at $m = 6$ frames for *all* systems regardless
 of their actual context length ("novel-fg-at-6"), so every arm is stratified on the same hardness
 axis, and defines three strata: **easy** ($\nu_6 = 0$ — the sprite was fully visible in the short
 window), **mid** ($0 < \nu_6 \le 0.1$), and **hard re-entry** ($\nu_6 > 0.1$ — a substantial part
-of the sprite is recoverable only from memory). The single-step mechanism study of Chapter 4 uses
+of the sprite is not geometrically visible in the short window). The single-step mechanism study of Chapter 4 uses
 the analogous *novel-strip* label (the same construction restricted to the newly revealed leading
 strip of the pan — the only genuinely generative region of a single predicted frame). This
 stratification is what turns the trajectory-consistency criterion of §1.4.5 into a measurement:

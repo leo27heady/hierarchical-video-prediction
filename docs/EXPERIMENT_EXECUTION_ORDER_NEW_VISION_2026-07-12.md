@@ -34,8 +34,8 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
 11. GPU time is charged mechanically as wall-clock time while any project process owns the GPU,
     including pilots, evaluation, failed runs and retries. Every run records its authorized maximum
     and actual consumption; c2's planning estimate is replaced by measured time at handoff.
-12. Measured consumption through E5a is 67.340 project GPU-hours. The forward portfolio reserves
-    at most 44 hours for E7, 4 for E8a, 40 for article-gated E6, 100 for post-freeze E9 and 50
+12. Measured consumption through terminal E7c is 73.338 project GPU-hours. The forward portfolio
+    reserves at most 36 hours for E7a, 4 for E8a, 40 for article-gated E6, 100 for post-freeze E9 and 50
     protected reserve hours. The reserve cannot fund discretionary experiments.
 13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
@@ -48,7 +48,7 @@ hours, deviations and the resulting gate decision. Raw logs, W&B and immutable a
 the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
 `GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
 
-#### Programme status at 2026-07-15 15:55 Europe/Kyiv
+#### Programme status at 2026-07-16 03:28 Europe/Kyiv
 
 | ID | Workstream | Expected before execution | Actual/status | Decision |
 |---|---|---|---|---|
@@ -63,7 +63,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4a | Seed-2 head × package factorial | 7–10 GPU-hours after H3b numerical parity | **COMPLETE / PASS**; two cells and analysis consumed 6.1228 project GPU-hours; completion validator PASS | Historical three-seed trigger is superseded by terminal E4b evidence below |
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
-| E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **PREPARATION IN PROGRESS**; separate robustness holdout and exact legacy sampler parity required | Launch only after frozen CPU/data/provenance/budget/W&B gates |
+| E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
 | E7a/E8a/E6/E9 | Codec robustness, retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### E2 run ledger
@@ -1161,6 +1161,39 @@ Evidence: `docs/confirmation/E4_RESULTS.md`, `artifacts/e4_head_package/results.
   partial terminal family, or authorize E7a. The expected untracked live-output directory is the
   only worktree change; this audit commits documentation only.
 
+#### E7c terminal audit E7c-I5 — 2026-07-16 03:28 Europe/Kyiv
+
+- **Completion and budget:** the controller ended normally at 01:26 Kyiv after **35/35** registered
+  checkpoint-only evaluations. All ledger rows exited zero and total mechanically charged GPU
+  time is **5.9975507 hours**, 0.0324 below the 6.03-hour projection and 2.0024 below the 8-hour
+  authorization. No retry, failed cell or competing project GPU process occurred.
+- **Independent immutable validation:** all 35 unique RunSpecs are COMPLETE and share the frozen
+  source, dataset, AE and checkpoint identities. Every one of the 105 manifest-declared files
+  matches its byte count and SHA-256. Each NPZ contains 15,200 finite records for every required
+  complete metric; all clip, horizon, hardness, observability and foreground-population pairing
+  keys align. The access ledger has 35 unique RunSpecs and one purpose-locked dataset.
+- **Registered family:** an independent recomputation exactly reproduces the stored 10,000-
+  replicate studentized max-statistic clip-cluster family (critical value **2.7160037**, maximum
+  numeric difference 0). All **20/20** expected-direction point estimates are positive and
+  **18/20** simultaneous lower bounds exceed zero. The three lower/interior/package-shape
+  contrasts are CI-clean for every NFE/sampler variant. The 2,432-token flat-fidelity inversion
+  is CI-clean at NFE 8/16/32 with sampler seed 0, but its NFE-16 intervals at sampler seeds 1 and 2
+  are +0.0098 [−0.0001,+0.0196] and +0.0077 [−0.0013,+0.0167]. The frozen terminal verdict is
+  therefore **DIRECTIONALLY_ROBUST**, not `ROBUST_CI_CLEAN` and not sampler-sensitive by sign.
+- **Metric interpretation:** non-empty foreground, full-frame, background and union-mask errors
+  favor the registered candidate in all 20 variants; recall and F1 do so in all 20. Component-count
+  diagnostics are not uniformly favorable, so no claim that every endpoint improves is made.
+- **Cloud and evidence:** the W&B group contains 38/38 finished runs: 35 evaluation cells, two
+  connectivity gates and one analysis. The cloud verdict, 35-cell inventory, 20-effect family and
+  max-statistic critical value match local evidence. Terminal results SHA-256 is
+  `93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6`.
+- **Scientific decision and next gate:** E7c supports point-estimate robustness of the four frozen
+  diffusion directions across a fourfold per-step NFE range and three sampler seeds on a separate
+  LoopMom robustness set. It does not establish universal sampler invariance, training-seed or
+  codec robustness, and it does not replace E7a. E7c is closed with no adaptive cells. E7a may now
+  enter protocol/data/provenance/budget preparation, but remains separately unlaunched and
+  unauthorized until those gates pass.
+
 ## 2. Historical handoff boundary — E0
 
 ### E0 — Finish c2-only optimizer-regime control
@@ -1437,6 +1470,13 @@ and to a fourfold per-step compute range?
 
 **Protocol:** `docs/E7C_SAMPLER_NFE_ROBUSTNESS_PROTOCOL_2026-07-15.md`.
 
+**Terminal result (2026-07-16):** **DIRECTIONALLY_ROBUST** in 5.9976 project GPU-hours. All 20
+registered point estimates retained their expected direction over NFE 8/16/32 at sampler seed 0
+and NFE 16 at sampler seeds 1/2. Eighteen simultaneous lower bounds were positive. The two
+exceptions were the 2,432-token inversion at alternate sampler seeds 1/2; both point estimates
+still favored flat fidelity, but their family-wise intervals included zero. This closes E7c with
+no post-result extension and qualifies only the precision of the upper inversion.
+
 ### E7a — Alternate autoencoder seed (second)
 
 Train a second AE seed and rerun the minimal central package set:
@@ -1585,13 +1625,13 @@ post-freeze extension work and cannot delay dissertation closure.
 ## 14. Execution order summary
 
 This is a decision tree, not a promise to exhaust the portfolio. Completed studies remain listed
-as history; the live forward order begins at E7c. H3b parity precedes every new predictor run.
+as history; the live forward order begins at E7a. H3b parity precedes every new predictor run.
 
 | Order | ID | Experiment/workstream | Portfolio status | GPU maximum | CPU/development estimate |
 |---:|---|---|---|---:|---:|
-| 0 | E0/E1/E2/E4a/E4b/E5a | Completed evidence and governance programme | **complete/frozen** | 67.340 h actual | complete |
-| 1 | E7c | Sampler/NFE robustness on separate locked set | **current; launch after gates** | 8 h | <1 d preparation |
-| 2 | E7a | Alternate-AE seed and minimal predictor matrix | closure robustness; separately gated | 36 h | 2–5 d |
+| 0 | E0/E1/E2/E4a/E4b/E5a/E7c | Completed evidence and governance programme | **complete/frozen** | 73.338 h actual | complete |
+| 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
+| 2 | E7a | Alternate-AE seed and minimal predictor matrix | next closure robustness; separately gated and not launched | 36 h | 2–5 d |
 | 3 | E8a | Classical pose-indexed retrieval | closure reference baseline | 0–4 h | 2–5 d |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
 | 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
@@ -1608,13 +1648,13 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Measured and forward allocations
 
-- measured E0+E2+E4a+E4b+E5a consumption: **67.340 GPU-hours**;
-- E7c plus E7a: **44 hours maximum**;
+- measured E0+E2+E4a+E4b+E5a+E7c consumption: **73.338 GPU-hours**;
+- remaining E7a allocation: **36 hours maximum**;
 - E8a: **4 hours maximum**;
 - E6: **40 hours maximum, article-utility gated**;
 - E9: **100 hours maximum, optional and post-freeze**;
-- without E6, the scientific-run maximum is approximately **215.340 hours**;
-- with E6, the scientific-run maximum is approximately **255.340 hours**.
+- without E6, the scientific-run maximum is approximately **213.338 hours**;
+- with E6, the scientific-run maximum is approximately **253.338 hours**.
 
 ### Pool C — protected reserve
 
@@ -1624,8 +1664,8 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Hard ceiling and replacement rule
 
-Including the protected reserve, the live maximum is approximately **305.340 GPU-hours** with E6,
-or **265.340 hours** without it. This is below the 400-hour ceiling without treating unused budget
+Including the protected reserve, the live maximum is approximately **303.338 GPU-hours** with E6,
+or **263.338 hours** without it. This is below the 400-hour ceiling without treating unused budget
 as a reason to run work. E4b is already included in measured consumption and replaced E8c rather
 than adding to the portfolio. E3a/b, E5b/c, E7b, E8b/c training, E9c and E10 remain outside.
 
@@ -1664,7 +1704,8 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 
 ## 17. Current execution instruction
 
-E5a is terminal. Prepare E7c, generate and validate its independent robustness set, attest exact
-legacy sampler parity, freeze its 35-cell ledger, verify clean worktree/no competing process/W&B,
-then launch only inside its 8-hour authorization. Integrate E7c before E7a is authorized. Maintain
-four-hour deep health audits in the same task and do not let E7c results alter the frozen E7a plan.
+E7c is terminal and frozen as `DIRECTIONALLY_ROBUST`; do not add sampler/NFE cells after observing
+the result. Begin only E7a's separate protocol, alternate-AE provenance, reconstruction-floor,
+latent-statistics, data, numerical-regime, budget and W&B preparation. E7a remains unlaunched until
+its own fail-closed authorization is recorded. Its design tests codec/latent-geometry robustness
+and must not be adapted to repair the two E7c upper-inversion intervals.

@@ -1,7 +1,7 @@
 # Generated reach–fidelity tables
 
-> Status: synchronized through terminal E5a on 2026-07-15. E2/E4/E5 values below are bound to
-> their immutable result artifacts; E7 rows remain explicitly pending.
+> Status: synchronized through terminal E7c on 2026-07-16. E2/E4/E5/E7c values below are bound
+> to their immutable result artifacts.
 
 ## Configuration and interface
 
@@ -41,7 +41,39 @@
 | F1 | hier-c2 vs flat-c2 (B8x60k) | 0 | -0.0077 | [-0.0123, -0.0030] | matched-example changed-batch/update/noise/EMA control | measured-regime-qualified |
 | T1 early | d1-diff vs d0-diff-long | 0/1/2 | +0.0204 / +0.0082 / +0.0230 | see E5a artifact | h1–24 | three-seed positive |
 | T1 late | d1-diff vs d0-diff-long | 0/1/2 | −0.0064 / +0.0074 / +0.0087 | see E5a artifact | h61–256 | late inversion not replicated |
-| F4 | four frozen diffusion contrasts | 0 | PENDING | PENDING | E7c NFE × sampler robustness | preregistered, not evidence |
+| F4 | four frozen diffusion contrasts | predictor seed 0 | 20/20 expected signs | 18/20 simultaneous lower bounds positive | E7c NFE × sampler robustness | directionally robust; upper inversion unresolved at sampler seeds 1/2 |
+
+## E7c sampler/NFE robustness family
+
+Positive effects favor the registered candidate. Intervals are simultaneous 95% intervals from
+the frozen 20-effect studentized max-statistic clip-cluster bootstrap. Total NFE per 152-frame
+rollout is 38 times the per-step NFE.
+
+| Contrast | NFE/step | Sampler seed | Total NFE/clip | Effect | Simultaneous 95% CI |
+|---|---:|---:|---:|---:|---:|
+| 896 reach | 8 | 0 | 304 | +0.0478 | [+0.0323,+0.0634] |
+| 896 reach | 16 | 0 | 608 | +0.0465 | [+0.0310,+0.0621] |
+| 896 reach | 32 | 0 | 1216 | +0.0471 | [+0.0317,+0.0625] |
+| 896 reach | 16 | 1 | 608 | +0.0482 | [+0.0325,+0.0638] |
+| 896 reach | 16 | 2 | 608 | +0.0466 | [+0.0314,+0.0618] |
+| 1,152 interior | 8 | 0 | 304 | +0.0152 | [+0.0045,+0.0259] |
+| 1,152 interior | 16 | 0 | 608 | +0.0146 | [+0.0041,+0.0251] |
+| 1,152 interior | 32 | 0 | 1216 | +0.0140 | [+0.0036,+0.0245] |
+| 1,152 interior | 16 | 1 | 608 | +0.0201 | [+0.0086,+0.0315] |
+| 1,152 interior | 16 | 2 | 608 | +0.0200 | [+0.0087,+0.0313] |
+| 1,152 package shape | 8 | 0 | 304 | +0.0276 | [+0.0171,+0.0381] |
+| 1,152 package shape | 16 | 0 | 608 | +0.0283 | [+0.0172,+0.0394] |
+| 1,152 package shape | 32 | 0 | 1216 | +0.0292 | [+0.0182,+0.0403] |
+| 1,152 package shape | 16 | 1 | 608 | +0.0251 | [+0.0160,+0.0342] |
+| 1,152 package shape | 16 | 2 | 608 | +0.0221 | [+0.0133,+0.0309] |
+| 2,432 inversion | 8 | 0 | 304 | +0.0115 | [+0.0016,+0.0214] |
+| 2,432 inversion | 16 | 0 | 608 | +0.0117 | [+0.0018,+0.0217] |
+| 2,432 inversion | 32 | 0 | 1216 | +0.0122 | [+0.0022,+0.0221] |
+| 2,432 inversion | 16 | 1 | 608 | +0.0098 | [−0.0001,+0.0196] |
+| 2,432 inversion | 16 | 2 | 608 | +0.0077 | [−0.0013,+0.0167] |
+
+Registered category: **DIRECTIONALLY_ROBUST**. The result is a checkpoint-only inference-robustness
+test on seed-0 predictors and one codec; E7a separately tests codec/latent-geometry robustness.
 
 ## Prior-art positioning
 

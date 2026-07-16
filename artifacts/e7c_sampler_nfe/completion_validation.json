@@ -1,0 +1,12 @@
+{
+  "authorized_gpu_hours": 8.0,
+  "dataset_id": "loopmom-robustness_holdout-20260715-477845150808",
+  "evaluations": 35,
+  "gpu_hours": 5.997550743472222,
+  "primary_effects": 20,
+  "results_sha256": "93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6",
+  "schema_version": 1,
+  "status": "COMPLETION_VALIDATION_PASS",
+  "study": "robustness-e7c",
+  "verdict": "DIRECTIONALLY_ROBUST"
+}

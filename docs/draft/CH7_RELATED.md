@@ -107,10 +107,12 @@ For the record, this article does **not** claim:
 2. **No universal EBT refutation.** The negative is scoped to 16 GB-reachable scale, two
    published recipes, our data regime; the config-gap table quantifies the distance to the
    paper's setting.
-3. **No hierarchy-dominance claim.** Hierarchy wins a bounded budget band; flat wins outside it
-   (below the span threshold and at window saturation) — measured, with CIs, at six budgets with
-   both edges located at B16×30k (the upper edge bracketed to (1,792, 2,432)); a B8×60k c2
-   control tests whether that upper bracket is optimization-budget robust.
+3. **No hierarchy-dominance or exact-edge claim.** The simultaneous family confirms hierarchy at
+   the tested 896/1,152-token points, leaves 1,792 unresolved, and confirms flat at 2,432/3,072.
+   The B8×60k c2 result is a matched-example optimizer-regime control. E7c retains all four
+   central directions across its NFE/sampler grid, but the upper inversion is family-wise
+   unresolved at alternate sampler seeds 1/2. None of this establishes monotonicity, a unique
+   crossing or universal sampler invariance.
 3a. **No depth claim on single-scale data.** Measured (§4.4.5, s0): the three-stream probe
    COSTS at matched budget on this testbed, with the objective-allocation confound disclosed;
    depth is claimed only as bounded by the data's memory-scale count — never as generally

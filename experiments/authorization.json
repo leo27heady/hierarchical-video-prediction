@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-15-e7c-authorization",
+  "updated": "2026-07-16-e7c-terminal-integration",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -142,8 +142,8 @@
       "required_files": ["experiments/configs/trust_horizon_dose_response.json"]
     },
     "sampler-nfe-robustness": {
-      "status": "AUTHORIZED",
-      "meaning": "E7c checkpoint-only robustness across a frozen NFE grid and sampler seeds on a separate purpose-locked LoopMom dataset.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E7c completed 35/35 checkpoint-only cells in 5.9975507 GPU-hours. The registered verdict is DIRECTIONALLY_ROBUST: all 20 effects retain direction, 18 simultaneous lower bounds are positive, and the 2432-token inversion is family-wise unresolved at sampler seeds 1/2. No extension is authorized.",
       "required_files": [
         "docs/E7C_SAMPLER_NFE_ROBUSTNESS_PROTOCOL_2026-07-15.md",
         "experiments/configs/sampler_nfe_robustness.json",
@@ -182,7 +182,7 @@
     },
     "alternate-autoencoder-robustness": {
       "status": "PREPARED_NOT_AUTHORIZED",
-      "meaning": "E7a alternate-codec-seed robustness; separately frozen and authorized only after E7c terminal integration.",
+      "meaning": "E7a alternate-codec-seed robustness may enter protocol/provenance/data/budget preparation after E7c. It remains separately unauthorized and must not be adapted to repair E7c.",
       "required_files": []
     },
     "phase-c-v2": {

@@ -32,18 +32,21 @@ STALE = [
     (r"four matched budgets|FOUR matched|at four budgets",
      "frontier is SIX budgets since R-F/R-G (2026-07-10)"),
     (r"2,?059\s*(tok|tokens)?\s*\(?interp",
-     "the interpolated-2059 hedge is retired: upper edge measured-bracketed to (1792, 2432)"),
+     "the interpolated-2059 hedge is retired: report only tested family-wise outcomes"),
     (r"upper (crossing|edge) interpolated",
-     "upper edge is measured-bracketed since R-G"),
+     "no continuous crossing or edge is inferred between sampled budgets"),
     (r"single[- ]seed at 512|512 \(seed 0\)",
      "512 is two-seed since R-E"),
     (r"was not re-imported into operating point A",
      "the temporal-only corner IS measured at point A by B2 (strided-flat)"),
     (r"adds? tokens, not parameters",
      "corrected to 'backbone-capacity neutral' (+1.4% per-level I/O disclosed) — review 2026-07-10"),
-    (r"\[896, ?[≈~]?2,?0\d\d\)",
-     "band upper edge is now the measured bracket (1792, 2432), not a point estimate "
-     "(canonical: [896, e), e in (1,792, 2,432))"),
+    (r"\[896, ?[≈~]?2,?0\d\d\)|\[896,\s*e\)",
+     "a continuous win band is not identified; E2 confirms hierarchy at 896/1152, leaves 1792 "
+     "unresolved, and confirms flat at 2432/3072"),
+    (r"(upper edge|crossover).{0,100}\(1,?792,\s*2,?432\)",
+     "opposite sampled signs do not locate a continuous upper edge; use the family-wise tested "
+     "bracket from 1152 (hierarchy) to 2432 (flat)"),
 ]
 
 fail = False

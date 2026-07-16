@@ -229,7 +229,7 @@ the protocol definition and are stated here once:
 
 ## 4.2 Механізмне дослідження за зрівняних обчислень: вибір генеративного ядра
 
-*(The matched-compute mechanism study: selecting the generation core.)*
+*(The matched-capacity and matched-NFE mechanism study: selecting the generation core.)*
 
 The claim defended in this section is deliberately conditional: **which prediction head wins
 depends on the inference regime; there is no one best head.** Three results establish this — the
@@ -728,10 +728,10 @@ the audited table register; final numbering at typeset). Measured anchor rows fr
 **[FIG 4-x — token-budget frontier]**
 *Content:* ALL fg-MSE versus context-token budget at operating point A, one 6-point curve per
 family (flat: flat-short → flat-min → flat-budget → flat-c1 → flat-c2 → flat-long; hierarchical:
-hier-short → hier-min → hier-long → hier-c1 → hier-c2 → hier-rich), with the measured win band
-[896, e) shaded, e ∈ (1,792, 2,432) per the R-F/R-G bracket, the
-geometric span-threshold (48×16 tokens) drawn as the band's lower edge, and the persistence
-floor (0.2552) drawn.
+hier-short → hier-min → hier-long → hier-c1 → hier-c2 → hier-rich). Mark the tested
+family-wise-confirmed hierarchy points at 896/1,152, the unresolved 1,792 point, and the confirmed
+flat points at 2,432/3,072. Draw the geometric span threshold as an explanatory annotation and
+the persistence floor (0.2552); do not shade an interpolated win band.
 *Source:* **`docs/figures/fig9_frontier.png`** (measured; anchors from Tables 4.5/4.6 and the
 frontier-completion + lower-edge runs).
 
@@ -761,23 +761,24 @@ pair confirms the prediction, and more strongly than expected: hier-min beats fl
 advantage measured in the campaign), with the visibility-stratified gates showing the reach
 signature exactly where the mechanism operates (dt ≤ 48 HARD +0.0750; dt 49–96 HARD +0.0282;
 dt 97–192, beyond the 48-frame span, null). Two structural conclusions follow. First, the win
-band's **lower edge coincides with the geometric span-threshold arithmetic** written before the
-run: flat wins at 512 tokens, the hierarchy wins at 896, so the switch-on is bracketed to
-(512, 896]. Second, the advantage **peaks at the lower edge**: inside the band, reducing the
+smallest tested dense-family hierarchy win coincides with the geometric span-threshold arithmetic
+written before the run: the next smaller dense-family point favors flat, while hierarchy wins at
+896. This is a tested ordering rather than a continuous switch. Second, the **largest tested
+dense-family advantage occurs at 896 tokens**: reducing the
 budget removes the flat model's window from the memory horizon faster than the hierarchical
 abstraction cost grows — the efficiency argument is strongest exactly where budgets are
 tightest, and hier-min at 896 tokens (0.1706) reaches a quality the flat curve attains only at
-≈2.3–3× the budget (the upper band edge is measured to lie in (1,792, 2,432) tokens: R-F wins at 1,792, R-G loses at 2,432).
+≈2.3–3× the budget in the measured curve (R-F favors hierarchy at 1,792 and R-G favors flat at 2,432).
 The pre-registered seed-1 replication confirmed the point: every cell WIN again (overall
 +0.0358 [+0.0267, +0.0454]) with the same visibility-stratified reach signature — the 896-token
-lower edge is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest two-seed effect
+896-token point is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest two-seed effect
 of the campaign), alongside the two-seed 1,152-token pairing of §4.3.3. The §4.3
-efficiency claim takes its final, edge-measured form: **the hierarchy wins the band of token
-budgets in which its coarse span crosses the memory horizon while the flat window does not —
-[896, e) tokens with e measured to lie in (1,792, 2,432) at this operating point — and inverts outside the band.** [UA-PASS:
-«ієрархія виграє смугу токен-бюджетів, у якій її грубий діапазон покриває горизонт пам'яті, тоді
-як пласке вікно — ні»; «нижня межа смуги збігається з геометричним порогом 48×16 токенів»;
-«перевага максимальна на нижній межі смуги».]
+efficiency claim takes its final, tested-bracket form: **the simultaneous confirmation family
+supports hierarchy at 896/1,152, leaves 1,792 unresolved, and supports flat fidelity at
+2,432/3,072; no interval, exact edge or unique crossing is inferred.** [UA-PASS:
+«найменша перевірена точка щільної родини з перевагою ієрархії — 896 токенів»;
+«1 152 — найбільший перевірений сімейно підтверджений виграш ієрархії, 2 432 — найменший
+перевірений сімейно підтверджений виграш плаского контексту»; «інтерполяція не виконується».]
 
 ## 4.4 Форми ієрархічної абстракції: просторова, часова, глибинна
 
@@ -878,28 +879,21 @@ representation), with the combined-optimum path highlighted.
 
 *(The temporal family and the moving edge. Full account: article §4.4.2.)*
 
-If the frontier's currency is span-per-token, the win band's lower edge is a constant of the
-**family**, not of the testbed: edge(family) ≈ (loop / k_t) · tokens-per-frame(k_s) + fine floor.
-Stride-1 coarse: 48·16 + 2·64 = 896 tokens — measured, two seeds (§4.3.6). Stride-2 coarse
-(`hier-s2-min`, 24 slots + 2 fine) prices the same 48-frame span at **512 tokens** — exactly the
-budget where the stride-1 family *loses* two-seed. **MEASURED (2026-07-10, s0; primary branch
-confirmed):** hier-s2-min ALL **0.1893** vs flat-short 0.2224; Δ **+0.0330 [+0.0246, +0.0419]**,
-WIN in every horizon × hardness cell (14/14); dt-gate span signature (dt≤48 HARD +0.0643 WIN;
-dt 97–192 null) — «нижній край смуги рухається разом із часовим кроком грубого потоку точно за
-токен-арифметикою» [UA-PASS]. Honest refinements vs the pre-registered expectation: the effect
-is smaller than the stride-1 edge win (+0.0330 vs +0.0399/+0.0358) and the family sits ≈+0.017
-above the stride-1 plateau (сімейна вартість розріджених якорів) — each family carries its own
-plateau level. Seed-1 QUEUED per the binding rule before headline escalation. Third family point
-pre-registered: stride-4 @ **320 tokens** [EXPECTED-E320: win → the edge law becomes a 3-point
-dose–response 896/512/320; ALT: the measured stride limit]. The head axis is crossed at all new
-cells via pre-registered regression twins [EXPECTED-REG: diffusion verdicts reproduce or enlarge
-under regression; a cross-head sign flip = headline-grade surprise; the article-critical
-strided-flat-reg cell is unconditionally two-seed]. REQUIRED caption
-note wherever the
-frontier is drawn: the 512-token stride-2 hier point and the 512-token stride-1 flat win are
-different families at the same budget, not a contradiction. **[FIG 4-13 — asset EXISTS:
-fig13_family_edges.png (family edge law, predicted vs measured per family; add s1 point on
-replication).]**
+Span-per-token provides an explanatory calculation, not an exact edge law. The dense coarse
+configuration first favors hierarchy at the tested 896-token point. The stride-2 coarse
+configuration (`hier-s2-min`, 24 slots + 2 fine) purchases the same 48-frame reach at **512
+tokens** and wins on both development seeds (+0.0330/+0.0338) and on the untouched E2 holdout
+(+0.0340/+0.0381). Its reach-band effects are also positive on both E2 seeds. This is strong
+evidence for the complete stride-2 configuration and is consistent with the span calculation.
+
+It is not a pure context-stride intervention: the legacy arm also changes target slots,
+target-token count, auxiliary supervision and total sequence length. Therefore the result is not
+worded as an exactly moved lower edge. A future stride dose-response, including any 320-token
+point, would require a fixed target interface and a new preregistration; it is not part of the
+current closure portfolio. The measured regression seed-0 B1 result (+0.0639
+[+0.0516,+0.0763]) supports the configuration but does not remove this confound. **[FIG 4-13 —
+asset EXISTS: `fig13_family_edges.png`; regenerate before submission as a configuration
+comparison without a continuous edge or unmeasured point.]**
 
 ### 4.4.3 Грубий рівень чи просто проліт? Контроль зі стрибковою повнороздільною історією
 
@@ -1425,7 +1419,34 @@ of §4.6.2. [UA-PASS: keep the quoted Ukrainian claim sentence verbatim as the m
 Цей результат безпосередньо підтримує пояснювальну схему «досяжність–точність–довіра»:
 досяжність визначає нижню та внутрішню області виграшу, тоді як після насичення горизонту
 просторова точність може переважити економію грубого представлення. Межа довіри при самоподачі
-залишається окремим, таким що потребує реплікації, твердженням.
+залишається окремою конструкцією; зареєстрована E5a-реплікація не підтвердила стабільну пізню
+інверсію, тому закон або точна межа довіри не стверджуються.
+
+### 4.6.9 Робастність до бюджету семплювання та випадковості DDIM
+
+Щоб відокремити властивість навчених конфігурацій від одного стандартного режиму дифузійного
+висновування, дослідження E7c заздалегідь зафіксувало чотири центральні контрасти: перевагу
+досяжності при 896 токенах, внутрішню точку фронтиру при 1,152 токенах, порівняння часової та
+просторової упаковки при 1,152 токенах і верхню інверсію на користь повнороздільного контексту
+при 2,432 токенах. Сім контрольних точок посіву 0 було оцінено на окремій цільовій вибірці для
+п'яти варіантів: NFE 8/16/32 за посіву семплера 0 та NFE 16 за посівів семплера 1 і 2. Єдине
+одночасне сімейство охоплює всі 20 ефектів; додавання варіантів після перегляду результатів було
+заборонено.
+
+Усі 20 точкових оцінок зберегли очікуваний знак, а 18 одночасних нижніх меж 95%-х інтервалів
+перевищили нуль. Три контрасти — 896-токенна досяжність, 1,152-токенна внутрішня точка та форма
+упаковки — є сімейно підтвердженими для кожного варіанта NFE/посіву. Верхня інверсія зберігає
+напрям, але при NFE 16 і посівах семплера 1 та 2 її одночасні інтервали становлять відповідно
++0.0098 [−0.0001,+0.0196] і +0.0077 [−0.0013,+0.0167]. Зареєстрований вердикт —
+**DIRECTIONALLY_ROBUST**: напрям робастний, але твердження про повну одночасну статистичну
+відокремленість усіх варіантів було б надмірним.
+
+Повнокадрова, фонова, непорожня передньопланова та union-mask помилки підтверджують сприятливий
+напрям в усіх 20 комбінаціях; повнота та F1 переднього плану також сприятливі в усіх 20.
+Діагностики пропущених і зайвих компонентів не є однорідними, тому не стверджується покращення
+кожного показника. E7c перевіряє робастність до обчислювального бюджету та випадковості
+семплювання для фіксованих контрольних точок; воно не замінює перевірку за посівами навчання або
+іншою навченою латентною геометрією.
 
 ## 4.7 Впровадження результатів дослідження
 
@@ -1464,7 +1485,7 @@ insert the act copies — the current draft has headings only]**.
    (§4.6.2, Table 4.8): the protocol anchor is achieved, and the pre-registered "mid-pack
    aggregate MSE" clause is refuted and reported as such.
 
-2. The matched-compute mechanism study (§4.2) established that **the generation-head ranking is
+2. The matched-capacity and matched-NFE mechanism study (§4.2) established that **the generation-head ranking is
    regime-dependent**: the diffusion core wins the single-step oracle-coverage regime on every
    column at matched capacity and NFE (fg-MSE 0.0512 vs 0.0664 overall; 0.1549 vs 0.1808 on the
    hard, genuinely generative stratum), while the regression core wins the deterministic
@@ -1504,7 +1525,10 @@ insert the act copies — the current draft has headings only]**.
    spatial material winners. The head × package interaction changes sign and its five-seed t95
    crosses zero. The robust conclusion is a stable diffusion package result plus regression and
    cross-head training-seed heterogeneity, not a directional head law or one universally optimal
-   package.
+   package. The separate E7c inference study (§4.6.9) preserved the expected point-estimate
+   direction in all 20 registered NFE/sampler variants, with 18 simultaneous lower bounds above
+   zero. The 2,432-token inversion is family-wise unresolved at alternate sampler seeds 1/2;
+   therefore the result is directionally robust rather than universally sampler-invariant.
 
 6. The temporal-capability study at operating point B (§4.5) closed with a characterized
    single-step positive and a **registered negative replication of the proposed late trust
@@ -1547,24 +1571,22 @@ The results of this chapter have been published in [A4] (the mechanism, memory, 
 boundary studies) and [A2] (the receipt validations of §4.1.2) **[AUTHOR: bind to the final
 numbered publication list; add conference theses covering the experimental campaign if any]**.
 
-9. The chapter's findings consolidate into **empirical laws under stated scope** (single source
-   of truth: `docs/CLAIM_LEDGER.md`; a law is quoted only from a complete evidence row, always
-   with testbed, head, representation, and seed level): **(L1) span-threshold** — long-span
-   packaging wins only once its span covers the memory horizon while flat context cannot (edges
-   measured under the diffusion head; regression confirms the interior pair); **(L2)
-   saturation** — where flat full-resolution context covers the same span, the abstraction cost
-   can dominate (crossover measured in (1,792, 2,432) tokens); **(L3) family edge** — the band's
-   lower edge follows each family's tested token arithmetic, with a family-specific plateau level;
-   **(L4) shape** — spatial coarsening and temporal sparsification are not interchangeable:
-   sparse full-resolution history wins under diffusion on three seeds, while regression shifts
-   the contrast toward spatial coarsening on all three but retains heterogeneous package signs
-   (static-world and frozen-representation scope binding);
-   **(L5) depth — hypothesis, not law** — a depth-plus-objective-allocation probe on single-scale
-   data (only the null branch measurable here); **(L6) self-fed reliability — negative
-   replication, not law** — the seed-0 late inversion is not reproduced at seeds 1–2 (§4.5).
-   Разом підтверджені закони та явно зафіксовані межі складають
-   обмежену, фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу
-   [UA-PASS].
+9. The chapter's findings consolidate into **scoped empirical regularities and explicit
+   boundaries** (single source of truth: `docs/CLAIM_LEDGER.md`; every statement names its
+   testbed, head, representation and seed level): **(L1) reach** — long-span packaging wins at
+   tested lower/interior budgets when it contains the relevant re-entry past and the comparator
+   does not; **(L2) fidelity inversion** — the simultaneous family confirms hierarchy at
+   896/1,152, leaves 1,792 unresolved and confirms flat at 2,432/3,072, without interpolation;
+   **(L3) stride-family configuration** — the 512-token stride-2 arm wins strongly but changes
+   its target interface; **(L4) package shape** — sparse full-resolution history wins under
+   diffusion on five seeds, while regression and the cross-head interaction are
+   training-seed-heterogeneous; **(L5) depth — hypothesis, not law** — a
+   depth-plus-objective-allocation probe on single-scale data; **(L6) self-fed reliability —
+   negative replication, not law** — the seed-0 late inversion is not reproduced at seeds 1–2;
+   and **(F4) inference robustness** — E7c retains all 20 NFE/sampler effect directions, with
+   18 simultaneous lower bounds positive and the upper inversion unresolved at alternate sampler
+   seeds 1/2. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
+   фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу [UA-PASS].
 
 ---
 

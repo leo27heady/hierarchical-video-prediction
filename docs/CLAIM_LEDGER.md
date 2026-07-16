@@ -1,6 +1,6 @@
 # Claim ledger — scientific source of truth
 
-**Revision:** 2026-07-15 E5a registered negative-replication integration
+**Revision:** 2026-07-16 E7c terminal sampler/NFE robustness integration
 **Rule:** a headline claim must name its testbed, intervention, comparator, metric population,
 representation, head, seeds, training regime, and evidence artifact.  Opposite signs are not
 equivalence; tested brackets are not continuous crossings; configuration changes are not pure
@@ -47,7 +47,7 @@ L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
 | F2 | The stride-2 B1 configuration strongly outperforms its compared short-flat configuration. | Development diffusion +0.0330/+0.0338 and regression seed 0 +0.0639; untouched E2 diffusion +0.0340/+0.0381 overall and +0.0692/+0.0743 in the registered reach band. | `CONFIRMED_CONFIGURATION_EFFECT` | Context stride, target slots, auxiliary loss, sequence length and optimization difficulty change together. Fixed-target control is required only for causal stride wording. |
 | F3 | At the tested static-world operating point, temporal subsampling and spatial coarsening are not interchangeable under diffusion; cross-head generalization is training-seed-sensitive. | Diffusion temporal advantages are +0.0197/+0.0046/+0.0111/+0.0075/+0.0060 at seeds 0–4: all five are positive, with across-seed mean +0.0098, SD 0.0060 and t95 [+0.0023, +0.0173]. Regression effects are +0.0107/−0.0104/−0.0208/+0.0248/−0.0166; interactions are −0.0089/−0.0150/−0.0319/+0.0173/−0.0226. | `MEASURED; FIVE_SEED_DIFFUSION_STABLE; REGRESSION_AND_INTERACTION_HETEROGENEITY` | Development-pool evidence. Regression has two temporal and three spatial material winners; its mean is −0.0024 with t95 [−0.0266, +0.0217]. The interaction mean is −0.0122 with t95 [−0.0353, +0.0109], so the preregistered robust negative head-shift rule fails. Claim the stable diffusion package result and the cross-head scope boundary separately; do not claim a directional head law. |
 | T1 | Addressable memory and self-fed reliability are experimentally separable, but the tested long-loop pair does not exhibit a training-seed-stable late trust boundary. | E5a registered primary effects (positive favors hierarchy): early h1–24 is +0.0204 [+0.0133,+0.0279], +0.0082 [+0.0035,+0.0133], +0.0230 [+0.0150,+0.0315] at seeds 0/1/2. Late h61–256 is −0.0064 [−0.0095,−0.0032], +0.0074 [+0.0038,+0.0112], +0.0087 [+0.0035,+0.0139]. Neither new seed reproduces the registered early-positive/late-negative direction. | `NOT_REPLICATED; EARLY_BENEFIT_THREE_SEED; SEED0_LATE_FAILURE_ONLY` | Do not claim or title a general trustworthy-memory boundary. E5b is not authorized. If trust is studied again, preregister a new multi-seed/task design rather than localizing the unreplicated seed-0 inversion. |
-| F4 | The four central diffusion directions are not artifacts of one DDIM sampling seed or the default NFE-16 allocation. | E7c is frozen as four contrasts × five sampler/NFE variants on an independent purpose-locked robustness set. | `PENDING_E7C; NOT_YET_EVIDENCE` | Claim only the registered terminal category: CI-clean robustness, directional robustness, or sampler/NFE sensitivity. E7c cannot select models or reuse E2. |
+| F4 | The four central diffusion directions retain their point-estimate signs across the registered DDIM sampling seeds and NFE allocations. | On the independent E7c robustness set, all 20 effects are positive over NFE 8/16/32 at sampler seed 0 and NFE 16 at sampler seeds 1/2. Eighteen simultaneous 95% lower bounds exceed zero. The 2,432-token flat-fidelity inversion remains positive but is family-wise unresolved at sampler seeds 1 (+0.0098 [−0.0001,+0.0196]) and 2 (+0.0077 [−0.0013,+0.0167]). | `MEASURED; DIRECTIONALLY_ROBUST; UPPER_INVERSION_SAMPLER_UNCERTAINTY` | E7c is checkpoint-only on seed-0 predictors and one frozen codec/testbed. It supports directional sampler/NFE robustness, not universal sampler invariance, training-seed robustness or codec robustness. No adaptive E7c extension is allowed. |
 
 ## Supporting and boundary claims
 
@@ -97,9 +97,11 @@ only when literally true.  Do not use “matched compute” as a substitute for 
 4. Evaluate the untouched confirmation set once. **COMPLETE: E2 PASS.**
 5. Complete the regression seed-2 factorial because F3 remains central, after H3b parity. **COMPLETE: E4a and E4b PASS; diffusion is five-seed-stable, while regression and the head interaction are heterogeneous. E4b is terminal and authorizes no seeds 5+.**
 6. Replicate/isolate trust. **COMPLETE: E5a NOT_REPLICATED; E5b/E5c not authorized; remove trust from the title-level empirical claim.**
-7. Run E7c sampler/NFE robustness on its separate locked set; integrate the registered terminal
-   category before authorizing E7a.
-8. Run E7a alternate-AE robustness, then E8a classical pose-indexed retrieval.
+7. Run E7c sampler/NFE robustness on its separate locked set. **COMPLETE:
+   DIRECTIONALLY_ROBUST; 20/20 effects retain sign and 18/20 simultaneous lower bounds are
+   positive; the upper inversion is family-wise unresolved at sampler seeds 1/2.**
+8. Prepare and separately gate E7a alternate-AE robustness, then E8a classical pose-indexed
+   retrieval. E7a is not authorized merely because E7c completed.
 9. Assemble and internally freeze the article/dissertation sources; run the fixed-target B1
    control only if causal stride wording returns.
 10. Run redesigned Phase C only if its validity/classifier and assembled-article utility gates pass.

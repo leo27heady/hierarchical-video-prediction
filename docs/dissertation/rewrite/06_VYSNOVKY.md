@@ -104,8 +104,9 @@ context-stream family of §3.1/§3.3.5). Long-range temporal memory is carried b
 stream: the **coarse stream is the measured spatial implementation** (48-frame coarse context at
 16 tokens per remembered frame versus the fine level's 64 — a 4× token and asymptotically ≈16×
 attention-cost advantage per memory frame), and **strided full-resolution history is the
-measured temporal implementation** (span 48 at 11 anchors; matches or exceeds the coarse form
-under the diffusion head at seed 0 [EXPECTED-B2-s1: replication queued]) — with unidirectional
+measured temporal implementation** (span 48 at 11 anchors; it beats the coarse form under the
+diffusion head on all five tested training seeds, while regression package ordering is
+seed-heterogeneous) — with unidirectional
 inter-level context transfer (gradient
 detachment at the representation/dynamics and past/future boundaries) and a per-frame
 iterative-refinement (diffusion) generation core selected by controlled mechanism analysis. The
@@ -145,7 +146,7 @@ operationalizes the trajectory-consistency criterion into a statistically discip
 procedure, and the complete benchmark trains and evaluates on a single consumer-grade 16 GB GPU.
 
 **7.** *(Task 7)* Comprehensive experimental verification of the developed methods and technology
-has been conducted (Chapter 4): a matched-capacity, matched-compute comparison of prediction
+has been conducted (Chapter 4): a matched-capacity, matched-NFE comparison of prediction
 mechanisms established that the generation-head ranking is regime-dependent — diffusion wins the
 single-step oracle-coverage regime on every column (foreground error 0.0512 versus 0.0664
 overall; 0.1549 versus 0.1808 on the hard, genuinely generative stratum), regression wins the
@@ -164,8 +165,9 @@ registered negative replication of the seed-0 late trust inversion (conclusion 5
 transferable methodology lessons (effective-loop span sizing; the autoencoder-reuse trap;
 evaluation power against plausible effect sizes). Memory-consumption
 measurements confirmed the constant-memory rollout capability (conclusion 4). The measured two-level spatial
-package outperforms the token-budget-matched flat control exactly in the memory-horizon regime
-(the shape comparison across packagings is conclusion 7's separate, seed-gated statement),
+package outperforms the token-budget-matched flat control in the tested lower/interior
+memory-horizon regime (the shape comparison across packagings is conclusion 7's separate,
+seed-resolved statement),
 and the boundary conditions of every claim are stated explicitly. The published validations of
 the reversibility method ([A2]: 2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are
 retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-MNIST suite is
@@ -175,11 +177,12 @@ benchmark with no off-screen re-entry and hence no memory horizon to carry, exac
 complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
 specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. The shape study (§4.4)
 established that the packaging axes are not interchangeable: the win band's lower edge follows
-each family's token arithmetic (896 tokens for the stride-1 coarse family, two seeds; 512 for
-the stride-2 family, +0.0330 [+0.0246, +0.0419] every cell at seed 0 [EXPECTED-B1-s1: queued]),
+each family's measured configuration (896 tokens for the stride-1 coarse family, two seeds; the
+stride-2 512-token configuration wins on both diffusion seeds but changes its target interface),
 and temporally subsampled full-resolution history beats the coarse packaging under the diffusion
-head at seed 0 (+0.0197 [+0.0143, +0.0252]; [EXPECTED-B2-s1/REG: seed and regression-head
-resolution queued]) — the findings motivating the scoped empirical regularities of §4.8 (ledger:
+head on all five training seeds (effects +0.0046 to +0.0197), whereas regression has two temporal
+and three spatial material winners and the head × package interaction changes sign — the findings
+motivating the scoped empirical regularities of §4.8 (ledger:
 `docs/CLAIM_LEDGER.md`), whose conclusion is a testable conditional design rule rather than universal
 superiority: allocate context tokens to cover the task-relevant span with the least lossy family
 that achieves it; spend the remainder on resolution and recency; add depth only where the data
@@ -197,11 +200,14 @@ same day: at 896 tokens — the cheapest budget whose 48-slot coarse span covers
 loop, against a flat window of only 14 frames — the hierarchical arm wins every horizon ×
 hardness cell, +0.0399 [+0.0299, +0.0501] at seed 0 and +0.0358 [+0.0267, +0.0454] at seed 1 —
 a two-seed result, the largest hierarchical advantage of the campaign), which together give the efficiency
-claim its final, edge-measured form: **hierarchy wins the band of token budgets in which its
-coarse span crosses the memory horizon while the flat window does not — approximately 896 to
-≈2×10³ tokens (upper edge measured to lie in (1,792, 2,432)) at the primary operating
-point, with the advantage peaking at the band's lower
-edge — and inverts outside the band**, not dominance at every budget.
+claim its final, tested-bracket form: **the simultaneous family confirms hierarchy at the tested
+896- and 1,152-token lower/interior points, leaves 1,792 unresolved, and confirms flat fidelity at
+2,432 and 3,072 tokens**. Thus 1,152 is the largest tested family-wise-confirmed hierarchy win and
+2,432 the smallest tested confirmed flat win; monotonicity, a unique crossing and interpolation
+between tested budgets are not claimed. A separate frozen E7c study retained the expected
+point-estimate sign in all 20 NFE/sampler variants, with 18 simultaneous lower bounds positive;
+the upper inversion remains family-wise unresolved at alternate sampler seeds 1/2, so the result
+is directionally robust rather than universally sampler-invariant.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -268,6 +274,7 @@ present results: they extend the measured boundary, which is stated exactly.
 - Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
   [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
   in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
-  2026-07-07, in sync with §4.3.6): inversion at both ends; win band [896, e) with BOTH
-  edges measured — lower edge 896 two-seed (R-A), upper edge e bracketed to (1,792, 2,432) by
-  R-F/R-G (2026-07-09/10); peak at the lower edge — edge-measured band wording.
+  2026-07-07 and confirmed on E2): hierarchy is family-wise confirmed at 896/1,152, 1,792 is
+  unresolved, and flat is family-wise confirmed at 2,432/3,072. Use tested-bracket wording only;
+  do not restore an interval, exact edge or unique-crossing claim. E7c adds directional
+  sampler/NFE robustness with the upper-inversion precision qualification.
