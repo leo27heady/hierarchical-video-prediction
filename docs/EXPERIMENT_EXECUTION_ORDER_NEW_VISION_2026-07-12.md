@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–5/7 complete and predictor 6/7 (`hier-c2`) at 7.5k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–5/7 complete and predictor 6/7 (`hier-c2`) at 25.5k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -310,6 +310,39 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 - **Isolation/decision:** no E7a evaluation/result/access-log artifact exists and the locked
   outcome set remains unevaluated. No numerical, operational, budget or scientific-validity
   blocker is present. Continue unchanged into the high-budget pair; no adaptive cell is warranted.
+
+#### Four-hour audit E7a-I7 — 2026-07-17 00:43 Europe/Kyiv
+
+- **Expected versus actual:** expected `hier-c2` to be in late training with adequate margin to
+  its 7.4-hour cap. It reached 25,500/30,000 (85%) after approximately 5.71 active hours, matching
+  the projection. The controller and single scientific child are alive; source commit,
+  alternate-codec hash, predictor seed 0, B16×30k optimizer geometry, EMA and development
+  validation remain frozen.
+- **Loss and validation:** all fifty W&B intervals through 25k are finite. Alternate-codec
+  training loss averages 8.0% above original seed 0 and is 21.9% higher at 25k
+  (0.04657 versus 0.03822). This is not accompanied by predictive deterioration: across twelve
+  matched validation grids, foreground MSE averages 2.9% lower, and the alternate codec is
+  19.1% lower at 24k (0.03690 versus 0.04561). The latest six validation comparisons all favor
+  the alternate codec. The late 24k qualitative grid remains aligned and structurally coherent.
+  The higher diffusion objective is therefore a codec-dependent latent-scale response, not a
+  stall, divergence or collapse signal.
+- **Throughput/memory:** throughput averages 2.58% faster than the original B16 run and remains
+  0.798–0.804 seconds/update in the late interval. Allocated model peak is exactly stable at
+  11.6785 GB. Board telemetry is 100% compute, 76% memory-controller utilization,
+  13.29/16.38 GB, 68°C, 120 W and P2. There is approximately 3.1 GB board headroom with no
+  monotonic allocation growth, thermal throttle, utilization collapse or WDDM spill evidence.
+- **Cloud/artifact state:** active RunSpec `7e3621066377f579` is continuously updating W&B with
+  the expected training summary and media; no training artifact is committed before normal
+  completion, as designed. No duplicate or failed scientific process exists.
+- **Budget/projection:** completed consumption remains 14.3384 hours; including the active cell,
+  approximately 20.05 project GPU-hours have elapsed. At current pace, `hier-c2` should finish
+  near 6.70–6.75 hours, retaining 0.65–0.70 hours of cell headroom. Allowing the same conservative
+  duration for `flat-c2` plus the registered evaluations projects 31–32 total tranche hours,
+  below 36, with terminal completion still near 2026-07-17 11:00–13:00 Kyiv.
+- **Isolation/decision:** no E7a evaluation/result/access-log artifact exists; the locked outcome
+  set remains unevaluated. The whole-codec estimand is intact and there is no numerical,
+  operational or budget blocker. Continue unchanged to `hier-c2` completion and the frozen
+  `flat-c2` cell.
 
 #### E2 run ledger
 
