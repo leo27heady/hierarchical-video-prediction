@@ -2395,3 +2395,24 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
 - **Decision:** this is a pre-access measurement implementation defect, not an endpoint or estimand
   change. Protected holdout generation remains disabled. Continue the corrected one-time gate
   because the unchanged floor has already been shown attainable with 0.0426 absolute headroom.
+
+### E6 preparation terminal audit — 2026-07-17 17:45 Europe/Kyiv
+
+- **Corrected classifier:** the isolated-mask classifier completed in 0.0087 charged hours. It
+  passes clean 0.9905, translated 0.9815, rendered component 0.9895, AE reconstruction 0.9779 and
+  degraded 0.9749 accuracy; overlap remains the expected diagnostic limitation at 0.3090. The
+  accepted checkpoint SHA-256 is
+  `acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb`.
+- **Exact evaluator ceiling:** every unchanged floor passes. Raw non-overlap coverage is 0.9868,
+  identity 0.9626 and trajectory error 1.70 px; AE non-overlap coverage is 0.9774 and identity
+  0.9433. The all-frame identity values, 0.6615 raw and 0.6440 AE, transparently retain the
+  generator-labelled overlap/merge difficulty rather than selecting detectable frames.
+- **Accounting/cloud:** all preparation connectivity, codec, classifier, domain and evaluator W&B
+  runs finished with immutable artifacts. Total charged preparation is **0.1131 GPU-hours**,
+  including both superseded classifiers and all three failed metric-validation attempts. The
+  accepted codec remains
+  `058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9`.
+- **Gate verdict:** **PREPARATION PASS**. Freeze the accepted codec/classifier, final scientific
+  config, implementation hashes and analysis rule. Only after that commit may the seeded holdout
+  be generated and opened once for integrity validation. Predictor training remains blocked until
+  the zero-collision final dataset report and protocol marker are committed.

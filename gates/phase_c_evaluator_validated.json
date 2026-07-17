@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "source_commit": "f3b3c39d525150f30b2eb3cc54b4deb5894e1417",
+  "status": "EVALUATOR_RELIABILITY_PASS",
+  "subject": "gates/phase_c_evaluator_report_v3.json",
+  "subject_sha256": "54a8ab6d815dd5795bbf40a5bf45814015246d920837c1095f99e5fc2b2ebdb6"
+}

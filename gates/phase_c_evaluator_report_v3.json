@@ -1,0 +1,62 @@
+{
+  "ae_all": {
+    "coverage": 0.7935,
+    "extra_detections": 0.006,
+    "foreground_mse": 0.010868633165955544,
+    "identity_accuracy": 0.644,
+    "missed_objects": 0.413,
+    "records": 2000,
+    "trajectory_error_px": 19.951541080503944
+  },
+  "ae_nonoverlap": {
+    "coverage": 0.9773848684210527,
+    "extra_detections": 0.009868421052631578,
+    "foreground_mse": 0.009642171673476696,
+    "identity_accuracy": 0.9432565789473685,
+    "missed_objects": 0.04523026315789474,
+    "records": 1216,
+    "trajectory_error_px": 2.6247720416162887
+  },
+  "checks": {
+    "ae_nonoverlap_coverage": true,
+    "ae_nonoverlap_identity": true,
+    "raw_nonoverlap_coverage": true,
+    "raw_nonoverlap_identity": true,
+    "raw_nonoverlap_trajectory": true
+  },
+  "floors": {
+    "ae_nonoverlap_coverage": 0.85,
+    "ae_nonoverlap_identity_accuracy": 0.8,
+    "raw_nonoverlap_coverage": 0.95,
+    "raw_nonoverlap_identity_accuracy": 0.92,
+    "raw_nonoverlap_trajectory_px": 6.0
+  },
+  "overlap_fraction": 0.392,
+  "raw_all": {
+    "coverage": 0.802,
+    "extra_detections": 0.0085,
+    "foreground_mse": 0.0,
+    "identity_accuracy": 0.6615,
+    "missed_objects": 0.396,
+    "records": 2000,
+    "trajectory_error_px": 19.133286712014815
+  },
+  "raw_nonoverlap": {
+    "coverage": 0.9868421052631579,
+    "extra_detections": 0.013157894736842105,
+    "foreground_mse": 0.0,
+    "identity_accuracy": 0.9625822368421053,
+    "missed_objects": 0.02631578947368421,
+    "records": 1216,
+    "trajectory_error_px": 1.6973643478877556
+  },
+  "schema_version": 1,
+  "sources": {
+    "ae_sha256": "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "classifier_sha256": "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+    "config_sha256": "c92bee90aaff438ebb08b587aa8e98f62cc4de9edf45c75b153b6285c8e4ff55",
+    "development_sha256": "9a4d7884d4ba567aab2a30e7c3d141482a21e82f6698d4fb2e27067874ad9a0c",
+    "metadata_sha256": "8e5e12addfa4d4798a6b63e494f685a4e5c4a014e8256c75d5a71cf5fd17602b"
+  },
+  "status": "EVALUATOR_RELIABILITY_PASS"
+}
