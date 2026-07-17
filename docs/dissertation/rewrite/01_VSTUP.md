@@ -51,18 +51,21 @@ that grows linearly with the number of steps of the modeled process, which makes
 trajectories unattainable on practically available computing systems. [UA-PASS: «експозиційне
 зміщення (exposure bias)» kept with the EN term in parentheses.]
 
-A natural remedy is the hierarchical decomposition of the latent state space. However, the
-author's own experimental investigations show that hierarchical video models built over
-*discrete* (vector-quantized) token spaces are unstable to train at practically reachable
-computational scale. This motivates the direction developed in this dissertation: hierarchical
-modeling of video generation processes in **compact continuous hierarchical latent state
-spaces**, in which multiple context streams can package long-range information at different
-temporal rates and spatial resolutions, context signals are transferred unidirectionally
-(with gradient detachment), per-frame generation is performed by an iterative refinement
-(denoising diffusion) core selected by controlled mechanism analysis, and the memory barrier of
-long-horizon activation-memory growth is bounded by reversible transformations that make
-backpropagation time-agnostic within their measured applicability domain. **[AUTHOR: cross-reference where the VQ-instability finding will be documented in
-Chapter 1 (own experiments); DISS_DIGEST Q1 authorizes using it as motivation.]**
+A natural remedy is the hierarchical decomposition of the latent state space. Discrete
+vector-quantized hierarchies are an important reviewed family, but they also introduce codebook
+and assignment-specific optimization risks; this dissertation does not present a controlled
+VQ-versus-continuous comparison. The implemented direction is therefore stated constructively:
+hierarchical modeling of video generation processes in **compact continuous hierarchical latent
+state spaces**, in which multiple context streams can package long-range information at
+different temporal rates and spatial resolutions, context signals are transferred
+unidirectionally (with gradient detachment), per-frame generation is performed by an iterative
+refinement (denoising diffusion) core selected by controlled mechanism analysis, and the memory
+barrier of long-horizon activation-memory growth is bounded by reversible transformations that
+make backpropagation time-agnostic within their measured applicability domain. Chapter 1
+explicitly marks the representation evidence boundary; Chapter 4 tests robustness to a second
+continuous codec seed rather than claiming representation-family universality. That intervention
+preserves all four registered directions; three contrasts remain simultaneous-CI clean, while
+the alternate-codec 2,432-token inversion remains positive but family-wise unresolved.
 
 Thus an objective systemic contradiction arises between the necessity of ensuring multi-level
 consistency of video data over long time horizons (which requires long memory horizons and deep
@@ -145,7 +148,7 @@ To achieve this purpose, the following scientific and practical tasks had to be 
    measurement instrument.
 
 7. Conduct comprehensive experimental studies and approbation of the developed methods and
-   technology on synthetic and open datasets — including a matched-capacity, matched-compute
+   technology on synthetic and open datasets — including a matched-capacity, matched-NFE
    comparison of prediction mechanisms — and compare their efficiency and consistency with
    modern analogues.
 
@@ -196,11 +199,11 @@ per the 124-alignment review — the strongest predictable committee objection. 
    spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
    hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
    and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
-   a flat context window at the same context-token budget, with the winning budgets predictable
-   from token arithmetic; unlike existing evaluation practice, which aggregates
+   a flat context window at the same context-token budget, with tested lower/interior and upper
+   regimes bracketed by explicit token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
    the memory contribution of the packaging directly measurable and localizes the improvement of
-   temporal consistency exactly in the regime where the memory horizon demands it.
+   temporal consistency to registered reach-differential populations.
 
 2. **For the first time**, a method for the computationally efficient optimization of processes in
    multi-step iterative systems was developed based on reversible transformations for
@@ -291,18 +294,18 @@ publication list.])*
   form Chapter 3 develops; the dissertation's hierarchical line thus runs [A1] (two-stage
   entropy-adaptive hierarchy) → [A4] (two-level latent hierarchy with coarse-level long-range
   memory).
-- In **[A2]** (TempVerseFormer, Springer Neural Computing and Applications 2025, Scopus, sole
+- In **[A2]** (TempVerseFormer, Springer *Neural Computing and Applications* 2026, Scopus, sole
   author), the applicant developed and mathematically substantiated the algorithm of
   time-agnostic backpropagation based on reversible transformations, which resolved the
-  computational uncertainty of long-horizon training. **[AUTHOR: confirm "Q1" quartile claim or
-  soften to "Scopus-indexed".]**
+  computational uncertainty of long-horizon training. The journal is described only as
+  Scopus-indexed; no unverified quartile claim is used.
 - In **[A3]** (consistency-criteria article), the applicant improved the criteria apparatus for
   the evaluation of complex generative systems by formalizing the notion of «conceptual
   consistency».
 - In **[A4]** (the fourth article, in finalization) and within the dissertation research, the
   applicant developed the hierarchical latent video generation model with long-range coarse-level
   memory; constructed the memory-horizon looping testbed and the re-entry-stratified evaluation
-  protocol; conducted the matched-capacity, matched-compute study of prediction mechanisms,
+  protocol; conducted the matched-capacity, matched-NFE study of prediction mechanisms,
   including the two-sided capability study of energy-based transformers (a characterized negative
   result); developed the theory of the exactly invertible stochastic recurrence with the
   three-axis reversibility taxonomy; and performed all complex experimental studies. *(Per
@@ -358,7 +361,7 @@ conclusions, a list of references, and appendices.
   and complexity estimates, and the formal definition of the memory-horizon testbed with the
   re-entry-stratified evaluation protocol.
 - **Chapter 4** presents the experimental research and practical application: the information
-  base; the matched-compute mechanism study (including the two-sided characterized study of
+  base; the matched-capacity, matched-NFE mechanism study (including the two-sided characterized study of
   energy-based descent); the single-step and 152-frame autoregressive-rollout (after a 48-frame
   ground-truth warm-up) evaluations of the hierarchical
   model; the memory-consumption measurements; and the implementations.

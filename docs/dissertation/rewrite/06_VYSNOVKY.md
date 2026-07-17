@@ -48,11 +48,12 @@ been performed, and the central systemic contradiction of the field has been ide
 resource blow-up (quadratic attention compute, linearly growing key–value memory, linearly
 growing training-activation memory) and the consistency degradation of flat long-context
 modeling, whereby content that leaves the field of view is not restored consistently upon its
-return. The analysis of existing approaches (Chapter 1) — including the author's own experimental
-finding that hierarchical video models over discrete vector-quantized token spaces are unstable
-to train at practically reachable scale — substantiated the chosen direction: hierarchical
-modeling in compact continuous hierarchical latent state spaces, with energy-based models
-reviewed as literature and later characterized experimentally.
+return. The analysis of existing approaches (Chapter 1) identified codebook-specific
+optimization risks in discrete vector-quantized hierarchies and delimited the implemented scope:
+hierarchical modeling in compact continuous hierarchical latent state spaces. Because the
+repository contains no controlled VQ-versus-continuous experiment, no representation-family
+superiority is claimed. Energy-based models are reviewed as literature and later characterized
+experimentally at the tested scale.
 
 **2.** *(Task 2)* The criteria apparatus of systems analysis of generative processes has been
 improved by introducing the criteria of conceptual consistency (the ability to generate unknown
@@ -115,8 +116,8 @@ context window at a matched context-token budget: on 152-frame autoregressive ro
 hierarchical model beats the token-matched flat control on two training seeds (seed 0: ALL
 +0.0189 [+0.0121, +0.0264], with the win concentrated from horizon 25 onward and peaking on hard
 re-entry bins, h 25–60 HARD +0.0344 [+0.0162, +0.0531]; seed 1: ALL +0.0354 [+0.0267, +0.0447],
-winning every horizon-hardness cell), the result is mechanism-agnostic (the regression twin
-pairing wins every bin at both seeds, ALL +0.0334 [+0.0248, +0.0423] and +0.0501
+winning every horizon-hardness cell). This specific reach comparison also replicates under the
+regression head (every bin at both seeds, ALL +0.0334 [+0.0248, +0.0423] and +0.0501
 [+0.0396, +0.0612]), and the underlying single-step retrieval
 capability reduces the hard re-entry error by ≈13% on both seeds (+0.0135 [+0.0080, +0.0196] and
 +0.0143 [+0.0083, +0.0208]), emerging only at the larger optimization budget (null at 6,000
@@ -168,10 +169,11 @@ measurements confirmed the constant-memory rollout capability (conclusion 4). Th
 package outperforms the token-budget-matched flat control in the tested lower/interior
 memory-horizon regime (the shape comparison across packagings is conclusion 7's separate,
 seed-resolved statement),
-and the boundary conditions of every claim are stated explicitly. The published validations of
-the reversibility method ([A2]: 2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are
-retained as its receipts; the bridge evaluation on the standard OpenSTL Moving-MNIST suite is
-**measured** and returns the predicted negative control — flat ≈ hierarchical (180.91 vs 181.29
+and the boundary conditions of every claim are stated explicitly. The published validation of
+the reversibility method ([A2]: procedurally generated 2-D rotating shapes under controlled
+temporal laws) is retained as its receipt; the bridge evaluation on the standard OpenSTL
+Moving-MNIST suite is a separate measured dissertation experiment and returns the predicted
+negative control — flat ≈ hierarchical (180.91 vs 181.29
 aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
 benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
 complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
@@ -207,7 +209,11 @@ claim its final, tested-bracket form: **the simultaneous family confirms hierarc
 between tested budgets are not claimed. A separate frozen E7c study retained the expected
 point-estimate sign in all 20 NFE/sampler variants, with 18 simultaneous lower bounds positive;
 the upper inversion remains family-wise unresolved at alternate sampler seeds 1/2, so the result
-is directionally robust rather than universally sampler-invariant.
+is directionally robust rather than universally sampler-invariant. The independent-codec E7a
+study retained all four registered directions: 896 reach +0.0521 [0.0374,0.0669], 1,152 interior
++0.0439 [0.0310,0.0569], package shape +0.0112 [0.0039,0.0184], and the 2,432 inversion +0.0079
+[−0.0006,0.0165]. Hence representation robustness is directional for this whole-codec
+intervention, while the upper edge remains family-wise precision-limited.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -250,8 +256,9 @@ Self-Forcing-class rollout training]. Second, the **extension
 of the memory-horizon protocol to real video**: transferring the re-entry-stratified evaluation
 methodology from the analytic testbed family to natural-video data of the KTH class (where
 hardness labels must be estimated rather than computed exactly), building on the completed
-OpenSTL bridge as the connectivity anchor and filling the [EXPECTED] transfer shells of §4.6. These directions require no revision of the
-present results: they extend the measured boundary, which is stated exactly.
+OpenSTL bridge as the connectivity anchor and executing the future-work protocols of §4.6.
+These directions require no revision of the present results: they extend a boundary currently
+stated only for its measured testbeds and configurations.
 
 ---
 
@@ -266,15 +273,17 @@ present results: they extend the measured boundary, which is stated exactly.
 - All CIs are 95% paired clip-level cluster bootstrap unless the chapter text discloses otherwise
   (single-step gates: see §4.3.1 design-effect widening; §4.5.4 sample-iid disclosure).
 - Deliberately absent per the rules: any capability headline for operating point B (the study
-  closed RED); any factorial-interaction reading of the combined optimum; any new TaxiBJ/KTH
-  *claim* (the §4.6 transfer shells are [EXPECTED]-marked plans under the Q4 run-or-strike
-  disposition, not commitments — struck before defense if unfilled); any "competitive with the
+  closed RED); any factorial-interaction reading of the combined optimum; any new KTH
+  *claim* (the KTH, 2D/3D and MMNIST-CIFAR suites are explicitly future protocols, while TaxiBJ
+  is reported only as the measured negative transfer result); any "competitive with the
   OpenSTL leaderboard on aggregate MSE" phrasing (refuted by measurement: 180.91 vs SimVP 26.69);
   the copyright-certificate sentence.
-- Result 7's generalization sentence is dual-branch by construction: the [EXPECTED] and
-  [FALLBACK] markers must be resolved (or the sentence softened to "planned") before defense,
-  in sync with §§4.6.3–4.6.7 of `05_ROZDIL4.md`. The frontier clause is RESOLVED (measured
+- Result 7's generalization boundary is resolved in sync with §§4.6.3–4.6.7 of
+  `05_ROZDIL4.md`: OpenSTL connectivity was verified, Moving-MNIST met the protocol anchor but
+  was not competitive with the reference leaderboard, TaxiBJ was a measured negative transfer,
+  and the remaining suites are future work. The frontier clause is RESOLVED (measured
   2026-07-07 and confirmed on E2): hierarchy is family-wise confirmed at 896/1,152, 1,792 is
   unresolved, and flat is family-wise confirmed at 2,432/3,072. Use tested-bracket wording only;
   do not restore an interval, exact edge or unique-crossing claim. E7c adds directional
-  sampler/NFE robustness with the upper-inversion precision qualification.
+  sampler/NFE robustness and E7a adds directional whole-codec robustness, both with the
+  upper-inversion precision qualification.

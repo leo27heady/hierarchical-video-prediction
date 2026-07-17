@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "status": "SAME_POPULATION_DIAGNOSTIC_COMPLETE",
+  "scope": "Metric-sanity diagnostic only; not architecture-, training- or inference-budget matched and no paired CW-VAE inference is possible from mean curves.",
+  "protocol": {
+    "clips": 100,
+    "context": 36,
+    "horizon": 964,
+    "cwvae_samples": 5,
+    "cwvae_selection": "best clip-average SSIM among stochastic samples",
+    "black_prediction": "all pixels zero for every predicted frame",
+    "ssim": "skimage.metrics.structural_similarity(data_range=1.0)",
+    "psnr": "20*log10(1/sqrt(full-frame MSE)); 100 when MSE is zero"
+  },
+  "black": {
+    "ssim": {
+      "overall_mean": 0.7681435823834062,
+      "clip_mean_sd": 0.03139473493723944,
+      "windows": {
+        "h1_48": {
+          "start_frame_inclusive": 1,
+          "stop_frame_inclusive": 48,
+          "records": 4800,
+          "mean": 0.7679353261659138,
+          "clip_mean_sd": 0.03225084988413396
+        },
+        "h49_192": {
+          "start_frame_inclusive": 49,
+          "stop_frame_inclusive": 192,
+          "records": 14400,
+          "mean": 0.7679422567609114,
+          "clip_mean_sd": 0.03208760105707771
+        },
+        "h193_964": {
+          "start_frame_inclusive": 193,
+          "stop_frame_inclusive": 964,
+          "records": 77200,
+          "mean": 0.7681940839223685,
+          "clip_mean_sd": 0.03135788066118749
+        }
+      }
+    },
+    "psnr": {
+      "overall_mean": 13.941071850914128,
+      "clip_mean_sd": 1.1662677948744762,
+      "windows": {
+        "h1_48": {
+          "start_frame_inclusive": 1,
+          "stop_frame_inclusive": 48,
+          "records": 4800,
+          "mean": 13.943147317833409,
+          "clip_mean_sd": 1.1657272120155269
+        },
+        "h49_192": {
+          "start_frame_inclusive": 49,
+          "stop_frame_inclusive": 192,
+          "records": 14400,
+          "mean": 13.94151338027202,
+          "clip_mean_sd": 1.1635295140619695
+        },
+        "h193_964": {
+          "start_frame_inclusive": 193,
+          "stop_frame_inclusive": 964,
+          "records": 77200,
+          "mean": 13.940860448531147,
+          "clip_mean_sd": 1.1669192365960408
+        }
+      }
+    }
+  },
+  "cwvae": {
+    "ssim": {
+      "overall_mean": 0.5707673059662415,
+      "windows": {
+        "h1_48": {
+          "start_frame_inclusive": 1,
+          "stop_frame_inclusive": 48,
+          "records_represented": 48,
+          "mean": 0.6338137378673029
+        },
+        "h49_192": {
+          "start_frame_inclusive": 49,
+          "stop_frame_inclusive": 192,
+          "records_represented": 144,
+          "mean": 0.5664537742893831
+        },
+        "h193_964": {
+          "start_frame_inclusive": 193,
+          "stop_frame_inclusive": 964,
+          "records_represented": 772,
+          "mean": 0.5676519171452786
+        }
+      }
+    },
+    "psnr": {
+      "overall_mean": 12.918107016175613,
+      "windows": {
+        "h1_48": {
+          "start_frame_inclusive": 1,
+          "stop_frame_inclusive": 48,
+          "records_represented": 48,
+          "mean": 13.944215626517932
+        },
+        "h49_192": {
+          "start_frame_inclusive": 49,
+          "stop_frame_inclusive": 192,
+          "records_represented": 144,
+          "mean": 12.625142031576898
+        },
+        "h193_964": {
+          "start_frame_inclusive": 193,
+          "stop_frame_inclusive": 964,
+          "records_represented": 772,
+          "mean": 12.908953835457716
+        }
+      }
+    }
+  },
+  "diagnostics": {
+    "blank_ground_truth_records": 0,
+    "finite": true
+  },
+  "inputs": {
+    "dataset": {
+      "path": "../cwvae/data_mmnist/test.npy",
+      "sha256": "dff1f471b4ca4324975089d9217ae2c3382f12ac24d3985be5f82bb95e8ed141",
+      "shape": [
+        100,
+        1000,
+        64,
+        64
+      ],
+      "dtype": "uint8"
+    },
+    "cwvae_curve": {
+      "path": "../cwvae/logs_torch/cwvae/eval/openloop_curve.json",
+      "sha256": "7d6c8cfd6f3e19a6c70f72b8ec2e0ab985b2a93d21a90258acea43e4cfb782a9"
+    },
+    "cwvae_evaluator": {
+      "path": "../cwvae/eval_torch.py",
+      "sha256": "6b4bc5dfc64bddded69aebcb3826503c19345eab569a67b66cdd3c73ffb13535"
+    }
+  }
+}

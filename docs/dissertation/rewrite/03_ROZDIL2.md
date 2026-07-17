@@ -65,10 +65,12 @@ natural language processing, in particular the Byte Latent Transformer (BLT)
 in favor of dynamic grouping of elementary information units (bytes) into latent patches whose
 size is inversely proportional to the local complexity of the signal.
 
-> **[FIG 2-1 — PLACEHOLDER]**
-> **Content:** Illustration of the conceptual operating principle of the Byte Latent Transformer
-> (BLT): entropy-driven variable-size patching of a byte stream.
-> **Source:** KEEP (original draft, Рисунок 2.1).
+![Entropy-driven byte patching](../../figures/fig45_blt_variable_patching.png)
+
+**Figure 2.1 — Conceptual operating principle of entropy-driven byte patching.** Long
+low-entropy regions are grouped into larger latent patches, whereas locally surprising regions
+receive finer allocation. The values are schematic, not empirical measurements. Source:
+author’s schematic after BLT [REF: Pagnoni et al. 2024, BLT].
 
 Within the dissertation research, the results of which are published in **[A1]**, the hypothesis
 was put forward that transferring the principles of adaptive entropy-based tokenization to the
@@ -89,10 +91,11 @@ criterion governs the allocation of capacity between them; the mature form of th
 decomposition, in which the upper level carries the long-range temporal memory of the process,
 is developed in Chapter 3.
 
-> **[FIG 2-2 — PLACEHOLDER]**
-> **Content:** Overall architecture of the Vision Byte Latent Transformer (V-BLT): Local Encoder →
-> Global Latent Transformer → Local Decoder.
-> **Source:** KEEP (original draft, Рисунок 2.2).
+![Vision Byte Latent Transformer architecture](../../figures/fig46_vblt_architecture.png)
+
+**Figure 2.2 — Vision Byte Latent Transformer architecture.** Local entropy-guided aggregation
+and byte classification surround the global time-causal latent transformer. Source: author’s
+schematic of the [A1] method.
 
 The first subsystem — the **Local Encoder** — performs the function of primary adaptive
 aggregation. The input is a video sequence as a multidimensional tensor of raw bytes. The task of
@@ -176,15 +179,23 @@ architecture is its ability to operate on raw bytes, which makes it possible to 
 entropy for every prediction. Entropy in this context is a measure of the model's uncertainty:
 the higher the entropy, the less "confident" the model is in its prediction for the given pixel.
 
-> **[FIG 2-3 — PLACEHOLDER]**
-> **Content:** Example of V-BLT operation on a 2D shape: ground-truth frames / predicted frames /
-> per-pixel entropy maps.
-> **Source:** KEEP (original draft, Рисунок 2.3).
+![V-BLT prediction and entropy maps for a rotating 2D shape](../../figures/fig59_vblt_2d_entropy_published.png)
 
-> **[FIG 2-4 — PLACEHOLDER]**
-> **Content:** Example of V-BLT operation on a 3D polycube: ground-truth frames / predicted
-> frames / per-pixel entropy maps.
-> **Source:** KEEP (original draft, Рисунок 2.4).
+**Figure 2.3 — V-BLT prediction and entropy maps for a rotating 2D shape.** Rows show,
+respectively, ground truth, V-BLT predictions and per-pixel entropy maps over five future frames.
+The first prediction has the largest shape error and the broadest high-entropy region; subsequent
+predictions recover the rotating contour while entropy concentrates near its boundary. Source:
+Kulyk and Mokin, *Scaling Video Prediction with Spatio-Temporal Patches*, published Fig. 7,
+DOI 10.31649/1997-9266-2025-182-5-129-139.
+
+![V-BLT prediction and entropy maps for a rotating 3D polycube](../../figures/fig60_vblt_3d_entropy_published.png)
+
+**Figure 2.4 — V-BLT prediction and entropy maps for a rotating 3D polycube.** Rows show ground
+truth, V-BLT predictions and per-pixel entropy maps. The first low-context forecast is visibly
+degraded; later frames preserve the coarse polycube structure, while uncertainty remains strongest
+along moving and newly exposed boundaries. Source: Kulyk and Mokin, *Scaling Video Prediction with
+Spatio-Temporal Patches*, published Fig. 8,
+DOI 10.31649/1997-9266-2025-182-5-129-139.
 
 From the standpoint of complex-system control, the entropy map is an ideal feedback signal. It
 allows the problem of structural-algorithmic uncertainty to be solved by dynamically forming
@@ -319,10 +330,11 @@ $$
 where $R^{d}_{\Theta,\text{pos}}$ denotes the $d \times d$ rotation matrix for the corresponding
 axis. The same operation is applied to the key vector $k$.
 
-> **[FIG 2-5 — PLACEHOLDER]**
-> **Content:** Visualization of the N-dimensional rotary positional embedding (RoPE-ND) for
-> ensuring spatio-temporal coherence.
-> **Source:** KEEP (original draft, Рисунок 2.5).
+![N-dimensional rotary position embedding](../../figures/fig47_rope_nd.png)
+
+**Figure 2.5 — N-dimensional rotary positional embedding.** Independent rotations encode
+horizontal, vertical and temporal coordinates so attention depends on relative displacement
+along all three axes. Source: author’s schematic of the [A1] method.
 
 Applying such a multidimensional transformation restores the structural coherence of the complex
 system. When the attention-score matrix between two arbitrary tokens in the video sequence is
@@ -480,10 +492,11 @@ x_1^{(l)} = y_1^{(l)} - \operatorname{Attention}\!\left(x_2^{(l)}\right)
 \tag{2.12}
 $$
 
-> **[FIG 2-6 — PLACEHOLDER]**
-> **Content:** Scheme of information flows during the forward (left) and reverse (right) pass
-> through the reversible transformer block.
-> **Source:** KEEP (original draft, Рисунок 2.6).
+![Forward and reverse information flow in the reversible block](../../figures/fig53_reversible_block_published.png)
+
+**Figure 2.6 — Forward and reverse information flow in a reversible transformer block.** The
+additive coupling structure permits exact reconstruction of block inputs from its outputs.
+Source: author’s published TempVerseFormer project asset [A2].
 
 For the reversible blocks to solve the task of controlling generation in time, they are
 integrated into a higher structural level of the system through the **temporal chaining**
@@ -505,9 +518,11 @@ $$
 where $\Phi$ is the transition functor built exclusively from algebraically reversible
 transformer blocks.
 
-> **[FIG 2-7 — PLACEHOLDER]**
-> **Content:** Temporal chaining mechanism for autoregressive time-series modeling.
-> **Source:** KEEP (original draft, Рисунок 2.7).
+![Temporal chaining mechanism](../../figures/fig54_temporal_chaining_published.png)
+
+**Figure 2.7 — Temporal chaining for autoregressive time-series modeling.** The same reversible
+transition is applied along physical time while the realized state is passed to the next step.
+Source: author’s published TempVerseFormer project asset [A2].
 
 Since the functor $\Phi$ consists of reversible elements, the entire multi-step trajectory
 $V_1 \to V_2 \to \dots \to V_T$ preserves the property of global reversibility. Knowing only the
@@ -522,10 +537,10 @@ latent vector before processing by the reversible blocks. After generation is co
 latent states are unfolded back by the VAE decoder. This architectural modularity separates the
 task of spatial compression from the task of temporal control.
 
-> **[FIG 2-8 — PLACEHOLDER]**
-> **Content:** Global architecture of the TempVerseFormer information technology (VAE spatial
-> compression + reversible temporal core).
-> **Source:** KEEP (original draft, Рисунок 2.8).
+![TempVerseFormer architecture](../../figures/fig55_tempverseformer_architecture_published.png)
+
+**Figure 2.8 — Global TempVerseFormer architecture.** A spatial VAE interfaces the video frames
+with the reversible temporal core. Source: author’s published TempVerseFormer project asset [A2].
 
 The integration of reversible blocks into a single system with temporal chaining creates an
 extremely powerful mathematical instrument: structural reversibility guarantees that information
@@ -581,9 +596,11 @@ $(y_1, y_2)$ are computed, the system immediately deletes all internal activatio
 keeping only the result. Upon reaching the final step $T$, the system stores only one final
 macro-state in memory.
 
-> **[FIG 2-9 — PLACEHOLDER]**
-> **Content:** Forward-pass algorithm of TempVerseFormer (activation-free forward evolution).
-> **Source:** KEEP (original draft, Рисунок 2.9).
+![Activation-free forward evolution](../../figures/fig48_activation_free_forward.png)
+
+**Figure 2.9 — Activation-free forward evolution.** Intermediate temporal states are discarded;
+the terminal state, parameters and stochastic replay information are retained. Source: author’s
+algorithmic schematic.
 
 **Phase two — the reverse pass.** This phase is the conceptual core of the method. The reverse
 pass starts with the computation of the gradient of the loss function with respect to the final
@@ -592,14 +609,17 @@ to $1$, the algorithm moves in the reverse direction: it reconstructs the layer 
 inverse transformations (2.11)–(2.12), locally rebuilds the computation graph of a single
 transition, computes the local gradients, and immediately destroys the local graph.
 
-> **[FIG 2-10 — PLACEHOLDER]**
-> **Content:** Reverse-pass algorithm of TempVerseFormer (reconstruct → local graph → gradient →
-> free).
-> **Source:** KEEP (original draft, Рисунок 2.10).
+![Reverse local replay](../../figures/fig49_reverse_local_replay.png)
 
-> **[FIG 2-11 — PLACEHOLDER]**
-> **Content:** Flowchart of the time-agnostic backpropagation algorithm (two phases).
-> **Source:** KEEP (original draft, Рисунок 2.11).
+**Figure 2.10 — Reverse-pass local replay.** Each state is reconstructed, its local graph is
+rebuilt, gradients are accumulated, and the graph is released before moving to the preceding
+time step. Source: author’s algorithmic schematic.
+
+![Two-phase time-agnostic backpropagation](../../figures/fig50_time_agnostic_backprop.png)
+
+**Figure 2.11 — Two-phase time-agnostic backpropagation.** A tape-free forward phase is followed
+by exact reverse reconstruction and local gradient accumulation. Source: author’s algorithmic
+schematic.
 
 For a rigorous confirmation of the effectiveness of the developed method, we formulate and prove
 a lemma on the optimization of operating-memory consumption.
@@ -652,24 +672,35 @@ the standard $O(\sqrt{T} \cdot L \cdot D)$ segment schedule, per DISS_DIGEST §5
 recursive schedule it is $O(\log T)$ memory at $O(T \log T)$ compute — [REF: Chen et al. 2016;
 Griewank & Walther, treeverse].)*
 
-> **[FIG 2-12 — PLACEHOLDER]**
-> **Content:** GPU operating-memory consumption vs optimization-trajectory length for the
-> developed architecture compared with analogues ([A2] measurement).
-> **Source:** KEEP (original draft, Рисунок 2.12).
+![GPU memory consumption versus prediction horizon](../../figures/fig57_tempverse_memory_published.png)
 
-> **[FIG 2-13 — PLACEHOLDER]**
-> **Content:** Wall-clock time of one optimization iteration vs trajectory length ([A2]
-> measurement).
-> **Source:** KEEP (original draft, Рисунок 2.13).
+**Figure 2.12 — GPU memory consumption versus prediction horizon.** Published TempVerseFormer
+measurement at batch size 32. The reversible temporal model remains near 0.9 GB over 1–1,024
+prediction steps, whereas the two non-reversible transformer variants grow to approximately
+160 GB in the reported extrapolated/extended measurement and the LSTM grows more slowly. The
+logarithmic vertical scale must be retained when typesetting. Source: Kulyk, *Temporal modeling
+with reversible transformers*, Fig. 13, author preprint (CC BY 4.0), DOI
+10.21203/rs.3.rs-6293520/v1; version of record DOI 10.1007/s00521-025-11707-3.
 
-As Fig. 2.12 shows, memory consumption remains near-constant even at large prediction depths,
-while the computational and time overhead, given the memory gain, is moderate (Fig. 2.13). The
-developed method is the only approach that achieves complete independence of memory consumption
-from the length of the temporal trajectory. Although the algebraic reconstruction during the
-reverse pass requires additional computational operations, this trade-off is highly favorable
-from the standpoint of systems analysis: shifting the load from the critically scarce resource —
-GPU memory — onto the abundant one — compute cores — allows the mathematical models to scale to
-horizons of hundreds and thousands of steps.
+![Training time versus prediction horizon](../../figures/fig58_tempverse_time_published.png)
+
+**Figure 2.13 — Training time per step versus prediction horizon.** Published comparison at batch
+size 32 and 1–1,024 prediction steps. Time grows with the prediction horizon for all four
+architectures; TempVerseFormer pays a compute premium relative to the matched non-reversible
+transformer while preserving the qualitatively different memory-scaling behavior in Fig. 2.12.
+The logarithmic vertical scale must be retained when typesetting. Source: Kulyk, *Temporal
+modeling with reversible transformers*, Fig. 14, author preprint (CC BY 4.0), DOI
+10.21203/rs.3.rs-6293520/v1; version of record DOI 10.1007/s00521-025-11707-3.
+
+As Fig. 2.12 shows, measured temporal-model memory remains nearly constant even at large
+prediction depths. Figure 2.13 also makes the trade-off explicit rather than cost-free:
+TempVerseFormer is slower per step than the matched TempFormer over the tested horizons, and all
+methods become slower as the horizon grows. Within this published configuration, the developed
+method is the only compared transformer whose activation-memory curve is practically independent
+of trajectory length. Algebraic reconstruction during the reverse pass therefore exchanges
+additional computation for the critically scarce resource — GPU memory — and makes horizons of
+hundreds or thousands of steps operationally possible when the non-reversible activation tape
+would exceed the device budget.
 
 In addition, the proposed architecture enables a unique **selective backpropagation** strategy.
 In many control problems the initial steps of a process are noisy, while the most informative
@@ -809,21 +840,18 @@ exact gradients; the stability of the modeled trajectory is a separate design re
 enforced by the Lipschitz constraint on the coupling (this requirement informs the architecture
 of Chapter 3).
 
-> **[FIG 2-14 — PLACEHOLDER]**
-> **Content:** Memory-frontier panel: peak GPU memory vs rollout length $K$ for the three
-> training regimes of the same stochastic hierarchical recurrent core — BPTT (12.2 GB at
-> $K{=}40$, host-RAM spill at $K{=}80$, OOM at $K{=}120$), gradient checkpointing (1.47–1.97 GB),
-> reversible reverse-replay (flat $\approx$1.1–1.2 GB through $K{=}160$). Log-scale memory axis;
-> annotate the OOM boundary and the 16 GB device ceiling.
-> **Source:** NEW — plot from the measured Panel-A table (`hvp_rev/mem_frontier.py`; numbers in
-> `docs/SESSION_JOURNEY_AND_EBT_PLAN.md` §2.2 = ARTICLE_SKELETON T6b; figure F9 of the article
-> skeleton). No new runs required.
+![Measured reversible memory frontier](../../figures/fig51_reversible_memory_frontier.png)
+
+**Figure 2.14 — Measured memory frontier of the stochastic recurrent core.** Standard BPTT
+reaches 12.2 GB at $K=40$, spills at $K=80$ and cannot run at $K=120$ on the 16 GB device;
+checkpointing grows slowly, while reverse replay stays near 1.1–1.2 GB through $K=160$. Source:
+repository Panel-A measurements (`hvp_rev/mem_frontier.py`,
+`docs/SESSION_JOURNEY_AND_EBT_PLAN.md`, §2.2).
 
 **(iii) The constant-memory autoregressive-rollout frontier (measured).** The practical payoff of
 the extended method is measured on the real training loop of the implemented stochastic
-hierarchical recurrent core (three levels, batch 32, Adam optimizer, 16 GB GPU; environment
-details in Chapter 4 **[AUTHOR: confirm the §4.1 hardware description — RTX 4060 Ti 16GB — and
-cross-reference it here]**). Table 2.3 gives the peak training memory as a function of the
+hierarchical recurrent core (three levels, batch 32, Adam optimizer, NVIDIA RTX 4060 Ti 16 GB;
+the full environment is specified in Chapter 4, §4.1.4). Table 2.3 gives the peak training memory as a function of the
 free-running rollout length $K$:
 
 **Table 2.3 — Measured peak training memory (MB) vs rollout length $K$: BPTT, gradient
@@ -900,14 +928,13 @@ diffusion inner loops are already published [REF: DOODL, Wallace et al. 2023; ED
 Wallace et al. 2023; MALI, Zhuang et al. 2021], with large-scale practice choosing checkpointing
 or truncation precisely because state $\ll$ graph [REF: AlignProp 2023; DRaFT 2023].
 
-> **[FIG 2-15 — PLACEHOLDER]**
-> **Content:** Three-axis taxonomy diagram of reversible computation: axis 1 depth (RevNet,
-> literature), axis 2 time (temporal chaining + store-the-noise — the axis that pays; annotate
-> with the Table 2.3 frontier), axis 3 computation / inner optimization loop (the axis that
-> cannot pay; annotate with the MEASURED four-way panel: naive 18.1 GB spill at K=4 / OOM at
-> K=8; truncate/checkpoint/reversible flat 5.28–5.30 GB through K=128; reversible saves 14 MB =
-> 0.26% of peak vs checkpointing; analytic band ≈0.6–1.0%; crossover K ≈ 5,000–30,000).
-> **Source:** NEW — drawing (figure F11 of the article skeleton; data `logs_rhcp/mem_panel.md`).
+![Axes of reversible computation](../../figures/fig52_reversibility_axes.png)
+
+**Figure 2.15 — Three axes of reversible computation and their measured applicability.**
+Reconstruction pays along network depth and temporal recurrence. In the tested inner-optimization
+loop the model/optimizer base state dominates: reversible replay saves only 14 MB (0.26% of peak)
+relative to checkpointing while approximately doubling wall time. Source: author’s taxonomy from
+`logs_rhcp/mem_panel.md`.
 
 The resulting **applicability boundary** of the developed resource-optimization method is stated
 as the closing result of this chapter: *reversibility pays on recurrences whose transition
@@ -982,8 +1009,8 @@ multi-step video generation systems. The main results are as follows.
 
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
 (§§2.3–2.4), and the extension to stochastic recurrences with the three-axis applicability
-taxonomy in **[A4]**. **[AUTHOR: bind [A1], [A2], [A4] to the final numbered publication list;
-the old draft's «[1], [2], [3], [4]» resolved into the donor bibliography and is abandoned.]**
+taxonomy in **[A4]**. These stable labels are bound mechanically to the final numbered publication
+list; the donor-template numbering is not reused.
 
 ---
 
@@ -993,8 +1020,8 @@ the old draft's «[1], [2], [3], [4]» resolved into the donor bibliography and 
 |---|---|---|
 | 2.1 | BLT concept illustration | KEEP |
 | 2.2 | V-BLT architecture | KEEP |
-| 2.3 | V-BLT on 2D shape + entropy maps | KEEP |
-| 2.4 | V-BLT on 3D polycube + entropy maps | KEEP |
+| 2.3 | V-BLT on 2D shape + entropy maps ([A1], published Fig. 7) | INSERTED (`fig59`) |
+| 2.4 | V-BLT on 3D polycube + entropy maps ([A1], published Fig. 8) | INSERTED (`fig60`) |
 | 2.5 | RoPE-ND visualization | KEEP |
 | 2.6 | Reversible block forward/reverse flows | KEEP |
 | 2.7 | Temporal chaining mechanism | KEEP |
@@ -1002,8 +1029,8 @@ the old draft's «[1], [2], [3], [4]» resolved into the donor bibliography and 
 | 2.9 | Forward-pass algorithm | KEEP |
 | 2.10 | Reverse-pass algorithm | KEEP |
 | 2.11 | Time-agnostic backprop flowchart | KEEP |
-| 2.12 | GPU memory vs trajectory length ([A2]) | KEEP |
-| 2.13 | Iteration time vs trajectory length ([A2]) | KEEP |
+| 2.12 | GPU memory vs trajectory length ([A2], published Fig. 13) | INSERTED (`fig57`) |
+| 2.13 | Iteration time vs trajectory length ([A2], published Fig. 14) | INSERTED (`fig58`) |
 | 2.14 | Memory-frontier panel (BPTT / checkpointing / reversible vs $K$) | **NEW** (from measured Panel-A numbers; skeleton F9) |
 | 2.15 | Three-axis reversibility taxonomy diagram | **NEW** (drawing; skeleton F11) |
 

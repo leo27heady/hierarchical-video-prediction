@@ -13,7 +13,9 @@
 > limitation" thesis is DROPPED; the motivation spine is: flat long-context attention memory
 > blow-up + long-horizon consistency degradation → remedied by hierarchical decomposition +
 > coarse-level long memory + reversible computation. The author's own finding that hierarchical
-> VQ video models train unstably is used as measured motivation for *continuous* latent spaces.
+> VQ video models are reviewed with their known optimization risks; because no controlled
+> hierarchical-VQ receipts are present in this repository, the continuous representation is
+> stated as the implemented scope rather than justified by an unverified measured superiority.
 > No HVEBT anywhere. EBM/EBT reviewed as literature with one honest forward reference to the
 > Chapter 4 characterized study.
 > **Conventions:** equations are renumbered continuously (1.1)–(1.15); the mapping to the old
@@ -63,14 +65,11 @@ time. The output data is the final generated object, which must satisfy the spec
 quality and consistency. The scheme of a modern generative video model as an example of an open
 complex dynamic control system is shown in Fig. 1.1.
 
-[FIG 1-1 — PLACEHOLDER]
-Content: Block scheme of a generative video model as an open complex dynamic control system:
-inputs (noise source = entropy; conditioning vectors = control signals, incl. previous frames /
-action track), the multi-step state-transition core operating on the latent state space, outputs
-(generated video), disturbance/uncertainty entry points, and the feedback of the autoregressive
-loop. The old drawing (based on a SnapGen-V-class diffusion pipeline) can be reused as-is; the
-caption drops the word «ітеративної» in favour of the generic control-system reading.
-Source: KEEP old Fig 1.1 (описати)
+![Video generation as an open dynamic control system](../../figures/fig30_control_system.png)
+
+**Figure 1.1 — Video generation as an open dynamic control system.** Noise acts as an entropy
+source, previous frames and actions as control signals, and autoregressive feedback makes output
+quality a property of the complete self-fed trajectory. Source: author’s schematic.
 
 In accordance with classical systems theory [REF: classical systems theory textbook], the object
 under study is characterized by a large number of interrelated elements, nonlinear interactions,
@@ -158,14 +157,12 @@ function minimized by gradient descent — this last instantiation, together wit
 dynamics, is reviewed as literature in §1.3.3 (eqs. (1.9)–(1.11)) and characterized
 experimentally in Chapter 4.)*
 
-[FIG 1-2 — PLACEHOLDER]
-Content: Conceptual visualization of multi-step generation as descent over the landscape of a
-consistency criterion functional $J(x,u)$ in the state space: a trajectory from the high-$J$
-noise region to a low-$J$ structured region, with intermediate states marked at pseudo-time steps
-$k$. The original drawing (descent over an "energy landscape") is reused with relabeled axes and
-caption: «енергія $E$» → «критерій консистентності $J$»; a footnote may state that in the
-energy-based literature this landscape is an explicit learned energy (§1.3.3).
-Source: ADAPT from old Fig 1.2 (relabel energy → consistency criterion)
+![Multi-step generation on a consistency landscape](../../figures/fig31_consistency_landscape.png)
+
+**Figure 1.2 — Conceptual multi-step generation on the landscape of a consistency criterion
+$J(x,u)$.** The trajectory moves from a high-criterion noise state toward a structured
+low-criterion region. This is a systems-level abstraction; only energy-based models instantiate
+the landscape as an explicit learned scalar energy. Source: author’s schematic.
 
 In the context of the intelligent information technology being developed, it is important to
 clearly delimit the roles of two fundamental system concepts: the **global consistency criterion**
@@ -281,12 +278,11 @@ The third subsystem, the **Decoder**, is the block of decoding and reconstructio
 translates the optimized latent state of the system back into the space of human perception (the
 pixel space of an image or video stream).
 
-[FIG 1-3 — PLACEHOLDER]
-Content: Structural decomposition of the complex video generation system into the three
-macro-subsystems Encoder → Iterative Generator/Denoiser → Decoder, with the condition/control
-inputs entering the Encoder, the noise source entering the Generator, and the state-space loop
-inside the Generator block.
-Source: KEEP old Fig 1.3 (описати)
+![Structural decomposition of the generation system](../../figures/fig32_system_decomposition.png)
+
+**Figure 1.3 — Structural decomposition of the video-generation system.** The encoder and
+decoder define the representation interface; the central predictor carries the controlled
+state transition and iterative refinement. Source: author’s schematic.
 
 Of greatest interest for systems analysis is the central subsystem, since it is where the
 state-control process takes place and the principal work of overcoming uncertainty is
@@ -316,13 +312,11 @@ critique of flat latent spaces]. This produces an internal control conflict in w
 micro-decisions are taken simultaneously. The mixing of levels is a direct source of generation
 anomalies: a correct object texture may be imposed on a distorted global shape.
 
-[FIG 1-4 — PLACEHOLDER]
-Content: Hierarchical decomposition of the visual state space into macro (semantics/composition,
-lowest spatial rate), meso (contours/geometry), and micro (textures/pixels, highest spatial rate)
-levels, shown as a pyramid over an example frame, with per-level information content annotated.
-Ensure the drawing's level labels match the FIXED ordering (macro = top of the abstraction
-pyramid = semantics).
-Source: KEEP old Fig 1.4 (описати; verify the macro/micro labels against the fixed ordering)
+![Hierarchical decomposition of visual state](../../figures/fig33_visual_hierarchy.png)
+
+**Figure 1.4 — Hierarchical decomposition of visual state.** Macro denotes the highest
+abstraction and lowest spatial rate; micro denotes the pixel-proximal level and highest detail.
+Source: author’s schematic.
 
 The systems approach requires the development of mathematical models of explicit hierarchical
 decomposition with mechanisms of strict coherence between these orthogonal levels of
@@ -364,12 +358,11 @@ memory horizon is bounded by $w$; events separated by more than $w$ frames (for 
 that left the field of view and returns later) are informationally inaccessible to it. [UA-PASS:
 «горизонт пам'яті» — defined here at first use, per the digest terminology table.]
 
-[FIG 1-5 — PLACEHOLDER]
-Content: The two-dimensional temporal grid of video generation: horizontal axis = physical frame
-time t (1…T), vertical axis = per-frame pseudo-time k (1…K refinement steps); one column per
-frame; arrows along t showing autoregressive dependence, arrows along k showing iterative
-refinement. Optionally annotate the context window w and the memory horizon on the t axis.
-Source: KEEP old Fig 1.5 (описати; optional annotation of w is NEW)
+![Physical time and refinement pseudo-time](../../figures/fig34_temporal_grid.png)
+
+**Figure 1.5 — Two-dimensional temporal decomposition of video generation.** Horizontal
+transitions advance physical frame time, vertical transitions refine each predicted state, and
+the sliding context window bounds directly addressable history. Source: author’s schematic.
 
 ### 1.2.4 Класифікація видів невизначеності (Classification of uncertainty types)
 
@@ -397,12 +390,11 @@ uncertainty is the problem of spatio-temporal tokenization. Standard transformer
 (ViT, ViViT) partition the image into a regular grid of fixed-size patches, ignoring the fact
 that the visual signal has non-uniform information density.
 
-[FIG 1-6 — PLACEHOLDER]
-Content: Visualization of fixed-grid tokenization for a ViT-class architecture: an example frame
-cut into a uniform patch grid, with high-information regions (moving object contours) and
-low-information regions (static background) receiving identical token budgets; annotate the
-mismatch.
-Source: KEEP old Fig 1.6 (описати)
+![Fixed-grid tokenization and information density](../../figures/fig35_fixed_grid_tokenization.png)
+
+**Figure 1.6 — Fixed-grid tokenization under non-uniform information density.** Equal-size
+patches assign equal token cost to static background and to high-information moving contours.
+Source: author’s schematic.
 
 As follows from the principle of optimal control, a uniform distribution of resources across
 monotonous background and complex moving objects is suboptimal. This gives rise to structural
@@ -494,10 +486,10 @@ $$q(x_t \mid x_0) = \mathcal{N}\!\left(x_t;\; \sqrt{\bar\alpha_t}\, x_0,\; (1-\b
 
 *(= old eqs. (1.4)–(1.5), renumbered.)*
 
-[FIG 1-7 — PLACEHOLDER]
-Content: Forward diffusion: a row of frames showing the progressive destruction of the
-information structure of a sample by Gaussian noising, from clean x0 to pure noise xT.
-Source: KEEP old Fig 1.7 (описати)
+![Forward diffusion](../../figures/fig36_forward_diffusion.png)
+
+**Figure 1.7 — Forward diffusion.** Progressive Gaussian corruption destroys the information
+structure of a sample from $x_0$ toward $x_T$. Source: author’s schematic.
 
 At the reverse diffusion stage the system learns to invert this process, denoising the corrupted
 sample and restoring the data. Unlike forward diffusion, the reverse process constitutes a
@@ -511,10 +503,11 @@ $$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, t}\left[\,\bigl\|\epsilon - \ep
 
 *(= old eqs. (1.6)–(1.7), renumbered.)*
 
-[FIG 1-8 — PLACEHOLDER]
-Content: Reverse diffusion: iterative restoration of structure by the neural network, from noise
-to a coherent frame, with the network block shown acting at each step.
-Source: KEEP old Fig 1.8 (описати)
+![Reverse diffusion](../../figures/fig37_reverse_diffusion.png)
+
+**Figure 1.8 — Reverse diffusion.** A learned denoising field iteratively restores structure from
+noise. The sequence is conceptual and does not depict an experimental sample. Source: author’s
+schematic.
 
 This "forward–reverse" paradigm makes it possible to generate images of extremely high quality:
 the decomposition of denoising into steps naturally decomposes the learning problem and
@@ -526,15 +519,16 @@ stable trend away from convolutional U-Nets toward transformers: Diffusion Trans
 in the video domain this approach evolved into systems of the Sora class [REF: Sora technical
 report], operating on spatio-temporal latent patches and generating video up to a minute long.
 
-[FIG 1-9 — PLACEHOLDER]
-Content: Scheme of latent-space diffusion generation (LDM): encoder to latent space, iterative
-denoising loop of T steps in latent space (U-Net/DiT core), decoder back to pixels.
-Source: KEEP old Fig 1.9 (описати)
+![Latent diffusion architecture](../../figures/fig38_latent_diffusion.png)
+
+**Figure 1.9 — Latent-space diffusion.** Spatial compression reduces the per-step denoising cost,
+but it does not by itself solve the temporal-memory allocation problem. Source: author’s
+schematic.
 
 Despite their dominant generation quality, modern diffusion video systems possess systemic
 limitations that are the direct object of this dissertation's analysis. **The paradigm-level
 strengths of iterative refinement are not in question here** — on the contrary, Chapter 4's
-matched-compute mechanism study confirms empirically that an iterative refinement (diffusion)
+matched-capacity, matched-NFE mechanism study confirms empirically that an iterative refinement (diffusion)
 core commits to sharp, correctly located content where a regression core averages over futures;
 the per-frame generation core of the model developed in Chapter 3 is itself a diffusion core,
 selected by exactly that controlled analysis. The limitations lie elsewhere — in *how the
@@ -575,15 +569,12 @@ errors accumulate along the whole autoregressive chain — the phenomenon of exp
 exposure bias in sequence generation]. [UA-PASS: «експозиційне зміщення (exposure bias)» with the
 EN term in parentheses.]
 
-[FIG 1-10 — PLACEHOLDER]
-Content: The flat long-context barrier, two-panel figure. Panel (a): attention compute (∝ L²) and
-KV-cache memory (∝ L) versus context length in frames for a flat spatio-temporal transformer —
-schematic curves with the hardware memory ceiling marked, showing the affordable window w. Panel
-(b): a camera pan timeline in which an object exits the field of view and re-enters after Δt > w
-frames; the flat model's window is drawn as a sliding box that no longer contains the object at
-re-entry time — the re-entry content is informationally inaccessible (marked with "?"), while a
-hierarchical coarse-level memory (long thin band at low rate) still covers it. Conceptual, no
-measured numbers.
+![Flat long-context barrier](../../figures/fig39_flat_long_context_barrier.png)
+
+**Figure 1.10 — Flat long-context resource and re-entry barrier.** Panel A is schematic rather
+than a hardware benchmark: key–value memory grows linearly and attention work quadratically with
+sequence length. Panel B shows why a low-rate long-memory stream can remain addressable after the
+relevant content has left a short flat window. Source: author’s schematic.
 Source: NEW (draw)
 
 ### 1.3.2 Ієрархічні латентні підходи та авторегресійне прогнозування (Hierarchical latent approaches and autoregressive prediction)
@@ -623,27 +614,22 @@ likelihood, natural compatibility with language-model tooling, and strong compre
 review material — the digest's gap analysis (§4 MISSING item 1) notes the committed-topic
 literature was absent from the old draft; it is added here as reviewed literature.)*
 
-However, the author's own experimental investigations found that **hierarchical video models
-built over vector-quantized token spaces are unstable to train at practically reachable
-computational scale**: stacking quantized levels compounds the known optimization pathologies of
-discrete bottlenecks (non-differentiable assignment bypassed by straight-through estimation,
-codebook underutilization and collapse), and in the author's experiments the hierarchical
-discrete configurations failed to converge to usable multi-level codes at single-GPU scale.
-**[AUTHOR: insert the concrete receipts for this finding — which hierarchical-VQ configurations
-were run, the observed instability modes (codebook collapse / divergence / dead levels), and
-where the logs live; per DISS_DIGEST §8 decision Q1 this finding is authorized as Chapter 1
-motivation material, and 01_VSTUP.md contains a matching [AUTHOR] cross-reference marker pointing
-here.]** This measured finding motivates the choice made in this dissertation: hierarchical
-modeling in **compact continuous hierarchical latent state spaces**, where every level remains
-end-to-end differentiable and stable to train at reachable scale.
+Discrete bottlenecks also introduce specific optimization risks—straight-through assignment,
+codebook underutilization, dead codes and level collapse—that are documented in the VQ
+literature [REF: VQ optimization/codebook collapse]. The implemented fourth-article system
+therefore uses **compact continuous hierarchical latent state spaces**, in which both levels are
+end-to-end differentiable and independently decodable. This is an implementation choice, not an
+empirical conclusion that continuous representations are universally superior: the present
+repository contains no controlled hierarchical-VQ-versus-continuous comparison and makes no such
+claim. Representation sensitivity is instead tested within the continuous-codec family by the
+pre-registered alternate-codec-seed study in Chapter 4.
 
-[FIG 1-11 — PLACEHOLDER]
-Content: Training instability of hierarchical VQ configurations vs the stability of the
-continuous hierarchical autoencoder: loss / codebook-usage curves for the author's hierarchical
-VQ runs (diverging or collapsing) side by side with the continuous two-level AE training curve
-(converging). [AUTHOR: this figure exists only if the VQ-run logs were preserved; if not,
-downgrade to a textual account and delete this slot.]
-Source: NEW (draw from the author's experiment logs)
+![Representation interfaces and empirical scope](../../figures/fig56_representation_scope.png)
+
+**Figure 1.11 — Representation interfaces and the evidence boundary of this dissertation.**
+Discrete VQ models are reviewed as an important autoregressive family; the controlled experiments
+use a continuous two-level codec. The dashed path denotes a comparison not performed here.
+Source: author’s schematic.
 
 **Hierarchical latent video models.** The direct remedy for the flat-latent limitation is the
 class of models whose latent state space is explicitly multi-level, with distinct temporal or
@@ -664,15 +650,12 @@ span and is compared directly in Chapter 4. *(Chapter 3 develops the spatial for
 continuous latent interface and unidirectional context transfer; Chapter 4 treats it as one point
 in the broader context-packaging design space.)*
 
-[FIG 1-12 — PLACEHOLDER]
-Content: Spatially hierarchical latent video model with coarse packaged long history (MilliVid-class, shown in
-the minimal two-level form used in this work): per-frame two-level latents (coarse = low-rate
-layout/composition code, fine = high-rate texture code, each independently decodable); the
-predictor's context assembled as LONG coarse-token history + SHORT fine-token history at a
-matched total token budget vs a flat model's uniform window; cross-level (joint) attention with
-unidirectional context transfer marked; autoregressive rollout along t. Emphasize the token-budget
-comparison visually (two context bars of equal area, different shapes).
-Source: NEW (draw; align with the Chapter 3 architecture — hvp_rev/rhvd.py stack per DISS_DIGEST
+![Context-package comparison](../../figures/fig40_context_package_comparison.png)
+
+**Figure 1.12 — Context packages allocate equal capacity differently across reach and
+fidelity.** Flat contiguous, spatially hierarchical and temporally strided packages feed the same
+predictor family; the exact experimental token counts and target interfaces are reported in
+Chapters 3–4. Source: author’s schematic.
 §8 decision Q2)
 
 Formally, the hierarchical factorization of the video distribution replaces the flat conditional
@@ -781,7 +764,7 @@ i.e., precisely the MCMC chain (1.11)).)*
 
 An honest forward reference completes this review. In the present research the energy-based
 mechanism was not adopted a priori but *examined experimentally* under matched conditions: the
-matched-capacity, matched-compute mechanism study of Chapter 4 (§4.2) includes a two-sided
+matched-capacity, matched-NFE mechanism study of Chapter 4 (§4.2) includes a two-sided
 capability study of Energy-Based Transformers, run with the official published implementation and
 both published training recipes at the largest scale reachable on the available hardware. Its
 outcome is a **characterized negative** at that scale: one published recipe converges to a stably
@@ -858,12 +841,10 @@ the starting point to steer the generation toward a specified result. The diffus
 transfers the information of the image into its latent space, subtly influencing the direction of
 the process.
 
-[FIG 1-13 — PLACEHOLDER]
-Content: Scheme of the image-to-image approach for basic object consistency: reference image →
-partial noising to an intermediate diffusion state → conditional denoising → output preserving
-the reference's identity; annotate the noise-strength trade-off (more noise = more variability =
-less identity preservation).
-Source: KEEP old Fig 1.10 (описати)
+![Image-to-image conditioning](../../figures/fig41_image_to_image.png)
+
+**Figure 1.13 — Image-to-image conditioning.** Increasing noising strength expands variation but
+weakens direct preservation of the reference identity. Source: author’s schematic.
 
 This approach, however, has rigid systemic limitations — the difficulty of precise control: a
 higher degree of noising of the reference increases variability and loses the consistency of fine
@@ -882,11 +863,11 @@ into the reverse diffusion process. Methods of the ControlNet type perform the f
 boundary control of the admissible state space: the input image acts as a guiding form
 constraining the evolution of the system.
 
-[FIG 1-14 — PLACEHOLDER]
-Content: Scheme of ControlNet: the frozen diffusion backbone with the parallel trainable control
-branch consuming a structural control signal (depth/edges/segmentation), showing how the control
-signal constrains the admissible state space of generation (boundary control).
-Source: KEEP old Fig 1.11 (описати)
+![ControlNet conditioning](../../figures/fig42_controlnet.png)
+
+**Figure 1.14 — Structural control with a ControlNet-class branch.** A trainable branch maps
+edges, depth or segmentation into residual constraints for a frozen diffusion backbone. Source:
+author’s schematic after the ControlNet architecture [REF: ControlNet].
 
 Despite the effectiveness of ControlNet, it is not a complete solution for object consistency,
 since it focuses only on the form ("how") and not on the properties ("what"). A fully autonomous
@@ -932,21 +913,21 @@ problem through intervention in the attention mechanism (shared attention): targ
 information about the reference image during generation, copying its global stylistic
 characteristics (color palettes, brushwork) without interfering with spatial geometry.
 
-[FIG 1-15 — PLACEHOLDER]
-Content: Ensuring style consistency via the shared-attention mechanism (StyleAligned): reference
-image's attention features shared into the generation of a series of target images, all acquiring
-the common style while retaining distinct content.
-Source: KEEP old Fig 1.12 (описати)
+![Shared-attention style conditioning](../../figures/fig43_shared_attention.png)
+
+**Figure 1.15 — Style consistency through shared attention.** Reference attention features are
+shared across distinct target trajectories while their content conditions remain separate.
+Source: author’s schematic after StyleAligned [REF: StyleAligned].
 
 For a more thorough and qualitative analysis of generative models, within this dissertation
 research — published in **[A3]** (the consistency-criteria article) — the notion of **conceptual
-consistency** was formalized. *(Attribution fixed: the old text said «Стаття 1»; canonical labels
-per DISS_DIGEST §2. [AUTHOR: confirm against the final publication list that [A3] is the criteria
-article and that conceptual consistency is its contribution.])*
+consistency** was formalized.
 
-Relying on the two-stage model of visual perception (seeing through the gaze and integrated
-scene understanding) [REF: two-stage visual perception], the traditional division into style and
-object alone is incomplete. Conceptual consistency is the capacity of the generative system for
+Marr's multi-stage account of visual representation — progressing from image evidence toward
+structured descriptions of the scene [REF: multi-stage visual representation (image evidence
+toward a 3-D description)] — motivates a broad engineering analogy, but does not itself prescribe
+the taxonomy used here. The dissertation's narrower claim is that the traditional division into
+style and object alone is incomplete. Conceptual consistency is the capacity of the generative system for
 compositionality and extrapolation. It evaluates the ability of the model not merely to reproduce
 existing objects but to generate entirely new visual ideas (out-of-distribution), never
 encountered during training, while strictly observing the logic of the control conditions $u$.
@@ -1059,15 +1040,12 @@ the memory limits on trajectory depth by the time-agnostic backpropagation devel
 and Chapter 2. *(Misattribution fixed: the old text credited this to «Стаття 2» under the
 inconsistent numbering; canonical label [A2] = TempVerseFormer.)*
 
-[FIG 1-16 — PLACEHOLDER]
-Content: Trajectory consistency operationalized, conceptual two-panel figure. Panel (a):
-schematic rollout-error curves E_b(h) vs horizon h for the three hardness bins (easy / medium /
-hard re-entry), for a flat-context system and a hierarchical long-memory system: curves coincide
-on the easy bin, separate on the hard bin beyond the flat window's horizon boundary (vertical
-dashed line at h = w). Panel (b): timeline sketch of a re-entry event with the two systems'
-predictions at the re-entry frame (consistent restoration vs hallucinated/blurred content).
-Conceptual only — the measured versions of these curves are Chapter 4 figures.
-Source: NEW (draw)
+![Trajectory consistency operationalization](../../figures/fig44_trajectory_consistency.png)
+
+**Figure 1.16 — Conceptual operationalization of trajectory consistency.** The schematic predicts
+separation specifically on memory-relevant re-entry records beyond a short window; Chapter 4
+tests this prediction with exact generator-derived observability labels and paired rollouts.
+Source: author’s schematic; curves are illustrative, not measured.
 
 Systems analysis shows that none of the kinds of consistency can be considered in isolation:
 they form an interdependent hierarchy of criteria. For example, without trajectory consistency it
@@ -1115,11 +1093,11 @@ of methods for adaptive decomposition of visual data based on measuring their lo
 The study of hierarchical latent approaches established the remedy direction: an explicitly
 multi-level latent state space in which a compact upper (coarse) level, carrying few tokens per
 frame, can retain a long temporal context at a fixed token budget and thereby serve as the
-carrier of the long-range memory of the process. Within this direction the author's own
-experimental finding — the training instability of hierarchical vector-quantized (discrete-token)
-video models at practically reachable computational scale — motivates the choice of **compact
-continuous hierarchical latent state spaces** as the mathematical basis of the dissertation
-**[AUTHOR: receipts per §1.3.2]**.
+carrier of the long-range memory of the process. Discrete-token hierarchies remain an important
+reviewed alternative with codebook-specific optimization risks. The implemented and evaluated
+scope of this dissertation is a **compact continuous hierarchical latent state space**; because
+no controlled VQ-versus-continuous receipts are present, representation-family superiority is
+not claimed.
 
 The examination of energy-based models (EBM) recorded their systemic attraction — an explicit
 scalar optimization criterion doubling as an anomaly indicator — alongside their fundamental
@@ -1190,7 +1168,7 @@ fixed vocabulary; «виконано у Розділі 1» notes added for tasks
    measurement instrument.
 
 7. Conduct comprehensive experimental studies and approbation of the developed methods and
-   technology on synthetic and open datasets — including a matched-capacity, matched-compute
+   technology on synthetic and open datasets — including a matched-capacity, matched-NFE
    comparison of prediction mechanisms — and compare their efficiency and consistency with
    modern analogues.
 
@@ -1225,7 +1203,7 @@ apparatus, §1.4) plus conference theses; DISS_DIGEST §2 notes all six are curr
 | Рис. 1.12 — Стильова консистентність через спільну увагу (StyleAligned) | **KEEP** | FIG 1-15 (§1.4.3) |
 | Рис. 1.13 — Траєкторіальна консистентність через маніпуляції з простором шуму | **DROP** (belonged to the noise-inversion/energy framing; replaced by the rollout/re-entry operationalization) | — (replaced by NEW FIG 1-16) |
 | — | **NEW** — flat long-context barrier (attention blow-up + re-entry inaccessibility) | FIG 1-10 (§1.3.1) |
-| — | **NEW** — hierarchical-VQ instability vs continuous-AE stability [AUTHOR: only if logs exist] | FIG 1-11 (§1.3.2) |
+| — | **NEW** — discrete and continuous representation interfaces with an explicit evidence boundary | FIG 1-11 (§1.3.2) |
 | — | **NEW** — hierarchical latent model with coarse-level long memory (token-budget comparison) | FIG 1-12 (§1.3.2) |
 | — | **NEW** — trajectory consistency operationalized (stratified rollout curves, horizon boundary) | FIG 1-16 (§1.4.5) |
 

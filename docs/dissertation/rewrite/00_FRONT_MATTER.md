@@ -93,7 +93,7 @@ packages long-range context across temporal rate and spatial resolution. The sta
 representation (a frozen two-level convolutional autoencoder interface with per-level decodable
 coarse and fine latents); its coarse stream is the measured spatially compressed implementation
 of long-history packaging, not the only possible carrier of the memory horizon. Per-frame generation uses an iterative refinement (denoising
-diffusion) core, selected empirically by the matched-compute mechanism analysis of Chapter 4. The
+diffusion) core, selected empirically by the matched-capacity, matched-NFE mechanism analysis of Chapter 4. The
 inter-level transfer of context signals is realized within a single joint attention mechanism
 with per-token level, role, and frame conditioning (generalizing the cross-level cross-attention
 of the earlier design), with unidirectional control enforced by the information-design asymmetry
@@ -116,7 +116,7 @@ panning $64\times64$ viewport, with 67% of the world off-screen at any instant a
 period of approximately 48 frames), and a measured bridge evaluation on the standard Moving MNIST
 suite (canonical 10→10 protocol, n = 10,000; the model halves the persistence baseline's
 perceptual error, and the flat-versus-hierarchical null on this memory-horizon-free benchmark
-serves as the predicted negative control). A matched-capacity, matched-compute comparison of
+serves as the predicted negative control). A matched-capacity, matched-NFE comparison of
 prediction mechanisms (regression,
 diffusion, energy-based descent) on a shared backbone shows that regression averages over possible
 futures while diffusion commits to sharp, correctly located content (foreground error 0.0512
@@ -139,16 +139,20 @@ by measurement: classical backpropagation through time exhausts GPU memory at ro
 $K=120$, while the reversible implementation remains at approximately 1.1–1.2 GB through $K=160$.
 The practical application of the developed methods in the tasks of ORNETIKA LLC and in the
 educational process of VNTU is described (per the existing implementation acts, which cover the
-reversible-transformer method and entropy tokenization). [A2]'s published validations (2D/3D
-rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are reported as the receipts of the
-reversibility method; no new TaxiBJ/KTH commitments are made for the hierarchical model.
+reversible-transformer method and entropy tokenization). [A2]'s published 2-D rotating-shape
+validation is reported as the receipt of the reversibility method; [A1] supplies the 2-D/3-D
+entropy-tokenization examples. Moving MNIST and TaxiBJ are separate dissertation bridges, while
+MMNIST-CIFAR and KTH remain explicitly unexecuted extensions.
 
 The general conclusions present the main results of the dissertation research, confirming the
 fulfillment of all the set tasks, with honest scoping: the hierarchy is validated where its reach
 covers memory-relevant history under a bounded budget, while full-resolution fidelity can recover
 at larger tested budgets. A seed-0 late self-fed inversion did not replicate at two new training
 seeds and is therefore not stated as a general trust boundary. The energy-based mechanism is a
-characterized negative; reversibility is scoped by its applicability taxonomy.
+characterized negative; reversibility is scoped by its applicability taxonomy. The four central
+reach–fidelity directions survive all registered NFE/sampler variants and an independently
+trained continuous codec at the point-estimate level; the upper inversion is explicitly retained
+as a family-wise precision boundary under alternate sampler and codec conditions.
 
 ### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
 
@@ -190,12 +194,13 @@ characterized negative; reversibility is scoped by its applicability taxonomy.
    evaluation protocol as a first-class measurement instrument. *(Task 6)*
 
 7. Conducted comprehensive experimental verification of the developed methods and technology:
-   a matched-capacity, matched-compute comparison of prediction mechanisms (including the
+   a matched-capacity, matched-NFE comparison of prediction mechanisms (including the
    two-sided characterized study of energy-based descent), single-step and 152-frame
    autoregressive-rollout evaluations with clip-clustered paired-bootstrap confidence intervals, and
    memory-consumption measurements; the developed system outperforms the token-budget-matched
-   flat control exactly in the memory-horizon regime, and the boundary conditions of every claim
-   are stated explicitly. *(Task 7)*
+   flat control at the tested lower/interior points where its package alone reaches
+   memory-relevant history, while tested larger budgets expose a full-resolution-fidelity
+   inversion; the boundary conditions of every claim are stated explicitly. *(Task 7)*
 
 The main results of the dissertation research are published in 10 scientific works: 3 articles in
 professional journals of Ukraine in specialty 124; 1 article indexed in the Scopus scientometric
@@ -214,11 +219,11 @@ real list — see §3 below.]**
    spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
    hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
    and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
-   a flat context window at the same context-token budget, with the winning budgets predictable
-   from token arithmetic; unlike existing evaluation practice, which aggregates
+   a flat context window at the same context-token budget, with tested lower/interior and upper
+   regimes bracketed by explicit token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
    the memory contribution of the packaging directly measurable and localizes the improvement of
-   temporal consistency exactly in the regime where the memory horizon demands it. [UA-PASS:
+   temporal consistency to registered reach-differential populations. [UA-PASS:
    «Вперше розроблено методологію … яка, на відміну від існуючих …, забезпечує …» genre formula.
    Re-scoped 2026-07-07: the «вперше» is carried by the testbed methodology + matched-budget
    demonstration (genuinely unclaimed), NOT by the coarse-memory architecture itself, which
@@ -297,18 +302,19 @@ The entire publication list in the current draft (items [1]–[10]) belongs to Y
 donor template) and must be replaced wholesale with the applicant's real list. Per decision Q3 the
 real list itself is unchanged for now; canonical article labels used throughout the rewrite:
 
-- **[A1]** — hierarchy/BLT-adaptation article (UA professional journal): entropy-based adaptive
-  spatio-temporal decomposition, V-BLT, procedural data synthesis. **[AUTHOR: exact bibliographic
-  entry.]**
-- **[A2]** — Kulyk L. «Temporal Modeling with Reversible Transformers» (TempVerseFormer), Springer
-  Neural Computing and Applications, 2025, Scopus, solo. **[AUTHOR: exact entry; confirm whether
-  the "Q1" quartile claim in the current ВСТУП holds or must be softened to "Scopus-indexed".]**
-- **[A3]** — consistency-criteria article (UA professional journal): conceptual consistency and
-  the criteria apparatus. **[AUTHOR: exact entry.]**
+- **[A1]** — Kulyk L. R., Mokin O. B. «Scaling Video Prediction with Spatio-Temporal Patches»,
+  *Visnyk of Vinnytsia Politechnical Institute*, 2025, No. 5, pp. 129–139,
+  DOI 10.31649/1997-9266-2025-182-5-129-139.
+- **[A2]** — Kulyk L. «Temporal modeling with reversible transformers» (TempVerseFormer),
+  *Neural Computing and Applications*, 2026, Vol. 38, article 30,
+  DOI 10.1007/s00521-025-11707-3, sole author, Scopus-indexed.
+- **[A3]** — Kulyk L. R., Mokin O. B. «Methods for Ensuring Consistent Generation in Diffusion
+  Models», *Visnyk of Vinnytsia Politechnical Institute*, 2024, No. 4, pp. 75–85,
+  DOI 10.31649/1997-9266-2024-175-4-75-85.
 - **[A4]** — the fourth article (in finalization): a controlled causal study of long-span
   context packaging (rate × resolution × depth) for long-horizon video prediction — the
   memory-horizon testbed, the matched-token-budget frontier with measured edges, the shape study,
-  the matched-compute mechanism study including the EBT characterized negative, and the
+  the matched-capacity, matched-NFE mechanism study including the EBT characterized negative, and the
   reversibility theory (non-core supporting material per the 2026-07-10 triage). **[AUTHOR: target venue and status by
   defense.]**
 - 6 conference theses. **[AUTHOR: identify all six; DSMSI-2023 participation needs verification

@@ -298,13 +298,17 @@ foreach ($evalRow in $dispatch.rows) {
 }
 
 $env:CUDA_VISIBLE_DEVICES = "-1"
+$savedErrorActionPreference = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 & .\venv\Scripts\python.exe scripts\analyze_e7a_codec_robustness.py `
     --config $Config --manifest $Manifest --alternate-ae $altAe --run-root artifacts/runs `
     --out-json artifacts/e7a_codec_robustness/results.json `
     --out-md docs/confirmation/E7A_RESULTS.md `
     --wandb-project $configValue.evaluation.wandb_project --wandb-group $group 2>&1 |
     Tee-Object -FilePath $Log -Append
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$analysisCode = $LASTEXITCODE
+$ErrorActionPreference = $savedErrorActionPreference
+if ($analysisCode -ne 0) { exit $analysisCode }
 & .\venv\Scripts\python.exe scripts\validate_e7a_completion.py `
     --config $Config --manifest $Manifest --alternate-ae $altAe --floor $floorReport `
     --results artifacts/e7a_codec_robustness/results.json --gpu-ledger $ledger `

@@ -167,16 +167,15 @@ merely gradient-detached but entirely frozen): pixel-space rendering can never d
 optimization of the dynamics core, and all pixel-space metrics of §3.4.3 are measured through one
 and the same fixed decoder for every compared system.
 
-**[FIG 3-1 — PLACEHOLDER]**
-*Content:* overall architecture of the developed model: input frames → frozen two-level conv-AE
-(shared encoder trunk; coarse $16{\times}4{\times}4$ and fine $16{\times}8{\times}8$ taps; two
-independent decoders back to $64{\times}64$); standardization layer (3.3); the window-DiT
-generation core (§3.2) consuming the coarse ring buffer (48 frames), the fine ring buffer (6
-frames), the 4 recorded actions and the noise level $\tau$; predicted 4-frame window of latent
-pairs; frozen fine decoder rendering the prediction. Freeze symbols on the AE; a dashed
-"no-gradient" boundary between the core and the AE.
-*Source:* **NEW** (draw from `hvp_rev/hier_convae.py` + `hvp_rev/rhvd.py`; no old figure depicts
-this system).
+**Рисунок 3.1 — Архітектура моделі та способи пакування контексту.**
+*Content:* input frames → frozen two-level conv-AE (shared encoder trunk; coarse
+$16{\times}4{\times}4$ and fine $16{\times}8{\times}8$ taps); training-only latent
+standardization; the shared WindowDiT generation core consuming a selected flat, spatial or
+temporal package together with actions; a jointly predicted four-frame latent window; and the
+frozen fine decoder. The lower panel reports exact package accounting and makes the 1,088-token
+temporal versus 1,152-token spatial comparison explicitly near-matched rather than exact.
+*Source:* **`docs/figures/fig16_context_packaging_architecture.png`** and vector PDF; generated
+deterministically by `scripts/make_rft_core_schematics.py` from the frozen interface.
 
 ### 3.1.2 Передача контекстних сигналів між рівнями: від перехресної уваги до спільної уваги
 
@@ -226,11 +225,10 @@ This generalization has three systemic consequences:
    developed model, the spatial correspondence between a $4{\times}4$ coarse cell and its
    $2{\times}2$ block of $8{\times}8$ fine cells is available to the network through the learned
    per-level spatial position embeddings, but it is not imposed as a hard constraint; at the
-   adopted resolutions the joint attention learns the routing directly. **[AUTHOR: the old text
-   motivates the hard mask by quadratic-cost and leakage arguments at 32×32 resolution; at 4×4/8×8
-   those arguments are moot. Confirm you are comfortable stating the hard mask is *dropped* (I
-   recommend yes — it is the truth of the implementation), with the RoPE-ND scaled-coordinate
-   mechanism remaining in Chapter 2 as the instrument developed for the A1 system.]**
+   adopted resolutions the joint attention learns the routing directly. Thus the hard
+   $2{\times}2$ mask of the superseded 32×32 design is explicitly not part of the validated
+   4×4/8×8 implementation. RoPE-ND remains the scaled-coordinate instrument developed for the
+   [A1] system in Chapter 2.
 
 ### 3.1.3 Односпрямоване керування з відсіканням градієнтних зв'язків
 
@@ -357,13 +355,14 @@ never needs to disentangle a summed multi-step action code — each generated fr
 the control signal that produced it. [UA-PASS: keep «покадрове кондиціонування керуючим
 сигналом» for "per-target-frame action conditioning".]
 
-**[FIG 3-2 — PLACEHOLDER]**
-*Content:* token-sequence layout diagram for one prediction step: a horizontal bar of 1472 token
-slots segmented as 768 coarse-context (48 frames × 16), 384 fine-context (6 frames × 64), and
-4 × (16 + 64) target tokens; frame-index axis 0…51 annotated below; per-token embedding stack
-(spatial + level + role + frame) and conditioning vector (noise level; per-frame action) shown as
-layered strips; a bracket marking the 1152 context tokens equated to the flat control's budget.
-*Source:* **NEW** (from `hvp_rev/rhvd.py::WindowDiT._ctx_tokens/forward`).
+**Рисунок 3.2 — Розкладка токенів одного кроку прогнозування.**
+The 1,472-token sequence contains 768 coarse-context tokens, 384 recent fine-context tokens and
+four 80-token coarse-plus-fine targets. The bracket identifies the 1,152-token context budget
+matched by the central contiguous-fine control; the lower strips show the additive token
+embeddings and per-target action/noise conditioning.
+*Source:* `docs/figures/fig22_token_sequence_layout.png`; deterministic source
+`scripts/make_dissertation_missing_figures.py`, reflecting
+`hvp_rev/rhvd.py::WindowDiT._ctx_tokens/forward`.
 
 ### 3.2.2 Трансформерний остов з адаптивною нормалізацією
 
@@ -371,8 +370,8 @@ layered strips; a bracket marking the 1152 context tokens equated to the flat co
 
 The sequence (3.4) with conditioning (3.5) is processed by a stack of $N_{\mathrm{blk}} = 8$
 pre-norm transformer blocks of width $d = 384$ with 6 attention heads and MLP expansion ratio 4
-(≈22 M parameters **[AUTHOR: confirm the exact parameter count from the rhvd training log line
-`params=…M`]**). Attention is full (every token attends to every token): the causality of the
+(22.18–22.19 M trainable parameters for the two-level arms; the 0.01 M difference is due to the
+package-specific input/output interface). Attention is full (every token attends to every token): the causality of the
 overall system is enforced by sequence construction and by the autoregressive recursion (§3.3.2),
 not by an attention mask inside the step.
 
@@ -481,8 +480,9 @@ gradient-norm clipping at 1.0; batch size 16–32; 30{,}000 training steps per s
 exponential moving average (EMA) of the parameters with decay 0.999 maintained throughout, with
 *all* evaluation performed on the EMA weights. Training uses clean (ground-truth) contexts only —
 no self-generated context injection in the base protocol; the pre-registered design reserves
-context-noise augmentation as a single budgeted fallback, and Chapter 4 reports that the fallback
-was not needed [AUTHOR: confirm against the final G2b outcome].
+context-noise augmentation as a single budgeted fallback. It was not activated: the observed
+deep-horizon sharpness-retention failure is reported as a boundary result rather than repaired by
+an adaptive retraining branch.
 
 Training-noise/teacher-forcing scope note for the defense: the long-horizon capability claimed in
 Chapter 4 is achieved *without* backpropagation through the rollout — the model is trained on
@@ -606,14 +606,12 @@ the flat control warms its 18-frame buffer from ground-truth frames 30–47): ev
 generating at the same frame of the same clip, so the per-(clip, horizon) records of §3.4 pair
 exactly across arms.
 
-**[FIG 3-3 — PLACEHOLDER]**
-*Content:* rollout ring-buffer schematic: timeline of a 200-frame clip with the 48-frame GT
-warm-up shaded; the two ring buffers (48-slot coarse, 6-slot fine) drawn as circular/stack
-registers above the timeline; one recursion step shown as: buffers + 4 actions → DDIM(16) → 4
-new latent pairs → append/evict; the "advance by 4" pointer; annotation that buffers stay
-consecutive (train = rollout layout) and that memory state is constant, $48 \cdot 256 + 6 \cdot
-1024 = 18{,}432$ numbers, independent of rollout length.
-*Source:* **NEW** (from `hvp_rev/rhvd.py::rollout_eval`).
+**Рисунок 3.3 — Кільцеві буфери авторегресійного розгортання.**
+After the common 48-frame ground-truth warm-up, each step combines the fixed 48-slot coarse and
+6-slot fine buffers with four actions, samples four latent pairs with DDIM-16, and appends/evicts
+four positions. The stored state is 18,432 latent numbers and does not grow with rollout length.
+*Source:* `docs/figures/fig23_rollout_ring_buffer.png`; deterministic source
+`scripts/make_dissertation_missing_figures.py`, reflecting `hvp_rev/rhvd.py::rollout_eval`.
 
 ### 3.3.2 Часова маршрутизація: чесне відображення блочно-каузального принципу
 
@@ -641,12 +639,10 @@ mapping explicitly rather than letting the old vocabulary stand:
   context to the fixed range $0 \ldots 47$ and its targets to $48 \ldots 51$, the absolute
   indices *are* relative to the window — the scheme is translation-invariant across the rollout
   by construction, which is the property the old text sought from relative positional coding.
-  **[AUTHOR: RoPE-ND from [A1] is used in the A1 (V-BLT) system described in Chapter 2; the final
-  hierarchical model uses learned frame embeddings as stated here. Decide whether to (a) present
-  both as level-appropriate instruments (recommended: RoPE-ND where token counts and
-  cross-resolution alignment demand it — Ch.2; learned indices where the window re-indexing makes
-  them equivalent and cheaper — this chapter), or (b) unify by porting RoPE-ND into the final
-  model, which would require a new training run and is NOT what the validated system does.]**
+  RoPE-ND and these learned indices are therefore presented as level-appropriate instruments:
+  RoPE-ND for the variable-patch, cross-resolution [A1] system in Chapter 2, and fixed learned
+  indices for the re-indexed window used by the validated hierarchical predictor. No unmeasured
+  RoPE-ND retrofit is attributed to the final model.
 
 ### 3.3.3 Аналіз пам'яті та обчислювальної складності
 
@@ -845,14 +841,13 @@ Datasets (fixed, generated once, shared by every experiment): `loopmom_train` �
 the multi-loop rollouts of Algorithm 3.1 (rollout evaluation uses 100 of them per arm). Test
 latents are standardized with the training statistics (3.3).
 
-**[FIG 3-4 — PLACEHOLDER]**
-*Content:* testbed geometry and re-entry: (top) the 192×64 toroidal world strip with three digits
-and the 64×64 viewport window marked, arrow showing the momentum pan and the wrap-around; (middle)
-a row of consecutive observed frames showing a digit exiting the right edge and re-entering ~48
-frames later; (bottom) timeline annotating loop period ≈48, the 6-frame short reference window,
-and a hard re-entry event (target sprite columns never covered by the short window).
-*Source:* **ADAPT** (from the article's testbed figure / `docs/draft/CH2_TESTBED.md` FIG ch2-1
-materials; regenerate panels from `scripts/gen_looping.py` output).
+**Рисунок 3.4 — Геометрія LoopMom та аналітична смуга досяжності.**
+The 64-pixel viewport traverses a 192-pixel toroidal static world. Saved positions make geometric
+observability exact; the highlighted 14-to-48-frame band contains evidence available to the
+long-reach package but outside the compared short flat window. The separate pose-mosaic inset is
+marked as a privileged reference because it receives exact pose and raw stored pixels.
+*Source:* `docs/figures/fig15_loopmom_observability_schematic.png`; deterministic source
+`scripts/make_rft_core_schematics.py`.
 
 ### 3.4.2 Точні мітки складності повторного входження
 
@@ -889,12 +884,24 @@ function of rollout horizon.
 
 *(Metrics: foreground-masked, per-image, decoded.)*
 
-Aggregate pixel metrics are excluded by protocol. In this project's own measurements on
-Moving-MNIST-class data (≈93% black background), a constant all-black prediction outperformed a
-trained CW-VAE [REF] on aggregate SSIM and PSNR — a benchmark on which the empty image wins is
-not evidence about dynamics [AUTHOR: the appendix must include the citable table behind this
-sentence, per the CH2_TESTBED provenance note]. All metrics below are computed on decoded pixels
-(through the frozen fine decoder), under a foreground mask, at the per-image level.
+Aggregate pixel metrics are excluded by protocol. On the archived CW-VAE Moving-MNIST population
+(100 clips, 36 context frames, 964 open-loop targets), a deterministic all-black prediction
+scores 0.7681 SSIM and 13.941 dB, while the trained CW-VAE's best-of-5-by-SSIM curve scores
+0.5708 and 12.918 dB. The source dataset, archived curve and evaluator are hash-pinned in
+`artifacts/cwvae_black_baseline/results.json`; record-level CW-VAE values were not retained, so
+this is a same-population metric diagnostic without paired inference, not a budget-matched model
+comparison. A benchmark on which the empty image wins its full-frame metrics is not evidence
+about dynamics. All metrics below are therefore computed on decoded pixels through the frozen
+fine decoder and reported with foreground, background, union, full-frame and component-sensitive
+views.
+
+**Table 3.4-A — Same-population Moving-MNIST metric sanity diagnostic.**
+
+| Open-loop horizon | CW-VAE SSIM | All-black SSIM | CW-VAE PSNR, dB | All-black PSNR, dB |
+|---|---:|---:|---:|---:|
+| +1–48 | 0.6338 | 0.7679 | 13.944 | 13.943 |
+| +49–192 | 0.5665 | 0.7679 | 12.625 | 13.942 |
+| +193–964 | 0.5677 | 0.7682 | 12.909 | 13.941 |
 
 - **Foreground MSE (fg-MSE).** Predictions and ground truth are decoded to $[0,1]$; the error is
   averaged over pixels where the ground-truth frame exceeds the threshold $0.5$. The threshold is
@@ -1039,9 +1046,9 @@ natural next rung (Chapter 4, conclusions; ВИСНОВКИ).
    pre-registered hypotheses on this design — including the honest fallback conclusions specified
    in advance — constitutes §§4.2–4.4 of Chapter 4.
 
-The results of this chapter have been published in [A4] **[AUTHOR: bind to the final numbered
-publication list; add the relevant conference theses if any cover the hierarchical model or the
-testbed]**.
+The results of this chapter form the methods and model section of [A4]. Its final numbered
+bibliographic position and any related conference theses are publication-administration fields,
+not scientific dependencies of the chapter.
 
 ---
 
@@ -1064,6 +1071,6 @@ testbed]**.
 | (3.1)–(3.2) | $x^* = \arg\min_x E_\theta(x,u)$; Langevin step | **MOVE → Ch.4 §4.2** (setup of the mechanism study); referenced from Ch.1 §1.3.3 as literature |
 | (3.3)–(3.5) | reversible-layer attention/cross-attention/MLP updates | superseded by (3.6)–(3.7) (adaLN-Zero blocks of the actual backbone); reversible blocks remain in Ch.2 |
 | (3.6) | per-token scalar energy sum | **MOVE → Ch.4 §4.2** (EBT arm) |
-| (3.7)–(3.14) | K-step Langevin training loop + SmoothL1+LPIPS loss | **MOVE → Ch.4 §4.2**, condensed (S1/S2 recipe description); LPIPS term does not survive (not used in the final study) [AUTHOR: verify against final Ch.4 text] |
+| (3.7)–(3.14) | K-step Langevin training loop + SmoothL1+LPIPS loss | **MOVE → Ch.4 §4.2**, condensed (S1/S2 recipe description); the LPIPS term is absent from the final measured mechanism study |
 | (3.15) | per-level Langevin recurrence | **MOVE → Ch.4 §4.2** |
 | New (3.1)–(3.18) | as numbered in this file | replace the old chapter's equation register wholesale |

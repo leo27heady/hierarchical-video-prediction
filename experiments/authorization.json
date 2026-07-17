@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-16-e7a-final-prelaunch-authorization",
+  "updated": "2026-07-17-e7a-terminal-e8a-preparation",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -181,8 +181,8 @@
       ]
     },
     "alternate-autoencoder-robustness": {
-      "status": "AUTHORIZED",
-      "meaning": "User-authorized E7a is frozen as a seven-arm, predictor-seed-0 whole-codec intervention with fourteen same-holdout evaluations. CPU/parity/data/collision/design gates pass for dataset loopmom-codec_robustness_holdout-20260716-77a4ec5aee94; 35.3 hours are allocated within a 36-hour hard maximum.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E7a completed 7/7 alternate-codec trainings and 14/14 locked evaluations in 30.0238 project GPU-hours. The independent validator and 27-run W&B audit pass. Verdict: CODEC_DIRECTIONALLY_ROBUST; the alternate-codec 2,432-token inversion remains positive but its simultaneous interval includes zero.",
       "required_files": [
         "docs/E7A_ALTERNATE_CODEC_ROBUSTNESS_PROTOCOL_2026-07-16.md",
         "experiments/configs/alternate_codec_robustness.json",
@@ -221,6 +221,47 @@
         {
           "path": "gates/e7a_dispatch_validated.json",
           "attests": {"status": "E7A_EVALUATION_DISPATCH_PASS", "subject": "gates/e7a_evaluation_dispatch.json"}
+        }
+      ]
+    },
+    "pose-indexed-retrieval": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "meaning": "E8a is a privileged exact-pose raw-pixel reference on a separate purpose-locked LoopMom set. It is not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence. Authorization requires the complete CPU, purpose-lock, collision, data and W&B gates and a clean source commit.",
+      "required_files": [
+        "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
+        "experiments/configs/pose_indexed_retrieval.json",
+        "docs/confirmation/E8A_TABLE_SHELL.md",
+        "hvp_rev/rhvd.py",
+        "scripts/generate_e8a_reference_set.ps1",
+        "scripts/evaluate_e8a_pose_mosaic.py",
+        "scripts/analyze_e8a_pose_mosaic.py",
+        "scripts/validate_e8a_design.py",
+        "scripts/validate_e8a_completion.py",
+        "scripts/run_e8a_label_parity.py",
+        "scripts/run_e8a_cpu_gate.py",
+        "scripts/run_e8a_reference.ps1",
+        "tests/test_e8a_pose_mosaic.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/e8a_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md"}
+        },
+        {
+          "path": "gates/e8a_config_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/pose_indexed_retrieval.json"}
+        },
+        {
+          "path": "gates/e8a_cpu_validated.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e8a_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e8a_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e8a_design_validation.json"}
+        },
+        {
+          "path": "gates/e8a_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e8a_dataset_validation.json"}
         }
       ]
     },

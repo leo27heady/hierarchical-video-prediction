@@ -1,0 +1,22 @@
+{
+  "article_claims": {
+    "codec_robustness": "artifacts/e7a_codec_robustness/results.json",
+    "head_package_heterogeneity": "artifacts/e4b_head_package/results.json",
+    "moving_mnist_metric_sanity": "artifacts/cwvae_black_baseline/results.json",
+    "pose_indexed_reference": null,
+    "reach_mechanism": "artifacts/confirmation_e2/results.json",
+    "sampler_nfe_robustness": "artifacts/e7c_sampler_nfe/results.json",
+    "self_fed_negative_replication": "artifacts/e5a_trust_replication/results.json",
+    "tested_frontier": "artifacts/confirmation_e2/results.json"
+  },
+  "schema_version": 1,
+  "sha256": {
+    "artifacts/confirmation_e2/results.json": "85d01085e9ac074cd099e7b611101b30b7b7112b1f0230ea9163d9825cf2166e",
+    "artifacts/cwvae_black_baseline/results.json": "561b0b3e5eac23276199b601fd22f77303d193921241bd53275861e17617bc78",
+    "artifacts/e4b_head_package/results.json": "eb917d948d852d022b872532b826bdb20fc1f17ecfddb55a76446f1821bc9e89",
+    "artifacts/e5a_trust_replication/results.json": "c38244c207c24c17d6081a2dc75004b6ae96c63c7814d1cfdfbd87bb8ab5414b",
+    "artifacts/e7a_codec_robustness/results.json": "3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173",
+    "artifacts/e7c_sampler_nfe/results.json": "93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6"
+  },
+  "status": "AWAITING_LATER_STAGES"
+}

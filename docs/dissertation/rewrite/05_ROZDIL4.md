@@ -18,11 +18,12 @@
 > (§6 «НОВИЙ РОЗДІЛ 4», §8 decisions Q4/Q6/Q7, item 35 §4.1 disposition, item 38 acts),
 > `docs/dissertation/rewrite/00_FRONT_MATTER.md` and `04_ROZDIL3.md` (vocabulary, cross-references).
 > **Disposition of the old Ch.4 (per DISS_DIGEST §3):** old §4.1 is **REWRITTEN/EXTENDED** (the
-> [A2] TempVerseFormer receipt datasets are kept as-is per decision Q4; the looping memory-horizon
-> testbed becomes the primary instrument; TaxiBJ/KTH survive only as [A2] receipts); §§4.2–4.4
+> [A2] TempVerseFormer 2-D rotation receipt is kept as published; the looping memory-horizon
+> testbed becomes the primary instrument; Moving MNIST and TaxiBJ are separate measured bridges,
+> while MMNIST-CIFAR and KTH remain future protocols); §§4.2–4.4
 > stubs are **WRITTEN NEW** from the [A4] campaign; a NEW §4.6 (generalization of the selected
-> configuration — mirroring the final article's full scope: the MEASURED OpenSTL bridge from
-> `docs/draft/T7_BRIDGE.md` plus [EXPECTED]-marked transfer shells) is INSERTED after the
+> configuration — mirroring the final article's full scope: the MEASURED OpenSTL and TaxiBJ
+> bridges, with unexecuted transfer suites retained only as future protocols) is INSERTED after the
 > boundary study; old §4.5 (впровадження) is **KEPT** with the existing acts wording
 > (TempVerseFormer + entropy tokenization only — no new claims, digest item 38) and lands as
 > §4.7; the chapter conclusions land as §4.8 with real content. Old Ch.3 figures Рис. 3.1/3.2/3.4
@@ -112,24 +113,34 @@ point (never mixed across operating points).**
 | Collapse threshold (no digit structure below) | ≈0.08 | ≈0.08 |
 | Frozen AE reconstruction (fine / coarse MSE) | 0.0020 / — | 0.0024 / 0.0059 |
 
-### 4.1.2 Набори даних методу оборотних перетворень ([A2])
+**Рисунок 4.A — Геометрія LoopMom та зареєстрована смуга досяжності
+(остаточна нумерація під час верстки).**
+*Content:* toroidal world, moving viewport, persistent digits and the pair-derived
+`14 < dt <= 48` population. The privileged pose-indexed raw-memory reference is drawn
+separately from token-budget-matched neural packages.
+*Source:* `docs/figures/fig15_loopmom_observability_schematic.png` and vector PDF; generated
+deterministically from the frozen E2 geometry by `scripts/make_rft_core_schematics.py`.
 
-*(The datasets of the reversible-transformation method — [A2] receipts, kept as published.)*
+### 4.1.2 Синтетичний набір методу оборотних перетворень ([A2])
+
+*(The synthetic suite of the reversible-transformation method — the [A2] receipt, kept as
+published.)*
 
 The experimental validation of the reversible-transformer method and time-agnostic
-backpropagation (§§2.3–2.4) was published in [A2] and is reported here as its published receipts,
-without new commitments: procedurally synthesized **2D rotations** (rotating polygonal shapes,
-$64 \times 64$ — the base test of the method, where the time-to-predict is a controlled
-variable), **3D polycubes** (procedurally generated volumetric objects with occlusion and
-non-uniform rotation), and the open benchmarks **Moving MNIST**, **MMNIST-CIFAR**, **TaxiBJ**,
-and **KTH**. **[AUTHOR: carry the exact dataset parameters and result tables from the [A2]
-publication text; the old draft's §4.1 description (AdamW, lr $10^{-4}$ cosine, batch 8–32,
-100–300 epochs) must be verified against the published paper before it is retained. The old
-draft's "A100 80GB cloud" hardware claim is kept only if receipts exist — otherwise delete.]**
-Per author decision Q4 (as later amended by execution): KTH appears in this dissertation
-exclusively as an [A2] receipt; TaxiBJ was originally scoped the same way, but the transfer run
-of §4.6.5 was subsequently executed (2026-07-07) and TaxiBJ therefore appears BOTH as an [A2]
-receipt and as a measured transfer suite of the Chapter 3 stack.
+backpropagation (§§2.3–2.4) was published in [A2] on procedurally synthesized **2-D rotating
+shapes** at $64 \times 64$ resolution. The suite controls the temporal law—constant, changing,
+oscillating, interrupted, and combined rotation—and therefore isolates the effect of prediction
+depth and temporal discontinuity. The published regime uses a 12-frame context, grows the
+prediction depth from one to five frames during 30,000 training steps, evaluates 2,000 independently
+generated sequences, and trains all compared models with Adam at learning rate $10^{-5}$ on one
+NVIDIA RTX 4060 Ti 16 GB. The memory-scaling measurements use batch 32. These values replace the
+unsupported old-draft claims of AdamW with cosine decay, 100–300 epochs, and A100 80 GB hardware.
+
+The **3-D polycube** and entropy-tokenization material belongs to [A1], not [A2]. Moving MNIST,
+MMNIST-CIFAR, TaxiBJ, and KTH are likewise not reported as [A2] experiments: Moving MNIST and
+TaxiBJ are separate dissertation bridges (§§4.6.2 and 4.6.5), whereas MMNIST-CIFAR and KTH remain
+explicitly unexecuted extensions. This separation preserves the content and scope of the existing
+publications instead of retroactively enlarging them.
 
 ### 4.1.3 Міст до стандартного стенда OpenSTL/MMNIST
 
@@ -237,15 +248,12 @@ single-step coverage study (§4.2.2), its rollout reversal (§4.2.3), and the tw
 the energy-based head (§4.2.4). The section thereby supplies the empirical selection evidence
 promised in §3.2 (the diffusion core) *and* the honest boundary of that selection.
 
-**[FIG 4-1 — PLACEHOLDER]**
-*Content:* the three prediction objectives compared on one diagram: direct regression (predict
-the target latent, penalize distance to the single truth), denoising diffusion (predict the
-velocity of a noised target across a schedule), and energy-based descent (learn a scalar
-consistency criterion, generate by gradient descent on the candidate); annotate what each
-objective does with predictive multimodality (average / commit per sample / descend the
-landscape).
-*Source:* **ADAPT** (old Рис. 3.2 — the diffusion-vs-EBM objective comparison — retitled to
-three objectives including regression, per the `04_ROZDIL3.md` disposition table).
+**Рисунок 4.1 — Три голови прогнозування у спільному контекстному стенді.**
+Direct regression predicts one target latent, diffusion predicts a denoising velocity and commits
+through DDIM sampling, while the energy head learns a scalar landscape traversed by candidate
+descent. The diagram separates objective and inference from the shared context question.
+*Source:* `docs/figures/fig24_generation_objectives.png`; deterministic source
+`scripts/make_dissertation_missing_figures.py`.
 
 ### 4.2.1 Спільний випробувальний стенд механізмів
 
@@ -318,11 +326,13 @@ budget, and exact hardness stratification — and its protocol scope is the poin
 selection is an oracle coverage regime. [UA-PASS: «регресія усереднює — дифузія фіксує
 гіпотезу».]
 
-**[FIG 4-2 — PLACEHOLDER]**
-*Content:* decoded panels (last context | prediction | ground truth) for the regression and
-diffusion arms on identical evaluation inputs; the regression arm hedges the re-entering digit
-into a blur, the diffusion arm commits to a sharp, correctly located digit.
-*Source:* **ADAPT** (article assets `logs_rhcp/step1_mech_clean_{reg,diff}.png`, compose).
+**Рисунок 4.2 — Однокрокові прогнози регресійної та дифузійної голівок.**
+Each row shows last context, prediction and ground truth on identical inputs. The panels are
+descriptive examples of the registered single-step regime; the aggregate and paired results,
+not a selected row, determine the comparison.
+*Source:* `docs/figures/fig29_mechanism_single_step_samples.png`, composed without pixel editing
+from `logs_rhcp/step1_mech_clean_{reg,diff}.png` by
+`scripts/make_dissertation_missing_figures.py`.
 
 ### 4.2.3 Розворот у розгортанні: регресія виграє режим best-of-1
 
@@ -397,13 +407,12 @@ the same units); and the decoded output's foreground sharpness (collapse thresho
 minimum energy, 4 descent steps, inference $\alpha/4$, Langevin noise, probed at both the
 current-$\alpha$ and initial-$\alpha$ readings).
 
-**[FIG 4-3 — PLACEHOLDER]**
-*Content:* the energy-based arm as tested: reference transformer backbone with the per-frame
-scalar energy head and the K-step descent generation loop (random-noise init → energy gradient
-steps → candidate), with the two flagged adaptations (1,280-d frame token; action embedding)
-marked.
-*Source:* **ADAPT** (old Рис. 3.4, condensed per digest item 31; the backbone half of the old
-figure is superseded by FIG 3-1/3-2).
+**Рисунок 4.3 — Енергетична голівка та цикл генерації градієнтним спуском.**
+The tested head scores a 1,280-dimensional per-frame candidate together with context and actions.
+Generation repeatedly updates the candidate using its energy gradient and the registered noise
+rule. This makes landscape ordering and reachability by descent separately testable.
+*Source:* `docs/figures/fig25_ebt_generation_loop.png`; deterministic source
+`scripts/make_dissertation_missing_figures.py`.
 
 **The S2 recipe: a stably mis-ordered landscape.** The S2 run converges (training loss settles at
 ≈0.597 from roughly step 7,000 to the end) — and its landscape is stably wrong. At **every one of
@@ -491,19 +500,18 @@ configurations (the extrapolation-risk record).**
 | Data | synthetic 64×64 grayscale; 2,700 clips × 100 frames | natural video, 224×224, pretrained-AE latents | same |
 | Hardware | 1× RTX 4060 Ti 16 GB, fp32 | 4 GPUs/node | 4 GPUs/node |
 
-**[FIG 4-4 — PLACEHOLDER]**
-*Content:* $E(\text{target})$, $E(\text{mean})$, $E(\text{randn})$ versus training step, S1 and
-S2 side by side; S2 stays mis-ordered (mean below target) through 20k converged steps; S1 flips
-to the correct ordering at ≈6k and the gap grows — yet neither generates.
-*Source:* **NEW** (plot from the probe data; the *conceptual* energy-landscape drawing of old
-Рис. 3.1 may serve as an inset explaining what "ordering" means, per the `04_ROZDIL3.md`
-disposition).
+**Рисунок 4.4 — Упорядкування енергетичного ландшафту за двома рецептами.**
+S1 changes to the desired target-below-mean ordering after approximately 6,000 updates; S2 keeps
+the batch mean below the target through 20,000 updates. Both series include the random-candidate
+reference.
+*Source:* `docs/figures/fig26_ebt_landscape_ordering.png`, parsed deterministically from
+`logs_rhcp/ebt_scaled_{s1,s2}.log` by `scripts/make_dissertation_missing_figures.py`.
 
-**[FIG 4-5 — PLACEHOLDER]**
-*Content:* cold-descent foreground sharpness versus training step for S1 and S2, with the 0.08
-structure threshold and the ≈0.24 decoder ceiling marked; descent output stays in the collapse
-regime under both recipes; S1's small upward trend remains ≈2.3× below structure.
-*Source:* **NEW** (plot from the probe data).
+**Рисунок 4.5 — Різкість переднього плану після холодного енергетичного спуску.**
+Both recipes remain below the preregistered 0.08 structure threshold and far below the
+approximately 0.24 decoder reference, even after S1 learns the desired energy ordering.
+*Source:* `docs/figures/fig27_ebt_descent_sharpness.png`, parsed deterministically from
+`logs_rhcp/ebt_scaled_{s1,s2}.log` by `scripts/make_dissertation_missing_figures.py`.
 
 ### 4.2.5 Висновок щодо генеративного ядра
 
@@ -513,16 +521,20 @@ The head ranking is **regime-dependent**: diffusion for the single-step best-of-
 regime, regression for the deterministic best-of-1 rollout regime, energy-based descent for
 neither at 16 GB-reachable scale (a two-sided characterized negative: ordering recipe-dependent,
 reachability failing under both recipes and under the paper's own sampler). The memory studies
-that follow are therefore run with **both** viable heads wherever a conclusion could depend on
-the head (§4.3.5, §4.4), so that no memory claim of this dissertation rides on a head choice.
+that follow therefore use **both** viable heads for the central matched-budget memory comparison
+(§4.3.5), while §4.4 estimates and reports package preference separately by head and training
+seed. The central reach result is not tied to one head; the broader ordering of temporal and
+spatial packages is explicitly head- and seed-conditional.
 
 ## 4.3 Одновкроковий гейт пам'яті та розгортальне дослідження зі зрівняним бюджетом
 
 *(The single-step memory gate and the matched-budget rollout study.)*
 
-This section verifies the central pre-registered prediction of Table 3.1: at an equal
-context-token budget, the hierarchical allocation (long coarse memory + recent fine window) beats
-the flat allocation exactly where the memory horizon demands it.
+This section tests the central pre-registered prediction of Table 3.1: at an equal
+context-token budget, does a hierarchical allocation (long coarse memory + recent fine window)
+beat a flat allocation when only the former reaches memory-relevant history? The measured studies
+then bracket the tested budgets where that prediction holds and where full-resolution fidelity
+instead wins; they do not assume a continuous or unique transition.
 
 ### 4.3.1 Попередній гейт: здатність пригадування виникає лише за більшого бюджету оптимізації
 
@@ -552,10 +564,13 @@ steps here) would have spuriously killed it.** [UA-PASS: «здатність п
 виникає лише за більшого бюджету оптимізації»; keep "retrieval" as «пригадування/відновлення з
 пам'яті» consistently.]
 
-**[FIG 4-6 — PLACEHOLDER]**
-*Content:* hard-bin Δ with confidence intervals at 6k vs 20k steps × 2 seeds: null at 6k on both
-seeds, CI-clean win at 20k on both — retrieval emerges under the larger optimization budget.
-*Source:* **NEW** (data measured; plot from the four memory-gate logs).
+**Рисунок 4.6 — Виникнення однокрокового виграшу пам'яті з бюджетом оптимізації.**
+The HARD-bin effect is unresolved at 6,000 updates for both seeds and positive with intervals
+excluding zero at 20,000 updates for both seeds. This is an optimization-budget result, not a
+claim about asymptotic convergence.
+*Source:* `docs/figures/fig28_memory_gate_optimization.png`, parsed deterministically from the
+four `logs_rhcp/mem_gate_full_s{0,1}{,_t20k}.log` files by
+`scripts/make_dissertation_missing_figures.py`.
 
 ### 4.3.2 Матриця розгортання
 
@@ -576,21 +591,22 @@ frames after the 48-frame ground-truth warm-up, seed 0; arms per Table 3.1).
 | hier-short (diff) | 6c + 6f | 480 | 0.2260 | 0.0392 | memory ablation |
 | persistence | — | — | 0.2552 | — | floor |
 
-Three regularities are visible in the ordering, each defended separately below: (i) **within each
-head, the hierarchical long-memory arm beats its token-matched flat control** (hier-long <
-flat-budget; reg-long < reg-flat); (ii) **across heads, regression wins the best-of-1 rollout**
-(§4.2.3); (iii) **the full-resolution long window wins outright at 2.7× the tokens** (§4.3.4).
-Both long-memory arms also beat the hier-short ablation in every bin — long context helps — but
-the claim defended here is the *hierarchical packaging* of the budget, which is exactly what the
-flat-budget control isolates.
+Three seed-0 regularities are visible in the ordering, each defended separately below: (i) the
+48-frame coarse-plus-fine arm beats the shorter contiguous-fine control under both tested heads
+at this seed; (ii) regression wins the deterministic best-of-1 rollout (§4.2.3); and (iii) the
+full-resolution 48-frame window wins outright at 2.7× the tokens (§4.3.4). The first observation
+replicates at seed 1 for this particular long-versus-short comparison, but it must not be promoted
+to a head-independent law. The complete five-seed temporal-versus-spatial factorial (§4.4.3)
+instead finds stable package direction under diffusion and sign-changing direction under
+regression. The defensible claim is therefore configuration- and head-scoped: reach helps where
+the shorter control cannot address the relevant past, while the preferred way to package that
+reach is not universally mechanism-agnostic.
 
-**[FIG 4-7 — PLACEHOLDER]**
-*Content:* per-horizon rollout curves, three panels over rollout horizon h: (a) fg-MSE vs h on
-all frames and (b) on HARD re-entry frames only, seven series each (hier-long, flat-budget,
-flat-long, reg-long, reg-flat, hier-short, persistence floor) with cluster-CI bands; (c)
-foreground-sharpness retention vs h (batch-mean series; AE round-trip ceiling 0.2412 marked).
-*Source:* **ADAPT** (article asset `logs_rhcp/fig_horizon_curves_loopmom.png` — 3 panels, 7
-series, CI bands, verified; relabel axes to the dissertation's notation).
+**Рисунок 4.7 — Погоризонтні криві помилки та різкості.**
+*Content:* foreground MSE on all frames, foreground MSE on HARD re-entry frames, and
+foreground-sharpness retention, with persistence and frozen-decoder references.
+*Source:* `docs/figures/fig1_claim1_horizon_curves.png`; deterministic source
+`scripts/make_figures.py`.
 
 ### 4.3.3 Головне парне порівняння за двома посівами: виграш, що вмикається за межею горизонту
 
@@ -645,18 +661,19 @@ sharpness at depth) is **not met** at h ≥ 81, and this is stated plainly as th
 limitation rather than tuned away. The blur ceiling is owned by the frozen decoder (AE round-trip
 0.2412), not by the dynamics.
 
-**[FIG 4-8 — PLACEHOLDER]**
-*Content:* horizon × hardness win map — Δ(flat − hier) with CI-based verdict shading, seeds 0 and
-1 side by side; the matched-budget win is horizon-gated on seed 0 and everywhere-positive on
-seed 1; the shared feature is the mid-horizon peak on hard re-entry bins.
-*Source:* **NEW** (data measured; plot).
+**Рисунок 4.8 — Карта ефекту за горизонтом і складністю.**
+*Content:* horizon × hardness map of Δ(flat − hierarchy), seeds 0 and 1 side by side. The
+horizon-gated onset is seed-0-specific; the common feature is the positive effect and
+mid-horizon peak rather than one exact onset.
+*Source:* `docs/figures/fig2_claim1_winmap.png`; deterministic source
+`scripts/make_figures.py`.
 
-**[FIG 4-9 — PLACEHOLDER]**
-*Content:* qualitative rollout strips at re-entry events (last context | rollout frames | ground
-truth): hier-long re-places the returning digit at the correct world position; flat-budget
-hallucinates content at the re-entry position.
-*Source:* **NEW** (from the saved rollout checkpoints; the decoded-sample review panels of the
-§3.4.3 protocol).
+**Рисунок 4.9 — Якісні зрізи авторегресивного розгортання.**
+*Content:* identical ground truth and seed-1 `hier-long`/`flat-budget` predictions at registered
+horizons. Both models become blurred at long horizon; the figure illustrates a modest average
+advantage, not a universal per-frame recovery or a claim that one named arm uniquely
+hallucinates.
+*Source:* `docs/figures/fig7_samples_claim1.png`, from the saved rollout checkpoints.
 
 ### 4.3.4 flat-long: Парето-фронт за 2.7× токенів
 
@@ -673,21 +690,23 @@ B = 16 × 30k, but with a different EMA horizon and gradient-noise scale than th
 regime where no affordable flat window can cover the loop at all is exactly what operating
 point B exists to test (§4.5).
 
-### 4.3.5 Механізм-агностичність: виграш пам'яті не є артефактом дифузійного ядра
+### 4.3.5 Робастність окремого порівняння до голови та її межі
 
-*(Mechanism-agnosticism: the memory win is not a diffusion artefact.)*
+*(Head robustness of one reach comparison, and its limits.)*
 
-The pre-registered mechanism-agnosticism gate required the regression pairing to reproduce the
-memory result: reg-long versus the token-matched reg-flat. Outcome: **passed — reg-long beats
-reg-flat in every bin at BOTH training seeds** (ALL +0.0334 [+0.0248, +0.0423] seed 0; +0.0501 [+0.0396, +0.0612] seed 1 — two-seed; hard-bin wins at every horizon,
-including h 1–8 HARD +0.0447; sharper, 0.0741 vs 0.0512). Notably, the regression pairing shows
-no null prelude — the win starts at h 1–8 — so the horizon-gating observed on the diffusion
-pairing at seed 0 is a property of that head/seed combination, not of the memory mechanism.
-Combined with Table 4.6, the matched-budget hierarchy win holds under **both** viable heads:
-whatever the head, packaging the same token budget as long-coarse-plus-recent-fine beats spending
-it on a shorter full-resolution window. This is the precise sense in which the memory claim of
-this dissertation is mechanism-agnostic. [UA-PASS: «механізм-агностичність» — keep as a term with
-a defining gloss at first use.]
+The preregistered two-seed gate asked whether the specific `reg-long` versus token-matched
+`reg-flat` comparison reproduced the diffusion reach result. It did: `reg-long` beats `reg-flat`
+in every bin at both tested seeds (ALL +0.0334 [+0.0248, +0.0423] at seed 0 and +0.0501
+[+0.0396, +0.0612] at seed 1; hard-bin wins at every horizon, including h 1–8 HARD +0.0447;
+sharpness 0.0741 versus 0.0512 at seed 0). The regression pairing has no null prelude, so the
+seed-0 diffusion onset near h = 25 is not a general property of the memory geometry.
+
+This is evidence that one long-coarse-versus-short-fine reach advantage is not solely an artifact
+of the diffusion head. It is **not** evidence that package preference is mechanism-agnostic. The
+complete five-seed temporal-versus-spatial factorial in §4.4.3 gives two temporal and three
+spatial regression winners and a sign-changing head × package interaction. Accordingly, the
+dissertation reports the two-seed replication as a scoped robustness result and rejects the
+broader head-independent wording.
 
 ### 4.3.6 Доповнення фронтиру токен-бюджету: зіставлені партнери на верхній та нижній межі
 
@@ -725,7 +744,7 @@ the audited table register; final numbering at typeset). Measured anchor rows fr
 | **896** | flat-min (14 f) | 0.2106 | hier-min (48c+2f) | **0.1706** | **+0.0399 [+0.0299, +0.0501]** (hier wins EVERY cell; seed 1 REPLICATED: +0.0358 [+0.0267, +0.0454], every cell) |
 | ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
 
-**[FIG 4-x — token-budget frontier]**
+**Рисунок 4.10 — Перевірений фронтир токен-бюджету.**
 *Content:* ALL fg-MSE versus context-token budget at operating point A, one 6-point curve per
 family (flat: flat-short → flat-min → flat-budget → flat-c1 → flat-c2 → flat-long; hierarchical:
 hier-short → hier-min → hier-long → hier-c1 → hier-c2 → hier-rich). Mark the tested
@@ -868,12 +887,14 @@ regression); its value is what its cheapness buys. The temporal-only corner (str
 full-resolution history), declared an omission in the factorial's pre-registration, is filled at
 operating point A by the span control of §4.4.3.
 
-**[FIG 4-10 — PLACEHOLDER]**
+**Рисунок 4.11 — Просторовий факторіал за генеративним ядром.**
 *Content:* the 2×2 factorial as a diagram: axes window (18/48) × history resolution (full/
 coarse), each cell annotated with arm name, token count, ALL fg-MSE; paired deltas drawn on the
 edges (resolution edges: −0.0082 diff / +0.0008 reg; window edge: −0.027 at fixed coarse
 representation), with the combined-optimum path highlighted.
-*Source:* **NEW** (drawing from Table 4.7).
+*Source:* `docs/figures/fig4_claim3_factorial.png`; deterministic source
+`scripts/make_figures.py`. The figure does not promote the combined arm ordering to a
+training-seed-robust head interaction.
 
 ### 4.4.2 Часове сімейство та рухомий край смуги
 
@@ -891,9 +912,9 @@ target-token count, auxiliary supervision and total sequence length. Therefore t
 worded as an exactly moved lower edge. A future stride dose-response, including any 320-token
 point, would require a fixed target interface and a new preregistration; it is not part of the
 current closure portfolio. The measured regression seed-0 B1 result (+0.0639
-[+0.0516,+0.0763]) supports the configuration but does not remove this confound. **[FIG 4-13 —
-asset EXISTS: `fig13_family_edges.png`; regenerate before submission as a configuration
-comparison without a continuous edge or unmeasured point.]**
+[+0.0516,+0.0763]) supports the configuration but does not remove this confound.
+**Рисунок 4.13:** `docs/figures/fig13_family_edges.png`; the caption treats B1 as a configuration
+comparison and does not draw a continuous edge or unmeasured point.
 
 ### 4.4.3 Грубий рівень чи просто проліт? Контроль зі стрибковою повнороздільною історією
 
@@ -925,6 +946,13 @@ measured statement is «за цієї робочої точки дифузійн
 All cells in this factorial use the existing adaptively used evaluation pool; E4a/E4b is
 seed-resolved development evidence, not a second untouched confirmation.
 
+**Рисунок 4.12 — Неоднорідність «голівка × пакування» за посівами навчання.**
+*Content:* five seed-resolved diffusion, regression and interaction effects. Clip-bootstrap
+intervals condition on each trained model; the shaded t intervals use the five training seeds as
+the inferential units.
+*Source:* `docs/figures/fig17_head_package_seed_heterogeneity.png`, generated directly from
+`artifacts/e4b_head_package/results.json`.
+
 Three binding scope qualifiers (mirror of
 the article §4.4.3): (1) **static world** — nothing changes between stride-4 anchors, so the
 testbed is maximally kind to temporal subsampling; on data with inter-anchor dynamics the stride
@@ -949,17 +977,45 @@ independent convergent evidence for the §4.4.5 mechanism reading [UA-PASS]. Rep
 pre-registered amendment): a zeroed stream is an out-of-distribution input, so the collapse
 magnitude bounds the stream's contribution from below confounded with OOD brittleness from
 above — the probe licenses «потік вилучено → здатність втрачено», not a precise information
-accounting [UA-PASS]. **[FIG 4-14 — PLACEHOLDER: blinding curves;
-asset fig14_level_blinding.png, QUEUED (eval-only).]**
+accounting [UA-PASS]. **Рисунок 4.14:** `docs/figures/fig14_level_blinding.png`; measured
+eval-only blinding curves with the out-of-distribution qualification retained.
 
 ### 4.4.5 Зведена порівняльна таблиця: глибина, ядра, зібрана сітка
 
 *(The assembled shape grid, CW-VAE-format. Auto-generated source: `docs/CWSTYLE_TABLE.md`.)*
 
-**[TABLE 4.7-B — PLACEHOLDER: paste the generated grid (depth × factors × head × budget; regime
-disclosed per row; EBT column = the §4.2.4 characterized negative, no rollout cells by design);
-17 measured rows + B1/B2/B3 pending.]** The depth row: `hier3` (2×2/4×4/8×8 factor-2 pyramid,
-48 top + 24 coarse + 9 fine = the same 1,152 tokens) on a task with a single memory scale and a
+**Таблиця 4.7-B — Зведена сітка форм контексту (152-крокове авторегресійне
+розгортання; `ALL` foreground-MSE, менше — краще).**
+
+| Бюджет контексту | Глибина роздільностей / часова глибина | Часовий фактор | Просторовий фактор | Голова | Конфігурація | Досяжність | ALL fg-MSE |
+|---:|---|---:|---:|---|---|---:|---:|
+| 512 | 1 / 1 | 1 | 1 | diffusion | `flat-short` | 8 | 0.2215 (2 посіви) |
+| 512 | 2 / 2 | 2 | 2 | diffusion | `hier-s2-min` | 48 | 0.1881 (2 посіви) |
+| 512 | 2 / 2 | 2 | 2 | regression | `hier-s2-min-reg` | 48 | 0.1566 (1 посів) |
+| 896 | 1 / 1 | 1 | 1 | diffusion | `flat-min` | 14 | 0.2104 (2 посіви) |
+| 896 | 2 / 1 | 1 | 2 | diffusion | `hier-min` | 48 | 0.1725 (2 посіви) |
+| 1,088 | 1 / 2 | 4 | 1 | diffusion | `strided-flat` | 48 | 0.1644 (2 посіви) |
+| 1,088 | 1 / 2 | 4 | 1 | regression | `strided-flat-reg` | 48 | 0.1590 (5 посівів) |
+| 1,152 | 1 / 1 | 1 | 1 | diffusion | `flat-budget` | 18 | 0.2042 (3 посіви) |
+| 1,152 | 2 / 1 | 1 | 2 | diffusion | `hier-long` | 48 | 0.1762 (3 посіви) |
+| 1,152 | 1 / 1 | 1 | 1 | regression | `reg-flat` | 18 | 0.2009 (5 посівів) |
+| 1,152 | 2 / 1 | 1 | 2 | regression | `reg-long` | 48 | 0.1592 (5 посівів) |
+| 1,152 | 3 / 1 | 1 | 2×2 | diffusion | `hier3` | 48 | 0.2044 (1 посів) |
+| 1,792 | 1 / 1 | 1 | 1 | diffusion | `flat-c1` | 28 | 0.1876 (1 посів) |
+| 1,792 | 2 / 1 | 1 | 2 | diffusion | `hier-c1` | 48 | 0.1799 (1 посів) |
+| 2,432 | 1 / 1 | 1 | 1 | diffusion | `flat-c2` | 38 | 0.1703 (B16×30k) |
+| 2,432 | 2 / 1 | 1 | 2 | diffusion | `hier-c2` | 48 | 0.1820 (B16×30k) |
+| 3,072 | 1 / 1 | 1 | 1 | diffusion | `flat-long` | 48 | 0.1572 (B8×60k; 2 посіви) |
+| 3,072 | 2 / 1 | 1 | 2 | diffusion | `hier-rich` | 48 | 0.1691 (B8×60k; 2 посіви) |
+
+*Примітки.* Значення для кількох посівів є середніми; точні посівні ефекти та інтервали
+наведено у відповідних підрозділах. `hier-s2-min` змінює також інтерфейс цілі, тому це ефект
+цілої конфігурації. `strided-flat` має 1,088, а `hier-long` 1,152 токени: це майже зрівняне,
+але не точне порівняння. Повна машинно згенерована сітка з довжиною послідовності, швидкістю,
+VRAM і різкістю зберігається в `docs/CWSTYLE_TABLE.md`.
+
+The depth row `hier3` (2×2/4×4/8×8 factor-2 pyramid,
+48 top + 24 coarse + 9 fine = the same 1,152 tokens) tests a task with a single memory scale and a
 protocol-capped 48-frame history. **MEASURED (2026-07-10, s0) — the pre-registered ALTERNATIVE (loss) branch:** hier3 ALL
 **0.2044** / sharp 0.0564 (class-lowest): CI-clean loss to hier-long (**−0.0196
 [−0.0248, −0.0146]**), null vs flat-budget (−0.0007) — the third stream erases the two-stream
@@ -970,10 +1026,9 @@ stream cut 48→24 to pay for the top). Reported as «зонд глибина-п
 коштує ≈0.02 за фіксованого бюджету», NOT «глибина шкодить» [UA-PASS]; the depth hypothesis
 stands (single-scale data cannot reward a third scale — consistent with the per-pixel-gate
 null, the §4.5 boundary, CW-VAE's two-levels-sufficed observation). Disposition:
-appendix-grade; a weight-matched follow-up would be required for any causal depth statement. **[FIG 4-15 —
-PLACEHOLDER: degradation curves over the 152-frame rollout for all grid configurations
-(«скільки кожна форма утримує метрику»); asset fig12_cwstyle_curves.png, EXISTS — regenerate
-after Phase B.]**
+appendix-grade; a weight-matched follow-up would be required for any causal depth statement.
+**Рисунок 4.15:** `docs/figures/fig12_cwstyle_curves.png`, degradation curves over the
+152-frame rollout for the measured configuration grid.
 
 ## 4.5 Дослідження межі часової здатності (робоча точка Б)
 
@@ -1118,11 +1173,12 @@ is **NOT_REPLICATED**, and the gated dose-response is not authorized. Addressabi
 reliability remain distinct constructs, but the present study does not establish a stable
 approximately-24-frame trust boundary. The §4.3 matched-budget result is unaffected.
 
-**[FIG 4-11 — PLACEHOLDER]**
+**Рисунок 4.16 — Зареєстрована негативна реплікація межі самоподачі.**
 *Content:* seed-resolved paired Δ (strided − baseline) versus rollout horizon with cluster-CI
 bands: early hierarchy benefit at seeds 0–2, late inversion at seed 0 only, and positive late
 effects at seeds 1–2; the registered primary windows are highlighted.
-*Source:* E5a manifests and `docs/confirmation/E5A_RESULTS.md`.
+*Source:* `docs/figures/fig18_trust_negative_replication.png`, generated from
+`artifacts/e5a_trust_replication/results.json` and independently validated E5a manifests.
 
 ### 4.5.6 Методологічні уроки дослідження межі
 
@@ -1153,10 +1209,10 @@ The studies of §§4.2–4.5 select a configuration and delimit it on the purpos
 family; this section carries that configuration outward — to the standard benchmark of the field
 and to the synthetic suites on which the reversible-transformation method was published ([A2],
 §4.1.2) — so that the dissertation's two experimental programs meet on shared ground. Scope
-discipline, stated once: **only §4.6.2 is measured**; §§4.6.3–4.6.6 are [EXPECTED]-marked shells
-whose tables stay empty until the runs land, and no number appears in any claim of this section
-before it is measured. [UA-PASS: «узагальнення обраної конфігурації»; genre heading form per the
-§5 terminology table.]
+discipline, stated once: **§§4.6.2 and 4.6.5 are measured**; the 2D-rotation, 3D-polycube,
+MMNIST-CIFAR and KTH extensions in §§4.6.3, 4.6.4 and 4.6.6 are future protocols and contribute
+no projected number or performance claim. [UA-PASS: «узагальнення обраної конфігурації»; genre
+heading form per the §5 terminology table.]
 
 ### 4.6.1 Обрана конфігурація за режимами висновування
 
@@ -1253,51 +1309,30 @@ this amendment are both retained in the scientific record. The conditional proto
 in `docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure enters the dissertation until its
 CPU, classifier and protocol-freeze gates pass.
 
-### 4.6.3 Синтетичні стенди методу оборотних перетворень: 2D-обертання та 3D-полікуби
+### 4.6.3 Синтетичні стенди [A1]/[A2]: 2D-обертання та 3D-полікуби
 
-*(The author's synthetic suites: 2D rotations and 3D polycubes. — [EXPECTED] shell; runs not yet
-performed.)*
+*(The author's published synthetic suites — future transfer protocol, not fourth-article
+evidence.)*
 
-These are the author's own published testbeds ([A2], §4.1.2): procedurally synthesized 2D
-rotations (64 × 64, time-to-predict as a controlled variable) and 3D polycubes (occlusion,
-non-uniform rotation). The transfer question is whether the selected hierarchical configuration
-retains prediction accuracy and consistency over the long horizons on which the
-reversible-transformer baseline was validated — connecting the Chapter 4 model line to the
-Chapter 2 method line on the latter's home ground.
-
-**Table 4.9 — Transfer to the [A2] synthetic suites [EXPECTED — cells empty until measured].**
-
-| Arm | Suite | MSE | SSIM | LPIPS | Consistency horizon |
-|---|---|---:|---:|---:|---:|
-| Hierarchical (selected recipe, §4.6.1) | 2D rotations | | | | |
-| Flat control (token-matched) | 2D rotations | | | | |
-| TempVerseFormer [A2] **[AUTHOR: insert the row from the [A2] publication]** | 2D rotations | | | | |
-| Persistence | 2D rotations | | | | |
-| Hierarchical (selected recipe, §4.6.1) | 3D polycubes | | | | |
-| Flat control (token-matched) | 3D polycubes | | | | |
-| TempVerseFormer [A2] **[AUTHOR: insert the row from the [A2] publication]** | 3D polycubes | | | | |
-| Persistence | 3D polycubes | | | | |
+Two distinct published sources motivate this future bridge. [A2] supplies the $64 \times 64$
+procedural 2-D rotation suite and its controlled temporal laws; [A1] supplies the V-BLT
+2-D-polygon and 3-D-polycube sequences with entropy maps. Neither publication evaluates the
+Chapter 3 reach–fidelity model. A future transfer study would therefore ask whether the selected
+hierarchical configuration retains accuracy and consistency on these source-faithful suites,
+using each publication's exact split, metrics, horizon and baselines. No such transfer has been
+executed, so no result table or projected advantage is inserted here. The published examples
+remain documented in Chapter 2, Figures 2.3–2.4.
 
 ### 4.6.4 MMNIST-CIFAR
 
-*([EXPECTED] shell — the textured-background Moving-MNIST variant; the stretch transfer of
-author decision Q4.)*
+*(Future protocol — the textured-background Moving-MNIST variant.)*
 
 The MMNIST-CIFAR variant replaces the black background with natural-image texture, removing the
 background degeneracy that makes aggregate metrics mean-seeking on standard Moving MNIST
 (§3.4.3) while keeping the same no-re-entry kinematics — so the pre-registered expectation of
 the §4.6.2 negative control (flat ≈ hier) carries over, now with more informative aggregate
-metrics.
-
-**Table 4.10 — MMNIST-CIFAR transfer [EXPECTED — cells empty until measured].**
-
-| Arm | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| mm-flat (configuration of §4.6.2) | | | | | |
-| mm-hier (configuration of §4.6.2) | | | | | |
-| AE round-trip ceiling | | | | | |
-| Persistence | | | | | |
-| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | | | |
+metrics. This extension is not required to establish the present reach–fidelity result and has
+not been executed; no numerical outcome is implied.
 
 ### 4.6.5 TaxiBJ: реальні дані просторово-часового прогнозування — ВИМІРЯНО (2026-07-07)
 
@@ -1318,7 +1353,7 @@ the architectural constants of §3.2 literally unchanged across every dataset of
 Regime: fresh autoencoder (12,000 steps), four arms at batch 64 × 15,000 steps (≈48 epochs,
 comparable to the leaderboard's 50-epoch protocol), best-of-1, unconditional, seed 0.
 
-**Table 4.11 — TaxiBJ 4→4, MEASURED (n = 500 canonical test pairs; OpenSTL convention;
+**Table 4.9 — TaxiBJ 4→4, MEASURED (n = 500 canonical test pairs; OpenSTL convention;
 leaderboard rows = OpenSTL's own 50-epoch retraining, locally verified).**
 
 | Arm | MSE | MAE | SSIM | PSNR |
@@ -1334,7 +1369,6 @@ leaderboard rows = OpenSTL's own 50-epoch retraining, locally verified).**
 | PredRNN (OpenSTL, 50 ep) | 0.3194 | 15.31 | 0.9838 | 39.51 |
 | SimVP+gSTA-S (OpenSTL, 50 ep) | 0.3246 | 15.03 | 0.9844 | 39.71 |
 | PhyDNet (OpenSTL, 50 ep) | 0.3622 | 15.53 | 0.9828 | 39.46 |
-| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | | |
 
 The measured readings, stated per metric and without a leaderboard-superiority headline (the
 §4.2.3 rule): the regression arm of the *unchanged generalist stack* lands **inside the
@@ -1349,47 +1383,24 @@ context tokens the hierarchical regression arm pays −0.053 MSE with faster per
 degradation (4-frame protocol → coarse history is pure token economy). Disclosure: single seed
 (a transfer row, not a claim-bearing contrast, per the campaign's two-seed rule).
 
-### 4.6.6 KTH-64 **[OPTIONAL]**
+### 4.6.6 KTH-64 — майбутнє розширення
 
-*(KTH real-video transfer at 64 × 64 — optional shell; same Q4 disposition as §4.6.5.)*
+*(KTH real-video transfer at 64 × 64 — future protocol.)*
 
-KTH (human actions, grayscale, evaluated at 64 × 64) is the natural-video member of the [A2]
-receipt set and the natural-video extension named in the research prospects. The shell is
-**[OPTIONAL]**: it is filled only if resources permit before the defense; otherwise it is struck
-without replacement and KTH remains an [A2] receipt.
+KTH (human actions, grayscale, evaluated at 64 × 64) is a natural-video extension named in the
+research prospects; it is not an [A2] result. It is retained as a future external-validity test,
+not as an optional empty result shell.
 
-**Table 4.12 — KTH-64 transfer [OPTIONAL / EXPECTED — cells empty until measured].**
+### 4.6.7 Межі виміряного узагальнювального твердження
 
-| Arm | MSE | SSIM | LPIPS |
-|---|---:|---:|---:|
-| Hierarchical (selected recipe) | | | |
-| Flat control (token-matched) | | | |
-| AE round-trip ceiling | | | |
-| Persistence | | | |
-| TempVerseFormer [A2] **[AUTHOR: insert from the [A2] publication]** | | | |
-
-### 4.6.7 Двогілкове формулювання узагальнювального твердження
-
-*(The generalization claim, stated dual-branch before the runs.)*
-
-For the unfilled shells of §§4.6.3–4.6.6, the claim is committed in advance in its realistic
-best-case form and carried in the main text only under the [EXPECTED] marker: **[EXPECTED]**
-обрана конфігурація **перевершує persistence та базові моделі [A2] за точністю і тривалістю
-збереження консистентності; конкурентна за перцептивними метриками (SSIM/LPIPS) зі
-спеціалізованими детермінованими регресорами за частку їх обчислювального бюджету.** *(EN: the
-selected configuration outperforms persistence and the [A2] baselines in accuracy and in the
-duration over which consistency is retained, and is competitive on perceptual metrics
-(SSIM/LPIPS) with specialized deterministic regressors at a fraction of their computational
-budget.)* **[FALLBACK: if a suite shows no advantage over the [A2] baseline, the claim for that
-suite retreats to "matches the published baseline at a fraction of the training budget", or the
-suite is reported as a further measured boundary condition in the §4.6.2 style.]** **[FALLBACK:
-if perceptual competitiveness fails on a suite, the perceptual clause is dropped for that suite
-and the claim is confined to the persistence/[A2]-baseline comparison.]** One formulation is
-excluded on measured grounds rather than branch-dependent: **a claim of beating (or matching)
-the OpenSTL leaderboard on aggregate MSE is never made** — Table 4.8 refutes it (180.91 versus
-SimVP's 26.69), and the honest statement of that comparison is the disclosed-generalist reading
-of §4.6.2. [UA-PASS: keep the quoted Ukrainian claim sentence verbatim as the main-text wording;
-«двогілкове формулювання» for the dual-branch device.]
+The measured generalization claim is deliberately narrow. On OpenSTL Moving MNIST the package
+comparison is a no-re-entry negative control and does not match specialist aggregate MSE. On
+TaxiBJ the unchanged generalist stack is competitive on some reported metrics, but the
+hierarchical package loses to the larger flat regression context and only one training seed was
+tested. The remaining synthetic and natural-video suites are future work. Accordingly, **a
+claim of beating (or matching) the OpenSTL leaderboard on aggregate MSE is never made** — Table
+4.8 refutes it (180.91 versus SimVP's 26.69), and the honest statement of that comparison is the
+disclosed-generalist reading of §4.6.2.
 
 ### 4.6.8 Незалежне підтвердження на недоторканій вибірці LoopMom
 
@@ -1426,8 +1437,9 @@ of §4.6.2. [UA-PASS: keep the quoted Ukrainian claim sentence verbatim as the m
 
 Щоб відокремити властивість навчених конфігурацій від одного стандартного режиму дифузійного
 висновування, дослідження E7c заздалегідь зафіксувало чотири центральні контрасти: перевагу
-досяжності при 896 токенах, внутрішню точку фронтиру при 1,152 токенах, порівняння часової та
-просторової упаковки при 1,152 токенах і верхню інверсію на користь повнороздільного контексту
+досяжності при 896 токенах, внутрішню точку фронтиру при 1,152 токенах, майже зрівняне
+порівняння часової упаковки на 1,088 токенах і просторової на 1,152 токенах, а також верхню
+інверсію на користь повнороздільного контексту
 при 2,432 токенах. Сім контрольних точок посіву 0 було оцінено на окремій цільовій вибірці для
 п'яти варіантів: NFE 8/16/32 за посіву семплера 0 та NFE 16 за посівів семплера 1 і 2. Єдине
 одночасне сімейство охоплює всі 20 ефектів; додавання варіантів після перегляду результатів було
@@ -1447,6 +1459,55 @@ of §4.6.2. [UA-PASS: keep the quoted Ukrainian claim sentence verbatim as the m
 кожного показника. E7c перевіряє робастність до обчислювального бюджету та випадковості
 семплювання для фіксованих контрольних точок; воно не замінює перевірку за посівами навчання або
 іншою навченою латентною геометрією.
+
+**Рисунок 4.19 — Робастність до NFE та посіву семплера.**
+*Content:* all 20 registered effects and simultaneous 95% intervals; the two upper-inversion
+intervals that include zero are marked separately.
+*Source:* `docs/figures/fig19_sampler_nfe_robustness.png`, generated directly from
+`artifacts/e7c_sampler_nfe/results.json`.
+
+### 4.6.10 Робастність до незалежно навченої латентної репрезентації
+
+Дослідження E7a змінює не один параметр декодера, а всю латентну репрезентацію: другий посів
+кодека навчено незалежно, статистики нормалізації обчислено повторно, а сім дифузійних
+предикторів посіву 0 перенавчено у новому латентному просторі. Тому оцінюється
+**цілісне втручання кодека**; воно не ізолює ваги кодека, масштаб латентів, похибку
+реконструкції або нормалізацію. Усі чотири контрольні контрасти оригінального кодека й чотири
+відповідні контрасти альтернативного кодека оцінено на одній новій цільовій вибірці
+`loopmom-codec_robustness_holdout-20260716-77a4ec5aee94` в одному одночасному
+max-statistic сімействі.
+
+**Таблиця 4.10 — Робастність чотирьох напрямів до незалежного кодека
+(додатні значення підтримують зареєстрованого кандидата).**
+
+| Кодек | 896: досяжність | 1,152: внутрішня точка | 1,088 проти 1,152: форма | 2,432: інверсія |
+|---|---:|---:|---:|---:|
+| Оригінальний | +0.0494 [0.0339, 0.0649] | +0.0283 [0.0169, 0.0397] | +0.0253 [0.0163, 0.0343] | +0.0150 [0.0065, 0.0235] |
+| Альтернативний | +0.0521 [0.0374, 0.0669] | +0.0439 [0.0310, 0.0569] | +0.0112 [0.0039, 0.0184] | +0.0079 [−0.0006, 0.0165] |
+
+Усі вісім точкових оцінок зберігають очікуваний напрям, а сім одночасних нижніх меж
+перевищують нуль. Єдиний невизначений інтервал — верхня інверсія альтернативного кодека при
+2,432 токенах. Отже, зареєстрований вердикт — **CODEC_DIRECTIONALLY_ROBUST**, а не
+`CODEC_ROBUST_CI_CLEAN`: нижня досяжність, внутрішня точка та форма пакета стійкі до цього
+втручання за напрямом і сімейною точністю, тоді як верхній край зберігає знак, але не повну
+сімейну відокремленість.
+
+На непорожньому передньому плані верхня інверсія також сприяє плоскому контексту
+(+0.0097 [0.0019, 0.0177]), однак повнокадрові, фонові, union-mask, precision/F1 та
+компонентні інтервали неоднорідні. Ця чутливість не скасовує основний напрям, але забороняє
+твердження про покращення кожної метрики. Описові зміни ефекту показують, що другий кодек
+підсилює нижні контрасти й зменшує контрасти форми та верхньої інверсії; оскільки посів кодека
+не є повтореною статистичною одиницею, причина цієї зміни не ідентифікується.
+
+Повний цикл використав 30.0238 із дозволених 36 GPU-годин: один кодек, сім навчань, чотирнадцять
+оцінювань, незалежний валідатор і 27 завершених W&B-записів з артефактами. Після перегляду
+результатів не додано третього кодека, посіву предиктора, конфігурації або метрики.
+
+**Рисунок 4.20 — Робастність до незалежно навченої латентної репрезентації.**
+*Content:* оригінальні й альтернативні ефекти з одним одночасним 95%-м сімейством; відкритою
+межею позначено альтернативну верхню інверсію, інтервал якої містить нуль.
+*Source:* `docs/figures/fig20_alternate_codec_robustness.png`, generated directly from
+`artifacts/e7a_codec_robustness/results.json`.
 
 ## 4.7 Впровадження результатів дослідження
 
@@ -1529,6 +1590,12 @@ insert the act copies — the current draft has headings only]**.
    direction in all 20 registered NFE/sampler variants, with 18 simultaneous lower bounds above
    zero. The 2,432-token inversion is family-wise unresolved at alternate sampler seeds 1/2;
    therefore the result is directionally robust rather than universally sampler-invariant.
+   The independent-codec study E7a (§4.6.10) likewise preserves all four point-estimate
+   directions: the 896 reach, 1,152 interior and package-shape contrasts remain
+   simultaneous-CI clean, while the alternate-codec 2,432 inversion is +0.0079
+   [−0.0006, 0.0165]. Thus the reach–fidelity account is directionally robust to both inference
+   allocation/randomness and one whole-codec intervention, while its upper tested edge remains
+   the precision-limited boundary.
 
 6. The temporal-capability study at operating point B (§4.5) closed with a characterized
    single-step positive and a **registered negative replication of the proposed late trust
@@ -1551,25 +1618,24 @@ insert the act copies — the current draft has headings only]**.
    no off-screen re-entry — hierarchy pays where the memory horizon exists (§4.3) and is a null
    where it does not, while the aggregate-MSE gap to the deterministic specialists (22.06–29.80)
    is disclosed as the refutation of the pre-registered "mid-pack" clause, and no leaderboard
-   claim is made. The remaining transfers (2D rotations, 3D polycubes, MMNIST-CIFAR, TaxiBJ,
-   KTH-64 [OPTIONAL]) stand as [EXPECTED]-marked shells under the dual-branch commitment of
-   §4.6.7 — **[EXPECTED]** superiority over persistence and the [A2] baselines in accuracy and
-   consistency retention, with perceptual competitiveness against specialized deterministic
-   regressors at a fraction of their computational budget **[FALLBACK: per-suite retreat to
-   baseline parity or a further measured boundary condition]** — and the token-budget frontier
+   claim is made. TaxiBJ is a measured real-data transfer (§4.6.5); the unexecuted 2D-rotation,
+   3D-polycube, MMNIST-CIFAR and optional KTH-64 protocols are retained only as future-work
+   designs and contribute no projected result to this conclusion. The token-budget frontier
    completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **measured**: the
    frontier inverts at both ends (hier-rich loses to flat-long −0.0131 [−0.0201, −0.0069] at
    equal budget and regime; flat-short beats hier-short −0.0036 [−0.0063, −0.0010]) — an outcome
-   stricter than the pre-registered convergence expectation, reported as measured — so the
-   efficiency claim takes its final, bounded form: hierarchy dominates the token-budget frontier
-   exactly where window extension is both possible and valuable.
+   stricter than the pre-registered convergence expectation, reported as measured. The final
+   bounded efficiency claim is therefore discrete and empirical: hierarchy is family-wise
+   confirmed at the tested 896- and 1,152-token points, unresolved at 1,792, and full-resolution
+   flat context is confirmed at 2,432 and 3,072; no untested interval or unique crossing is
+   inferred.
 
 8. The results of the research have been implemented in the practical activities of ORNETIKA LLC
    and in the educational process of VNTU (§4.7, per the implementation acts).
 
 The results of this chapter have been published in [A4] (the mechanism, memory, factorial, and
-boundary studies) and [A2] (the receipt validations of §4.1.2) **[AUTHOR: bind to the final
-numbered publication list; add conference theses covering the experimental campaign if any]**.
+boundary studies) and are connected to [A2] through the published receipt summarized in §4.1.2.
+The stable labels are bound mechanically to the final numbered publication list.
 
 9. The chapter's findings consolidate into **scoped empirical regularities and explicit
    boundaries** (single source of truth: `docs/CLAIM_LEDGER.md`; every statement names its
@@ -1585,7 +1651,9 @@ numbered publication list; add conference theses covering the experimental campa
    negative replication, not law** — the seed-0 late inversion is not reproduced at seeds 1–2;
    and **(F4) inference robustness** — E7c retains all 20 NFE/sampler effect directions, with
    18 simultaneous lower bounds positive and the upper inversion unresolved at alternate sampler
-   seeds 1/2. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
+   seeds 1/2; **(F5) representation robustness** — E7a retains all four alternate-codec point
+   directions, with three family-wise clean contrasts and the upper inversion again
+   precision-limited. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
    фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу [UA-PASS].
 
 ---
@@ -1608,14 +1676,17 @@ numbered publication list; add conference theses covering the experimental campa
 | FIG 4-x | token-budget frontier, both families (§4.3.6) | MEASURED — `docs/figures/fig9_frontier.png` (final figure number assigned at typeset, in-text position between FIG 4-9 and FIG 4-10) |
 
 Table register additions of this pass: Table 4.6a (§4.3.6, MEASURED frontier — letter-suffixed
-to avoid renumbering the audited register; renumber at typeset); Tables 4.8–4.12 (§4.6: 4.8 =
-MEASURED OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; 4.9–4.12 = [EXPECTED] empty shells —
-2D/3D rotations+polycubes, MMNIST-CIFAR, TaxiBJ 32×32×2 variant, KTH-64 [OPTIONAL]).
+to avoid renumbering the audited register; renumber at typeset); Table 4.8 is the measured
+OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; Table 4.9 is the measured TaxiBJ transfer;
+Table 4.10 and Figure 4.20 are the terminal E7a whole-codec robustness products generated from
+`artifacts/e7a_codec_robustness/results.json`. Empty
+projected transfer tables were removed when the corresponding suites were assigned to future
+work.
 
 Numbers deliberately NOT carried into this chapter: the superseded pre-audit mechanism table
 (0.0489/0.0363 — corrected by the hardness-anchor fix); the article's PASS-branch capability
 headline for §4.5 (superseded by the 2026-07-06 pair outcome); any "200-frame rollout" phrasing
-(protocol is 48 + 152); the old draft's TaxiBJ-as-key-benchmark framing and unverified A100
-claims (kept only as [A2] receipts / author-verify); any "competitive with the OpenSTL
+(protocol is 48 + 152); the old draft's TaxiBJ-as-[A2]-benchmark framing and unverified A100
+claims (neither occurs in the publication); any "competitive with the OpenSTL
 leaderboard on aggregate MSE" phrasing — refuted by measurement (Table 4.8: 180.91 vs SimVP
 26.69) and permanently excluded from the claim language.

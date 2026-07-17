@@ -11,6 +11,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from hvp_rev.provenance import atomic_write_json, sha256_file
 
 
+def _portable_path(path: Path) -> str:
+    """Use a repo-relative path when possible, otherwise a normalized absolute path."""
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(Path.cwd().resolve()).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def _completed_alternate_predictors(
     config: dict,
     *,
@@ -145,6 +154,8 @@ def resolve_dispatch(
         for run in config["predictor_runs"]:
             arm = run["arm"]
             checkpoint = checkpoints[arm]
+            ae_arg = _portable_path(ae_path)
+            checkpoint_arg = _portable_path(checkpoint)
             checkpoint_hash = sha256_file(checkpoint)
             expected_hours = float(run["reference_eval_hours_nfe16"])
             max_hours = 1.5 * expected_hours
@@ -163,8 +174,8 @@ def resolve_dispatch(
                 "--warm", str(config["evaluation"]["warmup_frames"]),
                 "--n_val", "250",
                 "--n_eval_clips", str(config["evaluation"]["evaluation_clips"]),
-                "--ae_path", ae_path.as_posix(),
-                "--checkpoint_path", checkpoint.as_posix(),
+                "--ae_path", ae_arg,
+                "--checkpoint_path", checkpoint_arg,
                 "--codec_manifest", manifest_path.as_posix(),
                 "--codec_access_log", access_log,
                 "--artifact_root", artifact_root,
@@ -175,17 +186,17 @@ def resolve_dispatch(
                 "--run_log", run_log,
                 "--authorized_gpu_hours", format(max_hours, ".12g"),
             ]
-            if _option_value(argv, "--ae_path") != ae_path.as_posix():
+            if _option_value(argv, "--ae_path") != ae_arg:
                 raise AssertionError("E7a AE path changed while constructing argv")
-            if _option_value(argv, "--checkpoint_path") != checkpoint.as_posix():
+            if _option_value(argv, "--checkpoint_path") != checkpoint_arg:
                 raise AssertionError("E7a checkpoint path changed while constructing argv")
             rows.append(
                 {
                     "codec": codec_id,
                     "arm": arm,
-                    "ae_path": ae_path.as_posix(),
+                    "ae_path": ae_arg,
                     "ae_sha256": ae_hash,
-                    "checkpoint_path": checkpoint.as_posix(),
+                    "checkpoint_path": checkpoint_arg,
                     "checkpoint_sha256": checkpoint_hash,
                     "expected_gpu_hours": expected_hours,
                     "max_gpu_hours": max_hours,

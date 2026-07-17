@@ -1035,6 +1035,9 @@ def main():
     ap.add_argument("--codec_manifest", default="",
                     help="purpose-locked E7a codec-robustness manifest; eval-only, immutable output")
     ap.add_argument("--codec_access_log", default="artifacts/e7a_codec_robustness/access.jsonl")
+    ap.add_argument("--retrieval_manifest", default="",
+                    help="purpose-locked E8a retrieval-reference manifest; eval-only, immutable output")
+    ap.add_argument("--retrieval_access_log", default="artifacts/e8a_pose_mosaic/access.jsonl")
     ap.add_argument("--checkpoint_path", default="",
                     help="explicit immutable checkpoint; required by E7a codec robustness")
     ap.add_argument("--artifact_root", default="artifacts/runs")
@@ -1089,20 +1092,22 @@ def main():
         )
     locked_switches = [
         value for value in (
-            args.confirmation_manifest, args.robustness_manifest, args.codec_manifest
+            args.confirmation_manifest, args.robustness_manifest, args.codec_manifest,
+            args.retrieval_manifest,
         ) if value
     ]
     if len(locked_switches) > 1:
         raise ValueError("choose exactly one locked evaluation manifest")
     locked_manifest = (args.confirmation_manifest or args.robustness_manifest or
-                       args.codec_manifest)
+                       args.codec_manifest or args.retrieval_manifest)
     if test_sidecar.is_file() and not locked_manifest:
         sidecar = assert_dataset_purpose(
             test_sidecar, allowed={"development_test", "development_fixture"},
             operation="ordinary evaluation"
         )
         if sidecar.get("purpose") in {
-            "confirmation_holdout", "robustness_holdout", "codec_robustness_holdout"
+            "confirmation_holdout", "robustness_holdout", "codec_robustness_holdout",
+            "retrieval_reference_holdout",
         }:
             raise PermissionError("locked holdout requires its explicit manifest switch")
     if locked_manifest:
@@ -1128,7 +1133,7 @@ def main():
             locked_prefix, locked_study = "e7c", "robustness-e7c"
             locked_tag, locked_job_type = "sampler-nfe-robustness", "robustness-eval"
             locked_artifact_type = "robustness-evaluation"
-        else:
+        elif args.codec_manifest:
             locked_purpose, locked_access_log = (
                 "codec_robustness_holdout", args.codec_access_log
             )
@@ -1137,6 +1142,14 @@ def main():
             locked_artifact_type = "codec-robustness-evaluation"
             if not args.checkpoint_path:
                 raise ValueError("E7a codec robustness requires --checkpoint_path")
+        else:
+            locked_purpose, locked_access_log = (
+                "retrieval_reference_holdout", args.retrieval_access_log
+            )
+            locked_prefix, locked_study = "e8a", "reference-e8a"
+            locked_tag = "pose-mosaic-neural-reference"
+            locked_job_type = "retrieval-reference-eval"
+            locked_artifact_type = "retrieval-reference-evaluation"
         confirmation = assert_dataset_purpose(
             locked_manifest,
             allowed={locked_purpose},

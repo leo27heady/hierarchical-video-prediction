@@ -34,8 +34,8 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
 11. GPU time is charged mechanically as wall-clock time while any project process owns the GPU,
     including pilots, evaluation, failed runs and retries. Every run records its authorized maximum
     and actual consumption; c2's planning estimate is replaced by measured time at handoff.
-12. Measured consumption through terminal E7c is 73.338 project GPU-hours. The forward portfolio
-    reserves at most 36 hours for E7a, 4 for E8a, 40 for article-gated E6, 100 for post-freeze E9 and 50
+12. Measured consumption through terminal E7a is 103.362 project GPU-hours. The forward portfolio
+    reserves at most 4 hours for E8a, 40 for article-gated E6, 100 for post-freeze E9 and 50
     protected reserve hours. The reserve cannot fund discretionary experiments.
 13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RECOVERY GATED / READY TO RESUME**; codec floor and 7/7 trainings verified; exact 14-cell hash-bound argv gate plus 58-test CPU suite PASS after the pre-access dispatch failure | Resume explicitly from the pinned execution; run only the frozen fourteen evaluations and registered analysis |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **COMPLETE / CODEC_DIRECTIONALLY_ROBUST**; 7/7 trainings, 14/14 evaluations, eight-effect simultaneous analysis, independent validator and W&B audit pass in 30.0238 project GPU-hours | Retain all four directions across the independent codec at point-estimate level; disclose that the alternate-codec 2,432-token inversion is family-wise unresolved |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -470,6 +470,46 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   completed codec/floor and all seven completed trainings, regenerate the same dispatch report,
   and begin `original/hier-min`. The remaining registered maximum leaves more than five hours of
   tranche headroom; no adaptive cell or manual evaluator launch is authorized.
+
+#### Terminal audit E7a-I11 — 2026-07-17 12:10 Europe/Kyiv
+
+- **Terminal integrity:** all seven alternate-codec predictor trainings and all fourteen locked
+  evaluations are complete. Every content-addressed RunSpec, COMPLETE marker, metric NPZ and
+  artifact manifest rehashes; the codec floor remains `CODEC_FLOOR_PASS`. The independent
+  completion validator reports 7 trainings, 14 evaluations, 8 primary effects and
+  **30.0238/36.0 project GPU-hours**. The failed pre-access command-line attempt remains charged
+  in that total.
+- **Registered simultaneous family:** all four original-codec controls are positive and
+  simultaneous-CI clean. Under the independently trained codec, the 896 reach effect is
+  **+0.0521 [0.0374, 0.0669]**, the 1,152 interior effect is
+  **+0.0439 [0.0310, 0.0569]**, and the near-matched package-shape effect is
+  **+0.0112 [0.0039, 0.0184]**. The 2,432-token flat-fidelity inversion remains positive at
+  **+0.0079**, but its simultaneous interval **[−0.0006, 0.0165]** includes zero. The frozen
+  verdict is therefore **`CODEC_DIRECTIONALLY_ROBUST`**, not CI-clean and not codec-sensitive.
+- **Corroborating endpoints:** the alternate-codec 2,432 comparison also favors flat on
+  non-empty GT-foreground MSE (+0.0097 [0.0019, 0.0177]) and recall
+  (+0.0266 [0.0088, 0.0452]); full-frame, background, union, precision/F1 and component-count
+  intervals are mixed. These prespecified diagnostics qualify mechanism and metric sensitivity;
+  they do not override the simultaneous primary category.
+- **Codec response:** the alternate codec strengthens the 896 and 1,152 interior effects,
+  while shrinking the package-shape and upper-inversion effects. Those effect changes are
+  descriptive because codec was not replicated as an inferential unit. E7a supports
+  whole-codec directional robustness conditional on predictor seed 0; it does not isolate latent
+  scale, reconstruction fidelity, normalization or another representation component.
+- **Operational recovery:** after the final evaluation, PowerShell again treated W&B's ordinary
+  stderr status line as a terminating native error in the unwrapped analysis block. The
+  deterministic result JSON had already been written, no scientific input changed, and no W&B
+  analysis run existed. The same error-handling-only wrapper repair was applied; the immutable
+  analysis reran to the identical SHA-256
+  `3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173`,
+  uploaded once, and the independent validator passed. Canonical dispatch paths were normalized
+  to repository-relative form without changing any codec/checkpoint hash.
+- **Cloud:** the final W&B audit passes for all 27 group runs: three connectivity gates, one
+  codec training, one codec-validity gate, seven predictor trainings, fourteen evaluations and
+  one analysis. Every scientific job is finished and has its required cloud artifact.
+- **Gate:** E7a is closed with no adaptive codec, seed, arm or endpoint. Proceed to the separately
+  frozen, privileged E8a pose-indexed raw-memory reference after its own code/access/CPU/data
+  gates; E7a supplies no authority to reopen E7c or add a third codec.
 
 #### E2 run ledger
 
@@ -2042,9 +2082,9 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 
 | Order | ID | Experiment/workstream | Portfolio status | GPU maximum | CPU/development estimate |
 |---:|---|---|---|---:|---:|
-| 0 | E0/E1/E2/E4a/E4b/E5a/E7c | Completed evidence and governance programme | **complete/frozen** | 73.338 h actual | complete |
+| 0 | E0/E1/E2/E4a/E4b/E5a/E7c/E7a | Completed evidence and governance programme | **complete/frozen** | 103.362 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
-| 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **authorized / ready to launch; all prelaunch gates pass** | 36 h | 2–5 d |
+| 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **complete / CODEC_DIRECTIONALLY_ROBUST** | 30.0238 h actual | complete |
 | 3 | E8a | Classical pose-indexed retrieval | closure reference baseline | 0–4 h | 2–5 d |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
 | 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
@@ -2061,13 +2101,12 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Measured and forward allocations
 
-- measured E0+E2+E4a+E4b+E5a+E7c consumption: **73.338 GPU-hours**;
-- remaining E7a allocation: **36 hours maximum**;
+- measured E0+E2+E4a+E4b+E5a+E7c+E7a consumption: **103.362 GPU-hours**;
 - E8a: **4 hours maximum**;
 - E6: **40 hours maximum, article-utility gated**;
 - E9: **100 hours maximum, optional and post-freeze**;
-- without E6, the scientific-run maximum is approximately **213.338 hours**;
-- with E6, the scientific-run maximum is approximately **253.338 hours**.
+- without E6, the scientific-run maximum is approximately **207.362 hours**;
+- with E6, the scientific-run maximum is approximately **247.362 hours**.
 
 ### Pool C — protected reserve
 
@@ -2077,8 +2116,8 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Hard ceiling and replacement rule
 
-Including the protected reserve, the live maximum is approximately **303.338 GPU-hours** with E6,
-or **263.338 hours** without it. This is below the 400-hour ceiling without treating unused budget
+Including the protected reserve, the live maximum is approximately **297.362 GPU-hours** with E6,
+or **257.362 hours** without it. This is below the 400-hour ceiling without treating unused budget
 as a reason to run work. E4b is already included in measured consumption and replaced E8c rather
 than adding to the portfolio. E3a/b, E5b/c, E7b, E8b/c training, E9c and E10 remain outside.
 
@@ -2117,9 +2156,10 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 
 ## 17. Current execution instruction
 
-E7c is terminal and frozen as `DIRECTIONALLY_ROBUST`; do not add sampler/NFE cells after observing
-the result. E7a's separate protocol, seven-arm matrix, whole-codec estimand, reconstruction floor,
-provenance, numerical-parity gate and 35.3/36.0-hour allocation are frozen. The purpose-locked
-dataset and all hash-bound prelaunch gates pass. Launch E7a from the final clean commit with W&B
-online, and preserve the outcome-independent codec-floor stop. E7a tests codec/latent-geometry
-robustness and cannot be adapted to repair the two E7c upper-inversion intervals.
+E7c is terminal as `DIRECTIONALLY_ROBUST`; no sampler/NFE cells may be added. E7a is terminal as
+`CODEC_DIRECTIONALLY_ROBUST` in 30.0238 project GPU-hours: all four alternate-codec point
+estimates are positive, while the alternate 2,432-token inversion remains family-wise unresolved.
+Do not add a codec, predictor seed, arm or endpoint. The next live gate is E8a's separately scoped
+privileged pose-indexed raw-memory reference. Patch and validate its purpose-specific access path,
+run the complete CPU/design/data/cloud gates from a clean commit, then execute only its frozen
+four-span mosaic plus seven checkpoint evaluations within the four-hour maximum.

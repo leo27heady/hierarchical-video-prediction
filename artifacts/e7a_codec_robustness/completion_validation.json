@@ -1,0 +1,15 @@
+{
+  "authorized_gpu_hours": 36.0,
+  "codec_floor": "CODEC_FLOOR_PASS",
+  "dataset_id": "loopmom-codec_robustness_holdout-20260716-77a4ec5aee94",
+  "dispatch_sha256": "61615b225f3c47885d5a391587eb52a7ce897db28cd2cd4e8d4da7d343edfceb",
+  "evaluations": 14,
+  "gpu_hours": 30.023805775194443,
+  "predictor_trainings": 7,
+  "primary_effects": 8,
+  "results_sha256": "3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173",
+  "schema_version": 1,
+  "status": "COMPLETION_VALIDATION_PASS",
+  "study": "robustness-e7a",
+  "verdict": "CODEC_DIRECTIONALLY_ROBUST"
+}

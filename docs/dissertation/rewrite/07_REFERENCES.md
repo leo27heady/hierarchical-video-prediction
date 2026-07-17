@@ -1,20 +1,19 @@
 # 07 — СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ (master bibliography + binding table)
 
-> **Status (2026-07-07):** the master reference list for BOTH texts (dissertation СПИСОК
+> **Status (2026-07-17):** the master reference list for BOTH texts (dissertation СПИСОК
 > ВИКОРИСТАНИХ ДЖЕРЕЛ and the article bibliography — the article cites a subset of the same
 > keys). Built from the full [REF:] inventory of `docs/dissertation/rewrite/*` +
 > `docs/draft/CH*` (104 unique descriptors, 120 occurrences, extracted 2026-07-07).
 >
 > **Numbering policy:** entries carry STABLE KEYS, not numbers. Final numbers are assigned
-> mechanically at assembly (E8) in order of first mention, after (a) the author verifies flagged
-> entries and (b) the author's own publications are bound. This avoids renumbering churn.
+> mechanically at assembly in order of first mention, after the applicant's own publications are
+> bound. This avoids renumbering churn.
 > **Formatting:** entries below are in a neutral scholarly format; the UA pass reformats the
 > dissertation copy to **ДСТУ 8302:2015** (Latin-script sources remain Latin). The article uses
 > the venue's style.
-> **Verification legend:** ✓ = high-confidence bibliographic data; **[VERIFY]** = check against
-> the PDF/publisher page before submission (standing debt, COMPLETION_PLAN E6); **[AUTHOR]** =
-> only the author can supply. Per the campaign's honesty rule, EVERY entry gets a PDF-check at
-> the E6 verification pass — ✓ marks confidence, not completed verification.
+> **Verification state:** ✓ = checked against a primary paper, publisher page, or authoritative
+> library catalogue. **[AUTHOR]** marks publication-administration facts that require the
+> applicant's or supervisor's records and must not be guessed.
 
 ---
 
@@ -22,10 +21,10 @@
 
 | key | entry | status |
 |---|---|---|
-| KulykA1 | Kulyk L. R. [Hierarchy/BLT-adaptation article: entropy-based adaptive spatio-temporal decomposition, V-BLT two-stage hierarchical video prediction, procedural data synthesis]. UA professional journal (spec. 124). | **[AUTHOR: exact entry — venue, year, vol., pages]** |
-| KulykA2 | Kulyk L. Temporal Modeling with Reversible Transformers. *Neural Computing and Applications* (Springer), 2025. Scopus-indexed, sole author. | **[AUTHOR: vol./pages/DOI; confirm Q1 or soften]** |
-| KulykA3 | Kulyk L. R. [Consistency-criteria article: the criteria apparatus, conceptual consistency of generative models]. UA professional journal (spec. 124). | **[AUTHOR: exact entry]** |
-| KulykA4 | Kulyk L. R. [The fourth article — hierarchical latent video model with coarse-level long memory; memory-horizon testbed; matched-compute mechanism study; reversibility]. In finalization. | **[AUTHOR: target venue; status by defense]** |
+| KulykA1 | Kulyk L. R., Mokin O. B. Scaling Video Prediction with Spatio-Temporal Patches. *Visnyk of Vinnytsia Politechnical Institute*. 2025. No. 5. P. 129–139. DOI: 10.31649/1997-9266-2025-182-5-129-139. | **Verified against the journal article and PDF. Ukrainian title: «Масштабування прогнозування відео за допомогою просторово-часових патчів».** |
+| KulykA2 | Kulyk L. Temporal modeling with reversible transformers. *Neural Computing and Applications*. 2026. Vol. 38. Article 30. DOI: 10.1007/s00521-025-11707-3. | **Verified against the Springer version of record (published 03 February 2026); sole author. Author preprint: DOI 10.21203/rs.3.rs-6293520/v1.** |
+| KulykA3 | Kulyk L. R., Mokin O. B. Methods for Ensuring Consistent Generation in Diffusion Models. *Visnyk of Vinnytsia Politechnical Institute*. 2024. No. 4. P. 75–85. DOI: 10.31649/1997-9266-2024-175-4-75-85. | **Verified against the journal record and PDF. Ukrainian title: «Методи забезпечення консистентності генерації в дифузійних моделях».** |
+| KulykA4 | Kulyk L. R. [The fourth article — controlled reach–fidelity study of budgeted video-memory context packaging; memory-horizon testbed; matched-capacity, matched-NFE mechanism study]. In finalization. | **[AUTHOR: target venue; status by defense]** |
 | KulykT1–T6 | Six conference theses (VNTU L–LIII conференції; «Проблеми вищої математичної освіти»; DSMSI-2023). | **[AUTHOR: identify all six; DSMSI-2023 unverified]** |
 
 ## B. Master list (grouped; key → full entry → status)
@@ -67,18 +66,18 @@
 ### B4. Hierarchical / long-horizon video prediction and world-model memory
 
 - **Saxena2021** — Saxena V., Ba J., Hafner D. Clockwork Variational Autoencoders. *NeurIPS 34*, 2021. ✓
-- **Kim2019vta** — Kim T., Ahn S., Bengio Y. Variational Temporal Abstraction. *NeurIPS 32*, 2019. **[VERIFY author list/venue — added 2026-07-10 for the CH7 §7.1 / ROZDIL1 §1.3.2 methodology paragraphs (VTA reset-artifact mention)]**
-- **Koutnik2014** — Koutník J., Greff K., Gomez F., Schmidhuber J. A Clockwork RNN. *ICML*, 2014. **[VERIFY pages — added 2026-07-10 for the temporal-abstraction lineage in CH7 §7.1 / ROZDIL1 §1.3.2]**
-- **Zakharov2023dlh** — Zakharov A., Guo Q., Fountas Z. Long-Horizon Video Prediction Using a Dynamic Latent Hierarchy. arXiv:2212.14376, 2023. **[VERIFY venue/year]**
-- **Yan2023teco** — Yan W., Hafner D., James S., Abbeel P. Temporally Consistent Transformers for Video Generation (TECO). *ICML*, 2023. **[VERIFY author list]**
-- **VillarCorrales2022** — Villar-Corrales A., Karapetyan A., Boltres A., Behnke S. MSPred: Video Prediction at Multiple Spatio-Temporal Scales. *BMVC*, 2022. **[VERIFY]**
+- **Kim2019vta** — Kim T., Ahn S., Bengio Y. Variational Temporal Abstraction. *NeurIPS 32*, 2019. ✓
+- **Koutnik2014** — Koutník J., Greff K., Gomez F., Schmidhuber J. A Clockwork RNN. *Proceedings of Machine Learning Research* 32(2):1863–1871, ICML, 2014. ✓
+- **Zakharov2023dlh** — Zakharov A., Guo Q., Fountas Z. Long-Horizon Video Prediction Using a Dynamic Latent Hierarchy. arXiv:2212.14376, submitted 2022, revised 2023. ✓
+- **Yan2023teco** — Yan W., Hafner D., James S., Abbeel P. Temporally Consistent Transformers for Video Generation (TECO). *ICML*, 2023. ✓
+- **VillarCorrales2022** — Villar-Corrales A., Karapetyan A., Boltres A., Behnke S. MSPred: Video Prediction at Multiple Spatio-Temporal Scales with Hierarchical Recurrent Networks. *BMVC*, 2022; arXiv:2203.09303. ✓
 - **Yin2023nuwa** — Yin S., Wu C., Yang H., et al. NUWA-XL: Diffusion over Diffusion for eXtremely Long Video Generation. *ACL*, 2023. ✓
-- **MilliVid** — [MIT + TRI hierarchical latent video diffusion — the architecture family the Chapter 3 system miniaturizes]. **[VERIFY: exact citation from the sibling `../millivid` repo README/paper]**
+- **MilliVid** — Chandratreya I. P., Charatan D., Van Hoorick B., Zakharov S., Guizilini V., Isola P., Sitzmann V. MilliVid: Hierarchical Latents for Long-Range Consistency in Video Generation. arXiv:2606.09056, 2026. ✓
 - **Harvey2022** — Harvey W., Naderiparizi S., Masrani V., Weilbach C., Wood F. Flexible Diffusion Modeling of Long Videos (FDM). *NeurIPS 35*, 2022. ✓
 - **Pasukonis2022** — Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022. ✓
-- **LSSVWM2025** — [Long-term spatial-memory / state-space video world model]. arXiv:2505.20171, 2025. **[VERIFY title/authors]**
+- **LSSVWM2025** — Po R., Nitzan Y., Zhang R., Chen B., Dao T., Shechtman E., Wetzstein G., Huang X. Long-Context State-Space Video World Models. arXiv:2505.20171, 2025. ✓
 - **WorldPack2025** — Oshima Y., Iwasawa Y., Suzuki M., Matsuo Y., Furuta H. WorldPack: Compressed Memory Improves Spatial Consistency in Video World Modeling. arXiv:2512.02473, 2025. ✓
-- **VidMem2025** — [Video world models with long-term spatial memory]. arXiv:2506.05284, 2025. **[VERIFY title/authors]**
+- **VidMem2025** — Wu T., Yang S., Po R., Xu Y., Liu Z., Lin D., Wetzstein G. Video World Models with Long-term Spatial Memory. arXiv:2506.05284, 2025. ✓
 - **Denton2018** — Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018. ✓
 - **Lee2018savp** — Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018. ✓
 - **Alonso2024** — Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024. ✓
@@ -94,10 +93,10 @@
 - **LeCun2006** — LeCun Y., Chopra S., Hadsell R., Ranzato M., Huang F. A Tutorial on Energy-Based Learning. In *Predicting Structured Data*, MIT Press, 2006. ✓
 - **Ackley1985** — Ackley D. H., Hinton G. E., Sejnowski T. J. A Learning Algorithm for Boltzmann Machines. *Cognitive Science* 9(1), 1985. ✓
 - **Du2019** — Du Y., Mordatch I. Implicit Generation and Modeling with Energy-Based Models. *NeurIPS 32*, 2019. ✓
-- **Nijkamp2019** — Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019. **[VERIFY-fit as the training-cost citation]**
-- **Gladstone2025ebt** — Gladstone A., Alonso [et al.]. Energy-Based Transformers [are Scalable Learners and Thinkers]. arXiv:2507.02092, 2025. **[VERIFY exact author list/title]**
-- **EBTPolicy2025** — [Energy-Based Transformer policies for robotic control]. arXiv:2510.27545, 2025. **[VERIFY title/authors]**
-- **MeanField2024** — [Mean-field analysis of gradient-descent sampling entropy collapse]. arXiv:2403.08362, 2024. **[VERIFY title/authors]**
+- **Nijkamp2019** — Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019. ✓ *(short-run MCMC behavior and its departure from convergent maximum-likelihood sampling; not a general-purpose hardware-cost citation)*
+- **Gladstone2025ebt** — Gladstone A., Nanduru G., Islam M. M., Han P., Ha H., Chadha A., Du Y., Ji H., Li J., Iqbal T. Energy-Based Transformers are Scalable Learners and Thinkers. arXiv:2507.02092, 2025. ✓
+- **EBTPolicy2025** — Davies T., Huang Y., Gladstone A., Liu Y., Chen X., Ji H., Liu H., Hu L. EBT-Policy: Energy Unlocks Emergent Physical Reasoning Capabilities. arXiv:2510.27545, 2025. ✓
+- **MeanField2024** — Häggbom M., Karlsmark M., Andén J. Mean-Field Microcanonical Gradient Descent. arXiv:2403.08362, 2024. ✓
 
 ### B6. Reversible computation, memory-efficient training
 
@@ -118,7 +117,7 @@
 - **Prabhudesai2023** — Prabhudesai M., Goyal A., Pathak D., Fragkiadaki K. Aligning Text-to-Image Diffusion Models with Reward Backpropagation (AlignProp). arXiv:2310.03739, 2023. ✓
 - **Clark2024draft** — Clark K., Vicol P., Swersky K., Fleet D. J. Directly Fine-Tuning Diffusion Models on Differentiable Rewards (DRaFT). *ICLR*, 2024. ✓
 - **Rajbhandari2020** — Rajbhandari S., Rasley J., Ruwase O., He Y. ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. *SC20*, 2020. ✓ *(GPU memory as binding constraint)*
-- **Korthikanti2022** — Korthikanti V., Casper J., Lym S., et al. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022. **[VERIFY-fit]**
+- **Korthikanti2022** — Korthikanti V., Casper J., Lym S., McAfee L., Andersch M., Shoeybi M., Catanzaro B. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022. ✓
 
 ### B7. Video-prediction benchmarks and baselines (Chapter 4–5 comparisons)
 
@@ -143,17 +142,16 @@
 - **Ji2023** — Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023. ✓ *(hallucination phenomenology)*
 - **Lipton2018** — Lipton Z. C. The Mythos of Model Interpretability. *Communications of the ACM* 61(10), 2018. ✓ *(black-box critique)*
 - **Rudin2019** — Rudin C. Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. *Nature Machine Intelligence* 1, 2019. ✓
-- **SoraSurvey2024** — Liu Y., Zhang K., Li Y., et al. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024. **[VERIFY-fit as the large-scale-video survey]**
-- **Marr1982** — Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982. **[VERIFY-fit for "two-stage visual perception"]**
+- **SoraSurvey2024** — Liu Y., Zhang K., Li Y., Yan Z., Gao C., Chen R., Yuan Z., Huang Y., Sun H., Gao J., He L., Sun L. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024. ✓
+- **Marr1982** — Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982. ✓ *(used only for the broad multi-stage account of representations from image evidence toward a 3-D description, not as a source for the dissertation's own consistency taxonomy)*
 
 ### B9. Systems analysis, hierarchical systems, stability (the 124 spine — Chapter 1)
 
-- **Zgurovsky2007** — Згуровський М. З., Панкратова Н. Д. *Основи системного аналізу*. Київ: Видавнича група BHV, 2007. **[VERIFY edition/pages; supervisor may prefer a specific edition]**
-- **Zgurovsky2007en** — Zgurovsky M. Z., Pankratova N. D. *System Analysis: Theory and Applications*. Springer, 2007. ✓
+- **Zgurovsky2007** — Згуровський М. З., Панкратова Н. Д. *Основи системного аналізу: підручник*. Київ: Видавнича група BHV, 2007. 544 с. ISBN 978-966-552-153-2. ✓
+- **Zgurovsky2007en** — Zgurovsky M. Z., Pankratova N. D. *System Analysis: Theory and Applications*. 1st ed. Springer Berlin, Heidelberg, 2007. XXII, 447 p. DOI: 10.1007/978-3-540-48880-4. ✓
 - **Mesarovic1970** — Mesarović M. D., Macko D., Takahara Y. *Theory of Hierarchical, Multilevel Systems*. Academic Press, 1970. ✓ *(hierarchical systems theory)*
 - **Bertalanffy1968** — von Bertalanffy L. *General System Theory: Foundations, Development, Applications*. George Braziller, 1968. ✓ *(classical systems theory)*
 - **Khalil2002** — Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002. ✓ *(stability of complex systems)*
-- **UA-риз** — [«Системи під ризиком» methodology — supervisor-preferred UA source(s) on системний аналіз в умовах невизначеності та ризику.] **[AUTHOR: Prof. Mokin's preferred source(s); 2–3 UA entries expected here for the council]**
 
 ## C. Binding table (inline [REF: descriptor] → key; substitution at assembly)
 
@@ -199,7 +197,7 @@
 | hierarchical systems theory | Mesarovic1970 |
 | image-to-image diffusion | Saharia2022 |
 | improved DDPM — Nichol & Dhariwal, 2021 | Nichol2021 |
-| information leakage in causal sequence modeling | Vaswani2017 *(causal masking; +[AUTHOR-CHOICE if a dedicated source is wanted)* |
+| information leakage in causal sequence modeling | Vaswani2017 *(causal masking; the dissertation makes only the standard no-future-token claim)* |
 | LDM (both forms) | Rombach2022 |
 | Liu et al. 2022, Video Swin / Video Swin | Liu2022swin |
 | long-term spatial-memory benchmarks; memory-augmented world-model evaluation; geometry-grounded probes | Pasukonis2022; LSSVWM2025; VidMem2025; WorldPack2025 |
@@ -220,10 +218,10 @@
 | StyleAligned | Hertz2024 |
 | survey of large-scale generative video models | SoraSurvey2024 |
 | SVG / SAVP (all forms) | Denton2018; Lee2018savp |
-| system methodology monograph; systems-under-risk methodology | Zgurovsky2007; Zgurovsky2007en; UA-риз |
+| system methodology monograph; systems-under-risk methodology | Zgurovsky2007; Zgurovsky2007en |
 | TECO (all forms) | Yan2023teco |
 | truncated BPTT | Williams1990 |
-| two-stage visual perception | Marr1982 |
+| multi-stage visual representation (image evidence toward a 3-D description) | Marr1982 |
 | VAE, Kingma & Welling | Kingma2014 |
 | van den Oord et al. 2017, VQ-VAE (both forms) | Oord2017 |
 | VideoGPT | Yan2021videogpt |
@@ -233,8 +231,10 @@
 
 ## D. Assembly instructions (E8)
 
-1. Author fills section A + the three **[AUTHOR]** items in B/C (UA-риз sources; MilliVid entry;
-   information-leakage choice) and clears every **[VERIFY]** flag against the PDFs (E6 debt).
+1. Author fills the unresolved publication-administration entries in section A. The external
+   bibliographic entries used by the scientific chapters have been checked against primary
+   papers, publisher pages, or library catalogues; no unresolved bibliographic-verification flag
+   remains in that set.
 2. Script pass replaces each inline `[REF: descriptor]` with `[N]` (or `[N, M]`) by the binding
    table, numbering by order of first mention: 01_VSTUP → 02 → 03 → 04 → 05 → 06 (the article
    numbers independently by its venue style from the same keys).

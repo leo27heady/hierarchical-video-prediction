@@ -1,0 +1,425 @@
+{
+  "entity": "leo27heady",
+  "failures": [],
+  "group": "e7a-alternate-codec-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94",
+  "job_type_counts": {
+    "codec-robustness-analysis": 1,
+    "codec-robustness-eval": 14,
+    "codec-training": 1,
+    "codec-validity-gate": 1,
+    "connectivity-gate": 3,
+    "scientific-training": 7
+  },
+  "project": "hgrid",
+  "requirements": {
+    "all_runs_finished": true,
+    "artifact_required_job_types": [
+      "codec-robustness-analysis",
+      "codec-robustness-eval",
+      "codec-training",
+      "codec-validity-gate",
+      "scientific-training"
+    ],
+    "minimum_job_types": {
+      "codec-robustness-analysis": 1,
+      "codec-robustness-eval": 14,
+      "codec-training": 1,
+      "codec-validity-gate": 1,
+      "connectivity-gate": 3,
+      "scientific-training": 7
+    },
+    "minimum_runs": 27
+  },
+  "run_count": 27,
+  "runs": [
+    {
+      "created_at": "2026-07-16T01:37:11Z",
+      "id": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043707",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043707",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043707"
+    },
+    {
+      "created_at": "2026-07-16T01:38:27Z",
+      "id": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043823",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043823",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260716043823"
+    },
+    {
+      "created_at": "2026-07-16T01:38:36Z",
+      "id": "e7a-alternate-codec-seed1-460d2f4a301438d9",
+      "job_type": "codec-training",
+      "logged_artifacts": [
+        {
+          "digest": "60cdf0418ae0c05b549248b8a26abc7a",
+          "name": "e7a-codec-460d2f4a301438d9:v0",
+          "type": "trained-codec"
+        }
+      ],
+      "name": "e7a-alternate-codec-seed1-460d2f4a301438d9",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-seed1-460d2f4a301438d9"
+    },
+    {
+      "created_at": "2026-07-16T01:41:51Z",
+      "id": "e7a-codec-floor-779ca0ea1e19",
+      "job_type": "codec-validity-gate",
+      "logged_artifacts": [
+        {
+          "digest": "9839ad524df34932f4f4efc09859acba",
+          "name": "e7a-codec-floor-779ca0ea1e19:v0",
+          "type": "codec-validity-report"
+        }
+      ],
+      "name": "e7a-codec-floor-779ca0ea1e19",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-codec-floor-779ca0ea1e19"
+    },
+    {
+      "created_at": "2026-07-16T01:42:04Z",
+      "id": "e7a-alternate-codec-predictors-993ee4b6535259e3",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "7a2c76da9fba51796184e2466d610247",
+          "name": "e7a-alternate-codec-predictors-993ee4b6535259e3:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-hier-min-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-993ee4b6535259e3"
+    },
+    {
+      "created_at": "2026-07-16T04:15:49Z",
+      "id": "e7a-alternate-codec-predictors-019fd82cf6963442",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "b5a893db5c4c53b073f12959fb20d78d",
+          "name": "e7a-alternate-codec-predictors-019fd82cf6963442:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-flat-min-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-019fd82cf6963442"
+    },
+    {
+      "created_at": "2026-07-16T06:43:57Z",
+      "id": "e7a-alternate-codec-predictors-c483500021b83d2e",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "cddbadafa529e3275c725d656f002450",
+          "name": "e7a-alternate-codec-predictors-c483500021b83d2e:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-hier-long-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-c483500021b83d2e"
+    },
+    {
+      "created_at": "2026-07-16T09:54:59Z",
+      "id": "e7a-alternate-codec-predictors-e7edc69a480412a7",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "5a6fb53a2b5ac7fcf753f4cae0adecc2",
+          "name": "e7a-alternate-codec-predictors-e7edc69a480412a7:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-flat-budget-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-e7edc69a480412a7"
+    },
+    {
+      "created_at": "2026-07-16T13:01:46Z",
+      "id": "e7a-alternate-codec-predictors-fb603c2f0565f70c",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "d0784366929ec6963dbe50712ef8e457",
+          "name": "e7a-alternate-codec-predictors-fb603c2f0565f70c:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-strided-flat-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-fb603c2f0565f70c"
+    },
+    {
+      "created_at": "2026-07-16T15:58:55Z",
+      "id": "e7a-alternate-codec-predictors-7e3621066377f579",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "08155d2d359d2d05cf798da392104a8b",
+          "name": "e7a-alternate-codec-predictors-7e3621066377f579:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-hier-c2-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-7e3621066377f579"
+    },
+    {
+      "created_at": "2026-07-16T22:41:10Z",
+      "id": "e7a-alternate-codec-predictors-afe335a270f4a293",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "1bbf2a06c2806b1d8a52fc054106f765",
+          "name": "e7a-alternate-codec-predictors-afe335a270f4a293:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "e7a-alternate-codec-predictors-flat-c2-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-alternate-codec-predictors-afe335a270f4a293"
+    },
+    {
+      "created_at": "2026-07-17T06:44:40Z",
+      "id": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260717094434",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260717094434",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-gate-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-d75d12f0-20260717094434"
+    },
+    {
+      "created_at": "2026-07-17T06:45:01Z",
+      "id": "e7a-31a77c958362359e",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "04b6e1a7a6a6598d6a8b98f0c9641393",
+          "name": "e7a-31a77c958362359e:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-min-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-31a77c958362359e"
+    },
+    {
+      "created_at": "2026-07-17T06:51:58Z",
+      "id": "e7a-e3ee87e3487ea6bd",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "67dd1bed2eca7234d2cfb27318be3135",
+          "name": "e7a-e3ee87e3487ea6bd:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-min-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-e3ee87e3487ea6bd"
+    },
+    {
+      "created_at": "2026-07-17T06:58:34Z",
+      "id": "e7a-a20aec800176ebf2",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "a03b81aaed01daa7ff200f2526fe501e",
+          "name": "e7a-a20aec800176ebf2:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-long-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-a20aec800176ebf2"
+    },
+    {
+      "created_at": "2026-07-17T07:06:55Z",
+      "id": "e7a-2f1038074659717c",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "f6e349ffe0ad045356741cbfcb61a26f",
+          "name": "e7a-2f1038074659717c:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-budget-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-2f1038074659717c"
+    },
+    {
+      "created_at": "2026-07-17T07:14:58Z",
+      "id": "e7a-a81074da3bd32482",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "3d2946753438f189b0680d903affd3bf",
+          "name": "e7a-a81074da3bd32482:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-strided-flat-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-a81074da3bd32482"
+    },
+    {
+      "created_at": "2026-07-17T07:22:38Z",
+      "id": "e7a-d1bdb2df7a7e4833",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "6faee3dcba696b484829cbd1e073f863",
+          "name": "e7a-d1bdb2df7a7e4833:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-c2-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-d1bdb2df7a7e4833"
+    },
+    {
+      "created_at": "2026-07-17T07:38:43Z",
+      "id": "e7a-bcd484b4392021a7",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "3618ef4e9fb5119baba445270099636a",
+          "name": "e7a-bcd484b4392021a7:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-c2-s0-ae3769200d-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-bcd484b4392021a7"
+    },
+    {
+      "created_at": "2026-07-17T07:54:31Z",
+      "id": "e7a-5da5a9d4aadaa92f",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "eb73e74b4a1dc7973d207668c7bc7250",
+          "name": "e7a-5da5a9d4aadaa92f:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-min-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-5da5a9d4aadaa92f"
+    },
+    {
+      "created_at": "2026-07-17T08:01:35Z",
+      "id": "e7a-ca4a4dc8dceecbf6",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "aa9825997371aa325866bab1551b0144",
+          "name": "e7a-ca4a4dc8dceecbf6:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-min-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-ca4a4dc8dceecbf6"
+    },
+    {
+      "created_at": "2026-07-17T08:08:17Z",
+      "id": "e7a-9ae485fd0126d644",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "2220bed71b91a6d9593830dd7628f1f4",
+          "name": "e7a-9ae485fd0126d644:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-long-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-9ae485fd0126d644"
+    },
+    {
+      "created_at": "2026-07-17T08:16:59Z",
+      "id": "e7a-7b029d0aab089aad",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "c249583f5f7407f3ba0b5140cb978cfa",
+          "name": "e7a-7b029d0aab089aad:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-budget-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-7b029d0aab089aad"
+    },
+    {
+      "created_at": "2026-07-17T08:25:13Z",
+      "id": "e7a-640e1b3cb88f5b0c",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "83cd5bdaab793d372d7e397bb8f08198",
+          "name": "e7a-640e1b3cb88f5b0c:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-strided-flat-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-640e1b3cb88f5b0c"
+    },
+    {
+      "created_at": "2026-07-17T08:33:16Z",
+      "id": "e7a-a38318ccb95875b4",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "d1d7c4de1a40874b212fcbad7271a2b2",
+          "name": "e7a-a38318ccb95875b4:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-hier-c2-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-a38318ccb95875b4"
+    },
+    {
+      "created_at": "2026-07-17T08:49:32Z",
+      "id": "e7a-7e34398d1c54aaa6",
+      "job_type": "codec-robustness-eval",
+      "logged_artifacts": [
+        {
+          "digest": "6bd5da3d17eaebaf590509ce7ecacb86",
+          "name": "e7a-7e34398d1c54aaa6:v0",
+          "type": "codec-robustness-evaluation"
+        }
+      ],
+      "name": "e7a-loopmom-codec_robustness_holdout-20260716-77a4ec5aee94-flat-c2-s0-ae779ca0ea-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-7e34398d1c54aaa6"
+    },
+    {
+      "created_at": "2026-07-17T09:07:57Z",
+      "id": "e7a-analysis-77a4ec5aee94",
+      "job_type": "codec-robustness-analysis",
+      "logged_artifacts": [
+        {
+          "digest": "3907ee23b24a45cba8827f1625dd5157",
+          "name": "e7a-analysis-77a4ec5aee94:v0",
+          "type": "codec-robustness-analysis"
+        }
+      ],
+      "name": "e7a-analysis-77a4ec5aee94",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e7a-analysis-77a4ec5aee94"
+    }
+  ],
+  "schema_version": 1,
+  "status": "WANDB_GROUP_AUDIT_PASS"
+}

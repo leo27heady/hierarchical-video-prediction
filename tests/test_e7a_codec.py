@@ -7,7 +7,7 @@ import numpy as np
 from hvp_rev.provenance import assert_dataset_purpose, sha256_file
 from hvp_rev.rhvd_train_v2 import resolved_spec
 from scripts.analyze_e7a_codec_robustness import registered_verdict
-from scripts.resolve_e7a_evaluation_dispatch import resolve_dispatch
+from scripts.resolve_e7a_evaluation_dispatch import _portable_path, resolve_dispatch
 
 
 def test_codec_robustness_purpose_is_explicitly_matchable(tmp_path):
@@ -208,3 +208,8 @@ def test_e7a_exact_fourteen_cell_dispatch_has_nonempty_hash_bound_paths(tmp_path
     controller = Path("scripts/run_e7a_codec_robustness.ps1").read_text(encoding="utf-8")
     assert "--ae_path $codec.ae" not in controller
     assert "hvp_rev.rhvd @evalArgs" in controller
+
+
+def test_e7a_dispatch_paths_are_repo_relative_when_portable():
+    path = Path("artifacts") / "fixture" / "checkpoint.pt"
+    assert _portable_path(path) == path.as_posix()
