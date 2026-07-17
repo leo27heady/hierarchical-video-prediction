@@ -2273,3 +2273,27 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   hash-bound CPU attestation, then run only the public/development preparation tranche. Protected
   holdout generation and predictor training remain blocked until the resulting codec,
   classifier, dataset and evaluator hashes are reviewed and frozen.
+
+### E6 preparation launch audit — 2026-07-17 17:10 Europe/Kyiv
+
+- **Prelaunch:** the focused 15-test gate, full 79-test suite, implementation hashes, 39.35-hour
+  allocation arithmetic, clean-source check and online W&B check passed. The four official MNIST
+  IDX sources were recovered from the frozen PyTorch mirror; counts and SHA-256 values are checked
+  by the dataset validator.
+- **Fail-closed operational repairs:** check-only initially consumed a deterministic W&B gate ID,
+  so the first live attempt stopped before data generation when W&B refused `resume=never`.
+  Connectivity IDs are now timestamp-unique and the controller verifies every implementation hash
+  against the CPU report. A second attempt exposed a misplaced local variable in the duplicate-clip
+  validator; it stopped before GPU work. The validator was corrected, independently exercised on
+  both generated arrays, reattested and resumed without modifying either immutable dataset.
+- **Data actual:** training is 3,000×100 from official train glyphs; development is 500×348 from
+  official test glyphs. Each set has unique exact clips, persistent metadata and zero action
+  conditioning; cross-role exact-clip collisions are zero. Development overlap-frame prevalence
+  is 0.397 and is retained for stratified evaluation.
+- **Active codec:** the fresh seed-0 two-level codec is healthy at 2,000/7,000 updates. Validation
+  coarse/fine MSE improved from 0.0216/0.0092 at 1k to 0.0125/0.0055 at 2k. GPU utilization is
+  about 93%, peak live allocation is approximately 2.5/16.4 GB, temperature 66°C and power 119 W.
+  Low VRAM reflects the frozen small codec/batch rather than a spill or throughput problem; batch
+  or optimizer geometry will not be changed mid-study.
+- **Decision:** no scientific blocker. Continue codec, classifier and exact production-evaluator
+  reliability gates. Protected holdout generation and all six predictor runs remain disabled.
