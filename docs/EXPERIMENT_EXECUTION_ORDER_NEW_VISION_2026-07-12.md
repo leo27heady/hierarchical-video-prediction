@@ -2348,3 +2348,24 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   necessary pre-access measurement-invariance repair, not a scope change. Reattest and retry once;
   if the unchanged 0.92 raw identity floor still fails, E6 remains blocked for a substantive
   measurement decision rather than lowering the floor adaptively.
+
+### E6 production-crop classifier audit — 2026-07-17 17:30 Europe/Kyiv
+
+- **Expected versus actual:** the replacement official-train-only classifier completed its frozen
+  3,000 updates in 0.0089 charged GPU-hours. Final training loss was 0.01863; the immutable
+  checkpoint SHA-256 is
+  `1cb4b9b79d44929b761ba686af56e1b0de1cc1f9e4399883a73a8b1b5a78b4e8`.
+  Its W&B run and content-addressed artifact completed normally. No protected holdout was generated
+  or accessed.
+- **Operational stop:** the controller correctly stopped before metric validation, but the
+  ownership guard had matched an inherited PowerShell command line containing an E6 script name
+  after the actual classifier process had exited. GPU telemetry was idle and no competing Python
+  trainer/evaluator existed. This was a conservative false positive, not a stall or scientific
+  failure.
+- **Fail-closed repair:** the ownership guard is narrowed to Python executables running one of the
+  registered E6 entry points. The evaluator-reliability W&B ID now binds both codec and classifier
+  hashes, preventing the replacement classifier from colliding with the earlier failed ceiling
+  run. The focused tests and 15-test CPU attestation pass after these operational changes.
+- **Decision:** no scientific blocker. Resume only the frozen v3 classifier-domain and v2 evaluator
+  ceilings. The unchanged accuracy, coverage, identity and trajectory floors remain binding; a
+  repeated raw non-overlap identity failure remains the substantive stop condition.

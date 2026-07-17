@@ -53,6 +53,7 @@ function Invoke-PhaseCGpuCell {
         throw "E6 $Phase/$Arm/s$Seed cannot fit the remaining 40-hour programme budget"
     }
     $active = @(Get-CimInstance Win32_Process | Where-Object {
+        $_.Name -match '^python(w)?\.exe$' -and
         $_.CommandLine -and
         $_.CommandLine -match 'phasec_eval_v2|train_phasec_classifier|build_phasec_classifier_domains|validate_phasec_evaluator|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
         $_.ProcessId -ne $PID

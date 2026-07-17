@@ -127,11 +127,16 @@ def main() -> None:
         },
     }
     atomic_write_json(out, report)
+    reliability_id = (
+        "phasec-v2-evaluator-reliability-"
+        f"{report['sources']['ae_sha256'][:8]}-"
+        f"{report['sources']['classifier_sha256'][:8]}"
+    )
     wb.init(
-        f"phasec-v2-evaluator-reliability-{report['sources']['ae_sha256'][:10]}",
+        reliability_id,
         config={"report": report, "source_commit": args.source_commit},
         project=args.wandb_project,
-        run_id=f"phasec-v2-evaluator-reliability-{report['sources']['ae_sha256'][:10]}",
+        run_id=reliability_id,
         group=args.wandb_group,
         tags=["moving-mnist", "phase-c-v2", "evaluator-reliability"],
         job_type="evaluator-validation",
@@ -144,7 +149,7 @@ def main() -> None:
     ):
         wb.summary({f"{population}/{key}": value for key, value in values.items()})
     wb.artifact(
-        f"phasec-v2-evaluator-reliability-{report['sources']['ae_sha256'][:10]}",
+        reliability_id,
         "evaluator-validation",
         [args.out, args.config],
         aliases=["latest"],
