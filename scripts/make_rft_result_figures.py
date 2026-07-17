@@ -7,6 +7,7 @@ uncertainty separately.
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib as mpl
@@ -29,6 +30,7 @@ ORIGINAL = "#4f6f8f"
 ALTERNATE = "#b56a3a"
 RAW = "#2f7d68"
 RAW_LIGHT = "#78a99a"
+PDF_TIMESTAMP = datetime(2026, 7, 17, tzinfo=timezone.utc)
 
 
 def _style() -> None:
@@ -58,7 +60,14 @@ def _read(relative: str) -> dict:
 def _save(fig: plt.Figure, stem: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT / f"{stem}.png")
-    fig.savefig(OUT / f"{stem}.pdf")
+    fig.savefig(
+        OUT / f"{stem}.pdf",
+        metadata={
+            "Creator": "hierarchical-video-prediction",
+            "CreationDate": PDF_TIMESTAMP,
+            "ModDate": PDF_TIMESTAMP,
+        },
+    )
     plt.close(fig)
 
 
@@ -319,16 +328,16 @@ def make_pose_mosaic_reference() -> None:
     ax.invert_yaxis()
     ax.set_xlabel("Baseline error − raw-K48 error")
     ax.set_title("B  Registered simultaneous family", loc="left", fontweight="bold")
-    ax.legend(frameon=False, loc="lower right")
+    ax.legend(frameon=False, loc="lower left")
     verdict = result["decision"]["verdict"].replace("_", " ")
     saturation = result["decision"].get("coverage_saturated_by_k38", False)
     ax.text(
         0.99,
-        0.03,
+        0.96,
         f"{verdict}\nK38 saturation: {'yes' if saturation else 'no'}",
         transform=ax.transAxes,
         ha="right",
-        va="bottom",
+        va="top",
         color=RAW,
         fontsize=8.5,
     )

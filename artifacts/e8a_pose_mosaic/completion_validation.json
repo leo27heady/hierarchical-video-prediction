@@ -1,0 +1,14 @@
+{
+  "authorized_gpu_hours": 4.0,
+  "dataset_id": "loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13",
+  "gpu_hours": 1.0896521511388888,
+  "mosaic_variants": 4,
+  "neural_evaluations": 7,
+  "primary_effects": 6,
+  "results_sha256": "74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be",
+  "schema_version": 1,
+  "source_commit": "dedcf01105d5b51a3143dd7b4bf520ce1f7488b8",
+  "status": "COMPLETION_VALIDATION_PASS",
+  "study": "reference-e8a",
+  "verdict": "RAW_ACCESS_CEILING_CI_CLEAN"
+}

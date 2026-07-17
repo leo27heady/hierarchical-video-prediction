@@ -213,7 +213,12 @@ is directionally robust rather than universally sampler-invariant. The independe
 study retained all four registered directions: 896 reach +0.0521 [0.0374,0.0669], 1,152 interior
 +0.0439 [0.0310,0.0569], package shape +0.0112 [0.0039,0.0184], and the 2,432 inversion +0.0079
 [−0.0006,0.0165]. Hence representation robustness is directional for this whole-codec
-intervention, while the upper edge remains family-wise precision-limited.
+intervention, while the upper edge remains family-wise precision-limited. The separate E8a
+explicit-access reference reaches foreground MSE 0.0494 with raw K48 memory; the four registered
+neural-minus-K48 effects range from +0.1134 to +0.1368 and all simultaneous lower bounds are
+positive. Its `RAW_ACCESS_CEILING_CI_CLEAN` verdict shows that exact addressing and lossless
+storage can remove much of the remaining static-world error, but the exact future poses,
+raw-pixel payload and unmatched budget prohibit a neural-model or efficiency ranking.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -286,4 +291,5 @@ stated only for its measured testbeds and configurations.
   unresolved, and flat is family-wise confirmed at 2,432/3,072. Use tested-bracket wording only;
   do not restore an interval, exact edge or unique-crossing claim. E7c adds directional
   sampler/NFE robustness and E7a adds directional whole-codec robustness, both with the
-  upper-inversion precision qualification.
+  upper-inversion precision qualification. E8a adds a clean but privileged explicit-access
+  ceiling and must remain outside token-matched model comparisons.

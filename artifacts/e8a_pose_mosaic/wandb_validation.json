@@ -1,0 +1,194 @@
+{
+  "entity": "leo27heady",
+  "failures": [],
+  "group": "e8a-pose-mosaic-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13",
+  "job_type_counts": {
+    "connectivity-gate": 3,
+    "pose-mosaic-analysis": 1,
+    "pose-mosaic-reference": 1,
+    "retrieval-reference-eval": 7
+  },
+  "project": "hgrid",
+  "requirements": {
+    "all_runs_finished": true,
+    "artifact_required_job_types": [
+      "pose-mosaic-analysis",
+      "pose-mosaic-reference",
+      "retrieval-reference-eval"
+    ],
+    "minimum_job_types": {
+      "connectivity-gate": 3,
+      "pose-mosaic-analysis": 1,
+      "pose-mosaic-reference": 1,
+      "retrieval-reference-eval": 7
+    },
+    "minimum_runs": 12
+  },
+  "run_count": 12,
+  "runs": [
+    {
+      "created_at": "2026-07-17T09:26:13Z",
+      "id": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122609",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122609",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122609"
+    },
+    {
+      "created_at": "2026-07-17T09:26:44Z",
+      "id": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122641",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122641",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-dedcf011-20260717122641"
+    },
+    {
+      "created_at": "2026-07-17T09:26:55Z",
+      "id": "e8a-68d42b66dd5107ce",
+      "job_type": "pose-mosaic-reference",
+      "logged_artifacts": [
+        {
+          "digest": "84f57a882954e01e6ad7499a2b3b7d46",
+          "name": "e8a-68d42b66dd5107ce:v0",
+          "type": "pose-mosaic-reference"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-pose-mosaic",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-68d42b66dd5107ce"
+    },
+    {
+      "created_at": "2026-07-17T09:27:34Z",
+      "id": "e8a-980eed7a2613ef16",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "04e7887139d33bb20983487bb0f01c84",
+          "name": "e8a-980eed7a2613ef16:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-hier-min-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-980eed7a2613ef16"
+    },
+    {
+      "created_at": "2026-07-17T09:34:18Z",
+      "id": "e8a-b7c80a8844d8af92",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "ca60124b16487d79ee8e5060a8384ccb",
+          "name": "e8a-b7c80a8844d8af92:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-flat-min-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-b7c80a8844d8af92"
+    },
+    {
+      "created_at": "2026-07-17T09:40:32Z",
+      "id": "e8a-5dfedb80775be543",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "ce2dc7dc3659b8e9c962248834606838",
+          "name": "e8a-5dfedb80775be543:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-hier-long-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-5dfedb80775be543"
+    },
+    {
+      "created_at": "2026-07-17T09:48:25Z",
+      "id": "e8a-9ecc195a37d00258",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "e142c035a1a0384e564b22b33203dc8a",
+          "name": "e8a-9ecc195a37d00258:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-flat-budget-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-9ecc195a37d00258"
+    },
+    {
+      "created_at": "2026-07-17T09:55:57Z",
+      "id": "e8a-4c73442d60ba3919",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "5aac48440093b8885546582e08488cc4",
+          "name": "e8a-4c73442d60ba3919:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-strided-flat-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-4c73442d60ba3919"
+    },
+    {
+      "created_at": "2026-07-17T10:03:09Z",
+      "id": "e8a-995a34bcfe734c05",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "a8a80853670feafa98a5f9c6e0d49560",
+          "name": "e8a-995a34bcfe734c05:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-hier-c2-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-995a34bcfe734c05"
+    },
+    {
+      "created_at": "2026-07-17T10:18:13Z",
+      "id": "e8a-6e30587a3428a7a6",
+      "job_type": "retrieval-reference-eval",
+      "logged_artifacts": [
+        {
+          "digest": "399d811c299f7709533bdf4e514d105d",
+          "name": "e8a-6e30587a3428a7a6:v0",
+          "type": "retrieval-reference-evaluation"
+        }
+      ],
+      "name": "e8a-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-flat-c2-s0-nfe16-ss0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-6e30587a3428a7a6"
+    },
+    {
+      "created_at": "2026-07-17T13:30:50Z",
+      "id": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-aa6b1cc4-20260717163045",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-aa6b1cc4-20260717163045",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-gate-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13-aa6b1cc4-20260717163045"
+    },
+    {
+      "created_at": "2026-07-17T13:31:00Z",
+      "id": "e8a-analysis-804b9f5d2c13",
+      "job_type": "pose-mosaic-analysis",
+      "logged_artifacts": [
+        {
+          "digest": "057349847f5eb9be6c2ad7a49ad51f0b",
+          "name": "e8a-analysis-804b9f5d2c13:v0",
+          "type": "pose-mosaic-analysis"
+        }
+      ],
+      "name": "e8a-analysis-804b9f5d2c13",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/e8a-analysis-804b9f5d2c13"
+    }
+  ],
+  "schema_version": 1,
+  "status": "WANDB_GROUP_AUDIT_PASS"
+}

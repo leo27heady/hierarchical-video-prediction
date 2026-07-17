@@ -34,8 +34,8 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
 11. GPU time is charged mechanically as wall-clock time while any project process owns the GPU,
     including pilots, evaluation, failed runs and retries. Every run records its authorized maximum
     and actual consumption; c2's planning estimate is replaced by measured time at handoff.
-12. Measured consumption through terminal E7a is 103.362 project GPU-hours. The forward portfolio
-    reserves at most 4 hours for E8a, 40 for article-gated E6, 100 for post-freeze E9 and 50
+12. Measured consumption through terminal E8a is 104.452 project GPU-hours. The forward portfolio
+    reserves at most 40 hours for article-gated E6, 100 for post-freeze E9 and 50
     protected reserve hours. The reserve cannot fund discretionary experiments.
 13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
@@ -65,7 +65,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
 | E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **COMPLETE / CODEC_DIRECTIONALLY_ROBUST**; 7/7 trainings, 14/14 evaluations, eight-effect simultaneous analysis, independent validator and W&B audit pass in 30.0238 project GPU-hours | Retain all four directions across the independent codec at point-estimate level; disclose that the alternate-codec 2,432-token inversion is family-wise unresolved |
-| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **E8a RUNNING** from clean commit `dedcf01`; E6/E9 remain gated/deferred as specified below | Complete and integrate E8a before applying the frozen article-utility and post-freeze gates |
+| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **E8a COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** in 1.0897 GPU-hours; E6/E9 remain gated/deferred | Freeze E8a; complete M1 article assembly before applying the E6 utility gate |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
 
@@ -2085,9 +2085,9 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 | 0 | E0/E1/E2/E4a/E4b/E5a/E7c/E7a | Completed evidence and governance programme | **complete/frozen** | 103.362 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
 | 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **complete / CODEC_DIRECTIONALLY_ROBUST** | 30.0238 h actual | complete |
-| 3 | E8a | Classical pose-indexed retrieval | **RUNNING** privileged closure reference from commit `dedcf01` | 0–4 h | launched 2026-07-17 12:26 Europe/Kyiv |
-| 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
-| 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
+| 3 | E8a | Classical pose-indexed retrieval | **COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** privileged closure reference | 1.0897 h actual | complete |
+| 4 | M1 | Article/dissertation provisional assembly and internal freeze | **COMPLETE**; E8a integrated and article identity frozen | 0 | complete 2026-07-17 |
+| 5 | E6 | Phase C hybrid on long Moving-MNIST | **UTILITY PASS / VALIDITY GATES IN PROGRESS** | 30–40 h | preparation active |
 | 6 | M2 | Final tables, claim/artifact index, clean-environment QA and release | required | 0 | 2–5 d |
 | 7 | E9 | Counterfactual Dynamic LoopWorld primary factorial | optional post-freeze extension | 60–100 h | 1–2 wk |
 | — | E3a | Fixed-target diffusion B1 | deferred while article retains configuration-only wording | 0 now | future if causal wording returns |
@@ -2101,12 +2101,12 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Measured and forward allocations
 
-- measured E0+E2+E4a+E4b+E5a+E7c+E7a consumption: **103.362 GPU-hours**;
-- E8a: **4 hours maximum**;
+- measured E0+E2+E4a+E4b+E5a+E7c+E7a+E8a consumption: **104.452 GPU-hours**;
+- E8a: **1.0897 hours actual; terminal**;
 - E6: **40 hours maximum, article-utility gated**;
 - E9: **100 hours maximum, optional and post-freeze**;
-- without E6, the scientific-run maximum is approximately **207.362 hours**;
-- with E6, the scientific-run maximum is approximately **247.362 hours**.
+- without E6, the scientific-run maximum is approximately **204.452 hours**;
+- with E6, the scientific-run maximum is approximately **244.452 hours**.
 
 ### Pool C — protected reserve
 
@@ -2116,8 +2116,8 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Hard ceiling and replacement rule
 
-Including the protected reserve, the live maximum is approximately **297.362 GPU-hours** with E6,
-or **257.362 hours** without it. This is below the 400-hour ceiling without treating unused budget
+Including the protected reserve, the live maximum is approximately **294.452 GPU-hours** with E6,
+or **254.452 hours** without it. This is below the 400-hour ceiling without treating unused budget
 as a reason to run work. E4b is already included in measured consumption and replaced E8c rather
 than adding to the portfolio. E3a/b, E5b/c, E7b, E8b/c training, E9c and E10 remain outside.
 
@@ -2159,10 +2159,11 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 E7c is terminal as `DIRECTIONALLY_ROBUST`; no sampler/NFE cells may be added. E7a is terminal as
 `CODEC_DIRECTIONALLY_ROBUST` in 30.0238 project GPU-hours: all four alternate-codec point
 estimates are positive, while the alternate 2,432-token inversion remains family-wise unresolved.
-Do not add a codec, predictor seed, arm or endpoint. E8a is now running as the separately scoped
-privileged pose-indexed raw-memory reference. Execute only its frozen four-span mosaic plus seven
-checkpoint evaluations within the four-hour maximum. After terminal validation, integrate the
-registered result before applying the M1/E6/E9 decision tree.
+Do not add a codec, predictor seed, arm or endpoint. E8a is terminal as
+`RAW_ACCESS_CEILING_CI_CLEAN`; its privileged reference must remain visually and verbally
+separate from token-matched neural comparisons. The live workstream is M1: internally freeze the
+assembled fourth article and dissertation synthesis, then apply the preregistered E6 utility and
+validity gate. E9 remains optional post-freeze work and cannot delay dissertation closure.
 
 ### E8a launch audit — 2026-07-17 12:28 Europe/Kyiv
 
@@ -2192,3 +2193,50 @@ registered result before applying the M1/E6/E9 decision tree.
 - **Decision:** no scientific blocker. Continue the seven registered neural evaluations,
   registered simultaneous analysis and independent completion/W&B validation. No adaptive span,
   arm, checkpoint, sampler, endpoint or storage rule is authorized.
+
+### E8a terminal audit — 2026-07-17 16:35 Europe/Kyiv
+
+- **Expected versus actual execution:** all four CPU pose-mosaic spans and all seven frozen neural
+  evaluations completed. The seven GPU cells consumed **1.0897 GPU-hours** versus 1.0952
+  expected and 4.0 authorized. Per-cell runtimes tracked their frozen references; no stall,
+  numerical failure, WDDM spill or retry occurred.
+- **Operational issue and origin:** the first analysis attempt stopped before computing effects
+  because neural artifacts serialize horizon-major records while mosaic artifacts serialize
+  clip-major records. Both contain the same 15,200 unique `(clip,horizon)` keys and identical
+  `hard/dt/seen/fg_nonempty` labels. The analysis now canonicalizes by registered keys, rejects
+  duplicates, and the independent validator repeats the alignment check. Seventy-four tests pass.
+  No model, dataset, metric, endpoint or GPU artifact was changed or rerun.
+- **Registered primary family:** raw K14→K48 is +0.0723 [0.0548,0.0898]; raw K38→K48 is
+  +0.0210 [0.0096,0.0325]. Neural-minus-K48 effects are `hier-min` +0.1219
+  [0.1031,0.1407], `hier-long` +0.1368 [0.1190,0.1545], `strided-flat` +0.1134
+  [0.0944,0.1324], and `flat-c2` +0.1310 [0.1122,0.1498]. All intervals are simultaneous
+  95% max-statistic clip-cluster intervals.
+- **Reference performance and storage:** K48 foreground MSE is 0.0494, full-frame MSE 0.0027
+  and recall 0.8438. Median stored columns increase 80→100→140→154 for K6/K14/K38/K48;
+  mean future-crop observed coverage increases 0.454→0.550→0.750→0.809. K38 saturation is
+  false.
+- **Integrity/cloud gate:** completion validation passes for 4 mosaic variants, 7 neural
+  evaluations, 6 effects, access logs, immutable manifests and budget. The W&B group has exactly
+  12 finished runs: 3 connectivity gates, 1 pose-mosaic reference, 7 neural evaluations and
+  1 analysis; every scientific run has its expected artifact.
+- **Scientific verdict:** **RAW_ACCESS_CEILING_CI_CLEAN**. Exact pose-indexed raw access removes
+  much of the error remaining in learned self-fed systems on this static world. This is not a
+  token-matched model win, efficiency result, learned-retrieval result or natural-video claim.
+- **Next gate:** freeze E8a evidence and complete M1 article/dissertation assembly. E6 may proceed
+  only if the assembled article still has a material reviewer-facing need for the valid
+  persistent-object long Moving-MNIST study. E9 remains optional post-freeze extension work.
+
+### M1 internal freeze and E6 utility gate — 2026-07-17 16:45 Europe/Kyiv
+
+- **M1 outcome:** the article, claim ledger, dissertation synthesis, generated tables, Figure 21
+  and artifact map now include terminal E8a. The frozen article identity remains reach and
+  fidelity in budgeted context packaging; E8a is explicitly a privileged access reference.
+- **Utility decision:** **PASS**. The short Moving-MNIST 10→10 bridge has no re-entry and all
+  load-bearing long-memory evidence otherwise remains on LoopMom. A valid persistent-object long
+  Moving-MNIST study materially addresses the recognizable cross-dataset boundary while allowing
+  positive, null, heterogeneous or unscorable outcomes.
+- **Authorization state:** preparation only. The legacy Phase C path remains prohibited. E6
+  training stays blocked until official glyph split isolation, persistent metadata, classifier
+  domain validation, Hungarian/intention-to-score semantics, overwrite/collision tests, frozen
+  six-cell RunSpecs, cloud connectivity and the 40-hour mechanical budget gate all pass.
+- **Decision record:** `docs/RFT_INTERNAL_FREEZE_AND_E6_UTILITY_DECISION_2026-07-17.md`.

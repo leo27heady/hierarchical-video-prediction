@@ -1509,6 +1509,54 @@ max-statistic сімействі.
 *Source:* `docs/figures/fig20_alternate_codec_robustness.png`, generated directly from
 `artifacts/e7a_codec_robustness/results.json`.
 
+### 4.6.11 Привілейований позиційно-індексований еталон явного доступу
+
+Дослідження E8a відокремлює наявність релевантного минулого від здатності навченої моделі
+адресувати й повторно використовувати його під час самоподачі. Із сирих пікселів лише
+48-кадрового істинного прогріву будується незмінна мозаїка у координатах світу; майбутній
+кадр запитується за точною збереженою позицією вікна спостереження. Невідомі стовпці
+заповнюються зафіксованим построковим середнім, обчисленим лише на тренувальній вибірці.
+Мозаїка не використовує майбутні пікселі, мітки об'єктів, декодер або власні попередні
+виходи.
+
+Цей еталон є навмисно **привілейованим**: він отримує сирі пікселі та точні майбутні позиції,
+не має токен-узгодженого бюджету й не є навченою системою пошуку. Тому його не можна
+інтерпретувати як рейтинг архітектур, перевагу за ефективністю або свідчення узагальнення на
+природне відео.
+
+**Таблиця 4.11 — Одночасне сімейство E8a для позиційно-індексованої сирої пам'яті
+(додатні значення означають меншу похибку K48).**
+
+| Зареєстрований контраст | Оцінка | Одночасний 95%-й ДІ |
+|---|---:|---:|
+| Сира пам'ять K14 → K48 | +0.0723 | [+0.0548, +0.0898] |
+| Сира пам'ять K38 → K48 | +0.0210 | [+0.0096, +0.0325] |
+| `hier-min` → сира K48 | +0.1219 | [+0.1031, +0.1407] |
+| `hier-long` → сира K48 | +0.1368 | [+0.1190, +0.1545] |
+| `strided-flat` → сира K48 | +0.1134 | [+0.0944, +0.1324] |
+| `flat-c2` → сира K48 | +0.1310 | [+0.1122, +0.1498] |
+
+Варіант K48 досягає foreground MSE 0.0494, повнокадрової MSE 0.0027 і повноти переднього
+плану 0.8438; для чотирьох зареєстрованих нейронних еталонів foreground MSE становить
+0.1628–0.1862. Усі чотири нейронно-еталонні точкові оцінки та їхні одночасні нижні межі
+додатні, тому зафіксований вердикт — **RAW_ACCESS_CEILING_CI_CLEAN**. Дозова залежність
+також зберігається всередині сирої пам'яті: K48 перевершує K14 і K38; умова насичення K38
+не виконується.
+
+Медіана кількості збережених стовпців світу зростає 80 → 100 → 140 → 154 для
+K6/K14/K38/K48, а середня частка спостережуваних стовпців майбутнього кадру —
+0.454 → 0.550 → 0.750 → 0.809. На вже спостережуваних пікселях реконструкція є точною.
+Отже, значна частина залишкової похибки навчених систем пов'язана не лише з геометричною
+досяжністю контексту, а й з адресацією, стисненням та повторним використанням інформації
+під час самоподачі. Це не скасовує ієрархічне пакування: E8a показує, скільки можна виграти,
+якщо явний доступ і вірність пам'яті зробити привілейованими.
+
+**Рисунок 4.21 — Привілейована позиційно-індексована сира пам'ять.**
+*Content:* ліворуч — покриття світу та майбутнього кадру залежно від K; праворуч —
+шість зареєстрованих ефектів з одночасними 95%-ми інтервалами.
+*Source:* `docs/figures/fig21_pose_indexed_raw_memory.png`, generated directly from
+`artifacts/e8a_pose_mosaic/results.json`.
+
 ## 4.7 Впровадження результатів дослідження
 
 *(Implementation of the research results. — Kept as per the existing implementation acts, digest
@@ -1595,7 +1643,10 @@ insert the act copies — the current draft has headings only]**.
    simultaneous-CI clean, while the alternate-codec 2,432 inversion is +0.0079
    [−0.0006, 0.0165]. Thus the reach–fidelity account is directionally robust to both inference
    allocation/randomness and one whole-codec intervention, while its upper tested edge remains
-   the precision-limited boundary.
+   the precision-limited boundary. The privileged explicit-access study E8a (§4.6.11) further
+   gives a clean simultaneous reference: raw K48 foreground MSE is 0.0494, and all four
+   registered neural-minus-K48 lower bounds are positive. This is evidence that geometric reach
+   and reliable addressing are distinct, not a token-matched model comparison.
 
 6. The temporal-capability study at operating point B (§4.5) closed with a characterized
    single-step positive and a **registered negative replication of the proposed late trust
@@ -1653,7 +1704,8 @@ The stable labels are bound mechanically to the final numbered publication list.
    18 simultaneous lower bounds positive and the upper inversion unresolved at alternate sampler
    seeds 1/2; **(F5) representation robustness** — E7a retains all four alternate-codec point
    directions, with three family-wise clean contrasts and the upper inversion again
-   precision-limited. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
+   precision-limited; and **(F6) explicit-access reference** — E8a gives a clean privileged
+   raw-memory ceiling while remaining outside token-matched model ranking. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
    фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу [UA-PASS].
 
 ---
@@ -1679,7 +1731,8 @@ Table register additions of this pass: Table 4.6a (§4.3.6, MEASURED frontier �
 to avoid renumbering the audited register; renumber at typeset); Table 4.8 is the measured
 OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; Table 4.9 is the measured TaxiBJ transfer;
 Table 4.10 and Figure 4.20 are the terminal E7a whole-codec robustness products generated from
-`artifacts/e7a_codec_robustness/results.json`. Empty
+`artifacts/e7a_codec_robustness/results.json`; Table 4.11 and Figure 4.21 are the terminal E8a
+privileged-access products generated from `artifacts/e8a_pose_mosaic/results.json`. Empty
 projected transfer tables were removed when the corresponding suites were assigned to future
 work.
 

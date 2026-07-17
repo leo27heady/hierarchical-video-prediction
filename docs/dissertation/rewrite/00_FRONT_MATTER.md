@@ -152,7 +152,10 @@ seeds and is therefore not stated as a general trust boundary. The energy-based 
 characterized negative; reversibility is scoped by its applicability taxonomy. The four central
 reach–fidelity directions survive all registered NFE/sampler variants and an independently
 trained continuous codec at the point-estimate level; the upper inversion is explicitly retained
-as a family-wise precision boundary under alternate sampler and codec conditions.
+as a family-wise precision boundary under alternate sampler and codec conditions. A separate
+privileged pose-indexed raw-memory reference reaches foreground MSE 0.0494 and beats all four
+registered neural references with positive simultaneous lower bounds, showing that geometric
+reach and reliable explicit addressing are distinct while making no token-matched model claim.
 
 ### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
 

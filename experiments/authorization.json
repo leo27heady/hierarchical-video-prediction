@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-17-e8a-authorized-after-all-preaccess-gates",
+  "updated": "2026-07-17-e8a-terminal-evidence-frozen",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -225,8 +225,8 @@
       ]
     },
     "pose-indexed-retrieval": {
-      "status": "AUTHORIZED",
-      "meaning": "E8a is authorized after frozen protocol/config, clean-commit CPU validation, purpose-lock, label parity, schema/distribution checks, and zero exact-clip collisions with development, E2, E7c and E7a. It remains a privileged exact-pose raw-pixel reference, not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E8a completed four pose-mosaic spans and seven frozen neural evaluations in 1.0897 project GPU-hours. Independent artifact/alignment/budget validation and a 12-run W&B audit pass. Verdict: RAW_ACCESS_CEILING_CI_CLEAN. The result is a privileged exact-pose raw-pixel reference, not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence; no extension is authorized.",
       "required_files": [
         "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
         "experiments/configs/pose_indexed_retrieval.json",

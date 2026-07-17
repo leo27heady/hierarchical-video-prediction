@@ -65,7 +65,11 @@ make backpropagation time-agnostic within their measured applicability domain. C
 explicitly marks the representation evidence boundary; Chapter 4 tests robustness to a second
 continuous codec seed rather than claiming representation-family universality. That intervention
 preserves all four registered directions; three contrasts remain simultaneous-CI clean, while
-the alternate-codec 2,432-token inversion remains positive but family-wise unresolved.
+the alternate-codec 2,432-token inversion remains positive but family-wise unresolved. A
+separately gated exact-pose raw-memory reference then measures the remaining explicit-access gap:
+its 48-frame mosaic attains foreground MSE 0.0494 and all four registered neural-minus-reference
+simultaneous lower bounds are positive. Because this reference receives raw pixels and exact
+future poses, it is reported as a privileged ceiling rather than a token-matched competitor.
 
 Thus an objective systemic contradiction arises between the necessity of ensuring multi-level
 consistency of video data over long time horizons (which requires long memory horizons and deep

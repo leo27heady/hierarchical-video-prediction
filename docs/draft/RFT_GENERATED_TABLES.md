@@ -124,7 +124,16 @@ Registered verdict: **CODEC_DIRECTIONALLY_ROBUST**. This is a whole-codec-seed i
 
 ## Privileged pose-indexed raw-memory reference
 
-Pending terminal E8a artifact.
+| Effect | Estimate | Simultaneous 95% CI |
+|---|---:|---:|
+| raw-reach-14-to-48 | +0.0723 | [+0.0548, +0.0898] |
+| raw-reach-38-to-48 | +0.0210 | [+0.0096, +0.0325] |
+| hier-min-to-raw48 | +0.1219 | [+0.1031, +0.1407] |
+| hier-long-to-raw48 | +0.1368 | [+0.1190, +0.1545] |
+| strided-flat-to-raw48 | +0.1134 | [+0.0944, +0.1324] |
+| flat-c2-to-raw48 | +0.1310 | [+0.1122, +0.1498] |
+
+Registered verdict: **RAW_ACCESS_CEILING_CI_CLEAN**. The mosaic receives exact poses and raw observed pixels; it is not token matched.
 
 ## Architecture/protocol positioning
 
@@ -162,3 +171,4 @@ Same archived population: 100 clips, 36 context frames and 964 open-loop targets
 | artifacts/e7c_sampler_nfe/results.json | 93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6 |
 | artifacts/cwvae_black_baseline/results.json | 561b0b3e5eac23276199b601fd22f77303d193921241bd53275861e17617bc78 |
 | artifacts/e7a_codec_robustness/results.json | 3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173 |
+| artifacts/e8a_pose_mosaic/results.json | 74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be |

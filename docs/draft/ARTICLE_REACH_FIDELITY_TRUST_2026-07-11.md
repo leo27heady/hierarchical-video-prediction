@@ -40,6 +40,9 @@ are the upper-budget flat-fidelity inversion under alternate sampler seeds.
 An independently trained latent codec likewise preserves all four directions. Three
 alternate-codec contrasts are simultaneous-CI clean; the 2,432-token inversion remains positive
 at +0.0079 but its family-wise interval [−0.0006, +0.0165] includes zero.
+A privileged exact-pose raw-pixel mosaic provides a separate access reference: its 48-frame
+variant reaches foreground MSE 0.0494, and all four registered neural-to-mosaic effects have
+positive simultaneous lower bounds.
 
 These results support a scoped account: context reach explains where memory can help, while
 fidelity explains why compression can lose after reach is saturated. Addressability and self-fed
@@ -125,7 +128,9 @@ The fourth article contributes:
 8. a preregistered NFE/sampler-seed robustness family on a separate purpose-locked set;
 9. a preregistered whole-codec-seed intervention separating directional representation
    robustness from family-wise precision;
-10. explicit reporting of negative, confounded and seed-sensitive outcomes.
+10. a privileged pose-indexed raw-memory reference separating explicit access from learned,
+    self-fed generation without presenting it as a token-matched competitor;
+11. explicit reporting of negative, confounded and seed-sensitive outcomes.
 
 Energy-based modelling and stochastic reversibility remain dissertation strands and supplementary
 context; they are not required to make this article's central claim.
@@ -446,6 +451,45 @@ endpoint was selected after observation.
 All point estimates preserve direction; the alternate-codec upper inversion is the sole interval
 crossing zero.
 
+### 4.9 Privileged pose-indexed raw-memory reference
+
+E8a asks how much error remains when access is made explicit. It builds a frozen world-coordinate
+mosaic from raw warm-up pixels and queries it using exact saved viewport positions. It receives
+information unavailable to the neural predictors: raw pixel storage and all future query poses.
+It is therefore an access reference, not a token-matched architecture comparison, learned
+retrieval baseline or natural-video result.
+
+| Registered effect | Estimate | Simultaneous 95% CI |
+|---|---:|---:|
+| Raw K14 minus raw K48 | +0.0723 | [+0.0548, +0.0898] |
+| Raw K38 minus raw K48 | +0.0210 | [+0.0096, +0.0325] |
+| `hier-min` minus raw K48 | +0.1219 | [+0.1031, +0.1407] |
+| `hier-long` minus raw K48 | +0.1368 | [+0.1190, +0.1545] |
+| `strided-flat` minus raw K48 | +0.1134 | [+0.0944, +0.1324] |
+| `flat-c2` minus raw K48 | +0.1310 | [+0.1122, +0.1498] |
+
+The K48 mosaic attains foreground MSE 0.0494, full-frame MSE 0.0027 and foreground recall
+0.8438, versus foreground MSE 0.1628–0.1862 for the four registered neural references. Every
+neural-to-K48 point estimate and simultaneous lower bound is positive, giving the preregistered
+verdict **RAW_ACCESS_CEILING_CI_CLEAN**. The raw-span diagnostics are also positive: K48 improves
+over both K14 and K38. The K38 saturation condition is not met. Median stored world coverage
+increases from 80 columns at K6 to 154 at K48; mean future-crop observed coverage increases from
+0.454 to 0.809. Observed pixels are reproduced exactly, while unobserved columns use the frozen
+training-only row prior.
+
+This closes a useful explanatory gap. Large error remains in the learned self-fed systems even
+when their context can geometrically reach the relevant past; exact addressing and lossless
+storage can remove much of it on this static world. The result does not show that hierarchy is
+unnecessary or that a raw mosaic is deployable: the mosaic has privileged poses, no token budget,
+no learned dynamics, no decoder loss and no self-fed state. It instead separates the potential
+value of explicit access from the measured neural package frontier.
+
+![Privileged pose-indexed raw memory](../figures/fig21_pose_indexed_raw_memory.png)
+
+**Figure 7.** Left: stored-world and future-crop coverage as the raw warm-up span increases.
+Right: the registered simultaneous family. All six lower bounds are positive; the four circular
+neural-to-K48 effects determine the clean ceiling verdict.
+
 ## 5. Reproducibility and evidence availability
 
 Every confirmatory or robustness dataset has a purpose string, generation seed, split indices and
@@ -478,6 +522,9 @@ generalization, a trust law, or valid legacy Phase C object conclusions. Moving-
 TaxiBJ are descriptive boundary/competence anchors rather than equivalence or re-entry evidence.
 E7a supports whole-codec directional robustness conditional on predictor seed 0; it does not
 establish component-level codec causality or universal representation invariance.
+E8a is a privileged static-world access reference. Because it receives exact future poses and
+raw warm-up pixels without a matched token or inference budget, it cannot support a model-ranking,
+efficiency or natural-generalization claim.
 
 Prior work already studies slow latent state, compressed trajectory memory, retrieval, memory
 benchmarks and autoregressive mismatch [CW-VAE; FDM; TECO; recent spatial-memory world models;
@@ -517,6 +564,14 @@ precision boundary rather than a sign reversal. Together, E7c and E7a support a 
 reach–fidelity account while making the upper-budget inversion the appropriately qualified edge
 of the evidence.
 
+The pose-indexed reference then exposes a complementary gap: explicit lossless access to observed
+content substantially outperforms every registered neural reference, with a clean simultaneous
+family. This does not replace the learned-model comparison; it shows that reach alone is not
+enough when addressing, compression and self-fed generation remain imperfect. The final account
+is therefore conditional and operational: buy enough reach to include the relevant past, preserve
+the fidelity the task needs, and distinguish having information in context from being able to
+address and reuse it reliably.
+
 ## References
 
 - Chen, H., Zhou, K., Hua, H., et al. (2026). *MemoBench: Benchmarking World Modeling in
@@ -552,6 +607,8 @@ of the evidence.
       upper-inversion intervals and checkpoint-only scope;
 - [x] integrate E7a as whole-codec directional robustness, including the unresolved
       alternate-codec upper inversion;
+- [x] integrate E8a as a privileged exact-pose raw-memory ceiling, explicitly separated from
+      token-matched neural comparisons;
 - [x] retain configuration-only B1 wording; no fixed-target causal claim is made;
 - [x] replace reference keys with verified primary citations;
 - [x] generate configuration/cost, claim/evidence and prior-art tables from artifacts;
