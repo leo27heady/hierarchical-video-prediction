@@ -12,6 +12,7 @@ from scripts.evaluate_e8a_pose_mosaic import (
 )
 from scripts.analyze_e8a_pose_mosaic import (
     HIGHER_BETTER,
+    _load_canonicalized,
     population_mask,
     registered_verdict,
     simultaneous_family_allowing_degenerate,
@@ -179,3 +180,35 @@ def test_e8a_byte_identical_manifest_copy_is_a_provenance_mirror(tmp_path):
     assert _is_manifest_mirror(protected, tracked)
     tracked.write_text(payload.replace("same", "different"), encoding="utf-8")
     assert not _is_manifest_mirror(protected, tracked)
+
+
+def test_e8a_pairing_is_independent_of_serialization_order(tmp_path):
+    clip_major = tmp_path / "clip-major.npz"
+    horizon_major = tmp_path / "horizon-major.npz"
+    clips = np.asarray([250, 250, 251, 251])
+    horizons = np.asarray([1, 2, 1, 2])
+    metric = clips * 1000 + horizons
+    np.savez(clip_major, clip=clips, h=horizons, fg=metric)
+    permutation = np.asarray([0, 2, 1, 3])
+    np.savez(
+        horizon_major,
+        clip=clips[permutation],
+        h=horizons[permutation],
+        fg=metric[permutation],
+    )
+    left = _load_canonicalized(clip_major)
+    right = _load_canonicalized(horizon_major)
+    for key in ("clip", "h", "fg"):
+        np.testing.assert_array_equal(left[key], right[key])
+
+
+def test_e8a_pairing_rejects_duplicate_record_keys(tmp_path):
+    duplicate = tmp_path / "duplicate.npz"
+    np.savez(
+        duplicate,
+        clip=np.asarray([250, 250]),
+        h=np.asarray([1, 1]),
+        fg=np.asarray([0.1, 0.2]),
+    )
+    with pytest.raises(ValueError, match="duplicate paired record key"):
+        _load_canonicalized(duplicate)

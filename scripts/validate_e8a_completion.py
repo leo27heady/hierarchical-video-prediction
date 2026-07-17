@@ -39,6 +39,20 @@ def _verify_store(run_dir: Path) -> None:
             raise ValueError(f"immutable artifact mismatch: {path}")
 
 
+def _canonical_alignment(path: Path) -> dict[str, np.ndarray]:
+    keys = ("clip", "h", "hard", "dt", "seen", "fg_nonempty")
+    with np.load(path) as values:
+        missing = [key for key in keys if key not in values]
+        if missing:
+            raise ValueError(f"E8a alignment keys missing from {path}: {missing}")
+        arrays = {key: np.asarray(values[key]) for key in keys}
+    pairs = np.stack([arrays["clip"], arrays["h"]], axis=1)
+    if len(np.unique(pairs, axis=0)) != len(pairs):
+        raise ValueError(f"E8a duplicate paired record key: {path}")
+    order = np.lexsort((arrays["h"], arrays["clip"]))
+    return {key: value[order] for key, value in arrays.items()}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
@@ -182,7 +196,14 @@ def main() -> None:
     method_paths = dict(neural)
     for variant in expected_mosaics:
         method_paths[variant] = mosaic_dir / f"metrics/{variant}.npz"
+    reference_alignment = _canonical_alignment(
+        method_paths["pose-mosaic-k48"]
+    )
     for method, path in method_paths.items():
+        alignment = _canonical_alignment(path)
+        for key, expected in reference_alignment.items():
+            if not np.array_equal(alignment[key], expected):
+                raise ValueError(f"E8a paired record key differs for {method}: {key}")
         if results["input_artifacts"].get(method) != sha256_file(path):
             raise ValueError(f"E8a analysis input hash mismatch: {method}")
 

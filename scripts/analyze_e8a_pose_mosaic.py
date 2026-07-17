@@ -115,6 +115,29 @@ def _aligned(reference, other) -> None:
             raise ValueError(f"paired E8a key differs: {key}")
 
 
+def _load_canonicalized(path: str | Path) -> dict[str, np.ndarray]:
+    """Load one metric artifact in canonical (clip, horizon) order.
+
+    The neural evaluator emits horizon-major records while the classical
+    pose-mosaic evaluator emits clip-major records.  Pairing is defined by the
+    registered record keys, not by serialization order.
+    """
+    with np.load(path) as archive:
+        arrays = {key: np.asarray(archive[key]) for key in archive.files}
+    clips = arrays["clip"]
+    horizons = arrays["h"]
+    if len(clips) != len(horizons):
+        raise ValueError(f"E8a clip/horizon length differs: {path}")
+    pairs = np.stack([clips, horizons], axis=1)
+    if len(np.unique(pairs, axis=0)) != len(pairs):
+        raise ValueError(f"E8a duplicate paired record key: {path}")
+    order = np.lexsort((horizons, clips))
+    return {
+        key: value[order] if value.ndim > 0 and len(value) == len(order) else value
+        for key, value in arrays.items()
+    }
+
+
 def _markdown(result: dict) -> str:
     lines = [
         "# E8a pose-indexed raw-memory reference results",
@@ -192,7 +215,7 @@ def main() -> None:
             f"extra={sorted(set(mosaic_paths)-expected_mosaics)}"
         )
     paths = {**neural_paths, **mosaic_paths}
-    arrays = {method: np.load(path) for method, path in paths.items()}
+    arrays = {method: _load_canonicalized(path) for method, path in paths.items()}
     reference = arrays["pose-mosaic-k48"]
     for values in arrays.values():
         _aligned(reference, values)
@@ -207,7 +230,7 @@ def main() -> None:
         deltas[effect["id"]] = baseline["fg"] - candidate["fg"]
         registered_rows.append(effect)
         for metric in config["decision"]["corroborating_metrics"]:
-            if metric not in baseline.files or metric not in candidate.files:
+            if metric not in baseline or metric not in candidate:
                 continue
             corroborating.append({
                 "effect": effect["id"],
