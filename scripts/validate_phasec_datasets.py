@@ -36,9 +36,6 @@ def _manifest(path: str, purpose: str, split: str) -> dict:
 
 def _clip_hashes(path: str) -> set[str]:
     clips = np.load(path, mmap_mode="r")
-    unique_hashes = _clip_hashes(manifest["artifacts"]["clips"]["path"])
-    if len(unique_hashes) != n:
-        raise ValueError("dataset contains duplicate exact clips")
     return {
         hashlib.sha256(np.ascontiguousarray(clips[index]).tobytes()).hexdigest()
         for index in range(len(clips))
@@ -81,6 +78,9 @@ def _validate_bundle(manifest: dict, source_count: int) -> dict:
         raise ValueError("trajectory top-left coordinates differ from boxes")
     if np.any(meta["overlap"] != np.swapaxes(meta["overlap"], 2, 3)):
         raise ValueError("overlap matrix is not symmetric")
+    unique_hashes = _clip_hashes(manifest["artifacts"]["clips"]["path"])
+    if len(unique_hashes) != n:
+        raise ValueError("dataset contains duplicate exact clips")
     return {
         "shape": list(clips.shape),
         "objects": int(n * objects),
