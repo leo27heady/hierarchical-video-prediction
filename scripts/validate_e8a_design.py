@@ -49,6 +49,11 @@ def _other_locked_manifests(exclude: Path) -> list[Path]:
     return sorted(path for path in candidates if path.resolve() != exclude.resolve())
 
 
+def _is_manifest_mirror(left: Path, right: Path) -> bool:
+    """Return true when two paths contain the same immutable manifest bytes."""
+    return sha256_file(left) == sha256_file(right)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
@@ -190,6 +195,10 @@ def main() -> None:
             key: value["sha256"] for key, value in manifest.get("artifacts", {}).items()
         }
         for other_path in _other_locked_manifests(manifest_path):
+            # The tracked manifest is an immutable provenance mirror of the
+            # protected data-side manifest, not an independent earlier set.
+            if _is_manifest_mirror(manifest_path, other_path):
+                continue
             try:
                 other = json.loads(other_path.read_text(encoding="utf-8"))
                 other_hashes = {

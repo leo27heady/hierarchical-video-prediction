@@ -16,6 +16,7 @@ from scripts.analyze_e8a_pose_mosaic import (
     registered_verdict,
     simultaneous_family_allowing_degenerate,
 )
+from scripts.validate_e8a_design import _is_manifest_mirror
 
 
 def _static_clip(world, positions):
@@ -166,3 +167,15 @@ def test_e8a_neural_path_has_a_distinct_purpose_lock():
         'locked_job_type = "retrieval-reference-eval"',
     ):
         assert marker in source
+
+
+def test_e8a_byte_identical_manifest_copy_is_a_provenance_mirror(tmp_path):
+    protected = tmp_path / "protected.manifest.json"
+    tracked = tmp_path / "tracked.manifest.json"
+    payload = '{"dataset_id":"same","artifacts":{}}\n'
+    protected.write_text(payload, encoding="utf-8")
+    tracked.write_text(payload, encoding="utf-8")
+    assert protected.resolve() != tracked.resolve()
+    assert _is_manifest_mirror(protected, tracked)
+    tracked.write_text(payload.replace("same", "different"), encoding="utf-8")
+    assert not _is_manifest_mirror(protected, tracked)
