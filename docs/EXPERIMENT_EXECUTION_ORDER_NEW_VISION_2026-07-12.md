@@ -2371,3 +2371,27 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
 - **Decision:** no scientific blocker. Resume only the frozen v3 classifier-domain and v2 evaluator
   ceilings. The unchanged accuracy, coverage, identity and trajectory floors remain binding; a
   repeated raw non-overlap identity failure remains the substantive stop condition.
+
+### E6 component-isolation audit — 2026-07-17 17:38 Europe/Kyiv
+
+- **Repeated ceiling result:** all replacement-classifier domain gates passed: clean 0.9890,
+  translated 0.9850, isolated rendered component 0.9925, AE 0.9845 and degraded 0.9830.
+  The unchanged exact-evaluator gate nevertheless stopped at raw non-overlap identity 0.9137
+  versus 0.92. Coverage 0.9868, trajectory error 1.70 px, AE identity 0.9017 and every other floor
+  passed. The failed 0.0110-hour validation cell is charged and retained.
+- **Origin:** component detection correctly separated disconnected objects, but `_classifier_crop`
+  then copied the complete frame inside the component's padded square. A nearby disconnected digit
+  could therefore re-enter the classifier input after segmentation had excluded it. On the 1,216
+  frozen mask-non-overlap development frames, the full-frame crop yields 0.9258 matched identity
+  accuracy; the detector-proposal-only crop yields 0.9754. Intention-to-score identity rises from
+  0.9137 to 0.9626 without changing assignments, misses, thresholds or the evaluation population.
+- **Repair:** zero pixels outside each detected connected-component mask before square
+  padding/resizing. This uses only the predicted component proposal and no GT box, class or object
+  count. Retrain the official-train-only classifier on the corrected exact production input,
+  rebuild every public/development fixture, and rerun the same frozen ceilings under new immutable
+  v4/v3 report identities. The superseded classifier remains charged but is excluded from the
+  accepted terminal inventory. The full repository suite passes 80 tests and the hash-bound E6
+  gate passes all 16 focused cases after the repair.
+- **Decision:** this is a pre-access measurement implementation defect, not an endpoint or estimand
+  change. Protected holdout generation remains disabled. Continue the corrected one-time gate
+  because the unchanged floor has already been shown attainable with 0.0426 absolute headroom.

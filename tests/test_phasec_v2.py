@@ -73,6 +73,21 @@ def test_component_extraction_keeps_extras_and_empty_prediction_explicit():
     assert np.isfinite(empty["trajectory_error"])
 
 
+def test_classifier_crop_contains_only_the_detected_component():
+    isolated = np.zeros((64, 64), np.float32)
+    isolated[20:30, 20:25] = 1.0
+    crowded = isolated.copy()
+    crowded[20:30, 27:32] = 0.5
+    isolated_component = extract_components(
+        isolated, threshold=0.3, min_component_pixels=30,
+    )[0]
+    crowded_components = extract_components(
+        crowded, threshold=0.3, min_component_pixels=30,
+    )
+    assert len(crowded_components) == 2
+    assert np.allclose(crowded_components[0].crop, isolated_component.crop)
+
+
 def test_abstention_is_an_intention_to_score_identity_error():
     frame = np.zeros((64, 64), np.float32)
     frame[20:40, 20:40] = 1

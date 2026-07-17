@@ -53,10 +53,14 @@ def main() -> None:
         "lr": args.lr,
         "source_split": "official-MNIST-train",
         "input_distribution": (
-            "uniform mixture of canonical 28x28 glyphs and deterministic production-component "
-            "crops from the same official-train glyphs"
+            "uniform mixture of canonical 28x28 glyphs and deterministic isolated-mask "
+            "production-component crops from the same official-train glyphs"
         ),
-        "production_crop": {"threshold": 0.3, "min_component_pixels": 4},
+        "production_crop": {
+            "threshold": 0.3,
+            "min_component_pixels": 4,
+            "isolate_component_mask": True,
+        },
         "images_sha256": sha256_file(args.images),
         "labels_sha256": sha256_file(args.labels),
         "source_commit": args.source_commit,

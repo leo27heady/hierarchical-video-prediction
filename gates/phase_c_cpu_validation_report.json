@@ -3,7 +3,7 @@
     "allocated_max_gpu_hours": 39.35000000000001,
     "authorized_max_gpu_hours": 40.0
   },
-  "config_sha256": "c44e8318990191b635cec2d86b09144f95f61de98a757c40a951ad87bd60780e",
+  "config_sha256": "c92bee90aaff438ebb08b587aa8e98f62cc4de9edf45c75b153b6285c8e4ff55",
   "context": {
     "flat_reach": 18,
     "flat_tokens": 1152,
@@ -17,20 +17,20 @@
     "hvp_rev/evaluation/frame_metrics.py": "a22754ccf2c0ff1873ecaea1c2a020959acf393df3e3ab0ac888358b5f1fb46c",
     "hvp_rev/evaluation/object_metrics.py": "c12ad66ac9cb97ecbabfab6117cb0639a4d1056dd7ecd94d3d0b3402df6cdf3b",
     "hvp_rev/phasec_eval_v2.py": "f17667bf87fe4369fb7c0e0ad20309284436f4a3fa68b2e7cd67e3cc0285f4b1",
-    "hvp_rev/phasec_v2.py": "6694cd7befe84034b2f549edad61deafca23ea09de3ac6cafa9319ec293b8889",
+    "hvp_rev/phasec_v2.py": "85925de58b1a28e4ec55138f8065bc110fc8c9ca4fdf1434390e3cd75b4652f5",
     "hvp_rev/rhvd_train_v2.py": "5b8847673fafb4eb4ba8617dfdeadb64e7fc425b177819997c14407f0be91d5e",
     "scripts/analyze_phasec_v2.py": "9e8e0761bdc0e5aa37103df0f03ea9e1bb913748e7c5d0d89434e4c0111a816a",
     "scripts/build_phasec_classifier_domains.py": "3de09bffc8f8e53cb18a4fdbfdf9dae6ae866bca7b33ab866f09eefd6f433ca2",
     "scripts/gen_moving_v2.py": "6ffedbfb7a837327e2c498f328139e981a0d38062a1d0009675701de875e3777",
-    "scripts/run_phasec_v2.ps1": "90f9c1826606e816b003c3a1dbd9f3faa76340cff6a06aae7def17cc8c923e1e",
-    "scripts/train_phasec_classifier.py": "dd764a2c81c9b66f58264f2e839328694ee9e2ab1bf727c7c1139ac62fd1b685",
+    "scripts/run_phasec_v2.ps1": "13a1a6930164030c31ac206add59c32c0a43a1c467bf27ee9edb09e6fbf062ce",
+    "scripts/train_phasec_classifier.py": "1faef1e9ba572184106c3b83c631878aec0efc06e86e7c19b5313aa49873ae09",
     "scripts/validate_phasec_classifier.py": "a9f1fa174c5c90c73bf4ba52c50c673cbda376ecde29da0ce0760ac0abdc9925",
     "scripts/validate_phasec_completion.py": "a766197806cda3304d2f7312fad9bf5cc83e496f2942dd56aa74f72ed513f2e8",
     "scripts/validate_phasec_datasets.py": "e3530693f229c8963b86528d706aa499f0425484da32bc9b028f05a18c27a514",
     "scripts/validate_phasec_evaluator.py": "ebd7222146b074b8b53b1a3e266917ba1c1420e52b77329ce4e80f9ddf4e04f1"
   },
   "schema_version": 1,
-  "source_commit": "75759cc7f49bfdefb80dcb4e1e4ef7ceae9b827d",
+  "source_commit": "7bfbbc5f9df8ca968cc226c1d63bb64315df480f",
   "status": "CPU_VALIDATION_PASS",
   "tests": {
     "command": [
@@ -44,6 +44,6 @@
       "tests/test_classifier_and_trust.py",
       "tests/test_complete_evaluation.py"
     ],
-    "stdout": "...............                                                          [100%]\n15 passed in 2.23s"
+    "stdout": "................                                                         [100%]\n16 passed in 2.60s"
   }
 }

@@ -66,7 +66,7 @@
   },
   "classifier": {
     "architecture": "DigitCNN-v1",
-    "training_input": "50% canonical official-train glyphs; 50% deterministic production-component crops of the same official-train glyphs",
+    "training_input": "50% canonical official-train glyphs; 50% deterministic isolated production-component-mask crops of the same official-train glyphs",
     "seed": 20260717,
     "steps": 3000,
     "batch": 256,

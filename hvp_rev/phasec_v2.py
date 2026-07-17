@@ -66,7 +66,12 @@ def extract_components(
             centroid = (float((ys * weights).sum() / total), float((xs * weights).sum() / total))
         else:
             centroid = (float(ys.mean()), float(xs.mean()))
-        crop = _classifier_crop(frame, bbox)
+        # The component is the detector's instance proposal. Crop that proposal, not the full
+        # frame inside its bounding square: nearby but disconnected objects may occupy the same
+        # square and would otherwise contaminate identity after detection separated them.
+        component_frame = np.zeros_like(frame)
+        component_frame[ys, xs] = frame[ys, xs]
+        crop = _classifier_crop(component_frame, bbox)
         components.append(
             DetectedComponent(
                 Detection(centroid_yx=centroid, bbox_yxyx=bbox),
