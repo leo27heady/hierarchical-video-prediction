@@ -2444,3 +2444,17 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   and final-data marker now passes. `phase-c-v2` may change to `AUTHORIZED_RUN_ALONE`; no other
   experiment may share the GPU. Run check-only once, then launch the frozen seed-major arm pairs
   without inspecting holdout outcomes until all six evaluations are complete.
+
+### E6 protected-run launch gate — 2026-07-17 17:58 Europe/Kyiv
+
+- **Check-only actual:** main authorization, all marker-to-subject hashes, frozen config status,
+  resolved codec/classifier hashes, holdout manifest presence, implementation attestation and
+  online W&B connectivity passed from clean commit `7f21852`. No training or evaluation process
+  was launched by check-only.
+- **Frozen execution order:** seed 0 flat/hier, seed 1 flat/hier, seed 2 flat/hier training,
+  followed only then by the six protected evaluations, registered simultaneous analysis, W&B
+  inventory and completion validation. Preparation failures remain in the 40-hour mechanical
+  total.
+- **Decision:** launch E6 alone. Four-hour audits may diagnose and document health but may not
+  alter batch, LR, update count, EMA, checkpoint, NFE, sampler, rollout geometry, endpoint,
+  protected clip range or decision rule.
