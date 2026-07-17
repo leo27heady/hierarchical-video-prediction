@@ -14,6 +14,7 @@ hvp.egg-info/
 /artifacts/training/
 /artifacts/autoencoders/
 /artifacts/e7a_codec_robustness/
+/artifacts/e8a_pose_mosaic/
 /artifacts/e4_head_package/gpu_hours.jsonl
 /artifacts/confirmation_e2/access.jsonl
 *.pt
