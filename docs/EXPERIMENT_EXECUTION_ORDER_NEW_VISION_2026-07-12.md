@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RUNNING**; codec floor PASS; predictors 1–6/7 complete and predictor 7/7 (`flat-c2`) at 13.5k/30k | Continue the fail-closed frozen queue under four-hour audits; no adaptive cells |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **BLOCKED at evaluation dispatch**; codec floor PASS and all 7/7 predictors complete/verified; first original-codec evaluation exited before data access because the wrapper supplied an empty AE path | Repair only the controller's PowerShell variable capture, add a 14-cell CPU argv gate, refresh the wrapper attestation, then resume explicitly; no scientific geometry or adaptive cell |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -385,6 +385,55 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   outcome set remains unopened until all seven predictors complete. The whole-codec estimand and
   registered joint eight-effect family remain intact. Continue the frozen final predictor and
   subsequent fourteen evaluations unchanged; there is no blocker or basis for an adaptive cell.
+
+#### Four-hour audit E7a-I9 — 2026-07-17 08:43 Europe/Kyiv
+
+- **Expected versus actual:** expected `flat-c2` to finish and the fourteen-cell locked evaluation
+  matrix to begin. All seven predictor trainings did finish, but the first evaluation
+  (`original` codec, `hier-min`) failed at command-line parsing with exit code 2 before rollout.
+  The controller exited fail-closed and the GPU is idle. E7a is therefore operationally blocked
+  at evaluation dispatch, not scientifically failed and not terminal.
+- **Completed `flat-c2`:** the final cell completed 30,000/30,000 in 6.6424 GPU-hours, below its
+  7.4-hour maximum. All sixty loss/throughput intervals and fifteen validation grids are finite.
+  Relative to the original B16 trajectory reconstructed from the immutable initial and resumed
+  logs, alternate-codec loss averages 10.3% higher, 12.8% higher over the final 5,000 updates and
+  ends 23.5% higher (0.06716 versus 0.05440). Validation foreground MSE is effectively unchanged:
+  −0.08% averaged over all grids and −0.64% at 30k (0.05663 versus 0.05700). Throughput averages
+  3.0% faster, model peak stays at 11.6822 GB, and the final qualitative grid remains coherent.
+  This closes training with the already observed codec-dependent objective-scale shift but no
+  predictive collapse, divergence or stall.
+- **Immutable training evidence:** the alternate codec COMPLETE marker and all 3/3 manifest
+  entries verify. Every one of the seven predictor COMPLETE markers matches its RunSpec and all
+  126/126 predictor-manifest entries rehash exactly. The final `flat-c2` checkpoint is
+  355,202,539 bytes with SHA-256
+  `2f947c8354b9ee0d99922c770d9b635d28b77eb61674af4c2b1af52022a7ada6`.
+  Its W&B run is finished with a COMMITTED training artifact, as are the other six predictors,
+  codec and codec-floor runs.
+- **Failure localization and holdout integrity:** no E7a access log, evaluation RunSpec,
+  evaluation artifact, metric file, result file or W&B evaluation run exists. `argparse` rejected
+  the command because `--ae_path` had no following value, before application code could open the
+  500×200 array. The locked outcome therefore remains analytically unopened and no point estimate
+  is visible. The failed dispatch consumed 0.00225 project GPU-hours and produced no scientific
+  record.
+- **Root cause:** the controller iterates with an outer object variable named `$codec`, then calls
+  `Invoke-E7aGpuCell`, whose string parameter is named `$Codec`. PowerShell variable names are
+  case-insensitive and the invoked script block resolves through dynamic scope; inside it,
+  `$codec.ae` therefore refers to the function's string parameter and evaluates to null. The same
+  deterministic wrapper defect would affect both codec rows. It is not a checkpoint, model,
+  dataset, evaluator or W&B failure.
+- **Budget:** valid completed codec/floor/training consumption is 27.6850 hours; including the
+  failed pre-evaluation dispatch it is 27.6872 hours. The complete fourteen-cell evaluation
+  allocation still fits comfortably below the frozen 36-hour tranche maximum. Hardware after the
+  fail-closed exit is idle at 0.84/16.38 GB board memory and 43°C; no orphan controller,
+  evaluator or trainer remains.
+- **Recovery gate:** do not launch an evaluation manually and do not change frozen scientific
+  geometry. Make a wrapper-only repair that captures the outer AE path in a non-shadowed scalar
+  before entering `Invoke-E7aGpuCell`; add a CPU argv-spy test proving that all fourteen frozen
+  rows receive non-empty, hash-matched AE/checkpoint paths and distinct codec identities; rerun
+  the existing design/config/compile tests; refresh only the implementation attestation affected
+  by the wrapper; record the recovery commit and failed-attempt provenance; then invoke the
+  controller with explicit `-Resume`. The original execution source commit, config hash, dataset,
+  checkpoints, NFE, sampler seed, rollout geometry, metrics and joint family remain frozen.
 
 #### E2 run ledger
 
