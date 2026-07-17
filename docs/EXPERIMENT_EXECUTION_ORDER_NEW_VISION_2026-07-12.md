@@ -2485,3 +2485,39 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   below the 40-hour ceiling even before favorable runtime variance.
 - **Decision:** no blocker or corrective trigger. Continue the immutable seed-major arm order and
   withhold protected evaluation until all six training cells complete.
+
+### E6 four-hour health audit — 2026-07-18 00:35 Europe/Kyiv
+
+- **Expected versus actual completion:** the complete seed-0 pair finished successfully:
+  `mmL-flat` RunSpec `4abc603c4b420f5a` used 3.1126 GPU-hours and `mmL-hier` RunSpec
+  `909a921003ec4f95` used 3.1741 GPU-hours, both below the 3.45-hour expectation and the
+  4.7-hour cell cap. Seed-1 `mmL-flat` is now the sole active scientific process and reached
+  3,500/30,000 updates at approximately 0.37 s/update.
+- **Convergence and parity:** seed-0 flat ended at loss 0.2615 and seed-0 hierarchy at 0.2742,
+  without NaN, overflow, discontinuity or late instability. Their final public-development
+  fixed-grid foreground MSE values are 0.3507 and 0.2865 respectively; this is a diagnostic,
+  not an early protected comparison. Final image inspection shows coherent localized digits in
+  both arms. Seed-1 flat closely matches seed-0 flat at the registered checkpoints: losses are
+  1.5285 versus 1.5267 at 500, 1.1674 versus 1.1559 at 1,000, 0.9868 versus 1.0269 at 2,000,
+  0.7907 versus 0.8019 at 3,000 and 0.7119 versus 0.7173 at 3,500. This is expected
+  training-seed variation rather than numerical drift.
+- **Immutable artifacts/cloud:** each completed directory has a matching `COMPLETE` marker and
+  all 18 files in each content-addressed manifest independently pass byte-count and SHA-256
+  verification, including checkpoints
+  `07eb3c381da95be0b3aa0c1afa58e5a2c8cbd0ecce14859b1ae0e6253a649e46`
+  and `8b28551669051f5cec139d142ae4b4285e6b93cc522686c45e0d220b6cc57ba5`.
+  W&B reports both seed-0 scientific-training runs `finished` at step 30,000 with their immutable
+  artifacts; seed-1 flat is `running` under the correct group and job type.
+- **Systems and protected access:** GPU utilization is 99–100%, live allocation is approximately
+  8.0/16.4 GB, recorded model peaks are 6.46–6.47 GB, temperature is 66°C and power is about
+  116 W. The controller, one Python shim and one trainer form the only E6 process chain; there is
+  no competing trainer, WDDM spill or stall. The protected access log remains exactly the one
+  preregistered integrity record and contains no evaluation access.
+- **Budget and projection:** accepted preparation plus the two completed scientific cells totals
+  6.3998 charged GPU-hours. Measured pair throughput projects all six trainings to approximately
+  18.9 hours. From this audit, the remaining four cells plus the active cell remainder project
+  training completion around 12:30–13:30 Europe/Kyiv on July 18; six protected evaluations and
+  terminal analysis project E6 completion around 18:00–20:00, conservatively by 22:00. Expected
+  total remains roughly 23.5–25 GPU-hours, leaving at least 15 hours below the 40-hour ceiling.
+- **Decision:** no scientific, operational or budget blocker. Continue the frozen seed-major
+  training order and do not open the protected holdout until all six training cells are complete.
