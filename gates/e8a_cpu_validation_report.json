@@ -1,0 +1,20 @@
+{
+  "commands": [
+    "venv\\Scripts\\python.exe -m pytest -q",
+    "venv\\Scripts\\python.exe scripts/validate_scientific_configs.py",
+    "venv\\Scripts\\python.exe scripts/check_rft_consistency.py",
+    "venv\\Scripts\\python.exe scripts/validate_e8a_design.py --config experiments/configs/pose_indexed_retrieval.json --protocol docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
+    "venv\\Scripts\\python.exe scripts/run_e8a_label_parity.py",
+    "venv\\Scripts\\python.exe -m compileall -q hvp_rev scripts tests",
+    "git diff --check"
+  ],
+  "commit": "6102e8cf6339f0f18f8cd664e4fdd7250894b4d7",
+  "config_sha256": "f7e56bec8c95191a423af6d4b30922724c236c550a9f9bc6adcea3ef6d9aff38",
+  "cuda_visible_devices": "-1",
+  "label_parity_sha256": "4d2a3384edd5320b7452c6cd9b8599deb2d349d92243c47d5d946291ff05e808",
+  "protocol_sha256": "ed91df332f6166567af64851fc327c2709421a6fa5146fb5d9356b69473d6e3d",
+  "schema_version": 1,
+  "status": "CPU_VALIDATION_PASS",
+  "timestamp_utc": "2026-07-17T09:21:13.534706+00:00",
+  "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
