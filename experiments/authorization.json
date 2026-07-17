@@ -285,7 +285,7 @@
       ]
     },
     "phase-c-v2-holdout-generation": {
-      "status": "AUTHORIZED_RUN_ALONE",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
       "meaning": "Generate the single seed-frozen protected holdout and perform one logged integrity access; predictor training and outcome analysis remain forbidden.",
       "required_files": [
         "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
@@ -318,8 +318,8 @@
       ]
     },
     "phase-c-v2": {
-      "status": "BLOCKED_PENDING_VALIDATION",
-      "meaning": "Persistent-object Phase C with one-to-one assignment and coverage co-primary.",
+      "status": "AUTHORIZED_RUN_ALONE",
+      "meaning": "Frozen six-cell E6 external Moving-MNIST boundary with persistent-object assignment, intention-to-score identity/trajectory, coverage and false-positive-sensitive endpoints.",
       "required_files": [
         "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
         "experiments/configs/phase_c_v2.json",

@@ -23,7 +23,17 @@ def main() -> None:
     if ledger["experiments"]["phase-c-legacy"]["status"] != "PROHIBITED_INVALID_ENDPOINTS":
         raise AssertionError("legacy Phase C must remain prohibited")
     if ledger["experiments"]["phase-c-v2"]["status"] in {"AUTHORIZED", "AUTHORIZED_RUN_ALONE"}:
-        raise AssertionError("Phase C v2 cannot be authorized by a preparation commit")
+        phasec = configs["phase_c_v2.json"]
+        if phasec.get("status") != "FROZEN":
+            raise AssertionError("Phase C v2 authorization requires a frozen scientific config")
+        for marker in (
+            "gates/phase_c_protocol_frozen.json",
+            "gates/phase_c_datasets_final_validated.json",
+            "gates/phase_c_classifier_validated.json",
+            "gates/phase_c_evaluator_validated.json",
+        ):
+            if not Path(marker).is_file():
+                raise AssertionError(f"Phase C v2 authorization missing {marker}")
     hier = FIXED_TARGET_CONTROLS["hier-s2-fixed-target"]
     flat = FIXED_TARGET_CONTROLS["flat-short-fixed-target"]
     print(f"B1 fixed-target: {hier.context_tokens} context tokens, "

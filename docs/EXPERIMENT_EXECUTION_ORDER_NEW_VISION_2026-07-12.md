@@ -2429,3 +2429,18 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   The six-cell scientific authorization remains blocked until final dataset validation passes.
 - **Decision:** the holdout-generation gate and fail-closed authorization-ledger validation pass.
   Commit this freeze before generating any protected bytes.
+
+### E6 protected-data integrity audit — 2026-07-17 17:54 Europe/Kyiv
+
+- **Generation:** the single registered seed-20260720 holdout was generated from the official
+  MNIST-test glyph pool after protocol commit `4ae9508`. Its dataset ID is
+  `moving-mnist-phase_c_v2_holdout-test-20260720-198306f9eab1`; manifest SHA-256 is
+  `5a7557860d6a2e35b8e505d0e98ca57a891a13c77d9e0d66514a2953fc4b6269`.
+- **Logged integrity access:** one pre-open record was written before validation. The 500×348 set
+  has 500 unique exact clips, 1,000 persistent objects, zero-valued aligned actions and overlap
+  prevalence 0.3977. Exact rendered-clip collisions are zero for train–development,
+  train–holdout and development–holdout.
+- **Authorization decision:** every immutable CPU, preparation, classifier, evaluator, protocol
+  and final-data marker now passes. `phase-c-v2` may change to `AUTHORIZED_RUN_ALONE`; no other
+  experiment may share the GPU. Run check-only once, then launch the frozen seed-major arm pairs
+  without inspecting holdout outcomes until all six evaluations are complete.
