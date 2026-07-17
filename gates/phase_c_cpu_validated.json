@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "source_commit": "944abf0db50001df73c21d923cdbd283fe5a7654",
+  "status": "CPU_VALIDATION_PASS",
+  "subject": "gates/phase_c_cpu_validation_report.json",
+  "subject_sha256": "ca1ba84a98a3bbdd67be4bc0c9dc498121222ee7736e6d1b3e10520ac76d44b4"
+}
