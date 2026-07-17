@@ -16,6 +16,13 @@ $maxHours = [double]$configValue.budget.authorized_max_gpu_hours
 $sourceCommit = (git rev-parse HEAD).Trim()
 $dirty = @(git status --porcelain)
 if ($dirty.Count -ne 0) { throw "E6 controller requires a clean worktree: $($dirty -join '; ')" }
+$cpuReport = Get-Content gates\phase_c_cpu_validation_report.json -Raw | ConvertFrom-Json
+foreach ($property in $cpuReport.implementation_hashes.PSObject.Properties) {
+    $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $property.Name).Hash.ToLowerInvariant()
+    if ($actual -ne $property.Value) {
+        throw "E6 implementation changed after CPU validation: $($property.Name)"
+    }
+}
 
 $projectProcesses = @(Get-CimInstance Win32_Process | Where-Object {
     $_.CommandLine -and
@@ -132,7 +139,7 @@ if ($Mode -in @("Prepare", "All")) {
     $prepGroup = "phasec-v2-preparation-$($sourceCommit.Substring(0,12))"
     & .\venv\Scripts\python.exe scripts\check_wandb_online.py `
         --project $configValue.evaluation.wandb_project --group $prepGroup `
-        --run-id "phasec-v2-prep-gate-$($sourceCommit.Substring(0,12))"
+        --run-id "phasec-v2-prep-gate-$($sourceCommit.Substring(0,12))-$(Get-Date -Format yyyyMMddHHmmss)"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     if ($CheckOnly) {
         Write-Output "Phase C v2 preparation gate passed; no data or GPU process launched."
@@ -259,7 +266,7 @@ if ($Mode -eq "Run") {
     $group = "$($configValue.evaluation.wandb_group_prefix)-$($holdout.dataset_id)"
     & .\venv\Scripts\python.exe scripts\check_wandb_online.py `
         --project $configValue.evaluation.wandb_project --group $group `
-        --run-id "phasec-v2-run-gate-$($sourceCommit.Substring(0,12))"
+        --run-id "phasec-v2-run-gate-$($sourceCommit.Substring(0,12))-$(Get-Date -Format yyyyMMddHHmmss)"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     if ($CheckOnly) { Write-Output "Phase C v2 protected run gate passed; no GPU process launched."; exit 0 }
 
