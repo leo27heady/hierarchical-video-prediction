@@ -26,7 +26,7 @@ foreach ($property in $cpuReport.implementation_hashes.PSObject.Properties) {
 
 $projectProcesses = @(Get-CimInstance Win32_Process | Where-Object {
     $_.CommandLine -and
-    $_.CommandLine -match 'phasec|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
+    $_.CommandLine -match 'run_phasec_v2|phasec_eval_v2|train_phasec_classifier|build_phasec_classifier_domains|validate_phasec_evaluator|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
     $_.ProcessId -ne $PID
 })
 if ($projectProcesses.Count -ne 0) { throw "Another project controller/trainer/evaluator is active" }
@@ -54,7 +54,7 @@ function Invoke-PhaseCGpuCell {
     }
     $active = @(Get-CimInstance Win32_Process | Where-Object {
         $_.CommandLine -and
-        $_.CommandLine -match 'phasec|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
+        $_.CommandLine -match 'phasec_eval_v2|train_phasec_classifier|build_phasec_classifier_domains|validate_phasec_evaluator|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
         $_.ProcessId -ne $PID
     })
     if ($active.Count -ne 0) { throw "Another project GPU process appeared before $Phase/$Arm" }
