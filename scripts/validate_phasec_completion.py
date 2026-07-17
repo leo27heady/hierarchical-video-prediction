@@ -114,7 +114,10 @@ def main() -> None:
     for row in rows:
         if float(row["gpu_hours"]) > float(row["cell_authorized_max_gpu_hours"]):
             raise ValueError(f"E6 cell exceeded its allocation: {row}")
-    successful = [row for row in rows if int(row["exit_code"]) == 0]
+    successful = [
+        row for row in rows
+        if int(row["exit_code"]) == 0 and row.get("accepted", True)
+    ]
     failed = [row for row in rows if int(row["exit_code"]) != 0]
     phase_counts = {}
     for row in successful:

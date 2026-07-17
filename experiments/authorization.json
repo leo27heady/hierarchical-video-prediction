@@ -312,14 +312,14 @@
           "path": "gates/phase_c_classifier_validated.json",
           "attests": {
             "status": "CLASSIFIER_VALIDATION_PASS",
-            "subject": "gates/phase_c_classifier_report_v2.json"
+            "subject": "gates/phase_c_classifier_report_v3.json"
           }
         },
         {
           "path": "gates/phase_c_evaluator_validated.json",
           "attests": {
             "status": "EVALUATOR_RELIABILITY_PASS",
-            "subject": "gates/phase_c_evaluator_report.json"
+            "subject": "gates/phase_c_evaluator_report_v2.json"
           }
         },
         {

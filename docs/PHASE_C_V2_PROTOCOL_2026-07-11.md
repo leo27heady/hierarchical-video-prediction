@@ -80,9 +80,10 @@ The GT trajectory coordinate is the center of the generator-provided 28×28 glyp
 
 ## 5. Classifier and evaluator reliability gates
 
-The identity classifier is trained only on official MNIST-train glyphs. Abstention is disabled
-(confidence threshold 0.0), eliminating a result-dependent coverage trade-off. Before holdout
-generation, a versioned report must pass:
+The identity classifier is trained only on official MNIST-train glyphs, sampled uniformly between
+canonical 28×28 inputs and deterministic crops produced by the exact production component
+extractor on those same glyphs. Abstention is disabled (confidence threshold 0.0), eliminating a
+result-dependent coverage trade-off. Before holdout generation, a versioned report must pass:
 
 | Domain | Minimum accuracy |
 |---|---:|

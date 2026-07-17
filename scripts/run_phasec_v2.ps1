@@ -188,7 +188,7 @@ if ($Mode -in @("Prepare", "All")) {
     }
     $codec = Find-SingleFile $codecRoot "checkpoint.pt"
 
-    $classifierRoot = "artifacts/phasec_v2/classifier"
+    $classifierRoot = "artifacts/phasec_v2/classifier-v2"
     $classifierMatches = @()
     if (Test-Path $classifierRoot) {
         $classifierMatches = @(Get-ChildItem $classifierRoot -Recurse -Filter checkpoint.pt | Where-Object {
@@ -206,6 +206,7 @@ if ($Mode -in @("Prepare", "All")) {
                     --batch $configValue.classifier.batch --lr $configValue.classifier.lr `
                     --source-commit $sourceCommit --wandb-project $configValue.evaluation.wandb_project `
                     --wandb-group $prepGroup `
+                    --artifact-root $classifierRoot `
                     --authorized-gpu-hours $configValue.classifier.max_gpu_hours
             }
     } elseif (-not $Resume -or $classifierMatches.Count -ne 1) {
@@ -222,12 +223,12 @@ if ($Mode -in @("Prepare", "All")) {
                     --development $configValue.datasets.development.path `
                     --development-metadata ([System.IO.Path]::ChangeExtension($configValue.datasets.development.path, ".metadata.npz")) `
                     --ae $codec --seed 20260718 --limit 2000 `
-                    --out artifacts\phasec_v2\classifier_domains_v2.npz `
-                    --report gates\phase_c_classifier_domains_report_v2.json
+                    --out artifacts\phasec_v2\classifier_domains_v3.npz `
+                    --report gates\phase_c_classifier_domains_report_v3.json
                 if ($LASTEXITCODE -ne 0) { throw "classifier-domain construction failed" }
                 & .\venv\Scripts\python.exe scripts\validate_phasec_classifier.py `
-                    --checkpoint $classifier --domains artifacts\phasec_v2\classifier_domains_v2.npz `
-                    --out gates\phase_c_classifier_report_v2.json --write-marker `
+                    --checkpoint $classifier --domains artifacts\phasec_v2\classifier_domains_v3.npz `
+                    --out gates\phase_c_classifier_report_v3.json --write-marker `
                     --source-commit $sourceCommit --wandb-project $configValue.evaluation.wandb_project `
                     --wandb-group $prepGroup
                 if ($LASTEXITCODE -ne 0) { throw "classifier validation failed" }
@@ -235,7 +236,7 @@ if ($Mode -in @("Prepare", "All")) {
                     --development $configValue.datasets.development.path `
                     --metadata ([System.IO.Path]::ChangeExtension($configValue.datasets.development.path, ".metadata.npz")) `
                     --ae $codec --classifier $classifier --config $Config `
-                    --out gates\phase_c_evaluator_report.json `
+                    --out gates\phase_c_evaluator_report_v2.json `
                     --marker gates\phase_c_evaluator_validated.json `
                     --source-commit $sourceCommit --wandb-project $configValue.evaluation.wandb_project `
                     --wandb-group $prepGroup

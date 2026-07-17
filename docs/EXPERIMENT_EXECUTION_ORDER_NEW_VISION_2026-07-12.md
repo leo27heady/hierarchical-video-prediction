@@ -2322,3 +2322,29 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   but requires the exact successful phase inventory.
 - **Decision:** no scope or estimand blocker. Reattest the repaired fixture/controller and resume
   only the classifier/evaluator validation cell. Protected holdout access remains disabled.
+
+### E6 production-evaluator ceiling audit — 2026-07-17 17:22 Europe/Kyiv
+
+- **Aligned domain gate:** after the isolated-box repair, the classifier passes clean 0.9885,
+  translated 0.9845, rendered-component 0.9770, AE 0.9835 and degraded 0.9790. Overlap remains a
+  disclosed diagnostic at 0.6725.
+- **Exact evaluator result:** raw non-overlap assignment coverage is 0.9868 and trajectory error
+  1.70 px; AE non-overlap coverage is 0.9774 and trajectory error 2.62 px. The only failed floor is
+  raw non-overlap identity, 0.8746 versus 0.92. All-frame coverage/identity are lower by design
+  because 39.2% of sampled frames contain generator-labelled overlap and merged components.
+- **Origin:** the domain gate still classified generator-box crops, while the production evaluator
+  classifies tight crops returned by the detected connected component. This input-distribution
+  mismatch—not Hungarian identity order, coverage selection or protected performance—accounts for
+  the failure.
+- **Registered repair:** train a new classifier only from official MNIST-train glyphs, using a
+  fixed 50/50 mixture of canonical glyphs and deterministic crops from the exact production
+  component extractor. Clean, translated, rendered, AE and overlap fixtures are all rebuilt through
+  that same extractor. Thresholds, confidence policy, assignment cost, identity population and
+  evaluator floors remain unchanged.
+- **Accounting:** the first clean-only classifier remains charged but is marked superseded before
+  scientific acceptance. Both failed metric-validation attempts are charged. Completion counts the
+  exact accepted phase inventory while reporting every charged failure/superseded cell.
+- **Decision:** no protected dataset exists and no scientific outcome has been observed. This is a
+  necessary pre-access measurement-invariance repair, not a scope change. Reattest and retry once;
+  if the unchanged 0.92 raw identity floor still fails, E6 remains blocked for a substantive
+  measurement decision rather than lowering the floor adaptively.

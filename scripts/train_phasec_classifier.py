@@ -10,10 +10,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import numpy as np
 import torch
 
 from hvp_rev import wb
 from hvp_rev.digit_classifier import load_idx, train_digit_classifier
+from hvp_rev.phasec_v2 import extract_components
 from hvp_rev.provenance import (
     atomic_write_bytes,
     atomic_write_json,
@@ -50,6 +52,11 @@ def main() -> None:
         "batch": args.batch,
         "lr": args.lr,
         "source_split": "official-MNIST-train",
+        "input_distribution": (
+            "uniform mixture of canonical 28x28 glyphs and deterministic production-component "
+            "crops from the same official-train glyphs"
+        ),
+        "production_crop": {"threshold": 0.3, "min_component_pixels": 4},
         "images_sha256": sha256_file(args.images),
         "labels_sha256": sha256_file(args.labels),
         "source_commit": args.source_commit,
@@ -90,8 +97,17 @@ def main() -> None:
 
     try:
         images, labels = load_idx(args.images, args.labels)
+        production_crops = []
+        for frame in images[:, 0].numpy():
+            components = extract_components(frame, threshold=0.3, min_component_pixels=4)
+            production_crops.append(
+                max(components, key=lambda item: item.pixels).crop if components else frame
+            )
+        augmented = torch.from_numpy(np.asarray(production_crops, np.float32))[:, None]
+        training_images = torch.cat([images, augmented], dim=0)
+        training_labels = torch.cat([labels, labels], dim=0)
         model = train_digit_classifier(
-            images, labels, seed=args.seed, steps=args.steps, batch_size=args.batch,
+            training_images, training_labels, seed=args.seed, steps=args.steps, batch_size=args.batch,
             learning_rate=args.lr, device="cuda", progress_callback=progress,
         )
         checkpoint = run_dir / "checkpoint.pt"
