@@ -2458,3 +2458,30 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
 - **Decision:** launch E6 alone. Four-hour audits may diagnose and document health but may not
   alter batch, LR, update count, EMA, checkpoint, NFE, sampler, rollout geometry, endpoint,
   protected clip range or decision rule.
+
+### E6 four-hour health audit — 2026-07-17 20:35 Europe/Kyiv
+
+- **Expected versus actual progress:** seed-0 `mmL-flat` is the sole active scientific process at
+  26,000/30,000 updates. The observed 0.368–0.373 s/update interval matches the 0.35–0.40 s/update
+  LoopMom v2 reference range and projects cell completion near 20:55 Europe/Kyiv, approximately
+  3.1 hours after launch versus 3.45 hours expected.
+- **Convergence:** training loss decreases 1.5267→1.1559→1.0269 at 500/1,000/2,000, then
+  0.5463→0.3939→0.2999→0.2725 at 5k/10k/20k/26k. Small local increases are bounded and followed
+  by new lows; no NaN, overflow, discontinuity or optimizer stall is present. Fixed-grid
+  foreground MSE improves from 0.7570 at 2k to 0.3638 at 24k, with expected sampling fluctuation
+  at intervening grids. The 24k image audit shows coherent, correctly localized digit shapes,
+  unlike the appropriately fragmented 2k sample.
+- **Systems/cloud:** GPU utilization is 99–100%, live VRAM 7.9/16.4 GB, recorded model peak
+  6.47 GB, temperature 66–67°C and power 117–118 W. There is no WDDM spill or competing project
+  process. W&B reports the correct content-addressed run, group, scientific-training job type,
+  live loss/throughput/VRAM history and media; the connectivity run is finished.
+- **Validity/access:** RunSpec `4abc603c4b420f5a` retains B16×30k, LR 0.0003, bf16, EMA,
+  codec and public train/development geometry exactly. The protected access log still contains
+  only the single preregistered integrity-open entry; no holdout frame or outcome has been opened
+  during training.
+- **Budget/projection:** charged completed preparation remains 0.1131 hours; the live cell has not
+  yet posted its terminal charge. At current throughput, six trainings project to approximately
+  18.6 hours and six evaluations retain their 4.5-hour expectation, leaving more than 16 hours
+  below the 40-hour ceiling even before favorable runtime variance.
+- **Decision:** no blocker or corrective trigger. Continue the immutable seed-major arm order and
+  withhold protected evaluation until all six training cells complete.
