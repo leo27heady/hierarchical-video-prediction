@@ -2297,3 +2297,28 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   or optimizer geometry will not be changed mid-study.
 - **Decision:** no scientific blocker. Continue codec, classifier and exact production-evaluator
   reliability gates. Protected holdout generation and all six predictor runs remain disabled.
+
+### E6 classifier-gate audit — 2026-07-17 17:17 Europe/Kyiv
+
+- **Codec/classifier actual:** the codec completed in 0.0532 charged hours with coarse/fine
+  development MSE 0.0079/0.0033; the official-train-only classifier completed in 0.0071 hours.
+  Both immutable W&B artifacts finished normally.
+- **First domain result:** clean 0.9885, translated 0.9845, AE reconstruction 0.9830,
+  deliberately degraded 0.9795 and diagnostic overlap 0.6815 behaved as expected. The nominal
+  rendered-component domain failed its 0.94 floor at 0.926.
+- **Origin:** generator `overlap=false` means the two digit stroke masks share no positive pixel;
+  it does not guarantee that the other 28×28 glyph box is absent from the target classifier crop.
+  The fixture therefore mixed isolated components with ambiguous two-digit crops, contrary to the
+  frozen protocol's isolated rendered-component gate. Ambiguous crops already have their own
+  overlap diagnostic.
+- **Repair and independent check:** the isolated domain now requires pairwise source boxes to be
+  separated by a two-pixel crop margin. No threshold, classifier weight, protected datum or
+  outcome endpoint changed. A CPU rebuild using the same immutable codec/classifier yields
+  rendered-component accuracy 0.977; all five thresholded domains pass, while the overlap
+  diagnostic remains deliberately weak at 0.673.
+- **Accounting/provenance:** the failed 8.9-second fixture attempt is charged in the GPU ledger and
+  its failed report is retained. The controller now catches and charges failed scriptblocks rather
+  than allowing an inner shell exit to bypass accounting. Completion permits charged failed cells
+  but requires the exact successful phase inventory.
+- **Decision:** no scope or estimand blocker. Reattest the repaired fixture/controller and resume
+  only the classifier/evaluator validation cell. Protected holdout access remains disabled.

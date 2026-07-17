@@ -32,7 +32,23 @@ def _development_crops(
     rng: np.random.RandomState,
 ) -> tuple[np.ndarray, np.ndarray]:
     overlap = metadata["overlap"].any(axis=(2, 3))
-    candidate = np.argwhere(overlap if want_overlap else ~overlap)
+    if want_overlap:
+        eligible = overlap
+    else:
+        # The registered rendered-component gate is the isolated domain. Pixel masks can be
+        # disjoint while the other 28x28 box still enters the target crop, which is an ambiguous
+        # multi-digit sample and belongs in the separate overlap diagnostic.
+        boxes = metadata["bbox_yxyx"]
+        eligible = np.ones(overlap.shape, dtype=bool)
+        for first in range(boxes.shape[1]):
+            for second in range(first + 1, boxes.shape[1]):
+                a, b = boxes[:, first], boxes[:, second]
+                separated = (
+                    (a[..., 2] + 2 <= b[..., 0]) | (b[..., 2] + 2 <= a[..., 0])
+                    | (a[..., 3] + 2 <= b[..., 1]) | (b[..., 3] + 2 <= a[..., 1])
+                )
+                eligible &= separated
+    candidate = np.argwhere(eligible)
     rng.shuffle(candidate)
     crops, labels = [], []
     for clip, frame in candidate:

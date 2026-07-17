@@ -114,10 +114,10 @@ def main() -> None:
     for row in rows:
         if float(row["gpu_hours"]) > float(row["cell_authorized_max_gpu_hours"]):
             raise ValueError(f"E6 cell exceeded its allocation: {row}")
-        if int(row["exit_code"]) != 0:
-            raise ValueError("E6 completion cannot ignore a failed charged GPU cell")
+    successful = [row for row in rows if int(row["exit_code"]) == 0]
+    failed = [row for row in rows if int(row["exit_code"]) != 0]
     phase_counts = {}
-    for row in rows:
+    for row in successful:
         phase_counts[row["phase"]] = phase_counts.get(row["phase"], 0) + 1
     expected_phases = {
         "codec-training": 1,
@@ -152,6 +152,7 @@ def main() -> None:
         "protected_access_entries": len(dataset_access),
         "gpu_hours": total_hours,
         "gpu_phase_counts": phase_counts,
+        "charged_failed_cells": len(failed),
         "wandb_run_count": wandb["run_count"],
         "evaluation_artifacts": evaluation_hashes,
         "hashes": {

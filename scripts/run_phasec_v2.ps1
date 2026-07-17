@@ -63,8 +63,14 @@ function Invoke-PhaseCGpuCell {
         Tee-Object -FilePath $Log -Append
     $savedPreference = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
-    & $Command 2>&1 | Tee-Object -FilePath $Log -Append
-    $code = $LASTEXITCODE
+    $code = 0
+    try {
+        & $Command 2>&1 | Tee-Object -FilePath $Log -Append
+        $code = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
+    } catch {
+        $_ | Out-String | Tee-Object -FilePath $Log -Append | Out-Null
+        $code = 1
+    }
     $ErrorActionPreference = $savedPreference
     $ended = Get-Date
     $hours = ($ended - $started).TotalHours
@@ -216,15 +222,15 @@ if ($Mode -in @("Prepare", "All")) {
                     --development $configValue.datasets.development.path `
                     --development-metadata ([System.IO.Path]::ChangeExtension($configValue.datasets.development.path, ".metadata.npz")) `
                     --ae $codec --seed 20260718 --limit 2000 `
-                    --out artifacts\phasec_v2\classifier_domains.npz `
-                    --report gates\phase_c_classifier_domains_report.json
-                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                    --out artifacts\phasec_v2\classifier_domains_v2.npz `
+                    --report gates\phase_c_classifier_domains_report_v2.json
+                if ($LASTEXITCODE -ne 0) { throw "classifier-domain construction failed" }
                 & .\venv\Scripts\python.exe scripts\validate_phasec_classifier.py `
-                    --checkpoint $classifier --domains artifacts\phasec_v2\classifier_domains.npz `
-                    --out gates\phase_c_classifier_report.json --write-marker `
+                    --checkpoint $classifier --domains artifacts\phasec_v2\classifier_domains_v2.npz `
+                    --out gates\phase_c_classifier_report_v2.json --write-marker `
                     --source-commit $sourceCommit --wandb-project $configValue.evaluation.wandb_project `
                     --wandb-group $prepGroup
-                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                if ($LASTEXITCODE -ne 0) { throw "classifier validation failed" }
                 & .\venv\Scripts\python.exe scripts\validate_phasec_evaluator.py `
                     --development $configValue.datasets.development.path `
                     --metadata ([System.IO.Path]::ChangeExtension($configValue.datasets.development.path, ".metadata.npz")) `
