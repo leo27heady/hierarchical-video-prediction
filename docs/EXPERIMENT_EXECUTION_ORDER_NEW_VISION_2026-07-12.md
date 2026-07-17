@@ -2363,9 +2363,11 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   trainer/evaluator existed. This was a conservative false positive, not a stall or scientific
   failure.
 - **Fail-closed repair:** the ownership guard is narrowed to Python executables running one of the
-  registered E6 entry points. The evaluator-reliability W&B ID now binds both codec and classifier
-  hashes, preventing the replacement classifier from colliding with the earlier failed ceiling
-  run. The focused tests and 15-test CPU attestation pass after these operational changes.
+  registered E6 entry points. The controller-wide guard excludes its complete ancestor chain, so
+  an invoking audit shell cannot be mistaken for a second controller. The evaluator-reliability
+  W&B ID now binds both codec and classifier hashes, preventing the replacement classifier from
+  colliding with the earlier failed ceiling run. The focused tests and 15-test CPU attestation
+  pass after these operational changes.
 - **Decision:** no scientific blocker. Resume only the frozen v3 classifier-domain and v2 evaluator
   ceilings. The unchanged accuracy, coverage, identity and trajectory floors remain binding; a
   repeated raw non-overlap identity failure remains the substantive stop condition.

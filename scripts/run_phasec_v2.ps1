@@ -24,10 +24,21 @@ foreach ($property in $cpuReport.implementation_hashes.PSObject.Properties) {
     }
 }
 
-$projectProcesses = @(Get-CimInstance Win32_Process | Where-Object {
+$processSnapshot = @(Get-CimInstance Win32_Process)
+$ancestorPids = [System.Collections.Generic.HashSet[int]]::new()
+$cursorPid = $PID
+while ($true) {
+    [void]$ancestorPids.Add([int]$cursorPid)
+    $cursor = $processSnapshot | Where-Object { $_.ProcessId -eq $cursorPid } | Select-Object -First 1
+    if ($null -eq $cursor -or $cursor.ParentProcessId -le 0 -or $ancestorPids.Contains([int]$cursor.ParentProcessId)) {
+        break
+    }
+    $cursorPid = [int]$cursor.ParentProcessId
+}
+$projectProcesses = @($processSnapshot | Where-Object {
     $_.CommandLine -and
     $_.CommandLine -match 'run_phasec_v2|phasec_eval_v2|train_phasec_classifier|build_phasec_classifier_domains|validate_phasec_evaluator|hier_convae_v2|rhvd_train_v2|hvp_rev\.rhvd' -and
-    $_.ProcessId -ne $PID
+    -not $ancestorPids.Contains([int]$_.ProcessId)
 })
 if ($projectProcesses.Count -ne 0) { throw "Another project controller/trainer/evaluator is active" }
 
