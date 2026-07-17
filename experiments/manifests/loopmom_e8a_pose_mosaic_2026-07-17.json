@@ -1,0 +1,57 @@
+{
+  "access_policy": {
+    "locked_evaluation": "explicit purpose-matched switch and access log required",
+    "monitoring_grid": "forbidden",
+    "training": "forbidden"
+  },
+  "artifacts": {
+    "actions": {
+      "bytes": 100128,
+      "path": "data/reference/loopmom_e8a_reference_500x200_actions.npy",
+      "sha256": "0525a1e112c6771de7a472173cae6fd95536ea0ccf3487b72846a7bb85d197a6"
+    },
+    "clips": {
+      "bytes": 409600128,
+      "path": "data/reference/loopmom_e8a_reference_500x200.npy",
+      "sha256": "804b9f5d2c136a0622a7070440c1e6300991f816aafc832021572d828641969b"
+    },
+    "objects": {
+      "bytes": 8912,
+      "path": "data/reference/loopmom_e8a_reference_500x200_objects.npz",
+      "sha256": "e2506b6e16670dab991e89a72cc35c88d9d292619bf1af042636dddf130d8922"
+    },
+    "positions": {
+      "bytes": 400128,
+      "path": "data/reference/loopmom_e8a_reference_500x200_positions.npy",
+      "sha256": "52d582b3f553d6880bdb5aa2ea7ef7132491bc4d4bb0e0e52dace7e18d64cf51"
+    }
+  },
+  "configuration": {
+    "digits": 3,
+    "frames": 200,
+    "n": 500,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "speed": 4,
+    "viewport": 64,
+    "world": 192
+  },
+  "dataset_id": "loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13",
+  "generator": {
+    "commit": "05a0b342100625d952d8eb271d23545fa23f754b",
+    "dirty_hash": "CLEAN",
+    "legacy_pixel_path": "scripts/gen_looping.py",
+    "path": "scripts/generate_loopmom_confirmation.py",
+    "rng": "numpy.random.RandomState/MT19937",
+    "seed": 20260717
+  },
+  "purpose": "retrieval_reference_holdout",
+  "schema_version": 1,
+  "source_glyph_pool": {
+    "bytes": 9912422,
+    "file_name": "train-images-idx3-ubyte.gz",
+    "indices_artifact": "data/reference/loopmom_e8a_reference_500x200_objects.npz",
+    "sha256": "440fcabf73cc546fa21475e81ea370265605f56be210a4024d2ca8f203523609",
+    "split": "train"
+  }
+}

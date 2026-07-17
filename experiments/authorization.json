@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-17-e7a-terminal-e8a-preparation",
+  "updated": "2026-07-17-e8a-authorized-after-all-preaccess-gates",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -225,11 +225,12 @@
       ]
     },
     "pose-indexed-retrieval": {
-      "status": "PREPARED_NOT_AUTHORIZED",
-      "meaning": "E8a is a privileged exact-pose raw-pixel reference on a separate purpose-locked LoopMom set. It is not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence. Authorization requires the complete CPU, purpose-lock, collision, data and W&B gates and a clean source commit.",
+      "status": "AUTHORIZED",
+      "meaning": "E8a is authorized after frozen protocol/config, clean-commit CPU validation, purpose-lock, label parity, schema/distribution checks, and zero exact-clip collisions with development, E2, E7c and E7a. It remains a privileged exact-pose raw-pixel reference, not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence.",
       "required_files": [
         "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
         "experiments/configs/pose_indexed_retrieval.json",
+        "experiments/manifests/loopmom_e8a_pose_mosaic_2026-07-17.json",
         "docs/confirmation/E8A_TABLE_SHELL.md",
         "hvp_rev/rhvd.py",
         "scripts/generate_e8a_reference_set.ps1",
