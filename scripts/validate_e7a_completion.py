@@ -27,6 +27,7 @@ def main() -> None:
     parser.add_argument("--gpu-ledger", required=True)
     parser.add_argument("--access-log", required=True)
     parser.add_argument("--execution", required=True)
+    parser.add_argument("--dispatch", required=True)
     parser.add_argument("--training-root", default="artifacts/training")
     parser.add_argument("--run-root", default="artifacts/runs")
     parser.add_argument("--out", required=True)
@@ -37,6 +38,7 @@ def main() -> None:
     floor = json.loads(Path(args.floor).read_text(encoding="utf-8"))
     results = json.loads(Path(args.results).read_text(encoding="utf-8"))
     execution = json.loads(Path(args.execution).read_text(encoding="utf-8-sig"))
+    dispatch = json.loads(Path(args.dispatch).read_text(encoding="utf-8"))
     config_hash, manifest_hash = sha256_file(args.config), sha256_file(args.manifest)
     alt_hash = sha256_file(args.alternate_ae)
     original_hash = config["codecs"]["original"]["sha256"]
@@ -51,6 +53,15 @@ def main() -> None:
     if execution.get("config_sha256") != config_hash or execution.get("dataset_id") != manifest["dataset_id"]:
         raise ValueError("E7a execution record is not bound to the frozen config and dataset")
     source_commit = execution.get("source_commit")
+    if (
+        dispatch.get("status") != "E7A_EVALUATION_DISPATCH_PASS"
+        or dispatch.get("config_sha256") != config_hash
+        or dispatch.get("dataset_manifest_sha256") != manifest_hash
+        or dispatch.get("dataset_id") != manifest["dataset_id"]
+        or dispatch.get("source_commit") != source_commit
+        or len(dispatch.get("rows", [])) != 14
+    ):
+        raise ValueError("E7a evaluation dispatch gate is missing or not bound to the execution")
     ae_spec = json.loads((Path(args.alternate_ae).parent / "run_spec.json").read_text(encoding="utf-8"))
     if ae_spec.get("source_commit") != source_commit:
         raise ValueError("alternate codec source commit differs from the execution record")
@@ -128,8 +139,20 @@ def main() -> None:
         evaluations[key] = (metric_path, spec)
         access_specs.add(spec_path.parent.name)
     expected_evaluations = {(codec, arm) for codec in codec_hashes for arm in expected_arms}
+    dispatch_by_key = {
+        (row["codec"], row["arm"]): row for row in dispatch["rows"]
+    }
+    if set(dispatch_by_key) != expected_evaluations:
+        raise ValueError("E7a evaluation dispatch inventory differs from the frozen matrix")
     if set(evaluations) != expected_evaluations:
         raise ValueError(f"E7a evaluation inventory mismatch: missing={sorted(expected_evaluations-set(evaluations))}")
+    for key, (_, spec) in evaluations.items():
+        row = dispatch_by_key[key]
+        if (
+            row["ae_sha256"] != spec["ae_hash"]
+            or row["checkpoint_sha256"] != spec["arm_config"]["checkpoint_sha256"]
+        ):
+            raise ValueError(f"E7a evaluation differs from its dispatch gate: {key}")
 
     access_rows = jsonl(args.access_log)
     logged_specs = {row.get("run_spec_hash") for row in access_rows}
@@ -190,6 +213,7 @@ def main() -> None:
         "gpu_hours": total,
         "authorized_gpu_hours": float(config["budget"]["authorized_max_gpu_hours"]),
         "verdict": expected_verdict,
+        "dispatch_sha256": sha256_file(args.dispatch),
         "results_sha256": sha256_file(args.results),
     }
     atomic_write_json(args.out, report)

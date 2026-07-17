@@ -64,7 +64,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E4b | Heterogeneity expansion, seeds 3–4 | 28–36 GPU-hours, replacement-only | **COMPLETE / PASS**; 8/8 cells, registered analysis and independent validator passed in 24.9922 project GPU-hours | Retain five-seed-stable diffusion package result; demote directional head shift; regression and interaction are training-seed-heterogeneous; no seeds 5+ |
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
-| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **BLOCKED at evaluation dispatch**; codec floor PASS and all 7/7 predictors complete/verified; first original-codec evaluation exited before data access because the wrapper supplied an empty AE path | Repair only the controller's PowerShell variable capture, add a 14-cell CPU argv gate, refresh the wrapper attestation, then resume explicitly; no scientific geometry or adaptive cell |
+| E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **RECOVERY GATED / READY TO RESUME**; codec floor and 7/7 trainings verified; exact 14-cell hash-bound argv gate plus 58-test CPU suite PASS after the pre-access dispatch failure | Resume explicitly from the pinned execution; run only the frozen fourteen evaluations and registered analysis |
 | E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
@@ -434,6 +434,42 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
   by the wrapper; record the recovery commit and failed-attempt provenance; then invoke the
   controller with explicit `-Resume`. The original execution source commit, config hash, dataset,
   checkpoints, NFE, sampler seed, rollout geometry, metrics and joint family remain frozen.
+
+#### Recovery gate E7a-I10 — 2026-07-17 09:43 Europe/Kyiv
+
+- **Repair scope:** the defect was confined to PowerShell argument resolution. No model/evaluator
+  kernel, checkpoint, codec, dataset, metric, NFE, sampler seed, rollout geometry, contrast,
+  bootstrap family or decision rule changed. The controller no longer interpolates an outer
+  `$codec` object inside `Invoke-E7aGpuCell`.
+- **Exact dispatch artifact:** `scripts/resolve_e7a_evaluation_dispatch.py` now resolves the two
+  codecs × seven arms into fourteen complete command vectors before locked-data access. It
+  verifies the original and alternate codec hashes, every original and alternate predictor
+  checkpoint hash/COMPLETE marker, the pinned execution/config/dataset identity and every
+  non-empty valued option. The controller executes the validated `argv` array directly rather
+  than rebuilding it through dynamically scoped variables.
+- **Real-artifact gate:** `gates/e7a_evaluation_dispatch.json` is
+  `E7A_EVALUATION_DISPATCH_PASS` for all 14/14 rows. Every row contains the frozen NFE 16,
+  sampler seed 0, 100 clips, 48 warmup and 152 rollout frames; all AE and checkpoint paths are
+  non-empty and SHA-256 matched. The report is deterministic for the pinned execution, and
+  `gates/e7a_dispatch_validated.json` hash-attests it. Resolving the matrix reads only metadata,
+  codecs and checkpoints; it does not open the locked clip array.
+- **Regression/completion gates:** a fixture-backed test constructs the full fourteen-cell matrix,
+  verifies exact codec/arm coverage and checks that the actual argument following `--ae_path` and
+  `--checkpoint_path` is non-empty and hash-bound. The terminal validator now requires the
+  dispatch report and proves each completed evaluation used its dispatched codec/checkpoint.
+  Full CPU validation passes: 58 tests, scientific-config/authorization validation,
+  reach–fidelity–trust text consistency, existing-artifact-aware E7a design validation,
+  bit-exact seed-0 AE parity, Python compilation, PowerShell parsing and clean diff checks.
+- **Authorization/provenance:** the refreshed CPU report and dispatch report have hash-bound
+  attestations, and `check_experiment_gate.py alternate-autoencoder-robustness` returns
+  `AUTHORIZED / GATE PASS`. The original execution remains pinned to source commit `d75d12f`,
+  dataset `loopmom-codec_robustness_holdout-20260716-77a4ec5aee94` and the unchanged frozen
+  config hash. The failed code-2 dispatch remains in the GPU-hours ledger and will not be erased.
+- **Resume decision:** commit the wrapper-only recovery and terminal codec-floor evidence from a
+  clean worktree, then invoke the unchanged controller with explicit `-Resume`. It must skip the
+  completed codec/floor and all seven completed trainings, regenerate the same dispatch report,
+  and begin `original/hier-min`. The remaining registered maximum leaves more than five hours of
+  tranche headroom; no adaptive cell or manual evaluator launch is authorized.
 
 #### E2 run ledger
 

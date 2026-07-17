@@ -192,6 +192,7 @@
         "scripts/generate_e7a_codec_set.ps1",
         "scripts/validate_loopmom_confirmation.py",
         "scripts/run_e7a_codec_robustness.ps1",
+        "scripts/resolve_e7a_evaluation_dispatch.py",
         "scripts/analyze_e7a_codec_robustness.py",
         "scripts/validate_e7a_design.py",
         "scripts/validate_e7a_completion.py"
@@ -216,6 +217,10 @@
         {
           "path": "gates/e7a_dataset_validated.json",
           "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e7a_dataset_validation.json"}
+        },
+        {
+          "path": "gates/e7a_dispatch_validated.json",
+          "attests": {"status": "E7A_EVALUATION_DISPATCH_PASS", "subject": "gates/e7a_evaluation_dispatch.json"}
         }
       ]
     },

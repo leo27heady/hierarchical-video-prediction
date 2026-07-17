@@ -20,6 +20,7 @@ $maxHours = [double]$configValue.budget.authorized_max_gpu_hours
 $ledger = "artifacts/e7a_codec_robustness/gpu_hours.jsonl"
 $accessLog = "artifacts/e7a_codec_robustness/access.jsonl"
 $floorReport = "gates/e7a_codec_floor_report.json"
+$dispatchReport = "gates/e7a_evaluation_dispatch.json"
 $executionRecord = "artifacts/e7a_codec_robustness/execution.json"
 
 $dirty = @(git status --porcelain)
@@ -236,25 +237,41 @@ foreach ($run in $configValue.predictor_runs) {
         }
 }
 
-# The locked array is opened only after codec validity and all seven predictor trainings pass.
-$codecRows = @(
-    [pscustomobject]@{ id = "original"; ae = $configValue.codecs.original.path },
-    [pscustomobject]@{ id = "alternate"; ae = $altAe }
-)
-foreach ($codec in $codecRows) {
-    foreach ($run in $configValue.predictor_runs) {
-        if ($codec.id -eq "original") {
-            $ckptRow = @($configValue.original_predictor_checkpoints | Where-Object { $_.arm -eq $run.arm })
-            if ($ckptRow.Count -ne 1) { throw "Original checkpoint row missing: $($run.arm)" }
-            $checkpoint = $ckptRow[0].path
-        } else {
-            $trained = @(Find-AlternatePredictor $run.arm)
-            if ($trained.Count -ne 1) { throw "Alternate predictor missing: $($run.arm)" }
-            $checkpoint = $trained[0]
+# Resolve the exact argv for all fourteen rows without opening the locked array. The resulting
+# hash-checked matrix is both the CPU dispatch gate and the command source used below.
+$env:CUDA_VISIBLE_DEVICES = "-1"
+& .\venv\Scripts\python.exe scripts\resolve_e7a_evaluation_dispatch.py `
+    --config $Config --manifest $Manifest --alternate-ae $altAe `
+    --execution $executionRecord --training-root artifacts/training `
+    --access-log $accessLog --run-log $Log --artifact-root artifacts/runs `
+    --out $dispatchReport 2>&1 | Tee-Object -FilePath $Log -Append
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$dispatch = Get-Content -LiteralPath $dispatchReport -Raw | ConvertFrom-Json
+if ($dispatch.status -ne "E7A_EVALUATION_DISPATCH_PASS" -or @($dispatch.rows).Count -ne 14) {
+    throw "E7a fourteen-cell evaluation dispatch gate failed"
+}
+Remove-Item Env:CUDA_VISIBLE_DEVICES -ErrorAction SilentlyContinue
+
+# The locked array is opened only after codec validity, all predictor trainings and dispatch pass.
+foreach ($evalRow in $dispatch.rows) {
+        $codecId = [string]$evalRow.codec
+        $armName = [string]$evalRow.arm
+        $aePath = [string]$evalRow.ae_path
+        $checkpointPath = [string]$evalRow.checkpoint_path
+        $evalArgs = @($evalRow.argv | ForEach-Object { [string]$_ })
+        if (-not $aePath -or -not $checkpointPath -or
+            -not (Test-Path -LiteralPath $aePath) -or
+            -not (Test-Path -LiteralPath $checkpointPath)) {
+            throw "E7a dispatch contains an empty or missing path: $codecId/$armName"
         }
-        $aeHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $codec.ae).Hash.ToLowerInvariant()
+        $aeHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $aePath).Hash.ToLowerInvariant()
+        $checkpointHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $checkpointPath).Hash.ToLowerInvariant()
+        if ($aeHash -ne [string]$evalRow.ae_sha256 -or
+            $checkpointHash -ne [string]$evalRow.checkpoint_sha256) {
+            throw "E7a dispatch path hash changed: $codecId/$armName"
+        }
         $existing = @()
-        $evalRoot = "artifacts/runs/robustness-e7a/$($run.arm)/seed-0"
+        $evalRoot = "artifacts/runs/robustness-e7a/$armName/seed-0"
         if (Test-Path $evalRoot) {
             foreach ($specPath in Get-ChildItem $evalRoot -Recurse -Filter run_spec.json) {
                 $spec = Get-Content $specPath.FullName -Raw | ConvertFrom-Json
@@ -265,29 +282,19 @@ foreach ($codec in $codecRows) {
                 }
             }
         }
-        if ($existing.Count -gt 1) { throw "Duplicate E7a evaluation: $($codec.id)/$($run.arm)" }
+        if ($existing.Count -gt 1) { throw "Duplicate E7a evaluation: $codecId/$armName" }
         if ($existing.Count -eq 1) {
             if (-not $Resume) { throw "Completed E7a evaluation exists; explicit -Resume is required" }
-            "=== E7a evaluation $($codec.id)/$($run.arm) already COMPLETE; skipping ===" |
+            "=== E7a evaluation $codecId/$armName already COMPLETE; skipping ===" |
                 Tee-Object -FilePath $Log -Append
             continue
         }
-        $limit = 1.5 * [double]$run.reference_eval_hours_nfe16
-        Invoke-E7aGpuCell -Phase "evaluation" -Arm $run.arm -Codec $codec.id `
-            -Limit $limit -Expected ([double]$run.reference_eval_hours_nfe16) -Command {
-                & .\venv\Scripts\python.exe -u -m hvp_rev.rhvd `
-                    --arm $run.arm --seed $run.seed --steps $run.steps --batch $run.batch --bf16 `
-                    --eval_only --complete_metrics --metric_threshold $configValue.evaluation.metric_threshold `
-                    --nfe $configValue.evaluation.nfe --sampler_seed $configValue.evaluation.sampler_seed `
-                    --test_path $testPath --warm $configValue.evaluation.warmup_frames --n_val 250 `
-                    --n_eval_clips $configValue.evaluation.evaluation_clips `
-                    --ae_path $codec.ae --checkpoint_path $checkpoint `
-                    --codec_manifest $Manifest --codec_access_log $accessLog `
-                    --artifact_root artifacts/runs --source_commit $sourceCommit `
-                    --wandb_project $configValue.evaluation.wandb_project --wandb_group $group `
-                    --wandb_required --run_log $Log --authorized_gpu_hours $limit
+        $cellLimit = [double]$evalRow.max_gpu_hours
+        $cellExpected = [double]$evalRow.expected_gpu_hours
+        Invoke-E7aGpuCell -Phase "evaluation" -Arm $armName -Codec $codecId `
+            -Limit $cellLimit -Expected $cellExpected -Command {
+                & .\venv\Scripts\python.exe -u -m hvp_rev.rhvd @evalArgs
             }
-    }
 }
 
 $env:CUDA_VISIBLE_DEVICES = "-1"
@@ -302,6 +309,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     --config $Config --manifest $Manifest --alternate-ae $altAe --floor $floorReport `
     --results artifacts/e7a_codec_robustness/results.json --gpu-ledger $ledger `
     --access-log $accessLog --execution $executionRecord `
+    --dispatch $dispatchReport `
     --training-root artifacts/training --run-root artifacts/runs `
     --out artifacts/e7a_codec_robustness/completion_validation.json 2>&1 |
     Tee-Object -FilePath $Log -Append
