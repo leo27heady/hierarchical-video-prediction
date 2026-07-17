@@ -266,17 +266,76 @@
         }
       ]
     },
+    "phase-c-v2-preparation": {
+      "status": "AUTHORIZED_RUN_ALONE",
+      "meaning": "E6 public/development-only data, codec, classifier and evaluator preparation; protected holdout access and predictor training remain forbidden.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json",
+        "scripts/run_phasec_v2.ps1"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/phase_c_cpu_validated.json",
+          "attests": {
+            "status": "CPU_VALIDATION_PASS",
+            "subject": "gates/phase_c_cpu_validation_report.json"
+          }
+        }
+      ]
+    },
     "phase-c-v2": {
       "status": "BLOCKED_PENDING_VALIDATION",
       "meaning": "Persistent-object Phase C with one-to-one assignment and coverage co-primary.",
       "required_files": [
         "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
-        "experiments/configs/phase_c_v2.json"
+        "experiments/configs/phase_c_v2.json",
+        "scripts/run_phasec_v2.ps1",
+        "hvp_rev/phasec_eval_v2.py"
       ],
       "required_markers": [
-        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"},
-        {"path": "gates/phase_c_classifier_validated.txt", "contains": "CLASSIFIER_VALIDATED"},
-        {"path": "gates/phase_c_protocol_frozen.txt", "contains": "FROZEN"}
+        {
+          "path": "gates/phase_c_cpu_validated.json",
+          "attests": {
+            "status": "CPU_VALIDATION_PASS",
+            "subject": "gates/phase_c_cpu_validation_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_train_development_validated.json",
+          "attests": {
+            "status": "PHASEC_TRAIN_DEVELOPMENT_DATA_PASS",
+            "subject": "gates/phase_c_train_development_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_classifier_validated.json",
+          "attests": {
+            "status": "CLASSIFIER_VALIDATION_PASS",
+            "subject": "gates/phase_c_classifier_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_evaluator_validated.json",
+          "attests": {
+            "status": "EVALUATOR_RELIABILITY_PASS",
+            "subject": "gates/phase_c_evaluator_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_datasets_final_validated.json",
+          "attests": {
+            "status": "PHASEC_DATASETS_FINAL_PASS",
+            "subject": "gates/phase_c_datasets_final_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_protocol_frozen.json",
+          "attests": {
+            "status": "PROTOCOL_FREEZE_PASS",
+            "subject": "gates/phase_c_protocol_freeze_report.json"
+          }
+        }
       ]
     }
   }

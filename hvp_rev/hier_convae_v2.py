@@ -1,4 +1,4 @@
-"""Content-addressed, W&B-required E7a wrapper for the legacy hierarchical codec kernel."""
+"""Content-addressed, W&B-required wrapper for the legacy hierarchical codec kernel."""
 from __future__ import annotations
 
 import argparse
@@ -70,13 +70,16 @@ def main() -> None:
     parser.add_argument("--provenance_tag", default="e7a-codec-seed-intervention")
     parser.add_argument("--wandb_project", default="hgrid")
     parser.add_argument("--wandb_group", required=True)
+    parser.add_argument("--dataset_tag", default="loopmom")
+    parser.add_argument("--allow_seed_zero", action="store_true",
+                        help="explicitly permit a fresh seed-0 codec outside the E7a intervention")
     parser.add_argument("--run_log", default="")
     parser.add_argument("--authorized_gpu_hours", type=float, required=True)
     args = parser.parse_args()
 
     if hier_convae.DEV != "cuda":
         raise RuntimeError("scientific E7a codec training requires CUDA")
-    if args.seed == 0:
+    if args.seed == 0 and not args.allow_seed_zero:
         raise ValueError("E7a must train a non-legacy codec seed")
     spec = resolved_spec(args)
     identity = sha256_value(spec)[:16]
@@ -99,7 +102,7 @@ def main() -> None:
         config={"run_spec": spec, "cli": vars(args)},
         project=args.wandb_project,
         run_id=run_name,
-        tags=["loopmom", "codec-training", args.provenance_tag],
+        tags=[args.dataset_tag, "codec-training", args.provenance_tag],
         resume="never",
         group=args.wandb_group,
         job_type="codec-training",

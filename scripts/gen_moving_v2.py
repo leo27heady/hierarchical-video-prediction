@@ -15,7 +15,9 @@ def main() -> None:
     parser.add_argument("--images", required=True, help="official MNIST idx3 gzip")
     parser.add_argument("--labels", required=True, help="matching official MNIST idx1 gzip")
     parser.add_argument("--source-split", choices=["train", "test"], required=True)
-    parser.add_argument("--purpose", choices=["development", "confirmation_holdout"], required=True)
+    parser.add_argument(
+        "--purpose", choices=["training", "development", "phase_c_v2_holdout"], required=True
+    )
     parser.add_argument("--n", type=int, required=True)
     parser.add_argument("--frames", type=int, required=True)
     parser.add_argument("--objects", type=int, default=2)
@@ -34,7 +36,7 @@ def main() -> None:
         bundle, args.out, purpose=args.purpose, generator_commit=args.generator_commit,
         source_images_path=args.images, source_labels_path=args.labels,
     )
-    print(f"saved {args.out} with {manifest['files']['metadata']['path']}")
+    print(f"saved {args.out} with {manifest['artifacts']['metadata']['path']}")
     print(f"dataset manifest sha256: {manifest['manifest_sha256']}")
 
 

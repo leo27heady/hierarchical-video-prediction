@@ -28,7 +28,12 @@ def test_generator_saves_persistent_ids_classes_and_trajectories(tmp_path):
     manifest = save_moving_mnist(
         bundle, out, purpose="development", generator_commit="fixture",
     )
-    assert manifest["source_split"] == "synthetic-fixture"
+    assert manifest["source_glyph_pool"]["split"] == "synthetic-fixture"
     assert out.exists() and out.with_suffix(".metadata.npz").exists()
+    actions = out.with_name(out.stem + "_actions.npy")
+    assert actions.exists()
+    assert not np.load(actions).any()
+    assert manifest["data_schema"] == "moving-mnist-persistent-v1"
+    assert manifest["artifacts"]["clips"]["path"].endswith("fixture.npy")
     with pytest.raises(FileExistsError):
         save_moving_mnist(bundle, out, purpose="development", generator_commit="fixture")

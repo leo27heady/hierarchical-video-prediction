@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import torch
 
+from hvp_rev import wb
 from hvp_rev.classifier_validation import ValidationDomain, validate_classifier
 from hvp_rev.digit_classifier import DigitCNN
 from hvp_rev.provenance import atomic_write_json, sha256_file
@@ -33,6 +34,9 @@ def main() -> None:
                         help="NPZ with <domain>_images and <domain>_labels arrays")
     parser.add_argument("--out", required=True)
     parser.add_argument("--write-marker", action="store_true")
+    parser.add_argument("--source-commit", default="")
+    parser.add_argument("--wandb-project", default="")
+    parser.add_argument("--wandb-group", default="")
     args = parser.parse_args()
     model = DigitCNN()
     model.load_state_dict(torch.load(args.checkpoint, map_location="cpu", weights_only=True))
@@ -45,6 +49,10 @@ def main() -> None:
             domains[name] = ValidationDomain(name, data[ik], data[lk], threshold)
         report = validate_classifier(model, domains, device="cpu")
     report.update({
+        "schema_version": 1,
+        "status": "CLASSIFIER_VALIDATION_PASS" if report["passed"] else "CLASSIFIER_VALIDATION_FAIL",
+        "confidence_threshold": 0.0,
+        "abstention_policy": "disabled; every matched detection receives a class prediction",
         "checkpoint_sha256": sha256_file(args.checkpoint),
         "domains_sha256": sha256_file(args.domains),
     })
@@ -52,14 +60,47 @@ def main() -> None:
     print(json.dumps(report, indent=2))
     if not report["passed"]:
         raise SystemExit("classifier validation failed")
-    if args.write_marker:
-        marker = Path("gates/phase_c_classifier_validated.txt")
-        marker.write_text(
-            "CLASSIFIER_VALIDATED\n"
-            f"checkpoint_sha256={report['checkpoint_sha256']}\n"
-            f"report_sha256={sha256_file(args.out)}\n",
-            encoding="utf-8",
+    if args.wandb_project or args.wandb_group:
+        if not args.wandb_project or not args.wandb_group or not args.source_commit:
+            raise ValueError("W&B validation requires project, group and source commit")
+        run_id = f"phasec-v2-classifier-validation-{report['checkpoint_sha256'][:12]}"
+        wb.init(
+            run_id,
+            config={"report": report, "source_commit": args.source_commit},
+            project=args.wandb_project,
+            run_id=run_id,
+            group=args.wandb_group,
+            tags=["moving-mnist", "phase-c-v2", "classifier-validation"],
+            job_type="classifier-validation",
+            required=True,
+            resume="never",
         )
+        for name, values in report["domains"].items():
+            wb.summary({
+                f"domains/{name}/accuracy": values["accuracy"],
+                f"domains/{name}/ece": values["ece_10bin"],
+                f"domains/{name}/n": values["n"],
+            })
+        wb.artifact(
+            f"phasec-v2-classifier-validation-{report['checkpoint_sha256'][:12]}",
+            "classifier-validation",
+            [args.checkpoint, args.domains, args.out],
+            aliases=["latest"],
+        )
+        wb.finish()
+    if args.write_marker:
+        if not args.source_commit:
+            raise ValueError("--write-marker requires --source-commit")
+        marker = Path("gates/phase_c_classifier_validated.json")
+        atomic_write_json(marker, {
+            "schema_version": 1,
+            "status": "CLASSIFIER_VALIDATION_PASS",
+            "subject": Path(args.out).as_posix(),
+            "subject_sha256": sha256_file(args.out),
+            "source_commit": args.source_commit,
+            "checkpoint_sha256": report["checkpoint_sha256"],
+            "domains_sha256": report["domains_sha256"],
+        })
 
 
 if __name__ == "__main__":

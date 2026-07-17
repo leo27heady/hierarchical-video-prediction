@@ -151,6 +151,13 @@ def _atomic_save_npy(path: Path, array: np.ndarray) -> None:
     atomic_write_bytes(path, buffer.getvalue())
 
 
+def _display_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(Path.cwd().resolve()).as_posix()
+    except ValueError:
+        return path.resolve().as_posix()
+
+
 def save_moving_mnist(
     bundle: MovingMNISTBundle,
     output: str | Path,
@@ -160,18 +167,21 @@ def save_moving_mnist(
     source_images_path: str | Path | None = None,
     source_labels_path: str | Path | None = None,
 ) -> dict:
-    """Save frames, metadata and a hash-pinned manifest; refuses overwrite."""
+    """Save frames, zero actions, metadata and a hash-pinned manifest; refuses overwrite."""
     bundle.validate()
-    if purpose not in {"development", "confirmation_holdout"}:
-        raise ValueError("purpose must be development or confirmation_holdout")
+    allowed_purposes = {"training", "development", "phase_c_v2_holdout"}
+    if purpose not in allowed_purposes:
+        raise ValueError(f"purpose must be one of {sorted(allowed_purposes)}")
     output = Path(output)
+    actions_path = output.with_name(output.stem + "_actions.npy")
     metadata_path = output.with_suffix(".metadata.npz")
     manifest_path = output.with_suffix(".manifest.json")
-    existing = [p for p in (output, metadata_path, manifest_path) if p.exists()]
+    existing = [p for p in (output, actions_path, metadata_path, manifest_path) if p.exists()]
     if existing:
         raise FileExistsError("refusing dataset overwrite: " + ", ".join(map(str, existing)))
     output.parent.mkdir(parents=True, exist_ok=True)
     _atomic_save_npy(output, bundle.frames)
+    _atomic_save_npy(actions_path, np.zeros(bundle.frames.shape[:2], dtype=np.int8))
     atomic_save_npz(
         metadata_path,
         object_id=bundle.object_id,
@@ -188,19 +198,61 @@ def save_moving_mnist(
     for key, value in (("images", source_images_path), ("labels", source_labels_path)):
         if value is not None:
             source[key] = {"path": str(value), "sha256": sha256_file(value)}
+    artifacts = {
+        "clips": {
+            "path": _display_path(output),
+            "bytes": output.stat().st_size,
+            "sha256": sha256_file(output),
+        },
+        "actions": {
+            "path": _display_path(actions_path),
+            "bytes": actions_path.stat().st_size,
+            "sha256": sha256_file(actions_path),
+        },
+        "metadata": {
+            "path": _display_path(metadata_path),
+            "bytes": metadata_path.stat().st_size,
+            "sha256": sha256_file(metadata_path),
+        },
+    }
+    dataset_id = (
+        f"moving-mnist-{purpose}-{bundle.source_split}-{bundle.seed}-"
+        f"{artifacts['clips']['sha256'][:12]}"
+    )
     manifest = {
-        "schema_version": SCHEMA_VERSION,
-        "dataset_id": f"moving-mnist-{bundle.source_split}-s{bundle.seed}",
+        "schema_version": 1,
+        "data_schema": SCHEMA_VERSION,
+        "dataset_id": dataset_id,
         "purpose": purpose,
         "created_utc": datetime.now(timezone.utc).isoformat(),
-        "generator_commit": generator_commit,
-        "seed": bundle.seed,
-        "source_split": bundle.source_split,
-        "source": source,
-        "shape": list(bundle.frames.shape),
-        "files": {
-            "frames": {"path": output.name, "sha256": sha256_file(output)},
-            "metadata": {"path": metadata_path.name, "sha256": sha256_file(metadata_path)},
+        "generator": {
+            "path": "hvp_rev/data/moving_mnist.py",
+            "commit": generator_commit,
+            "rng": "numpy.random.RandomState/MT19937",
+            "seed": bundle.seed,
+        },
+        "configuration": {
+            "n": int(bundle.frames.shape[0]),
+            "frames": int(bundle.frames.shape[1]),
+            "image_size": int(bundle.frames.shape[2]),
+            "objects": int(bundle.object_id.shape[1]),
+            "composition": "pixelwise maximum",
+            "trajectory_yx_semantics": "top-left coordinate of the 28x28 source-glyph box",
+            "actions": "all-zero exogenous conditioning",
+        },
+        "source_glyph_pool": {
+            "split": bundle.source_split,
+            "files": source,
+            "glyph_indices_artifact": artifacts["metadata"]["path"],
+        },
+        "artifacts": artifacts,
+        "access_policy": {
+            "training": "allowed" if purpose == "training" else "forbidden",
+            "monitoring_grid": "allowed" if purpose == "development" else "forbidden",
+            "locked_evaluation": (
+                "explicit purpose-matched switch and access log required"
+                if purpose == "phase_c_v2_holdout" else "not applicable"
+            ),
         },
     }
     atomic_write_json(manifest_path, manifest)

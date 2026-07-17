@@ -8,6 +8,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from collections.abc import Callable
 
 
 class DigitCNN(nn.Module):
@@ -42,16 +43,25 @@ def train_digit_classifier(
     batch_size: int = 256,
     learning_rate: float = 1e-3,
     device: str = "cpu",
+    progress_callback: Callable[[dict], None] | None = None,
 ) -> DigitCNN:
     torch.manual_seed(seed)
     model = DigitCNN().to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     generator = torch.Generator().manual_seed(seed + 1)
     model.train()
-    for _ in range(steps):
+    running = 0.0
+    running_count = 0
+    for step in range(1, steps + 1):
         index = torch.randint(0, len(images), (batch_size,), generator=generator)
         loss = F.cross_entropy(model(images[index].to(device)), labels[index].to(device))
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
+        running += float(loss.detach())
+        running_count += 1
+        if progress_callback is not None and (step % 250 == 0 or step == steps):
+            progress_callback({"step": step, "train_loss": running / running_count})
+            running = 0.0
+            running_count = 0
     return model.eval()

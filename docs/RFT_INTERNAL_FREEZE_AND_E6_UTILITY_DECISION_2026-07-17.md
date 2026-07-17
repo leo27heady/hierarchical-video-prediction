@@ -1,6 +1,6 @@
 # Reach–fidelity article internal freeze and E6 utility decision
 
-**Date:** 2026-07-17  
+**Date:** 2026-07-17
 **Status:** M1 internal scientific freeze complete; E6 utility gate passes; E6 validity and
 implementation gates remain fail-closed.
 

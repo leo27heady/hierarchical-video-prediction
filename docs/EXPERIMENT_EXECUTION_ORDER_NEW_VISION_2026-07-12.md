@@ -1874,29 +1874,31 @@ Required preparation:
 - Hungarian assignment wired into rollout records;
 - dated `SPATIAL_FACTORIAL` amendment.
 
-Primary:
+Co-primary registered family:
 
-- preregistered paired foreground-MSE effect/equivalence decision at the recorded ±0.005 margin,
-  described narrowly as protocol-defined foreground equivalence rather than broad memory
-  equivalence.
-
-Co-primary/secondary:
-
-- full/background/union-mask errors;
-- foreground precision/recall;
-- missed/extra objects and coverage;
+- foreground MSE and union-mask MSE;
 - intention-to-score trajectory error;
-- identity accuracy with persistent labels.
+- intention-to-score identity accuracy;
+- persistent-object assignment coverage.
+
+Positive effects always favor the hierarchy. One studentized max-statistic clip-cluster family
+covers all five endpoints across all three training seeds. Full/background errors, foreground
+precision/recall/F1, misses/extras, matched-only diagnostics and overlap strata are secondary.
+Equivalence is disabled: the earlier ±0.005 foreground margin is withdrawn before protected
+access because it did not have a defensible native-unit smallest effect of interest.
 
 **Question:** on a familiar long-rollout benchmark without loopmom's explicit re-entry geometry,
 do flat and hierarchical packages differ in foreground fidelity, identity, trajectory or survival?
 
-**CPU preparation:** **1–3 days**.
+**CPU/prelaunch preparation:** implementation complete; immutable public/development gates in
+progress.
 
 **GPU time:** six arm×seed training runs plus long evaluation, approximately **30–40 hours**.
 
-**Launch gate:** prepare and CPU-validate E6, but authorize training only if the evidence-frozen
-article shows that this recognizable cross-dataset boundary materially improves the argument.
+**Launch gate:** the article-utility decision passed at M1. Predictor training remains blocked
+until official-source hashes, persistent train/development data, classifier domains, evaluator
+reliability, exact six-cell dispatch, protected-data isolation, W&B and the mechanical 40-hour
+budget gate all pass.
 
 ## 9. Representation and sampler robustness — E7
 
@@ -2087,7 +2089,7 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 | 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **complete / CODEC_DIRECTIONALLY_ROBUST** | 30.0238 h actual | complete |
 | 3 | E8a | Classical pose-indexed retrieval | **COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** privileged closure reference | 1.0897 h actual | complete |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | **COMPLETE**; E8a integrated and article identity frozen | 0 | complete 2026-07-17 |
-| 5 | E6 | Phase C hybrid on long Moving-MNIST | **UTILITY PASS / VALIDITY GATES IN PROGRESS** | 30–40 h | preparation active |
+| 5 | E6 | Phase C hybrid on long Moving-MNIST | **UTILITY PASS / PREPARATION FROZEN / PROTECTED RUN BLOCKED** | 30–40 h | run public/development gates, then freeze hashes before holdout access |
 | 6 | M2 | Final tables, claim/artifact index, clean-environment QA and release | required | 0 | 2–5 d |
 | 7 | E9 | Counterfactual Dynamic LoopWorld primary factorial | optional post-freeze extension | 60–100 h | 1–2 wk |
 | — | E3a | Fixed-target diffusion B1 | deferred while article retains configuration-only wording | 0 now | future if causal wording returns |
@@ -2240,3 +2242,34 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   domain validation, Hungarian/intention-to-score semantics, overwrite/collision tests, frozen
   six-cell RunSpecs, cloud connectivity and the 40-hour mechanical budget gate all pass.
 - **Decision record:** `docs/RFT_INTERNAL_FREEZE_AND_E6_UTILITY_DECISION_2026-07-17.md`.
+
+### E6 preparation audit — 2026-07-17 17:02 Europe/Kyiv
+
+- **Expected versus actual inherited state:** the article-utility gate had passed, persistent
+  generator metadata and a Hungarian scoring primitive existed, but the protected evaluator,
+  classifier-domain fixture, evaluator reliability ceiling, immutable six-cell controller,
+  simultaneous analysis and completion audit did not. The legacy Phase C path remains
+  fail-closed and was not reused.
+- **Frozen scientific repair:** E6 is now explicitly an external Moving-MNIST boundary, not a
+  LoopMom mechanism replication. The exact 1,152-token `mmL-flat`/`mmL-hier` pair, seeds 0–2,
+  30k/B16 training, 48-frame warm-up, 300-frame NFE-16 rollout, persistent assignment semantics
+  and protected clips 250–349 are fixed. Equivalence is disabled before protected access; the
+  unjustified ±0.005 margin has been withdrawn.
+- **Metric validity:** the production path uses persistent IDs/classes/boxes, one-to-one Hungarian
+  matching, frame-diagonal miss penalties, explicit extras, intention-to-score identity,
+  false-positive-sensitive frame metrics and overlap strata. The registered family is five
+  endpoints × three training seeds under one studentized max-statistic clip-cluster bootstrap.
+- **Preparation implementation:** official train/test glyph roles, immutable zero-action dataset
+  manifests, exact-clip collision validation, a train-only provenance-v2 predictor path,
+  classifier training/domain validation, raw/AE evaluator ceilings, protected access logging,
+  W&B-required cells, mechanical GPU ledgers and terminal inventory/cloud validation are wired.
+- **CPU actual:** 79 repository tests pass; the focused E6 suite has 15 passing tests, including
+  crossing/permutation, overlap, miss/extra, empty, wrong-location/class, threshold/tie,
+  abstention and overwrite cases. Python compilation, JSON semantics and PowerShell parsing pass.
+- **Budget:** the fixed maximum remains 40 GPU-hours. Cell maxima total 39.35 hours: codec 0.8,
+  classifier 0.25, classifier/evaluator validation 0.5, six predictor trainings 28.2 and six
+  protected evaluations 9.6. Failures and retries are charged; reserve use is forbidden.
+- **Gate decision:** no scientific blocker. Commit the preparation implementation, generate a
+  hash-bound CPU attestation, then run only the public/development preparation tranche. Protected
+  holdout generation and predictor training remain blocked until the resulting codec,
+  classifier, dataset and evaluator hashes are reviewed and frozen.
