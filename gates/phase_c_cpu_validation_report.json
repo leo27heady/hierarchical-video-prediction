@@ -3,7 +3,7 @@
     "allocated_max_gpu_hours": 39.35000000000001,
     "authorized_max_gpu_hours": 40.0
   },
-  "config_sha256": "c92bee90aaff438ebb08b587aa8e98f62cc4de9edf45c75b153b6285c8e4ff55",
+  "config_sha256": "db30b2086fccbc6a1eca7b1e4f4796430942e77e9d8faee12af06e55c94543ce",
   "context": {
     "flat_reach": 18,
     "flat_tokens": 1152,
@@ -30,7 +30,7 @@
     "scripts/validate_phasec_evaluator.py": "ebd7222146b074b8b53b1a3e266917ba1c1420e52b77329ce4e80f9ddf4e04f1"
   },
   "schema_version": 1,
-  "source_commit": "7bfbbc5f9df8ca968cc226c1d63bb64315df480f",
+  "source_commit": "cad658ed30237ee8f5cac2d027636b43301b69f7",
   "status": "CPU_VALIDATION_PASS",
   "tests": {
     "command": [
@@ -44,6 +44,6 @@
       "tests/test_classifier_and_trust.py",
       "tests/test_complete_evaluation.py"
     ],
-    "stdout": "................                                                         [100%]\n16 passed in 2.60s"
+    "stdout": "................                                                         [100%]\n16 passed in 2.33s"
   }
 }

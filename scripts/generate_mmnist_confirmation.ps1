@@ -9,7 +9,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $env:CUDA_VISIBLE_DEVICES = "-1"
-& .\venv\Scripts\python.exe scripts\check_experiment_gate.py phase-c-v2
+& .\venv\Scripts\python.exe scripts\check_experiment_gate.py phase-c-v2-holdout-generation
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 if ($CheckOnly) { Write-Output "Phase-C-v2 generation gate passed; dataset not created."; exit 0 }
 

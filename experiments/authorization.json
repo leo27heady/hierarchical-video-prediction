@@ -284,6 +284,39 @@
         }
       ]
     },
+    "phase-c-v2-holdout-generation": {
+      "status": "AUTHORIZED_RUN_ALONE",
+      "meaning": "Generate the single seed-frozen protected holdout and perform one logged integrity access; predictor training and outcome analysis remain forbidden.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json",
+        "scripts/generate_mmnist_confirmation.ps1",
+        "scripts/gen_moving_v2.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/phase_c_protocol_frozen.json",
+          "attests": {
+            "status": "PROTOCOL_FREEZE_PASS",
+            "subject": "gates/phase_c_protocol_freeze_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_classifier_validated.json",
+          "attests": {
+            "status": "CLASSIFIER_VALIDATION_PASS",
+            "subject": "gates/phase_c_classifier_report_v4.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_evaluator_validated.json",
+          "attests": {
+            "status": "EVALUATOR_RELIABILITY_PASS",
+            "subject": "gates/phase_c_evaluator_report_v3.json"
+          }
+        }
+      ]
+    },
     "phase-c-v2": {
       "status": "BLOCKED_PENDING_VALIDATION",
       "meaning": "Persistent-object Phase C with one-to-one assignment and coverage co-primary.",

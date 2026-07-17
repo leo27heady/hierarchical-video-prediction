@@ -2416,3 +2416,16 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   config, implementation hashes and analysis rule. Only after that commit may the seeded holdout
   be generated and opened once for integrity validation. Predictor training remains blocked until
   the zero-collision final dataset report and protocol marker are committed.
+
+### E6 protocol-freeze audit — 2026-07-17 17:50 Europe/Kyiv
+
+- **Frozen subjects:** the final config is `FROZEN` and resolves the accepted codec, classifier,
+  train/development manifests and future holdout-manifest path. The protocol-freeze report binds
+  those artifact hashes plus the generator/evaluator, training controller, registered analysis,
+  completion validator, preparation reports and final 16-case CPU attestation.
+- **Protected-data policy:** no holdout exists at freeze time. A separate
+  `phase-c-v2-holdout-generation` authorization permits exactly the seed-20260720 generation and
+  one logged integrity access; it does not authorize training, evaluation or outcome analysis.
+  The six-cell scientific authorization remains blocked until final dataset validation passes.
+- **Decision:** the holdout-generation gate and fail-closed authorization-ledger validation pass.
+  Commit this freeze before generating any protected bytes.

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "study": "phase-c-persistent-object-v2",
   "programme_id": "E6",
-  "status": "PREPARATION_FROZEN",
+  "status": "FROZEN",
   "question": "On a familiar long-rollout Moving-MNIST boundary without LoopMom's explicit re-entry geometry, do the registered flat and hierarchical packages differ in foreground fidelity, identity, trajectory, or survival?",
   "scope": {
     "role": "external boundary and cross-dataset validity study",
@@ -194,6 +194,17 @@
     "mechanical_accounting": "wall-clock time while a project process owns the GPU, including codec, classifier, validation, training, evaluation, failures and retries",
     "allocated_max_gpu_hours": 39.35,
     "reserve_use": "forbidden"
+  },
+  "resolved_artifacts": {
+    "codec_path": "artifacts/autoencoders/phasec-v2-codec/seed-0/564ce75a1a0703c3/checkpoint.pt",
+    "codec_sha256": "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "classifier_path": "artifacts/phasec_v2/classifier-v3/34fd97697094c949/checkpoint.pt",
+    "classifier_sha256": "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+    "training_manifest": "data/phasec_v2/mmnist_train_3000x100.manifest.json",
+    "training_manifest_sha256": "caf737dee5a3546ba1d8357550acd741a477373808df9b07db51ea09f0171631",
+    "development_manifest": "data/phasec_v2/mmnist_development_500x348.manifest.json",
+    "development_manifest_sha256": "ddee14ba4a1274081a09531bdd8aa87e44e8a7cba80ac498bd3e568dde5d6346",
+    "holdout_manifest": "data/phasec_v2/mmnist_holdout_500x348.manifest.json"
   },
   "launch_condition": "authorization status may become AUTHORIZED_RUN_ALONE only after immutable CPU, source, dataset-development, classifier, evaluator-reliability, dispatch, protocol-freeze, W&B and budget attestations pass"
 }

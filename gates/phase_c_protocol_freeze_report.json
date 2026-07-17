@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "status": "PROTOCOL_FREEZE_PASS",
+  "source_commit": "cad658e241adf62a88b2e6b795e8b7083a25cb5d",
+  "frozen_at": "2026-07-17T17:49:00+03:00",
+  "scope": "E6 external long Moving-MNIST boundary study",
+  "config_status": "FROZEN",
+  "protected_data_accessed": false,
+  "registered_design": {
+    "arms": [
+      "mmL-flat",
+      "mmL-hier"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "training": "B16 x 30000 updates; bf16; LR 0.0003; EMA 0.999",
+    "evaluation": "48-frame warm-up; 300-frame rollout; NFE 16; sampler seed 0; holdout clips 250-349",
+    "inference": "one 15-effect studentized max-statistic clip-cluster bootstrap family",
+    "equivalence_enabled": false,
+    "maximum_gpu_hours": 40.0
+  },
+  "resolved_artifacts": {
+    "codec_sha256": "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "classifier_sha256": "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+    "training_manifest_sha256": "caf737dee5a3546ba1d8357550acd741a477373808df9b07db51ea09f0171631",
+    "development_manifest_sha256": "ddee14ba4a1274081a09531bdd8aa87e44e8a7cba80ac498bd3e568dde5d6346"
+  },
+  "frozen_file_sha256": {
+    "experiments/configs/phase_c_v2.json": "db30b2086fccbc6a1eca7b1e4f4796430942e77e9d8faee12af06e55c94543ce",
+    "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md": "86e63a5c0ae2059b5bda98a796c6c00e665936f27464ac7f04ee55cb8d546f30",
+    "hvp_rev/phasec_v2.py": "85925de58b1a28e4ec55138f8065bc110fc8c9ca4fdf1434390e3cd75b4652f5",
+    "hvp_rev/phasec_eval_v2.py": "f17667bf87fe4369fb7c0e0ad20309284436f4a3fa68b2e7cd67e3cc0285f4b1",
+    "scripts/analyze_phasec_v2.py": "9e8e0761bdc0e5aa37103df0f03ea9e1bb913748e7c5d0d89434e4c0111a816a",
+    "scripts/run_phasec_v2.ps1": "13a1a6930164030c31ac206add59c32c0a43a1c467bf27ee9edb09e6fbf062ce",
+    "scripts/validate_phasec_completion.py": "a766197806cda3304d2f7312fad9bf5cc83e496f2942dd56aa74f72ed513f2e8",
+    "gates/phase_c_cpu_validation_report.json": "b97bdc6422a38e36a4b3d4c3572f9727f922aa4e26e3b64d0de782c86d33f0c7",
+    "gates/phase_c_classifier_report_v4.json": "afa82d162f91f8804db6bfc5349ffaccd004219c6fce52a958e63cb4ec3d579e",
+    "gates/phase_c_evaluator_report_v3.json": "54a8ab6d815dd5795bbf40a5bf45814015246d920837c1095f99e5fc2b2ebdb6",
+    "gates/phase_c_preparation_complete.json": "48131ac2ecf7baf92acceb12d05d89b627dc5eb8a281397d418e7ba5079226d0"
+  }
+}
