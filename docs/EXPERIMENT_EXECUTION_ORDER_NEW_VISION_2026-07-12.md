@@ -48,7 +48,7 @@ hours, deviations and the resulting gate decision. Raw logs, W&B and immutable a
 the evidence; this section is the human-readable index. Status vocabulary is `NOT STARTED`,
 `GATED`, `RUNNING`, `COMPLETE`, `DEFERRED`, `BLOCKED` or `CANCELLED`.
 
-#### Programme status at 2026-07-16 03:28 Europe/Kyiv
+#### Programme status at 2026-07-17 12:28 Europe/Kyiv
 
 | ID | Workstream | Expected before execution | Actual/status | Decision |
 |---|---|---|---|---|
@@ -65,7 +65,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
 | E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **COMPLETE / CODEC_DIRECTIONALLY_ROBUST**; 7/7 trainings, 14/14 evaluations, eight-effect simultaneous analysis, independent validator and W&B audit pass in 30.0238 project GPU-hours | Retain all four directions across the independent codec at point-estimate level; disclose that the alternate-codec 2,432-token inversion is family-wise unresolved |
-| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **NOT STARTED / DEFERRED as specified below** | No automatic launch authority |
+| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **E8a RUNNING** from clean commit `dedcf01`; E6/E9 remain gated/deferred as specified below | Complete and integrate E8a before applying the frozen article-utility and post-freeze gates |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
 
@@ -2085,7 +2085,7 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 | 0 | E0/E1/E2/E4a/E4b/E5a/E7c/E7a | Completed evidence and governance programme | **complete/frozen** | 103.362 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
 | 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **complete / CODEC_DIRECTIONALLY_ROBUST** | 30.0238 h actual | complete |
-| 3 | E8a | Classical pose-indexed retrieval | closure reference baseline | 0–4 h | 2–5 d |
+| 3 | E8a | Classical pose-indexed retrieval | **RUNNING** privileged closure reference from commit `dedcf01` | 0–4 h | launched 2026-07-17 12:26 Europe/Kyiv |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | required CPU/text milestone | 0 | 3–7 d |
 | 5 | E6 | Phase C hybrid on long Moving-MNIST | run only if assembled-article utility/validity gate passes | 30–40 h | 1–3 d |
 | 6 | M2 | Final tables, claim/artifact index, clean-environment QA and release | required | 0 | 2–5 d |
@@ -2159,7 +2159,36 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
 E7c is terminal as `DIRECTIONALLY_ROBUST`; no sampler/NFE cells may be added. E7a is terminal as
 `CODEC_DIRECTIONALLY_ROBUST` in 30.0238 project GPU-hours: all four alternate-codec point
 estimates are positive, while the alternate 2,432-token inversion remains family-wise unresolved.
-Do not add a codec, predictor seed, arm or endpoint. The next live gate is E8a's separately scoped
-privileged pose-indexed raw-memory reference. Patch and validate its purpose-specific access path,
-run the complete CPU/design/data/cloud gates from a clean commit, then execute only its frozen
-four-span mosaic plus seven checkpoint evaluations within the four-hour maximum.
+Do not add a codec, predictor seed, arm or endpoint. E8a is now running as the separately scoped
+privileged pose-indexed raw-memory reference. Execute only its frozen four-span mosaic plus seven
+checkpoint evaluations within the four-hour maximum. After terminal validation, integrate the
+registered result before applying the M1/E6/E9 decision tree.
+
+### E8a launch audit — 2026-07-17 12:28 Europe/Kyiv
+
+- **Issue audit and repair:** the initial live check-only gate correctly exposed that the E8a
+  validator treated the committed byte-identical manifest copy as an earlier independent dataset.
+  The origin was path-based exclusion rather than manifest-identity handling. The validator now
+  skips only byte-identical manifest mirrors; an explicit regression test distinguishes a mirror
+  from a changed manifest.
+- **CPU/scientific gate:** 72 tests pass after the repair, including 11 E8a-specific tests.
+  Scientific-config, authorization-ledger, article/dissertation consistency, label-parity,
+  compilation and whitespace gates pass from clean source. Frozen protocol/config and CPU
+  attestations are committed.
+- **Data gate:** the new purpose-locked set is
+  `loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13`, with 500 unique
+  `uint8` clips of 200 frames. Action-position consistency, persistent-object schema, motion
+  statistics and artifact hashes pass. Exact-clip collisions are zero against legacy
+  train/test, E2, E7c and E7a. The data-side and committed manifests have identical SHA-256
+  `06a88f48676a7c0dc1bd96223c3ca09d6ca8e8c8ef9efb0dd731962155d1558c`.
+- **Cloud/launch gate:** the purpose-matched access switch, fail-closed authorization check,
+  post-data design validator and W&B online connectivity gate pass. E8a launched from commit
+  `dedcf01` at 12:26 Europe/Kyiv in group
+  `e8a-pose-mosaic-loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13`.
+- **Early actual versus expected:** the CPU pose-mosaic reference completed all 15,200 aligned
+  records and immutable cloud/artifact output before the first GPU cell. `hier-min` seed 0 is
+  the first active neural evaluation. GPU utilization is high and VRAM remains safely below the
+  WDDM spill region; the frozen checkpoint-only NFE geometry is unchanged.
+- **Decision:** no scientific blocker. Continue the seven registered neural evaluations,
+  registered simultaneous analysis and independent completion/W&B validation. No adaptive span,
+  arm, checkpoint, sampler, endpoint or storage rule is authorized.
