@@ -1,9 +1,12 @@
 # Final scientific programme report
 
-**Date:** 2026-07-18  
-**Experimental state:** terminal through E6  
-**Live GPU work:** none  
-**Authoritative language:** English  
+**Date:** 2026-07-18
+
+**Experimental state:** terminal through E6
+
+**Live GPU work:** none
+
+**Authoritative language:** English
 **Canonical status ledger:** `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md`
 
 ## 1. Final scientific identity

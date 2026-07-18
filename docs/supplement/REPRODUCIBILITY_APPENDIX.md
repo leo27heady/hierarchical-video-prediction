@@ -1,8 +1,10 @@
 # Reproducibility appendix
 
-**Frozen:** 2026-07-18  
-**Scope:** fourth article and its dissertation Chapter 4 evidence  
-**Scientific authority:** `docs/CLAIM_LEDGER.md`  
+**Frozen:** 2026-07-18
+
+**Scope:** fourth article and its dissertation Chapter 4 evidence
+
+**Scientific authority:** `docs/CLAIM_LEDGER.md`
 **Execution authority:** `experiments/authorization.json`
 
 ## A. Reproduction levels
