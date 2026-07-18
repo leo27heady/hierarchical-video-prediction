@@ -122,7 +122,7 @@ what digit it is. It is neither a failed experiment nor a universal hierarchy vi
 - E6 mechanical project ownership: 20.5127031 GPU-hours, including three charged failed
   preparation cells.
 - Measured project consumption through E6: approximately 124.965 GPU-hours.
-- Full CPU repository suite: 81 tests passed.
+- Full CPU repository suite: 83 tests passed.
 - Packaging/RFT consistency, text consistency and scientific-config/authorization validation pass.
 
 ## 4. Content completed
@@ -138,8 +138,9 @@ The result is integrated directly—not only through planning documents—into:
 - the E6 result record, protocol, execution ledger and experiment authorization;
 - the reproducibility appendix and repository README.
 
-The binding article is approximately 6,000 words before venue formatting. The authoritative
-English dissertation rewrite is approximately 64,000 words across its current source files.
+The binding article is 6,127 words before venue formatting. The assembled authoritative English
+dissertation is 54,178 words, with 57 figure captions, 21 table captions and 80 bound external
+references.
 
 ## 5. What is intentionally not claimed
 
@@ -156,24 +157,37 @@ English dissertation rewrite is approximately 64,000 words across its current so
 These exclusions strengthen the work by converting architecture promotion into a falsifiable
 systems result with measured operating regions.
 
-## 6. Remaining work
+## 6. Release completion and remaining author-owned work
 
 No further GPU experiment is authorized or required for the present article/dissertation scope.
 
-The remaining items are release or author decisions:
+The research and repository release work is complete:
+
+- the modular English dissertation sources assemble into one validated manuscript;
+- the binding fourth article has a release Markdown source;
+- both manuscripts have visually audited DOCX review editions and PDF review renders;
+- 12 remaining `[AUTHOR: ...]` fields are isolated in
+  `docs/dissertation/AUTHOR_INPUT_CHECKLIST.md`;
+- a documented public `hvp` API/CLI wraps the frozen research implementation;
+- scientific-config, claim/text consistency, assembly, compilation, CPU test and wheel-build
+  gates pass.
+
+The remaining items require author or institutional facts rather than scientific work:
 
 1. Select the target venue and apply its length, style and bibliography format.
 2. Bind [A1]–[A4] to the final numbered publication list and resolve institutional front-matter
    fields marked `[AUTHOR: …]`.
-3. Typeset the English dissertation/article into the required final document format and perform
-   the final page-level visual QA.
+3. Apply the university/venue template to the authoritative Markdown content and update final
+   pagination; the supplied DOCX/PDF files are review editions rather than a claim of institutional
+   template compliance.
 4. Publish or archive the large datasets/checkpoints/NPZs named by the content-addressed manifests
    if external reproduction access is required.
 5. Perform a Ukrainian localization only if explicitly required later; it is not part of the
    current scientific workflow.
 
-E9 Counterfactual Dynamic LoopWorld is deliberately deferred. It is a high-value future study for
-information-necessity and hidden-state structure, but it requires a new generator, oracle,
-factorial and explicit authorization. E6 has already closed the current reviewer-facing external
-boundary, so E9 must not delay dissertation closure. E3a remains conditional only if the article
-later restores a pure causal stride claim.
+E9 Counterfactual Dynamic LoopWorld is terminally
+`SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY` for this programme. It remains a high-value future
+study for information necessity and hidden-state structure, but it requires a new generator,
+oracle, factorial, scope and explicit authorization. E6 has already closed the current
+reviewer-facing external boundary, so E9 must not delay dissertation closure. E3a remains
+conditional only if the article later restores a pure causal stride claim.

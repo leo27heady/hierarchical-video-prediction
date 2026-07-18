@@ -32,6 +32,7 @@ RAW = "#2f7d68"
 RAW_LIGHT = "#78a99a"
 HIER = "#2563a6"
 FLAT = "#b6463d"
+UNRESOLVED = "#65717d"
 PDF_TIMESTAMP = datetime(2026, 7, 17, tzinfo=timezone.utc)
 
 
@@ -97,6 +98,128 @@ def _errorbar(
         linestyle="none",
         label=label,
     )
+
+
+def make_confirmed_frontier() -> None:
+    """Render the untouched, family-wise frontier and its exact token arithmetic."""
+    result = _read("artifacts/confirmation_e2/results.json")
+    rows = result["frontier"]["contrasts"]
+    plotted = [
+        (896, "s0", rows["b896-s0"]),
+        (896, "s1", rows["b896-s1"]),
+        (1152, "s0", rows["b1152-s0"]),
+        (1152, "s1", rows["b1152-s1"]),
+        (1152, "s2", rows["b1152-s2"]),
+        (1792, "s0", rows["b1792-s0"]),
+        (2432, "30k", rows["b2432-30k-s0"]),
+        (2432, "60k", rows["b2432-60k-s0"]),
+        (3072, "s0", rows["b3072-s0"]),
+        (3072, "s1", rows["b3072-s1"]),
+    ]
+    markers = {"s0": "o", "s1": "s", "s2": "^", "30k": "D", "60k": "P"}
+    offsets = {"s0": 0.975, "s1": 1.025, "s2": 1.0, "30k": 0.975, "60k": 1.025}
+
+    fig, axes = plt.subplots(
+        1,
+        2,
+        figsize=(12.2, 4.8),
+        gridspec_kw={"width_ratios": [1.65, 1.0]},
+        constrained_layout=True,
+    )
+    ax = axes[0]
+    seen_labels: set[str] = set()
+    for budget, label, row in plotted:
+        color = HIER if row["lo"] > 0 else FLAT if row["hi"] < 0 else UNRESOLVED
+        legend_label = label if label not in seen_labels else None
+        seen_labels.add(label)
+        ax.errorbar(
+            budget * offsets[label],
+            row["mean"],
+            yerr=[[row["mean"] - row["lo"]], [row["hi"] - row["mean"]]],
+            color=color,
+            marker=markers[label],
+            markersize=5.5,
+            capsize=2.5,
+            linewidth=1.25,
+            linestyle="none",
+            label=legend_label,
+        )
+    ax.axhline(0, color=INK, linewidth=0.9)
+    ax.set_xscale("log", base=2)
+    ax.set_xticks([896, 1152, 1792, 2432, 3072])
+    ax.set_xticklabels(["896", "1,152", "1,792", "2,432", "3,072"])
+    ax.grid(axis="y", color=GRID, linewidth=0.7)
+    ax.set_xlabel("Context-token budget")
+    ax.set_ylabel("Flat error - hierarchy error")
+    ax.set_title("A  Untouched simultaneous frontier", loc="left", fontweight="bold")
+    ax.text(
+        0.02,
+        0.97,
+        "blue: hierarchy confirmed\n"
+        "grey: unresolved\n"
+        "red: flat confirmed",
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=8.5,
+    )
+    ax.legend(frameon=False, ncol=5, loc="lower left", fontsize=8, title="training/regime")
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+
+    ax = axes[1]
+    packages = [
+        ("48 fine", 3072, FLAT),
+        ("48 coarse + 6 fine", 1152, HIER),
+        ("48 coarse + 2 fine", 896, HIER),
+    ]
+    y = np.arange(len(packages))
+    values = [value for _, value, _ in packages]
+    bars = ax.barh(
+        y,
+        values,
+        color=[color for _, _, color in packages],
+        alpha=0.88,
+        height=0.58,
+    )
+    ax.set_yticks(y)
+    ax.set_yticklabels([label for label, _, _ in packages])
+    ax.invert_yaxis()
+    ax.set_xlim(0, 3400)
+    ax.set_xlabel("Context tokens for nominal 48-frame reach")
+    ax.set_title("B  Exact memory arithmetic", loc="left", fontweight="bold")
+    ax.grid(axis="x", color=GRID, linewidth=0.7)
+    for bar, value in zip(bars, values):
+        ax.text(value + 45, bar.get_y() + bar.get_height() / 2, f"{value:,}", va="center")
+    ax.text(
+        0.98,
+        0.96,
+        "2.7-3.4x fewer tokens\nfor the same nominal reach",
+        transform=ax.transAxes,
+        ha="right",
+        va="top",
+        fontsize=8.5,
+        color=HIER,
+    )
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+
+    fig.suptitle(
+        "Hierarchy buys reach; flat context buys fidelity",
+        fontsize=12,
+        fontweight="bold",
+    )
+    fig.text(
+        0.5,
+        -0.01,
+        "Intervals in panel A are one studentized max-statistic clip-cluster family; "
+        "no interpolation or unique crossover is inferred.",
+        ha="center",
+        va="top",
+        color=MUTED,
+        fontsize=8.5,
+    )
+    _save(fig, "article_confirmed_frontier")
 
 
 def make_head_package() -> None:
@@ -445,6 +568,7 @@ def make_phasec_v2_boundary() -> None:
 
 def main() -> None:
     _style()
+    make_confirmed_frontier()
     make_head_package()
     make_trust_replication()
     make_sampler_robustness()

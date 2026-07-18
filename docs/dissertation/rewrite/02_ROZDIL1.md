@@ -1,38 +1,6 @@
-# 02 — РОЗДІЛ 1 (rewrite, phase 1)
+# Chapter 1 — Systems Analysis of Hierarchical Video Generation and Its Consistency Criteria
 
-> **Status:** authoritative English working text of the full Chapter 1 replacement. No translation
-> pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only. Author-input
-> spots are marked **[AUTHOR: …]**,
-> literature placeholders **[REF: …]** (to be resolved against the rebuilt reference list — the
-> original draft's numeric citations do not resolve).
-> **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§1 РОЗДІЛ 1 TOC, §3 items 15–21, §4,
-> §6 «НОВИЙ РОЗДІЛ 1», **§8 AUTHOR DECISIONS override everything**), the original РОЗДІЛ 1 text
-> (scratchpad `diss/diss_full.md`, ~75% preserved below), `docs/dissertation/rewrite/01_VSTUP.md`
-> + `00_FRONT_MATTER.md` (fixed goal/tasks/novelty vocabulary), `docs/draft/CH2_TESTBED.md` +
-> `docs/draft/CH3_MECHANISM.md` (forward references).
-> **Paradigm per §8:** continuous-latent hierarchical diffusion. The old "diffusion as the
-> limitation" thesis is DROPPED; the motivation spine is: flat long-context attention memory
-> blow-up + long-horizon consistency degradation → remedied by hierarchical decomposition +
-> coarse-level long memory + reversible computation. The author's own finding that hierarchical
-> VQ video models are reviewed with their known optimization risks; because no controlled
-> hierarchical-VQ receipts are present in this repository, the continuous representation is
-> stated as the implemented scope rather than justified by an unverified measured superiority.
-> No HVEBT anywhere. EBM/EBT reviewed as literature with one honest forward reference to the
-> Chapter 4 characterized study.
-> **Conventions:** equations are renumbered continuously (1.1)–(1.15); the mapping to the old
-> draft's numbers is noted inline. Abstraction-level ordering is FIXED globally per the digest
-> terminology table: **macro = highest abstraction (semantics), micro = lowest (pixels)** — the
-> original §1.1 inverted it. Figure slots use the placeholder-block format; the full old-figure
-> disposition inventory is at the end of this file.
-
----
-
-# РОЗДІЛ 1 — СИСТЕМНИЙ АНАЛІЗ ПРОЦЕСІВ ІЄРАРХІЧНОЇ ГЕНЕРАЦІЇ ВІДЕОДАНИХ ТА КРИТЕРІЇВ ЇХ КОНСИСТЕНТНОСТІ
-
-*(EN: Systems analysis of hierarchical video data generation processes and the criteria of their
-consistency. Title per the approved topic vocabulary and 00_FRONT_MATTER §5 ЗМІСТ.)*
-
-## 1.1 Генеративні відеомоделі як складні системи управління (Generative video models as complex control systems)
+## 1.1 Generative video models as complex control systems
 
 The development of artificial-intelligence and machine-learning methods over the last decade has
 produced new classes of mathematical models capable of solving complex problems of data analysis,
@@ -52,9 +20,7 @@ of video data generation is not merely a mathematical transformation of informat
 purposeful process of changing the state of a complex system under control actions and the
 influence of the external environment. Iterative generative models — diffusion models [REF: DDPM,
 Ho et al.], autoregressive systems, and energy-based models employing Markov chain Monte Carlo —
-fall squarely under the definition of a complex dynamic control system. *(EBM retained in the
-taxonomy per DISS_DIGEST item 15 — accurate as classification; its role as a "direction" is
-removed below.)*
+fall squarely under the definition of a complex dynamic control system.
 
 A complex system controlling the process of video data generation is characterized by input
 actions, a state space, and output data. The input actions of such a system are the initial noise
@@ -98,7 +64,7 @@ where $x_t$ is the system state (a multidimensional tensor of video data or its 
 representations) at step $t$; $u_t$ is the vector of control actions (generation conditions);
 $\theta$ is the parameter matrix of the system (the neural network weights); $\xi_t$ is the
 stochastic component (the random number generator); and $f$ is the nonlinear transition function
-describing the law of state change. *(= old eq. (1.1), preserved verbatim.)*
+describing the law of state change.
 
 The presence of the stochastic component $\xi_t$ indicates that the system operates under
 uncertainty. Every generation step is a probabilistic process, and the system produces not a
@@ -114,10 +80,7 @@ models this hierarchy is expressed with particular clarity. At the **macro level
 level of abstraction** — the system operates with semantic concepts (global style, the mutual
 arrangement of objects, scene composition). At the **meso level**, structural contours and
 geometry are determined. At the **micro level — the lowest level of abstraction, the highest
-level of detail** — high-frequency textures, lighting, and individual pixels are formed. *(FIX
-applied: the original text inverted the macro/micro ordering; per the digest terminology table
-macro = highest abstraction, micro = pixels. This ordering is used consistently everywhere
-below.)*
+level of detail** — high-frequency textures, lighting, and individual pixels are formed.
 
 It is the hierarchical structure that gives rise to such a systemic property as emergence: a
 meaningful image arises only thanks to complex spatial and temporal correlations between elements
@@ -126,7 +89,7 @@ ensure coherence between these levels, the emergent property is destroyed (for e
 receives a correct texture imposed on a distorted global shape). Hence the task of ensuring
 stable generation reduces to the task of ensuring the stability of a complex hierarchical system.
 
-### 1.1.1 Генерація як задача оптимального керування (Generation as an optimal-control problem)
+### 1.1.1 Generation as an optimal-control problem
 
 Traditional deep-learning approaches attempt to solve the stability problem extensively, by
 increasing the number of parameters $\theta$ and the volume of the training sample. This path,
@@ -148,15 +111,7 @@ Generation then becomes a constrained optimization problem over the state space:
 $$x^{*} = \arg\min_{x} J(x, u) \tag{1.2}$$
 
 subject to the state-transition law (1.1). The smaller the value of the criterion, the more
-consistent and realistic the generated object. *(De-energized rewrite of old eq. (1.2) per
-DISS_DIGEST item 16: the optimal-control framing — the systems-analysis spine and spec-124
-language — is kept; the commitment to a scalar* energy *as THE criterion is removed. Different
-generative paradigms instantiate (1.2) differently: diffusion models minimize the criterion
-implicitly, through a learned per-step denoising direction; autoregressive models maximize
-stepwise conditional likelihood; energy-based models make the criterion an explicit scalar energy
-function minimized by gradient descent — this last instantiation, together with its Langevin
-dynamics, is reviewed as literature in §1.3.3 (eqs. (1.9)–(1.11)) and characterized
-experimentally in Chapter 4.)*
+consistent and realistic the generated object.
 
 ![Multi-step generation on a consistency landscape](../../figures/fig31_consistency_landscape.png)
 
@@ -177,9 +132,7 @@ level of structural informational uncertainty at specific spatio-temporal coordi
 data. Entropy maps allow the system to "understand" where complex moving contours are located and
 where there is static background, and accordingly to adaptively redistribute limited
 computational resources (this apparatus is realized in the V-BLT subsystem in Chapter 2).
-Together these two system concepts form a closed loop of analysis and control. *(Forward
-reference retargeted from «HVEBT у Розділі 3» to the Chapter 3 hierarchical model + §1.4.5
-criteria, per DISS_DIGEST item 16.)*
+Together these two system concepts form a closed loop of analysis and control.
 
 Controlling this system runs into **computational uncertainty** on two fronts. First, at the
 stage of parameter identification (training): since the transition function is realized by a deep
@@ -195,10 +148,7 @@ reduce the memory-consumption complexity (developed in Chapter 2); overcoming th
 hierarchical decomposition of the state space with a compact long-memory level (developed in
 Chapter 3).
 
-### 1.1.2 Прикладні сфери застосування генеративних відеосистем (Applied domains)
-
-*(Preserved essentially as-is per DISS_DIGEST §3 item — «Keep as-is»; one sentence on long-horizon
-re-entry coherence added to the simulator paragraph.)*
+### 1.1.2 Applied domains
 
 Beyond its theoretical significance, understanding generative video models as complex control
 systems has enormous practical importance for various applied fields. The tasks solved by such
@@ -246,10 +196,7 @@ decomposition, identification of uncertainty types, introduction of new consiste
 creation of algorithms for optimal resource control. The following subsections of this research
 are devoted precisely to these questions.
 
-## 1.2 Декомпозиція складної системи генерації відеоданих (Decomposition of the video generation system)
-
-*(Heading FIXED — the original carried a copy-paste duplicate of the §1.1.2 title here, flagged
-in DISS_DIGEST §1.)*
+## 1.2 Decomposition of the video generation system
 
 The principal instrument of systems analysis in the study of complex systems is the method of
 decomposition — the division of an integral system into interrelated subsystems, elements, and
@@ -258,7 +205,7 @@ uncertainty. For the multidimensional system controlling the process of video da
 is expedient to apply several orthogonal kinds of decomposition: structural (functional),
 hierarchical (semantic), and temporal.
 
-### 1.2.1 Структурна декомпозиція (Structural decomposition)
+### 1.2.1 Structural decomposition
 
 Structural (functional) decomposition treats the generative system as a set of functional
 information-processing blocks. In most modern architectures, irrespective of their mathematical
@@ -289,7 +236,7 @@ Of greatest interest for systems analysis is the central subsystem, since it is 
 state-control process takes place and the principal work of overcoming uncertainty is
 concentrated. Its detailed study requires the deeper kinds of decomposition that follow.
 
-### 1.2.2 Ієрархічна декомпозиція простору станів (Hierarchical decomposition of the state space)
+### 1.2.2 Hierarchical decomposition of the state space
 
 Complex systems have a pronounced hierarchical nature [REF: hierarchical systems theory].
 Accordingly, the state space of the central generation subsystem cannot be "flat" — it must be
@@ -329,7 +276,7 @@ same memory budget for which a flat single-level representation affords only a s
 therefore serve as the carrier of the system's long-range temporal memory (quantified in §1.3.1
 and developed in Chapter 3).
 
-### 1.2.3 Часова декомпозиція (Temporal decomposition)
+### 1.2.3 Temporal decomposition
 
 The third necessary kind of stratification is temporal decomposition. When modeling systems that
 generate video data, time must be considered in two entirely different, orthogonal dimensions,
@@ -340,9 +287,7 @@ partition of the continuous process of state change into discrete refinement ste
 $k = 1, \dots, K$ *per generated frame*: the steps of the reverse diffusion process, the token
 steps of an autoregressive decoder, or the descent steps of an energy-based sampler. Every such
 step is a micro-transition of the system in phase space, during which the total entropy of the
-state decreases and its consistency increases. *(Generalized from «кроки MCMC або кроки
-зворотного дифузійного процесу» per DISS_DIGEST §1 — pseudo-time now covers per-frame generation
-steps of any mechanism.)*
+state decreases and its consistency increases.
 
 The second dimension is introduced upon the transition to processing video sequences and reflects
 the **physical time axis** $t = 1, \dots, T$, where every discrete slice is a separate frame. The
@@ -356,8 +301,7 @@ dissertation: the **memory horizon** — the maximal temporal distance $\Delta t
 information about the past state of the modeled process can still influence the generated present
 state. For a system whose central subsystem attends to a flat context window of $w$ frames, the
 memory horizon is bounded by $w$; events separated by more than $w$ frames (for example, content
-that left the field of view and returns later) are informationally inaccessible to it. [UA-PASS:
-«горизонт пам'яті» — defined here at first use, per the digest terminology table.]
+that left the field of view and returns later) are informationally inaccessible to it.
 
 ![Physical time and refinement pseudo-time](../../figures/fig34_temporal_grid.png)
 
@@ -365,7 +309,7 @@ that left the field of view and returns later) are informationally inaccessible 
 transitions advance physical frame time, vertical transitions refine each predicted state, and
 the sliding context window bounds directly addressable history. Source: author’s schematic.
 
-### 1.2.4 Класифікація видів невизначеності (Classification of uncertainty types)
+### 1.2.4 Classification of uncertainty types
 
 The performed decomposition of the complex system permits a classification of the kinds of
 uncertainty arising in it. In accordance with the theory of systems analysis of complex systems
@@ -434,17 +378,14 @@ What is required is a comprehensive mathematical approach comprising: methods of
 entropy-based state estimation for resolving spatial uncertainty; resource-saving algorithms
 based on reversible computation for overcoming computational uncertainty; and the creation of a
 new **hierarchical control apparatus over compact continuous hierarchical latent state spaces**
-for eliminating structural and target uncertainty. *(Final clause rewritten per DISS_DIGEST item
-17 + §8 decision Q1: «нового ієрархічного енергетичного апарату управління» → hierarchical
-apparatus over compact continuous latent spaces; note the §8 override of the digest's earlier
-"discrete" wording.)*
+for eliminating structural and target uncertainty.
 
 The next subsection conducts a detailed critical analysis of existing approaches to the
 mathematical modeling of visual data — diffusion, hierarchical latent and autoregressive, and
 energy-based models — with the aim of identifying their strengths and their fundamental systemic
 limitations in the context of the requirements formulated above.
 
-## 1.3 Аналіз існуючих підходів до математичного моделювання відеоданих (Analysis of existing approaches)
+## 1.3 Analysis of existing approaches
 
 To solve the posed problems of systems analysis and to construct an intelligent information
 technology of video data generation, a thorough critical review of the existing mathematical
@@ -456,12 +397,9 @@ the state of the art in generation quality, whose systemic limitation is the mon
 long-context attention; (ii) hierarchical latent and autoregressive approaches — the remedy
 direction, within which the choice between discrete and continuous latent spaces is examined;
 (iii) energy-based models — reviewed as literature together with the resource-efficiency methods
-they motivated. The focus criteria are systemic consistency and resource control. *(Paradigm
-ordering per DISS_DIGEST §6 and §8: diffusion → hierarchical latent → EBM. The old draft's
-framing of diffusion as "the motivating limitation" is DROPPED per decision Q1; the limitation is
-now located in the flat long-context mechanism, not in the diffusion paradigm.)*
+they motivated. The focus criteria are systemic consistency and resource control.
 
-### 1.3.1 Дифузійні моделі: якість генерації та бар'єр плоского довгого контексту (Diffusion models: generation quality and the flat long-context barrier)
+### 1.3.1 Diffusion models: generation quality and the flat long-context barrier
 
 Denoising diffusion probabilistic models (DDPM) [REF: DDPM] and their non-Markovian
 generalizations (DDIM) [REF: DDIM] are today the dominant standard in high-quality image and
@@ -485,8 +423,6 @@ at an arbitrary step directly from the original state:
 
 $$q(x_t \mid x_0) = \mathcal{N}\!\left(x_t;\; \sqrt{\bar\alpha_t}\, x_0,\; (1-\bar\alpha_t)\mathbf{I}\right) \tag{1.4}$$
 
-*(= old eqs. (1.4)–(1.5), renumbered.)*
-
 ![Forward diffusion](../../figures/fig36_forward_diffusion.png)
 
 **Figure 1.7 — Forward diffusion.** Progressive Gaussian corruption destroys the information
@@ -501,8 +437,6 @@ $$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}\!\left(x_{t-1};\; \mu_\theta(x_t, t),
 In practice the model is optimized to predict the added noise $\epsilon$ via the simplified loss:
 
 $$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, t}\left[\,\bigl\|\epsilon - \epsilon_\theta\bigl(\sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon,\; t\bigr)\bigr\|^2\,\right] \tag{1.6}$$
-
-*(= old eqs. (1.6)–(1.7), renumbered.)*
 
 ![Reverse diffusion](../../figures/fig37_reverse_diffusion.png)
 
@@ -533,8 +467,7 @@ matched-capacity, matched-NFE mechanism study confirms empirically that an itera
 core commits to sharp, correctly located content where a regression core averages over futures;
 the per-frame generation core of the model developed in Chapter 3 is itself a diffusion core,
 selected by exactly that controlled analysis. The limitations lie elsewhere — in *how the
-temporal context is represented and scaled*. *(Framing per §8 decision Q1: DROP "diffusion as the
-limitation"; the critique below targets the monolithic flat long-context mechanism.)*
+temporal context is represented and scaled*.
 
 The first limitation is the **flat, single-level latent space**. The latent space of the
 underlying autoencoder is single-level; the system is forced to solve macro-problems (global
@@ -554,8 +487,7 @@ where $D$ is the model width: computation grows quadratically and key–value ca
 with the context length. Doubling the memory horizon of a flat system quadruples its attention
 computation and doubles its inference memory — the resource cost is paid *at every generation
 step, for every frame*, precisely at the horizons where long memory is most needed. This is the
-central resource contradiction of flat long-context modeling. *(NEW equation supporting the new
-motivation spine; no numeric claims — asymptotic only.)*
+central resource contradiction of flat long-context modeling.
 
 The third limitation is the **degradation of long-horizon temporal consistency** even where a
 long flat context is affordable. Empirical evaluations of long-video generators and world models
@@ -567,8 +499,7 @@ context window imposes a hard memory horizon (§1.2.3): information older than t
 merely expensive — it is absent from the system state. Related to this is **target uncertainty**:
 during training the model optimizes the local error of one isolated step, while during generation
 errors accumulate along the whole autoregressive chain — the phenomenon of exposure bias [REF:
-exposure bias in sequence generation]. [UA-PASS: «експозиційне зміщення (exposure bias)» with the
-EN term in parentheses.]
+exposure bias in sequence generation].
 
 ![Flat long-context barrier](../../figures/fig39_flat_long_context_barrier.png)
 
@@ -578,7 +509,7 @@ sequence length. Panel B shows why a low-rate long-memory stream can remain addr
 relevant content has left a short flat window. Source: author’s schematic.
 Source: NEW (draw)
 
-### 1.3.2 Ієрархічні латентні підходи та авторегресійне прогнозування (Hierarchical latent approaches and autoregressive prediction)
+### 1.3.2 Hierarchical latent approaches and autoregressive prediction
 
 The remedy direction for the contradictions of §1.3.1 is formed by approaches that (i) treat
 video prediction autoregressively along the physical time axis and (ii) decompose the latent
@@ -611,9 +542,7 @@ den Oord et al.] compresses frames into grids of codebook indices, over which an
 transformer learns the video distribution — the VideoGPT line [REF: VideoGPT] and its successors,
 including long-video architectures with compressed memory [REF: TECO / long-video discrete-token
 models]. The attraction of this paradigm is genuine: discrete tokens give a clean autoregressive
-likelihood, natural compatibility with language-model tooling, and strong compression. *(NEW
-review material — the digest's gap analysis (§4 MISSING item 1) notes the committed-topic
-literature was absent from the old draft; it is added here as reviewed literature.)*
+likelihood, natural compatibility with language-model tooling, and strong compression.
 
 Discrete bottlenecks also introduce specific optimization risks—straight-through assignment,
 codebook underutilization, dead codes and level collapse—that are documented in the VQ
@@ -657,8 +586,6 @@ in the broader context-packaging design space.)*
 fidelity.** Flat contiguous, spatially hierarchical and temporally strided packages feed the same
 predictor family; the exact experimental token counts and target interfaces are reported in
 Chapters 3–4. Source: author’s schematic.
-§8 decision Q2)
-
 Formally, the hierarchical factorization of the video distribution replaces the flat conditional
 $p_\theta(x_t \mid x_{t-w:t-1})$ with a level-decomposed conditional of the form
 
@@ -667,11 +594,10 @@ $$p_\theta\!\left(z^{c}_{t}, z^{f}_{t} \,\middle|\, z^{c}_{t-w_c:t-1},\; z^{f}_{
 where $z^{c}$ and $z^{f}$ are the coarse- and fine-level latent states, $w_c$ and $w_f$ their
 context windows, and $u_t$ the control signals; the asymmetry $w_c \gg w_f$ at a matched token
 budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the memory horizon
-without the flat blow-up (1.7). *(NEW equation formalizing the coarse-memory construction;
-detailed model in Chapter 3.)*
+without the flat blow-up (1.7).
 
-**Методологія порівняння ієрархічних конфігурацій (за стендом CW-VAE).** [UA-PASS: genre
-paragraph.] The canonical comparison methodology of this class is the Clockwork-VAE benchmark
+**Methodology for comparing hierarchical configurations.** The canonical comparison methodology
+of this class is the Clockwork-VAE benchmark
 [REF: CW-VAE]: one configuration table over several datasets and metrics, quality-retention
 curves over long open-loop rollouts, and level-content probes (an upper level following its
 prior while lower levels see the context). The dissertation adopts this *format* in §4.4 while
@@ -688,11 +614,11 @@ CW-VAE on such aggregates on sparse-foreground video — hence the foreground-ma
 re-entry-stratified protocol of §3.4. It is also noted that the CW-VAE paper's depth evidence is
 an information-allocation (KL-per-level) analysis rather than a prediction-quality dose–response;
 the quality-per-depth cells are measured directly in §4.4.5. The temporal-abstraction relatives —
-VTA [REF] (whose lower level resets when the upper level ticks) and the clockwork recurrent
+VTA [REF: VTA / Variational Temporal Abstraction] (whose lower level resets when the upper level ticks) and the clockwork recurrent
 lineage [REF: Clockwork RNN, Koutník et al. 2014] — complete the review of hierarchy *shapes*:
-просторова та часова абстракція, глибина і розподіл бюджету є чотирма осями простору
-конструкцій, і питання «яка форма ієрархії окуповується та де» стає предметом вимірювання
-(§4.4), а не постулатом. [UA-PASS: «форми ієрархії»; «вісь глибини, нейтральна до ємності».]
+spatial and temporal abstraction, depth and budget allocation are four axes of the design space.
+Which form of hierarchy pays and where is therefore a measurement question (§4.4), not a
+postulate.
 
 Summarizing the hierarchical-latent review: this paradigm inherits the generation quality of the
 diffusion core (§1.3.1) while remedying its two systemic limitations — the flat latent space and
@@ -700,7 +626,7 @@ the flat context window — and, per the author's measured finding, its *continu
 one trainable at practically reachable scale. It is therefore adopted as the base paradigm of
 this dissertation.
 
-### 1.3.3 Енергетичні моделі (EBM) та ресурсоефективність (Energy-based models and resource efficiency)
+### 1.3.3 Energy-based models and resource efficiency
 
 The third class of the review is that of energy-based models (EBM). The EBM paradigm originates
 in statistical physics [REF: statistical-physics foundations of EBM; REF: Boltzmann-distribution
@@ -711,25 +637,13 @@ $$p_\theta(x) = \frac{\exp\left(-E_\theta(x)\right)}{Z(\theta)} \tag{1.9}$$
 
 where $E_\theta(x)$ is a scalar energy function parameterized by a neural network and $Z(\theta)$
 is the partition function. The lower the energy, the higher the probability of the state and the
-more consistent it is deemed. *(= old eq. (1.8), renumbered.)*
+more consistent it is deemed.
 
 An important theoretical bridge connects EBM to diffusion models through score matching [REF:
 score matching]: the score function approximated by a diffusion model is the negative gradient of
 an (implicit) energy,
 
 $$\nabla_x \log p(x) = -\nabla_x E(x) \tag{1.10}$$
-
-*(= old eq. (1.9), renumbered.)* In the explicit-energy formulation, generation itself becomes
-optimization: the sample is sought as the minimizer $x^{*} = \arg\min_x E_\theta(x, u)$ — the
-energy-based instantiation of the general criterion (1.2) — realized by gradient (Langevin)
-descent over the energy landscape:
-
-$$x_k = x_{k-1} - \alpha_k \nabla_x E\left(x_{k-1}, u\right) + \xi_k \sqrt{2\alpha_k} \tag{1.11}$$
-
-where $\alpha_k$ is the optimization step size and $\xi_k\sqrt{2\alpha_k}$ is Brownian noise
-preventing entrapment in local minima. *(Moved here from the old §1.1.1 (old eqs. (1.2)–(1.3))
-per DISS_DIGEST item 16: the energy/Langevin mathematics is retained as literature, not as the
-dissertation's criterion apparatus.)*
 
 From the standpoint of systems analysis the attraction of this paradigm is evident: the energy is
 a single explicit optimization criterion; the system always moves toward equilibrium; and the
@@ -757,11 +671,7 @@ transformer form RevViT [REF: RevViT] — which restore activations mathematical
 caching them. It is this apparatus of reversible computation, applied to removing the resource
 constraints of long-horizon *temporal* modeling, that forms the core of the TempVerseFormer
 method presented in Chapter 2 and underlies the constant-memory autoregressive rollout of the
-hierarchical model of Chapter 3. *(Retargeted from «покладено в основу … HVEBT у Розділі 3»;
-resource-efficiency survey retained intact per DISS_DIGEST item 18. Chapter 2 additionally
-delimits — by a three-axis reversibility taxonomy — where reversible computation pays (the
-temporal-rollout axis) and where it cannot beat checkpointing (the inner-optimization-loop axis,
-i.e., precisely the MCMC chain (1.11)).)*
+hierarchical model of Chapter 3.
 
 An honest forward reference completes this review. In the present research the energy-based
 mechanism was not adopted a priori but *examined experimentally* under matched conditions: the
@@ -778,9 +688,7 @@ sharp and correctly located predictions. The study is scoped explicitly: it test
 the EBT publication does not claim at a scale it did not run, and contradicts none of the
 published claims. For this dissertation its systemic significance is that the choice of the
 per-frame generation core in Chapter 3 is made *by controlled measurement, not by paradigm
-preference* — and the measurement selects diffusion. *(One-paragraph honest preview per
-DISS_DIGEST item 18 and §8 decision Q6(a); full diagnostics, tables, and scope statement live in
-Chapter 4. Qualitative only — the numbers stay in Ch. 4.)*
+preference* — and the measurement selects diffusion.
 
 Summarizing the critical analysis of existing approaches: diffusion models deliver the highest
 generation quality, but their monolithic flat realization runs into the long-context resource
@@ -796,7 +704,7 @@ refinement core, whose coarse level carries the long memory horizon (Chapter 3),
 entropy-adaptive decomposition (Chapter 2), reversible-computation resource optimization
 (Chapter 2), and a criterion-driven measurement instrument (Chapters 3–4)**.
 
-## 1.4 Аналіз критеріїв та методів забезпечення консистентності в системах генерації відеоданих (Consistency criteria and methods)
+## 1.4 Consistency criteria and methods
 
 In the theory of complex systems one of the fundamental notions is the stability of a system
 [REF: stability of complex systems] — its capacity to maintain a specified state or target
@@ -820,10 +728,7 @@ scalar parameter. It is a complex systemic phenomenon requiring an extended taxo
 subsection analyzes the classical kinds of consistency — spatial, object, and temporal —
 integrates the notion of conceptual consistency, and formalizes hierarchical and trajectory
 consistency, which are critically important for hierarchical multi-step generative systems.
-*(Seven consistency types in total, all preserved: spatial, object, temporal, style, conceptual,
-hierarchical, trajectory.)*
-
-### 1.4.1 Просторова та об'єктна консистентність (Spatial and object consistency)
+### 1.4.1 Spatial and object consistency
 
 The basic level of coherence for any visual signal is **spatial consistency**. This criterion
 determines the structural integrity of the generated frame at the level of geometry and the
@@ -877,7 +782,7 @@ mandatory external structural prompts. *(This requirement — identity maintenan
 memory rather than external prompts — is exactly the long-memory requirement that the coarse
 level of the Chapter 3 model serves.)*
 
-### 1.4.2 Часова консистентність (Temporal consistency)
+### 1.4.2 Temporal consistency
 
 Upon the transition from static images to video data the key criterion becomes **temporal
 consistency**. It requires that the sequence of generated states $x_1, x_2, \dots, x_T$ form a
@@ -891,7 +796,7 @@ $W(x_{t-1})$. The local temporal-consistency error is defined as:
 
 $$L_{\text{temp}} = \left\|\left(x_t - W(x_{t-1})\right)\right\|^2 \odot M \tag{1.12}$$
 
-where $M$ is a binary mask excluding occlusion regions. *(= old eq. (1.10), renumbered.)*
+where $M$ is a binary mask excluding occlusion regions.
 
 It must be emphasized, however, that the warp criterion (1.12) is **local**: it couples only
 adjacent frames and therefore certifies only short-range temporal consistency. It is entirely
@@ -903,10 +808,9 @@ part of trajectory consistency (§1.4.5), through metrics stratified by re-entry
 ensuring temporal consistency in the developed information technology, the following mechanisms
 are used: multidimensional positional encoding 3D-RoPE, block-causal attention masks, and
 temporal chaining mechanisms (Chapter 2), together with the coarse-level long memory of the
-hierarchical model (Chapter 3). *(Forward references retargeted; the new local-vs-long-range
-delimitation is the bridge to the redefined §1.4.5.)*
+hierarchical model (Chapter 3).
 
-### 1.4.3 Стильова та концептуальна консистентність (Style and conceptual consistency)
+### 1.4.3 Style and conceptual consistency
 
 Besides object consistency, complex systems must maintain a unified **stylistic** appearance of a
 series of generated data. Modern approaches such as StyleAligned [REF: StyleAligned] solve this
@@ -946,17 +850,14 @@ encoder; then the measure of conceptual consistency is defined as:
 $$C_{\text{concept}}(x, u) = \frac{E_I(x) \cdot E_T(u)}{\left\|E_I(x)\right\| \left\|E_T(u)\right\|} \tag{1.13}$$
 
 High values of this indicator testify that the system has successfully resolved the target
-uncertainty and learned the deep causal relations of the visual space. *(= old eq. (1.11),
-renumbered.)*
+uncertainty and learned the deep causal relations of the visual space.
 
-### 1.4.4 Ієрархічна консистентність (Hierarchical consistency)
+### 1.4.4 Hierarchical consistency
 
 For the transition to systems of a higher order of complexity — multi-level generative models —
 this research introduces the notion of **hierarchical consistency**, developed within the
 construction of the hierarchical generation model of Chapter 3. This criterion follows directly
-from the principles of systems analysis of multi-level objects. *(Retargeted per DISS_DIGEST item
-19: «у рамках розроблення архітектури HVEBT (Розділ 3)» → the Chapter 3 hierarchical model; the
-criterion and its enforcement mechanism survive verbatim.)*
+from the principles of systems analysis of multi-level objects.
 
 Hierarchical consistency is defined as the strict informational and structural coherence between
 the representations of one and the same visual object at different levels of abstraction: the
@@ -978,13 +879,9 @@ in the scheduling sense. Second, by **gradient detachment at the system boundari
 exact and load-bearing: between the frozen representation subsystem and the prediction core (the
 state coordinate system is a constant of the control problem), and between past and future along
 the autoregressive rollout (previously generated context enters as a constant, excluding
-destructive gradient interference between successive windows). [UA-PASS: «односпрямоване
-керування з відсіканням градієнтних зв'язків»; «асиметрія інформаційної конструкції». Rewritten
-2026-07-07 (audit fix): the earlier draft asserted a cross-level stop-gradient inside the
-attention that the implemented joint-denoising model does not have — the enforcement statement
-now matches §3.1.2–3.1.3 exactly.]
+destructive gradient interference between successive windows).
 
-### 1.4.5 Траєкторіальна консистентність (Trajectory consistency)
+### 1.4.5 Trajectory consistency
 
 The last — and, for multi-step generative systems, fundamental — criterion is **trajectory
 consistency**: the stability of the generation process itself as a trajectory of the complex
@@ -993,9 +890,7 @@ refinement process in pseudo-time $k$; in the present research it is generalized
 operationalized on the physical time axis, where the dominant practical instability of video
 generation lives: the degradation of **autoregressive rollout**, in which the system consumes its
 own outputs as context and errors compound along $t$ (the realization of the target uncertainty
-of §1.2.4 and the exposure bias of §1.3.1). *(REWRITE per DISS_DIGEST item 20: the old
-energy-gap-based definition is replaced by the rollout/re-entry operationalization; the old
-noise-space-manipulation figure (Fig 1.13) is DROPPED with the old framing.)*
+of §1.2.4 and the exposure bias of §1.3.1).
 
 A trajectory-consistent system must satisfy two requirements. First, **bounded degradation**: the
 prediction error along an autoregressive rollout must grow in a controlled manner, without
@@ -1019,11 +914,7 @@ aggregate number. This stratification is what makes the criterion *diagnostic*: 
 system and a long-memory hierarchical system can be indistinguishable on aggregate error while
 differing qualitatively on the hard re-entry bin beyond the flat window's horizon; conversely, an
 anomaly of trajectory consistency (divergence, mean-collapse, identity loss at re-entry)
-localizes to specific bins and horizons. [UA-PASS: «стратифікація за складністю повторного
-входження»; «авторегресійне розгортання». Chapter 3 defines $\nu$, the bins, and the paired
-statistical protocol formally; Chapter 4 reports the measured curves, including the finding that
-the hierarchical model's advantage over a token-matched flat control switches on precisely at the
-flat window's horizon boundary.]
+localizes to specific bins and horizons.
 
 For energy-based mechanisms the trajectory criterion has a specialized classical diagnostic in
 pseudo-time: the divergence of the sampling chain (1.11) is monitored by the **energy gap**
@@ -1032,14 +923,10 @@ between the initial and final states of the descent,
 $$\Delta E = \frac{E(x_0) - E(x_K)}{E(x_0)} \tag{1.15}$$
 
 which must be strictly positive, and by the ordering of the trained landscape (whether the true
-target attains lower energy than degenerate candidates). *(= old eq. (1.12), retained — per
-DISS_DIGEST item 20 — solely as the diagnostic apparatus of the Chapter 4 energy-mechanism study,
-where landscape ordering is exactly what is measured; it is no longer the dissertation's
-operational trajectory-consistency metric.)* Finally, the practical attainability of long
+target attains lower energy than degenerate candidates). Finally, the practical attainability of long
 consistent trajectories depends on resolving the computational uncertainty of §1.2.4: removing
 the memory limits on trajectory depth by the time-agnostic backpropagation developed in **[A2]**
-and Chapter 2. *(Misattribution fixed: the old text credited this to «Стаття 2» under the
-inconsistent numbering; canonical label [A2] = TempVerseFormer.)*
+and Chapter 2.
 
 ![Trajectory consistency operationalization](../../figures/fig44_trajectory_consistency.png)
 
@@ -1062,12 +949,9 @@ spatial resolution with unidirectional context transfer** — so that hierarchic
 construction (stop-gradient control, §1.4.4), long-range temporal and trajectory consistency are
 supplied with the memory they informationally require (§§1.3.1–1.3.2), and the whole is trainable
 within realistic resource constraints thanks to reversible computation (Chapter 2). Constructing
-and validating exactly such an architecture is the subject of Chapters 3 and 4. *(Replaces the
-old closing «перехід до енергетичних моделей (EBM) … є найбільш логічним кроком» — per §8 the
-architecture-level remedy is hierarchy + coarse memory + reversibility, not the energy
-criterion.)*
+and validating exactly such an architecture is the subject of Chapters 3 and 4.
 
-## 1.5 Висновки до розділу та постановка задач дослідження (Conclusions and statement of the research tasks)
+## 1.5 Conclusions and statement of the research tasks
 
 In the first chapter of the dissertation a thorough systems analysis of the processes of
 hierarchical video data generation has been carried out. On the basis of complex-systems theory,
@@ -1122,20 +1006,14 @@ The identified systemic contradiction — between the necessity of ensuring mult
 of video data over long time horizons (which requires long memory horizons and deep hierarchies)
 and the strict resource constraints of modern computing systems (the attention-memory blow-up of
 flat contexts and the linear growth of training memory with horizon length) — determines the
-relevance of this dissertation research and forms its purpose. *(Contradiction wording aligned
-verbatim with 01_VSTUP.md.)*
+relevance of this dissertation research and forms its purpose.
 
 **The purpose of the dissertation research** is to improve the efficiency and the temporal and
 spatial consistency of hierarchical video data generation processes through the development of
 systems analysis methods, mathematical models, and intelligent information technologies.
-[UA-PASS: «Метою дисертаційного дослідження є підвищення ефективності та просторової і часової
-консистентності процесів ієрархічної генерації відеоданих шляхом створення методів системного
-аналізу, математичних моделей та інтелектуальних інформаційних технологій.» — identical to
-01_VSTUP.md; keep the two files in sync.]
 
 To achieve this purpose and to resolve the identified systemic contradictions, the following
-research tasks must be solved: *(The 7 tasks below are restated verbatim from 01_VSTUP.md — the
-fixed vocabulary; «виконано у Розділі 1» notes added for tasks 1–2 as in the original genre.)*
+research tasks must be solved:
 
 1. Analyze the state and problems of generative video-data models as complex systems; classify
    the types of uncertainty and identify the systemic causes of anomalies (inconsistencies) in
@@ -1179,51 +1057,7 @@ optimization; Chapter 3 develops the hierarchical mathematical model with long-r
 memory and the memory-horizon measurement instrument; Chapter 4 presents the experimental
 research and practical application.
 
-The results of this chapter are published in the author's works: **[AUTHOR: resolve the six [X]
-self-citations of the old draft against the real publication list — expected: [A3] (criteria
-apparatus, §1.4) plus conference theses; DISS_DIGEST §2 notes all six are currently unresolved
-[X] placeholders.]**
+The results of this chapter are published in the author's work [A3] and in the conference
+publications to be identified in the final author-supplied publication list.
 
 ---
-
-## Figure inventory — old РОЗДІЛ 1 figures → dispositions
-
-| Old figure (original caption, abridged) | Disposition | New slot |
-|---|---|---|
-| Рис. 1.1 — Принципова схема ітеративної генеративної моделі як відкритої складної динамічної системи управління | **KEEP** (caption drops «ітеративної») | FIG 1-1 (§1.1) |
-| Рис. 1.2 — Концептуальна візуалізація багатокрокової оптимізації вздовж енергетичного ландшафту | **ADAPT** (relabel: енергія → критерій консистентності $J$) | FIG 1-2 (§1.1.1) |
-| Рис. 1.3 — Структурна декомпозиція складної системи ітеративної генерації | **KEEP** | FIG 1-3 (§1.2.1) |
-| Рис. 1.4 — Ієрархічна декомпозиція візуального простору станів | **KEEP** (verify macro/micro labels vs fixed ordering) | FIG 1-4 (§1.2.2) |
-| Рис. 1.5 — Часова двовимірна декомпозиція процесу відеогенерації | **KEEP** (optional NEW annotation: window w / memory horizon) | FIG 1-5 (§1.2.3) |
-| Рис. 1.6 — Візуалізація процесу токенізації для архітектури ViT | **KEEP** | FIG 1-6 (§1.2.4) |
-| Рис. 1.7 — Етап прямої дифузії | **KEEP** | FIG 1-7 (§1.3.1) |
-| Рис. 1.8 — Етап зворотної дифузії | **KEEP** | FIG 1-8 (§1.3.1) |
-| Рис. 1.9 — Схема генерації у прихованому просторі (LDM) | **KEEP** | FIG 1-9 (§1.3.1) |
-| Рис. 1.10 — Схема підходу image-to-image | **KEEP** | FIG 1-13 (§1.4.1) |
-| Рис. 1.11 — Схема моделі ControlNet | **KEEP** | FIG 1-14 (§1.4.1) |
-| Рис. 1.12 — Стильова консистентність через спільну увагу (StyleAligned) | **KEEP** | FIG 1-15 (§1.4.3) |
-| Рис. 1.13 — Траєкторіальна консистентність через маніпуляції з простором шуму | **DROP** (belonged to the noise-inversion/energy framing; replaced by the rollout/re-entry operationalization) | — (replaced by NEW FIG 1-16) |
-| — | **NEW** — flat long-context barrier (attention blow-up + re-entry inaccessibility) | FIG 1-10 (§1.3.1) |
-| — | **NEW** — discrete and continuous representation interfaces with an explicit evidence boundary | FIG 1-11 (§1.3.2) |
-| — | **NEW** — hierarchical latent model with coarse-level long memory (token-budget comparison) | FIG 1-12 (§1.3.2) |
-| — | **NEW** — trajectory consistency operationalized (stratified rollout curves, horizon boundary) | FIG 1-16 (§1.4.5) |
-
-**Totals:** 16 figure slots in the new chapter = 11 KEEP + 1 ADAPT + 4 NEW; 1 old figure DROPPED
-(old Fig 1.13).
-
-## Equation renumbering map (old → new)
-
-| Old | Content | New |
-|---|---|---|
-| (1.1) | state recurrence $x_t = f(\cdot)$ | (1.1) |
-| (1.2) | $\arg\min E$ | de-energized as (1.2) $\arg\min J$; energy form absorbed into §1.3.3 text before (1.11) |
-| (1.3) | Langevin dynamics | (1.11) (moved to §1.3.3, literature) |
-| (1.4)–(1.7) | DDPM forward/closed-form/reverse/loss | (1.3)–(1.6) |
-| (1.8) | Gibbs distribution | (1.9) |
-| (1.9) | score identity | (1.10) |
-| (1.10) | warp loss | (1.12) |
-| (1.11) | CLIP conceptual metric | (1.13) |
-| (1.12) | energy gap ΔE | (1.15) (retained as Ch.4 EBM-study diagnostic only) |
-| — | attention cost (NEW) | (1.7) |
-| — | hierarchical factorization (NEW) | (1.8) |
-| — | stratified rollout metric (NEW) | (1.14) |

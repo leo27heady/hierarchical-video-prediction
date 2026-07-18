@@ -14,9 +14,10 @@ Regenerable from the committed data.
 | fig6_mmnist_bridge.png | T7 MMNIST negative control: flat ≈ hier (MSE/SSIM/LPIPS) | CH4 §4.1.3 / appendix | mmnist_bridge_chain.log |
 | fig7_samples_claim1.png | qualitative GT vs hier-long vs flat-budget at h=1..148 (HONEST: both blur late) | CH4 §4.3.3 [FIG ch4-4] | GPU decode, seed 1 |
 | fig8_mmnist_samples_hier.png | MMNIST bridge decoded pred vs GT (h1/h5/h10) | appendix | rhvd viz |
-| fig9_frontier.png | token-budget frontier: fg-MSE(ALL, 152-frame rollout) vs context tokens (log-x), 6-point flat vs hier curves (896/1152/1792 hier-win, 512/2432/3072 flat-win) + reg context points; hier wins the band [896, ~2000) with the upper edge bracketed to (1792,2432) by R-F/R-G (shaded; geometric span-threshold dashed), peak +0.0399/+0.0358 at the lower edge (two seeds), inverts outside | CH4 §4.3.x (→§4.3.6), Розділ 4 §4.3.6 [FIG 4-x] | Table 4.2 + `frontier_{top,bottom,low,c1,c2}.log` |
+| fig9_frontier.png | historical development frontier retained for provenance only; its interpolated band is retired and it must not be used as a confirmatory result figure | historical appendix only | development NPZs and logs |
 
-| fig10_flat_vs_hier.png | flat vs hier at 6 matched budgets (512/896/1152/1792/2432/3072): (A) grouped bars seed-mean+min/max whiskers, per-budget winner; (B) paired Δ(flat−hier) per seed with 95% cluster CIs, shaded win band (896/1152/1792 hier), sign flip at both edges; two-seed except the 1792/2432 bracket | CH4 §4.3.6 companion, Розділ 4 §4.3.6 | rhvd_eval_*.npz + frontier_{bottom,low,top,c1,c2}.log + headline compares |
+| fig10_flat_vs_hier.png | historical development comparison retained for provenance only; the 1,792-token point is unresolved under the untouched simultaneous family | historical appendix only | development NPZs and logs |
+| article_confirmed_frontier.png/.pdf | untouched E2 simultaneous frontier plus exact 48-frame token arithmetic; 896/1,152 hierarchy-confirmed, 1,792 unresolved, 2,432/3,072 flat-confirmed, with no interpolation | fourth article main result; dissertation Chapter 4 | `artifacts/confirmation_e2/results.json`; `scripts/make_rft_result_figures.py` |
 | fig15_loopmom_observability_schematic.png/.pdf | LoopMom toroidal-world/viewport schematic plus the registered pair-derived `14 < dt <= 48` reach band and a clearly privileged pose-mosaic reference | fourth article Methods; Розділ 4 §4.1/§4.6 | frozen E2 geometry in `experiments/configs/e2_untouched_confirmation.json`; deterministic `scripts/make_rft_core_schematics.py` |
 | fig16_context_packaging_architecture.png/.pdf | frozen two-level codec, joint WindowDiT and the flat/spatial/temporal context-package interfaces, including the exact 1,088-token temporal-package accounting | fourth article Methods; Розділ 3 §3.1/§3.3 | `hvp_rev/rhvd.py`; deterministic `scripts/make_rft_core_schematics.py` |
 | fig17_head_package_seed_heterogeneity.png/.pdf | five-seed diffusion, regression and head×package effects; clip CIs and across-training-seed t intervals are shown as different uncertainty levels | fourth article Results; Розділ 4 §4.4 | `artifacts/e4b_head_package/results.json`; `scripts/make_rft_result_figures.py` |
@@ -76,7 +77,8 @@ Regenerable from the committed data.
 - fig2: horizon-gated onset is seed-0-specific; seed-1 wins everywhere. Report "win + mid-horizon
   peak," not the exact onset.
 
-## Still missing (need a run or author input)
-- E7a alternate-codec result plot — generated after the terminal artifact is validated.
-- E8a pose-mosaic coverage/result plot — complete and validated as Figure 21.
-- E6 persistent-object external-boundary plot — complete and validated as Figure 22.
+## Terminal figure state
+
+All experiment-dependent figures required for the fourth article are generated. Administrative
+front matter and venue-specific graphical formatting remain author/venue inputs rather than
+missing experiments.

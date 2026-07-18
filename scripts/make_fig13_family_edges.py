@@ -8,10 +8,19 @@ for BOTH families; the upper edge is the measured bracket (1792, 2432) for the s
 Data: compare logs (cluster CIs). Stride-1 points two-seed except the bracket; stride-2 point
 seed 0 (s1 queued per the binding rule — figure footnote carries this).
 """
+import os
 import numpy as np
 import matplotlib
+from pathlib import Path
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+if os.environ.get("HVP_ALLOW_HISTORICAL_FIGURES") != "1":
+    raise RuntimeError(
+        "fig13 is an archived development-era family-edge visualization and must not be used as "
+        "terminal evidence. Run scripts/make_rft_result_figures.py for the registered frontier, "
+        "or set HVP_ALLOW_HISTORICAL_FIGURES=1 solely for provenance reproduction."
+    )
 
 # family -> {budget: [(delta, lo, hi) per seed]}
 S1 = {  # stride-1 coarse family (k_t=1, k_s=2): edge prediction 48*16 + 2*64 = 896
@@ -69,6 +78,6 @@ fig.text(0.01, 0.01, "stride-2 point: seed 0, every-cell win; seed-1 queued per 
          "rule before headline use. Same budget, different families — not a contradiction.",
          fontsize=7, color="0.4")
 fig.tight_layout(rect=[0, 0.035, 1, 1])
-out = r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\figures\fig13_family_edges.png"
+out = Path(__file__).resolve().parents[1] / "docs" / "figures" / "fig13_family_edges.png"
 fig.savefig(out, dpi=180)
 print("saved", out)

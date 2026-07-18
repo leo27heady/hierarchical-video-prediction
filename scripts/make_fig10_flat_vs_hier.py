@@ -8,10 +8,19 @@ win band (Δ>0 = hier better) shaded, sign flip at both ends.
 Data: rhvd_eval_*.npz (bars) + compare logs frontier_{bottom,low,top}.log + the 2026-07-04/05
 headline compares (deltas + CIs). All two-seed as of 2026-07-08 except 512 (seed 0).
 """
+import os
 import numpy as np
 import matplotlib
+from pathlib import Path
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+if os.environ.get("HVP_ALLOW_HISTORICAL_FIGURES") != "1":
+    raise RuntimeError(
+        "fig10 is an archived development-only summary. Run "
+        "scripts/make_rft_result_figures.py for the untouched simultaneous frontier, or set "
+        "HVP_ALLOW_HISTORICAL_FIGURES=1 solely to reproduce the historical artifact."
+    )
 
 # ---- measured ALL fg-MSE (diffusion head), per budget: seed values from the npz ----
 # 1792 (R-F) and 2432 (R-G) are seed-0 bracket points; the rest are two-seed.
@@ -125,6 +134,6 @@ fig.suptitle("Flat vs hierarchical at matched token budgets — hierarchy wins t
              "coarse span crosses the memory horizon\n(loopmom, diffusion head; 6 budgets, both "
              "band edges measured, as of 2026-07-10)", fontsize=11, y=0.995)
 fig.tight_layout(rect=[0, 0, 1, 0.93])
-out = r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\figures\fig10_flat_vs_hier.png"
+out = Path(__file__).resolve().parents[1] / "docs" / "figures" / "fig10_flat_vs_hier.png"
 fig.savefig(out, dpi=180)
 print("saved", out)

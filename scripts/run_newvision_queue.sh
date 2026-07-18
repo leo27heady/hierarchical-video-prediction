@@ -18,6 +18,11 @@ case "$MODE" in
   *) echo "usage: $0 [full|after-seed1|core-only|after-seed1-core]" >&2; exit 2 ;;
 esac
 
+echo "This legacy master queue is archived and terminal. Its studies have completed, the original"
+echo "Phase C estimand is retired, and no continuation is authorized. Use individual registered"
+echo "controllers only after scripts/check_experiment_gate.py passes for a new study."
+exit 97
+
 PHASEB_LOG=logs_rhcp/cwstyle_phaseB.log
 if ! grep -q "CWSTYLE_PHASE_B_ALL_DONE" "$PHASEB_LOG"; then
   echo "Phase B is not marked complete in $PHASEB_LOG; refusing to overlap the live queue." >&2

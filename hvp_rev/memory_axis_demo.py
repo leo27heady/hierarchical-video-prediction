@@ -10,9 +10,12 @@ This is the contribution the compute axis cannot make: the content-adaptive gate
 over checkpointing — a persisted frame writes nothing to the reverse tape. Part 1 measures BPTT & checkpointing peak
 memory empirically on the real SpatialDLH; Part 2 projects the reversible-gated curve from the K1-verified per-step
 byte counts and reports the max trainable window on a 16 GB card vs tick rate."""
+import os
 import sys
+from pathlib import Path
 import torch, numpy as np
-sys.path.insert(0, r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.stdout.reconfigure(encoding='utf-8')
 from hvp_dlh.model_spatial import SpatialDLH, SpatialDLHConfig
 import torch.utils.checkpoint as ckpt
@@ -20,7 +23,13 @@ dev = 'cuda'; torch.manual_seed(0)
 GB = 1e9; BUDGET = 14.0   # usable on a 16 GB card
 
 cfg = SpatialDLHConfig(batch_size=32)
-data = np.load(r"C:\Users\leoni\Documents\projects\cwvae\data_mmnist\train.npy")
+data_path = Path(os.environ.get("HVP_MOVING_MNIST_NPY", ROOT / "data" / "moving_mnist" / "train.npy"))
+if not data_path.is_file():
+    raise FileNotFoundError(
+        f"Moving-MNIST array not found at {data_path}. "
+        "Set HVP_MOVING_MNIST_NPY to the local training array."
+    )
+data = np.load(data_path)
 
 def peak_mem(seq_len, checkpoint=False):
     torch.cuda.empty_cache(); torch.cuda.reset_peak_memory_stats()

@@ -370,6 +370,12 @@
           }
         }
       ]
+    },
+    "counterfactual-loopworld-e9": {
+      "status": "SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY",
+      "meaning": "E9 is terminally outside the current programme. E6 closed the registered external boundary; E9 would require a new dataset, oracle, factorial, protocol, budget and explicit authorization. This record cannot authorize a launch.",
+      "required_files": [],
+      "required_markers": []
     }
   }
 }

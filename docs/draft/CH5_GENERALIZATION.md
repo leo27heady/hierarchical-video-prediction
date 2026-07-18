@@ -6,9 +6,8 @@
 > registered identity, trajectory and coverage language, but not legacy equivalence.
 
 > **Status (2026-07-18):** §5.3 contains both the measured short bridge and the terminal corrected
-> persistent-object long Moving-MNIST boundary. All other dataset sections
-> are protocol + pre-registered expectation only: every unmeasured value is marked [EXPECTED],
-> [PENDING] or [AUTHOR: …] — no bare expected numbers anywhere in this chapter. Placement
+> persistent-object long Moving-MNIST boundary. All other dataset sections are explicitly
+> future-work protocols with no projected quantitative results. Placement
 > RESOLVED (2026-07-07, per CH1_INTRO.md canonical order): this IS Chapter 5; reversibility is
 > Chapter 6 (`CH6_REVERSIBILITY.md`), related work Chapter 7, conclusion Chapter 8. `docs/NEXT_EXPERIMENTS_GENERALIZATION.md` did not exist at drafting time; protocols
 > and costs below are derived from `docs/draft/T7_BRIDGE.md`, the `hvp_rev/mmnist_bridge.py`
@@ -41,9 +40,10 @@ decision table, not a single model — every entry below is a measured result, n
   above the abstraction cost; coarse history is statistically free under the regression head
   (+0.0008 [−0.0013, +0.0029] at 42% token savings, factorial G-S1) and a small real cost under
   diffusion (−0.0082 [−0.0115, −0.0050]). Under the diffusion head, temporally subsampled
-  full-resolution history beats the coarse package at seed 0 while using fewer tokens; replication
-  and the regression-head twin are pending. Accordingly, coarse history is a measured economical
-  option with per-level decodability, not the universal transfer default (§4.4).
+  full-resolution history beats the coarse package on all five tested training seeds; regression
+  changes sign across seeds and the cross-head interaction is heterogeneous. Accordingly, coarse
+  history is a measured economical option with per-level decodability, not the universal transfer
+  default (§4.4).
 - **Transfer rules carried from the boundary study (§4.5):** a *fresh autoencoder per dataset*
   (the AE-reuse trap destroyed positional landmarks on hgrid and is a standing rule); per-dataset
   persistence and AE-round-trip ceiling rows in every table (the honesty devices); the target
@@ -63,11 +63,13 @@ hierarchy effect.
 WIN, measured, two seeds); hgrid3 (present beyond self-feed trust; bounded, measured, §4.5 pair
 outcome); Moving MNIST (no re-entry horizon at 10→10; null MEASURED §5.3; persistent-state
 demand at 300 frames TESTED by Phase C); 2D rotations
-(absent — object always fully visible; null [EXPECTED]); 3D polycubes (weak — self-occlusion
-cycles content out of view; small hard-bin edge possible [EXPECTED]); MMNIST-CIFAR (absent;
-null [EXPECTED]); TaxiBJ (absent — global field, nothing leaves; MEASURED §5.7: flat-reg wins at
+(absent — object always fully visible; a null hierarchy effect is the stated future-work
+hypothesis); 3D polycubes (weak — self-occlusion cycles content out of view; a small hard-bin
+effect is a future-work hypothesis); MMNIST-CIFAR (absent; null is the future-work hypothesis);
+TaxiBJ (absent — global field, nothing leaves; MEASURED §5.7: flat-reg wins at
 2× tokens, hier = economy-only, recipe lands in the leaderboard band on MAE/PSNR); KTH-64 (weak —
-actors exit/re-enter the frame in walking/jogging/running clips; untested [EXPECTED null-to-weak]).]
+actors exit/re-enter the frame in walking/jogging/running clips; untested, with no quantitative
+projection).]
 
 ## 5.2 Protocol template and measured costs
 
@@ -350,5 +352,5 @@ only per decision Q4 — new runs here are ADDITIONS and need author sign-off ag
 50-epoch block; 4→4 protocol stated there. §5.8: KTH 10→20 @128×128 verified in
 `OpenSTL/openstl/datasets/dataloader_kth.py` (in_shape [10,1,128,128]); 100-epoch rows from
 video_benchmarks.md. LPIPS absent from OpenSTL MMNIST/MMNIST-CIFAR/TaxiBJ tables (KTH only) —
-hence "—" cells. All [EXPECTED]/[PENDING]/[AUTHOR] markers are load-bearing: no unmeasured value
-may be replaced by a bare number without a named log/npz source.
+hence "—" cells. No unmeasured value may be replaced by a bare number without a named log/NPZ
+source; unexecuted sections remain explicitly labelled future work.

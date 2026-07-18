@@ -1,12 +1,15 @@
 param(
     [string]$Config = "experiments/configs/alternate_codec_robustness.json",
-    [string]$Mnist = "C:\Users\leoni\Documents\projects\OpenSTL\data\moving_mnist\train-images-idx3-ubyte.gz",
+    [string]$Mnist = $env:HVP_MNIST_IDX,
     [string]$Out = "data/robustness/loopmom_e7a_codec_500x200.npy",
     [switch]$CheckOnly
 )
 
 $ErrorActionPreference = "Stop"
 $env:CUDA_VISIBLE_DEVICES = "-1"
+if ([string]::IsNullOrWhiteSpace($Mnist)) {
+    throw "Pass -Mnist or set HVP_MNIST_IDX to the MNIST IDX image file."
+}
 $configValue = Get-Content -LiteralPath $Config -Raw | ConvertFrom-Json
 if ($configValue.status -ne "FROZEN") { throw "E7a config is not frozen" }
 if ($configValue.dataset.purpose -ne "codec_robustness_holdout") { throw "Wrong E7a dataset purpose" }

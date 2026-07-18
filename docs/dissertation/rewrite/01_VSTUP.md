@@ -1,23 +1,6 @@
-# 01 — ВСТУП (rewrite, phase 1)
+# Introduction
 
-> **Status:** authoritative English working text of the full introduction replacement. No
-> translation pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only.
-> Author-input spots are marked **[AUTHOR: …]**.
-> **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (esp. §3 items 10–14, §6, §8 decisions
-> Q1–Q7), `docs/draft/ARTICLE_SKELETON.md`, `docs/draft/CH2_TESTBED.md`,
-> `docs/draft/CH3_MECHANISM.md`. Structure follows the committee-expected order of the original
-> draft: актуальність → зв'язок з НДР → мета і задачі → об'єкт/предмет → методи → новизна →
-> практичне значення → особистий внесок → апробація → публікації → структура.
-
----
-
-> **Evidence posture added 2026-07-11.** The approved topic, purpose, seven tasks and publications
-> [A1]–[A3] remain unchanged. Their integration is presented as a layered research programme.
-> The final article [A4] tests context packaging; reach, fidelity and trust are explanatory axes,
-> not premises to be asserted before measurement. See
-> `docs/dissertation/REACH_FIDELITY_TRUST_SYNTHESIS_2026-07-11.md`.
-
-## Обґрунтування вибору теми дослідження (Justification / relevance)
+## Justification and Relevance
 
 The rapid development of information technologies and artificial-intelligence methods over the
 last decade has produced new classes of mathematical models capable of solving complex problems of
@@ -26,8 +9,7 @@ occupied by generative video models, which have evolved from simple statistical 
 complex multi-level systems capable of forming high-quality spatio-temporal video data. Such
 systems are critically important for many applied fields: from medical diagnostics and
 environmental monitoring to the prediction of the state of technical systems and the construction
-of simulators for autonomous control. *(Register and application list preserved from the original
-draft.)*
+of simulators for autonomous control.
 
 However, despite significant progress, the control of the generation process remains
 insufficiently formalized from the standpoint of systems analysis methodology. Modern
@@ -49,8 +31,24 @@ field of view is not restored consistently upon its return, and autoregressive e
 (exposure bias) destabilizes the trajectory of the generation process. Third, the identification
 of parameters of long-horizon models by backpropagation through time requires activation memory
 that grows linearly with the number of steps of the modeled process, which makes deep training
-trajectories unattainable on practically available computing systems. [UA-PASS: «експозиційне
-зміщення (exposure bias)» kept with the EN term in parentheses.]
+trajectories unattainable on practically available computing systems.
+
+These are two different memory bottlenecks and the dissertation treats them separately. For
+systems analysis, peak memory is decomposed conceptually as
+
+$$
+M_{\mathrm{system}} =
+M_{\mathrm{parameters}} + M_{\mathrm{optimizer}} +
+M_{\mathrm{context/state}} + M_{\mathrm{activations}} + M_{\mathrm{transient}} .
+$$
+
+The hierarchical context-packaging model of Chapters 3–4 reduces
+$M_{\mathrm{context/state}}$ for a required temporal reach by storing distant history at a lower
+spatial rate or a lower temporal rate. The reversible TempVerseFormer method of Chapter 2 reduces
+$M_{\mathrm{activations}}$ for long temporal computation by reconstructing intermediate states
+during the backward pass. These are complementary resource axes, not one integrated mechanism and
+not evidence that their savings automatically multiply. The common design principle is:
+**compress what must be remembered; reconstruct what need not be stored**.
 
 A natural remedy is the hierarchical decomposition of the latent state space. Discrete
 vector-quantized hierarchies are an important reviewed family, but they also introduce codebook
@@ -80,33 +78,29 @@ this contradiction requires the creation of new mathematical methods of decompos
 resource-efficient control, and intelligent information technologies of systems analysis, which
 determines the high relevance of this dissertation research.
 
-## Зв'язок роботи з науковими програмами, планами, темами
+## Relationship to Research Programmes, Plans and Topics
 
 The dissertation was carried out in accordance with the research plans of Vinnytsia National
 Technical University, in particular within the state-budget research topics:
 
-- Research topic No. **[AUTHOR: НОМЕР НДР 1]** «Розробка інформаційних технологій та математичних
-  методів інтелектуального аналізу просторово-часових даних у складних системах» (2021–2023), in
+- Research topic No. **[AUTHOR: research-project number 1]**, *Development of Information
+  Technologies and Mathematical Methods for Intelligent Analysis of Spatio-Temporal Data in
+  Complex Systems* (2021–2023), in
   which the applicant developed the method of adaptive estimation of spatio-temporal uncertainty
   and entropy-based tokenization of video data;
-- Research topic No. **[AUTHOR: НОМЕР НДР 2]** «Системний аналіз і моделювання багатокрокових
-  процесів в умовах ресурсних обмежень та невизначеності» (2024–2026), in which the applicant
+- Research topic No. **[AUTHOR: research-project number 2]**, *Systems Analysis and Modelling of
+  Multi-Step Processes under Resource Constraints and Uncertainty* (2024–2026), in which the applicant
   developed the method of computational-resource optimization based on reversible transformations
-  and the **hierarchical generative model of video data**. **[AUTHOR: per DISS_DIGEST item 13,
-  verify this wording against the actual НДР report text — the old draft said «ієрархічну
-  енергетичну модель генерації», which must not survive.]**
+  and the **hierarchical generative model of video data**. **[AUTHOR: verify both approved
+  project titles and the applicant's role against the official project reports.]**
 
-## Мета і задачі дослідження
+## Aim and Research Tasks
 
 **The purpose of the dissertation research** is to improve the efficiency and the temporal and
 spatial consistency of hierarchical video data generation processes through the development of
 systems analysis methods, mathematical models, and intelligent information technologies.
-[UA-PASS: «Метою дисертаційного дослідження є підвищення ефективності та просторової і часової
-консистентності процесів ієрархічної генерації відеоданих шляхом створення методів системного
-аналізу, математичних моделей та інтелектуальних інформаційних технологій.» Note: no
-discrete-space commitment, per decisions Q1/Q2.]
 
-The dissertation's components serve **one backbone question** (packaging reframe 2026-07-10):
+The dissertation's components serve **one backbone question**:
 *how can hierarchical decomposition, temporal abstraction, and resource-aware rollout improve
 the consistency of long-horizon video generation under bounded memory and computation?* Each
 contribution has a defined role in answering it: adaptive entropy-based decomposition and
@@ -116,8 +110,13 @@ processes within memory limits; the multi-stream hierarchical predictor (Chapter
 demonstrated system; the memory-horizon testbed and re-entry-stratified protocol (Chapters 3–4)
 — the causal instrument for measuring whether context memory actually matters; the frontier and
 shape experiments (Chapter 4) — the evidence for how to allocate a fixed context budget; the
-energy-based study (Chapter 4) — the measured mechanism-selection negative. [UA-PASS: «наскрізне
-питання дослідження».]
+energy-based study (Chapter 4) — the measured mechanism-selection negative.
+
+For the fourth article, context packaging is the manipulated design space. **Reach** asks whether
+the package contains the memory-relevant past; **fidelity** asks what useful information survives
+compression or subsampling; reliable reuse under self-fed generation is treated as a robustness
+question because the proposed late trust boundary did not replicate. The terminal empirical
+summary is conditional: **hierarchy buys reach; flat context buys fidelity**.
 
 To achieve this purpose, the following scientific and practical tasks had to be solved:
 
@@ -143,8 +142,7 @@ To achieve this purpose, the following scientific and practical tasks had to be 
    state spaces, supporting context streams at different temporal rates and spatial resolutions
    over a shared attention backbone, with unidirectional transfer of context signals (gradient
    detachment at the representation and rollout boundaries) and a per-frame iterative-refinement
-   generation core selected by controlled mechanism analysis. *(Rewritten per DISS_DIGEST item 11
-   + decision Q1: continuous-latent formulation, no Markov-optimization/energy commitment.)*
+   generation core selected by controlled mechanism analysis.
 
 6. Create an intelligent information technology and a software complex for the systems analysis
    of hierarchical video generation processes, integrating the developed methods of adaptive
@@ -157,19 +155,17 @@ To achieve this purpose, the following scientific and practical tasks had to be 
    comparison of prediction mechanisms — and compare their efficiency and consistency with
    modern analogues.
 
-## Об'єкт і предмет дослідження
+## Object and Subject of Research
 
 **The object of research** is the processes of systems analysis, mathematical modeling, and
 control of complex multi-level systems of video data generation under structural, informational,
-and computational uncertainty. *(«ітеративної» → «ієрархічної»; rebalanced 2026-07-07 (124-
-alignment fix): the systems-analysis activity is the grammatical head, video generation is the
-domain; no discrete-space framing.)*
+and computational uncertainty.
 
 **The subject of research** is the mathematical models, methods, and intelligent information
 technologies of systems analysis, uncertainty estimation, criteria-based evaluation, and control
 in hierarchical generative systems.
 
-## Методи дослідження
+## Research Methods
 
 To solve the set tasks, a complex apparatus of modern science was used: the methodology of systems
 analysis for the decomposition of generative processes and the classification of uncertainty and
@@ -187,112 +183,6 @@ the pre-registered decision rules of the experimental program and the re-entry-s
 evaluation protocol, which operationalizes the acceptance or rejection of model configurations
 as a formal criteria-based choice; and methods of statistical inference (paired bootstrap
 confidence intervals, common random numbers) for the experimental evaluation protocol.
-*(Rewritten per DISS_DIGEST item 12: the old «теорія марковських процесів та стохастичні
-диференціальні рівняння для моделювання динаміки Ланжевена та MCMC-керування» clause is trimmed;
-Langevin/MCMC survive only as mechanism-study vocabulary. Decision-theory clause added 2026-07-07
-per the 124-alignment review — the strongest predictable committee objection. [UA-PASS: «елементи
-теорії прийняття рішень для побудови критеріальних процедур вибору».)*
-
-## Наукова новизна отриманих результатів
-
-1. **For the first time**, a methodology for the systems analysis and evaluation of long-range
-   memory in hierarchical video generation processes was developed — a purpose-built
-   memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
-   control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
-   comparison design — and it was demonstrated with its help that **long-span multi-stream
-   context packaging** — a hierarchical allocation of a fixed context-token budget across
-   spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
-   hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
-   and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
-   a flat context window at the same context-token budget, with tested lower/interior and upper
-   regimes bracketed by explicit token arithmetic; unlike existing evaluation practice, which aggregates
-   prediction error without isolating memory-dependent content, the developed methodology makes
-   the memory contribution of the packaging directly measurable and localizes the improvement of
-   temporal consistency to registered reach-differential populations.
-
-2. **For the first time**, a method for the computationally efficient optimization of processes in
-   multi-step iterative systems was developed based on reversible transformations for
-   time-agnostic backpropagation, which, unlike classical backpropagation through time, ensures
-   constant memory consumption regardless of the depth of the temporal horizon; the method is
-   extended to stochastic multi-level recurrences via an exactly invertible stochastic recurrence
-   with noise storage, and its applicability domain is delimited by a three-axis taxonomy of
-   reversibility (across depth, time, and computation).
-
-3. **Improved** the criteria apparatus of systems analysis of the results of generative models by
-   introducing the criteria of conceptual consistency (the ability to generate unknown
-   combinations), hierarchical consistency (alignment of structural levels), and trajectory
-   consistency, the latter operationalized through autoregressive-rollout degradation metrics
-   stratified by re-entry hardness, which allows a more comprehensive and measurable assessment of
-   the adequacy of complex generative systems.
-
-4. **Improved** the method for assessing the state of uncertainty of spatio-temporal data through
-   their adaptive decomposition using N-dimensional rotary positional embedding and per-pixel
-   entropy maps, which allows dynamic allocation of computational resources during the analysis of
-   complex visual scenes.
-
-*(Wording identical to 00_FRONT_MATTER.md §2 — keep the two files in sync. Item 1 re-scoped
-2026-07-07 (audit fix): «вперше» now carried by the testbed methodology + matched-budget
-demonstration, with the coarse-memory architecture credited to adopted prior art per §1.3.2 —
-supersedes the DISS_DIGEST §6 wording. No "guarantees" language anywhere — the old novelty item
-1's «математично гарантує» claim is replaced by the empirically demonstrated, exactly scoped
-claim.)*
-
-## Положення, що виносяться на захист
-
-**[AUTHOR: confirm whether the VNTU spec-124 council template expects an explicit
-defended-theses list; if the council treats the scientific-novelty items as the defended
-propositions, replace this block with one sentence stating exactly that.]**
-
-The following propositions are submitted for defense:
-
-1. Packaging a bounded context-token budget across temporal rate and spatial resolution can
-   improve the temporal consistency of long generated video sequences when the package covers
-   the task-relevant memory horizon more economically than a contiguous flat window. The coarse
-   latent stream and temporally subsampled full-resolution history are distinct measured forms,
-   not synonyms; their operating region is identified, measured, and bounded by the developed
-   memory-horizon methodology with re-entry-stratified analytic hardness labels. The valid
-   persistent-object long Moving-MNIST boundary further shows that this efficiency is
-   task-information-specific: hierarchy can preserve spatial support and continuity while flat
-   full-resolution context preserves fine object identity.
-
-2. Reversible transformations enable time-agnostic backpropagation with constant activation
-   memory in the length of the modeled process; the method extends to stochastic multi-level
-   recurrences through exact noise storage (gradients coinciding with backpropagation through
-   time), and its domain of applicability is delimited by the three-axis reversibility taxonomy:
-   the temporal-rollout axis pays, while the inner-optimization-loop axis cannot pay against
-   gradient checkpointing.
-
-3. The consistency-criteria apparatus extended with conceptual, hierarchical, and trajectory
-   consistency — the latter operationalized through autoregressive-rollout degradation metrics
-   stratified by re-entry hardness — provides a measurable, statistically disciplined decision
-   procedure for the acceptance or rejection of configurations of complex generative systems.
-
-4. The adaptive decomposition of spatio-temporal data based on entropy metrics with
-   multidimensional rotary positional embedding allows dynamic allocation of computational
-   resources to high-information zones of complex visual scenes and mathematically aligns the
-   coordinate systems of the abstraction levels of hierarchical models.
-
-## Практичне значення отриманих результатів
-
-The practical significance lies in the development of a complex of algorithms and
-software-information tools implementing the developed intelligent information technology for the
-systems analysis of hierarchical video generation processes (the reversible-transformer method,
-entropy-based adaptive tokenization, the hierarchical generation model, and the memory-horizon
-evaluation instrument; Python/PyTorch). Unique synthetic spatio-temporal datasets were created for
-testing generation and optimization systems: 2D shapes, 3D polycubes, and the looping
-memory-horizon testbed with recorded action tracks and exactly computable hardness labels. The
-developed technology was implemented in the practical activities of ORNETIKA LLC (implementation
-act of October 14, 2025) and in the educational process of VNTU (implementation act of September
-19, 2025). **[AUTHOR: per decision Q5 no copyright certificate has been filed — drop the
-certificate sentence, or file under a new title without "HVEBT" and insert the number.]**
-
-## Особистий внесок здобувача
-
-All theoretical and experimental results submitted for defense were obtained by the applicant
-personally. *(Canonical article labels [A1]–[A4] per DISS_DIGEST §2; the old draft's «Стаття 1–4»
-numbering was inconsistent and is abandoned. [AUTHOR: bind [A1]–[A4] to the final numbered
-publication list.])*
-
 - In **[A1]** (hierarchy/BLT-adaptation article), the applicant proposed and implemented the
   method of adaptive decomposition of spatio-temporal data based on entropy metrics (the V-BLT
   architecture) with multidimensional rotary positional embedding, and the procedural synthesis
@@ -316,35 +206,32 @@ publication list.])*
   protocol; conducted the matched-capacity, matched-NFE study of prediction mechanisms,
   including the two-sided capability study of energy-based transformers (a characterized negative
   result); developed the theory of the exactly invertible stochastic recurrence with the
-  three-axis reversibility taxonomy; and performed all complex experimental studies. *(Per
-  DISS_DIGEST item 14 — replaces the old «формалізовано ієрархічну енергетичну модель HVEBT»
-  wording.)*
+  three-axis reversibility taxonomy; and performed all complex experimental studies.
 
-## Апробація результатів дисертації
+## Validation and Presentation of Results
 
 The main provisions, results, and conclusions of the dissertation were reported and discussed at
-6 scientific conferences: **[AUTHOR: verify this list — it was inherited from the old draft; the
-DSMSI-2023 participation is flagged in DISS_DIGEST Q3 as unverified, and all six [X] thesis
-citations must resolve to real theses]**
+6 scientific conferences: **[AUTHOR: verify every event below against the applicant's records and
+bind each event to the corresponding conference publication.]**
 
-- L науково-технічна конференція підрозділів ВНТУ, Вінниця, 2021;
-- LI науково-технічна конференція підрозділів ВНТУ, Вінниця, 2022;
-- «Проблеми вищої математичної освіти: виклики сучасності», ВНТУ, Вінниця, 2022;
-- LII науково-технічна конференція підрозділів ВНТУ, Вінниця, 2023;
-- LIII науково-технічна конференція підрозділів ВНТУ, Вінниця, 2024;
-- Dynamical System Modeling and Stability Investigation (DSMSI-2023), Київ, 2023.
+- 50th Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2021;
+- 51st Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2022;
+- *Problems of Higher Mathematical Education: Contemporary Challenges*, VNTU, Vinnytsia, 2022;
+- 52nd Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2023;
+- 53rd Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2024;
+- Dynamical System Modeling and Stability Investigation (DSMSI-2023), Kyiv, 2023.
 
-## Публікації
+## Publications
 
 Based on the dissertation topic, 10 scientific works were published, including: 3 articles in
-professional journals of Ukraine included in the МОН list for specialty 124 ([A1], [A3], [A4]);
+professional journals of Ukraine included in the Ministry of Education and Science list for
+specialty 124 ([A1], [A3], [A4]);
 1 article in an international scientific journal indexed by the Scopus scientometric database
 ([A2]); and 6 abstracts of reports at international and all-Ukrainian scientific-practical
-conferences. *(Per decision Q3 the list is unchanged for now.)* **[AUTHOR: replace the donor
-(Isaienkov) bibliography wholesale; resolve all [X] placeholders; confirm that [A4] will be
-published in a UA professional journal by defense so the 3+1+6 count holds.]**
+conferences. **[AUTHOR: supply the venue/status of [A4] and the six conference entries, then
+confirm that the 3+1+6 count is correct.]**
 
-## Структура та обсяг дисертації
+## Dissertation Structure and Length
 
 The dissertation consists of an introduction, four chapters, conclusions to each chapter, general
 conclusions, a list of references, and appendices.
@@ -374,9 +261,8 @@ conclusions, a list of references, and appendices.
   ground-truth warm-up) evaluations of the hierarchical
   model; the memory-consumption measurements; and the implementations.
 
-The total volume of the work is **[AUTHOR: pages]** pages of typewritten text; the main part
-comprises **[AUTHOR: pages]** pages, **[AUTHOR: N]** figures, and **[AUTHOR: N]** tables. The list
-of references contains **[AUTHOR: N]** items. The appendices contain copies of the implementation
-acts and fragments of the software code of the developed information technology. *(The old
-draft's «185 сторінок / 145 джерел / 45 рисунків / 12 таблиць» were placeholders — recount after
-assembly; do not carry them over.)*
+The total volume of the work is **[AUTHOR: final page count]** pages; the main part comprises
+**[AUTHOR: final main-text page count]** pages, with the final figure and table counts obtained
+mechanically during typesetting. The bound scientific bibliography currently contains 79
+external sources. The appendices contain copies of the implementation acts, the preregistration
+trail, and the software and experiment-configuration map of the developed information technology.

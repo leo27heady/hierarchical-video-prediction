@@ -5,11 +5,20 @@ docs/SPATIAL_FACTORIAL.md FRONTIER MEASURED + LOWER EDGE MEASURED 2026-07-07;
 logs_rhcp/frontier_low.log: hier-min 0.1706 / flat-min 0.2106, +0.0399 [+0.0299,+0.0501]).
 fg-MSE ALL over 152 AR frames.
 """
+import os
 import numpy as np
 import matplotlib
+from pathlib import Path
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+if os.environ.get("HVP_ALLOW_HISTORICAL_FIGURES") != "1":
+    raise RuntimeError(
+        "fig9 is an archived development-only interpolation and is not a terminal scientific "
+        "figure. Run scripts/make_rft_result_figures.py for the untouched simultaneous frontier, "
+        "or set HVP_ALLOW_HISTORICAL_FIGURES=1 solely to reproduce the historical artifact."
+    )
 
 # (tokens, fg-MSE ALL) — diffusion-head frontier curves, seed 0 (6 points; R-F/R-G add 1792/2432)
 flat = [(512, 0.2224), (896, 0.2106), (1152, 0.2038), (1792, 0.1876), (2432, 0.1703), (3072, 0.1564)]
@@ -132,6 +141,6 @@ ax.legend(loc="lower left", fontsize=8.5, framealpha=0.9)
 ax.grid(True, which="major", axis="y", alpha=0.25)
 
 fig.tight_layout()
-out = r"C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\figures\fig9_frontier.png"
+out = Path(__file__).resolve().parents[1] / "docs" / "figures" / "fig9_frontier.png"
 fig.savefig(out, dpi=180)
 print("saved", out, "| crossings at tokens:", [round(c) for c in crossings])

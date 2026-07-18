@@ -30,7 +30,7 @@ CPU/document/release QA; no GPU study is launchable.
 | E7a | completed/directionally robust | seven trainings and 14 evaluations complete; no extension |
 | E8a | completed/privileged reference | exact-pose raw-memory reference complete; no extension |
 | E6 | completed/mixed boundary | six trainings/evaluations complete in 20.5127 GPU-hours; no adaptive arm, seed or endpoint |
-| E9 | deferred post-freeze | no implementation or launch authorization; future scope only |
+| E9 | skipped/terminal | `SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY`; no implementation, budget or launch authorization; a future version requires a new scope |
 
 ## Handoff checklist
 
@@ -56,8 +56,9 @@ CPU/document/release QA; no GPU study is launchable.
 | approved execution tranches | Codex | time-bounded execution autonomy constrained by protocol, budget and authorization ledger |
 
 **Current transfer marker:** the author authorized gated execution through terminal E6. That
-experimental tranche is complete. M2 finalization remains active; any future E9 launch requires a
-new explicit scope decision, frozen implementation and its own fail-closed authorization.
+experimental tranche is complete, E9 has failed its post-freeze utility gate, and M2 finalization
+is active. Any future counterfactual study is a new programme requiring an explicit scope
+decision, frozen implementation and its own fail-closed authorization.
 
 ## Status-change procedure
 

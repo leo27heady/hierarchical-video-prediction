@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory=$true)][int]$Seed,
     [Parameter(Mandatory=$true)][string]$GeneratorCommit,
     [Parameter(Mandatory=$true)][string]$DirtyHash,
-    [string]$Mnist = "C:\Users\leoni\Documents\projects\OpenSTL\data\moving_mnist\train-images-idx3-ubyte.gz",
+    [string]$Mnist = $env:HVP_MNIST_IDX,
     [string]$Out = "data/confirmation/loopmom_confirmation_500x200.npy",
     [switch]$CheckOnly
 )
@@ -12,6 +12,10 @@ $env:CUDA_VISIBLE_DEVICES = "-1"
 & .\venv\Scripts\python.exe scripts\check_experiment_gate.py confirmation-holdout
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 if ($CheckOnly) { Write-Output "Loopmom confirmation generation gate passed; dataset not created."; exit 0 }
+if ([string]::IsNullOrWhiteSpace($Mnist)) {
+    throw "Pass -Mnist or set HVP_MNIST_IDX to the MNIST IDX image file."
+}
+if (-not (Test-Path -LiteralPath $Mnist)) { throw "MNIST source file missing: $Mnist" }
 
 & .\venv\Scripts\python.exe scripts\generate_loopmom_confirmation.py `
     --mnist $Mnist --source-split train --purpose confirmation_holdout `

@@ -1,61 +1,41 @@
-# Reach and Fidelity in Budgeted Video Memory:
-## A Controlled Context-Packaging Study
+# When Does Hierarchical Video Memory Pay?
+## Reach–Fidelity Trade-offs under Fixed Context Budgets
 
-> **Binding fourth-article manuscript source.** Numerical claims are generated or checked against
-> `artifacts/rft_claim_artifact_index.json`; complete tables are in
-> `docs/draft/RFT_GENERATED_TABLES.md`. This article changes neither the dissertation topic nor
-> the subject matter of the three existing articles. Development-pool analyses remain explicitly
-> labelled; only E2 supplies untouched confirmation.
+<!-- canonical-id: binding fourth-article manuscript -->
 
 **Keywords:** long-horizon video prediction; context compression; hierarchical latent models;
 memory; observability; re-entry; diffusion transformer; reproducible evaluation.
 
 ## Abstract
 
-A bounded-context video predictor must decide not only how much history to retain, but how to
-represent it. More temporal reach can be purchased by reducing spatial fidelity or temporal rate.
-We study this as a controlled **context-packaging** problem. The manipulated factors are temporal
-sampling rate, spatial resolution and package depth; the main explanatory questions are whether a
-package reaches the memory-relevant past and preserves sufficient fidelity. We separately test
-whether an apparent self-fed reliability boundary is robust across training seeds.
+A bounded-context video predictor must choose not only how much history to retain, but how to
+represent it. We frame temporal sampling rate, spatial resolution and package depth as a controlled
+**context-packaging** design space. A procedural panning-world instrument provides exact geometric
+observability when content leaves and re-enters the viewport, while a shared diffusion-transformer
+backbone consumes flat or multistream packages at explicit token budgets.
 
-We construct a procedural panning-world instrument in which foreground content exits and re-enters
-the viewport and its geometric observability is known from recorded camera motion. A shared
-backbone consumes flat or multistream context packages at tested token budgets. Development-set
-experiments locate a reach–fidelity frontier rather than assuming that hierarchy should win. A
-long-reach spatial package strongly outperforms shorter packages when the relevant evidence lies
-inside its 48-frame reach but outside theirs: the post-hoc pair-specific effects are +0.0880 and
-+0.0809 for the 14-to-48-frame band across two seeds. At larger tested budgets, full-resolution
-context recovers and can become preferable. A stride-2 package wins at 512 tokens across diffusion
-seeds, but the legacy implementation also changes its target interface, so this is reported as a
-configuration effect pending a fixed-target control. A five-seed factorial finds a stable
-temporal-package advantage under diffusion, but sign-changing package effects under regression
-and no training-seed-robust directional head interaction. In a preregistered three-seed rollout
-study, the early hierarchy advantage is positive at every seed, but a late inversion observed at
-seed 0 reverses to a late hierarchy advantage at seeds 1 and 2. The proposed trust boundary is
-therefore not replicated. A separate checkpoint-only robustness study preserves all four central
-diffusion directions across NFE 8/16/32 and three sampler seeds at the point-estimate level.
-Eighteen of 20 simultaneous family-wise lower bounds are positive; the two unresolved intervals
-are the upper-budget flat-fidelity inversion under alternate sampler seeds.
-An independently trained latent codec likewise preserves all four directions. Three
-alternate-codec contrasts are simultaneous-CI clean; the 2,432-token inversion remains positive
-at +0.0079 but its family-wise interval [−0.0006, +0.0165] includes zero.
-A privileged exact-pose raw-pixel mosaic provides a separate access reference: its 48-frame
-variant reaches foreground MSE 0.0494, and all four registered neural-to-mosaic effects have
-positive simultaneous lower bounds.
-A protected three-seed persistent-object long Moving-MNIST study then identifies an external
-boundary rather than a universal winner. Hierarchy improves union-mask error on all three seeds
-and improves trajectory/coverage cleanly on two, but flat context preserves digit identity on
-all three; foreground-only error is unresolved.
+On a hash-pinned untouched holdout, the hierarchy wins when it alone reaches the relevant past:
+the registered 14-to-48-frame reach-band effects are +0.0980 and +0.0914 across two training
+seeds. A simultaneous frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792
+unresolved, and confirms flat full-resolution context at 2,432 and 3,072. In the frozen latent
+interface, 48 fine frames cost 3,072 tokens, whereas 48 coarse frames plus a two- or six-frame fine
+tail cost 896 or 1,152 tokens. Hierarchical packaging therefore provides the same nominal
+48-frame reach with 2.7–3.4 times fewer context tokens, while the upper-budget reversal shows the
+price of discarded detail.
 
-These results support a scoped account: context reach explains where memory can help, while
-fidelity explains why compression can lose after reach is saturated. Addressability and self-fed
-reliability remain distinct constructs, but the present data do not locate a stable trust
-boundary. They do not establish universal laws or a unique continuous crossing.
-The central reach–fidelity comparisons were confirmed once on a hash-pinned untouched LoopMom
-holdout, with false-positive-sensitive, component and coverage endpoints. The Moving-MNIST
-boundary uses a separate protected holdout and persistent-object metadata. Claims remain scoped
-to these synthetic testbeds, frozen representations and tested training regimes.
+The main directions persist across a fourfold sampling-work range, three sampler seeds and an
+independently trained codec, although the 2,432-token inversion is less precise under alternate
+sampler or codec conditions. A five-seed factorial finds a stable temporal-package advantage under
+diffusion but sign-changing regression and cross-head effects. A preregistered long-rollout study
+replicates the early hierarchy benefit but not a seed-0 late inversion, rejecting a stable trust
+boundary. Finally, a protected persistent-object Moving-MNIST study yields a mixed external
+boundary: hierarchy better preserves support and trajectory continuity, whereas flat context
+better preserves digit identity; foreground-only error is unresolved.
+
+The resulting prescription is conditional rather than architectural: buy enough reach to include
+the memory-relevant past, then preserve the fidelity required by the task. Hierarchy is most useful
+when a flat full-resolution window cannot afford that reach; flat context becomes preferable when
+fine detail, rather than temporal access, is limiting.
 
 ## 1. Introduction
 
@@ -121,23 +101,16 @@ rather than triggering post-hoc localization experiments.
 
 The fourth article contributes:
 
-1. a low-cost procedural instrument with exact geometric observability and re-entry labels;
-2. tested rate-versus-resolution packages at explicit context-token budgets;
-3. pair-specific reach-differential analysis derived from comparator geometry;
-4. lower- and upper-regime inversions reported as tested configurations, not interpolated laws;
-5. a five-seed package factorial that separates a stable diffusion result from regression and
-   cross-head heterogeneity;
-6. an outcome-independent negative replication showing that the proposed late trust inversion is
-   training-seed-specific under this protocol;
-7. an untouched-confirmation protocol with false-positive-sensitive and coverage endpoints;
-8. a preregistered NFE/sampler-seed robustness family on a separate purpose-locked set;
-9. a preregistered whole-codec-seed intervention separating directional representation
-   robustness from family-wise precision;
-10. a privileged pose-indexed raw-memory reference separating explicit access from learned,
-    self-fed generation without presenting it as a token-matched competitor;
-11. a protected persistent-object long Moving-MNIST boundary showing that support/continuity and
-    fine identity fidelity can favor different packages;
-12. explicit reporting of negative, confounded and seed-sensitive outcomes.
+1. a low-cost re-entry instrument with exact geometric observability, complete error metrics and
+   pair-derived reach bands;
+2. an untouched, simultaneous fixed-budget frontier showing where hierarchical reach pays and
+   where flat full-resolution fidelity recovers;
+3. package-shape, prediction-head, sampler-allocation and codec interventions that separate stable
+   diffusion directions from training-seed and upper-frontier precision boundaries;
+4. explicit-access and persistent-object boundary studies that distinguish geometric reach,
+   support/continuity, identity fidelity and reliable reuse;
+5. outcome-independent reporting of a failed trust-boundary replication, a confounded B1
+   configuration result and all protected negative or mixed outcomes.
 
 Energy-based modelling and stochastic reversibility remain dissertation strands and supplementary
 context; they are not required to make this article's central claim.
@@ -146,11 +119,11 @@ context; they are not required to make this article's central claim.
 
 Clockwork VAEs introduced hierarchies whose upper latent sequences update at slower rates and
 demonstrated long video prediction over sequences up to 1,000 frames [Saxena et al., 2021].
-Dynamic latent hierarchies, TECO and flexible diffusion conditioning likewise pursue long-horizon
-generation through hierarchical state, latent temporal consistency or variable history
-[Zakharov et al., 2023; Yan et al., 2023; Harvey et al., 2022]. These works motivate temporal
-abstraction, but they do not provide the matched package-by-budget intervention or exact
-pair-derived observability bands used here.
+Dynamic latent hierarchies, TECO, MilliVid and flexible diffusion conditioning likewise pursue
+long-horizon generation through hierarchical state, latent temporal consistency, coarse-to-fine
+rollout or variable history [Zakharov et al., 2023; Yan et al., 2023; Chandratreya et al., 2026;
+Harvey et al., 2022]. These works motivate temporal abstraction, but they do not provide the
+matched package-by-budget intervention or exact pair-derived observability bands used here.
 
 Recent work makes it especially important not to claim that memory-focused evaluation or
 retrieval is absent. WorldPack combines compressed trajectory packing with retrieval and evaluates
@@ -176,6 +149,7 @@ not protocol-equivalent.
 | CW-VAE | clocked hierarchical latent state | no | no | yes | temporal-hierarchy lineage |
 | FDM | flexible sparse/long-range diffusion conditioning | no | no | yes | conditioning lineage |
 | TECO | compressed latent sequence + temporal transformer | no | no | yes | long-consistency lineage |
+| MilliVid | coarse-to-fine hierarchical latent rollout | no | no | yes | modern hierarchy comparator |
 | WorldPack | trajectory packing + retrieval | no | no | yes | compressed-memory comparator |
 | CaR / MemLearner / GIM-World | learned or geometry-conditioned retrieval | no | annotated or learned geometry | yes | modern retrieval comparators |
 | MBench / MemoBench | benchmark instruments | n/a | task-dependent | model-dependent | memory-evaluation context |
@@ -214,9 +188,9 @@ pixels.
 Every package is described by context temporal stride, context spatial resolution, slots and
 reach, target stride and slots, auxiliary losses, context/target/total tokens, head and sampler
 allocation. The legacy B1 stride-2 arm couples context stride to coarse target stride. It therefore
-compares a complete stride-2 configuration to a short-flat configuration. The prepared causal
-control keeps four coarse and four fine target slots, loss weights and target stride fixed while
-changing only the 512-token context package.
+compares a complete stride-2 configuration to a short-flat configuration. We permanently retain
+that configuration-level interpretation in this article; a fixed-target control would be required
+only to revive a pure causal context-stride claim.
 
 ![Frozen codec, shared predictor and context packages](../figures/fig16_context_packaging_architecture.png)
 
@@ -242,7 +216,58 @@ The `strided-flat` package is near-matched, not exactly matched, to `hier-long`:
 context tokens, a deficit that favors the temporal-package control. B1 changes 32 target tokens
 as well as the context, so its outcome remains a configuration effect.
 
-### 2.3 Cost accounting
+### 2.3 Package, predictor and estimand
+
+Let a context package be
+
+$$
+\mathcal P_t=\{(K_\ell,q_\ell)\}_{\ell=1}^{L},
+$$
+
+where $K_\ell$ is the set of historical lags retained at representation level $\ell$ and
+$q_\ell$ is the number of tokens used by one slot at that level. Its context cost and nominal
+reach are
+
+$$
+B_{\mathrm{ctx}}(\mathcal P)=\sum_{\ell=1}^{L}|K_\ell|q_\ell,\qquad
+R(\mathcal P)=\max_{\ell,k\in K_\ell} k .
+$$
+
+This accounting makes reach exact but does not pretend that fidelity is one scalar: spatial
+resolution, codec distortion and temporal sparsity preserve different information. In the frozen
+interface $q_{\mathrm{fine}}=64$ and $q_{\mathrm{coarse}}=16$. Thus 48 fine slots cost 3,072
+tokens, whereas 48 coarse slots plus two or six recent fine slots cost 896 or 1,152.
+
+The common predictor models a target latent block $z_{t+1:t+m}$ conditional on the packaged
+history and camera actions,
+
+$$
+p_\theta\!\left(z_{t+1:t+m}\mid \mathcal P_t,u_{t+1:t+m}\right).
+$$
+
+For the diffusion head, training minimizes
+
+$$
+\mathcal L_{\mathrm{diff}}=
+\mathbb E_{z,\epsilon,\tau}
+\left\|\epsilon-\epsilon_\theta(z_\tau,\tau,\mathcal P_t,u)\right\|_2^2 ,
+$$
+
+while the regression control predicts the clean target latents directly. The principal paired
+effect is always reported as comparator loss minus candidate loss, so positive values favor the
+registered candidate. For a long package $\mathcal P_l$ and shorter comparator $\mathcal P_s$,
+the reach-specific population is
+
+$$
+\mathcal D_{\mathrm{reach}}=
+\{i:R(\mathcal P_s)<\Delta t_i\le R(\mathcal P_l),\
+\text{answerable}_i,\ \text{foreground}_i\ne\varnothing\}.
+$$
+
+The diffusion and deterministic DDIM sampling conventions follow Ho et al. (2020) and Song et al.
+(2021); the latent-token transformer follows the DiT design family (Peebles and Xie, 2023).
+
+### 2.4 Cost accounting
 
 “Matched compute” is avoided unless total work is genuinely matched. Comparison tables list
 context tokens, target tokens, total sequence length, parameters, examples, optimizer updates,
@@ -250,7 +275,7 @@ batch size, EMA, per-step and total NFE, runtime and peak memory. The B16x30k an
 process approximately the same examples but differ in updates, gradient noise, grouping and
 effective EMA horizon; c2 is an optimizer-regime robustness control.
 
-### 2.4 Development and confirmation populations
+### 2.5 Development and confirmation populations
 
 The existing test pool informed qualitative monitoring, arm selection and theory development. It
 provides development evidence, not an untouched final holdout. Confirmation uses a newly
@@ -302,23 +327,40 @@ clip-cluster bootstrap covers the resulting 20-effect family. This checkpoint-on
 test sensitivity to inference allocation and randomness; it cannot establish robustness to
 training seed, representation seed or another dataset family.
 
-## 4. Development evidence
+## 4. Results
 
-### 4.1 Reach-differential effects
+### 4.1 Untouched confirmation of reach and the fixed-budget frontier
 
-On non-empty answerable records, `hier-min` versus `flat-min` yields +0.0880 [0.0668, 0.1083] at
-seed 0 and +0.0809 [0.0621, 0.0998] at seed 1 in `14 < dt <= 48`. Stride-2 B1 versus
-`flat-short` yields +0.0675 [0.0526, 0.0828] and +0.0709 [0.0544, 0.0871] in
-`8 < dt <= 48`. These are the strongest current mechanistic observations, while their post-hoc
-origin prevents a confirmatory label on the development pool.
+On the frozen E2 holdout, `hier-min` versus `flat-min` yields +0.0980 [0.0788, 0.1179] and
++0.0914 [0.0736, 0.1098] in the registered `14 < dt <= 48` band across seeds 0/1. The B1
+configuration versus `flat-short` yields +0.0692 [0.0543, 0.0845] and +0.0743
+[0.0588, 0.0899] in `8 < dt <= 48`. Whole-population, union/full-frame, recall/F1,
+missed-component and coverage endpoints corroborate the signs. The concentration of the benefit
+inside the pair-derived reach band supports reach as the mechanism rather than horizon alone.
 
-### 4.2 Tested reach–fidelity frontier
+The single simultaneous frontier family confirms hierarchy at 896 and 1,152 tokens, leaves 1,792
+unresolved, and confirms flat full-resolution context at 2,432 and 3,072. The largest tested
+family-wise-confirmed hierarchy point is therefore 1,152 tokens and the smallest tested confirmed
+flat point is 2,432. No value between them is inferred. The memory arithmetic is substantial:
+the confirmed hierarchical packages provide nominal 48-frame reach with 896 or 1,152 tokens,
+compared with 3,072 tokens for a 48-frame fine-only window. This is a 2.7–3.4-fold context-token
+reduction for reach, not a claim of equal information or equal error at every operating point.
 
-At 896 context tokens the dense coarse family has 48-frame reach and beats the shorter flat
-comparator under diffusion by +0.0399 and +0.0358 across seeds 0/1. At 3,072 tokens the flat
-48-frame window wins across both seeds (−0.0131 and −0.0107). At B16x30k, 1,792 is the largest
-tested budget favouring the spatial package and 2,432 the smallest tested budget favouring flat
-full-resolution context. This bracket does not prove monotonicity, continuity or one crossing.
+![Untouched frontier and context-token arithmetic](../figures/article_confirmed_frontier.png)
+
+**Figure 3.** Left: untouched E2 effects under one studentized max-statistic clip-cluster family;
+positive favors hierarchy. Right: exact cost of 48 fine slots versus coarse history with a recent
+fine tail. The figure marks tested outcomes only and draws no interpolated crossing.
+
+### 4.2 Development evidence that motivated the confirmation
+
+On non-empty answerable development records, `hier-min` versus `flat-min` yields +0.0880
+[0.0668, 0.1083] at seed 0 and +0.0809 [0.0621, 0.0998] at seed 1 in `14 < dt <= 48`.
+Stride-2 B1 versus `flat-short` yields +0.0675 [0.0526, 0.0828] and +0.0709
+[0.0544, 0.0871] in `8 < dt <= 48`. These post-hoc observations motivated the frozen E2
+analysis; they are not relabelled as confirmatory. Development comparisons also suggested an
+intermediate hierarchy region and an upper flat recovery. E2 preserved the lower and upper
+directions but correctly demoted the 1,792-token point to unresolved.
 
 ### 4.3 B1 configuration result
 
@@ -326,7 +368,7 @@ The stride-2 B1 configuration wins under diffusion by +0.0330 and +0.0338 across
 seeds. Under regression, seed 0 yields +0.0639 [0.0516, 0.0763]. This is strong evidence for the
 whole configuration. It does not isolate context stride because target slots, target tokens,
 auxiliary loss, sequence length and optimization difficulty also change. The article retains
-configuration-level wording until the fixed-target control lands.
+configuration-level wording permanently within its present scope.
 
 ### 4.4 Temporal versus spatial packages and head interaction
 
@@ -354,7 +396,7 @@ untouched confirmation.
 
 ![Five-seed head and package effects](../figures/fig17_head_package_seed_heterogeneity.png)
 
-**Figure 3.** Clip-bootstrap intervals are conditional on a trained model and are shown per seed.
+**Figure 4.** Clip-bootstrap intervals are conditional on a trained model and are shown per seed.
 The shaded interval and dashed mean instead summarize five training seeds. Diffusion consistently
 favors temporal anchors; regression and the interaction change sign.
 
@@ -380,22 +422,11 @@ current evidence.
 
 ![Registered long-loop replication](../figures/fig18_trust_negative_replication.png)
 
-**Figure 4.** The early hierarchy benefit is positive at all three seeds. The registered late
+**Figure 5.** The early hierarchy benefit is positive at all three seeds. The registered late
 negative direction occurs only at seed 0 and reverses at both new seeds, producing the
 `NOT_REPLICATED` verdict.
 
-### 4.6 Untouched confirmation
-
-On the frozen E2 holdout, `hier-min` versus `flat-min` yields +0.0980 [0.0788, 0.1179] and
-+0.0914 [0.0736, 0.1098] in `14 < dt <= 48` across seeds 0/1. B1 versus `flat-short` yields
-+0.0692 [0.0543, 0.0845] and +0.0743 [0.0588, 0.0899] in `8 < dt <= 48`. Whole-population,
-union/full-frame, recall/F1, missed-component and coverage endpoints corroborate the signs.
-
-The simultaneous frontier family confirms hierarchy at 896 and 1,152 tokens, leaves 1,792
-unresolved, and confirms flat full-resolution context at 2,432 and 3,072. Thus the evidence
-supports a tested reach–fidelity phase structure without claiming a smooth or unique crossing.
-
-### 4.7 Sampler and inference-allocation robustness
+### 4.6 Sampler and inference-allocation robustness
 
 E7c evaluates seven frozen seed-0 diffusion checkpoints on a separate purpose-locked LoopMom
 robustness set. Four contrasts—896-token reach, 1,152-token interior reach–fidelity, the
@@ -422,11 +453,11 @@ uses seed-0 predictors, one frozen codec and one procedural dataset family.
 
 ![Sampler and NFE robustness](../figures/fig19_sampler_nfe_robustness.png)
 
-**Figure 5.** All 20 point estimates preserve their registered direction. Open circles mark the
+**Figure 6.** All 20 point estimates preserve their registered direction. Open circles mark the
 two 2,432-token upper-inversion effects whose simultaneous family intervals include zero under
 alternate sampler seeds.
 
-### 4.8 Robustness to an independently trained latent codec
+### 4.7 Robustness to an independently trained latent codec
 
 E7a changes the entire latent representation by training a second codec seed, recomputing
 codec-specific normalization and retraining the same seven seed-0 diffusion predictors. It is
@@ -454,11 +485,11 @@ endpoint was selected after observation.
 
 ![Alternate-codec robustness](../figures/fig20_alternate_codec_robustness.png)
 
-**Figure 6.** Original- and alternate-codec effects under one simultaneous eight-effect family.
+**Figure 7.** Original- and alternate-codec effects under one simultaneous eight-effect family.
 All point estimates preserve direction; the alternate-codec upper inversion is the sole interval
 crossing zero.
 
-### 4.9 Privileged pose-indexed raw-memory reference
+### 4.8 Privileged pose-indexed raw-memory reference
 
 E8a asks how much error remains when access is made explicit. It builds a frozen world-coordinate
 mosaic from raw warm-up pixels and queries it using exact saved viewport positions. It receives
@@ -493,13 +524,14 @@ value of explicit access from the measured neural package frontier.
 
 ![Privileged pose-indexed raw memory](../figures/fig21_pose_indexed_raw_memory.png)
 
-**Figure 7.** Left: stored-world and future-crop coverage as the raw warm-up span increases.
+**Figure 8.** Left: stored-world and future-crop coverage as the raw warm-up span increases.
 Right: the registered simultaneous family. All six lower bounds are positive; the four circular
 neural-to-K48 effects determine the clean ceiling verdict.
 
-### 4.10 External boundary: persistent-object long Moving-MNIST
+### 4.9 External boundary: persistent-object long Moving-MNIST
 
-E6 tests whether the reach–fidelity account survives a recognizable synthetic dataset with
+E6 tests whether the reach–fidelity account survives the recognizable Moving-MNIST setting
+[Srivastava et al., 2015], with
 persistent digit identities, collisions and 300-frame self-fed prediction. The comparison uses
 three training seeds, a 48-frame warm-up, matched 1,152-token flat and hierarchical packages, an
 official train/test glyph split, generator-saved object identity and trajectory, one-to-one
@@ -512,6 +544,14 @@ studentized max-statistic clip-cluster family.
 | 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
 | 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
 | 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
+
+The absolute values are important because both packages remain far from solved:
+
+| Seed | Arm | Union MSE ↓ | Trajectory error ↓ | Identity accuracy ↑ | Object coverage ↑ |
+|---:|---|---:|---:|---:|---:|
+| 0 | flat / hierarchy | 0.6861 / 0.6759 | 42.19 / 39.71 | 0.214 / 0.138 | 0.619 / 0.650 |
+| 1 | flat / hierarchy | 0.6901 / 0.6779 | 40.20 / 38.77 | 0.244 / 0.188 | 0.646 / 0.662 |
+| 2 | flat / hierarchy | 0.6931 / 0.6763 | 43.79 / 39.65 | 0.222 / 0.158 | 0.599 / 0.649 |
 
 The registered verdict is **MIXED_BOUNDARY**. Union-mask error favors hierarchy on every seed.
 Trajectory and coverage favor hierarchy cleanly on seeds 0 and 2 and remain directionally
@@ -529,7 +569,7 @@ LoopMom's exact observability mechanism or evidence of natural-video transfer.
 
 ![Persistent-object long Moving-MNIST boundary](../figures/fig22_phasec_v2_boundary.png)
 
-**Figure 8.** Registered E6 simultaneous effects. Positive favors hierarchy. The support and
+**Figure 9.** Registered E6 simultaneous effects. Positive favors hierarchy. The support and
 continuity endpoints separate from identity fidelity, producing the preregistered mixed verdict.
 
 ## 5. Reproducibility and evidence availability
@@ -597,8 +637,9 @@ robust directional head shift; regression remains a sign-changing scope boundary
 equivalence result. E7c further shows that all four central diffusion directions survive the
 registered fourfold NFE range and sampler-seed variations as point estimates. Three contrasts are
 simultaneous-CI clean throughout; the upper flat-fidelity inversion is directionally retained but
-family-wise unresolved at two alternate sampler seeds. Because the article retains configuration-level B1 wording, the fixed-target
-control is not required for its present causal scope. E5a failed its preregistered late-inversion
+family-wise unresolved at two alternate sampler seeds. Because the article retains
+configuration-level B1 wording, the fixed-target control is not required for its present causal
+scope. E5a failed its preregistered late-inversion
 replication rule, so trust is removed from the title and the gated E5b diagnostic programme is not
 run. The three-seed early benefit and seed-0-only late failure are reported together. This
 outcome-independent narrowing is part of the contribution.
@@ -621,17 +662,27 @@ being able to address and reuse it reliably.
 
 ## References
 
+- Chandratreya, I. P., Charatan, D., Van Hoorick, B., Zakharov, S., Guizilini, V., Isola, P.,
+  and Sitzmann, V. (2026). *MilliVid: Hierarchical Latents for Long-Range Consistency in Video
+  Generation*. arXiv:2606.09056.
 - Chen, H., Zhou, K., Hua, H., et al. (2026). *MemoBench: Benchmarking World Modeling in
   Dynamically Changing Environments*. arXiv:2606.27537.
 - Harvey, W., Naderiparizi, S., Masrani, V., Weilbach, C., and Wood, F. (2022). Flexible
   Diffusion Modeling of Long Videos. *NeurIPS 35*.
+- Ho, J., Jain, A., and Abbeel, P. (2020). Denoising Diffusion Probabilistic Models.
+  *NeurIPS 33*.
 - Huang, X., Li, Z., He, G., Zhou, M., and Shechtman, E. (2025). Self Forcing: Bridging the
   Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS 2025*.
 - Oshima, Y., Iwasawa, Y., Suzuki, M., Matsuo, Y., and Furuta, H. (2025). *WorldPack:
   Compressed Memory Improves Spatial Consistency in Video World Modeling*. arXiv:2512.02473.
+- Peebles, W., and Xie, S. (2023). Scalable Diffusion Models with Transformers. *ICCV 2023*.
 - Peng, Z., Ma, J., Sun, H., et al. (2026). *Compression and Retrieval: Implicit Memory
   Retrieval for Video World Models*. arXiv:2606.23105.
 - Saxena, V., Ba, J., and Hafner, D. (2021). Clockwork Variational Autoencoders. *NeurIPS 34*.
+- Song, J., Meng, C., and Ermon, S. (2021). Denoising Diffusion Implicit Models.
+  *ICLR 2021*.
+- Srivastava, N., Mansimov, E., and Salakhutdinov, R. (2015). Unsupervised Learning of Video
+  Representations using LSTMs. *ICML 2015*.
 - Wei, Z., Guo, X., Li, X., et al. (2026). *Geometry-Aware Implicit Memory for Video World
   Models*. arXiv:2606.02436.
 - Yan, W., Hafner, D., James, S., and Abbeel, P. (2023). Temporally Consistent Transformers for
@@ -642,24 +693,3 @@ being able to address and reuse it reliably.
   latent hierarchy*. arXiv:2212.14376.
 - Zhang, S., Zhang, Z., Huang, S., et al. (2026). *MBench: A Comprehensive Benchmark on Memory
   Capability for Video World Models*. arXiv:2606.00793.
-
-## Required pre-submission inserts
-
-- [x] integrate seed-2 trio and c2 with regime-correct wording;
-- [x] insert untouched-confirmation and metric-decomposition results;
-- [x] remove trust from the title after E5a returned `NOT_REPLICATED`;
-- [x] complete the five-seed E4a/E4b factorial; retain stable diffusion packaging and demote the
-      directional head-shift claim;
-- [x] integrate E7c as directional sampler/NFE robustness, including the two unresolved
-      upper-inversion intervals and checkpoint-only scope;
-- [x] integrate E7a as whole-codec directional robustness, including the unresolved
-      alternate-codec upper inversion;
-- [x] integrate E8a as a privileged exact-pose raw-memory ceiling, explicitly separated from
-      token-matched neural comparisons;
-- [x] integrate E6 as a valid persistent-object external boundary with the complete mixed
-      support/continuity-versus-identity result;
-- [x] retain configuration-only B1 wording; no fixed-target causal claim is made;
-- [x] replace reference keys with verified primary citations;
-- [x] generate configuration/cost, claim/evidence and prior-art tables from artifacts;
-- [x] move EBT, reversibility and B3 detail to supplement/dissertation;
-- [x] complete the evidence archive and reproducibility appendix.

@@ -1,17 +1,8 @@
-# 00 — FRONT MATTER (rewrite, phase 1)
-
-> **Status:** authoritative English working text for the dissertation front matter. No translation
-> pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only. Author-input
-> spots are marked **[AUTHOR: …]**.
-> **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§§3, 5, 6, 8 — author decisions Q1–Q7
-> override everything), `docs/draft/ARTICLE_SKELETON.md`, `docs/draft/CH2_TESTBED.md`,
-> `docs/draft/CH3_MECHANISM.md`. Every number below is traceable to those files; none are invented.
-> **Convention:** one canonical abstract text is written once (§2). The UA АНОТАЦІЯ is its
-> translation; the EN ABSTRACT is this text as-is. This prevents UA/EN drift.
+# Front Matter
 
 ---
 
-## 1. Title page (replacement fields)
+## 1. Title Page
 
 - **Topic (UA, approved, verbatim — fixed):** «Системний аналіз та інтелектуальні технології
   консистентного моделювання процесів ієрархічної генерації відеоданих»
@@ -19,28 +10,30 @@
   Hierarchical Video Data Generation Processes*
 - Candidate: Kulyk Leonid Ruslanovych. Specialty 124 «System Analysis», field 12 «Information
   Technologies». Supervisor: Prof. O. B. Mokin, Dr. Sc. (Eng.). VNTU, Vinnytsia — 2026.
-- UDC: 004.054:[004.032.26+004.85] **[AUTHOR: confirm the UDC still fits the new topic (it was
-  chosen for the old energy-based framing); also fix the stray opening «-quote typo before
-  "праця на правах рукопису" on the current title page].**
-- All occurrences of the old topic wording («…інформаційні технології… ітеративної генерації…»)
-  are replaced by the approved wording above, including the degree line inside the abstract.
+- UDC: 004.054:[004.032.26+004.85] **[AUTHOR: confirm the UDC classification and the title-page
+  quotation against the approved institutional record.]**
 
 ---
 
-## 2. АНОТАЦІЯ (UA) / ABSTRACT (EN) — canonical replacement text
+## 2. Abstract
 
-> [UA-PASS: the UA version opens with the standard formula «Кулик Л. Р. …
-> — Кваліфікаційна наукова праця на правах рукопису. Дисертація на здобуття наукового ступеня
-> доктора філософії за спеціальністю 124 «Системний аналіз». — Вінницький національний технічний
-> університет, Вінниця, 2026.» The EN version mirrors it as in the current draft.]
 
 The purpose of the dissertation research is to improve the efficiency and the temporal and spatial
 consistency of hierarchical video data generation processes through the development of systems
 analysis methods, mathematical models, and intelligent information technologies. The dissertation
 addresses the actual scientific and technical problem of systems analysis, mathematical modeling,
 and uncertainty resolution in complex multi-step systems for the hierarchical generation of
-spatio-temporal data. [UA-PASS: «розкриття невизначеності» is the spec-124 idiom for "uncertainty
-resolution".]
+spatio-temporal data.
+
+The systems contribution separates two resource bottlenecks. Hierarchical multi-rate context
+packaging reduces the state memory required to reach distant history; reversible temporal
+optimization reduces the activation tape required to train long computations. In conceptual
+form, these act on different terms of
+$M_{\mathrm{system}}=M_{\mathrm{parameters}}+M_{\mathrm{optimizer}}+
+M_{\mathrm{context/state}}+M_{\mathrm{activations}}+M_{\mathrm{transient}}$.
+They are complementary dissertation strands rather than one causally integrated pipeline. Their
+shared prescription is to compress what must be remembered and reconstruct what need not be
+stored.
 
 The introduction presents the relevance and justification of the research topic in the context of
 systems analysis requirements; describes the purpose, object, subject, and tasks of the research;
@@ -48,7 +41,7 @@ states the scientific novelty; shows the connection of the dissertation with res
 states the practical significance of the results, their approbation and publications; and
 describes the personal contribution of the applicant.
 
-### Chapter-by-chapter summary (new structure per DISS_DIGEST §6)
+### Chapter-by-Chapter Summary
 
 **Chapter 1** performs a systems analysis of hierarchical video data generation processes and the
 criteria of their consistency. Generative video models are analyzed as open complex dynamic
@@ -85,8 +78,7 @@ fp64; $8.4\times10^{-13}$ for the stochastic scheme), and activation memory in a
 is $O(1)$ in $K$ — together with a three-axis applicability taxonomy (reversibility across depth,
 time, and computation) that delimits where reversibility pays (long temporal rollouts) and where
 it cannot (inner optimization loops, where the achievable saving versus gradient checkpointing is
-0.26% measured, with an analytic band of 0.6–1.0%). [UA-PASS: «часонезалежне зворотне розповсюдження помилки», «оборотні
-перетворення», «збереження шуму».]
+0.26% measured, with an analytic band of 0.6–1.0%).
 
 **Chapter 3** develops a mathematical model of multi-stream video sequence generation that
 packages long-range context across temporal rate and spatial resolution. The state space is a compact two-level hierarchical latent
@@ -104,9 +96,7 @@ with a frozen pixel decoder. The chapter also gives the formal
 definition of the *memory-horizon looping testbed* and its re-entry-stratified evaluation
 protocol — a criterion-driven measurement instrument in which the hardness of every predicted
 frame ("recoverable only from memory") is an exactly computable analytic label — and derives the
-memory and complexity estimates of the rollout algorithm. [UA-PASS: «грубий (верхній) рівень із
-довготривалою пам'яттю», «циклічний тестовий стенд», «стратифікація за складністю повторного
-входження».]
+memory and complexity estimates of the rollout algorithm.
 
 **Chapter 4** presents the experimental research and practical application of the developed
 methods and technologies. The information base includes procedurally synthesized datasets (2D
@@ -124,19 +114,23 @@ versus 0.0664; on the hard, genuinely generative subset 0.1549 versus 0.1808), a
 two-sided capability study of Energy-Based Transformers using the official implementation — a
 characterized negative result: one published recipe yields a stably mis-ordered energy landscape,
 the other repairs the ordering, yet gradient descent from the prescribed initialization does not
-reach structured outputs at the scale reachable in this work. For the developed hierarchical
-model, single-step evaluation shows that spatially compressed long history reduces the error on hard
-re-entry frames by approximately 13% (two seeds, confidence intervals excluding zero), a
-capability that emerges only under a larger optimization budget (null at 6,000 steps, win at
-20,000; budget-matched schedules); in 152-frame autoregressive rollouts (after a 48-frame
-ground-truth warm-up) the hierarchical model beats a flat model matched in context-token budget
-precisely beyond the horizon of the flat context window (null at every horizon-hardness bin below
-horizon 25, a win with confidence interval excluding zero at every bin from horizon 25 onward),
-and the overall window ordering confirms that longer memory windows strictly improve rollout error
-(foreground error 0.1848 versus 0.2038 versus 0.2260 for the 48-frame coarse-memory, token-matched
-flat, and short-window arms respectively). The constant-memory rollout capability is demonstrated
-by measurement: classical backpropagation through time exhausts GPU memory at rollout depth
-$K=120$, while the reversible implementation remains at approximately 1.1–1.2 GB through $K=160$.
+reach structured outputs at the scale reachable in this work. On a hash-pinned untouched LoopMom
+holdout, the registered pair-specific reach effects at the 896-token operating point are +0.0980
+and +0.0914 across two training seeds, and the whole-population effects are +0.0474 and +0.0436.
+A simultaneous max-statistic family confirms hierarchical packaging at 896 and 1,152 context
+tokens, leaves 1,792 unresolved, and confirms flat full-resolution context at 2,432 and 3,072
+tokens. The frozen latent interface therefore supplies the same nominal 48-frame reach with
+2.7–3.4 times fewer context tokens in the two confirmed hierarchical packages, while the
+upper-budget reversals show that compression is not free. All 20 registered sampler/NFE point
+estimates retain their direction, with 18 simultaneous lower bounds above zero; an independently
+trained continuous codec retains all four registered directions, although the 2,432-token
+inversion becomes family-wise unresolved. A privileged pose-indexed raw-memory reference reaches
+foreground MSE 0.0494 and establishes a remaining explicit-access gap without constituting a
+token-matched competitor. On the persistent-object 48→300 Moving-MNIST boundary, hierarchy
+preserves spatial support and continuity better, whereas flat context preserves digit identity
+better. The constant-activation-memory capability is demonstrated separately: classical
+backpropagation through time exhausts GPU memory at rollout depth $K=120$, while the reversible
+implementation remains at approximately 1.1–1.2 GB through $K=160$.
 The practical application of the developed methods in the tasks of ORNETIKA LLC and in the
 educational process of VNTU is described (per the existing implementation acts, which cover the
 reversible-transformer method and entropy tokenization). [A2]'s published 2-D rotating-shape
@@ -164,7 +158,7 @@ The protected persistent-object long Moving-MNIST result further separates the a
 long-memory packaging preserves spatial support and continuity, whereas flat full-resolution
 context preserves fine digit identity.
 
-### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
+### 7 items, mapped 1:1 to the 7 tasks
 
 1. Characterized the process of hierarchical video data generation as a complex control system
    with inherent informational, structural-algorithmic, computational, and target uncertainties;
@@ -214,11 +208,10 @@ context preserves fine digit identity.
 
 The main results of the dissertation research are published in 10 scientific works: 3 articles in
 professional journals of Ukraine in specialty 124; 1 article indexed in the Scopus scientometric
-database; 6 conference abstracts. **[AUTHOR: per decision Q3 the publication list is unchanged for
-now; the donor (Isaienkov) list in the current draft must still be replaced wholesale with the
-real list — see §3 below.]**
+database; and 6 conference abstracts. The final bibliographic details of the fourth article and
+the six conference abstracts require the applicant's publication records.
 
-### Scientific novelty (the 4 rewritten items — canonical wording)
+### Scientific Novelty
 
 1. **For the first time**, a methodology for the systems analysis and evaluation of long-range
    memory in hierarchical video generation processes was developed — a purpose-built
@@ -233,12 +226,7 @@ real list — see §3 below.]**
    regimes bracketed by explicit token arithmetic; unlike existing evaluation practice, which aggregates
    prediction error without isolating memory-dependent content, the developed methodology makes
    the memory contribution of the packaging directly measurable and localizes the improvement of
-   temporal consistency to registered reach-differential populations. [UA-PASS:
-   «Вперше розроблено методологію … яка, на відміну від існуючих …, забезпечує …» genre formula.
-   Re-scoped 2026-07-07: the «вперше» is carried by the testbed methodology + matched-budget
-   demonstration (genuinely unclaimed), NOT by the coarse-memory architecture itself, which
-   §1.3.2 cites as adopted prior art (CW-VAE/MilliVid-class) — this removes the audit-flagged
-   self-contradiction.]
+   temporal consistency to registered reach-differential populations.
 
 2. **For the first time**, a method for the computationally efficient optimization of processes in
    multi-step iterative systems was developed based on reversible transformations for
@@ -253,26 +241,24 @@ real list — see §3 below.]**
    combinations), hierarchical consistency (alignment of structural levels), and trajectory
    consistency, the latter operationalized through autoregressive-rollout degradation metrics
    stratified by re-entry hardness, which allows a more comprehensive and measurable assessment of
-   the adequacy of complex generative systems. [UA-PASS: «удосконалено».]
+   the adequacy of complex generative systems.
 
 4. **Improved** the method for assessing the state of uncertainty of spatio-temporal data through
    their adaptive decomposition using N-dimensional rotary positional embedding and per-pixel
    entropy maps, which allows dynamic allocation of computational resources during the analysis of
    complex visual scenes.
 
-### Usefulness of the obtained results (implementation acts — kept as-is, they match reality)
+### implementation acts — kept as-is, they match reality
 
 - practical activities of **ORNETIKA LLC** (Kyiv): the developed information technology was used
   in designing intelligent systems for the analysis of spatio-temporal video data and anomaly
   detection in complex technical environments; the resource-efficient methods (TempVerseFormer)
   and adaptive entropy tokenization substantially reduced the computational cost of modeling long
   temporal sequences (implementation act of October 14, 2025);
-- the **educational process of VNTU** in the disciplines «Інформаційні технології моніторингу та
-  аналізу стану складних систем» and «Інтернет речей та інтелектуальний аналіз даних» for PhD
+- the **educational process of VNTU** in the disciplines *Information Technologies for Monitoring
+  and Analysing the State of Complex Systems* and *Internet of Things and Intelligent Data
+  Analysis* for PhD
   students of specialty 124 (implementation act of September 19, 2025).
-
-*(Note: per DISS_DIGEST item 38, the acts mention only TempVerseFormer and entropy tokenization —
-no claims about the hierarchical model are added here.)*
 
 ### Practical significance
 
@@ -284,12 +270,9 @@ datasets were created for testing generation and optimization systems: 2D shapes
 and the looping memory-horizon testbed with recorded action tracks and analytic hardness labels
 (3,000 training clips × 100 frames; 500 test clips × 200 frames). The proposed technology can be
 applied to state estimation and prediction of future states of complex systems in technical,
-medical, and environmental monitoring. **[AUTHOR: per decision Q5 no copyright certificate has
-been filed — either delete the certificate sentence from the current draft or file a new
-registration under a title without "HVEBT" (e.g., «Комплекс програм для ресурсоефективної
-ієрархічної генерації відеоданих») and insert its number.]**
+medical, and environmental monitoring.
 
-### Keywords (replacement list)
+### Keywords
 
 systems analysis; complex system; mathematical modeling; intelligent information technology;
 decision making; neural network; deep learning; artificial intelligence; video data generation;
@@ -298,19 +281,11 @@ horizon**; **temporal consistency**; **context packaging**; **reversible transfo
 **diffusion refinement core**; autoregressive prediction; state estimation; forecasting;
 consistency.
 
-*(Dropped per instructions: «енергетичні моделі», «марковські ланцюги», and all VQ/discrete-space
-terms; added the six new-topic terms in bold.)* [UA-PASS: ієрархічна генерація відеоданих;
-компактні ієрархічні приховані простори станів; горизонт пам'яті; часова консистентність;
-довготривала пам'ять грубого рівня; оборотні перетворення; дифузійне ядро ітеративного
-уточнення.]
-
 ---
 
-## 3. СПИСОК ПУБЛІКАЦІЙ ЗДОБУВАЧА — replacement note
+## 3. Applicant's Publications
 
-The entire publication list in the current draft (items [1]–[10]) belongs to Ya. O. Isaienkov (the
-donor template) and must be replaced wholesale with the applicant's real list. Per decision Q3 the
-real list itself is unchanged for now; canonical article labels used throughout the rewrite:
+The following stable labels are used throughout the dissertation:
 
 - **[A1]** — Kulyk L. R., Mokin O. B. «Scaling Video Prediction with Spatio-Temporal Patches»,
   *Visnyk of Vinnytsia Politechnical Institute*, 2025, No. 5, pp. 129–139,
@@ -324,25 +299,21 @@ real list itself is unchanged for now; canonical article labels used throughout 
 - **[A4]** — the fourth article (in finalization): a controlled causal study of long-span
   context packaging (rate × resolution × depth) for long-horizon video prediction — the
   memory-horizon testbed, the matched-token-budget frontier with measured edges, the shape study,
-  the matched-capacity, matched-NFE mechanism study including the EBT characterized negative, and the
-  reversibility theory (non-core supporting material per the 2026-07-10 triage). **[AUTHOR: target venue and status by
-  defense.]**
-- 6 conference theses. **[AUTHOR: identify all six; DSMSI-2023 participation needs verification
-  per DISS_DIGEST Q3.]**
+  the matched-capacity, matched-NFE mechanism study including the EBT characterized negative, and
+  the supporting reversibility theory. **[AUTHOR: supply target venue and status.]**
+- Six conference theses. **[AUTHOR: supply the six verified bibliographic entries.]**
 
 ---
 
-## 4. ПЕРЕЛІК УМОВНИХ ПОЗНАЧЕНЬ ТА СКОРОЧЕНЬ — replacement list
-
-The current list is a GAN-era donor template; replace with the abbreviations actually used:
+## 4. Symbols and Abbreviations
 
 | Abbreviation | Expansion |
 |---|---|
-| ВНТУ | Вінницький національний технічний університет |
-| AE | Autoencoder (автокодувальник) |
-| AR | Autoregressive (авторегресійний) |
+| VNTU | Vinnytsia National Technical University |
+| AE | Autoencoder |
+| AR | Autoregressive |
 | BPTT | Backpropagation Through Time |
-| CI | Confidence Interval (довірчий інтервал) |
+| CI | Confidence Interval |
 | CRN | Common Random Numbers |
 | DDIM | Denoising Diffusion Implicit Models |
 | DDPM | Denoising Diffusion Probabilistic Models |
@@ -350,10 +321,10 @@ The current list is a GAN-era donor template; replace with the abbreviations act
 | EBM | Energy-Based Model |
 | EBT | Energy-Based Transformer |
 | EMA | Exponential Moving Average |
-| fg-MSE | Foreground Mean Squared Error (середньоквадратична помилка переднього плану) |
+| fg-MSE | Foreground Mean Squared Error |
 | GPU | Graphics Processing Unit |
 | LPIPS | Learned Perceptual Image Patch Similarity |
-| MCMC | Markov Chain Monte Carlo (у розділі механізмного дослідження) |
+| MCMC | Markov Chain Monte Carlo |
 | MSE | Mean Squared Error |
 | NFE | Number of Function Evaluations |
 | OOM | Out of Memory |
@@ -362,23 +333,17 @@ The current list is a GAN-era donor template; replace with the abbreviations act
 | V-BLT | Video Byte-Latent Transformer |
 | VAE | Variational Autoencoder |
 
-**[AUTHOR: extend after the chapter rewrites settle; the УМОВНІ ПОЗНАЧЕННЯ list must contain only
-symbols actually used in the final text.]**
-
 ---
 
-## 5. ЗМІСТ (table of contents skeleton — new chapter titles per DISS_DIGEST §6)
+## 5. Table of Contents
 
-- ВСТУП
-- РОЗДІЛ 1. Системний аналіз процесів ієрархічної генерації відеоданих та критеріїв їх
-  консистентності
-- РОЗДІЛ 2. Математичні методи оцінювання невизначеності та ресурсоефективного моделювання
-  багатокрокових відеопроцесів
-- РОЗДІЛ 3. Ієрархічна математична модель генерації відеопослідовностей із довготривалою
-  пам'яттю грубого рівня
-- РОЗДІЛ 4. Експериментальне дослідження та практичне застосування
-- ВИСНОВКИ · СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ · ДОДАТКИ (публікації; акти впровадження; конфігурації
-  експериментів; міст до OpenSTL/MMNIST)
-
-*(Section-level TOC is regenerated after the chapter rewrites; appendices А/Б of the donor draft —
-dental X-ray content — are removed entirely.)*
+- Introduction
+- Chapter 1. Systems Analysis of Hierarchical Video Generation and Its Consistency Criteria
+- Chapter 2. Mathematical Methods for Uncertainty Estimation and Resource-Efficient Modelling of
+  Multi-Step Video Processes
+- Chapter 3. A Hierarchical Mathematical Model for Video Generation with Long Multi-Stream Context
+- Chapter 4. Experimental Evaluation and Practical Application
+- General Conclusions
+- References
+- Appendices: publications, implementation acts, experiment configurations, and the
+  OpenSTL/Moving-MNIST bridge

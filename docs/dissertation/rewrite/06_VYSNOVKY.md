@@ -1,45 +1,20 @@
-# 06 — ВИСНОВКИ (rewrite, phase 1)
-
-> **Status:** authoritative English working text of the full conclusions replacement (the old
-> draft was a literal "TEXT" stub). No translation pass is active; legacy **[UA-PASS: …]**
-> markers are unresolved genre notes. Author-input spots **[AUTHOR: …]** and citation spots
-> **[REF: …]** remain active.
-> **Sources of truth:** `docs/dissertation/rewrite/00_FRONT_MATTER.md` (the 7 results and 4
-> novelty items — the 7 numbered conclusions below mirror the front-matter results 1:1 against
-> the 7 tasks of `01_VSTUP.md`; the two files must stay in sync), `docs/draft/CH4_RESULTS.md`
-> (audited numbers, including the §4.5 E5a registered replication of 2026-07-15 — the seed-0
-> late inversion did not replicate at seeds 1–2),
-> `docs/SPATIAL_FACTORIAL.md` (incl. the FRONTIER COMPLETION pre-registration),
-> `docs/draft/T7_BRIDGE.md` (the MEASURED OpenSTL bridge — authoritative for the bridge numbers
-> in result 7), `docs/draft/VALIDITY_AUDIT.md`,
-> `docs/dissertation/rewrite/03_ROZDIL2.md` (reversibility receipts), `05_ROZDIL4.md`
-> (chapter-level conclusions these generalize), `docs/dissertation/DISS_DIGEST.md` §6 («ВИСНОВКИ —
-> 7 results restated against the 7 rewritten tasks; honest scoping») and §8 author decisions.
-> **Genre note:** ВИСНОВКИ opens with the standard resolution formula, gives the numbered main
-> results mapped to the tasks, then practical significance and prospects. No new claims appear
-> here — every number is a restatement of Chapters 2–4.
-
----
-
-> **Evidence-status correction, 2026-07-11.** The approved topic, seven tasks and the content of
-> [A1]–[A3] are preserved. Conclusions about [A4] use the scoped claim ledger: context packaging is
-> manipulated; reach, fidelity and trust organize interpretation; legacy Phase C and universal-law
-> wording are excluded. Corrected E6 is separately included as the valid persistent-object
-> `MIXED_BOUNDARY`. The programme is layered and is not described as one fully integrated
-> executable pipeline unless the demonstrator is completed.
-
-# ВИСНОВКИ
-
-*(EN: General conclusions.)*
+# General Conclusions
 
 In the dissertation research, the actual scientific and applied problem of systems analysis,
 mathematical modeling, and uncertainty resolution in complex multi-step systems of hierarchical
 video data generation has been solved: methods of systems analysis, mathematical models, and
 intelligent information technologies have been developed that improve the efficiency and the
 temporal and spatial consistency of hierarchical video generation processes. The purpose of the
-research has been achieved, and all seven of the set tasks have been fulfilled. [UA-PASS: opening
-formula «У дисертаційній роботі розв'язано актуальну науково-прикладну задачу…; мету дослідження
-досягнуто, усі поставлені задачі виконано.»]
+research has been achieved, and all seven of the set tasks have been fulfilled.
+
+The resource contribution is best understood along two orthogonal memory axes. The hierarchical
+context-packaging model reduces the context/state memory needed to reach task-relevant history:
+distant frames can be stored at a cheaper spatial or temporal rate, while a short recent tail
+retains detail. TempVerseFormer reduces the activation memory needed to optimize long temporal
+computations by reconstructing intermediate states during the backward pass. These are
+complementary dissertation results, not one experimentally integrated architecture and not a
+claim that their savings multiply. Together they support one systems principle: **compress what
+must be remembered; reconstruct what need not be stored**.
 
 The main scientific and practical results of the dissertation research are as follows.
 
@@ -196,7 +171,7 @@ motivating the scoped empirical regularities of §4.8 (ledger:
 superiority: allocate context tokens to cover the task-relevant span with the least lossy family
 that achieves it; spend the remainder on resolution and recency; add depth only where the data
 contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations,
-3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Розділ 4
+3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Chapter 4
 §§4.6.3–4.6.5 carry the pre-registered protocols; per the shell end-state rule no projected
 result is claimed here). Measured in full, by contrast, is the **token-budget frontier
 completion** (hier-rich at 3,072 tokens loses to flat-long, −0.0131
@@ -238,9 +213,7 @@ measurement); (iii) spatial abstraction is not an intrinsically better represent
 verdict is economic and head-conditional; and (iv) the **combined-optimum readout** (regression
 head + coarse history + long window: 0.1682 at 1,152 tokens; at the short window, 0.2008 at 672
 tokens versus the diffusion flat control's 0.2038 at 1,152) is reported as a *measured arm
-ordering* within the evaluated campaign, **not** as a factorial-interaction claim. [UA-PASS:
-«охарактеризовані негативні результати як наукові результати рівного епістемічного рангу»;
-«виміряне впорядкування конфігурацій, а не факторне твердження».]
+ordering* within the evaluated campaign, **not** as a factorial-interaction claim.
 
 **The practical significance** of the obtained results lies in the development of a complex of
 algorithms and software-information tools implementing the developed intelligent information
@@ -254,9 +227,7 @@ in the practical activities of ORNETIKA LLC (implementation act of October 14, 2
 educational process of VNTU (implementation act of September 19, 2025), per the acts covering the
 reversible-transformer method and entropy-based tokenization. The proposed technology can be
 applied to state estimation and prediction of future states of complex systems in technical,
-medical, and environmental monitoring. **[AUTHOR: per decision Q5, no copyright certificate has
-been filed — do not mention one; if a new registration is filed before defense, insert its title
-and number here and in the front matter.]**
+medical, and environmental monitoring.
 
 **Prospects for further research** follow directly from the measured boundary conditions rather
 than from speculation. First, **self-fed reliability across tasks and seeds**: single-step
@@ -275,31 +246,3 @@ These directions require no revision of the present results: they extend a bound
 stated only for its measured testbeds and configurations.
 
 ---
-
-## Working notes (not part of the text)
-
-- The 7 numbered conclusions mirror `00_FRONT_MATTER.md` «Main scientific and practical results»
-  items 1–7 one-to-one (which in turn map 1:1 to the 7 tasks of `01_VSTUP.md`); wording drift
-  between the three files must be resolved toward the measured Chapter 4 evidence and this
-  post-reframe conclusions file; front matter is a synchronized output, not the authority.
-- Conclusion 5 carries the terminal E5a negative replication: retain the three-seed early benefit,
-  state that the late inversion is seed-0-only, and do not restore a trustworthy-memory law.
-- All CIs are 95% paired clip-level cluster bootstrap unless the chapter text discloses otherwise
-  (single-step gates: see §4.3.1 design-effect widening; §4.5.4 sample-iid disclosure).
-- Deliberately absent per the rules: any capability headline for operating point B (the study
-  closed RED); any factorial-interaction reading of the combined optimum; any new KTH
-  *claim* (the KTH, 2D/3D and MMNIST-CIFAR suites are explicitly future protocols, while TaxiBJ
-  is reported only as the measured negative transfer result); any "competitive with the
-  OpenSTL leaderboard on aggregate MSE" phrasing (refuted by measurement: 180.91 vs SimVP 26.69);
-  the copyright-certificate sentence.
-- Result 7's generalization boundary is resolved in sync with §§4.6.2a–4.6.7 of
-  `05_ROZDIL4.md`: OpenSTL connectivity was verified, short Moving-MNIST met the protocol anchor
-  but was not competitive with the reference leaderboard, valid long Moving-MNIST returned the
-  mixed support/continuity-versus-identity boundary, TaxiBJ was a measured negative transfer,
-  and the remaining suites are future work. The frontier clause is RESOLVED (measured
-  2026-07-07 and confirmed on E2): hierarchy is family-wise confirmed at 896/1,152, 1,792 is
-  unresolved, and flat is family-wise confirmed at 2,432/3,072. Use tested-bracket wording only;
-  do not restore an interval, exact edge or unique-crossing claim. E7c adds directional
-  sampler/NFE robustness and E7a adds directional whole-codec robustness, both with the
-  upper-inversion precision qualification. E8a adds a clean but privileged explicit-access
-  ceiling and must remain outside token-matched model comparisons.

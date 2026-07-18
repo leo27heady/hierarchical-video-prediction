@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or its evaluation protocol, cite the software and the associated reach–fidelity article."
+title: "Hierarchical Video Prediction: Controlled Context-Packaging Experiments"
+type: software
+version: 0.3.0
+date-released: 2026-07-18
+authors:
+  - family-names: Kulyk
+    given-names: Leonid
+license: MIT
+abstract: >-
+  Research software for controlled studies of how bounded video-memory context should be
+  packaged across temporal rate, spatial resolution and depth, with construct-valid frame,
+  persistent-object and reach-differential evaluation.
+keywords:
+  - video prediction
+  - hierarchical memory
+  - context packaging
+  - long-horizon generation
+  - reproducible research

@@ -1,38 +1,6 @@
-# 03 — РОЗДІЛ 2 (rewrite, phase 1)
+# Chapter 2 — Mathematical Methods for Uncertainty Estimation and Resource-Efficient Modelling of Multi-Step Video Processes
 
-> **Status:** authoritative English working text of the full Chapter 2 replacement. No translation
-> pass is active. The archival Ukrainian original (`scratchpad/diss/diss_full.md`, РОЗДІЛ 2) is
-> untouched.
-> Genre spots are marked **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**, unresolved
-> literature citations **[REF: …]**.
-> **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§1 РОЗДІЛ 2 TOC, §3 items 22–25, §6
-> НОВИЙ РОЗДІЛ 2, §8 decisions Q1/Q2/Q5), `docs/dissertation/rewrite/01_VSTUP.md` (fixed
-> vocabulary), `docs/THEORY_CHAPTER_D.md` (T1–T4 measured numbers),
-> `docs/draft/ARTICLE_SKELETON.md` §5 + T6a/T6b (frontier table, taxonomy),
-> `docs/FINAL_ARTICLE_REVIEW_2026-07-02.md` §1-Q3 (inner-loop accounting). Every number below is
-> traceable to those files; none are invented.
-> **What changed vs the original chapter (per DISS_DIGEST):** §2.1 HVEBT-energy contrast
-> retargeted (item 22); §2.2 "system significance for HVEBT" retargeted to the hierarchical model
-> of Chapter 3 (item 23); §2.4 closing bridge («Зв'язок із марковською оптимізацією в енергетичних
-> моделях», the T↔K isomorphism over-claim) **replaced** by the new closing section (item 24);
-> §2.5 conclusions rewritten (item 25); Table 2.1 checkpointing entry fixed to
-> $O(\sqrt{T}\cdot L\cdot D)$. Everything else survives faithfully (~90% per §6). "HVEBT" naming
-> is dropped everywhere (decision Q5). Numbering 2.1–2.5 is preserved; new equations continue
-> from (2.14); new figures continue from Fig. 2.14.
-
----
-
-# РОЗДІЛ 2 — МАТЕМАТИЧНІ МЕТОДИ ОЦІНЮВАННЯ НЕВИЗНАЧЕНОСТІ ТА РЕСУРСОЕФЕКТИВНОГО МОДЕЛЮВАННЯ БАГАТОКРОКОВИХ ВІДЕОПРОЦЕСІВ
-
-*(EN: Chapter 2 — Mathematical Methods for Uncertainty Estimation and Resource-Efficient
-Modeling of Multi-Step Video Processes. Title per DISS_DIGEST §6; the old title «Математичне
-моделювання та розкриття невизначеності у багатокрокових генеративних системах» is superseded.
-[UA-PASS: keep the spec-124 idiom «розкриття невизначеності» inside the body text].)*
-
-## 2.1 Метод оцінювання просторово-часової невизначеності відеоданих на основі ентропійних показників
-
-*(EN: Method for estimating the spatio-temporal uncertainty of video data based on entropy
-metrics.)*
+## 2.1 Entropy-Based Estimation of Spatio-Temporal Video Uncertainty
 
 As established in the previous chapter during the decomposition of the complex system, the
 processes of hierarchical video data generation operate under a high level of multidimensional
@@ -213,8 +181,7 @@ trajectory-consistency criteria introduced in Chapter 1, which for the hierarchi
 model developed in Chapter 3 are operationalized in Chapter 4 through autoregressive-rollout
 degradation metrics stratified by re-entry hardness. The local entropy signal governs the
 allocation of computational resources within a frame, while the global criteria evaluate the
-consistency of the generated process as a whole. *(Replaces the old contrast with the "global
-energy criterion of HVEBT" per DISS_DIGEST item 22.)*
+consistency of the generated process as a whole.
 
 The successful substantiation and approbation of the entropy-based method for estimating
 spatio-temporal uncertainty opens the path to building fully resource-efficient video-generation
@@ -223,10 +190,7 @@ linear sequence of patches for transformer processing carries a serious mathemat
 the loss of structural topology. The next subsection is devoted to solving this problem by
 adapting and integrating multidimensional rotary positional encoding.
 
-## 2.2 Забезпечення структурної когерентності даних за допомогою багатовимірного позиційного кодування
-
-*(EN: Ensuring the structural coherence of data by means of multidimensional positional
-encoding.)*
+## 2.2 Structural Coherence through Multidimensional Positional Encoding
 
 During the transformation of a multidimensional spatio-temporal information array into a form
 suitable for processing by the model, the primary topology of the complex system is destroyed.
@@ -357,10 +321,7 @@ plays a decisive role in ensuring *hierarchical consistency* in the hierarchical
 model developed in Chapter 3. In multi-level architectures, a problem of resolving structural
 uncertainty arises between different levels of abstraction: for example, how to correctly
 transfer information between a fine level with a dense token grid (e.g., $32 \times 32$ tokens)
-and a coarse level with a sparser grid (e.g., $16 \times 16$ tokens). *(Retargeted per
-DISS_DIGEST item 23: the old text bound this role to the cascaded energy system "HVEBT"; the
-mechanism itself — coordinate scaling for cross-level attention — survives unchanged and now
-serves the inter-level context-signal transfer of the hierarchical model of Chapter 3.)*
+and a coarse level with a sparser grid (e.g., $16 \times 16$ tokens).
 
 For the correct routing of cross-attention signals, the coordinate systems of these levels must
 be mathematically aligned. The RoPE-ND method offers an elegant systemic solution through affine
@@ -378,10 +339,7 @@ apparatus an ideal candidate for integration into architectures with time-agnost
 backpropagation, where memory is the most valuable resource. The description of such an
 architecture and the corresponding optimization method is given in the following subsections.
 
-## 2.3 Метод оптимізації обчислювальних ресурсів складної системи при моделюванні багатокрокових часових процесів
-
-*(EN: Method for optimizing the computational resources of a complex system in the modeling of
-multi-step temporal processes.)*
+## 2.3 Resource Optimization for Multi-Step Temporal Modelling
 
 The improvement of the mathematical methods for uncertainty estimation (V-BLT) and structural
 coherence (RoPE-ND) considered in the previous subsections substantially raises the quality of
@@ -550,10 +508,7 @@ reversibility into an effective training algorithm for computing the control gra
 loss function. Exactly how the reversibility property is exploited by the algorithm to remove the
 computational uncertainty is considered formally in the next subsection.
 
-## 2.4 Математичне обґрунтування часонезалежного зворотного розповсюдження помилки на основі оборотних перетворень
-
-*(EN: Mathematical substantiation of time-agnostic backpropagation based on reversible
-transformations.)*
+## 2.4 Time-Agnostic Backpropagation through Reversible Transformations
 
 Solving the problem of computational uncertainty — the critical deficit of operating memory in
 the optimization of iterative and temporal systems — requires a transition from classical
@@ -668,11 +623,6 @@ developed method against the existing approaches.
 | Gradient checkpointing | $O(\sqrt{T} \cdot L \cdot D)$ | $\approx 1.5\,C$ | $\pm 10^{-6}$ |
 | Developed method (time-agnostic BP) | $O(L \cdot D) \sim O(1)$ in $T$ | $2\,C$ | $\pm 10^{-6}$ |
 
-*(The checkpointing memory entry is corrected from the original draft's $O(T \cdot L \cdot D)$ to
-the standard $O(\sqrt{T} \cdot L \cdot D)$ segment schedule, per DISS_DIGEST §5; with the
-recursive schedule it is $O(\log T)$ memory at $O(T \log T)$ compute — [REF: Chen et al. 2016;
-Griewank & Walther, treeverse].)*
-
 ![GPU memory consumption versus prediction horizon](../../figures/fig57_tempverse_memory_published.png)
 
 **Figure 2.12 — GPU memory consumption versus prediction horizon.** Published TempVerseFormer
@@ -710,17 +660,7 @@ then reconstruct activations and compute gradients only for a narrow target segm
 $[T - K_{\text{opt}},\; T]$, ignoring the rest of the chain. This focuses the optimization on the
 relevant portions of the trajectory with zero memory cost for the skipped stages.
 
-### Узагальнення на стохастичні рекурентності та межі застосовності оборотних обчислень
-
-*(EN: Extension to stochastic recurrences and the applicability boundary of reversible
-computation. This closing section **replaces** the original bridge «Зв'язок із марковською
-оптимізацією в енергетичних моделях» — the claim that the graph isomorphism between the temporal
-chain $T$ and a $K$-step MCMC/Langevin optimization chain makes time-agnostic backpropagation the
-"critical foundation" of an energy-based cascade. Per DISS_DIGEST item 24, that bridge was an
-over-claim: the isomorphism of the graph *structure* is valid, but the memory accounting on the
-inner-optimization axis is opposite — see part (iv) below, which proves it rigorously. The
-replacement turns the bridge into a scoping result: it establishes exactly where reversible
-computation pays and where it provably cannot.)*
+### Extension to Stochastic Recurrences and Limits of Reversible Computation
 
 The time-agnostic backpropagation method was substantiated above for *deterministic* transition
 functors (2.13). The hierarchical video generation model developed in Chapter 3, however, is a
@@ -949,12 +889,7 @@ feasibility Chapter 4 demonstrates by direct memory measurement (the validated C
 itself is trained single-window and does not presuppose it) — and closes, on the record, the
 axis where it is not.
 
-## 2.5 Висновки до розділу
-
-*(EN: Conclusions to the chapter. Rewritten per DISS_DIGEST item 25: items 1–4 updated lightly —
-retargeted forward references, corrected Table 2.1 — and item 5 replaced: the old «інтеграція до
-MCMC-оптимізації усуває головний системний бар'єр… відкриваючи шлях до HVEBT» claim is
-superseded by the store-the-noise extension + frontier + taxonomy scoping.)*
+## 2.5 Chapter Conclusions
 
 In the second chapter of the dissertation, a complex of mathematical methods was developed and
 substantiated for resolving the structural, informational, and computational uncertainties in
@@ -1011,30 +946,6 @@ multi-step video generation systems. The main results are as follows.
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
 (§§2.3–2.4), and the extension to stochastic recurrences with the three-axis applicability
 taxonomy in **[A4]**. These stable labels are bound mechanically to the final numbered publication
-list; the donor-template numbering is not reused.
+list.
 
 ---
-
-## Figure inventory (old chapter → rewrite)
-
-| Fig. | Content | Disposition |
-|---|---|---|
-| 2.1 | BLT concept illustration | KEEP |
-| 2.2 | V-BLT architecture | KEEP |
-| 2.3 | V-BLT on 2D shape + entropy maps ([A1], published Fig. 7) | INSERTED (`fig59`) |
-| 2.4 | V-BLT on 3D polycube + entropy maps ([A1], published Fig. 8) | INSERTED (`fig60`) |
-| 2.5 | RoPE-ND visualization | KEEP |
-| 2.6 | Reversible block forward/reverse flows | KEEP |
-| 2.7 | Temporal chaining mechanism | KEEP |
-| 2.8 | TempVerseFormer global architecture | KEEP |
-| 2.9 | Forward-pass algorithm | KEEP |
-| 2.10 | Reverse-pass algorithm | KEEP |
-| 2.11 | Time-agnostic backprop flowchart | KEEP |
-| 2.12 | GPU memory vs trajectory length ([A2], published Fig. 13) | INSERTED (`fig57`) |
-| 2.13 | Iteration time vs trajectory length ([A2], published Fig. 14) | INSERTED (`fig58`) |
-| 2.14 | Memory-frontier panel (BPTT / checkpointing / reversible vs $K$) | **NEW** (from measured Panel-A numbers; skeleton F9) |
-| 2.15 | Three-axis reversibility taxonomy diagram | **NEW** (drawing; skeleton F11) |
-
-Tables: 2.1 (complexity — checkpointing entry **fixed** to $O(\sqrt{T} \cdot L \cdot D)$),
-2.2 (**NEW** — Lipschitz/perturbation-growth characterization), 2.3 (**NEW** — measured memory
-frontier).

@@ -1,39 +1,4 @@
-# 04 — РОЗДІЛ 3 (rewrite, phase 1)
-
-> **Status:** authoritative English working text of the full Chapter 3 replacement (the core model
-> chapter that replaces the old HVEBT chapter wholesale). No translation pass is active; legacy
-> **[UA-PASS: …]** markers are unresolved genre notes. Author-input spots **[AUTHOR: …]** and
-> citation spots **[REF: …]** remain active.
-> **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§3 items 26–34, §6 «НОВИЙ РОЗДІЛ 3»,
-> §8 decisions Q1/Q2/Q6/Q7), `docs/STAGE2_DESIGN.md` (pre-registered design + 4-frame-window
-> addendum), `hvp_rev/rhvd.py` (THE implementation this chapter describes), `hvp_rev/hier_convae.py`
-> (frozen 2-level conv-AE), `hvp_rev/faithful_nets.py` (tokenizer + adaLN-Zero blocks),
-> `hvp_rev/step1_mech.py` (latent standardization, metrics), `docs/draft/CH2_TESTBED.md` (testbed
-> formalization), `docs/dissertation/rewrite/01_VSTUP.md` (vocabulary).
-> **Disposition of the old Ch.3 (per DISS_DIGEST §3):** §3.1.1 (energy criterion) and §3.2 (energy
-> core, eqs. 3.6–3.14) are **CUT** here — their content moves, condensed, into the Ch.4 mechanism
-> study (§4.2) as the description of what was tested. §3.3 (Reversible MCMC) is **CUT** as a
-> contribution; one salvage paragraph survives in §3.3.3 below, pointing to the Ch.2 three-axis
-> taxonomy's negative branch. §3.1.3 (cross-level cross-attention) and §3.1.4 (unidirectional
-> stop-gradient control) are **SALVAGED and RETARGETED** in §§3.1.2–3.1.3. §3.4 (AR-prediction
-> skeleton: block-causal masking, autonomy, per-frame hierarchy) is **SALVAGED** as the skeleton of
-> §3.3, with the per-stage MCMC replaced by the actual generation procedure and every routing claim
-> mapped honestly onto what `hvp_rev/rhvd.py` does. The macro-first vs micro-first ordering
-> contradiction of the old chapter (digest item 30) is **FIXED** in §3.1.3. The
-> O(K·L·D)→O(D) vs O(K·T·L·D)→O(T·L·D) inconsistency (digest item 34) is **FIXED** by re-deriving
-> memory/complexity for the actual algorithm in §3.3.3. Old-figure dispositions: end of file.
-
----
-
-# РОЗДІЛ 3 — ІЄРАРХІЧНА МАТЕМАТИЧНА МОДЕЛЬ ГЕНЕРАЦІЇ ВІДЕОПОСЛІДОВНОСТЕЙ ІЗ ДОВГОТРИВАЛИМ БАГАТОПОТОКОВИМ КОНТЕКСТОМ
-
-> **[SUPERVISOR-GATE, packaging reframe 2026-07-10]:** proposed title above (multi-stream
-> long-span context — survives the B2 measurement); prior title «…ІЗ ДОВГОТРИВАЛОЮ ПАМ'ЯТТЮ
-> ГРУБОГО РІВНЯ» kept as fallback pending Prof. Mokin's sign-off. The coarse level remains
-> the concrete stream type of §3.1.1; it is no longer the chapter-title-level principle.
-
-*(EN: Hierarchical mathematical model of video-sequence generation with long-span
-multi-stream context.)*
+# Chapter 3 — A Hierarchical Mathematical Model for Video Generation with Long Multi-Stream Context
 
 The preceding chapters performed the decomposition of the video-generation system and developed
 the mathematical instruments for uncertainty estimation (entropy-based adaptive decomposition,
@@ -58,14 +23,11 @@ the systems-analysis methodology of specialty 124, the instrument is a deliverab
 with the model: it is what operationalizes the trajectory-consistency criterion of Chapter 1
 (§1.4.5) into an exactly computable, statistically disciplined measurement procedure.
 
-## 3.1 Формалізація ієрархічного прихованого простору станів
-
-*(Formalization of the hierarchical latent state space.)*
+## 3.1 Formalization of the Hierarchical Latent State Space
 
 The chapter's organizing object, defined here once and used throughout (full formalization in
 §3.3.5): a **context-stream family**. Each context stream is a triple
-$s_i = (r_i,\; k_i,\; n_i)$ — spatial resolution $r_i$, temporal stride $k_i$, and slot count $n_i$
-[UA-PASS: «потік контекстних токенів»: роздільна здатність, часовий крок, кількість слотів], and a system configuration is a set of such streams
+$s_i = (r_i,\; k_i,\; n_i)$ — spatial resolution $r_i$, temporal stride $k_i$, and slot count $n_i$, and a system configuration is a set of such streams
 consumed by one shared attention backbone. In this vocabulary: a **flat** configuration is a
 single fine-resolution stride-1 stream; a **temporal (rate) hierarchy** has two or more tick
 rates at any resolution; a **resolution hierarchy** has two or more spatial resolutions; a
@@ -74,9 +36,7 @@ with total sequence length and compute reported separately (§4.1). The two-leve
 coarse-plus-fine model developed next is the family's per-level-decodable resolution form — the
 dissertation's demonstrated system, not the family's definition.
 
-### 3.1.1 Дворівнева декомпозиція стану та заморожений автокодувальник
-
-*(Two-level state decomposition and the frozen autoencoder.)*
+### 3.1.1 Two-Level State Decomposition and Frozen Autoencoder
 
 Chapter 1 (§1.2.2) established the hierarchical decomposition of the visual scene state into
 levels of abstraction as the core systems-analysis remedy for the anomalies of flat latent
@@ -168,7 +128,7 @@ merely gradient-detached but entirely frozen): pixel-space rendering can never d
 optimization of the dynamics core, and all pixel-space metrics of §3.4.3 are measured through one
 and the same fixed decoder for every compared system.
 
-**Рисунок 3.1 — Архітектура моделі та способи пакування контексту.**
+**Figure 3.1 — Model architecture and context-packaging alternatives.**
 *Content:* input frames → frozen two-level conv-AE (shared encoder trunk; coarse
 $16{\times}4{\times}4$ and fine $16{\times}8{\times}8$ taps); training-only latent
 standardization; the shared WindowDiT generation core consuming a selected flat, spatial or
@@ -178,18 +138,14 @@ temporal versus 1,152-token spatial comparison explicitly near-matched rather th
 *Source:* **`docs/figures/fig16_context_packaging_architecture.png`** and vector PDF; generated
 deterministically by `scripts/make_rft_core_schematics.py` from the frozen interface.
 
-### 3.1.2 Передача контекстних сигналів між рівнями: від перехресної уваги до спільної уваги
-
-*(Inter-level context-signal transfer: from cross-attention to joint attention. — Salvaged from
-old §3.1.3, retargeted per DISS_DIGEST item 29.)*
+### 3.1.2 Cross-Level Context Transfer: from Cross-Attention to Joint Attention
 
 If the two levels of the hierarchy were optimized in complete isolation, the generated states
 would contradict each other — the coarse level could place scene content at one position while
 the fine level renders texture consistent with another. Guaranteeing the integrity of the
 multi-level system requires a strict information channel between the levels; Chapter 1 (§1.4.4)
 introduced *hierarchical consistency* as the corresponding criterion. The question is the
-mechanism of this **inter-level context-signal transfer** [UA-PASS: «передача контекстних
-сигналів між рівнями» — verbatim scope item of the approved topic].
+mechanism of this **inter-level context-signal transfer**.
 
 The classical mechanism, described in the earlier design iterations of this work, is cross-level
 cross-attention: queries formed from the child level, keys and values projected from the parent
@@ -231,10 +187,7 @@ This generalization has three systemic consequences:
    4×4/8×8 implementation. RoPE-ND remains the scaled-coordinate instrument developed for the
    [A1] system in Chapter 2.
 
-### 3.1.3 Односпрямоване керування з відсіканням градієнтних зв'язків
-
-*(Unidirectional control with gradient detachment. — Salvaged from old §3.1.4; the macro-first vs
-micro-first contradiction of the old chapter is resolved here per DISS_DIGEST item 30.)*
+### 3.1.3 One-Way Control with Detached Gradient Paths
 
 The old chapter postulated a strict *sequential* ordering of level generation (macro level first,
 then meso, then micro, each receiving the previous level's output as a gradient-detached
@@ -270,16 +223,12 @@ because only the coarse channel transports them), not in the scheduling sense.
    interference between the optimization of successive windows — the failure mode the old
    chapter's unidirectional control was designed to prevent — is thereby excluded structurally.
 
-This formulation preserves everything defensible in the salvaged mechanism (the stop-gradient
-discipline, the constancy of parent context, the prevention of bidirectional gradient
-interference) while eliminating the internal contradiction of the old text: the strict
-macro-first sequencing claim is dropped because the system that was actually built, validated,
-and measured generates both levels jointly in a single attention pass, with the coarse level
-distinguished by *what it remembers*, not by *when it runs*.
+This formulation combines stop-gradient discipline, constant parent context and prevention of
+bidirectional gradient interference. The implemented and validated system generates both levels
+jointly in a single attention pass, with the coarse level distinguished by *what it remembers*,
+not by a separate execution phase.
 
-## 3.2 Генеративне ядро: віконна дифузія у прихованому просторі
-
-*(The generation core: window diffusion in latent space.)*
+## 3.2 Generative Core: Windowed Latent Diffusion
 
 The per-frame generation mechanism of the developed model is an iterative-refinement (denoising
 diffusion) core. This choice is not aesthetic: Chapter 4 (§4.2) selects it by a matched-capacity,
@@ -289,9 +238,7 @@ to sharp, correctly located content where regression hedges toward the condition
 energy-based alternative fails in a two-sided, characterized manner. This chapter presents the
 selected core; the selection evidence belongs to Chapter 4.
 
-### 3.2.1 Токенна послідовність та покомпонентне кондиціонування
-
-*(Token sequence and per-token conditioning.)*
+### 3.2.1 Token Sequence and Component-Wise Conditioning
 
 The prediction problem is windowed. Let $t$ be the first frame to predict, $W = 4$ the window
 length, $H_{\mathrm{c}}$ the coarse context length and $w_{\mathrm{f}}$ the fine context length
@@ -353,10 +300,9 @@ told which part of the sequence is clean evidence and which is the object of ref
 prediction loss is computed on target tokens only. Second, the action conditioning is
 **per-target-frame**: frame $t{+}j$ receives exactly its own action $a_{t+j}$, so the network
 never needs to disentangle a summed multi-step action code — each generated frame is bound to
-the control signal that produced it. [UA-PASS: keep «покадрове кондиціонування керуючим
-сигналом» for "per-target-frame action conditioning".]
+the control signal that produced it.
 
-**Рисунок 3.2 — Розкладка токенів одного кроку прогнозування.**
+**Figure 3.2 — Token layout for one prediction step.**
 The 1,472-token sequence contains 768 coarse-context tokens, 384 recent fine-context tokens and
 four 80-token coarse-plus-fine targets. The bracket identifies the 1,152-token context budget
 matched by the central contiguous-fine control; the lower strips show the additive token
@@ -365,9 +311,7 @@ embeddings and per-target action/noise conditioning.
 `scripts/make_dissertation_missing_figures.py`, reflecting
 `hvp_rev/rhvd.py::WindowDiT._ctx_tokens/forward`.
 
-### 3.2.2 Трансформерний остов з адаптивною нормалізацією
-
-*(The transformer backbone with adaptive normalization.)*
+### 3.2.2 Transformer Backbone with Adaptive Normalization
 
 The sequence (3.4) with conditioning (3.5) is processed by a stack of $N_{\mathrm{blk}} = 8$
 pre-norm transformer blocks of width $d = 384$ with 6 attention heads and MLP expansion ratio 4
@@ -404,9 +348,7 @@ backbone, tokenizer, and conditioning are shared verbatim with the alternative m
 Chapter 4 mechanism study; only the output interpretation and the training objective differ —
 this is what "matched capacity" means operationally in this work.
 
-### 3.2.3 Віконна дифузійна цільова функція (v-параметризація)
-
-*(The window-diffusion objective with v-parameterization.)*
+### 3.2.3 v-Parameterization
 
 Why a *window* of $W = 4$ frames rather than one frame at a time? The reason is
 rollout-consistency of the training distribution. The autoregressive rollout of §3.3 appends
@@ -416,8 +358,7 @@ consist of stride-4 samples while the training context consisted of consecutive 
 train/rollout distribution mismatch built into the protocol itself. Predicting a window of $W$
 *consecutive* frames per step and advancing the recursion by exactly $W$ keeps the buffers
 consecutive at all times: the layout of every context the model sees at rollout is identically
-distributed with the contexts it saw in training. [UA-PASS: «узгодженість розподілів навчання та
-авторегресійного розгортання».]
+distributed with the contexts it saw in training.
 
 Let $z_0 = \bigl(z^{\mathrm{c}}_{t..t+3},\, z^{\mathrm{f}}_{t..t+3}\bigr)$ denote the clean
 (standardized) target-window latents. The forward diffusion process corrupts them with Gaussian
@@ -492,9 +433,7 @@ information design (§3.1.2), not of a long-horizon training objective. Where a 
 time objective would be required, the constant-memory machinery of Chapter 2 is the enabling
 instrument; the two contributions compose but do not presuppose each other.
 
-### 3.2.4 Детерміноване вибіркове відновлення (DDIM)
-
-*(Deterministic DDIM sampling.)*
+### 3.2.4 DDIM
 
 Generation inverts the diffusion with a deterministic DDIM sampler [REF: DDIM — Song, Meng,
 Ermon, 2021] over $N_{\mathrm{DDIM}} = 16$ steps on a rounded-linear sub-grid
@@ -524,9 +463,7 @@ noise draw, which the evaluation protocol controls with common random numbers (�
 computational price of generation is thus fixed: 16 network evaluations per 4-frame window — 4
 network function evaluations per generated frame.
 
-### 3.2.5 Регресійне контрольне ядро
-
-*(The regression control core.)*
+### 3.2.5 Regression Control Head
 
 For the mechanism claims of Chapter 4 (hypothesis H2: the generative mechanism earns its keep at
 rollout), the system admits a drop-in **regression** variant on the identical backbone: the noisy
@@ -538,10 +475,7 @@ two systems differ in the training objective and nothing else. The chapter recor
 as part of the model family because the honest form of the dissertation's mechanism claim is
 comparative, and the comparison is meaningful only under this strict parity.
 
-## 3.3 Алгоритм авторегресійного розгортання з кільцевою буферною пам'яттю
-
-*(The autoregressive rollout algorithm with ring-buffer memory. — Skeleton salvaged from old
-§3.4; per-stage MCMC replaced by the actual generation procedure; digest item 33.)*
+## 3.3 Autoregressive Rollout with Ring-Buffer Memory
 
 The developed technology operates as a fully **autonomous** autoregressive predictor: its
 inputs are past video frames (through the latent interface) and the recorded low-dimensional
@@ -553,9 +487,7 @@ blur verdict. The salvaged autonomy principle of the old chapter therefore survi
 sharpened form: autonomous with respect to semantic side information, conditioned on the recorded
 control signal.
 
-### 3.3.1 Рекурсія розгортання
-
-*(The rollout recursion.)*
+### 3.3.1 Rollout Recurrence
 
 The state of the rollout between prediction steps is the pair of **ring buffers**
 
@@ -579,7 +511,6 @@ The recursion is:
 > recorded actions $a_{1..T}$, frozen AE $(\mathcal{E}, \mathcal{D})$, trained EMA weights
 > $\theta$, horizon $T$.
 > **Output:** predicted frames $\hat x_{H_{\mathrm{w}}..T-1}$.
->
 > 1. Encode and standardize the warm-up frames; initialize $B^{\mathrm{c}}, B^{\mathrm{f}}$ with
 >    their last $H_{\mathrm{c}}$ and $w_{\mathrm{f}}$ latents; $t_0 \leftarrow H_{\mathrm{w}}$.
 > 2. **for** $n = 0, 1, \ldots, \lfloor (T - H_{\mathrm{w}})/W \rfloor - 1$ **do**
@@ -594,7 +525,6 @@ The recursion is:
 >    $\hat x_{t_n+j} = \mathcal{D}_{\mathrm{f}}\bigl(\hat z^{\mathrm{f}}_{t_n+j}\bigr)$,
 >    $j = 0..3$ (through un-standardization and the frozen fine decoder).
 > 7. **end for**
->
 > On the 200-frame evaluation clips of §3.4: warm-up 48 frames, then
 > $(200 - 48)/4 = 38$ rollout steps, i.e. 152 self-generated frames per clip — more than three
 > full loop periods of the testbed world.
@@ -607,16 +537,14 @@ the flat control warms its 18-frame buffer from ground-truth frames 30–47): ev
 generating at the same frame of the same clip, so the per-(clip, horizon) records of §3.4 pair
 exactly across arms.
 
-**Рисунок 3.3 — Кільцеві буфери авторегресійного розгортання.**
+**Figure 3.3 — Ring buffers for autoregressive rollout.**
 After the common 48-frame ground-truth warm-up, each step combines the fixed 48-slot coarse and
 6-slot fine buffers with four actions, samples four latent pairs with DDIM-16, and appends/evicts
 four positions. The stored state is 18,432 latent numbers and does not grow with rollout length.
 *Source:* `docs/figures/fig23_rollout_ring_buffer.png`; deterministic source
 `scripts/make_dissertation_missing_figures.py`, reflecting `hvp_rev/rhvd.py::rollout_eval`.
 
-### 3.3.2 Часова маршрутизація: чесне відображення блочно-каузального принципу
-
-*(Temporal routing: the honest mapping of the block-causal principle. — Digest item 33.)*
+### 3.3.2 Temporal Routing and Block-Causal Semantics
 
 The old chapter's prediction skeleton promised two routing mechanisms: a block-causal attention
 mask (full attention within a frame, causal across frames) over a jointly optimized past+future
@@ -638,18 +566,14 @@ mapping explicitly rather than letting the old vocabulary stand:
 - **Temporal position is encoded by learned absolute frame-index embeddings** (52-entry table,
   §3.2.1) rather than rotary relative coding. Because every prediction step re-indexes its
   context to the fixed range $0 \ldots 47$ and its targets to $48 \ldots 51$, the absolute
-  indices *are* relative to the window — the scheme is translation-invariant across the rollout
-  by construction, which is the property the old text sought from relative positional coding.
+  indices *are* relative to the window, so the scheme is translation-invariant across the rollout
+  by construction.
   RoPE-ND and these learned indices are therefore presented as level-appropriate instruments:
   RoPE-ND for the variable-patch, cross-resolution [A1] system in Chapter 2, and fixed learned
   indices for the re-indexed window used by the validated hierarchical predictor. No unmeasured
   RoPE-ND retrofit is attributed to the final model.
 
-### 3.3.3 Аналіз пам'яті та обчислювальної складності
-
-*(Memory and complexity analysis. — Re-derivation fixing the old chapter's inconsistency,
-digest item 34; includes the token-budget economics of the hierarchy and the disposition of the
-old Reversible-MCMC section, digest item 32.)*
+### 3.3.3 Memory and Computational Complexity
 
 **Rollout memory is constant in the horizon.** The complete inter-step state of Algorithm 3.1 is
 the buffer pair (3.14):
@@ -678,10 +602,14 @@ runs gradient-free — and the memory object that matters for long-horizon opera
 state (3.15), is constant by design.
 
 **Training memory is single-window and horizon-independent.** The training graph spans one
-network evaluation over 1472 tokens and $N_{\mathrm{blk}} = 8$ blocks; no gradient crosses window
-boundaries (§3.1.3). Peak training memory is therefore $O(N_{\mathrm{blk}} \cdot S \cdot d)$ with
-$S = 1472$ — independent of both the rollout horizon and the memory horizon $H_{\mathrm{c}}$'s
-*temporal* extent (it depends on $H_{\mathrm{c}}$ only through the token count in $S$).
+network evaluation over 1,472 tokens and $N_{\mathrm{blk}} = 8$ blocks; no gradient crosses window
+boundaries (§3.1.3). The stored residual-state term is
+$O(N_{\mathrm{blk}} S d)$, while a naïve attention implementation can additionally materialize
+$O(N_{\mathrm{blk}}S^2)$ attention-score storage. Memory-efficient or fused attention changes
+that kernel-dependent term but not the model's $O(N_{\mathrm{blk}}S^2d)$ attention compute.
+Accordingly, peak VRAM is treated as an empirical implementation property. The justified
+invariance is to the number of rollout windows; memory still depends on token count $S$ and hence
+on the selected package.
 
 **Token-budget economics of the hierarchy.** The systemic argument for the two-level design is a
 counting argument. Let $H$ be the number of past frames a model can consult ("effective memory
@@ -703,8 +631,9 @@ are: hier-long consults 48 frames for 1152 context tokens; a flat model consulti
 frames pays $48 \cdot 64 = 3072$ context tokens — 2.67× the tokens and, at full sequence lengths
 (1472 vs 3392 tokens), a ≈5.3× ratio in per-layer attention cost. Conversely, a flat model
 *constrained to hier-long's token budget* can afford only $1152 / 64 = 18$ frames of memory —
-which is precisely the matched-budget control of §3.3.4, and the design reason the model's
-long-memory claim is a claim about *hierarchy*, not merely about context length: at equal budget,
+which is precisely the matched-budget control of §3.3.4. The claim is about **hierarchical
+context packaging whose benefit is mediated by reach**, not an intrinsic superiority of coarse
+features and not context length treated as a free variable: at equal budget,
 the flat alternative's horizon (18 frames) falls short of the testbed's loop period (≈48 frames,
 §3.4.1), while the hierarchical allocation covers it.
 
@@ -723,9 +652,7 @@ all. Reversibility remains a contribution of this dissertation on the axis where
 temporal-rollout axis of Chapter 2 — and this paragraph is the honest record of where it does
 not.
 
-### 3.3.4 Конфігурації системи та контрольні варіанти зі зрівняним бюджетом
-
-*(System configurations and matched-budget controls.)*
+### 3.3.4 System Configurations and Matched-Budget Controls
 
 The information design of §3.1.2 turns context allocation into an experimental variable. The
 model family is parameterized by $(H_{\mathrm{c}}, w_{\mathrm{f}}, \text{core})$, and the
@@ -754,17 +681,13 @@ pre-registered prediction — validated in Chapter 4 — is that the two systems
 where the testbed's re-entry events lie beyond the 18-frame flat horizon, and are otherwise
 comparable; if they had *not* separated, the honest conclusion recorded in the design memo was
 "context length, not hierarchy," and the dissertation would have reported it as such.
-[UA-PASS: «зрівняний бюджет контекстних токенів» for "matched context-token budget".]
 
-### 3.3.5 Узагальнення на сімейство ієрархічних конфігурацій
-
-*(Generalization to a family of hierarchical configurations — the model basis of the §4.4 shape
-study.)*
+### 3.3.5 Generalization to a Family of Hierarchical Configurations
 
 The token-stream design of §3.2.1 generalizes beyond the two-level, stride-1 family of Table 3.1
 without any change to the backbone. A configuration is a set of context streams, each
-parameterized by the triple **(роздільна здатність, часовий крок, кількість кадрів)** [UA-PASS:
-«потік контекстних токенів», «часовий крок (проріджування)»]: the coarse stream may tick at
+parameterized by the triple **(spatial resolution, temporal stride, number of frames)**: the
+coarse stream may tick at
 stride $k_t > 1$ (one slot per $k_t$ frames, block-end anchors, $W/k_t$ target slots per
 prediction window so the slot buffer keeps phase for any $k_t$ dividing $W$); a full-resolution
 stream may itself be strided (temporal abstraction without a resolution change); and a third,
@@ -775,26 +698,22 @@ and every measurement of Chapter 4 stays valid across the extension. Two systemi
 distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth is
 backbone-capacity neutral** — all streams share one attention backbone; a third level adds only
 per-level input/output parameters (+0.30 M on the 22.19 M predictor, +1.4%) and the frozen
-autoencoder tap (1.25 M), measured and disclosed [UA-PASS: «нейтральність глибини щодо ємності
-остова»]; and (ii)
+autoencoder tap (1.25 M), measured and disclosed; and (ii)
 every configuration's context cost is an exact token count, so families are comparable at
-**matched budget** — the property that licenses the shape comparisons of §4.4 (спрощені
-конфігурації: `hier-s2-min` = 24 slots at stride 2 + 2 fine = 512 tokens; `strided-flat` = 11
+**matched budget** — the property that licenses the shape comparisons of §4.4 (simplified
+configurations: `hier-s2-min` = 24 slots at stride 2 + 2 fine = 512 tokens; `strided-flat` = 11
 full-resolution slots at stride 4 + 6 fine = 1,088; `hier3` = 48 top + 24 coarse + 9 fine =
 1,152).
 
-## 3.4 Тестовий стенд горизонту пам'яті та протокол оцінювання зі стратифікацією за повторним входженням
-
-*(The memory-horizon testbed and the re-entry-stratified evaluation protocol — the
-systems-analysis measurement instrument.)*
+## 3.4 Memory-Horizon Testbed and Re-Entry-Stratified Evaluation
 
 A model whose defining property is a *memory horizon* cannot be validated on benchmarks that do
 not exercise one. On Moving-MNIST-class data nothing ever leaves the frame and returns: every
 future frame is either fully determined by a short context or permanently unknowable, so there
 exists no *hard-but-computable-with-memory* regime in which a long-memory mechanism could
 demonstrate its value — this project's own null results on such data (Chapter 1, §1.3; Chapter 4)
-trace to exactly this degeneracy. Existing memory-oriented benchmarks (Memory Maze [REF],
-TECO-Minecraft [REF], and the recent long-term spatial-memory evaluation protocols for world
+trace to exactly this degeneracy. Existing memory-oriented benchmarks (Memory Maze and
+TECO-Minecraft [REF: Memory Maze / TECO-Minecraft (article Ch. 7)], and the recent long-term spatial-memory evaluation protocols for world
 models [REF: arXiv 2505.20171; REF: arXiv 2512.02473; REF: arXiv 2506.05284]) pose genuine
 long-horizon problems but derive their re-entry events from 3-D egomotion in rendered
 environments, where determining *which* pixels of a target frame were knowable from a given
@@ -803,9 +722,7 @@ budget. The instrument constructed here is the minimal fully analytic member of 
 hardness labels are computed **exactly** from the recorded control track, and the complete
 benchmark trains and evaluates on one 16 GB consumer GPU.
 
-### 3.4.1 Циклічний світ з інерційним панорамуванням
-
-*(The momentum looping world.)*
+### 3.4.1 Cyclic World with Inertial Panning
 
 Each clip is generated (module `scripts/gen_looping.py`) from a static **world**: a
 $192 \times 64$ texture on a horizontal torus, composed of a smooth background (a sum of four
@@ -842,7 +759,7 @@ Datasets (fixed, generated once, shared by every experiment): `loopmom_train` �
 the multi-loop rollouts of Algorithm 3.1 (rollout evaluation uses 100 of them per arm). Test
 latents are standardized with the training statistics (3.3).
 
-**Рисунок 3.4 — Геометрія LoopMom та аналітична смуга досяжності.**
+**Figure 3.4 — LoopMom geometry and analytic reach band.**
 The 64-pixel viewport traverses a 192-pixel toroidal static world. Saved positions make geometric
 observability exact; the highlighted 14-to-48-frame band contains evidence available to the
 long-reach package but outside the compared short flat window. The separate pose-mosaic inset is
@@ -850,9 +767,7 @@ marked as a privileged reference because it receives exact pose and raw stored p
 *Source:* `docs/figures/fig15_loopmom_observability_schematic.png`; deterministic source
 `scripts/make_rft_core_schematics.py`.
 
-### 3.4.2 Точні мітки складності повторного входження
-
-*(Exact re-entry hardness labels.)*
+### 3.4.2 Exact Re-Entry Difficulty Labels
 
 Because the viewport trajectory (3.17) is a deterministic function of the recorded actions, the
 set of world columns covered by any context window is computable in closed form — hardness is an
@@ -881,9 +796,7 @@ stratification is what turns the trajectory-consistency criterion of §1.4.5 int
 the dissertation's headline quantities are error deltas *within the hard re-entry stratum* as a
 function of rollout horizon.
 
-### 3.4.3 Метрики: маскований передній план, покадрово, після декодування
-
-*(Metrics: foreground-masked, per-image, decoded.)*
+### 3.4.3 Decoded Frame, Foreground and Object Metrics
 
 Aggregate pixel metrics are excluded by protocol. On the archived CW-VAE Moving-MNIST population
 (100 clips, 36 context frames, 964 open-loop targets), a deterministic all-black prediction
@@ -928,16 +841,17 @@ views.
   fade to the mean; a blank-output collapse) that one glance at the panels exposed; the protocol
   therefore mandates the panels alongside the numbers.
 
-### 3.4.4 Статистичний протокол, опорні рівні та межі
-
-*(Statistical protocol, reference floors and ceilings.)*
+### 3.4.4 Statistical Protocol, References and Boundaries
 
 All system-versus-system comparisons are **paired**: evaluation draws use fixed seeds so every
 arm sees identical (clip, target) pairs; stochastic samplers are re-seeded per batch with common
 random numbers; and rollout records pair exactly across arms by (clip, horizon) thanks to the
 universal 48-frame warm-up (§3.3.1). Headline deltas are reported with 95% confidence intervals
-from a paired bootstrap over per-record deltas (10{,}000 resamples, percentile intervals),
-computed within each hardness×horizon bin; single-step evaluation pools are sized at ≈768 samples
+from a paired **clip-cluster** bootstrap (10{,}000 resamples), so all horizons belonging to one
+clip are resampled together. The untouched frontier and protected robustness families use a
+studentized max-statistic clip-cluster procedure for simultaneous coverage across their
+registered contrasts. Intervals are computed within each stated hardness×horizon population;
+single-step evaluation pools are sized at ≈768 samples
 so the hard stratum retains power, and rollout evaluation covers 100 clips × 152 generated frames
 = 15{,}200 records per arm. The headline arms (hier-long, flat-budget) are replicated over 2
 seeds. Where a best-of-$N$ statistic appears it is an oracle *coverage* diagnostic (selection by
@@ -969,7 +883,7 @@ mechanism study).
 | Sharpness metric | per-image masked Laplacian energy | GT 0.4785; AE round-trip ceiling 0.2412; collapse < ≈0.08 |
 | Hardness axis | $\nu_6$ — novel-fg vs 6-frame window, exact | easy $=0$; mid $(0, 0.1]$; hard $> 0.1$; eq. (3.18) |
 | Rollout | 48-frame GT warm-up; 38 steps × 4 frames | 152 generated frames/clip; 100 clips; horizons binned 1–8 / 9–24 / 25–60 / 61+ |
-| Statistics | paired bootstrap 95% CI; CRN for same target shapes | 10,000 resamples; ≈768-sample single-step pools; 15,200 rollout records/arm; 2 seeds on headline arms; cross-shape cells share records but not elementwise noise |
+| Statistics | paired clip-cluster 95% CI; CRN for same target shapes | 10,000 resamples; simultaneous max-statistic families where registered; ≈768-sample single-step pools; 15,200 rollout records/arm; training seeds reported separately |
 | Floors / ceilings | persistence fg-MSE 0.2367 / fg-sharp 0.0515 | k = 4 offset; identical pipeline for every arm |
 
 Scope and limitations of the instrument are stated plainly, as required of a measurement
@@ -979,11 +893,9 @@ world coordinates, so the testbed does not probe memory of *dynamic* off-screen 
 conclusions are at 64×64 grayscale and single-digit complexity; and the frozen decoder's
 sharpness ceiling caps every downstream comparison. The analytic hardness labels that justify
 the design would not transfer unchanged to 3-D egomotion benchmarks, which are positioned as the
-natural next rung (Chapter 4, conclusions; ВИСНОВКИ).
+natural next rung (Chapter 4 and General Conclusions).
 
-## 3.5 Висновки до розділу
-
-*(Conclusions to the chapter.)*
+## 3.5 Chapter Conclusions
 
 1. In accordance with **Task 5** of the dissertation research, a mathematical model of
    multi-stream video-data generation in a compact continuous hierarchical latent state space
@@ -1052,26 +964,3 @@ bibliographic position and any related conference theses are publication-adminis
 not scientific dependencies of the chapter.
 
 ---
-
-## Dispositions of the OLD Ch.3 figures (working notes — not part of the chapter text)
-
-| Old figure | Content (old) | Disposition |
-|---|---|---|
-| Рис. 3.1 (energy-landscape surface) | 3-D energy landscape with consistent states in minima, MCMC descent trajectory | **MOVE → Ch.4 §4.2** (mechanism-study setup); useful for explaining what the EBT study tested; do not use in Ch.3 |
-| Рис. 3.2 (diffusion vs EBM objectives) | local noise-error vs global scalar criterion comparison | **MOVE → Ch.4 §4.2** as the mechanism-comparison framing figure (retitle: three objectives incl. regression) |
-| Рис. 3.3 (HVEBT cascade block scheme) | frozen CLIP pyramid, 3 cascade MCMC stages, detached context arrows, text prompt, pixel decoder | **REPLACE** by **FIG 3-1** (new architecture); the detached-context arrow idea survives visually as the frozen-AE boundary; text-prompt input is gone (system is autonomous + action-conditioned) |
-| Рис. 3.4 (energy-transformer core + scalar head) | reversible layer stack, scalar energy head, Σ | **MOVE → Ch.4 §4.2**, condensed, as the EBT-arm description (per digest item 31); the *backbone* half is superseded by FIG 3-1/3-2 |
-| Рис. 3.6 (Reversible MCMC memory scheme) | forward/reverse passes with graph reconstruction along the K-chain | **CUT**; one paragraph in §3.3.3 records the disposition; if a figure is wanted for the taxonomy's negative branch it belongs in Ch.2 §2.4 |
-| Рис. 3.7 (block-causal attention matrix) | green/red frame-block attention matrix, full-spatial + causal-temporal | **ADAPT → optional companion of FIG 3-2/3-3**: redraw as "effective block-causal pattern at window granularity over a rollout" if the defense wants the visual; otherwise cite the construction argument of §3.3.2 |
-| Рис. 3.7-bis/3.8 (spatio-temporal data flow in AR prediction) | context (blue) vs target (orange) tensors, causal mask, 3D-RoPE axes inside MCMC loop | **REPLACE** by **FIG 3-3** (ring-buffer rollout); the context/target color convention is worth keeping in all new figures |
-
-## Salvage map of OLD Ch.3 equations (working notes)
-
-| Old eq. | Content | Disposition |
-|---|---|---|
-| (3.1)–(3.2) | $x^* = \arg\min_x E_\theta(x,u)$; Langevin step | **MOVE → Ch.4 §4.2** (setup of the mechanism study); referenced from Ch.1 §1.3.3 as literature |
-| (3.3)–(3.5) | reversible-layer attention/cross-attention/MLP updates | superseded by (3.6)–(3.7) (adaLN-Zero blocks of the actual backbone); reversible blocks remain in Ch.2 |
-| (3.6) | per-token scalar energy sum | **MOVE → Ch.4 §4.2** (EBT arm) |
-| (3.7)–(3.14) | K-step Langevin training loop + SmoothL1+LPIPS loss | **MOVE → Ch.4 §4.2**, condensed (S1/S2 recipe description); the LPIPS term is absent from the final measured mechanism study |
-| (3.15) | per-level Langevin recurrence | **MOVE → Ch.4 §4.2** |
-| New (3.1)–(3.18) | as numbered in this file | replace the old chapter's equation register wholesale |

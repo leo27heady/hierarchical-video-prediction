@@ -113,6 +113,9 @@ only when literally true.  Do not use “matched compute” as a substitute for 
     **COMPLETE: E6 `MIXED_BOUNDARY`; spatial support/continuity favor hierarchy, identity favors
     flat context, and foreground-only error is unresolved.**
 11. Treat counterfactual/dynamic-content and natural re-entry studies as post-freeze/future work.
+    **TERMINAL PROGRAMME DECISION: E9 is
+    `SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY`; any future version is a new study, not unfinished
+    work in the present article or dissertation.**
 
 Pre-C seed-2 and c2 results must be integrated as new evidence rows without silently upgrading the
 scope of these claims.
