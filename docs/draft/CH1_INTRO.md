@@ -6,7 +6,7 @@
 > will become the sole submission source. Older law, exact-edge and invalid Phase-C wording remains
 > retired.
 
-> **Status (2026-07-16):** detailed source synchronized through E7c. Written from
+> **Status (2026-07-18):** detailed source synchronized through terminal E7a, E8a and E6. Written from
 > `ARTICLE_SKELETON.md` §0.1/§1 and revised to the binding reach–fidelity account. Canonical chapter numbering fixed at integration:
 > 1 introduction · 2 testbed · 3 mechanisms · 4 memory-horizon results · 5 generalization ·
 > 6 reversibility · 7 related work · 8 conclusion. Title, packaging-reframe candidate
@@ -40,7 +40,11 @@ result. The packaging axes are not interchangeable: temporally subsampled full-r
 beats spatial coarsening under diffusion on all five training seeds, whereas regression and the
 head × package interaction are seed-heterogeneous. A frozen NFE/sampler family preserves all 20
 central effect directions, with 18 simultaneous lower bounds positive and the upper inversion
-unresolved at two alternate sampler seeds. The head ranking itself is
+unresolved at two alternate sampler seeds. An independently trained codec preserves all four
+directions at the point-estimate level, with the upper inversion again precision-limited. A
+privileged pose-indexed raw-memory reference shows how much error explicit lossless access can
+remove. On protected persistent-object long Moving-MNIST, hierarchy better preserves spatial
+support and continuity, while flat context better preserves digit identity. The head ranking itself is
 regime-dependent (regression, not diffusion, wins deterministic best-of-1 rollout). Energy-based
 descent is a two-sided characterized negative at reachable scale, and an exactly invertible
 stochastic recurrence (gradients equal to backpropagation through time at constant activation
@@ -132,8 +136,10 @@ negatives (Ch. 3, Ch. 6) that scope it.
 - **C4.** The frontier result: comparator-specific reach bands and a simultaneous six-budget
   family locate tested lower/interior hierarchy wins and upper flat-fidelity inversions without
   interpolation; a five-seed package factorial and a 20-effect NFE/sampler family delimit its
-  head, training-seed and inference scope. This is paired with an outcome-independent negative
-  replication of the proposed late trust inversion and a standard-benchmark negative control.
+  head, training-seed, inference and codec scope. This is paired with an outcome-independent
+  negative replication of the proposed late trust inversion, a privileged explicit-access
+  reference, a standard-benchmark negative control and a valid persistent-object external
+  boundary separating support/continuity from identity fidelity.
 - **C5.** The exactly invertible stochastic recurrence and the three-axis reversibility taxonomy
   with the measured inner-loop no-go (Ch. 6).
 

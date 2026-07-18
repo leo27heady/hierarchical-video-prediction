@@ -1,0 +1,36 @@
+{
+  "charged_failed_cells": 3,
+  "dataset_id": "moving-mnist-phase_c_v2_holdout-test-20260720-198306f9eab1",
+  "evaluation_artifacts": {
+    "mmL-flat-s0": "c5e24dca1f56b556dabcd96c46d1ea584641fc606dd335df40681e7fcfbaf708",
+    "mmL-flat-s1": "79da76af912e854834d7c5c0f23ecc3d1a374dca7fabd938be68a1b019d73c20",
+    "mmL-flat-s2": "2e56e7e6ec45feeb5e5ea485454e9394e320a6a94c863a33ba0b0337dd8a52f5",
+    "mmL-hier-s0": "037daeb92074d30c6ab50f6221926ccc780cd94521805a2e8714c4e720e64f65",
+    "mmL-hier-s1": "c4adebcf726d4bf64be3c9b4368f1a7e8732b5fdef30ba34dd9ec0f15e00c460",
+    "mmL-hier-s2": "719b98c59ba71adb3133ca6f1b44710ef09380bdb0f9bb088ff09d64b041cb51"
+  },
+  "evaluation_cells": 6,
+  "gpu_hours": 20.512703069805553,
+  "gpu_phase_counts": {
+    "classifier-training": 1,
+    "codec-training": 1,
+    "metric-validation": 1,
+    "predictor-training": 6,
+    "protected-evaluation": 6
+  },
+  "hashes": {
+    "access_log": "bc27e40ec679d2fc57d833fc2670ea99c5e7950a1cdd902fbb3d0cac6a408873",
+    "config": "db30b2086fccbc6a1eca7b1e4f4796430942e77e9d8faee12af06e55c94543ce",
+    "gpu_ledger": "4db85bf3cf183feeb49e735f6cc0f84c19ba6413e8beb1c3c2cd68a6d7a68850",
+    "manifest": "5a7557860d6a2e35b8e505d0e98ca57a891a13c77d9e0d66514a2953fc4b6269",
+    "results": "75a628ca6f2fa87e74e67bbe7b95d4acee6e0f35969d28fe97e72b0b40e981c7",
+    "wandb_audit": "62366dca968a602d55b4cc43b5cc6d5a5cd7e9aad0e1e3ee2883175d0ff0396b"
+  },
+  "paired_records_per_cell": 30000,
+  "protected_access_entries": 7,
+  "schema_version": 1,
+  "status": "PHASEC_V2_COMPLETION_PASS",
+  "training_cells": 6,
+  "verdict": "MIXED_BOUNDARY",
+  "wandb_run_count": 15
+}

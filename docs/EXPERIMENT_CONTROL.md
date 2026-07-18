@@ -1,6 +1,6 @@
 # Experiment control and ownership
 
-**Policy date:** 2026-07-16 post-E7c integration
+**Policy date:** 2026-07-18 post-E6 terminal integration
 **Launch authority:** `experiments/authorization.json`
 **Principle:** exactly one execution owner; all other contributors are read-only with respect to
 GPU launches and queue mutation.
@@ -12,10 +12,9 @@ The pre-Phase-C queue is complete and archived. The verified boundary is recorde
 `artifacts/post_c2_evidence_manifest_2026-07-12.json` and independently backed up.
 
 The **author retains scientific and GPU-launch authority**. Codex has time-bounded execution
-autonomy only inside an author-approved tranche and the fail-closed authorization ledger. E7c
-completed and was integrated under the 2026-07-15 approval. The current boundary permits E7a
-preparation only; alternate-AE training and predictor runs require E7a's own recorded protocol,
-provenance, numerical-regime, reconstruction-floor, budget and W&B gates.
+autonomy only inside an author-approved tranche and the fail-closed authorization ledger. E7c,
+E7a, E8a and E6 are complete, independently validated and frozen. The current workstream is M2
+CPU/document/release QA; no GPU study is launchable.
 
 ## Authorized live work
 
@@ -28,8 +27,10 @@ provenance, numerical-regime, reconstruction-floor, budget and W&B gates.
 | E4a/E4b | completed/frozen | five-seed factorial integrated; no seed 5+ |
 | E5a | completed/not replicated | E5b/E5c closed by the frozen gate |
 | E7c | completed/directionally robust | 35/35 frozen evaluations; 20/20 positive effects, 18/20 simultaneous lower bounds positive; 5.9976 GPU-hours; no extension |
-| E7a | preparation only | cannot launch until its own codec/provenance/parity, reconstruction-floor and budget gates pass |
-| E8a/E6/E9 | baseline/conditional/post-freeze | follow the canonical decision tree; no automatic authorization |
+| E7a | completed/directionally robust | seven trainings and 14 evaluations complete; no extension |
+| E8a | completed/privileged reference | exact-pose raw-memory reference complete; no extension |
+| E6 | completed/mixed boundary | six trainings/evaluations complete in 20.5127 GPU-hours; no adaptive arm, seed or endpoint |
+| E9 | deferred post-freeze | no implementation or launch authorization; future scope only |
 
 ## Handoff checklist
 
@@ -54,9 +55,9 @@ provenance, numerical-regime, reconstruction-floor, budget and W&B gates.
 | after verified handoff | author | retains scientific and launch authority |
 | approved execution tranches | Codex | time-bounded execution autonomy constrained by protocol, budget and authorization ledger |
 
-**Current transfer marker:** the author explicitly authorized continued gated execution and GPU
-use on 2026-07-15. This permission applies to the next plan-defined tranche only; the ledger and
-prelaunch checks remain fail closed.
+**Current transfer marker:** the author authorized gated execution through terminal E6. That
+experimental tranche is complete. M2 finalization remains active; any future E9 launch requires a
+new explicit scope decision, frozen implementation and its own fail-closed authorization.
 
 ## Status-change procedure
 

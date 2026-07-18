@@ -1,0 +1,244 @@
+{
+  "entity": "leo27heady",
+  "failures": [],
+  "group": "phasec-v2-persistent-object-moving-mnist-phase_c_v2_holdout-test-20260720-198306f9eab1",
+  "job_type_counts": {
+    "connectivity-gate": 2,
+    "phasec-v2-analysis": 1,
+    "phasec-v2-evaluation": 6,
+    "scientific-training": 6
+  },
+  "project": "hgrid",
+  "requirements": {
+    "all_runs_finished": true,
+    "artifact_required_job_types": [
+      "phasec-v2-analysis",
+      "phasec-v2-evaluation",
+      "scientific-training"
+    ],
+    "minimum_job_types": {
+      "phasec-v2-analysis": 1,
+      "phasec-v2-evaluation": 6,
+      "scientific-training": 6
+    },
+    "minimum_runs": 14
+  },
+  "run_count": 15,
+  "runs": [
+    {
+      "created_at": "2026-07-17T14:49:00Z",
+      "id": "phasec-v2-run-gate-7f2185250db1-20260717174856",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "phasec-v2-run-gate-7f2185250db1-20260717174856",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-run-gate-7f2185250db1-20260717174856"
+    },
+    {
+      "created_at": "2026-07-17T14:49:37Z",
+      "id": "phasec-v2-run-gate-5a13b7ae39bd-20260717174934",
+      "job_type": "connectivity-gate",
+      "logged_artifacts": [],
+      "name": "phasec-v2-run-gate-5a13b7ae39bd-20260717174934",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-run-gate-5a13b7ae39bd-20260717174934"
+    },
+    {
+      "created_at": "2026-07-17T14:49:48Z",
+      "id": "phase-c-v2-predictors-4abc603c4b420f5a",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "0e086bbd964775861ac5c6eaa18b715e",
+          "name": "phase-c-v2-predictors-4abc603c4b420f5a:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-flat-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-4abc603c4b420f5a"
+    },
+    {
+      "created_at": "2026-07-17T17:56:33Z",
+      "id": "phase-c-v2-predictors-909a921003ec4f95",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "1e0247e23d11ef68e29320476aef5d10",
+          "name": "phase-c-v2-predictors-909a921003ec4f95:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-hier-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-909a921003ec4f95"
+    },
+    {
+      "created_at": "2026-07-17T21:07:00Z",
+      "id": "phase-c-v2-predictors-043f46de85888729",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "6b9dac702d6ac4361888dbcdad1bdf6d",
+          "name": "phase-c-v2-predictors-043f46de85888729:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-flat-s1",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-043f46de85888729"
+    },
+    {
+      "created_at": "2026-07-18T00:13:43Z",
+      "id": "phase-c-v2-predictors-7cab898fd89a0a05",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "9afa1321f01857b8acf389c0fbb41a7f",
+          "name": "phase-c-v2-predictors-7cab898fd89a0a05:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-hier-s1",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-7cab898fd89a0a05"
+    },
+    {
+      "created_at": "2026-07-18T03:24:24Z",
+      "id": "phase-c-v2-predictors-ee1b65fe62a81776",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "133ebd95231181433a5d2bb7f5e186a0",
+          "name": "phase-c-v2-predictors-ee1b65fe62a81776:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-flat-s2",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-ee1b65fe62a81776"
+    },
+    {
+      "created_at": "2026-07-18T06:31:03Z",
+      "id": "phase-c-v2-predictors-743890aa293976f1",
+      "job_type": "scientific-training",
+      "logged_artifacts": [
+        {
+          "digest": "ad224badfafba9f27b24e85496f0068e",
+          "name": "phase-c-v2-predictors-743890aa293976f1:v0",
+          "type": "training-run"
+        }
+      ],
+      "name": "phase-c-v2-predictors-mmL-hier-s2",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phase-c-v2-predictors-743890aa293976f1"
+    },
+    {
+      "created_at": "2026-07-18T09:48:28Z",
+      "id": "phasec-v2-eval-a8c029164c6b0ed1",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "81e3d95ee5b60dd91952f910cc01aa2c",
+          "name": "phasec-v2-eval-a8c029164c6b0ed1:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-flat-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-a8c029164c6b0ed1"
+    },
+    {
+      "created_at": "2026-07-18T10:02:10Z",
+      "id": "phasec-v2-eval-db09430966aceeb9",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "146386440471a128f0917ef5836bbf2d",
+          "name": "phasec-v2-eval-db09430966aceeb9:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-hier-s0",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-db09430966aceeb9"
+    },
+    {
+      "created_at": "2026-07-18T10:16:58Z",
+      "id": "phasec-v2-eval-d93b03c39d5b08a6",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "92e21857632ea3357d5402e9b658010b",
+          "name": "phasec-v2-eval-d93b03c39d5b08a6:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-flat-s1",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-d93b03c39d5b08a6"
+    },
+    {
+      "created_at": "2026-07-18T10:30:38Z",
+      "id": "phasec-v2-eval-26381def1ba7f002",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "6ee58c598eb96b14880dc6558d990c5d",
+          "name": "phasec-v2-eval-26381def1ba7f002:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-hier-s1",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-26381def1ba7f002"
+    },
+    {
+      "created_at": "2026-07-18T10:45:22Z",
+      "id": "phasec-v2-eval-eea68a59a8e8b154",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "33efac812f62cfc50e80b20bd6a5f1e7",
+          "name": "phasec-v2-eval-eea68a59a8e8b154:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-flat-s2",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-eea68a59a8e8b154"
+    },
+    {
+      "created_at": "2026-07-18T10:59:02Z",
+      "id": "phasec-v2-eval-38eea39c8a5dfc17",
+      "job_type": "phasec-v2-evaluation",
+      "logged_artifacts": [
+        {
+          "digest": "4cca2ca4b35f4972d6b5a85fb1dfe584",
+          "name": "phasec-v2-eval-38eea39c8a5dfc17:v0",
+          "type": "phasec-v2-evaluation"
+        }
+      ],
+      "name": "phasec-v2-mmL-hier-s2",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-eval-38eea39c8a5dfc17"
+    },
+    {
+      "created_at": "2026-07-18T11:13:47Z",
+      "id": "phasec-v2-analysis-198306f9eab1",
+      "job_type": "phasec-v2-analysis",
+      "logged_artifacts": [
+        {
+          "digest": "eb2dc6850f5591d7177f83f8a3bd951a",
+          "name": "phasec-v2-analysis-198306f9eab1:v0",
+          "type": "phasec-v2-analysis"
+        }
+      ],
+      "name": "phasec-v2-analysis-198306f9eab1",
+      "state": "finished",
+      "url": "https://wandb.ai/leo27heady/hgrid/runs/phasec-v2-analysis-198306f9eab1"
+    }
+  ],
+  "schema_version": 1,
+  "status": "WANDB_GROUP_AUDIT_PASS"
+}

@@ -24,6 +24,7 @@ Regenerable from the committed data.
 | fig19_sampler_nfe_robustness.png/.pdf | all 20 E7c effects across NFE and sampler seeds, with the two simultaneous intervals including zero visually marked | fourth article robustness; Розділ 4 §4.6.9 | `artifacts/e7c_sampler_nfe/results.json`; `scripts/make_rft_result_figures.py` |
 | fig20_alternate_codec_robustness.png/.pdf | original- and alternate-codec E7a effects in the registered joint family; the alternate upper inversion is the sole interval crossing zero | fourth article robustness; Розділ 4 §4.6.10 | `artifacts/e7a_codec_robustness/results.json`; `scripts/make_rft_result_figures.py` |
 | fig21_pose_indexed_raw_memory.png/.pdf | privileged exact-pose raw-memory spans, neural references and storage/coverage accounting | fourth article closure reference; Розділ 4 §4.6.11 | terminal E8a; generated from `artifacts/e8a_pose_mosaic/results.json`; `scripts/make_rft_result_figures.py` |
+| fig22_phasec_v2_boundary.png/.pdf | persistent-object long Moving-MNIST simultaneous effects: hierarchy support/continuity versus flat identity fidelity | fourth article external boundary; Chapter 4 §4.6.2a | terminal E6; generated from `artifacts/phasec_v2/results.json`; `scripts/make_rft_result_figures.py` |
 | fig22_token_sequence_layout.png/.pdf | exact 1,472-token one-step sequence, including the 1,152-token context bracket and embedding/conditioning layers | Розділ 3 §3.2.1 | `hvp_rev/rhvd.py`; `scripts/make_dissertation_missing_figures.py` |
 | fig23_rollout_ring_buffer.png/.pdf | fixed 48-coarse/6-fine rollout buffers, DDIM-16 four-frame recursion and 200-frame evaluation timeline | Розділ 3 §3.3.1 | `hvp_rev/rhvd.py`; `scripts/make_dissertation_missing_figures.py` |
 | fig24_generation_objectives.png/.pdf | direct regression, diffusion and energy-based objectives/inference under the shared context question | Розділ 4 §4.2 | frozen mechanism definitions; `scripts/make_dissertation_missing_figures.py` |
@@ -78,3 +79,4 @@ Regenerable from the committed data.
 ## Still missing (need a run or author input)
 - E7a alternate-codec result plot — generated after the terminal artifact is validated.
 - E8a pose-mosaic coverage/result plot — complete and validated as Figure 21.
+- E6 persistent-object external-boundary plot — complete and validated as Figure 22.

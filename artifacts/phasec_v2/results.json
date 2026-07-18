@@ -1,0 +1,534 @@
+{
+  "arm_summary": [
+    {
+      "arm": "mmL-flat",
+      "fg_f1": 0.14229711890220642,
+      "fg_precision": 0.14720550179481506,
+      "fg_recall": 0.1416926085948944,
+      "mse_full": 0.07210854440927505,
+      "mse_gt_bg": 0.03839927539229393,
+      "mse_gt_fg_nonempty": 0.6393179893493652,
+      "mse_union": 0.6860750913619995,
+      "object_coverage": 0.6193833333333333,
+      "object_extra": 0.14363333333333334,
+      "object_identity_accuracy": 0.21391666666666667,
+      "object_identity_coverage": 0.6193833333333333,
+      "object_missed": 0.7612333333333333,
+      "object_trajectory_error": 42.19304433571497,
+      "seed": 0
+    },
+    {
+      "arm": "mmL-hier",
+      "fg_f1": 0.14935289323329926,
+      "fg_precision": 0.15755127370357513,
+      "fg_recall": 0.14539742469787598,
+      "mse_full": 0.06827084720134735,
+      "mse_gt_bg": 0.03454887866973877,
+      "mse_gt_fg_nonempty": 0.6357437968254089,
+      "mse_union": 0.6758782267570496,
+      "object_coverage": 0.64975,
+      "object_extra": 0.1442,
+      "object_identity_accuracy": 0.13768333333333332,
+      "object_identity_coverage": 0.64975,
+      "object_missed": 0.7005,
+      "object_trajectory_error": 39.71441533092308,
+      "seed": 0
+    },
+    {
+      "arm": "mmL-flat",
+      "fg_f1": 0.14755959808826447,
+      "fg_precision": 0.14235684275627136,
+      "fg_recall": 0.15983274579048157,
+      "mse_full": 0.07964374870061874,
+      "mse_gt_bg": 0.04742082208395004,
+      "mse_gt_fg_nonempty": 0.6261412501335144,
+      "mse_union": 0.6901319026947021,
+      "object_coverage": 0.64595,
+      "object_extra": 0.14386666666666667,
+      "object_identity_accuracy": 0.2437,
+      "object_identity_coverage": 0.64595,
+      "object_missed": 0.7081,
+      "object_trajectory_error": 40.195497308700254,
+      "seed": 1
+    },
+    {
+      "arm": "mmL-hier",
+      "fg_f1": 0.1519816666841507,
+      "fg_precision": 0.15295271575450897,
+      "fg_recall": 0.1548759490251541,
+      "mse_full": 0.07268274575471878,
+      "mse_gt_bg": 0.03968513756990433,
+      "mse_gt_fg_nonempty": 0.6292212009429932,
+      "mse_union": 0.6779451966285706,
+      "object_coverage": 0.6619,
+      "object_extra": 0.15253333333333333,
+      "object_identity_accuracy": 0.18758333333333332,
+      "object_identity_coverage": 0.6619,
+      "object_missed": 0.6762,
+      "object_trajectory_error": 38.773212574975815,
+      "seed": 1
+    },
+    {
+      "arm": "mmL-flat",
+      "fg_f1": 0.14607737958431244,
+      "fg_precision": 0.14748187363147736,
+      "fg_recall": 0.15411591529846191,
+      "mse_full": 0.07716389745473862,
+      "mse_gt_bg": 0.04432077705860138,
+      "mse_gt_fg_nonempty": 0.6309559941291809,
+      "mse_union": 0.6931350231170654,
+      "object_coverage": 0.5993833333333334,
+      "object_extra": 0.11066666666666666,
+      "object_identity_accuracy": 0.22226666666666667,
+      "object_identity_coverage": 0.5993833333333334,
+      "object_missed": 0.8012333333333334,
+      "object_trajectory_error": 43.7860477555218,
+      "seed": 2
+    },
+    {
+      "arm": "mmL-hier",
+      "fg_f1": 0.15259483456611633,
+      "fg_precision": 0.1609070599079132,
+      "fg_recall": 0.14924933016300201,
+      "mse_full": 0.06843520700931549,
+      "mse_gt_bg": 0.03487971052527428,
+      "mse_gt_fg_nonempty": 0.6333544254302979,
+      "mse_union": 0.6762532591819763,
+      "object_coverage": 0.6491333333333333,
+      "object_extra": 0.13056666666666666,
+      "object_identity_accuracy": 0.15758333333333333,
+      "object_identity_coverage": 0.6491333333333333,
+      "object_missed": 0.7017333333333333,
+      "object_trajectory_error": 39.65350817544689,
+      "seed": 2
+    }
+  ],
+  "config_sha256": "db30b2086fccbc6a1eca7b1e4f4796430942e77e9d8faee12af06e55c94543ce",
+  "dataset_id": "moving-mnist-phase_c_v2_holdout-test-20260720-198306f9eab1",
+  "decision": {
+    "equivalence_enabled": false,
+    "rule": {
+      "FLAT_ADVANTAGE": "sign-reversed symmetric rule",
+      "HIERARCHY_ADVANTAGE": "all three simultaneous foreground-MSE intervals are positive; each other co-primary endpoint has at least two positive point effects and no interval wholly negative",
+      "MIXED_BOUNDARY": "complete and valid results satisfying neither directional rule",
+      "UNSCORABLE": "protected alignment, evaluator reliability, completion, or coverage validity fails"
+    },
+    "verdict": "MIXED_BOUNDARY"
+  },
+  "family": {
+    "clusters": 100,
+    "confidence": 0.95,
+    "critical_value": 2.859960515734484,
+    "method": "studentized max-statistic clip-cluster bootstrap",
+    "replicates": 10000
+  },
+  "input_artifacts": {
+    "mmL-flat-s0": "c5e24dca1f56b556dabcd96c46d1ea584641fc606dd335df40681e7fcfbaf708",
+    "mmL-flat-s1": "79da76af912e854834d7c5c0f23ecc3d1a374dca7fabd938be68a1b019d73c20",
+    "mmL-flat-s2": "2e56e7e6ec45feeb5e5ea485454e9394e320a6a94c863a33ba0b0337dd8a52f5",
+    "mmL-hier-s0": "037daeb92074d30c6ab50f6221926ccc780cd94521805a2e8714c4e720e64f65",
+    "mmL-hier-s1": "c4adebcf726d4bf64be3c9b4368f1a7e8732b5fdef30ba34dd9ec0f15e00c460",
+    "mmL-hier-s2": "719b98c59ba71adb3133ca6f1b44710ef09380bdb0f9bb088ff09d64b041cb51"
+  },
+  "manifest_sha256": "5a7557860d6a2e35b8e505d0e98ca57a891a13c77d9e0d66514a2953fc4b6269",
+  "overlap_strata": {
+    "nonoverlap": [
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.007634652420540882,
+        "lo": -0.00561721378975202,
+        "mean": 0.0007067011293280539,
+        "records": 18473,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.013806463659737863,
+        "lo": 0.003835775869925216,
+        "mean": 0.008882888799230453,
+        "records": 18473,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 3.710589626540465,
+        "lo": 0.8633858002520594,
+        "mean": 2.2983583089515007,
+        "records": 18473,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.053236584277562754,
+        "lo": -0.10492094320397898,
+        "mean": -0.07919666540356196,
+        "records": 18473,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.047505883765850375,
+        "lo": 0.011091503926731331,
+        "mean": 0.029394251069127915,
+        "records": 18473,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.0010098436539076343,
+        "lo": -0.0098052923587192,
+        "mean": -0.0044864317690518525,
+        "records": 18473,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.01532395354388397,
+        "lo": 0.006306503348899451,
+        "mean": 0.010757615695494395,
+        "records": 18473,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 2.8276383293119913,
+        "lo": -0.9191205310650826,
+        "mean": 0.9592148673546137,
+        "records": 18473,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.031497810926603496,
+        "lo": -0.08742857192255879,
+        "mean": -0.059005034374492504,
+        "records": 18473,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.03442755060714314,
+        "lo": -0.013834916270127628,
+        "mean": 0.010501813457478483,
+        "records": 18473,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.0013959405446968569,
+        "lo": -0.010510338342649049,
+        "mean": -0.004636357230313938,
+        "records": 18473,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.02047751283358506,
+        "lo": 0.011050354394723823,
+        "mean": 0.015645768686202186,
+        "records": 18473,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 5.659720101223317,
+        "lo": 1.92209015422944,
+        "mean": 3.7744986445620183,
+        "records": 18473,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.045888266133330594,
+        "lo": -0.0924944419628903,
+        "mean": -0.06977751312726682,
+        "records": 18473,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.07076966053083447,
+        "lo": 0.022434513589291872,
+        "mean": 0.04658149732041358,
+        "records": 18473,
+        "seed": 2
+      }
+    ],
+    "overlap": [
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.019113199716135145,
+        "lo": -0.002349837462178749,
+        "mean": 0.008169740193814409,
+        "records": 11527,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.019874552120048163,
+        "lo": 0.004514515083393138,
+        "mean": 0.012302443823355632,
+        "records": 11527,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 4.889805371598856,
+        "lo": 0.7463972588026073,
+        "mean": 2.7675281601887685,
+        "records": 11527,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.04801371678559474,
+        "lo": -0.0945449327510238,
+        "mean": -0.07148434111217142,
+        "records": 11527,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.0583073986209818,
+        "lo": 0.00641858399070612,
+        "mean": 0.03192504554524161,
+        "records": 11527,
+        "seed": 0
+      },
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.009345437400199212,
+        "lo": -0.010418585830728725,
+        "mean": -0.0008259384859835811,
+        "records": 11527,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.02087866379772177,
+        "lo": 0.008238523879635175,
+        "mean": 0.01447719225287179,
+        "records": 11527,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 3.862341399078942,
+        "lo": 0.41949761811617386,
+        "mean": 2.164393664187685,
+        "records": 11527,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.027196004354939272,
+        "lo": -0.07685374829199897,
+        "mean": -0.051487811225817644,
+        "records": 11527,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.04722845714420293,
+        "lo": 0.001658958873882306,
+        "mean": 0.024681183308753362,
+        "records": 11527,
+        "seed": 1
+      },
+      {
+        "clusters": 100,
+        "endpoint": "foreground_mse",
+        "hi": 0.012224120254717995,
+        "lo": -0.009569176800196252,
+        "mean": 0.0011878606047372388,
+        "records": 11527,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "union_mse",
+        "hi": 0.025851824292037844,
+        "lo": 0.011998744499715726,
+        "mean": 0.018862604533870026,
+        "records": 11527,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "trajectory_error",
+        "hi": 6.70433598473707,
+        "lo": 2.8192955987401502,
+        "mean": 4.706330696734047,
+        "records": 11527,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "identity_accuracy",
+        "hi": -0.03530722717307306,
+        "lo": -0.07697996139610795,
+        "mean": -0.05651947601283942,
+        "records": 11527,
+        "seed": 2
+      },
+      {
+        "clusters": 100,
+        "endpoint": "object_coverage",
+        "hi": 0.07998675587229677,
+        "lo": 0.03084647387963456,
+        "mean": 0.054827795610306235,
+        "records": 11527,
+        "seed": 2
+      }
+    ]
+  },
+  "primary": [
+    {
+      "bootstrap_se": 0.003849733098442031,
+      "endpoint": "foreground_mse",
+      "hi": 0.014584334163532912,
+      "lo": -0.007435835151787857,
+      "mean": 0.0035742495058725277,
+      "seed": 0
+    },
+    {
+      "bootstrap_se": 0.0028877256856045547,
+      "endpoint": "union_mse",
+      "hi": 0.018455577265768137,
+      "lo": 0.0019380143835654989,
+      "mean": 0.010196795824666817,
+      "seed": 0
+    },
+    {
+      "bootstrap_se": 0.7921995197200282,
+      "endpoint": "trajectory_error",
+      "hi": 4.744288351775003,
+      "lo": 0.21296965780879784,
+      "mean": 2.4786290047919004,
+      "seed": 0
+    },
+    {
+      "bootstrap_se": 0.012025128815559158,
+      "endpoint": "identity_accuracy",
+      "hi": -0.041841939724213156,
+      "lo": -0.11062472694245351,
+      "mean": -0.07623333333333333,
+      "seed": 0
+    },
+    {
+      "bootstrap_se": 0.010051612404043554,
+      "endpoint": "object_coverage",
+      "hi": 0.059113881261698205,
+      "lo": 0.0016194520716351288,
+      "mean": 0.030366666666666667,
+      "seed": 0
+    },
+    {
+      "bootstrap_se": 0.0033562762433487193,
+      "endpoint": "foreground_mse",
+      "hi": 0.006518869302620746,
+      "lo": -0.012678765769129253,
+      "mean": -0.003079948233254254,
+      "seed": 1
+    },
+    {
+      "bootstrap_se": 0.0024391034927316265,
+      "endpoint": "union_mse",
+      "hi": 0.01916254067772656,
+      "lo": 0.005211061311721511,
+      "mean": 0.012186800994724035,
+      "seed": 1
+    },
+    {
+      "bootstrap_se": 0.8695624196427538,
+      "endpoint": "trajectory_error",
+      "hi": 3.909198919869257,
+      "lo": -1.0646294524203752,
+      "mean": 1.4222847337244409,
+      "seed": 1
+    },
+    {
+      "bootstrap_se": 0.013046450498590403,
+      "endpoint": "identity_accuracy",
+      "hi": -0.018804333370213644,
+      "lo": -0.0934289999631197,
+      "mean": -0.05611666666666667,
+      "seed": 1
+    },
+    {
+      "bootstrap_se": 0.011290388409831964,
+      "endpoint": "object_coverage",
+      "hi": 0.048240065059425664,
+      "lo": -0.016340065059425667,
+      "mean": 0.01595,
+      "seed": 1
+    },
+    {
+      "bootstrap_se": 0.0037570729971924065,
+      "endpoint": "foreground_mse",
+      "hi": 0.008346581829209724,
+      "lo": -0.013143579024195273,
+      "mean": -0.002398498597492774,
+      "seed": 2
+    },
+    {
+      "bootstrap_se": 0.002666139699501805,
+      "endpoint": "union_mse",
+      "hi": 0.024506838516745122,
+      "lo": 0.009256729976730394,
+      "mean": 0.01688178424673776,
+      "seed": 2
+    },
+    {
+      "bootstrap_se": 0.9110038241472193,
+      "endpoint": "trajectory_error",
+      "hi": 6.7379745468190855,
+      "lo": 1.5271046133307489,
+      "mean": 4.132539580074917,
+      "seed": 2
+    },
+    {
+      "bootstrap_se": 0.010787831303069057,
+      "endpoint": "identity_accuracy",
+      "hi": -0.03383056175615134,
+      "lo": -0.09553610491051531,
+      "mean": -0.06468333333333333,
+      "seed": 2
+    },
+    {
+      "bootstrap_se": 0.011774460556426709,
+      "endpoint": "object_coverage",
+      "hi": 0.08342449228545348,
+      "lo": 0.01607550771454653,
+      "mean": 0.04975,
+      "seed": 2
+    }
+  ],
+  "schema_version": 1,
+  "study": "phase-c-persistent-object-v2"
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-07-17-e8a-terminal-evidence-frozen",
+  "updated": "2026-07-18-e6-terminal-evidence-frozen",
   "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
   "experiments": {
     "pre-c-seed2-trio": {
@@ -267,8 +267,8 @@
       ]
     },
     "phase-c-v2-preparation": {
-      "status": "AUTHORIZED_RUN_ALONE",
-      "meaning": "E6 public/development-only data, codec, classifier and evaluator preparation; protected holdout access and predictor training remain forbidden.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E6 public/development data, codec, classifier and evaluator preparation completed and is frozen; no preparation retry or adaptive replacement is authorized.",
       "required_files": [
         "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
         "experiments/configs/phase_c_v2.json",
@@ -318,8 +318,8 @@
       ]
     },
     "phase-c-v2": {
-      "status": "AUTHORIZED_RUN_ALONE",
-      "meaning": "Frozen six-cell E6 external Moving-MNIST boundary with persistent-object assignment, intention-to-score identity/trajectory, coverage and false-positive-sensitive endpoints.",
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E6 completed six trainings and six protected evaluations in 20.5127 project GPU-hours. Verdict MIXED_BOUNDARY: support/continuity favor hierarchy, identity favors flat context, foreground-only error is unresolved. No adaptive arm, seed, endpoint or retry is authorized.",
       "required_files": [
         "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
         "experiments/configs/phase_c_v2.json",

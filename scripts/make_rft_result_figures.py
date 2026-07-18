@@ -30,6 +30,8 @@ ORIGINAL = "#4f6f8f"
 ALTERNATE = "#b56a3a"
 RAW = "#2f7d68"
 RAW_LIGHT = "#78a99a"
+HIER = "#2563a6"
+FLAT = "#b6463d"
 PDF_TIMESTAMP = datetime(2026, 7, 17, tzinfo=timezone.utc)
 
 
@@ -361,6 +363,86 @@ def make_pose_mosaic_reference() -> None:
     _save(fig, "fig21_pose_indexed_raw_memory")
 
 
+def make_phasec_v2_boundary() -> None:
+    result = _read("artifacts/phasec_v2/results.json")
+    lookup = {
+        (row["endpoint"], int(row["seed"])): row
+        for row in result["primary"]
+    }
+    unitless = [
+        ("foreground_mse", "Foreground MSE"),
+        ("union_mse", "Union MSE"),
+        ("identity_accuracy", "Identity accuracy"),
+        ("object_coverage", "Object coverage"),
+    ]
+    seeds = [0, 1, 2]
+    colors = [HIER, "#5485ba", "#86a9cf"]
+
+    fig, axes = plt.subplots(
+        1,
+        2,
+        figsize=(12.2, 5.4),
+        gridspec_kw={"width_ratios": [1.55, 0.8]},
+        constrained_layout=True,
+    )
+
+    ax = axes[0]
+    base = np.arange(len(unitless), dtype=float)
+    offsets = np.asarray([-0.20, 0.0, 0.20])
+    for seed, offset, color in zip(seeds, offsets, colors):
+        rows = [lookup[(endpoint, seed)] for endpoint, _ in unitless]
+        _errorbar(
+            ax,
+            base + offset,
+            rows,
+            color=color,
+            label=f"seed {seed}",
+            marker="o",
+        )
+    ax.axvline(0, color=INK, linewidth=0.9)
+    ax.grid(axis="x", color=GRID, linewidth=0.7)
+    ax.set_yticks(base)
+    ax.set_yticklabels([label for _, label in unitless])
+    ax.invert_yaxis()
+    ax.set_xlabel("Registered effect (positive favors hierarchy)")
+    ax.set_title("A  Support and identity effects", loc="left", fontweight="bold")
+    ax.legend(frameon=False, loc="upper left", ncol=3)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+
+    ax = axes[1]
+    trajectory = [lookup[("trajectory_error", seed)] for seed in seeds]
+    y = np.arange(len(seeds))
+    for index, (row, color) in enumerate(zip(trajectory, colors)):
+        _errorbar(ax, np.asarray([index]), [row], color=color, marker="o")
+    ax.axvline(0, color=INK, linewidth=0.9)
+    ax.grid(axis="x", color=GRID, linewidth=0.7)
+    ax.set_yticks(y)
+    ax.set_yticklabels([f"seed {seed}" for seed in seeds])
+    ax.invert_yaxis()
+    ax.set_xlabel("Flat trajectory error − hierarchy error (px)")
+    ax.set_title("B  Persistent-object trajectory", loc="left", fontweight="bold")
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+
+    fig.suptitle(
+        "Long Moving-MNIST: hierarchy preserves support, flat context preserves identity",
+        fontsize=12,
+        fontweight="bold",
+    )
+    fig.text(
+        0.5,
+        -0.01,
+        "Positive favors hierarchy; intervals belong to one simultaneous 15-effect family. "
+        "Registered verdict: MIXED_BOUNDARY.",
+        ha="center",
+        va="top",
+        color=MUTED,
+        fontsize=8.5,
+    )
+    _save(fig, "fig22_phasec_v2_boundary")
+
+
 def main() -> None:
     _style()
     make_head_package()
@@ -368,6 +450,7 @@ def main() -> None:
     make_sampler_robustness()
     make_codec_robustness()
     make_pose_mosaic_reference()
+    make_phasec_v2_boundary()
     print("RFT_RESULT_FIGURES_DONE")
 
 

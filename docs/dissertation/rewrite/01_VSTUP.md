@@ -250,7 +250,10 @@ The following propositions are submitted for defense:
    the task-relevant memory horizon more economically than a contiguous flat window. The coarse
    latent stream and temporally subsampled full-resolution history are distinct measured forms,
    not synonyms; their operating region is identified, measured, and bounded by the developed
-   memory-horizon methodology with re-entry-stratified analytic hardness labels.
+   memory-horizon methodology with re-entry-stratified analytic hardness labels. The valid
+   persistent-object long Moving-MNIST boundary further shows that this efficiency is
+   task-information-specific: hierarchy can preserve spatial support and continuity while flat
+   full-resolution context preserves fine object identity.
 
 2. Reversible transformations enable time-agnostic backpropagation with constant activation
    memory in the length of the modeled process; the method extends to stochastic multi-level

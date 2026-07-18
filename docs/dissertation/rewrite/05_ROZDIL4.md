@@ -39,6 +39,8 @@
 > current loopmom pool is development evidence; tested edges are brackets; B1 is a configuration
 > result; c2 is a matched-example optimizer-regime control; legacy Phase C is blocked. Where older
 > paragraphs conflict, `docs/CLAIM_LEDGER.md` and the synthesis note govern final assembly.
+> **Terminal update, 2026-07-18:** the legacy evaluator remains blocked, while corrected E6
+> completed as a valid `MIXED_BOUNDARY` persistent-object study and is integrated in §4.6.2a.
 
 # РОЗДІЛ 4 — ЕКСПЕРИМЕНТАЛЬНЕ ДОСЛІДЖЕННЯ ТА ПРАКТИЧНЕ ЗАСТОСУВАННЯ
 
@@ -57,8 +59,9 @@ hierarchical arm otherwise confounds. The temporal-capability boundary study at 
 operating point (§4.5) closes the capability line of the experimental program with an honestly
 bounded negative and the methodology lessons it produced. The generalization study (§4.6) then
 carries the configuration selected by §§4.2–4.4 onto the standard and synthetic benchmark
-suites — its measured component, the standard Moving-MNIST bridge, serving as the predicted
-negative control of the memory-horizon claim. §4.7 documents the implementation of the results,
+suites — its measured components include the standard Moving-MNIST negative-control bridge and
+the corrected persistent-object long Moving-MNIST external boundary. §4.7 documents the
+implementation of the results,
 and §4.8 concludes the chapter.
 
 Two standing conventions of the chapter, fixed by the validity audit of the experimental campaign
@@ -1309,6 +1312,47 @@ this amendment are both retained in the scientific record. The conditional proto
 in `docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure enters the dissertation until its
 CPU, classifier and protocol-freeze gates pass.
 
+### 4.6.2a Persistent-object long Moving-MNIST: a measured external boundary
+
+The corrected E6 protocol passed every CPU, codec, classifier, production-crop, data-integrity and
+protocol-freeze gate before protected evaluation. The frozen comparison used `mmL-flat` and
+`mmL-hier` at training seeds 0/1/2, a 48-frame ground-truth warm-up, 300 self-fed target frames and
+100 protected test clips. Both arms used the same 1,152 context-token budget, predictor regime,
+codec, sampler and evaluation geometry. The generator saved persistent object and source-glyph
+identity, boxes and trajectories; the evaluator used one-to-one Hungarian assignment, explicit
+missed/extra-object penalties and intention-to-score coverage. The official train/test glyph split
+and classifier-domain floors were verified before the holdout was opened.
+
+**Table 4.8a — E6 persistent-object long Moving-MNIST.** Positive effects favor hierarchy; all
+intervals belong to one simultaneous 95% max-statistic clip-cluster family over the 15
+co-primary effects.
+
+| Seed | Foreground MSE | Union MSE | Trajectory error, px | Identity accuracy | Object coverage |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
+| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
+| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
+
+The preregistered verdict is **MIXED_BOUNDARY**, not equivalence and not a null result. Union-mask
+error favors hierarchy on all three seeds. Trajectory and coverage favor hierarchy cleanly on
+seeds 0 and 2 and are directionally positive but unresolved on seed 1. Missed-object rate,
+full-frame error, background error and foreground F1 also improve for hierarchy at all seeds as
+secondary descriptive endpoints. Digit identity, however, favors flat context with simultaneous
+intervals wholly below zero at all three seeds; foreground-only MSE is unresolved and changes
+sign.
+
+This division is consistent with the dissertation's systems interpretation. The coarse stream
+retains spatial support economically—where an object is, whether it persists and how its motion
+continues—but discards fine glyph information needed to preserve what the object is. Flat
+full-resolution storage retains that identity fidelity better. Thus E6 extends, but does not
+universally generalize, the LoopMom reach–fidelity frontier. It is a controlled synthetic external
+boundary, not evidence of natural-video transfer.
+
+![E6 persistent-object boundary](../../figures/fig22_phasec_v2_boundary.png)
+
+**Figure 4.22 —** Persistent-object long Moving-MNIST simultaneous effects. Positive favors
+hierarchy; support/continuity and fine identity fidelity separate.
+
 ### 4.6.3 Синтетичні стенди [A1]/[A2]: 2D-обертання та 3D-полікуби
 
 *(The author's published synthetic suites — future transfer protocol, not fourth-article
@@ -1669,7 +1713,12 @@ insert the act copies — the current draft has headings only]**.
    no off-screen re-entry — hierarchy pays where the memory horizon exists (§4.3) and is a null
    where it does not, while the aggregate-MSE gap to the deterministic specialists (22.06–29.80)
    is disclosed as the refutation of the pre-registered "mid-pack" clause, and no leaderboard
-   claim is made. TaxiBJ is a measured real-data transfer (§4.6.5); the unexecuted 2D-rotation,
+   claim is made. The valid persistent-object long Moving-MNIST study (§4.6.2a, Table 4.8a)
+   returns a separate **mixed boundary**: hierarchy improves union error at all three seeds and
+   trajectory/coverage cleanly at two, while flat context preserves digit identity at all three
+   and foreground-only error is unresolved. It therefore supports a support/continuity-versus-
+   identity-fidelity interpretation rather than universal superiority. TaxiBJ is a measured
+   real-data transfer (§4.6.5); the unexecuted 2D-rotation,
    3D-polycube, MMNIST-CIFAR and optional KTH-64 protocols are retained only as future-work
    designs and contribute no projected result to this conclusion. The token-budget frontier
    completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **measured**: the
@@ -1704,8 +1753,10 @@ The stable labels are bound mechanically to the final numbered publication list.
    18 simultaneous lower bounds positive and the upper inversion unresolved at alternate sampler
    seeds 1/2; **(F5) representation robustness** — E7a retains all four alternate-codec point
    directions, with three family-wise clean contrasts and the upper inversion again
-   precision-limited; and **(F6) explicit-access reference** — E8a gives a clean privileged
-   raw-memory ceiling while remaining outside token-matched model ranking. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
+   precision-limited; **(F6) explicit-access reference** — E8a gives a clean privileged
+   raw-memory ceiling while remaining outside token-matched model ranking; and **(X3) external
+   persistent-object boundary** — E6 separates hierarchy-favoring spatial support/continuity from
+   flat-favoring digit identity under one valid protected simultaneous family. Разом ці підтверджені регулярності та явно зафіксовані межі складають обмежену,
    фальсифіковану теорію розподілу контексту — головний науковий підсумок розділу [UA-PASS].
 
 ---
@@ -1732,7 +1783,9 @@ to avoid renumbering the audited register; renumber at typeset); Table 4.8 is th
 OpenSTL bridge from `docs/draft/T7_BRIDGE.md`; Table 4.9 is the measured TaxiBJ transfer;
 Table 4.10 and Figure 4.20 are the terminal E7a whole-codec robustness products generated from
 `artifacts/e7a_codec_robustness/results.json`; Table 4.11 and Figure 4.21 are the terminal E8a
-privileged-access products generated from `artifacts/e8a_pose_mosaic/results.json`. Empty
+privileged-access products generated from `artifacts/e8a_pose_mosaic/results.json`; Table 4.8a
+and Figure 4.22 are the terminal E6 persistent-object boundary products generated from
+`artifacts/phasec_v2/results.json`. Empty
 projected transfer tables were removed when the corresponding suites were assigned to future
 work.
 

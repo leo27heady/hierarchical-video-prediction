@@ -2,7 +2,8 @@
 
 **Original redesign:** 2026-07-11
 **Binding amendment and preparation freeze:** 2026-07-17
-**Status:** article-utility gate passed; preparation frozen; GPU launch remains fail-closed
+**Status:** terminal `MIXED_BOUNDARY`; six training and six protected evaluation cells complete;
+evidence frozen on 2026-07-18
 
 This protocol replaces—not edits away—the invalid legacy Phase C identity, trajectory and
 equivalence design. The legacy scripts remain prohibited evidence paths.

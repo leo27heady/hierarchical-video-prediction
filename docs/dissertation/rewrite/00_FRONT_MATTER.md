@@ -142,7 +142,11 @@ educational process of VNTU is described (per the existing implementation acts, 
 reversible-transformer method and entropy tokenization). [A2]'s published 2-D rotating-shape
 validation is reported as the receipt of the reversibility method; [A1] supplies the 2-D/3-D
 entropy-tokenization examples. Moving MNIST and TaxiBJ are separate dissertation bridges, while
-MMNIST-CIFAR and KTH remain explicitly unexecuted extensions.
+MMNIST-CIFAR and KTH remain explicitly unexecuted extensions. In the valid persistent-object
+48→300 Moving-MNIST bridge, hierarchy lowers union error on all three seeds and improves
+trajectory/coverage cleanly on two, while flat context preserves digit identity on all three;
+foreground-only error is unresolved. The result is reported as a mixed external boundary rather
+than a universal model ranking.
 
 The general conclusions present the main results of the dissertation research, confirming the
 fulfillment of all the set tasks, with honest scoping: the hierarchy is validated where its reach
@@ -156,6 +160,9 @@ as a family-wise precision boundary under alternate sampler and codec conditions
 privileged pose-indexed raw-memory reference reaches foreground MSE 0.0494 and beats all four
 registered neural references with positive simultaneous lower bounds, showing that geometric
 reach and reliable explicit addressing are distinct while making no token-matched model claim.
+The protected persistent-object long Moving-MNIST result further separates the axes: coarse
+long-memory packaging preserves spatial support and continuity, whereas flat full-resolution
+context preserves fine digit identity.
 
 ### Main scientific and practical results (7 items, mapped 1:1 to the 7 tasks)
 

@@ -5,7 +5,7 @@
 > reach–fidelity specification. “Laws,” exact switch points, invalid Phase C factor claims and pooled
 > regression-equivalence wording remain superseded.
 
-> **Status (2026-07-16):** detailed source synchronized through E7c. Expected transfer shells are
+> **Status (2026-07-18):** detailed source synchronized through terminal E7a, E8a and E6. Expected transfer shells are
 > future work and do not enter conclusions. The claim ledger and binding compact govern wording.
 
 ## 8.1 One claim
@@ -31,6 +31,11 @@ because its target interface also changes. E7c shows that four central diffusion
 their point-estimate signs across the frozen NFE/sampler family, while qualifying the precision of
 the upper inversion at two alternate sampler seeds. The spatially coarse two-level model is one
 measured implementation of the design space, not the conclusion itself.
+E7a preserves all four directions under an independently trained codec, with the upper inversion
+again a precision boundary. E8a shows that privileged exact-pose raw access removes much of the
+remaining error but is not token matched. Corrected E6 then exposes an external division:
+hierarchy better preserves spatial support and continuity, while flat context better preserves
+digit identity.
 
 ## 8.2 Empirical regularities under fixed conditions
 
@@ -72,6 +77,18 @@ section only when its evidence row is complete, and its wording carries its scop
   retain direction across NFE 8/16/32 and sampler seeds 0/1/2; 18 simultaneous lower bounds are
   positive. The 2,432-token inversion is family-wise unresolved at alternate sampler seeds 1/2.
   Scope: frozen seed-0 checkpoints and one codec; this is not training-seed or codec robustness.
+- **F5 — Representation robustness.** An independently trained codec preserves all four registered
+  point-estimate directions. Three alternate-codec effects are family-wise clean; the 2,432-token
+  inversion remains positive but unresolved. Scope: a whole-codec intervention conditional on
+  predictor seed 0, not component-level codec causality.
+- **F6 — Explicit-access reference.** The privileged raw K48 pose mosaic reaches foreground MSE
+  0.0494 and beats all four registered neural references with positive simultaneous lower bounds.
+  Exact future poses, raw pixels and unmatched storage prevent an efficiency or model-ranking
+  claim.
+- **X3 — Persistent-object external boundary.** On protected long Moving-MNIST, hierarchy has
+  lower union error at all three seeds and cleaner trajectory/coverage at two, while flat context
+  has higher identity accuracy at all three; foreground-only error is unresolved. Scope: a valid
+  synthetic external boundary, not LoopMom-mechanism or natural-video transfer.
 
 **Supporting boundary conditions (measured):** retrieval *emerges* only under a sufficient
 optimization budget (null at 6k steps, two-seed win at 20k; matched-budget delta doubles at 2×
@@ -80,8 +97,8 @@ mechanism-agnostic at the interior point (both heads, two seeds); the generation
 regime-dependent (diffusion wins coverage, regression wins best-of-1 rollout; no "one best
 head" survives); and the negative control holds — on standard Moving MNIST, with no memory
 horizon, flat ≈ hierarchical (180.91 vs 181.29), as the scoped account predicts. Legacy Phase C
-identity/trajectory conclusions are excluded; a redesigned Phase C remains conditional on its
-persistent-object, assignment, classifier and article-utility gates.
+identity/trajectory conclusions are excluded. The corrected E6 replacement passed those gates
+and supports only its registered mixed external-boundary interpretation.
 
 ## 8.3 The two honest negatives that scope the claim
 
@@ -106,8 +123,10 @@ the compute gap larger still); the exact upper multiple remains optimization-bud
 Within the spatially coarse family, regression plus long history is a strong measured arm, but the
 five-seed factorial shows that package ordering under regression is heterogeneous. Across
 packaging families, sparse full-resolution history is stable under diffusion across five seeds.
-E7c makes this practical reading less dependent on a single inference allocation, while E7a must
-still test whether it depends on one learned latent geometry.
+E7c makes this practical reading less dependent on a single inference allocation, and E7a
+preserves its four directions under an independent learned latent geometry. E8a shows the
+remaining value of reliable explicit access, while E6 warns that maximizing spatial continuity
+can still sacrifice fine object identity.
 
 ## 8.5 Future work
 

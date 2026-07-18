@@ -77,3 +77,20 @@ access. A confidence interval crossing zero is inconclusive.
 - E6 protocol: `docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`
 - E6 config: `experiments/configs/phase_c_v2.json`
 - E8a result: `artifacts/e8a_pose_mosaic/results.json`
+
+## Terminal E6 outcome — 2026-07-18
+
+E6 completed all six training cells and six protected evaluations in 20.5127 mechanically charged
+GPU-hours. Its independent completion validator, W&B audit, access audit and 15-effect CPU
+recomputation pass. The registered verdict is **MIXED_BOUNDARY**: hierarchy improves union error
+at all three seeds and trajectory/coverage cleanly at two, while flat context preserves digit
+identity at all three; foreground-only error is unresolved.
+
+This outcome satisfies the original article-utility rationale. It gives a recognizable external
+boundary without pretending that one package dominates every information type. The binding
+interpretation is spatial support/continuity versus fine identity fidelity.
+
+The post-freeze E9 utility gate is therefore **DEFER**. E9 remains valuable as a future
+counterfactual necessity study, but it would add a new dataset, oracle and factorial after the
+article's reviewer-facing gap has been resolved. It is not required for dissertation closure and
+has no frozen launch implementation or authorization.

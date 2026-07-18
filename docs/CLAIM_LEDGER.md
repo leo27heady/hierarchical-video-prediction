@@ -1,6 +1,6 @@
 # Claim ledger — scientific source of truth
 
-**Revision:** 2026-07-17 E8a terminal privileged-access reference integration
+**Revision:** 2026-07-18 E6 terminal persistent-object external-boundary integration
 **Rule:** a headline claim must name its testbed, intervention, comparator, metric population,
 representation, head, seeds, training regime, and evidence artifact.  Opposite signs are not
 equivalence; tested brackets are not continuous crossings; configuration changes are not pure
@@ -30,7 +30,7 @@ are finer-grained evidence views, not replacements that invalidate existing cita
 | L5 | D1 | Depth-plus-objective/allocation probe on a single-scale testbed; appendix evidence, not a general depth law. |
 | L6 | T1, P8 | Addressability and self-fed reliability are distinct questions, but the seed-0 late inversion did not replicate at seeds 1–2; no stable trust boundary is established. |
 | L7 | M1, M2 | Prediction-mechanism regime dependence and the EBT characterized negative. |
-| L8 | X1, P1 | External boundary programme; short controls measured, legacy Phase C factor claims invalid, hybrid Phase C conditional. |
+| L8 | X1, X3, P1 | External boundary programme: short controls and valid persistent-object long Moving-MNIST measured; legacy Phase C factor claims remain invalid. |
 | L9 | V1 | Reversible temporal optimization as a dissertation enabler, not the cause of package gains. |
 | L10 | future counterfactual/multiscale study | A genuine multiscale/depth or counterfactual hidden-state benefit remains a future claim, not required for present closure. |
 
@@ -60,6 +60,7 @@ L1-R, L2-F or L6-T, but no source should cite a missing ledger row.
 | D1 | Adding a third level at fixed budget costs performance on the single-scale loopmom probe. | B3 seed 0 −0.0196 [−0.0248, −0.0146] versus two-level arm; disclosed objective/allocation confounds. | `MEASURED_APPENDIX` | A depth-plus-objective-allocation probe, never a general statement that depth hurts. |
 | X1 | Short-horizon Moving-MNIST and TaxiBJ are competence/boundary anchors, not strong equivalence or transfer evidence. | T7 descriptive near-null; TaxiBJ in-band competence/economy. | `MEASURED_DESCRIPTIVE` | Moving-MNIST uses one seed/unequal budgets/no paired equivalence test; TaxiBJ is not a memory-re-entry test. |
 | X2 | Full-frame SSIM/PSNR are background-dominated on the archived sparse Moving-MNIST protocol. | On the exact 100-clip, 36-context, 964-target CW-VAE population, deterministic all-black scores 0.7681 SSIM / 13.941 dB versus the trained best-of-5 CW-VAE mean curve at 0.5708 / 12.918. | `MEASURED_METRIC_SANITY_DIAGNOSTIC` | Same clips/targets/metric code, but not architecture- or budget-matched; only CW-VAE mean curves survive, so no paired inference. Use this only to motivate foreground/union/component endpoints, not as a model-quality ranking. |
+| X3 | On the valid persistent-object 48→300 Moving-MNIST boundary, the 1,152-token hierarchy preserves spatial support and continuity better, while the matched-budget flat package preserves digit identity better. | E6 one-family simultaneous effects across seeds 0/1/2: union-MSE effects +0.0102/+0.0122/+0.0169 are all CI-positive; trajectory effects +2.4786/+1.4223/+4.1325 are clean on seeds 0/2 and unresolved on seed 1; coverage effects +0.0304/+0.0159/+0.0498 are clean on seeds 0/2 and unresolved on seed 1. Identity effects −0.0762/−0.0561/−0.0647 are CI-negative at every seed. Foreground-MSE intervals all cross zero. | `MEASURED; MIXED_BOUNDARY; PERSISTENT_OBJECT_VALID` | External synthetic boundary, not LoopMom-mechanism replication, equivalence, universal hierarchy advantage or natural-video transfer. Persistent IDs, official glyph split, Hungarian matching, misses/extras, coverage, classifier validation and protected access all pass. |
 | V1 | The stochastic reversible recurrence supports exact reverse replay and constant activation memory relative to BPTT. | Reconstruction/gradient/memory panels. | `MEASURED_DISSERTATION_STRAND` | Enabler, not cause of Chapter 4 gains; novelty scoped against reversible RNNs. Move out of core fourth article. |
 
 ## Invalid, blocked, or retired claims
@@ -109,6 +110,8 @@ only when literally true.  Do not use “matched compute” as a substitute for 
 9. Assemble and internally freeze the article/dissertation sources; run the fixed-target B1
    control only if causal stride wording returns.
 10. Run redesigned Phase C only if its validity/classifier and assembled-article utility gates pass.
+    **COMPLETE: E6 `MIXED_BOUNDARY`; spatial support/continuity favor hierarchy, identity favors
+    flat context, and foreground-only error is unresolved.**
 11. Treat counterfactual/dynamic-content and natural re-entry studies as post-freeze/future work.
 
 Pre-C seed-2 and c2 results must be integrated as new evidence rows without silently upgrading the

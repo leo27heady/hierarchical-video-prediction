@@ -43,14 +43,19 @@ at +0.0079 but its family-wise interval [−0.0006, +0.0165] includes zero.
 A privileged exact-pose raw-pixel mosaic provides a separate access reference: its 48-frame
 variant reaches foreground MSE 0.0494, and all four registered neural-to-mosaic effects have
 positive simultaneous lower bounds.
+A protected three-seed persistent-object long Moving-MNIST study then identifies an external
+boundary rather than a universal winner. Hierarchy improves union-mask error on all three seeds
+and improves trajectory/coverage cleanly on two, but flat context preserves digit identity on
+all three; foreground-only error is unresolved.
 
 These results support a scoped account: context reach explains where memory can help, while
 fidelity explains why compression can lose after reach is saturated. Addressability and self-fed
 reliability remain distinct constructs, but the present data do not locate a stable trust
 boundary. They do not establish universal laws or a unique continuous crossing.
-The central reach–fidelity comparisons were confirmed once on a hash-pinned untouched holdout,
-with false-positive-sensitive, component and coverage endpoints. All claims remain scoped to the
-procedural static-world testbed, frozen representation and tested training regimes.
+The central reach–fidelity comparisons were confirmed once on a hash-pinned untouched LoopMom
+holdout, with false-positive-sensitive, component and coverage endpoints. The Moving-MNIST
+boundary uses a separate protected holdout and persistent-object metadata. Claims remain scoped
+to these synthetic testbeds, frozen representations and tested training regimes.
 
 ## 1. Introduction
 
@@ -130,7 +135,9 @@ The fourth article contributes:
    robustness from family-wise precision;
 10. a privileged pose-indexed raw-memory reference separating explicit access from learned,
     self-fed generation without presenting it as a token-matched competitor;
-11. explicit reporting of negative, confounded and seed-sensitive outcomes.
+11. a protected persistent-object long Moving-MNIST boundary showing that support/continuity and
+    fine identity fidelity can favor different packages;
+12. explicit reporting of negative, confounded and seed-sensitive outcomes.
 
 Energy-based modelling and stochastic reversibility remain dissertation strands and supplementary
 context; they are not required to make this article's central claim.
@@ -490,6 +497,41 @@ value of explicit access from the measured neural package frontier.
 Right: the registered simultaneous family. All six lower bounds are positive; the four circular
 neural-to-K48 effects determine the clean ceiling verdict.
 
+### 4.10 External boundary: persistent-object long Moving-MNIST
+
+E6 tests whether the reach–fidelity account survives a recognizable synthetic dataset with
+persistent digit identities, collisions and 300-frame self-fed prediction. The comparison uses
+three training seeds, a 48-frame warm-up, matched 1,152-token flat and hierarchical packages, an
+official train/test glyph split, generator-saved object identity and trajectory, one-to-one
+Hungarian assignment, explicit missed/extra-object accounting, and a protected 100-clip holdout.
+Positive effects below favor hierarchy. All 15 intervals belong to one preregistered
+studentized max-statistic clip-cluster family.
+
+| Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
+| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
+| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
+
+The registered verdict is **MIXED_BOUNDARY**. Union-mask error favors hierarchy on every seed.
+Trajectory and coverage favor hierarchy cleanly on seeds 0 and 2 and remain directionally
+positive but unresolved on seed 1. Missed objects are lower and full-frame/background error is
+lower for hierarchy at every seed as secondary descriptive evidence. Conversely, identity
+accuracy favors flat context with simultaneous intervals wholly below zero at every seed.
+Foreground-only error is unresolved and changes sign.
+
+This is a scientifically useful division of labor. The coarse stream better preserves spatial
+support—where an object is, whether it remains represented, and how its trajectory continues—but
+loses fine glyph information needed to preserve what the object is. Because identity uses a fixed
+ground-truth object denominator, the result is not explained by selecting only detected survivors.
+It is consistent with the article's reach–fidelity account, but it is not a replication of
+LoopMom's exact observability mechanism or evidence of natural-video transfer.
+
+![Persistent-object long Moving-MNIST boundary](../figures/fig22_phasec_v2_boundary.png)
+
+**Figure 8.** Registered E6 simultaneous effects. Positive favors hierarchy. The support and
+continuity endpoints separate from identity fidelity, producing the preregistered mixed verdict.
+
 ## 5. Reproducibility and evidence availability
 
 Every confirmatory or robustness dataset has a purpose string, generation seed, split indices and
@@ -520,6 +562,9 @@ The study does not establish a universal hierarchy advantage, a unique token cro
 context-stride effect, regression equivalence, information-theoretic necessity, natural-video
 generalization, a trust law, or valid legacy Phase C object conclusions. Moving-MNIST 10-to-10 and
 TaxiBJ are descriptive boundary/competence anchors rather than equivalence or re-entry evidence.
+The corrected persistent-object long Moving-MNIST study is valid but remains an external
+synthetic boundary: it supports neither a universal hierarchy ranking nor LoopMom-mechanism or
+natural-video generalization.
 E7a supports whole-codec directional robustness conditional on predictor seed 0; it does not
 establish component-level codec causality or universal representation invariance.
 E8a is a privileged static-world access reference. Because it receives exact future poses and
@@ -568,9 +613,11 @@ The pose-indexed reference then exposes a complementary gap: explicit lossless a
 content substantially outperforms every registered neural reference, with a clean simultaneous
 family. This does not replace the learned-model comparison; it shows that reach alone is not
 enough when addressing, compression and self-fed generation remain imperfect. The final account
-is therefore conditional and operational: buy enough reach to include the relevant past, preserve
-the fidelity the task needs, and distinguish having information in context from being able to
-address and reuse it reliably.
+is sharpened by the persistent-object boundary: hierarchy is better at retaining spatial support
+and continuity, while flat full-resolution context is better at retaining digit identity.
+The operational prescription is therefore conditional: buy enough reach to include the relevant
+past, preserve the fidelity the task needs, and distinguish having information in context from
+being able to address and reuse it reliably.
 
 ## References
 
@@ -609,8 +656,10 @@ address and reuse it reliably.
       alternate-codec upper inversion;
 - [x] integrate E8a as a privileged exact-pose raw-memory ceiling, explicitly separated from
       token-matched neural comparisons;
+- [x] integrate E6 as a valid persistent-object external boundary with the complete mixed
+      support/continuity-versus-identity result;
 - [x] retain configuration-only B1 wording; no fixed-target causal claim is made;
 - [x] replace reference keys with verified primary citations;
 - [x] generate configuration/cost, claim/evidence and prior-art tables from artifacts;
-- [ ] move EBT, reversibility and B3 detail to supplement/dissertation;
-- [ ] complete the evidence archive and reproducibility appendix.
+- [x] move EBT, reversibility and B3 detail to supplement/dissertation;
+- [x] complete the evidence archive and reproducibility appendix.

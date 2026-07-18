@@ -13,6 +13,15 @@ import numpy as np
 from hvp_rev.provenance import atomic_write_json, sha256_file
 
 
+def _read_jsonl(path: str | Path) -> list[dict]:
+    """Read Windows PowerShell JSONL, accepting its optional UTF-8 BOM."""
+    return [
+        json.loads(line)
+        for line in Path(path).read_text(encoding="utf-8-sig").splitlines()
+        if line.strip()
+    ]
+
+
 def _verify_manifest(run_dir: Path) -> None:
     manifest_path = run_dir / "manifest.json"
     complete = run_dir / "COMPLETE"
@@ -104,10 +113,7 @@ def main() -> None:
                     raise ValueError(f"E6 endpoint missing/nonfinite: {key}/{required}")
         evaluation_hashes[f"{key[0]}-s{key[1]}"] = sha256_file(path)
 
-    rows = [
-        json.loads(line) for line in Path(args.gpu_ledger).read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    rows = _read_jsonl(args.gpu_ledger)
     total_hours = float(sum(float(row["gpu_hours"]) for row in rows))
     if total_hours > config["budget"]["authorized_max_gpu_hours"]:
         raise ValueError("E6 mechanical GPU ledger exceeds 40 hours")
@@ -132,10 +138,7 @@ def main() -> None:
     if phase_counts != expected_phases:
         raise ValueError(f"E6 GPU phase inventory {phase_counts} != {expected_phases}")
 
-    access = [
-        json.loads(line) for line in Path(args.access_log).read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    access = _read_jsonl(args.access_log)
     dataset_access = [
         row for row in access if row["dataset_id"] == holdout["dataset_id"]
     ]

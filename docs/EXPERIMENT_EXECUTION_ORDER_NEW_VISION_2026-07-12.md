@@ -40,8 +40,8 @@ LoopWorld tests genuine hidden-state necessity and is additional to both.
 11. GPU time is charged mechanically as wall-clock time while any project process owns the GPU,
     including pilots, evaluation, failed runs and retries. Every run records its authorized maximum
     and actual consumption; c2's planning estimate is replaced by measured time at handoff.
-12. Measured consumption through terminal E8a is 104.452 project GPU-hours. The forward portfolio
-    reserves at most 40 hours for article-gated E6, 100 for post-freeze E9 and 50
+12. Measured consumption through terminal E6 is 124.965 project GPU-hours. The forward portfolio
+    reserves at most 100 hours for optional post-freeze E9 and 50
     protected reserve hours. The reserve cannot fund discretionary experiments.
 13. Stop when the claims are resolved. Unused budget is not a reason to launch another study.
 
@@ -71,7 +71,7 @@ the evidence; this section is the human-readable index. Status vocabulary is `NO
 | E5a/b | Trust replication and dose response | E5a ≤28 GPU-hours; E5b only if the registered boundary replicated | **E5a COMPLETE / NOT_REPLICATED** in 17.7852 project GPU-hours; both new seeds reproduce the early hierarchy benefit but neither reproduces the late inversion | **E5b NOT AUTHORIZED**; retain the seed-0 inversion as a negative-replication case, not a stable trust boundary |
 | E7c | Sampler/NFE robustness | 35 checkpoint-only evaluations; ≤8 GPU-hours | **COMPLETE / DIRECTIONALLY_ROBUST**; 35/35 cells and 20/20 positive registered effects in 5.9976 project GPU-hours; 18/20 simultaneous lower bounds exceed zero | Freeze the directional result; disclose that the 2,432-token inversion is family-wise unresolved at sampler seeds 1/2; no adaptive extension |
 | E7a | Alternate-codec robustness | Frozen seven-arm seed-0 matrix, new locked holdout, joint eight-effect family; ≤36 GPU-hours | **COMPLETE / CODEC_DIRECTIONALLY_ROBUST**; 7/7 trainings, 14/14 evaluations, eight-effect simultaneous analysis, independent validator and W&B audit pass in 30.0238 project GPU-hours | Retain all four directions across the independent codec at point-estimate level; disclose that the alternate-codec 2,432-token inversion is family-wise unresolved |
-| E8a/E6/E9 | Retrieval, Phase C and optional extension | Decision-tree gated | **E8a COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** in 1.0897 GPU-hours; E6/E9 remain gated/deferred | Freeze E8a; complete M1 article assembly before applying the E6 utility gate |
+| E8a/E6/E9 | Retrieval, external boundary and optional extension | Decision-tree gated | **E8a COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** in 1.0897 GPU-hours; **E6 COMPLETE / MIXED_BOUNDARY** in 20.5127 GPU-hours; E9 deferred | Integrate E6's support/continuity-versus-identity boundary; proceed to M2 without making E9 a closure prerequisite |
 
 #### Intermediate audit E7a-I0 — 2026-07-16 04:27 Europe/Kyiv
 
@@ -2090,14 +2090,14 @@ as history; the live forward order begins at E7a. H3b parity precedes every new 
 
 | Order | ID | Experiment/workstream | Portfolio status | GPU maximum | CPU/development estimate |
 |---:|---|---|---|---:|---:|
-| 0 | E0/E1/E2/E4a/E4b/E5a/E7c/E7a | Completed evidence and governance programme | **complete/frozen** | 103.362 h actual | complete |
+| 0 | E0/E1/E2/E4a/E4b/E5a/E7c/E7a/E8a/E6 | Completed evidence and governance programme | **complete/frozen** | 124.965 h actual | complete |
 | 1 | E7c | Sampler/NFE robustness on separate locked set | **complete / DIRECTIONALLY_ROBUST** | 5.9976 h actual | complete |
 | 2 | E7a | Alternate-AE seed and frozen seven-arm/14-evaluation matrix | **complete / CODEC_DIRECTIONALLY_ROBUST** | 30.0238 h actual | complete |
 | 3 | E8a | Classical pose-indexed retrieval | **COMPLETE / RAW_ACCESS_CEILING_CI_CLEAN** privileged closure reference | 1.0897 h actual | complete |
 | 4 | M1 | Article/dissertation provisional assembly and internal freeze | **COMPLETE**; E8a integrated and article identity frozen | 0 | complete 2026-07-17 |
-| 5 | E6 | Phase C hybrid on long Moving-MNIST | **UTILITY PASS / PREPARATION FROZEN / PROTECTED RUN BLOCKED** | 30–40 h | run public/development gates, then freeze hashes before holdout access |
-| 6 | M2 | Final tables, claim/artifact index, clean-environment QA and release | required | 0 | 2–5 d |
-| 7 | E9 | Counterfactual Dynamic LoopWorld primary factorial | optional post-freeze extension | 60–100 h | 1–2 wk |
+| 5 | E6 | Persistent-object long Moving-MNIST boundary | **COMPLETE / MIXED_BOUNDARY** | 20.5127 h actual | complete 2026-07-18 |
+| 6 | M2 | Final tables, claim/artifact index, clean-environment QA and release | **IN PROGRESS / REQUIRED** | 0 | 2–5 d |
+| 7 | E9 | Counterfactual Dynamic LoopWorld primary factorial | **DEFERRED POST-FREEZE**; no frozen implementation or launch authorization | 60–100 h | future 1–2 wk |
 | — | E3a | Fixed-target diffusion B1 | deferred while article retains configuration-only wording | 0 now | future if causal wording returns |
 | — | E8c | CW-VAE protocol bridge training | removed/replaced by E4b; table remains CPU-only | 0 | 3–7 d table/audit |
 | — | E3b/E5c/E7b/E8b/E9c/E10 | Additional methods/extensions | deferred outside portfolio | — | future work |
@@ -2109,12 +2109,12 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Measured and forward allocations
 
-- measured E0+E2+E4a+E4b+E5a+E7c+E7a+E8a consumption: **104.452 GPU-hours**;
+- measured E0+E2+E4a+E4b+E5a+E7c+E7a+E8a+E6 consumption: **124.965 GPU-hours**;
 - E8a: **1.0897 hours actual; terminal**;
-- E6: **40 hours maximum, article-utility gated**;
-- E9: **100 hours maximum, optional and post-freeze**;
-- without E6, the scientific-run maximum is approximately **204.452 hours**;
-- with E6, the scientific-run maximum is approximately **244.452 hours**.
+- E6: **20.5127 hours actual; terminal**;
+- E9: **100 hours maximum, optional, post-freeze and presently deferred**;
+- the measured scientific programme through E6 is **124.965 hours**;
+- a separately authorized future E9 would raise that maximum to approximately **224.965 hours**.
 
 ### Pool C — protected reserve
 
@@ -2124,10 +2124,11 @@ execution. GPU-hour consumption is wall-clock project ownership, not successful-
 
 ### Hard ceiling and replacement rule
 
-Including the protected reserve, the live maximum is approximately **294.452 GPU-hours** with E6,
-or **254.452 hours** without it. This is below the 400-hour ceiling without treating unused budget
-as a reason to run work. E4b is already included in measured consumption and replaced E8c rather
-than adding to the portfolio. E3a/b, E5b/c, E7b, E8b/c training, E9c and E10 remain outside.
+Including the protected reserve, the programme is currently **174.965 GPU-hours**; a separately
+authorized future E9 would raise the maximum to approximately **274.965 hours**. Both are below
+the 400-hour ceiling without treating unused budget as a reason to run work. E4b is already
+included in measured consumption and replaced E8c rather than adding to the portfolio. E3a/b,
+E5b/c, E7b, E8b/c training, E9c and E10 remain outside.
 
 Before each tranche, replace estimates with measured probes and a run-count ledger. A tranche is
 not authorized unless its maximum fits the remaining non-reserve envelope. Stop when the claims are
@@ -2153,25 +2154,26 @@ resolved; unused GPU hours indicate successful governance, not incomplete work.
    predictor contrasts and provenance.
 9. **E8a reference table:** privileged pose-indexed retrieval and any budget-matched variant kept
    explicitly separate.
-10. **CW-VAE/prior-art protocol table:** architecture, levels, clocks, memory mechanism, context,
+10. **E6 external-boundary table:** persistent-object foreground/union/trajectory/identity/
+    coverage effects under one simultaneous family, with support/continuity and identity fidelity
+    reported separately.
+11. **CW-VAE/prior-art protocol table:** architecture, levels, clocks, memory mechanism, context,
    horizon, self-feeding, dataset, metrics, budget matching and reproduction status.
-11. **Qualitative evidence:** frozen-selection re-entry strips, failure cases and overlap/object
+12. **Qualitative evidence:** frozen-selection re-entry strips, failure cases and overlap/object
    examples.
-12. **Dissertation synthesis map:** each fourth-article result linked to the unchanged dissertation
+13. **Dissertation synthesis map:** each fourth-article result linked to the unchanged dissertation
    programme and the three existing article strands.
-13. **Machine-readable artifact map:** every manuscript number linked to immutable
+14. **Machine-readable artifact map:** every manuscript number linked to immutable
    RunSpec/data/AE/result hashes.
 
 ## 17. Current execution instruction
 
-E7c is terminal as `DIRECTIONALLY_ROBUST`; no sampler/NFE cells may be added. E7a is terminal as
-`CODEC_DIRECTIONALLY_ROBUST` in 30.0238 project GPU-hours: all four alternate-codec point
-estimates are positive, while the alternate 2,432-token inversion remains family-wise unresolved.
-Do not add a codec, predictor seed, arm or endpoint. E8a is terminal as
-`RAW_ACCESS_CEILING_CI_CLEAN`; its privileged reference must remain visually and verbally
-separate from token-matched neural comparisons. The live workstream is M1: internally freeze the
-assembled fourth article and dissertation synthesis, then apply the preregistered E6 utility and
-validity gate. E9 remains optional post-freeze work and cannot delay dissertation closure.
+E7c, E7a, E8a and E6 are terminal. E6's valid `MIXED_BOUNDARY` must be reported as a separation
+between hierarchy-favoring spatial support/continuity and flat-favoring identity fidelity; no
+single averaged winner, equivalence claim or adaptive E6 extension is authorized. The live
+workstream is M2: final tables, figures, claim/artifact binding, clean-environment QA and
+article/dissertation release preparation. E9 remains optional post-freeze work, has no frozen
+implementation or launch authorization, and cannot delay dissertation closure.
 
 ### E8a launch audit — 2026-07-17 12:28 Europe/Kyiv
 
@@ -2638,3 +2640,50 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
 - **Decision:** no stop or corrective trigger. Complete the immutable final cell, enforce the
   all-six-checkpoint gate, then enter the frozen protected evaluation matrix without inspecting or
   adapting to intermediate pair directions.
+
+### E6 terminal audit and integration gate — 2026-07-18 16:45 Europe/Kyiv
+
+- **Completion and immutable evidence:** all six predictor-training cells and all six protected
+  evaluations completed. Every evaluation contains 30,000 paired frame records (100 clips × 300
+  targets). Six checkpoint manifests and six evaluation manifests pass byte-count and SHA-256
+  validation. The protected access ledger contains exactly seven permitted records: one integrity
+  open and six unique frozen evaluation RunSpecs. W&B contains 15 finished runs across training,
+  evaluation, analysis and connectivity/audit roles; the independent W&B group audit passes.
+- **Completion-validator repair:** the first terminal validator attempt failed after all scientific
+  work had completed because PowerShell had written UTF-8 JSONL with a byte-order mark and the
+  validator opened the ledger as plain `utf-8`. This was an operational parser defect, not a data,
+  estimator or run defect. The validator now reads JSONL as `utf-8-sig`; a focused BOM regression
+  test is included. The independent terminal validator returns
+  `PHASEC_V2_COMPLETION_PASS`.
+- **Independent numerical check:** a separate CPU recomputation reproduces every one of the 15
+  protected effects with maximum absolute difference 0.0 and returns the same registered verdict.
+  The frozen geometry is intact: NFE 16, sampler seed 0, 48 warm-up frames, 300 targets, 100 clips
+  beginning at protected index 250, and exact codec/classifier/checkpoint hashes.
+- **Registered family:** one studentized max-statistic clip-cluster family over 15 co-primary
+  effects, 100 clip clusters, 10,000 bootstrap replicates and critical value 2.85996. Equivalence
+  was disabled before protected access. The terminal verdict is **MIXED_BOUNDARY**.
+- **Expected versus actual result:** the study did not yield a single architecture winner. Union
+  MSE favors hierarchy on seeds 0/1/2: +0.0102 [+0.0019,+0.0185], +0.0122
+  [+0.0052,+0.0192], +0.0169 [+0.0093,+0.0245]. Trajectory favors hierarchy cleanly on seeds
+  0/2 and is positive but unresolved on seed 1. Coverage follows the same 0/2-clean pattern.
+  Identity favors flat context cleanly at every seed: −0.0762 [−0.1106,−0.0418], −0.0561
+  [−0.0934,−0.0188], −0.0647 [−0.0955,−0.0338]. Foreground-only MSE is unresolved at every seed
+  and changes sign.
+- **Scientific interpretation:** E6 is a valid external reach–fidelity boundary. Hierarchical
+  coarse memory preserves spatial support and continuity—lower union error, fewer missed objects,
+  better trajectory and coverage—while flat full-resolution context preserves digit identity.
+  This cannot be reduced to equivalence or one aggregate winner and does not establish natural-
+  video transfer or replicate LoopMom's exact geometric mechanism.
+- **Cost and health:** mechanical project ownership totals **20.5127031 GPU-hours**, including
+  three charged failed preparation cells, below the 40-hour ceiling. GPU is idle and no project
+  controller remains.
+- **Integration:** terminal evidence is bound into `docs/CLAIM_LEDGER.md`, the binding fourth
+  article, the detailed generalization chapter, the dissertation Chapter 4/front matter/
+  introduction/conclusions, generated evidence tables, Figure 22, the artifact index and the
+  resource-efficiency narrative.
+- **E9 post-freeze utility gate:** **DEFER**. E6 already resolves the recognizable external
+  reviewer-facing boundary and the central article claims are resolved. E9 would introduce a new
+  counterfactual dataset, oracle and factorial with no frozen implementation or launch
+  authorization; that is a substantive extension rather than closure QA. Per the frozen plan, it
+  cannot delay dissertation closure. Continue to M2. E9 remains a high-value future study if the
+  author later explicitly broadens the scope.

@@ -136,9 +136,22 @@ def main() -> None:
     cw_black, cw_black_path = read_json("artifacts/cwvae_black_baseline/results.json")
     e7a, e7a_path = read_json("artifacts/e7a_codec_robustness/results.json", optional=True)
     e8a, e8a_path = read_json("artifacts/e8a_pose_mosaic/results.json", optional=True)
+    e6, e6_path = read_json("artifacts/phasec_v2/results.json", optional=True)
+    e6_completion, e6_completion_path = read_json(
+        "artifacts/phasec_v2/completion_validation.json", optional=True
+    )
+    e6_wandb, e6_wandb_path = read_json(
+        "artifacts/phasec_v2/wandb_validation.json", optional=True
+    )
 
     source_paths = [e2_path, e4_path, e5_path, e7c_path, cw_black_path]
-    for value, path in ((e7a, e7a_path), (e8a, e8a_path)):
+    for value, path in (
+        (e7a, e7a_path),
+        (e8a, e8a_path),
+        (e6, e6_path),
+        (e6_completion, e6_completion_path),
+        (e6_wandb, e6_wandb_path),
+    ):
         if value is not None:
             source_paths.append(path)
 
@@ -331,6 +344,33 @@ def main() -> None:
             "poses and raw observed pixels; it is not token matched.",
             "",
         ]
+    text += ["## Persistent-object long Moving-MNIST boundary", ""]
+    if e6 is None:
+        text += ["Pending terminal E6 artifact.", ""]
+    else:
+        e6_rows = [
+            [
+                row["seed"],
+                row["endpoint"],
+                f"{row['mean']:+.4f}",
+                interval(row),
+            ]
+            for row in e6["primary"]
+        ]
+        text += [
+            md_table(
+                ["Seed", "Endpoint", "Hierarchy effect", "Simultaneous 95% CI"],
+                e6_rows,
+                {0, 2, 3},
+            ),
+            "",
+            f"Registered verdict: **{e6['decision']['verdict']}**. Positive favors hierarchy. "
+            "Union-mask error favors hierarchy on all three seeds; trajectory and coverage favor "
+            "hierarchy cleanly on seeds 0 and 2; identity favors flat context on all three seeds; "
+            "foreground-only error is unresolved. This persistent-object study is an external "
+            "reach–fidelity boundary, not a replication of LoopMom's exact mechanism.",
+            "",
+        ]
     text += [
         "## Architecture/protocol positioning",
         "",
@@ -398,7 +438,11 @@ def main() -> None:
     out.write_text("\n".join(text), encoding="utf-8")
     index = {
         "schema_version": 1,
-        "status": "SYNCHRONIZED" if e7a is not None and e8a is not None else "AWAITING_LATER_STAGES",
+        "status": (
+            "SYNCHRONIZED"
+            if e7a is not None and e8a is not None and e6 is not None
+            else "AWAITING_LATER_STAGES"
+        ),
         "article_claims": {
             "reach_mechanism": "artifacts/confirmation_e2/results.json",
             "tested_frontier": "artifacts/confirmation_e2/results.json",
@@ -411,6 +455,19 @@ def main() -> None:
             ),
             "pose_indexed_reference": (
                 "artifacts/e8a_pose_mosaic/results.json" if e8a is not None else None
+            ),
+            "persistent_object_external_boundary": (
+                "artifacts/phasec_v2/results.json" if e6 is not None else None
+            ),
+            "persistent_object_completion": (
+                "artifacts/phasec_v2/completion_validation.json"
+                if e6_completion is not None
+                else None
+            ),
+            "persistent_object_cloud_audit": (
+                "artifacts/phasec_v2/wandb_validation.json"
+                if e6_wandb is not None
+                else None
             ),
         },
         "sha256": hashes,

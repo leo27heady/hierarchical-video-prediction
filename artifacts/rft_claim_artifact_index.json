@@ -3,6 +3,9 @@
     "codec_robustness": "artifacts/e7a_codec_robustness/results.json",
     "head_package_heterogeneity": "artifacts/e4b_head_package/results.json",
     "moving_mnist_metric_sanity": "artifacts/cwvae_black_baseline/results.json",
+    "persistent_object_cloud_audit": "artifacts/phasec_v2/wandb_validation.json",
+    "persistent_object_completion": "artifacts/phasec_v2/completion_validation.json",
+    "persistent_object_external_boundary": "artifacts/phasec_v2/results.json",
     "pose_indexed_reference": "artifacts/e8a_pose_mosaic/results.json",
     "reach_mechanism": "artifacts/confirmation_e2/results.json",
     "sampler_nfe_robustness": "artifacts/e7c_sampler_nfe/results.json",
@@ -17,7 +20,10 @@
     "artifacts/e5a_trust_replication/results.json": "c38244c207c24c17d6081a2dc75004b6ae96c63c7814d1cfdfbd87bb8ab5414b",
     "artifacts/e7a_codec_robustness/results.json": "3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173",
     "artifacts/e7c_sampler_nfe/results.json": "93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6",
-    "artifacts/e8a_pose_mosaic/results.json": "74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be"
+    "artifacts/e8a_pose_mosaic/results.json": "74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be",
+    "artifacts/phasec_v2/completion_validation.json": "091206aa6e2b1a9cf39f9cd4d921a2da8611216f8ecaf56e9bccb48d454915d8",
+    "artifacts/phasec_v2/results.json": "75a628ca6f2fa87e74e67bbe7b95d4acee6e0f35969d28fe97e72b0b40e981c7",
+    "artifacts/phasec_v2/wandb_validation.json": "62366dca968a602d55b4cc43b5cc6d5a5cd7e9aad0e1e3ee2883175d0ff0396b"
   },
   "status": "SYNCHRONIZED"
 }

@@ -131,7 +131,12 @@ The following boundaries must also remain visible:
 - the seed-0 late trust inversion does not replicate at seeds 1–2;
 - privileged raw pose-indexed access outperforms all tested neural packages but is not
   storage-, compute- or information-matched;
-- E6 determines external-boundary behavior and must be reported regardless of its direction.
+- E6 returns a valid `MIXED_BOUNDARY` on persistent-object long Moving-MNIST: union error favors
+  hierarchy on all three seeds; trajectory and coverage favor hierarchy cleanly on seeds 0 and 2;
+  flat context preserves digit identity better on all three seeds; foreground-only error is
+  unresolved. This is the external expression of the same reach–fidelity tension: coarse memory
+  better preserves where an object is and whether it persists, while fine flat memory better
+  preserves what digit it is.
 
 These findings do not weaken the contribution. They define when hierarchy pays and prevent an
 architecture-promotion claim from replacing the controlled scientific result.

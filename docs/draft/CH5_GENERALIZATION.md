@@ -2,10 +2,11 @@
 
 > **Detailed fourth-article source chapter; not the binding submission narrative.** Moving-MNIST
 > and TaxiBJ are descriptive boundary/competence anchors. Legacy Phase C factor claims
-> are blocked; only the dated hybrid protocol with persistent-object evaluation may support
-> identity, trajectory, coverage or equivalence language.
+> are blocked; the corrected persistent-object E6 protocol is terminal and may support its
+> registered identity, trajectory and coverage language, but not legacy equivalence.
 
-> **Status (2026-07-06):** §5.3 (Moving-MNIST) is MEASURED and FINAL. All other dataset sections
+> **Status (2026-07-18):** §5.3 contains both the measured short bridge and the terminal corrected
+> persistent-object long Moving-MNIST boundary. All other dataset sections
 > are protocol + pre-registered expectation only: every unmeasured value is marked [EXPECTED],
 > [PENDING] or [AUTHOR: …] — no bare expected numbers anywhere in this chapter. Placement
 > RESOLVED (2026-07-07, per CH1_INTRO.md canonical order): this IS Chapter 5; reversibility is
@@ -16,10 +17,10 @@
 Chapter 4 selected a configuration; this chapter asks whether the selection survives contact
 with datasets it was not built on. The test set spans the dissertation's declared corpus: the
 author's own 2D-rotation testbed ([A2]), the 3D polycube testbed, and the open benchmarks
-Moving MNIST, MMNIST-CIFAR, TaxiBJ, with KTH-64 as an optional stretch. One dataset (Moving
-MNIST) is already measured and serves as both the credibility anchor and the *negative control*
-for the memory-horizon claim; the rest carry protocols, empty tables, and dual-branch claim
-language written before any run.
+Moving MNIST, MMNIST-CIFAR, TaxiBJ, with KTH-64 as an optional stretch. Moving MNIST now includes
+both a measured short negative control and a valid long persistent-object boundary; TaxiBJ
+supplies the measured real-data competence/economy bridge. The remaining suites carry protocols
+rather than projected results.
 
 ## 5.1 The selected configuration, stated per regime
 
@@ -52,8 +53,9 @@ decision table, not a single model — every entry below is a measured result, n
 **The generalization question tests the scope of the memory-horizon thesis.** Testbed A supplies
 the measured re-entry case; the short 10→10 Moving-MNIST bridge and TaxiBJ supply measured
 null/economy-only boundary observations. Those short protocols do not prove that an open dataset
-lacks longer-lived state: Phase C separately tests whether persistent digit identity and velocity
-become memory-relevant over 300-frame rollout. What is already shown to generalize is the
+lacks longer-lived state: corrected E6 separately measures persistent digit identity and velocity
+over 300-frame rollout and returns a mixed support/continuity-versus-identity boundary. What is
+shown to generalize is the
 measurement recipe (heads per regime, window packaging, floors/ceilings protocol), not a positive
 hierarchy effect.
 
@@ -185,11 +187,32 @@ object/glyph IDs, boxes and trajectories from the generator; use the official MN
 glyph split, one-to-one Hungarian assignment, miss/extra penalties and coverage; validate the
 classifier on rendered, overlapping and AE-reconstructed domains; and justify native-unit margins.
 The historical registration remains visible, but no identity, trajectory, coverage or replicated
-equivalence result may be claimed from the legacy evaluator. Phase C remains optional to the
-focused article and requires all CPU/classifier/protocol gates before launch.
+equivalence result may be claimed from the legacy evaluator.
 
-[FIG ch5-2: conditional Phase C hybrid result only after execution; no projected overlapping
-curves or queued-result wording belongs in the assembled manuscript.]
+**Corrected E6 execution and terminal result (2026-07-18).** The replacement protocol passed every
+CPU, codec, classifier, production-crop, protected-data and protocol-freeze gate before any
+protected evaluation. It then trained the frozen `mmL-flat` and `mmL-hier` arms at seeds 0/1/2,
+using a 48-frame warm-up and 300-frame self-fed evaluation on 100 protected clips. Persistent
+generator identities, official train/test glyph separation, Hungarian assignment, explicit
+miss/extra penalties and intention-to-score coverage replaced every invalid legacy shortcut.
+
+One simultaneous 95% max-statistic clip-cluster family covered the five co-primary endpoints at
+all three seeds. The verdict is **MIXED_BOUNDARY**:
+
+| Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
+| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
+| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
+
+Positive favors hierarchy. Union error favors hierarchy at every seed; trajectory and coverage
+favor it cleanly at seeds 0 and 2; identity favors flat context cleanly at every seed; and
+foreground-only error is unresolved. The result therefore extends the reach–fidelity account
+rather than producing a universal architecture ranking: hierarchy preserves spatial support and
+continuity, while flat full-resolution context preserves fine digit identity. It remains a
+synthetic external boundary rather than a LoopMom-mechanism replication or natural-video claim.
+
+![Persistent-object Moving-MNIST boundary](../figures/fig22_phasec_v2_boundary.png)
 
 ## 5.4 Author's 2D rotations — the [A2] testbed
 
@@ -286,15 +309,17 @@ upsample-equivalent build; SSIM deficit stated.
 > Retitled at the triage: **the article's external sections are measured boundary controls and a
 > competence anchor — never positive transfer.**
 
-Three measured statements close the article's external scope, each already stated in its own
+Four measured statements close the article's external scope, each already stated in its own
 section and gathered here without projection. First, the **short-protocol boundary control**:
 on standard Moving MNIST with no off-screen re-entry, flat ≈ hierarchical at 10→10 (§5.3,
-measured); the conditional long-horizon hybrid would separately test persistent-state demand
-(§5.3.1) only after its persistent-object, classifier and protocol gates. Second, the
+measured). Second, the **persistent-object long boundary**: corrected E6 passes its evaluator,
+classifier and protected-data gates and returns `MIXED_BOUNDARY` at 48→300 (§5.3.1): hierarchy
+preserves spatial support/continuity better, while flat context preserves identity fidelity.
+Third, the
 **competence anchor**: the unchanged 22 M
 generalist stack lands inside the OpenSTL TaxiBJ leaderboard band on MAE/PSNR (§5.7, measured),
 answering "is this system a toy?" without claiming leaderboard superiority anywhere (§5.2
-standing rule; measured concession: 180.91 vs 26.69 aggregate MSE on MMNIST). Third, the
+standing rule; measured concession: 180.91 vs 26.69 aggregate MSE on MMNIST). Fourth, the
 **boundary observation**: in the measured short/no-re-entry regimes the hierarchy factor is a
 null (§5.3) or economy-only (§5.7), while the two-seed
 CI-clean win exists precisely where the horizon exists (testbed A, §4.3). **No positive-transfer

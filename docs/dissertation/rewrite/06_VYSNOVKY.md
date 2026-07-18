@@ -24,7 +24,8 @@
 > **Evidence-status correction, 2026-07-11.** The approved topic, seven tasks and the content of
 > [A1]–[A3] are preserved. Conclusions about [A4] use the scoped claim ledger: context packaging is
 > manipulated; reach, fidelity and trust organize interpretation; legacy Phase C and universal-law
-> wording are excluded. The programme is layered and is not described as one fully integrated
+> wording are excluded. Corrected E6 is separately included as the valid persistent-object
+> `MIXED_BOUNDARY`. The programme is layered and is not described as one fully integrated
 > executable pipeline unless the demonstrator is completed.
 
 # ВИСНОВКИ
@@ -178,7 +179,12 @@ negative control — flat ≈ hierarchical (180.91 vs 181.29
 aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
 benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
 complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
-specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. The shape study (§4.4)
+specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. A separate valid
+persistent-object 48→300 Moving-MNIST study resolves the long-rollout external boundary:
+hierarchy improves union error at all three seeds and trajectory/coverage cleanly at two, while
+flat context preserves digit identity at all three and foreground-only error is unresolved. This
+`MIXED_BOUNDARY` result shows that spatial support/continuity and fine identity fidelity can favor
+different packages. The shape study (§4.4)
 established that the packaging axes are not interchangeable: the win band's lower edge follows
 each family's measured configuration (896 tokens for the stride-1 coarse family, two seeds; the
 stride-2 512-token configuration wins on both diffusion seeds but changes its target interface),
@@ -220,6 +226,8 @@ neural-minus-K48 effects range from +0.1134 to +0.1368 and all simultaneous lowe
 positive. Its `RAW_ACCESS_CEILING_CI_CLEAN` verdict shows that exact addressing and lossless
 storage can remove much of the remaining static-world error, but the exact future poses,
 raw-pixel payload and unmatched budget prohibit a neural-model or efficiency ranking.
+The E6 result is therefore not averaged into one architecture score: it is retained as the
+external reach–fidelity boundary showing what coarse long memory preserves and what it loses.
 
 Beyond the numbered results, the dissertation deliberately records its **characterized
 negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
@@ -284,9 +292,10 @@ stated only for its measured testbeds and configurations.
   is reported only as the measured negative transfer result); any "competitive with the
   OpenSTL leaderboard on aggregate MSE" phrasing (refuted by measurement: 180.91 vs SimVP 26.69);
   the copyright-certificate sentence.
-- Result 7's generalization boundary is resolved in sync with §§4.6.3–4.6.7 of
-  `05_ROZDIL4.md`: OpenSTL connectivity was verified, Moving-MNIST met the protocol anchor but
-  was not competitive with the reference leaderboard, TaxiBJ was a measured negative transfer,
+- Result 7's generalization boundary is resolved in sync with §§4.6.2a–4.6.7 of
+  `05_ROZDIL4.md`: OpenSTL connectivity was verified, short Moving-MNIST met the protocol anchor
+  but was not competitive with the reference leaderboard, valid long Moving-MNIST returned the
+  mixed support/continuity-versus-identity boundary, TaxiBJ was a measured negative transfer,
   and the remaining suites are future work. The frontier clause is RESOLVED (measured
   2026-07-07 and confirmed on E2): hierarchy is family-wise confirmed at 896/1,152, 1,792 is
   unresolved, and flat is family-wise confirmed at 2,432/3,072. Use tested-bracket wording only;

@@ -6,7 +6,8 @@
 > B1 as a configuration effect, a five-seed-stable diffusion package result, and regression plus
 > head × package effects as training-seed heterogeneity. E7c is a checkpoint-only
 > inference-robustness result: directionally robust across its frozen NFE/sampler family, with
-> upper-inversion precision qualified at two alternate sampler seeds.
+> upper-inversion precision qualified at two alternate sampler seeds. E7a supplies the
+> independent-codec boundary and E8a the privileged explicit-access reference.
 
 This chapter reports the article's causal evidence program for context packaging on the testbed
 family of Chapter 2, followed by the temporal-capability boundary study at the second operating point.
@@ -876,6 +877,23 @@ are reported as such. E7c closes a sampler/NFE alternative explanation for the c
 does not test training-seed or codec robustness because all checkpoints use predictor seed 0 and
 the original frozen autoencoder.
 
+### 4.5.9 Representation robustness and explicit access
+
+E7a retrains the complete seven-arm seed-0 matrix under an independently trained continuous
+codec. All four alternate-codec point estimates preserve their registered direction: +0.0521
+[+0.0374,+0.0669] at 896 tokens, +0.0439 [+0.0310,+0.0569] at 1,152, +0.0112
+[+0.0039,+0.0184] for temporal versus spatial package shape, and +0.0079
+[−0.0006,+0.0165] for the 2,432-token inversion. The intervention changes the whole codec and
+remains conditional on predictor seed 0; the upper inversion is directionally retained but
+family-wise unresolved.
+
+E8a then supplies a deliberately privileged access reference. A raw K48 world-coordinate mosaic
+using exact future poses reaches foreground MSE 0.0494. All four registered neural-minus-K48
+effects have positive simultaneous lower bounds (+0.1134 to +0.1368). Because raw pixels, exact
+poses and unmatched storage are supplied, this is not a model ranking or efficiency comparison.
+It shows that having enough geometric reach and being able to address and reuse stored content
+are distinct.
+
 ## 4.6 Chapter conclusions
 
 **Claim 1 — hierarchical memory at matched token budget: CONFIRMED, two seeds, both heads.** At
@@ -936,8 +954,10 @@ while the matched-budget and reach–fidelity results of §4.3 remain unchanged.
 central diffusion contrasts retain their point-estimate direction over the registered fourfold
 per-step NFE range and three sampler seeds. Eighteen of 20 simultaneous intervals are positive;
 the upper 2,432-token inversion is unresolved at sampler seeds 1/2. This supports the central
-reach–fidelity directions without claiming universal sampler invariance. Alternate-codec
-robustness remains the separate E7a question.
+reach–fidelity directions without claiming universal sampler invariance. E7a subsequently
+preserves all four point-estimate directions under an independent codec, with
+the upper inversion family-wise unresolved. E8a supplies a clean privileged explicit-access
+reference and remains outside token-matched model ranking.
 
 ---
 

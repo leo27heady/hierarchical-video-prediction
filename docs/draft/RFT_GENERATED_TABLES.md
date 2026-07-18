@@ -135,6 +135,28 @@ Registered verdict: **CODEC_DIRECTIONALLY_ROBUST**. This is a whole-codec-seed i
 
 Registered verdict: **RAW_ACCESS_CEILING_CI_CLEAN**. The mosaic receives exact poses and raw observed pixels; it is not token matched.
 
+## Persistent-object long Moving-MNIST boundary
+
+| Seed | Endpoint | Hierarchy effect | Simultaneous 95% CI |
+|---:|---|---:|---:|
+| 0 | foreground_mse | +0.0036 | [-0.0074, +0.0146] |
+| 0 | union_mse | +0.0102 | [+0.0019, +0.0185] |
+| 0 | trajectory_error | +2.4786 | [+0.2130, +4.7443] |
+| 0 | identity_accuracy | -0.0762 | [-0.1106, -0.0418] |
+| 0 | object_coverage | +0.0304 | [+0.0016, +0.0591] |
+| 1 | foreground_mse | -0.0031 | [-0.0127, +0.0065] |
+| 1 | union_mse | +0.0122 | [+0.0052, +0.0192] |
+| 1 | trajectory_error | +1.4223 | [-1.0646, +3.9092] |
+| 1 | identity_accuracy | -0.0561 | [-0.0934, -0.0188] |
+| 1 | object_coverage | +0.0159 | [-0.0163, +0.0482] |
+| 2 | foreground_mse | -0.0024 | [-0.0131, +0.0083] |
+| 2 | union_mse | +0.0169 | [+0.0093, +0.0245] |
+| 2 | trajectory_error | +4.1325 | [+1.5271, +6.7380] |
+| 2 | identity_accuracy | -0.0647 | [-0.0955, -0.0338] |
+| 2 | object_coverage | +0.0498 | [+0.0161, +0.0834] |
+
+Registered verdict: **MIXED_BOUNDARY**. Positive favors hierarchy. Union-mask error favors hierarchy on all three seeds; trajectory and coverage favor hierarchy cleanly on seeds 0 and 2; identity favors flat context on all three seeds; foreground-only error is unresolved. This persistent-object study is an external reach–fidelity boundary, not a replication of LoopMom's exact mechanism.
+
 ## Architecture/protocol positioning
 
 | Work | Memory mechanism | Matched budget | Exact observability | Self-fed | Role |
@@ -172,3 +194,6 @@ Same archived population: 100 clips, 36 context frames and 964 open-loop targets
 | artifacts/cwvae_black_baseline/results.json | 561b0b3e5eac23276199b601fd22f77303d193921241bd53275861e17617bc78 |
 | artifacts/e7a_codec_robustness/results.json | 3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173 |
 | artifacts/e8a_pose_mosaic/results.json | 74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be |
+| artifacts/phasec_v2/results.json | 75a628ca6f2fa87e74e67bbe7b95d4acee6e0f35969d28fe97e72b0b40e981c7 |
+| artifacts/phasec_v2/completion_validation.json | 091206aa6e2b1a9cf39f9cd4d921a2da8611216f8ecaf56e9bccb48d454915d8 |
+| artifacts/phasec_v2/wandb_validation.json | 62366dca968a602d55b4cc43b5cc6d5a5cd7e9aad0e1e3ee2883175d0ff0396b |

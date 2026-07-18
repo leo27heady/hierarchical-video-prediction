@@ -16,16 +16,22 @@ as universal laws, and negative results remain part of the evidence.
 
 ## Current scientific status
 
-- Existing looping-video experiments provide strong development evidence for reach/fidelity
-  trade-offs and tested package inversions.
-- Pair-specific reach bands are mechanistically strong but post-hoc on the current development
-  pool; they are preregistered for untouched confirmation.
+- The untouched LoopMom confirmation verifies hierarchy-favoring lower/interior budgets,
+  comparator-derived reach bands and flat-favoring upper-budget inversions. The family-wise
+  confirmed tested bracket is 1,152 to 2,432 context tokens; no continuous crossing is inferred.
+- The five-seed diffusion package-shape result is stable, while regression and the cross-head
+  interaction are training-seed-heterogeneous.
 - The B1 stride-2 result is a replicated **configuration** result because the legacy model couples
   context and target stride.  A fixed-target-interface control is prepared but not authorized.
-- The legacy Phase C identity/trajectory evaluator is retired from claim production.  Phase C v2
-  requires persistent object metadata, one-to-one assignment, coverage, and validated margins.
-- Trust is presently a measured failure boundary; it requires replication or horizon dose-response
-  before being described as a general principle.
+- The seed-0 late self-fed inversion did not replicate at seeds 1–2. Trust is therefore a
+  robustness question, not an established boundary or title-level law.
+- Legacy Phase C object conclusions remain retired. Corrected E6 completed with persistent
+  metadata, official glyph separation, Hungarian assignment, miss/extra accounting and protected
+  evaluation. Its verdict is `MIXED_BOUNDARY`: hierarchy better preserves spatial support and
+  continuity, while flat context better preserves digit identity.
+- E7c and E7a establish directional sampler/NFE and whole-codec robustness with disclosed
+  upper-inversion precision limits. E8a is a privileged exact-pose raw-memory reference, not a
+  token-matched competitor.
 
 The governing plan is
 [`docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md`](docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md).
@@ -61,8 +67,8 @@ $env:CUDA_VISIBLE_DEVICES='-1'
 .\venv\Scripts\python.exe scripts\check_experiment_gate.py phase-c-v2
 ```
 
-The legacy Phase C study is explicitly prohibited.  The v2 launcher is intentionally disabled
-until its dataset, classifier, evaluator, and preregistration gates are complete.
+The legacy Phase C study is explicitly prohibited. Phase C v2 is terminal and frozen; no adaptive
+arm, seed or endpoint may be added. A new study requires a new authorization entry and protocol.
 
 ## Reproduction tiers
 
@@ -88,9 +94,16 @@ run-specific directories and may not overwrite canonical artifacts.
   strands are preserved.
 - `docs/CLAIM_LEDGER.md` — scientific source of truth.
 
-## Historical code
+## Evidence and manuscript regeneration
 
-The current GPU queue uses the legacy `hvp_rev/rhvd.py` path.  It is being kept byte-stable until
-the already-running pre-Phase-C queue finishes so later seed-2/c2 cells remain comparable with
-earlier cells.  New validated components live alongside it and will become the default only after
-the queue handoff and artifact freeze.
+The binding article source is
+`docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`. Regenerate the synchronized evidence table
+and claim/artifact index with:
+
+```powershell
+.\venv\Scripts\python.exe scripts\make_rft_final_tables.py
+.\venv\Scripts\python.exe scripts\make_rft_result_figures.py
+```
+
+The canonical execution/status ledger is
+`docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md`.
