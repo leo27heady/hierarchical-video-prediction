@@ -2599,3 +2599,42 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   blocker: continue unchanged, preserve the diagnostic sign reversal as evidence rather than
   reacting adaptively, and open the protected evaluation only after the final training artifact
   passes its immutable checks.
+
+### E6 four-hour health audit — 2026-07-18 12:35 Europe/Kyiv
+
+- **Expected versus actual progress:** seed-2 `mmL-flat` completed successfully in 3.1126
+  GPU-hours, below the 3.45-hour expectation and effectively identical to flat seeds 0–1.
+  Seed-2 `mmL-hier` is the sixth and final training cell and reached 27,500/30,000 updates.
+  Five content-addressed predictor checkpoints are now complete; no protected evaluation has
+  started early.
+- **Seed-2 flat closure:** final loss is 0.2462, public fixed-grid foreground MSE 0.3134,
+  throughput 0.3649 s/update and recorded peak 6.4653 GB. Its final qualitative grid is coherent.
+  RunSpec `ee1b65fe62a81776` has a matching `COMPLETE` marker, all 18 manifest entries pass
+  independent byte-count and SHA-256 validation, and checkpoint SHA-256 is
+  `c17a15a72e060741bb307cbd098303880acc675f4f47d7314c1e7fb7cdca36e8`.
+  W&B is `finished` at step 30,000 with the immutable artifact.
+- **Final hierarchy-cell trend:** seed-2 hierarchy remains finite and smoothly decreasing:
+  loss 1.5125/1.1553/0.9995 at 500/1,000/2,000 and 0.4469/0.3858/0.3524/0.3308/0.3133/0.3022
+  at 8k/12k/16k/20k/24k/26k. It is above the seed-0/1 late-loss envelope but retains coherent
+  localized predictions and resembles the weaker public-grid behavior of seed 1. This is a
+  plausible training-seed effect to be resolved by the protected family, not evidence of a
+  corrupted run.
+- **Transient throughput deviation:** intervals 12k–18.5k temporarily slowed to
+  0.41–0.48 s/update before recovering to 0.37–0.38. Peak model memory stayed 6.4611 GB, loss
+  remained smooth and current board telemetry is 100% utilization, approximately 8.1/16.4 GB,
+  65°C and 117 W. The recovery and unchanged numerical trajectory indicate transient Windows
+  scheduling contention rather than WDDM spill, optimizer drift or a stall.
+- **Cloud/access/estimand:** W&B shows five completed scientific-training runs with artifacts and
+  the final cell running under the correct frozen group. The only project process is the expected
+  controller/trainer chain. The protected access log remains exactly the single integrity-open
+  record, and no evaluation artifact directory exists. Batch, LR, updates, EMA, codec, NFE,
+  sampler and evaluation geometry remain unchanged.
+- **Budget and transition gate:** completed preparation plus five training cells totals
+  approximately 15.8007 GPU-hours. The sixth cell should finish and upload near 13:00; projected
+  six-cell training cost is approximately 19.0 hours. Before protected access, require its
+  `COMPLETE` marker, manifest/hash validation and finished W&B artifact. Six registered
+  evaluations plus simultaneous analysis then project terminal integration around 18:00–20:00,
+  with more than 15 hours of programme-cap headroom.
+- **Decision:** no stop or corrective trigger. Complete the immutable final cell, enforce the
+  all-six-checkpoint gate, then enter the frozen protected evaluation matrix without inspecting or
+  adapting to intermediate pair directions.
