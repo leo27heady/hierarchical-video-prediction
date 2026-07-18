@@ -1,7 +1,8 @@
 # 02 — РОЗДІЛ 1 (rewrite, phase 1)
 
-> **Status:** English working text of the full РОЗДІЛ 1 replacement; the Ukrainian pass translates
-> it mechanically. Genre spots are marked **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**,
+> **Status:** authoritative English working text of the full Chapter 1 replacement. No translation
+> pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only. Author-input
+> spots are marked **[AUTHOR: …]**,
 > literature placeholders **[REF: …]** (to be resolved against the rebuilt reference list — the
 > original draft's numeric citations do not resolve).
 > **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§1 РОЗДІЛ 1 TOC, §3 items 15–21, §4,

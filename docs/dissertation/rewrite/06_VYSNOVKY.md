@@ -1,8 +1,9 @@
 # 06 — ВИСНОВКИ (rewrite, phase 1)
 
-> **Status:** English working text of the full ВИСНОВКИ replacement (the old draft's ВИСНОВКИ was
-> a literal "TEXT" stub); the Ukrainian pass translates it mechanically. Genre spots marked
-> **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**, citation spots **[REF: …]**.
+> **Status:** authoritative English working text of the full conclusions replacement (the old
+> draft was a literal "TEXT" stub). No translation pass is active; legacy **[UA-PASS: …]**
+> markers are unresolved genre notes. Author-input spots **[AUTHOR: …]** and citation spots
+> **[REF: …]** remain active.
 > **Sources of truth:** `docs/dissertation/rewrite/00_FRONT_MATTER.md` (the 7 results and 4
 > novelty items — the 7 numbered conclusions below mirror the front-matter results 1:1 against
 > the 7 tasks of `01_VSTUP.md`; the two files must stay in sync), `docs/draft/CH4_RESULTS.md`

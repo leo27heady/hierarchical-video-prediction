@@ -1,7 +1,8 @@
 # 01 — ВСТУП (rewrite, phase 1)
 
-> **Status:** English working text of the full ВСТУП replacement; the Ukrainian pass translates it
-> mechanically. Genre spots marked **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**.
+> **Status:** authoritative English working text of the full introduction replacement. No
+> translation pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only.
+> Author-input spots are marked **[AUTHOR: …]**.
 > **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (esp. §3 items 10–14, §6, §8 decisions
 > Q1–Q7), `docs/draft/ARTICLE_SKELETON.md`, `docs/draft/CH2_TESTBED.md`,
 > `docs/draft/CH3_MECHANISM.md`. Structure follows the committee-expected order of the original

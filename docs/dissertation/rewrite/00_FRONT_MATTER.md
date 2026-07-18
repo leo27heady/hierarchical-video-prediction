@@ -1,8 +1,8 @@
 # 00 — FRONT MATTER (rewrite, phase 1)
 
-> **Status:** English working text for the Ukrainian dissertation front matter. The Ukrainian pass
-> translates this mechanically; genre-specific phrasing spots are marked **[UA-PASS: …]** and
-> author-input spots are marked **[AUTHOR: …]**.
+> **Status:** authoritative English working text for the dissertation front matter. No translation
+> pass is active; legacy **[UA-PASS: …]** markers are unresolved genre notes only. Author-input
+> spots are marked **[AUTHOR: …]**.
 > **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§§3, 5, 6, 8 — author decisions Q1–Q7
 > override everything), `docs/draft/ARTICLE_SKELETON.md`, `docs/draft/CH2_TESTBED.md`,
 > `docs/draft/CH3_MECHANISM.md`. Every number below is traceable to those files; none are invented.

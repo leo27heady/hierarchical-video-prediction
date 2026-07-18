@@ -1,7 +1,8 @@
 # 03 — РОЗДІЛ 2 (rewrite, phase 1)
 
-> **Status:** English working text of the full РОЗДІЛ 2 replacement; the Ukrainian pass translates
-> it mechanically. The Ukrainian original (`scratchpad/diss/diss_full.md`, РОЗДІЛ 2) is untouched.
+> **Status:** authoritative English working text of the full Chapter 2 replacement. No translation
+> pass is active. The archival Ukrainian original (`scratchpad/diss/diss_full.md`, РОЗДІЛ 2) is
+> untouched.
 > Genre spots are marked **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**, unresolved
 > literature citations **[REF: …]**.
 > **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§1 РОЗДІЛ 2 TOC, §3 items 22–25, §6

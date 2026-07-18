@@ -1,9 +1,9 @@
 # 05 — РОЗДІЛ 4 (rewrite, phase 1)
 
-> **Status:** English working text of the full РОЗДІЛ 4 replacement (the experimental chapter —
-> the old chapter's §§4.2–4.4 were literal "NAME"/"TEXT" stubs and are written new here); the
-> Ukrainian pass translates it mechanically. Genre spots marked **[UA-PASS: …]**, author-input
-> spots **[AUTHOR: …]**, citation spots **[REF: …]**.
+> **Status:** authoritative English working text of the full Chapter 4 replacement (the
+> experimental chapter; the old chapter's §§4.2–4.4 were literal "NAME"/"TEXT" stubs and are
+> written new here). No translation pass is active; legacy **[UA-PASS: …]** markers are unresolved
+> genre notes. Author-input spots **[AUTHOR: …]** and citation spots **[REF: …]** remain active.
 > **Sources of truth:** `docs/draft/CH4_RESULTS.md` (the audited article results chapter,
 > AUTHORITATIVE for every number, **including the §4.5 PAIR OUTCOME block of 2026-07-06** — the
 > H-grid capability study closed RED; the PASS-branch capability headline is superseded and this

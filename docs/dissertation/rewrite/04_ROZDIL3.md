@@ -1,8 +1,9 @@
 # 04 — РОЗДІЛ 3 (rewrite, phase 1)
 
-> **Status:** English working text of the full РОЗДІЛ 3 replacement (the core model chapter that
-> replaces the old HVEBT chapter wholesale); the Ukrainian pass translates it mechanically. Genre
-> spots marked **[UA-PASS: …]**, author-input spots **[AUTHOR: …]**, citation spots **[REF: …]**.
+> **Status:** authoritative English working text of the full Chapter 3 replacement (the core model
+> chapter that replaces the old HVEBT chapter wholesale). No translation pass is active; legacy
+> **[UA-PASS: …]** markers are unresolved genre notes. Author-input spots **[AUTHOR: …]** and
+> citation spots **[REF: …]** remain active.
 > **Sources of truth:** `docs/dissertation/DISS_DIGEST.md` (§3 items 26–34, §6 «НОВИЙ РОЗДІЛ 3»,
 > §8 decisions Q1/Q2/Q6/Q7), `docs/STAGE2_DESIGN.md` (pre-registered design + 4-frame-window
 > addendum), `hvp_rev/rhvd.py` (THE implementation this chapter describes), `hvp_rev/hier_convae.py`

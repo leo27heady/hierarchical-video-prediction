@@ -11,6 +11,12 @@ the confirmed explanatory axes; self-fed trust remains a falsifiable robustness 
 article is about when hierarchical/multirate context pays under bounded budgets. E5a showed that
 the seed-0 late trust inversion is not a stable third title-level result.
 
+**Binding narrative and authoring policy:** all new article and dissertation content is authored
+and reviewed in English. The resource-efficiency synthesis, evidence boundaries, reporting rules
+and TempVerseFormer/reversibility bridge are frozen in
+`docs/RESOURCE_EFFICIENT_LONG_HORIZON_VISION_2026-07-18.md`. A Ukrainian localization is not part
+of the active programme and must not begin without a later explicit author request.
+
 **Dataset roles:** loopmom is the primary causal memory instrument. Moving-MNIST is retained as a
 standard boundary/generalization dataset, not replaced by loopmom. A future counterfactual Dynamic
 LoopWorld tests genuine hidden-state necessity and is additional to both.

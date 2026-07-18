@@ -29,6 +29,8 @@ as universal laws, and negative results remain part of the evidence.
 
 The governing plan is
 [`docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md`](docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md).
+The binding dissertation/article narrative and English-authoring policy are recorded in
+[`docs/RESOURCE_EFFICIENT_LONG_HORIZON_VISION_2026-07-18.md`](docs/RESOURCE_EFFICIENT_LONG_HORIZON_VISION_2026-07-18.md).
 
 ## CPU validation
 
