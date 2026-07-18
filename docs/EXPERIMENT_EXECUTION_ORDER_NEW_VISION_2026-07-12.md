@@ -2521,3 +2521,38 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   total remains roughly 23.5–25 GPU-hours, leaving at least 15 hours below the 40-hour ceiling.
 - **Decision:** no scientific, operational or budget blocker. Continue the frozen seed-major
   training order and do not open the protected holdout until all six training cells are complete.
+
+### E6 four-hour health audit — 2026-07-18 04:35 Europe/Kyiv
+
+- **Expected versus actual progress:** seed-1 `mmL-flat` completed successfully in 3.1119
+  GPU-hours, again below the 3.45-hour expectation and nearly identical to seed 0's 3.1126 hours.
+  Seed-1 `mmL-hier` is the sole active cell and reached 12,000/30,000 updates at
+  0.37–0.39 s/update. Its current projection is approximately 3.15–3.20 hours total, within both
+  the expected runtime and 4.7-hour cap.
+- **Convergence against references:** seed-1 flat ended at loss 0.2467, fixed-grid public
+  development foreground MSE 0.3338 and 0.3708 s/update, compared with seed-0 flat's 0.2615,
+  0.3507 and 0.3704. Its final diagnostic grid is coherent and correctly localized. Seed-1
+  hierarchy tracks the seed-0 hierarchy trajectory closely: losses are 1.5266 versus 1.5237 at
+  500, 1.1642 versus 1.1551 at 1,000, 1.0064 versus 1.0018 at 2,000, 0.6430 versus 0.5995 at
+  4,000, 0.4401 versus 0.4301 at 8,000 and 0.3783 versus 0.3734 at 12,000. The bounded early
+  difference is shrinking and the 12k diagnostic shows the expected partly resolved intermediate
+  predictions; there is no NaN, overflow, stall or discontinuity.
+- **Artifacts and cloud:** seed-1 flat has a matching `COMPLETE` marker and all 18 manifest entries
+  pass independent size and SHA-256 verification; checkpoint SHA-256 is
+  `4554c834d1c97a386ec8be38aa045ea426b36fe385782bc2b87d4275b3ed23cd`.
+  W&B reports all three completed predictor cells `finished` at step 30,000 with their immutable
+  artifacts and seed-1 hierarchy `running` under the correct scientific-training job type and
+  frozen group.
+- **Systems, access and estimand:** utilization is 100%, live allocation approximately
+  8.0/16.4 GB, recorded model peak 6.46 GB, temperature 66°C and power approximately 116 W.
+  Exactly one controller and one trainer process chain is active, with no competing job or WDDM
+  spill. The RunSpec retains the frozen B16×30k, LR, EMA, codec and public-data geometry. The
+  protected access log remains exactly the single integrity-open record; no evaluation endpoint
+  has been inspected.
+- **Budget and forecast:** preparation plus three complete predictor cells totals approximately
+  9.5117 charged GPU-hours. At measured throughput, seed-1 hierarchy should finish near 06:20,
+  and the seed-2 pair should place all training terminal around 12:30–13:00 Europe/Kyiv.
+  Protected evaluation plus simultaneous analysis still projects terminal E6 integration around
+  18:00–20:00, conservatively by 22:00, with approximately 15 hours of programme-cap headroom.
+- **Decision:** no corrective or stop trigger. Continue the registered order, retain the public
+  grids as diagnostics only, and keep protected evaluation closed until all six checkpoints exist.
