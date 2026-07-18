@@ -2556,3 +2556,40 @@ validity gate. E9 remains optional post-freeze work and cannot delay dissertatio
   18:00–20:00, conservatively by 22:00, with approximately 15 hours of programme-cap headroom.
 - **Decision:** no corrective or stop trigger. Continue the registered order, retain the public
   grids as diagnostics only, and keep protected evaluation closed until all six checkpoints exist.
+
+### E6 four-hour health audit — 2026-07-18 08:35 Europe/Kyiv
+
+- **Expected versus actual progress:** seed-1 `mmL-hier` completed successfully in 3.1764
+  GPU-hours, below the 3.45-hour expectation and consistent with seed 0's 3.1741 hours. Seed-2
+  `mmL-flat` is the sole active cell and reached 20,500/30,000 updates at approximately
+  0.37 s/update. Four of six training cells are therefore immutable and complete.
+- **Training behavior:** seed-1 hierarchy ended at loss 0.2662, 0.3755 s/update and 6.4611 GB
+  recorded peak, closely matching seed 0's 0.2742, 0.3817 and 6.4611. Its final qualitative grid
+  contains coherent localized digits. Seed-2 flat remains within the seed-0/1 envelope throughout:
+  losses at 500/1,000/2,000/4,000/8,000/12,000/16,000/20,000 are
+  1.5188/1.1597/1.0313/0.6715/0.4419/0.3740/0.3215/0.2931, versus corresponding seed-0 values
+  1.5267/1.1559/1.0269/0.6471/0.4297/0.3618/0.3260/0.2999. No numerical instability,
+  throughput drift or qualitative collapse is present.
+- **Diagnostic heterogeneity:** the final public fixed-grid foreground MSE for seed-1 hierarchy is
+  0.3920, versus 0.3338 for seed-1 flat, whereas seed 0 was 0.2865 versus 0.3507. This reverses
+  the descriptive development-grid sign. It is not a stop trigger because this small,
+  diffusion-sampled grid is neither the protected evaluation nor the registered multi-clip
+  estimand. It does, however, make training-seed heterogeneity a plausible final outcome; the
+  frozen three-seed protected family must determine whether an average external-dataset effect is
+  stable, heterogeneous or unresolved.
+- **Artifacts/cloud:** seed-1 hierarchy has a matching `COMPLETE` marker and all 18 manifest
+  entries pass independent size and SHA-256 verification; checkpoint SHA-256 is
+  `1235c732a56ff16444cbd2d89c63117acbf1db19987dcf1ad54ac28babdf68ea`.
+  W&B shows four completed scientific-training runs at step 30,000 with immutable artifacts and
+  seed-2 flat running under the correct frozen group.
+- **Systems, access and budget:** GPU utilization is 100%, live allocation approximately
+  8.0/16.4 GB, temperature 64°C and power approximately 116 W, with one valid controller/trainer
+  chain and no WDDM spill or competing process. Protected access remains exactly one integrity
+  record. Completed charges total approximately 12.6881 GPU-hours including preparation, leaving
+  more than 27 hours under the programme cap before the live cell is posted.
+- **Projection and decision:** seed-2 flat projects to finish near 09:30 and seed-2 hierarchy near
+  12:40 Europe/Kyiv. Six protected evaluations plus simultaneous analysis still project terminal
+  E6 integration around 18:00–20:00, conservatively by 22:00. There is no validity or operational
+  blocker: continue unchanged, preserve the diagnostic sign reversal as evidence rather than
+  reacting adaptively, and open the protected evaluation only after the final training artifact
+  passes its immutable checks.
