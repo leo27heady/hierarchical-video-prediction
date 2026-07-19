@@ -1,9 +1,9 @@
 # 07 — СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ (master bibliography + binding table)
 
-> **Status (2026-07-17):** the master reference list for BOTH texts (dissertation СПИСОК
-> ВИКОРИСТАНИХ ДЖЕРЕЛ and the article bibliography — the article cites a subset of the same
-> keys). Built from the full [REF:] inventory of `docs/dissertation/rewrite/*` +
-> `docs/draft/CH*` (104 unique descriptors, 120 occurrences, extracted 2026-07-07).
+> **Status (2026-07-19):** master dissertation bibliography and binding table. The article
+> maintains a venue-neutral 46-entry subset in its own authoritative source. The dissertation
+> binder currently emits 123 external references in order of first mention; source descriptors
+> remain visible only in the editable rewrite files and are absent from the assembled manuscript.
 >
 > **Numbering policy:** entries carry STABLE KEYS, not numbers. Final numbers are assigned
 > mechanically at assembly in order of first mention, after the applicant's own publications are
@@ -55,6 +55,13 @@
 ### B3. Transformers, attention, positional encoding, tokenization
 
 - **Vaswani2017** — Vaswani A., Shazeer N., Parmar N., et al. Attention Is All You Need. *NeurIPS 30*, 2017. ✓
+- **Dao2022flash** — Dao T., Fu D. Y., Ermon S., Rudra A., Ré C. FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness. *NeurIPS 35*, 2022. ✓
+- **Dai2019txl** — Dai Z., Yang Z., Yang Y., Carbonell J., Le Q. V., Salakhutdinov R. Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context. *ACL*, 2019. ✓
+- **Rae2020compressive** — Rae J. W., Potapenko A., Jayakumar S. M., Lillicrap T. P. Compressive Transformers for Long-Range Sequence Modelling. *ICLR*, 2020. ✓
+- **Wu2022memorizing** — Wu Y., Rabe M. N., Hutchins D., Szegedy C. Memorizing Transformers. *ICLR*, 2022. ✓
+- **Kitaev2020reformer** — Kitaev N., Kaiser Ł., Levskaya A. Reformer: The Efficient Transformer. *ICLR*, 2020. ✓
+- **Beltagy2020longformer** — Beltagy I., Peters M. E., Cohan A. Longformer: The Long-Document Transformer. arXiv:2004.05150, 2020. ✓
+- **Gu2023mamba** — Gu A., Dao T. Mamba: Linear-Time Sequence Modeling with Selective State Spaces. arXiv:2312.00752, 2023. ✓
 - **Dosovitskiy2021** — Dosovitskiy A., Beyer L., Kolesnikov A., et al. An Image is Worth 16×16 Words: Transformers for Image Recognition at Scale (ViT). *ICLR*, 2021. ✓
 - **Arnab2021** — Arnab A., Dehghani M., Heigold G., et al. ViViT: A Video Vision Transformer. *ICCV*, 2021. ✓
 - **Liu2022swin** — Liu Z., Ning J., Cao Y., et al. Video Swin Transformer. *CVPR*, 2022. ✓
@@ -87,6 +94,24 @@
 - **Yu2026memlearner** — Yu J., Gao J., Bai J., et al. MemLearner: Learning to Query Context Memory for Video World Models. arXiv:2606.31734; ECCV 2026. ✓
 - **Wei2026gimworld** — Wei Z., Guo X., Li X., et al. Geometry-Aware Implicit Memory for Video World Models. arXiv:2606.02436, 2026. ✓
 - **Chen2026memobench** — Chen H., Zhou K., Hua H., et al. MemoBench: Benchmarking World Modeling in Dynamically Changing Environments. arXiv:2606.27537, 2026. ✓
+- **Ho2022video** — Ho J., Salimans T., Gritsenko A., Chan W., Norouzi M., Fleet D. J. Video Diffusion Models. *NeurIPS 35*, 2022. ✓
+- **Blattmann2023videoldm** — Blattmann A., Rombach R., Ling H., Dockhorn T., Kim S. W., Fidler S., Kreis K. Align Your Latents: High-Resolution Video Synthesis with Latent Diffusion Models. *CVPR*, 2023. ✓
+- **Blattmann2023svd** — Blattmann A., Dockhorn T., Kulal S., et al. Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets. arXiv:2311.15127, 2023. ✓
+- **Singer2023makeavideo** — Singer U., Polyak A., Hayes T., et al. Make-A-Video: Text-to-Video Generation without Text-Video Data. *ICLR*, 2023. ✓
+- **Ho2022imagenvideo** — Ho J., Chan W., Saharia C., et al. Imagen Video: High Definition Video Generation with Diffusion Models. arXiv:2210.02303, 2022. ✓
+- **Villegas2022phenaki** — Villegas R., Babaeizadeh M., Kindermans P.-J., et al. Phenaki: Variable Length Video Generation from Open Domain Textual Descriptions. arXiv:2210.02399, 2022. ✓
+- **Yu2023magvit** — Yu L., Lezama J., Gundavarapu N. B., et al. MAGVIT: Masked Generative Video Transformer. *CVPR*, 2023. ✓
+- **Yu2024magvit2** — Yu L., Lezama J., Gundavarapu N. B., et al. Language Model Beats Diffusion — Tokenizer Is Key to Visual Generation. *ICLR*, 2024. ✓
+- **Bruce2024genie** — Bruce J., Dennis M., Edwards A., et al. Genie: Generative Interactive Environments. *ICML*, 2024. ✓
+- **Hu2023gaia1** — Hu A., Russell L., Yeo H., et al. GAIA-1: A Generative World Model for Autonomous Driving. arXiv:2309.17080, 2023. ✓
+- **Ha2018worldmodels** — Ha D., Schmidhuber J. World Models. arXiv:1803.10122, 2018. ✓
+- **Hafner2020dreamer** — Hafner D., Lillicrap T., Ba J., Norouzi M. Dream to Control: Learning Behaviors by Latent Imagination. *ICLR*, 2020. ✓
+- **Hafner2023dreamerv3** — Hafner D., Pasukonis J., Ba J., Lillicrap T. Mastering Diverse Domains through World Models. arXiv:2301.04104, 2023. ✓
+- **Micheli2023iris** — Micheli V., Alonso E., Fleuret F. Transformers Are Sample-Efficient World Models. *ICLR*, 2023. ✓
+- **Razavi2019vqvae2** — Razavi A., van den Oord A., Vinyals O. Generating Diverse High-Fidelity Images with VQ-VAE-2. *NeurIPS 32*, 2019. ✓
+- **Child2021vdvae** — Child R. Very Deep VAEs Generalize Autoregressive Models and Can Outperform Them on Images. *ICLR*, 2021. ✓
+- **Vahdat2020nvae** — Vahdat A., Kautz J. NVAE: A Deep Hierarchical Variational Autoencoder. *NeurIPS 33*, 2020. ✓
+- **Sonderby2016laddervae** — Sønderby C. K., Raiko T., Maaløe L., Sønderby S. K., Winther O. Ladder Variational Autoencoders. *NeurIPS 29*, 2016. ✓
 
 ### B5. Energy-based models
 
@@ -144,6 +169,14 @@
 - **Rudin2019** — Rudin C. Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. *Nature Machine Intelligence* 1, 2019. ✓
 - **SoraSurvey2024** — Liu Y., Zhang K., Li Y., Yan Z., Gao C., Chen R., Yuan Z., Huang Y., Sun H., Gao J., He L., Sun L. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024. ✓
 - **Marr1982** — Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982. ✓ *(used only for the broad multi-stage account of representations from image evidence toward a 3-D description, not as a source for the dissertation's own consistency taxonomy)*
+- **Wang2004ssim** — Wang Z., Bovik A. C., Sheikh H. R., Simoncelli E. P. Image Quality Assessment: From Error Visibility to Structural Similarity. *IEEE Transactions on Image Processing* 13(4):600–612, 2004. DOI: 10.1109/TIP.2003.819861. ✓
+- **Zhang2018lpips** — Zhang R., Isola P., Efros A. A., Shechtman E., Wang O. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. *CVPR*, 2018. ✓
+- **Unterthiner2019fvd** — Unterthiner T., van Steenkiste S., Kurach K., et al. Towards Accurate Generative Models of Video: A New Metric and Challenges. arXiv:1812.01717, 2019. ✓
+- **Kuhn1955** — Kuhn H. W. The Hungarian Method for the Assignment Problem. *Naval Research Logistics Quarterly* 2(1–2):83–97, 1955. DOI: 10.1002/nav.3800020109. ✓
+- **Efron1979** — Efron B. Bootstrap Methods: Another Look at the Jackknife. *The Annals of Statistics* 7(1):1–26, 1979. ✓
+- **Cameron2008cluster** — Cameron A. C., Gelbach J. B., Miller D. L. Bootstrap-Based Improvements for Inference with Clustered Errors. *Review of Economics and Statistics* 90(3):414–427, 2008. ✓
+- **WestfallYoung1993** — Westfall P. H., Young S. S. *Resampling-Based Multiple Testing: Examples and Methods for p-Value Adjustment*. Wiley, 1993. ✓
+- **RomanoWolf2005** — Romano J. P., Wolf M. Exact and Approximate Stepdown Methods for Multiple Hypothesis Testing. *Econometrica* 73(4):1237–1282, 2005. ✓
 
 ### B9. Systems analysis, hierarchical systems, stability (the 124 spine — Chapter 1)
 
@@ -152,6 +185,10 @@
 - **Mesarovic1970** — Mesarović M. D., Macko D., Takahara Y. *Theory of Hierarchical, Multilevel Systems*. Academic Press, 1970. ✓ *(hierarchical systems theory)*
 - **Bertalanffy1968** — von Bertalanffy L. *General System Theory: Foundations, Development, Applications*. George Braziller, 1968. ✓ *(classical systems theory)*
 - **Khalil2002** — Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002. ✓ *(stability of complex systems)*
+- **Simon1962** — Simon H. A. The Architecture of Complexity. *Proceedings of the American Philosophical Society* 106(6):467–482, 1962. ✓
+- **Shannon1948** — Shannon C. E. A Mathematical Theory of Communication. *Bell System Technical Journal* 27:379–423, 623–656, 1948. ✓
+- **Kalman1960** — Kalman R. E. A New Approach to Linear Filtering and Prediction Problems. *Journal of Basic Engineering* 82(1):35–45, 1960. ✓
+- **Ashby1956** — Ashby W. R. *An Introduction to Cybernetics*. Chapman & Hall, 1956. ✓
 
 ## C. Binding table (inline [REF: descriptor] → key; substitution at assembly)
 
@@ -193,6 +230,18 @@
 | Gomez et al. 2017 / RevNet (+ Mangalam, RevViT forms) | Gomez2017; Mangalam2022 |
 | GPU memory as the binding constraint | Rajbhandari2020; Korthikanti2022 |
 | hallucination phenomenology | Ji2023 |
+| attention scaling and memory-efficient exact attention | Vaswani2017; Dao2022flash |
+| bootstrap, clustered resampling, and simultaneous inference | Efron1979; Cameron2008cluster; WestfallYoung1993; RomanoWolf2005 |
+| Hungarian assignment | Kuhn1955 |
+| Moving-MNIST original | Srivastava2015 |
+| SSIM, LPIPS, FID, and FVD | Wang2004ssim; Zhang2018lpips; Heusel2017; Unterthiner2019fvd |
+| TaxiBJ | Zhang2017taxibj |
+| recent long-memory retrieval and benchmark work | WorldPack2025; Peng2026car; Yu2026memlearner; Wei2026gimworld; Zhang2026mbench; Chen2026memobench; LSSVWM2025 |
+| efficient long-sequence state and attention alternatives | Dai2019txl; Rae2020compressive; Wu2022memorizing; Kitaev2020reformer; Beltagy2020longformer; Gu2023mamba |
+| modern video diffusion and token generation | Ho2022video; Blattmann2023videoldm; Blattmann2023svd; Singer2023makeavideo; Ho2022imagenvideo; Villegas2022phenaki; Yu2023magvit; Yu2024magvit2 |
+| interactive and autonomous world models | Bruce2024genie; Hu2023gaia1; Ha2018worldmodels; Hafner2020dreamer; Hafner2023dreamerv3; Micheli2023iris |
+| hierarchical latent representation foundations | Razavi2019vqvae2; Child2021vdvae; Vahdat2020nvae; Sonderby2016laddervae |
+| systems foundations for complexity, information, state, and control | Simon1962; Shannon1948; Kalman1960; Ashby1956 |
 | Harvey et al. 2022 / FDM | Harvey2022 |
 | hierarchical systems theory | Mesarovic1970 |
 | image-to-image diffusion | Saharia2022 |

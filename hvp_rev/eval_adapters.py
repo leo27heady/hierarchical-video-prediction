@@ -21,9 +21,11 @@ try:
 except Exception:  # pragma: no cover
     _ssim = None
 
-OPENSTL_TEST = "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_mnist/mnist_test_seq.npy"
-CWVAE_TEST = "C:/Users/leoni/Documents/projects/cwvae/data_mmnist/test.npy"
-CWVAE_TRAIN = "C:/Users/leoni/Documents/projects/cwvae/data_mmnist/train.npy"
+OPENSTL_TEST = os.environ.get(
+    "HVP_OPENSTL_TEST", "data/external/openstl/moving_mnist/mnist_test_seq.npy"
+)
+CWVAE_TEST = os.environ.get("HVP_CWVAE_TEST", "data/external/cwvae/data_mmnist/test.npy")
+CWVAE_TRAIN = os.environ.get("HVP_CWVAE_TRAIN", "data/external/cwvae/data_mmnist/train.npy")
 
 
 # ----------------------------------------------------------------------------- layout adapter
@@ -94,7 +96,10 @@ def selftest():
     print("ours:", {k: round(v, 4) for k, v in ours.items()})
     try:
         import sys
-        sys.path.insert(0, "C:/Users/leoni/Documents/projects/OpenSTL")
+        openstl_repo = os.environ.get("OPENSTL_REPO")
+        if not openstl_repo:
+            raise RuntimeError("OPENSTL_REPO is not set")
+        sys.path.insert(0, openstl_repo)
         from openstl.core.metrics import metric as ostl_metric
         res, _ = ostl_metric(pred, true, mean=0, std=1, metrics=["mae", "mse", "ssim", "psnr"],
                              clip_range=[0, 1], return_log=True)

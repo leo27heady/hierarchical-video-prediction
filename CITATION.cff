@@ -3,11 +3,12 @@ message: "If you use this software or its evaluation protocol, cite the software
 title: "Hierarchical Video Prediction: Controlled Context-Packaging Experiments"
 type: software
 version: 0.3.0
-date-released: 2026-07-18
 authors:
   - family-names: Kulyk
     given-names: Leonid
 license: MIT
+repository-code: "https://github.com/leo27heady/hierarchical-video-prediction"
+url: "https://github.com/leo27heady/hierarchical-video-prediction"
 abstract: >-
   Research software for controlled studies of how bounded video-memory context should be
   packaged across temporal rate, spatial resolution and depth, with construct-valid frame,

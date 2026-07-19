@@ -16,7 +16,7 @@ ARTICLE_CHAPTERS = [
     Path("docs/draft/CH8_CONCLUSION.md"),
 ]
 
-BINDING_ARTICLE = Path("docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md")
+BINDING_ARTICLE = Path("docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.md")
 
 AUTHORITATIVE = [
     Path("README.md"),

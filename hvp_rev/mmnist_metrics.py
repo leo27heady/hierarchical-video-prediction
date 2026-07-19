@@ -32,7 +32,9 @@ import torch.nn.functional as F
 from scipy import ndimage
 
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
-MNIST_IDX = "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_mnist/train-images-idx3-ubyte.gz"
+MNIST_IDX = os.environ.get(
+    "HVP_MNIST_GZ", "data/external/openstl/moving_mnist/train-images-idx3-ubyte.gz"
+)
 MNIST_LBL = MNIST_IDX.replace("images-idx3", "labels-idx1")
 CKPT = "logs_rhcp/mmnist_digit_clf.pt"
 THR = 0.3

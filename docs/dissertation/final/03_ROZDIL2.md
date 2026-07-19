@@ -13,24 +13,20 @@ uncertainty is the problem of inefficient decomposition of the input spatio-temp
 In classical systems analysis, the decomposition of a complex system must reflect its internal
 information saturation and structure. However, the traditional approaches to the mathematical
 modeling of video data, popularized by architectures of the Vision Transformer (ViT) type
-[26] and their spatio-temporal extensions ViViT
-[27] and Video Swin Transformer [28],
+[63] and their spatio-temporal extensions ViViT
+[64] and Video Swin Transformer [65],
 are based on a rigid, a-priori-fixed partition of the image or video stream into a regular grid
 of non-overlapping patches of fixed size, e.g., 16×16 pixels.
 
-From the standpoint of optimal control and resource-allocation theory, such an approach is
-severely suboptimal. The visual signal, especially video data, is characterized by an extremely
-non-uniform distribution of information density. Large areas of the frame are often occupied by a
-static, low-information background (monotonous sky, walls), while the key dynamics and
-high-frequency details (moving objects, complex kinematics) are concentrated in small local
-zones. Using a fixed grid forces the system to distribute its limited computational resource
-uniformly across all regions of the frame, wasting it on the processing of redundant information.
+Fixed patches are simple and effective, but their token allocation is independent of local signal
+complexity. In videos with large low-variation regions and small high-detail moving regions, this
+can allocate equal token cost to areas with different representational demands. Whether that
+trade-off matters is empirical rather than a universal defect of fixed-grid models.
 
-To solve this problem, it is necessary to move from a rigid geometric decomposition to an
-adaptive decomposition of the state space that is driven by the data themselves. The conceptual
+The dissertation investigates adaptive, data-dependent decomposition as one response. The conceptual
 foundation for this transition is the new paradigm of byte-level language models that emerged in
 natural language processing, in particular the Byte Latent Transformer (BLT)
-[29]. These systems abandoned the paradigm of fixed token vocabularies
+[66]. These systems abandoned the paradigm of fixed token vocabularies
 in favor of dynamic grouping of elementary information units (bytes) into latent patches whose
 size is inversely proportional to the local complexity of the signal.
 
@@ -39,19 +35,19 @@ size is inversely proportional to the local complexity of the signal.
 **Figure 2.1 — Conceptual operating principle of entropy-driven byte patching.** Long
 low-entropy regions are grouped into larger latent patches, whereas locally surprising regions
 receive finer allocation. The values are schematic, not empirical measurements. Source:
-author’s schematic after BLT [29].
+author’s schematic after BLT [66].
 
 Within the dissertation research, the results of which are published in **[A1]**, the hypothesis
 was put forward that transferring the principles of adaptive entropy-based tokenization to the
-visual modality opens fundamental opportunities for optimizing and redistributing the
+visual modality may improve the allocation of
 computational resources of a generative system. On the basis of this approach, the author
 developed the method for estimating spatio-temporal uncertainty and a new mathematical
 architecture — the Vision Byte Latent Transformer (V-BLT).
 
-Working at the level of "raw" bytes of video data, where each pixel of an RGB channel is
-represented by a discrete integer from 0 to 255, allows the system to avoid the loss of
-information that is unavoidable when heuristic pre-compression or vector-quantization (VQ-VAE)
-algorithms are used [30]. The developed V-BLT architecture is
+Working at the input-byte level, where each RGB channel value is represented by an integer from
+0 to 255, avoids committing the target interface to a learned discrete visual codebook
+[67]. It does not make the learned hidden representation
+lossless. The developed V-BLT architecture is
 a three-tier hierarchical information-transformation system consisting of a Local Encoder, a
 Global Latent Transformer, and a Local Decoder. In the arc of this dissertation, V-BLT is the
 author's **first realization of the hierarchical adaptation of video generation** — a two-stage
@@ -70,15 +66,15 @@ The first subsystem — the **Local Encoder** — performs the function of prima
 aggregation. The input is a video sequence as a multidimensional tensor of raw bytes. The task of
 the Local Encoder is the dynamic grouping of locally correlated bytes into compact latent
 representations in the form of spatio-temporal patches $Z = \{z_1, z_2, \dots, z_M\}$.
-Mathematically it is realized as a lightweight convolutional-transformer network capable of
-determining the optimal boundaries of information aggregation.
+Mathematically it is realized as a lightweight convolutional-transformer network that predicts
+data-dependent boundaries of information aggregation.
 
 The second subsystem — the **Global Latent Transformer** — is the computational core and is
 responsible for modeling the long-term dynamics in the compressed space. Since this block
 performs autoregressive prediction for time-series modeling, its architecture requires a specific
-design of the attention-masking system in order to avoid structural uncertainty in the form of
-information leakage from the future [56], while
-fully resolving the spatial uncertainty within the current frame.
+design of the attention-masking system to prevent information leakage from future frames
+[12], while allowing tokens within the current
+and preceding frames to interact.
 
 For this purpose, a spatio-temporal attention-masking matrix is used. Let the latent space have
 dimensionality $T' \times S'$, where $T'$ is the number of time steps and $S'$ is the number of
@@ -94,8 +90,8 @@ M_{i,j} =
 \tag{2.1}
 $$
 
-This strictly time-causal but spatially fully-connected mask guarantees the physical and logical
-plausibility of the generation process.
+This time-causal, spatially connected mask prevents future-frame attention. It does not by itself
+guarantee physical plausibility or accurate dynamics.
 
 The third subsystem — the **Local Decoder** — projects the predicted latent macro-states back
 into the micro-space of image bytes. The key mathematical innovation of the developed method,
@@ -115,7 +111,7 @@ $$
 
 Such a mathematical formulation transforms the problem of minimizing the mean squared error
 (MSE), which by its nature is prone to smoothing and to the loss of high-frequency details, into
-a classification problem using the cross-entropy loss function [57]. This makes it possible to correctly model multimodal distributions:
+a classification problem using the cross-entropy loss function [96]. This makes it possible to correctly model multimodal distributions:
 for example, the contour of a moving object may shift one pixel to the left or to the right with
 equal probability, which cannot be described by a single mean value.
 
@@ -214,14 +210,14 @@ a precise coordinate anchoring makes it impossible to model adequate kinematics 
 the visual scene.
 
 The traditional approach to preserving positional information is absolute positional encoding
-[56]. This method adds a special coordinate
+[12]. This method adds a special coordinate
 vector $p_i$ to each latent token $z_i$. However, absolute encoding has fundamental drawbacks in
 this application: it destroys translation invariance, which is a natural property of the visual
 world, since the system must recognize and generate an object equally well regardless of its
 absolute coordinates in the frame.
 
 An alternative approach is relative positional encoding (Relative Positional Bias)
-[58, 28], where coordinate information is
+[97, 65], where coordinate information is
 added directly to the attention-weight matrix in the form of biases. Although this method models
 relative distances more correctly, it is accompanied by a significant growth of computational
 complexity and requires $O(L^2)$ memory for storing multidimensional bias matrices, which
@@ -230,17 +226,16 @@ consumption.
 
 To overcome these systemic contradictions, within the development of the information technology
 it is proposed to apply the mathematical apparatus of Rotary Positional Embedding (RoPE)
-[59] with its subsequent generalization to N-dimensional space. The
-RoPE method combines the advantages of absolute encoding — the absence of quadratic memory costs
-for storing positions — with the translation-invariance property of relative encoding. The core
-idea is to represent the state vectors of the system as complex numbers and to apply to them an
-orthogonal rotation operation in the complex space.
+[98] with its subsequent generalization to N-dimensional space. The
+RoPE applies position-dependent rotations without storing a learned pairwise relative-bias
+matrix. The core idea is to group feature pairs as complex coordinates and rotate them according
+to position.
 
 Let the attention subsystem operate on query vectors $q$ and key vectors $k$ of dimensionality
 $D$. For a one-dimensional sequence, the position of element $m$ is encoded by multiplying the
-vector by an orthogonal rotation matrix $R_{\Theta,m}$. Applying this operation to the query and
-key vectors before computing their scalar product makes the attention weight a function of their
-relative distance only. In the complex representation this is proved by the following equation:
+vector by an orthogonal rotation matrix $R_{\Theta,m}$. Applying this operation to query and key
+vectors makes the positional phase in their scalar product depend on relative displacement. In
+the complex representation:
 
 $$
 \left\langle R_{\Theta,m}\,q,\; R_{\Theta,n}\,k \right\rangle
@@ -249,17 +244,15 @@ $$
 \tag{2.4}
 $$
 
-As the equation shows, the absolute coordinates $m$ and $n$ cancel algebraically, leaving only
-their difference $m - n$. This mathematically guarantees that the attention system reacts
-exclusively to the relative arrangement of elements.
+As the equation shows, the positional phase contains the difference $m-n$. The complete attention
+score still depends on the learned content vectors \(q\) and \(k\); RoPE does not force a
+particular attention pattern.
 
-However, the original RoPE method [59] was developed exclusively for
-one-dimensional sequences such as text and cannot be applied directly to spatio-temporal video
-data without losing the multidimensional topology. To solve this problem, within the research
-underlying the results of **[A1]**, the method of N-dimensional rotary positional embedding
-(RoPE-ND) [59] is used, which allows the system to
-simultaneously account for the mutual arrangement of elements along several independent
-coordinate axes.
+The original RoPE formulation [98] uses a one-dimensional sequence coordinate.
+A flattened video index can be supplied, but it does not explicitly separate time, row, and
+column displacement. In the research underlying **[A1]**, N-dimensional rotary positional
+embedding (RoPE-ND) [98] assigns independent feature
+subspaces to these axes.
 
 The essence of the generalization is the decomposition of the latent token's feature space into
 $N$ independent subspaces, each responsible for its own physical coordinate. For video data the
@@ -300,63 +293,46 @@ axis. The same operation is applied to the key vector $k$.
 horizontal, vertical and temporal coordinates so attention depends on relative displacement
 along all three axes. Source: author’s schematic of the [A1] method.
 
-Applying such a multidimensional transformation restores the structural coherence of the complex
-system. When the attention-score matrix between two arbitrary tokens in the video sequence is
-computed, the scalar product decomposes into three independent sums, each depending exclusively
-on the coordinate difference along the corresponding axis:
+With disjoint coordinate subspaces, the rotary contribution to an attention score decomposes by
+axis. Each term depends on the corresponding relative coordinate difference:
 
 $$
 q'^{\top}_{\text{rotated}}\, k'_{\text{rotated}} = f(\Delta t, \Delta y, \Delta x)
 \tag{2.7}
 $$
 
-where $\Delta t = t_q - t_k$, $\Delta y = y_q - y_k$, $\Delta x = x_q - x_k$. This proves that
-the system mathematically identifies not the absolute position of objects in space but their
-relative spatio-temporal topology, which is critically important for modeling physical motion.
+where $\Delta t = t_q-t_k$, $\Delta y = y_q-y_k$, and $\Delta x=x_q-x_k$. The algebra establishes
+relative-coordinate dependence in the rotary score terms. It does not prove that a learned model
+recovers physical topology or attends to the correct object.
 
-**Systemic significance of the method for hierarchical architectures.** Beyond the plain modeling
-of temporal dynamics in patch-based systems, the RoPE-ND method is a universal instrument and
-plays a decisive role in ensuring *hierarchical consistency* in the hierarchical video generation
-model developed in Chapter 3. In multi-level architectures, a problem of resolving structural
-uncertainty arises between different levels of abstraction: for example, how to correctly
-transfer information between a fine level with a dense token grid (e.g., $32 \times 32$ tokens)
-and a coarse level with a sparser grid (e.g., $16 \times 16$ tokens).
+**Systemic significance and scope.** In an architecture with explicit cross-resolution
+attention, coordinates can be affinely mapped to a common physical scale before RoPE-ND is
+applied. This provides a consistent coordinate convention for fine and coarse tokens, but it does
+not force attention to select geometrically correct regions or guarantee semantic routing. The
+measured Chapter 3 predictor does **not** use this mechanism: it uses learned level, role, and
+frame embeddings with joint attention. RoPE-ND is therefore a separate representation result
+from [A1], not an explanation of the Chapter 4 context-package effects.
 
-For the correct routing of cross-attention signals, the coordinate systems of these levels must
-be mathematically aligned. The RoPE-ND method offers an elegant systemic solution through affine
-scaling of the coordinates. A parent coarse-level token physically covers a cluster of several
-child fine-level tokens; after the coordinates of both levels are brought to a common scale, the
-attention mechanism is forced to center precisely on the geometrically relevant zones. This
-eliminates the risk of chaotic mixing of semantic features between distant objects and ensures
-that the global composition governs exclusively its own local details — the mathematical basis of
-the unidirectional inter-level context-signal transfer developed in Chapter 3.
-
-From the standpoint of resource efficiency, the computational complexity of applying RoPE-ND is
-strictly linear, $O(D)$, with respect to the feature-space dimensionality, and it requires no
-additional memory for storing large bias matrices. This makes the developed mathematical
-apparatus an ideal candidate for integration into architectures with time-agnostic
-backpropagation, where memory is the most valuable resource. The description of such an
-architecture and the corresponding optimization method is given in the following subsections.
+Applying RoPE-ND costs $O(D)$ arithmetic per token and avoids storing a learned pairwise bias
+matrix. It is compatible with memory-efficient architectures, but no end-to-end experiment in
+this dissertation combines RoPE-ND, reversible rollout training, and the final hierarchical
+predictor.
 
 ## 2.3 Resource Optimization for Multi-Step Temporal Modelling
 
-The improvement of the mathematical methods for uncertainty estimation (V-BLT) and structural
-coherence (RoPE-ND) considered in the previous subsections substantially raises the quality of
-spatio-temporal data modeling. However, the practical implementation of iterative generative
-models inevitably runs into the exhaustion of available computational resources as a fundamental
-systemic constraint. From the standpoint of systems analysis, the effectiveness of controlling
-any process is determined not only by the adequacy of the mathematical model but also by the
-feasibility of its implementation under strict resource constraints.
+The V-BLT and RoPE-ND methods address representation and coordinate structure. A separate
+constraint arises when an iterative model must be differentiated through a long computation:
+activation storage can exceed available device memory. Systems analysis must therefore consider
+both model adequacy and implementation feasibility.
 
-In the modeling of multi-step temporal processes, the main bottleneck is not so much the
-computational throughput of the processors (the number of floating-point operations, FLOPs) as
-the amount of operating memory of the graphics accelerators [60, 61]. This problem arises from the architectural features of
-modern artificial neural networks and their optimization algorithms.
+For the long unrolls measured in this work, accelerator memory is a binding constraint alongside
+throughput [99, 100]. Which resource
+dominates is hardware- and model-dependent.
 
-The standard Backpropagation Through Time (BPTT) algorithm [62] is the basis
-for identifying the parameters of dynamic systems. To compute the control gradients, the
-algorithm requires the mandatory storage of all intermediate states of the system — the
-activations — at every layer and every time step during the forward pass.
+Backpropagation Through Time (BPTT) [28] differentiates a temporally unrolled
+dynamic system. A vanilla implementation retains the intermediate activations required by the
+reverse pass; checkpointing and reversible replay are alternative storage/recomputation
+schedules.
 
 Mathematically, the amount of operating memory $M$ required to store the full computation graph
 is linearly dependent on the depth of the temporal unrolling and the number of layers in the
@@ -369,23 +345,20 @@ $$
 
 where $N$ is the dimensionality of the spatial state (the number of tokens per frame), $T$ the
 number of time steps or optimization iterations, $L$ the number of model layers, and $D$ the
-dimensionality of the latent feature space. Since for video data the spatial parameter $N$ is
-extremely large, modeling long sequences $T$ very quickly leads to the exhaustion of the
-available physical memory (Out of Memory, OOM).
+dimensionality of the latent feature space. For video states, the product can exceed available
+memory as the differentiated horizon grows.
 
 The presence of such computational uncertainty forces various heuristic compromises. The most
-common approaches are truncated backpropagation (Truncated BPTT) [63] and
-gradient checkpointing [42, 43]. Truncated
-backpropagation artificially limits the gradient horizon — e.g., optimizing over only the last 5
-frames — which inevitably loses the memory of long-range cause-and-effect relations. The
-checkpointing method reduces memory consumption (to $O(\sqrt{T} \cdot L \cdot D)$ with the
-standard segment schedule; see Table 2.1), but the price is a significant slowdown of training
-due to redundant recomputation.
+common approaches are truncated backpropagation (Truncated BPTT) [29] and
+gradient checkpointing [30, 31]. Truncated
+backpropagation limits the gradient horizon—e.g., differentiating only the last five frames—and
+therefore removes learning signals that cross that boundary. Checkpointing reduces memory
+consumption (to a square-root trade-off under a balanced segment schedule; see Table 2.1) at the
+cost of recomputation.
 
-For the effective functioning of the generative model, a fundamental revision of its architecture
-is necessary. The systemic task is to develop a mathematical method of organizing the
-computations that would provide constant memory consumption, $O(1)$ with respect to the number of
-time steps $T$, without losing information about global long-range dependencies.
+The task considered here is to organize reverse differentiation so that activation memory is
+constant with respect to the number of reversible time steps \(T\), while preserving the
+full-horizon gradient for the tested recurrence.
 
 To solve this systemic problem, the dissertation research developed the Temporal Reversible
 Transformer (TempVerseFormer) architecture. The developed architecture and the mathematical
@@ -398,10 +371,10 @@ state-transition functions that are bijective (one-to-one). If the transition fu
 $l$ to layer $l+1$ has an exact analytic inverse, the system can restore its previous state
 purely from the current state, without storing it in memory during the forward pass.
 
-The introduction of the reversibility principle into deep neural networks was previously studied
-in continuous models of the Neural ODE type [44], but these suffer
-from numerical instability during integration. Discrete reversible models, e.g., RevViT
-[45], have shown high stability. The
+Continuous-time adjoint methods such as Neural ODEs [85] and
+discrete reversible models such as RevNet and RevViT
+[32] provide related
+storage/recomputation strategies with different numerical trade-offs. The
 scientific novelty of TempVerseFormer lies in combining structural reversibility at the level of
 individual transformer layers with an iterative temporal-chaining mechanism for modeling
 multi-step processes.
@@ -499,37 +472,28 @@ task of spatial compression from the task of temporal control.
 **Figure 2.8 — Global TempVerseFormer architecture.** A spatial VAE interfaces the video frames
 with the reversible temporal core. Source: author’s published TempVerseFormer project asset [A2].
 
-The integration of reversible blocks into a single system with temporal chaining creates an
-extremely powerful mathematical instrument: structural reversibility guarantees that information
-is not lost. Yet the main systemic challenge remains — converting this theoretical structural
-reversibility into an effective training algorithm for computing the control gradients of the
-loss function. Exactly how the reversibility property is exploited by the algorithm to remove the
-computational uncertainty is considered formally in the next subsection.
+Temporal chaining of reversible blocks provides algebraic state recoverability in exact
+arithmetic. It does not guarantee numerical stability, preservation of task-relevant
+information, or useful gradients. The next subsection shows how reverse replay is used for
+gradient computation and later measurements delimit its stability and memory behaviour.
 
 ## 2.4 Time-Agnostic Backpropagation through Reversible Transformations
 
-Solving the problem of computational uncertainty — the critical deficit of operating memory in
-the optimization of iterative and temporal systems — requires a transition from classical
-training algorithms to new mathematical paradigms. The traditional BPTT method
-[62] is the de-facto standard for identifying the parameters of dynamic
-systems modeled by neural networks, but its mathematical architecture contains a fundamental
-deficiency from the standpoint of resource control.
+Long temporal optimization requires an explicit policy for storing or reconstructing the reverse
+pass. BPTT [28] supplies the gradient semantics; the resource question is how
+its required intermediate values are made available.
 
-The BPTT algorithm is based on the chain rule of differentiation of a composite function. To
-compute the control gradient of the loss function $L_{\text{loss}}$ with respect to the weight
-parameters $\theta$ of the system at the current time step, one must know not only the derivative
-of the state at the next step but also the exact values of the internal activations of the system
-at every step. Mathematically this means that the forward pass must be accompanied by the caching
-of absolutely all intermediate vectors of the multidimensional state space, for all steps, in the
-operating memory of the computing device.
+The BPTT gradient follows the chain rule through the unrolled composite function. The reverse
+pass needs the corresponding states and local activations, but they need not all be cached:
+vanilla autograd retains them, checkpointing recomputes segments, and the developed method
+reconstructs reversible states before rebuilding each local graph.
 
-In the modeling of complex spatio-temporal video data, this requirement leads to a catastrophic
-growth of resource consumption. The control of the system reaches a dead end: to increase the
-temporal consistency of generation, the optimization trajectory $T$ must be lengthened, but
-lengthening the trajectory exhausts the memory and makes the gradient computation impossible.
+For large spatio-temporal states, vanilla retention makes activation memory grow with the unroll
+and can cause out-of-memory failure. This is the measured bottleneck addressed here; it is not a
+claim that every long-horizon model must use reversibility.
 
 Within this dissertation research, the method of **time-agnostic backpropagation** was developed
-to resolve this systemic contradiction. The method is based on integrating the mathematical
+for the tested reversible recurrence. The method is based on integrating the mathematical
 apparatus of discrete reversible transformations directly into the gradient-computation process
 along the temporal chain.
 
@@ -683,7 +647,7 @@ where $F$ is a transition operator built from reversible (additive-coupling) blo
 the noise scale, and $\epsilon_t$ is the noise sample of step $t$. Transformation (2.14), taken
 alone, is not invertible: the noise irreversibly injects new information. However, if the noise
 samples $\epsilon_t$ drawn during the forward pass are *stored* — the store-the-noise principle,
-extending the reversible recurrent networks of [64] — the
+extending the reversible recurrent networks of [101] — the
 recurrence becomes exactly invertible. Equations (2.14)–(2.15) state the principle in its
 simplest, *external-additive* form, in which the stored noise is subtracted before the inverse
 transition is applied:
@@ -771,7 +735,7 @@ i.e., the additive structure is inherently non-contractive — constraining $F$ 
 $\operatorname{Lip}(F) \le 1$ is *not* sufficient (the growth factor $26{,}600\times$ in
 Table 2.2), and bounded long-horizon dynamics require a *small* coupling Lipschitz constant
 ($\operatorname{Lip}(F) \lesssim 0.1$). This is the stability analysis of invertible networks
-[65, 66] instantiated
+[102, 103] instantiated
 for temporal recurrences and confirmed by measurement. The systemic conclusion: **invertibility
 is a memory-and-correctness property, not a stability property.** In the developed technology,
 reversibility is claimed exclusively as the constant-memory enabler of long-horizon training with
@@ -824,7 +788,7 @@ mechanisms developed and reviewed in this chapter can be organized along three o
 the computation graph on which reversibility can be exploited to avoid storing states:
 
 1. **The depth axis** — reversibility across the layers of a network at a single step (RevNet and
-   its descendants [45]): the
+   its descendants [32]): the
    literature baseline on which the developed blocks build.
 2. **The temporal axis** — reversibility along the physical time of the modeled process
    (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16)). On this axis
@@ -858,12 +822,12 @@ crossover at which trajectory states would begin to dominate the second-order gr
 $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically meaningful refinement
 depth. The underlying storage arithmetic — counting the bits per step that an optimizer
 trajectory consumes versus the volume contraction of the update map — is due to
-[67], **applied** here to the video-generation inner loop, not claimed as a new theorem.
+[104], **applied** here to the video-generation inner loop, not claimed as a new theorem.
 Moreover, plain gradient descent is not closed-form invertible at all (inversion requires the
 momentum-buffer scheme of Maclaurin et al., whose kilobyte-scale state itself demonstrates that
 trajectory storage was never the binding constraint), and the reversible-sampler variants for
-diffusion inner loops are already published [68, 69, 70], with large-scale practice choosing checkpointing
-or truncation precisely because state $\ll$ graph [71, 72].
+diffusion inner loops are already published [105, 106, 107], with large-scale practice choosing checkpointing
+or truncation precisely because state $\ll$ graph [108, 109].
 
 ![Axes of reversible computation](../../figures/fig52_reversibility_axes.png)
 
@@ -894,23 +858,21 @@ multi-step video generation systems. The main results are as follows.
 1. In accordance with **Task 3** of the dissertation research, a method for estimating the
    spatio-temporal uncertainty of video data was developed through the transition from rigid
    patch tokenization to adaptive entropy-based decomposition (the V-BLT architecture). It was
-   established that computing the information entropy at the level of raw bytes yields per-pixel
-   entropy maps that act as a reliable diagnostic indicator of complex kinematics and can be used
-   for the optimal redistribution of the system's computational resources.
+   established that computing entropy over byte predictions yields per-pixel uncertainty maps
+   that can guide non-uniform allocation. The evidence supports the reported [A1] setting; it
+   does not prove globally optimal token boundaries.
 
 2. To ensure the structural coherence of data under spatial linearization, the mathematical
-   apparatus of N-dimensional rotary positional embedding (RoPE-ND) was developed. It was proven
-   that the method algebraically guarantees the preservation of the multidimensional
-   spatio-temporal topology inside the attention mechanisms. A coordinate-scaling mechanism was
-   developed that provides an instrument for precise spatial localization of cross-level
-   cross-attention between abstraction levels. This is a level-appropriate instrument for
+   apparatus of N-dimensional rotary positional embedding (RoPE-ND) was developed. The derivation
+   shows that its rotary score terms depend on relative displacement along each encoded axis. A
+   coordinate-scaling mechanism provides a common convention for cross-level coordinates but does
+   not guarantee learned attention localization. This is a level-appropriate instrument for
    architectures that require spatial coordinate transfer; the measured Chapter 3 predictor
    instead uses learned level/role/frame embeddings in joint attention, so its results do not
    depend on RoPE-ND.
 
-3. In accordance with **Task 4**, the fundamental problem of computational uncertainty — the
-   critical deficit of operating memory in BPTT optimization of long processes — was resolved.
-   The TempVerseFormer mathematical architecture was developed on the basis of discrete
+3. In accordance with **Task 4**, activation-memory growth in vanilla BPTT was addressed for the
+   tested recurrence. The TempVerseFormer mathematical architecture was developed from discrete
    reversible transformer blocks joined by the temporal-chaining mechanism.
 
 4. The lemma on the computational complexity of the time-agnostic backpropagation algorithm was
@@ -928,20 +890,21 @@ multi-step video generation systems. The main results are as follows.
    alternative (1.47–1.97 GB) — i.e., the method provides a constant-memory capability relative
    to vanilla BPTT and approximate Pareto equivalence with checkpointing, which is stated
    honestly. The **applicability domain** of reversible computation was delimited by the
-   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and forms the
-   resource foundation for the long-horizon autoregressive training of the hierarchical video
-   generation model of Chapter 3; the inner-optimization-loop axis provably cannot pay against
+   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and can support
+   future rollout-through-time training of hierarchical video generators; the final Chapter 3
+   predictor is trained on individual windows and does not use that integration. The
+   inner-optimization-loop axis cannot pay against
    checkpointing (a saving of $\approx 0.2\%$ at $K = 128$, with the state-versus-graph
    accounting applied after Maclaurin et al.). It was additionally established by measurement
    that **invertibility does not imply stability**: exactly invertible recurrences span
    perturbation-growth regimes from $333\times$ to $1.0\times$ over 100 steps purely as a
    function of the Lipschitz bound on the coupling, so trajectory stability is a separate design
-   requirement (a Lipschitz constraint), which is taken into account in the architecture of
-   Chapter 3.
+   requirement (a Lipschitz constraint). This is an applicability result for reversible temporal
+   recurrences; the final Chapter 3 predictor does not use reversible rollout training.
 
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
-(§§2.3–2.4), and the extension to stochastic recurrences with the three-axis applicability
-taxonomy in **[A4]**. These stable labels are bound mechanically to the final numbered publication
-list.
+(§§2.3–2.4). The stochastic-recurrence extension and three-axis applicability taxonomy are
+dissertation developments building on [A2]; they are not attributed to the context-packaging
+article [A4]. These stable labels are bound mechanically to the final numbered publication list.
 
 ---

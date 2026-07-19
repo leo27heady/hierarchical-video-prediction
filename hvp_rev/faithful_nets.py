@@ -15,22 +15,22 @@ Run the smoke test with the venv (base python lacks torch):
 ======================================================================================
 REAL-REPO MECHANISMS MIRRORED (file:line references)
 ======================================================================================
-MilliVid DiT (C:/Users/leoni/Documents/projects/millivid/source/components/dit_per_token_c.py):
+MilliVid DiT (reference checkout: source/components/dit_per_token_c.py):
   - modulate(x, shift, scale) = x*(1+scale)+shift                              (dit_per_token_c.py:60-65)
   - DiTBlock adaLN-Zero: SiLU->Linear(d,6d) chunked into
     shift_msa,scale_msa,gate_msa,shift_mlp,scale_mlp,gate_mlp; gates init 0    (dit_per_token_c.py:84-110)
   - Unpatchify final adaLN-Zero: SiLU->Linear(d,2d)->shift,scale, then
     modulate(norm_final(x)) and a zero-init Linear(d,out)                      (dit_per_token_c.py:145-173)
   - TimestepEmbedder: t*1000, sinusoidal(embedding_size) -> MLP(d)            (dit_per_token_c.py:181-215)
-MilliVid conditioning (C:/Users/leoni/Documents/projects/millivid/source/components/adaptivity.py):
+MilliVid conditioning (reference checkout: source/components/adaptivity.py):
   - posemb added to x (flhw sin/cos), and c = time_embed(t) + level_embed(l)
     + action_encoder(actions), i.e. per-token conditioning summed            (adaptivity.py:186-197)
   - level_embedding = nn.Embedding(num_levels, d)                             (adaptivity.py:163)
-MilliVid joint attention (C:/Users/leoni/Documents/projects/millivid/source/model/model_video_universal.py):
+MilliVid joint attention (reference checkout: source/model/model_video_universal.py):
   - context tokens at noise-level 0, denoised tokens at t; roles==DENOISED
     get the diffusion time, context gets t=0; ALL share one attention seq    (model_video_universal.py:123-148, 200)
   - loss only on DENOISED tokens (we only unpatchify/return target tokens)    (model_video_universal.py:143-148)
-EBT (C:/Users/leoni/Documents/projects/EBT/model/vid/ebt.py and ar_ebt_adaln.py):
+EBT (reference checkout: model/vid/ebt.py and ar_ebt_adaln.py):
   - transformer(all_embeddings) with all=cat(context, candidate); energies
     reshaped to (-1,1); grad wrt candidate via autograd.grad(create_graph=learning) (ebt.py:117-129)
   - descent step  x <- x - alpha * grad(E)                                    (ebt.py:139)

@@ -1,8 +1,8 @@
 """Assemble the final English article and dissertation Markdown artifacts.
 
-Scientific chapter sources remain modular. Reference binding is performed first, after which this
-script concatenates the dissertation in institutional order, copies the binding fourth article
-to its release location, validates local figure links, and writes a mechanical assembly report.
+Scientific dissertation chapter sources remain modular. Reference binding is performed first,
+after which this script concatenates the dissertation in institutional order, validates the
+authoritative fourth-article Markdown in place, and writes a mechanical assembly report.
 """
 from __future__ import annotations
 
@@ -15,8 +15,7 @@ from bind_dissertation_references import main as bind_references
 ROOT = Path(__file__).resolve().parents[1]
 REWRITE = ROOT / "docs" / "dissertation" / "rewrite"
 DISS_FINAL = ROOT / "docs" / "dissertation" / "final"
-ARTICLE_SOURCE = ROOT / "docs" / "draft" / "ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md"
-ARTICLE_FINAL = ROOT / "docs" / "article" / "final"
+ARTICLE_SOURCE = ROOT / "docs" / "article" / "final" / "ARTICLE_REACH_FIDELITY_TRUST.md"
 
 DISSERTATION_PARTS = [
     REWRITE / "00_FRONT_MATTER.md",
@@ -56,12 +55,8 @@ def main() -> None:
     dissertation_path = DISS_FINAL / "DISSERTATION_MANUSCRIPT.md"
     dissertation_path.write_text(dissertation, encoding="utf-8", newline="\n")
 
-    ARTICLE_FINAL.mkdir(parents=True, exist_ok=True)
     article = ARTICLE_SOURCE.read_text(encoding="utf-8")
-    # The source lives one directory below docs; the final copy lives two directories below.
-    article = article.replace("](../figures/", "](../../figures/")
-    article_path = ARTICLE_FINAL / "ARTICLE_REACH_FIDELITY_TRUST.md"
-    article_path.write_text(article, encoding="utf-8", newline="\n")
+    article_path = ARTICLE_SOURCE
 
     missing = {
         dissertation_path: _validate_images(dissertation_path, dissertation),

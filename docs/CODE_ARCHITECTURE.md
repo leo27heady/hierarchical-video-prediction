@@ -33,6 +33,13 @@ For that reason, release refactoring uses adapters and parity tests. A future v1
 split the trainer into data, model, training and evaluation components only after frozen-batch and
 first-update numerical parity is demonstrated for every retained regime.
 
+The wheel currently includes `hvp_rev`, `hvp_blt` and `hvp_dlh` because the public adapters and
+scientific reproduction paths import those frozen implementations. Inclusion in the distribution
+does **not** make every module a supported public API: the compatibility promise applies to
+`hvp.*` only. Removing or physically reorganizing the frozen namespaces is deferred until a
+versioned artifact archive and numerical-parity fixtures can prove that the change preserves the
+published computations.
+
 ## Experiment controllers and scripts
 
 `scripts/` contains dataset generation, launch control, analysis and manuscript generation.

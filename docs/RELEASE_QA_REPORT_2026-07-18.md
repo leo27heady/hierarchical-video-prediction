@@ -1,5 +1,15 @@
 # Release and Manuscript QA Report — 18 July 2026
 
+> **Superseded scope note — 19 July 2026.** This report records the 18 July review artifacts and
+> scientific gates. It does not certify the later content-refactored Markdown, an institutional
+> dissertation render, a journal-template article, or a clean-clone public release. A subsequent
+> audit found visible linear-LaTeX/Markdown artifacts and table-pagination defects in the 18 July
+> renders, developer-specific path defaults in research bridges, and bytecode/cache files in the
+> old release manifest. The authoritative correction programme is
+> `docs/CONTENT_FINALIZATION_EXECUTION_PLAN_2026-07-19.md`. The scientific evidence verdict remains
+> unchanged; the earlier zero-formatting-finding and externally release-ready implications are
+> withdrawn.
+
 ## Outcome
 
 The current programme is release-ready at the research-content level. No further GPU experiment

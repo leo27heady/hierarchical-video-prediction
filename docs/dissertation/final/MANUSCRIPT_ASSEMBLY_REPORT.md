@@ -1,11 +1,11 @@
 # Final Manuscript Assembly Report
 
-- Dissertation words: 54,178
-- Article words: 6,127
-- Dissertation figure captions: 57
-- Dissertation table captions: 21
-- Bound external references: 80
-- Remaining author-input markers: 12
+- Dissertation words: 38,069
+- Article words: 7,112
+- Dissertation figure captions: 42
+- Dissertation table captions: 13
+- Bound external references: 123
+- Remaining author-input markers: 9
 - Local figure-link validation: PASS
 - Reference-marker validation: PASS
 - Projected/pending-result marker validation: PASS

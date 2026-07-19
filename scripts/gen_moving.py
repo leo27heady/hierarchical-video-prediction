@@ -14,8 +14,12 @@ import os
 import numpy as np
 
 SRC = {
-    "mnist": "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_mnist/train-images-idx3-ubyte.gz",
-    "fmnist": "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_fmnist/train-images-idx3-ubyte.gz",
+    "mnist": os.environ.get(
+        "HVP_MNIST_GZ", "data/external/openstl/moving_mnist/train-images-idx3-ubyte.gz"
+    ),
+    "fmnist": os.environ.get(
+        "HVP_FMNIST_GZ", "data/external/openstl/moving_fmnist/train-images-idx3-ubyte.gz"
+    ),
 }
 DIGIT = 28
 

@@ -8,34 +8,32 @@ memory; observability; re-entry; diffusion transformer; reproducible evaluation.
 
 ## Abstract
 
-A bounded-context video predictor must choose not only how much history to retain, but how to
-represent it. We frame temporal sampling rate, spatial resolution and package depth as a controlled
-**context-packaging** design space. A procedural panning-world instrument provides exact geometric
-observability when content leaves and re-enters the viewport, while a shared diffusion-transformer
-backbone consumes flat or multistream packages at explicit token budgets.
+A bounded-context video predictor must choose both how much history to retain and how to represent
+it. We study temporal rate, spatial resolution and package depth as a controlled
+**context-packaging** design space. A panning-world instrument provides exact geometric
+observability at viewport re-entry, while a shared latent diffusion-transformer consumes flat or
+multistream packages at explicit token budgets.
 
-On a hash-pinned untouched holdout, the hierarchy wins when it alone reaches the relevant past:
-the registered 14-to-48-frame reach-band effects are +0.0980 and +0.0914 across two training
-seeds. A simultaneous frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792
-unresolved, and confirms flat full-resolution context at 2,432 and 3,072. In the frozen latent
-interface, 48 fine frames cost 3,072 tokens, whereas 48 coarse frames plus a two- or six-frame fine
-tail cost 896 or 1,152 tokens. Hierarchical packaging therefore provides the same nominal
-48-frame reach with 2.7–3.4 times fewer context tokens, while the upper-budget reversal shows the
-price of discarded detail.
+On a hash-pinned untouched holdout, hierarchy is most effective when it alone reaches the relevant
+past: the registered 14-to-48-frame reach-band effects are +0.0980 and +0.0914 across two training
+seeds. One simultaneous comparison family confirms hierarchy at 896 and 1,152 context tokens,
+leaves 1,792 unresolved, and confirms flat full-resolution context at 2,432 and 3,072. In the
+frozen latent interface, 48 fine frames cost 3,072 tokens, whereas 48 coarse frames plus a two- or
+six-frame fine tail cost 896 or 1,152. The hierarchical packages therefore provide the same
+nominal 48-frame addressable reach with 2.67–3.43 times fewer context tokens, without implying
+equal information or equal prediction error.
 
-The main directions persist across a fourfold sampling-work range, three sampler seeds and an
-independently trained codec, although the 2,432-token inversion is less precise under alternate
-sampler or codec conditions. A five-seed factorial finds a stable temporal-package advantage under
-diffusion but sign-changing regression and cross-head effects. A preregistered long-rollout study
-replicates the early hierarchy benefit but not a seed-0 late inversion, rejecting a stable trust
-boundary. Finally, a protected persistent-object Moving-MNIST study yields a mixed external
-boundary: hierarchy better preserves support and trajectory continuity, whereas flat context
-better preserves digit identity; foreground-only error is unresolved.
+The principal directions persist across sampler allocations and an independently trained codec,
+with reduced precision for the upper inversion. A preregistered long-rollout study replicates the
+early hierarchy benefit but not a seed-0 late inversion, rejecting a stable trust boundary. In
+persistent-object long Moving-MNIST, hierarchy better preserves spatial support and trajectory
+continuity, whereas flat context better preserves digit identity; both systems remain difficult in
+absolute terms.
 
-The resulting prescription is conditional rather than architectural: buy enough reach to include
-the memory-relevant past, then preserve the fidelity required by the task. Hierarchy is most useful
-when a flat full-resolution window cannot afford that reach; flat context becomes preferable when
-fine detail, rather than temporal access, is limiting.
+The result is conditional rather than architectural: first buy enough reach to include the
+memory-relevant past, then preserve the fidelity required by the task. Hierarchy pays in the tested
+reach-limited region; flat context recovers when fine detail, rather than temporal access, becomes
+limiting.
 
 ## 1. Introduction
 
@@ -46,7 +44,11 @@ fine state renders detail, and a hierarchy should therefore retain longer histor
 That story is not yet an answer. A model can appear better because it sees more frames, receives a
 different prediction target, uses more inference work, or is evaluated on a metric that ignores
 its hallucinations. Conversely, a hierarchy can appear useless on a benchmark where every
-relevant object remains visible to a short context.
+relevant object remains visible to a short context. Earlier recurrent, stochastic and latent video
+predictors established the importance of temporal state and multi-modal futures
+[Srivastava et al., 2015; Shi et al., 2015; Wang et al., 2017; Denton and Fergus, 2018;
+Lee et al., 2018], but their reported scores do not by themselves identify whether a later failure
+comes from insufficient temporal access, lossy state, or self-fed rollout.
 
 This article begins with two primary explanatory questions and one robustness question rather
 than a claim that hierarchy must win:
@@ -59,7 +61,9 @@ than a claim that hierarchy must win:
 The experimental object is context packaging. “Hierarchy” denotes one family of packages—multiple
 rates, resolutions or depths—rather than the conclusion. This distinction lets a flat window, a
 spatially coarse stream, and a temporally subsampled full-resolution stream be compared as design
-choices under explicitly reported budgets.
+choices under explicitly reported budgets. The controlled instrument is deliberately synthetic:
+it is designed to identify a reach mechanism, not to establish natural-video superiority or a
+production-scale world model.
 
 ### 1.2 Why aggregate evaluation is insufficient
 
@@ -124,6 +128,20 @@ long-horizon generation through hierarchical state, latent temporal consistency,
 rollout or variable history [Zakharov et al., 2023; Yan et al., 2023; Chandratreya et al., 2026;
 Harvey et al., 2022]. These works motivate temporal abstraction, but they do not provide the
 matched package-by-budget intervention or exact pair-derived observability bands used here.
+Clocked recurrence, variational temporal abstraction, multiscale prediction and nested long-video
+diffusion provide additional antecedents for representing different temporal rates
+[Koutník et al., 2014; Kim et al., 2019; Villar-Corrales et al., 2022; Yin et al., 2023].
+Outside video, Transformer-XL, compressive memory and memorizing transformers illustrate the
+broader distinction between extending a flat attention window and retaining selected historical
+state [Dai et al., 2019; Rae et al., 2020; Wu et al., 2022].
+
+The predictor also belongs to a well-established latent diffusion and transformer lineage:
+denoising diffusion supplies the stochastic objective [Ho et al., 2020], DDIM supplies the
+deterministic finite-step sampler [Song et al., 2021], latent diffusion moves denoising into a
+compressed representation [Rombach et al., 2022], and DiT supplies the token-transformer design
+[Peebles and Xie, 2023]. VideoGPT, FDM and TECO illustrate related ways to represent or condition
+long video sequences [Yan et al., 2021; Harvey et al., 2022; Yan et al., 2023]. These components
+are antecedents, not claimed inventions of this article.
 
 Recent work makes it especially important not to claim that memory-focused evaluation or
 retrieval is absent. WorldPack combines compressed trajectory packing with retrieval and evaluates
@@ -131,8 +149,12 @@ spatial consistency on LoopNav [Oshima et al., 2025]. CaR/SceneFly, MemLearner a
 study compression or learned retrieval under annotated camera motion and occlusion
 [Peng et al., 2026; Yu et al., 2026; Wei et al., 2026]. MBench and MemoBench explicitly benchmark
 long-term entity/environment/causal memory or disappearance and reappearance [Zhang et al., 2026;
-Chen et al., 2026]. Self Forcing directly targets the mismatch between ground-truth-conditioned
-training and self-fed autoregressive inference [Huang et al., 2025].
+Chen et al., 2026]. Long-context state-space world models and explicit spatial-memory models offer
+additional alternatives to retaining all history in a flat attention window
+[Po et al., 2025; Wu et al., 2025]. Self Forcing directly targets the mismatch between
+ground-truth-conditioned training and self-fed autoregressive inference [Huang et al., 2025],
+continuing the broader exposure-bias line represented by scheduled sampling and sequence-level
+training [Bengio et al., 2015; Ranzato et al., 2016].
 
 The present contribution is narrower and complementary. It treats temporal rate, spatial
 resolution and depth as manipulable ways to package a bounded context; computes exact geometric
@@ -221,22 +243,28 @@ as well as the context, so its outcome remains a configuration effect.
 Let a context package be
 
 $$
-\mathcal P_t=\{(K_\ell,q_\ell)\}_{\ell=1}^{L},
+\mathcal P_t=\{(\ell_i,s_i,n_i,a_i)\}_{i=1}^{L},
 $$
 
-where $K_\ell$ is the set of historical lags retained at representation level $\ell$ and
-$q_\ell$ is the number of tokens used by one slot at that level. Its context cost and nominal
-reach are
+where $\ell_i$ identifies a representation level, $s_i$ is temporal stride, $n_i$ is the number
+of retained slots and $a_i$ is the lag of the most recent anchor in stream $i$. The lag set is
+$K_i=\{a_i+j s_i:j=0,\ldots,n_i-1\}$. If a slot at level $\ell$ contains
+$q_\ell=H_\ell W_\ell$ tokens, the package cost and nominal addressable reach are
 
 $$
-B_{\mathrm{ctx}}(\mathcal P)=\sum_{\ell=1}^{L}|K_\ell|q_\ell,\qquad
-R(\mathcal P)=\max_{\ell,k\in K_\ell} k .
+B_{\mathrm{ctx}}(\mathcal P)=\sum_{i=1}^{L}n_iq_{\ell_i},\qquad
+R(\mathcal P)=\max_i\left[a_i+(n_i-1)s_i\right].
 $$
 
 This accounting makes reach exact but does not pretend that fidelity is one scalar: spatial
 resolution, codec distortion and temporal sparsity preserve different information. In the frozen
 interface $q_{\mathrm{fine}}=64$ and $q_{\mathrm{coarse}}=16$. Thus 48 fine slots cost 3,072
-tokens, whereas 48 coarse slots plus two or six recent fine slots cost 896 or 1,152.
+tokens, whereas 48 coarse slots plus two or six recent fine slots cost 896 or 1,152. If the target
+contains $m_j$ slots at target level $j$, then
+$B_{\mathrm{tgt}}=\sum_jm_jq_j$ and
+$B_{\mathrm{total}}=B_{\mathrm{ctx}}+B_{\mathrm{tgt}}$. Claims about context efficiency refer to
+$B_{\mathrm{ctx}}$; tables report all three quantities so they are not conflated with total
+sequence length.
 
 The common predictor models a target latent block $z_{t+1:t+m}$ conditional on the packaged
 history and camera actions,
@@ -245,15 +273,18 @@ $$
 p_\theta\!\left(z_{t+1:t+m}\mid \mathcal P_t,u_{t+1:t+m}\right).
 $$
 
-For the diffusion head, training minimizes
+At diffusion time $\tau$, a clean target latent $z$ is perturbed as
+$z_\tau=\alpha_\tau z+\sigma_\tau\epsilon$. The executed head uses the velocity target
+$v_\tau=\alpha_\tau\epsilon-\sigma_\tau z$ and minimizes
 
 $$
-\mathcal L_{\mathrm{diff}}=
+\mathcal L_v=
 \mathbb E_{z,\epsilon,\tau}
-\left\|\epsilon-\epsilon_\theta(z_\tau,\tau,\mathcal P_t,u)\right\|_2^2 ,
+\left\|v_\tau-v_\theta(z_\tau,\tau,\mathcal P_t,u)\right\|_2^2 ,
 $$
 
-while the regression control predicts the clean target latents directly. The principal paired
+following the stable diffusion parameterization described by Salimans and Ho (2022). The
+regression control instead predicts the clean target latents directly. The principal paired
 effect is always reported as comparator loss minus candidate loss, so positive values favor the
 registered candidate. For a long package $\mathcal P_l$ and shorter comparator $\mathcal P_s$,
 the reach-specific population is
@@ -264,8 +295,9 @@ $$
 \text{answerable}_i,\ \text{foreground}_i\ne\varnothing\}.
 $$
 
-The diffusion and deterministic DDIM sampling conventions follow Ho et al. (2020) and Song et al.
-(2021); the latent-token transformer follows the DiT design family (Peebles and Xie, 2023).
+The diffusion schedule follows Ho et al. (2020) and Nichol and Dhariwal (2021), deterministic
+sampling follows Song et al. (2021), and the latent-token transformer follows the DiT design
+family (Peebles and Xie, 2023).
 
 ### 2.4 Cost accounting
 
@@ -289,19 +321,26 @@ reach bands, table shells and interpretation branches are frozen before access.
 For every frame record we save full-frame MSE; GT-foreground MSE only on non-empty frames;
 GT-background and union-mask MSE; foreground precision, recall and F1; component counts, misses,
 extras, IoU and centroid error. Empty-GT frames are a named stratum and never inherit a differently
-defined full-frame value under a foreground label.
+defined full-frame value under a foreground label. SSIM and PSNR are retained as conventional
+image-reconstruction diagnostics [Wang et al., 2004], while perceptual and distributional metrics
+such as LPIPS, FID and FVD motivate—but do not replace—the task-specific foreground, component and
+re-entry endpoints used here [Zhang et al., 2018; Heusel et al., 2017;
+Unterthiner et al., 2019].
 
 The need for this suite is empirical rather than stylistic. On the exact archived 100-clip,
 964-target CW-VAE Moving-MNIST population, a deterministic all-black predictor scores 0.7681
 SSIM / 13.941 dB, compared with 0.5708 / 12.918 for the trained best-of-5 CW-VAE curve. Because
 only the model's mean curves survived, this is a hash-pinned same-population metric diagnostic
 without paired inference—not a budget-matched model ranking. It shows why sparse-background
-full-frame metrics cannot carry the memory claim.
+full-frame metrics cannot carry the memory claim. OpenSTL and modern deterministic predictors
+remain useful short-horizon competence references, but their aggregate benchmark protocols answer
+a different question from the registered re-entry populations used here
+[Gao et al., 2022; Tan et al., 2023].
 
 ### 3.2 Persistent-object metrics
 
 Object claims require stable generator IDs, glyph classes, trajectories, boxes and overlaps.
-Predicted components are assigned jointly with a frozen Hungarian cost. Misses receive a
+Predicted components are assigned jointly with a frozen Hungarian cost [Kuhn, 1955]. Misses receive a
 trajectory penalty, extras remain visible, and identity accuracy is intention-to-score over all
 labelled GT objects. Matched-only performance is diagnostic; coverage is co-primary.
 
@@ -318,14 +357,29 @@ Effects are paired by clip and horizon; confidence intervals resample clips rath
 autocorrelated frames. Reports show each seed, record/clip counts and coverage. Opposite
 seed-specific effects are heterogeneity even when their mean is near zero. Equivalence requires a
 justified smallest effect of interest and reliable measurement; otherwise a null interval is
-inconclusive.
+inconclusive. For clip $c$ with retained frame records $i\in c$, the paired record differences
+$d_{ci}$ are summarized by
+
+$$
+\widehat\Delta=
+\frac{\sum_c\sum_{i\in c}d_{ci}}{\sum_c n_c}.
+$$
+
+Each bootstrap replicate samples clips with replacement and retains all selected frames inside
+each sampled clip. It therefore preserves within-rollout dependence rather than treating frames
+as independent observations [Efron, 1979; Cameron et al., 2008]. These clip-cluster intervals
+condition on a trained model. Training seeds are a separate uncertainty level and are displayed
+individually or summarized with seeds—not clips—as units.
 
 Sampling robustness is evaluated separately from training-seed robustness. E7c freezes four
 already-supported seed-0 diffusion contrasts and five variants before evaluation: NFE 8/16/32 at
 sampler seed 0 and NFE 16 at sampler seeds 1/2. A 10,000-replicate studentized max-statistic
 clip-cluster bootstrap covers the resulting 20-effect family. This checkpoint-only design can
 test sensitivity to inference allocation and randomness; it cannot establish robustness to
-training seed, representation seed or another dataset family.
+training seed, representation seed or another dataset family. Registered comparison families use
+the maximum absolute studentized statistic in each replicate, yielding simultaneous intervals
+that control the familywise error rate rather than interpreting many marginal intervals
+independently [Westfall and Young, 1993; Romano and Wolf, 2005].
 
 ## 4. Results
 
@@ -625,71 +679,115 @@ baselines, would test whether the preferred package follows the information stru
 
 ## 7. Conclusion
 
-The project is a controlled search for boundaries, not proof that one architecture always wins.
-Current evidence supports two central scoped propositions: effects are largest where only the
-longer package reaches the relevant past, and full-resolution fidelity can recover after reach is
-saturated. Context packaging is the intervention; reach and fidelity organize the confirmed
-explanation. Self-fed reliability remains an important question, not a third empirical law.
+This work is a controlled search for operating boundaries, not proof that one architecture always
+wins. On the untouched LoopMom holdout, hierarchy is confirmed where a token-matched flat window
+cannot address the re-entry past; at larger tested budgets, full-resolution fidelity recovers the
+advantage. The tested packages reach 48 frames with 2.67–3.43 times fewer context tokens than a
+dense fine-history package, but this is a reach-efficiency result rather than an equivalence claim.
 
-The one-time untouched confirmation supports the central reach–fidelity account. The five-seed
-factorial strengthens the diffusion temporal-package result while rejecting a training-seed-
-robust directional head shift; regression remains a sign-changing scope boundary rather than an
-equivalence result. E7c further shows that all four central diffusion directions survive the
-registered fourfold NFE range and sampler-seed variations as point estimates. Three contrasts are
-simultaneous-CI clean throughout; the upper flat-fidelity inversion is directionally retained but
-family-wise unresolved at two alternate sampler seeds. Because the article retains
-configuration-level B1 wording, the fixed-target control is not required for its present causal
-scope. E5a failed its preregistered late-inversion
-replication rule, so trust is removed from the title and the gated E5b diagnostic programme is not
-run. The three-seed early benefit and seed-0-only late failure are reported together. This
-outcome-independent narrowing is part of the contribution.
+The supporting studies narrow the scope rather than changing the conclusion. Temporal packaging is
+stable across five diffusion training seeds but not under the regression head; sampler and codec
+interventions retain the principal directions while reducing precision for the upper inversion;
+and the proposed late trust boundary fails to replicate. Privileged pose-indexed raw access shows
+that including information in context is not the same as addressing and reusing it reliably.
+Persistent-object Moving-MNIST adds the complementary fidelity boundary: hierarchy better
+preserves support and continuity, whereas flat context better preserves identity, and neither
+system solves the task.
 
-The independently trained codec preserves the same four directions. The lower reach, interior and
-package-shape contrasts remain family-wise clean, while the upper inversion again becomes a
-precision boundary rather than a sign reversal. Together, E7c and E7a support a robust
-reach–fidelity account while making the upper-budget inversion the appropriately qualified edge
-of the evidence.
-
-The pose-indexed reference then exposes a complementary gap: explicit lossless access to observed
-content substantially outperforms every registered neural reference, with a clean simultaneous
-family. This does not replace the learned-model comparison; it shows that reach alone is not
-enough when addressing, compression and self-fed generation remain imperfect. The final account
-is sharpened by the persistent-object boundary: hierarchy is better at retaining spatial support
-and continuity, while flat full-resolution context is better at retaining digit identity.
-The operational prescription is therefore conditional: buy enough reach to include the relevant
-past, preserve the fidelity the task needs, and distinguish having information in context from
-being able to address and reuse it reliably.
+The practical rule is therefore conditional: buy enough reach to include the relevant past,
+preserve the detail the task needs, and evaluate storage, addressing and self-fed reuse as
+different failure modes. Within the tested regime, hierarchy buys reach and flat context buys
+fidelity.
 
 ## References
 
+- Bengio, S., Vinyals, O., Jaitly, N., and Shazeer, N. (2015). Scheduled Sampling for Sequence
+  Prediction with Recurrent Neural Networks. *NeurIPS 28*.
+- Cameron, A. C., Gelbach, J. B., and Miller, D. L. (2008). Bootstrap-Based Improvements for
+  Inference with Clustered Errors. *Review of Economics and Statistics*, 90(3), 414–427.
 - Chandratreya, I. P., Charatan, D., Van Hoorick, B., Zakharov, S., Guizilini, V., Isola, P.,
   and Sitzmann, V. (2026). *MilliVid: Hierarchical Latents for Long-Range Consistency in Video
   Generation*. arXiv:2606.09056.
 - Chen, H., Zhou, K., Hua, H., et al. (2026). *MemoBench: Benchmarking World Modeling in
   Dynamically Changing Environments*. arXiv:2606.27537.
+- Dai, Z., Yang, Z., Yang, Y., et al. (2019). Transformer-XL: Attentive Language Models Beyond a
+  Fixed-Length Context. *ACL 2019*.
+- Denton, E., and Fergus, R. (2018). Stochastic Video Generation with a Learned Prior.
+  *ICML 2018*.
+- Efron, B. (1979). Bootstrap Methods: Another Look at the Jackknife. *The Annals of Statistics*,
+  7(1), 1–26.
+- Gao, Z., Tan, C., Wu, L., and Li, S. Z. (2022). SimVP: Simpler yet Better Video Prediction.
+  *CVPR 2022*.
 - Harvey, W., Naderiparizi, S., Masrani, V., Weilbach, C., and Wood, F. (2022). Flexible
   Diffusion Modeling of Long Videos. *NeurIPS 35*.
+- Heusel, M., Ramsauer, H., Unterthiner, T., et al. (2017). GANs Trained by a Two Time-Scale
+  Update Rule Converge to a Local Nash Equilibrium. *NeurIPS 30*.
 - Ho, J., Jain, A., and Abbeel, P. (2020). Denoising Diffusion Probabilistic Models.
   *NeurIPS 33*.
 - Huang, X., Li, Z., He, G., Zhou, M., and Shechtman, E. (2025). Self Forcing: Bridging the
   Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS 2025*.
+- Kim, T., Ahn, S., and Bengio, Y. (2019). Variational Temporal Abstraction. *NeurIPS 32*.
+- Koutník, J., Greff, K., Gomez, F., and Schmidhuber, J. (2014). A Clockwork RNN. *ICML 2014*.
+- Kuhn, H. W. (1955). The Hungarian Method for the Assignment Problem. *Naval Research Logistics
+  Quarterly*, 2(1–2), 83–97.
+- Lee, A. X., Zhang, R., Ebert, F., et al. (2018). Stochastic Adversarial Video Prediction.
+  arXiv:1804.01523.
+- Nichol, A., and Dhariwal, P. (2021). Improved Denoising Diffusion Probabilistic Models.
+  *ICML 2021*.
 - Oshima, Y., Iwasawa, Y., Suzuki, M., Matsuo, Y., and Furuta, H. (2025). *WorldPack:
   Compressed Memory Improves Spatial Consistency in Video World Modeling*. arXiv:2512.02473.
 - Peebles, W., and Xie, S. (2023). Scalable Diffusion Models with Transformers. *ICCV 2023*.
 - Peng, Z., Ma, J., Sun, H., et al. (2026). *Compression and Retrieval: Implicit Memory
   Retrieval for Video World Models*. arXiv:2606.23105.
+- Po, R., Nitzan, Y., Zhang, R., et al. (2025). *Long-Context State-Space Video World Models*.
+  arXiv:2505.20171.
+- Rae, J. W., Potapenko, A., Jayakumar, S. M., and Lillicrap, T. P. (2020). Compressive
+  Transformers for Long-Range Sequence Modelling. *ICLR 2020*.
+- Ranzato, M., Chopra, S., Auli, M., and Zaremba, W. (2016). Sequence Level Training with
+  Recurrent Neural Networks. *ICLR 2016*.
+- Rombach, R., Blattmann, A., Lorenz, D., Esser, P., and Ommer, B. (2022). High-Resolution Image
+  Synthesis with Latent Diffusion Models. *CVPR 2022*.
+- Romano, J. P., and Wolf, M. (2005). Exact and Approximate Stepdown Methods for Multiple
+  Hypothesis Testing. *Econometrica*, 73(4), 1237–1282.
+- Salimans, T., and Ho, J. (2022). Progressive Distillation for Fast Sampling of Diffusion
+  Models. *ICLR 2022*.
 - Saxena, V., Ba, J., and Hafner, D. (2021). Clockwork Variational Autoencoders. *NeurIPS 34*.
+- Shi, X., Chen, Z., Wang, H., et al. (2015). Convolutional LSTM Network: A Machine Learning
+  Approach for Precipitation Nowcasting. *NeurIPS 28*.
 - Song, J., Meng, C., and Ermon, S. (2021). Denoising Diffusion Implicit Models.
   *ICLR 2021*.
 - Srivastava, N., Mansimov, E., and Salakhutdinov, R. (2015). Unsupervised Learning of Video
   Representations using LSTMs. *ICML 2015*.
+- Tan, C., Li, S., Gao, Z., et al. (2023). OpenSTL: A Comprehensive Benchmark of Spatio-Temporal
+  Predictive Learning. *NeurIPS 36 Datasets and Benchmarks*.
+- Unterthiner, T., van Steenkiste, S., Kurach, K., et al. (2019). Towards Accurate Generative
+  Models of Video: A New Metric and Challenges. arXiv:1812.01717.
+- Villar-Corrales, A., Karapetyan, A., Boltres, A., and Behnke, S. (2022). MSPred: Video
+  Prediction at Multiple Spatio-Temporal Scales with Hierarchical Recurrent Networks. *BMVC 2022*.
+- Wang, Y., Long, M., Wang, J., Gao, Z., and Yu, P. S. (2017). PredRNN: Recurrent Neural
+  Networks for Predictive Learning using Spatiotemporal LSTMs. *NeurIPS 30*.
+- Wang, Z., Bovik, A. C., Sheikh, H. R., and Simoncelli, E. P. (2004). Image Quality Assessment:
+  From Error Visibility to Structural Similarity. *IEEE Transactions on Image Processing*,
+  13(4), 600–612.
 - Wei, Z., Guo, X., Li, X., et al. (2026). *Geometry-Aware Implicit Memory for Video World
   Models*. arXiv:2606.02436.
+- Westfall, P. H., and Young, S. S. (1993). *Resampling-Based Multiple Testing: Examples and
+  Methods for p-Value Adjustment*. Wiley.
+- Wu, Y., Rabe, M. N., Hutchins, D., and Szegedy, C. (2022). Memorizing Transformers.
+  *ICLR 2022*.
+- Wu, T., Yang, S., Po, R., et al. (2025). *Video World Models with Long-term Spatial Memory*.
+  arXiv:2506.05284.
+- Yan, W., Zhang, Y., Abbeel, P., and Srinivas, A. (2021). VideoGPT: Video Generation using
+  VQ-VAE and Transformers. arXiv:2104.10157.
 - Yan, W., Hafner, D., James, S., and Abbeel, P. (2023). Temporally Consistent Transformers for
   Video Generation. *ICML 2023*.
+- Yin, S., Wu, C., Yang, H., et al. (2023). NUWA-XL: Diffusion over Diffusion for eXtremely Long
+  Video Generation. *ACL 2023*.
 - Yu, J., Gao, J., Bai, J., et al. (2026). *MemLearner: Learning to Query Context Memory for
   Video World Models*. ECCV 2026; arXiv:2606.31734.
 - Zakharov, A., Guo, Q., and Fountas, Z. (2023). *Long-horizon video prediction using a dynamic
   latent hierarchy*. arXiv:2212.14376.
 - Zhang, S., Zhang, Z., Huang, S., et al. (2026). *MBench: A Comprehensive Benchmark on Memory
   Capability for Video World Models*. arXiv:2606.00793.
+- Zhang, R., Isola, P., Efros, A. A., Shechtman, E., and Wang, O. (2018). The Unreasonable
+  Effectiveness of Deep Features as a Perceptual Metric. *CVPR 2018*.

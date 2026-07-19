@@ -71,8 +71,8 @@ from hvp_rev.faithful_nets import LAT
 from hvp_rev.hier_convae import HierConvAE
 
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
-TAXIBJ_NPZ = "C:/Users/leoni/Documents/projects/OpenSTL/data/taxibj/dataset.npz"
-OPENSTL_REPO = "C:/Users/leoni/Documents/projects/OpenSTL"
+TAXIBJ_NPZ = os.environ.get("HVP_TAXIBJ_NPZ", "data/external/openstl/taxibj/dataset.npz")
+OPENSTL_REPO = os.environ.get("OPENSTL_REPO", "data/external/openstl")
 AE_PATH = "logs_rhcp/hier_ae_taxibj.pt"
 
 BRIDGE_ARMS = {

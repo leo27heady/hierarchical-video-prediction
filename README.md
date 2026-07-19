@@ -47,8 +47,12 @@ full-resolution context wins at the tested upper budgets.
 | 2,432 | flat fidelity confirmed |
 | 3,072 | flat fidelity confirmed |
 
-The governing plan is
-[`docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md`](docs/MASTER_IMPLEMENTATION_PLAN_REACH_FIDELITY_TRUST_2026-07-11.md).
+The current content-finalization plan and claim matrix are
+[`docs/CONTENT_FINALIZATION_EXECUTION_PLAN_2026-07-19.md`](docs/CONTENT_FINALIZATION_EXECUTION_PLAN_2026-07-19.md)
+and
+[`docs/CONTENT_FINALIZATION_CLAIM_MATRIX_2026-07-19.md`](docs/CONTENT_FINALIZATION_CLAIM_MATRIX_2026-07-19.md).
+The completed implementation and honest remaining-work audit are recorded in
+[`docs/CONTENT_FINALIZATION_REPORT_2026-07-19.md`](docs/CONTENT_FINALIZATION_REPORT_2026-07-19.md).
 The binding dissertation/article narrative and English-authoring policy are recorded in
 [`docs/RESOURCE_EFFICIENT_LONG_HORIZON_VISION_2026-07-18.md`](docs/RESOURCE_EFFICIENT_LONG_HORIZON_VISION_2026-07-18.md).
 
@@ -88,6 +92,9 @@ Check an experiment authorization without launching anything:
 
 The command returns a non-zero status because E9 is terminally skipped. See
 [`docs/CODE_ARCHITECTURE.md`](docs/CODE_ARCHITECTURE.md) for the compatibility contract.
+The installable distribution also carries the frozen `hvp_rev`, `hvp_blt` and `hvp_dlh`
+namespaces because the adapters and reproduction paths depend on them; their presence in the wheel
+does not make them supported public APIs.
 
 ## Experiment safety
 
@@ -120,6 +127,11 @@ arm, seed or endpoint may be added. A new study requires a new authorization ent
 New datasets and runs must be stored with manifests.  Smoke runs and qualitative strips must use
 run-specific directories and may not overwrite canonical artifacts.
 
+External datasets and reference checkouts are not assumed to live at developer-specific paths.
+Set `HVP_MNIST_GZ`, `HVP_FMNIST_GZ`, `HVP_OPENSTL_TEST`, `HVP_CWVAE_TEST`,
+`HVP_CWVAE_TRAIN`, `HVP_TAXIBJ_NPZ`, `OPENSTL_REPO`, or `EBT_REPO` as required by the
+corresponding bridge. Repository-relative defaults point under `data/external/`.
+
 ## Repository map
 
 - `hvp/` — stable public API and read-only CLI.
@@ -128,7 +140,8 @@ run-specific directories and may not overwrite canonical artifacts.
 - `hvp_rev/provenance.py` — `RunSpec`, atomic artifacts, RNG-complete checkpoints, holdout access.
 - `hvp_rev/arm_registry.py` — typed package and target interfaces, including fixed-target controls.
 - `experiments/` — authorization ledger and frozen/prepared experiment configurations.
-- `docs/draft/` — fourth-article source material.
+- `docs/draft/` — archived development and detailed fourth-article source material.
+- `docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.md` — authoritative fourth-article source.
 - `docs/dissertation/rewrite/` — dissertation source; its approved topic and three existing article
   strands are preserved.
 - `docs/CLAIM_LEDGER.md` — scientific source of truth.
@@ -137,8 +150,8 @@ run-specific directories and may not overwrite canonical artifacts.
 ## Evidence and manuscript regeneration
 
 The binding article source is
-`docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md`. Regenerate the synchronized evidence table
-and claim/artifact index with:
+`docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.md`. Regenerate the synchronized evidence table,
+claim/artifact index, and assembled dissertation with:
 
 ```powershell
 .\venv\Scripts\python.exe scripts\make_rft_final_tables.py
@@ -146,20 +159,22 @@ and claim/artifact index with:
 .\venv\Scripts\python.exe scripts\assemble_final_manuscripts.py
 ```
 
-Assembly writes the release-ready Markdown sources to
-`docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.md` and
+Assembly validates the authoritative article in place and writes the bound dissertation to
 `docs/dissertation/final/DISSERTATION_MANUSCRIPT.md`. Administrative facts that only the applicant
-can supply are isolated in `docs/dissertation/AUTHOR_INPUT_CHECKLIST.md`.
+or institution can supply are isolated in `docs/dissertation/AUTHOR_INPUT_CHECKLIST.md`.
 
-Polished review editions are available as DOCX files beside those sources and as PDFs under
-`output/pdf/`. Run the complete CPU release gate, including the wheel build, with:
+The DOCX and PDF files dated 18 July 2026 are historical review renders and do not include the
+19 July content refactor. They are neither institutional nor journal-template submissions.
+Run the CPU scientific/source gate and wheel build with:
 
 ```powershell
 .\venv\Scripts\python.exe scripts\release_check.py --wheel-dir output\wheel
 ```
 
-The page-level, accessibility and artifact-hash record is
+The historical page-level and accessibility record is
 [`docs/RELEASE_QA_REPORT_2026-07-18.md`](docs/RELEASE_QA_REPORT_2026-07-18.md).
+It does not certify a current institutional render. Source finalization is tracked separately in
+the 19 July execution plan.
 
 The canonical execution/status ledger is
 `docs/EXPERIMENT_EXECUTION_ORDER_NEW_VISION_2026-07-12.md`.

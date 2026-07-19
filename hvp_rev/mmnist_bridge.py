@@ -83,7 +83,9 @@ from hvp_rev.step1_mech import ActionHierData, decode01
 
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 GEN_SEED = 0
-MNIST_GZ = "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_mnist/train-images-idx3-ubyte.gz"
+MNIST_GZ = os.environ.get(
+    "HVP_MNIST_GZ", "data/external/openstl/moving_mnist/train-images-idx3-ubyte.gz"
+)
 AE_PATH = "logs_rhcp/hier_ae_mmnist.pt"
 
 # Bridge arms, registered into rhvd.ARMS at import (rhvd.py untouched; keys are new).

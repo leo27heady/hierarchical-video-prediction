@@ -3,7 +3,7 @@ recipe on OUR loopmom latents, to settle whether the mean-collapse we see is OUR
 fault or an EBT-method limitation at our scale.
 
 FAITHFULNESS (what is genuinely THEIRS vs approximated):
-  THEIRS, verbatim (imported unchanged from C:/Users/leoni/Documents/projects/EBT):
+  THEIRS, verbatim (imported unchanged from the checkout supplied through ``EBT_REPO``):
     * model.ar_ebt_time_embed.EBTTimeConcat  -- the whole transformer: RMSNorm blocks, RoPE,
       causal+superdiagonal AR attention, prepended mcmc-step time-embedding TOKEN, bias-free
       Linear(dim,1) energy head, per-predicted-frame scalar energy. NOT reimplemented.
@@ -49,7 +49,14 @@ import torch.nn.functional as F
 # shims) -- the originals sat in a session temp dir and would vanish with a cleanup.
 _STUBS = os.environ.get("EBT_STUBS",
                         os.path.join(os.path.dirname(os.path.abspath(__file__)), "ebt_stubs"))
-_EBT_REPO = os.environ.get("EBT_REPO", "C:/Users/leoni/Documents/projects/EBT")
+_EBT_REPO = os.environ.get("EBT_REPO")
+if not _EBT_REPO:
+    raise RuntimeError(
+        "The reference EBT checkout is external. Set EBT_REPO to its absolute path before "
+        "running hvp_rev.ebt_reference_control."
+    )
+if not os.path.isdir(_EBT_REPO):
+    raise FileNotFoundError(f"EBT_REPO does not exist or is not a directory: {_EBT_REPO}")
 if _STUBS and os.path.isdir(_STUBS) and _STUBS not in sys.path:
     sys.path.insert(0, _STUBS)
 if _EBT_REPO not in sys.path:

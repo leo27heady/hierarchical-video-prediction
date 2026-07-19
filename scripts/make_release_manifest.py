@@ -1,4 +1,9 @@
-"""Build a compact, machine-readable release manifest for article/dissertation evidence."""
+"""Build a compact, source-only manifest for article/dissertation evidence.
+
+The manifest intentionally excludes bytecode, caches, local virtual environments, rendered review
+files, and wheels. Those artifacts are platform- or build-dependent and belong in a separately
+generated distribution manifest after a clean build.
+"""
 from __future__ import annotations
 
 import argparse
@@ -35,20 +40,17 @@ FIXED_PATHS = [
     "docs/MODEL_CARD.md",
     "docs/REPRODUCIBILITY.md",
     "docs/RELEASE_QA_REPORT_2026-07-18.md",
+    "docs/CONTENT_FINALIZATION_EXECUTION_PLAN_2026-07-19.md",
+    "docs/CONTENT_FINALIZATION_CLAIM_MATRIX_2026-07-19.md",
+    "docs/CONTENT_FINALIZATION_REPORT_2026-07-19.md",
     "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
     "docs/confirmation/E6_PHASEC_V2_RESULTS.md",
-    "docs/draft/ARTICLE_REACH_FIDELITY_TRUST_2026-07-11.md",
     "docs/draft/RFT_GENERATED_TABLES.md",
     "docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.md",
-    "docs/article/final/ARTICLE_REACH_FIDELITY_TRUST.docx",
     "docs/dissertation/AUTHOR_INPUT_CHECKLIST.md",
     "docs/dissertation/final/DISSERTATION_MANUSCRIPT.md",
-    "docs/dissertation/final/DISSERTATION_REVIEW_MANUSCRIPT.docx",
     "docs/dissertation/final/MANUSCRIPT_ASSEMBLY_REPORT.md",
     "docs/supplement/REPRODUCIBILITY_APPENDIX.md",
-    "output/pdf/ARTICLE_REACH_FIDELITY_TRUST.pdf",
-    "output/pdf/DISSERTATION_REVIEW_MANUSCRIPT.pdf",
-    "output/wheel/hierarchical_video_prediction-0.3.0-py3-none-any.whl",
     "artifacts/rft_claim_artifact_index.json",
     "artifacts/confirmation_e2/results.json",
     "artifacts/e4b_head_package/results.json",
@@ -87,14 +89,22 @@ def git(*args: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--out", default="artifacts/release_manifest_2026-07-18.json"
+        "--out", default="artifacts/release_manifest_2026-07-19.json"
+    )
+    parser.add_argument(
+        "--require-clean",
+        action="store_true",
+        help="fail unless all manifest inputs are tracked and the worktree is clean",
     )
     args = parser.parse_args()
     out = (ROOT / args.out).resolve()
 
     paths = [ROOT / relative for relative in FIXED_PATHS]
     paths.extend(sorted((ROOT / "docs" / "dissertation" / "rewrite").glob("*.md")))
-    paths.extend(sorted(path for path in (ROOT / "hvp").rglob("*") if path.is_file()))
+    paths.extend(sorted((ROOT / "hvp").rglob("*.py")))
+    py_typed = ROOT / "hvp" / "py.typed"
+    if py_typed.is_file():
+        paths.append(py_typed)
     for pattern in ("fig1[7-9]_*.png", "fig1[7-9]_*.pdf", "fig2[0-2]_*.png", "fig2[0-2]_*.pdf"):
         paths.extend(sorted((ROOT / "docs" / "figures").glob(pattern)))
     missing = [path.relative_to(ROOT).as_posix() for path in paths if not path.is_file()]
@@ -106,28 +116,42 @@ def main() -> None:
         for line in git("status", "--porcelain").splitlines()
         if args.out.replace("\\", "/") not in line.replace("\\", "/")
     ]
+    tracked = set(git("ls-files").replace("\\", "/").splitlines())
+    untracked_inputs = sorted(
+        path.relative_to(ROOT).as_posix()
+        for path in set(paths)
+        if path.relative_to(ROOT).as_posix() not in tracked
+    )
+    if args.require_clean and (status_lines or untracked_inputs):
+        raise RuntimeError(
+            "clean release manifest requested with a dirty/untracked source state: "
+            f"status={status_lines}, untracked_inputs={untracked_inputs}"
+        )
     packages = {}
     for package in ("numpy", "scipy", "torch", "matplotlib", "wandb", "pytest"):
         packages[package] = importlib.metadata.version(package)
 
     payload = {
-        "schema_version": 2,
-        "status": "RELEASE_MANIFEST_COMPLETE",
+        "schema_version": 3,
+        "status": (
+            "CLEAN_SOURCE_RELEASE_MANIFEST"
+            if not status_lines and not untracked_inputs
+            else "WORKING_SOURCE_SNAPSHOT"
+        ),
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "source_commit": git("rev-parse", "HEAD"),
         "worktree_clean_excluding_manifest": not status_lines,
+        "all_inputs_git_tracked": not untracked_inputs,
+        "untracked_inputs": untracked_inputs,
         "environment": {
             "python": sys.version.split()[0],
             "platform": platform.platform(),
             "packages": packages,
         },
         "qa": {
-            "pytest": "83 passed",
-            "phasec_completion": "PHASEC_V2_COMPLETION_PASS",
-            "rft_consistency": "PASS",
-            "scientific_configs": "10 validated; fail closed",
-            "manuscript_assembly": "PASS; 54,178 dissertation words; 6,127 article words",
-            "rendered_review_editions": "PASS; article 23 pages; dissertation 154 pages",
+            "scope": "source/evidence manifest; rendered files and wheels require separate clean-build manifests",
+            "report": "docs/RELEASE_QA_REPORT_2026-07-18.md",
+            "assembly_report": "docs/dissertation/final/MANUSCRIPT_ASSEMBLY_REPORT.md",
         },
         "files": {
             path.relative_to(ROOT).as_posix(): {

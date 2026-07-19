@@ -19,7 +19,9 @@ import os
 
 import numpy as np
 
-MNIST = "C:/Users/leoni/Documents/projects/OpenSTL/data/moving_mnist/train-images-idx3-ubyte.gz"
+MNIST = os.environ.get(
+    "HVP_MNIST_GZ", "data/external/openstl/moving_mnist/train-images-idx3-ubyte.gz"
+)
 V = 64            # viewport size
 DIGIT = 28
 

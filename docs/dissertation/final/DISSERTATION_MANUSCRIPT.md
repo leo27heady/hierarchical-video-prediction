@@ -11,275 +11,83 @@
 - Candidate: Kulyk Leonid Ruslanovych. Specialty 124 «System Analysis», field 12 «Information
   Technologies». Supervisor: Prof. O. B. Mokin, Dr. Sc. (Eng.). VNTU, Vinnytsia — 2026.
 - UDC: 004.054:[004.032.26+004.85] **[AUTHOR: confirm the UDC classification and the title-page
-  quotation against the approved institutional record.]**
+  wording against the approved institutional record.]**
 
 ---
 
 ## 2. Abstract
 
+Kulyk L. R. *Systems Analysis and Intelligent Technologies for Consistent Modeling of
+Hierarchical Video Data Generation Processes*. — Qualifying scientific work submitted as a
+manuscript.
 
-The purpose of the dissertation research is to improve the efficiency and the temporal and spatial
-consistency of hierarchical video data generation processes through the development of systems
-analysis methods, mathematical models, and intelligent information technologies. The dissertation
-addresses the actual scientific and technical problem of systems analysis, mathematical modeling,
-and uncertainty resolution in complex multi-step systems for the hierarchical generation of
-spatio-temporal data.
+The dissertation addresses the scientific and technical problem of modelling long multi-step
+video processes under bounded computational resources. A video generator must retain
+memory-relevant history, preserve task-relevant visual detail, and support differentiation through
+long temporal computations. Treating these requirements as one undifferentiated “memory” problem
+obscures which resource is limiting and which intervention is appropriate.
 
-The systems contribution separates two resource bottlenecks. Hierarchical multi-rate context
-packaging reduces the state memory required to reach distant history; reversible temporal
-optimization reduces the activation tape required to train long computations. In conceptual
-form, these act on different terms of
-$M_{\mathrm{system}}=M_{\mathrm{parameters}}+M_{\mathrm{optimizer}}+
-M_{\mathrm{context/state}}+M_{\mathrm{activations}}+M_{\mathrm{transient}}$.
-They are complementary dissertation strands rather than one causally integrated pipeline. Their
-shared prescription is to compress what must be remembered and reconstruct what need not be
-stored.
+The work develops a systems methodology that separates total training and inference memory into
+parameter, optimizer, context/state, activation, and transient components:
 
-The introduction presents the relevance and justification of the research topic in the context of
-systems analysis requirements; describes the purpose, object, subject, and tasks of the research;
-states the scientific novelty; shows the connection of the dissertation with research programs;
-states the practical significance of the results, their approbation and publications; and
-describes the personal contribution of the applicant.
+$$
+M_{\mathrm{system}}=
+M_{\mathrm{parameters}}+
+M_{\mathrm{optimizer}}+
+M_{\mathrm{context/state}}+
+M_{\mathrm{activations}}+
+M_{\mathrm{transient}}.
+$$
 
-### Chapter-by-Chapter Summary
+Two complementary resource axes are investigated. Hierarchical or multirate context packaging acts
+on \(M_{\mathrm{context/state}}\) by retaining distant history at reduced spatial resolution or
+temporal density. Reversible temporal computation acts on \(M_{\mathrm{activations}}\) by
+reconstructing intermediate states during reverse replay. Their savings were measured separately
+and are not assumed to multiply automatically.
 
-**Chapter 1** performs a systems analysis of hierarchical video data generation processes and the
-criteria of their consistency. Generative video models are analyzed as open complex dynamic
-control systems; structural, hierarchical, and temporal decompositions of the system state space
-are performed, and the types of uncertainty (informational, structural-algorithmic, computational,
-and target) are classified. The analysis of existing approaches establishes the central systemic
-contradiction of the field: state-of-the-art video generators extend a *flat* (single-level)
-spatio-temporal context, which leads to a rapid growth of attention memory and computational cost
-with context length and, simultaneously, to the degradation of temporal consistency over long
-horizons — content that leaves the field of view is not re-generated consistently upon return. It
-is further shown, based on the author's own experimental findings, that hierarchical video models
-over discrete (vector-quantized) token spaces are unstable to train at practically reachable
-scale, which motivates hierarchical modeling in *compact continuous hierarchical latent state
-spaces*. Energy-based models are reviewed as literature, with their resource barrier noted (their
-capability boundary is later characterized experimentally in Chapter 4). The criteria apparatus is
-improved by introducing new types of consistency (conceptual, hierarchical, trajectory), with
-trajectory consistency operationalized through measurable autoregressive-rollout and
-re-entry-stratified metrics. The research tasks are defined.
+The dissertation develops methods for entropy-guided adaptive decomposition of video data,
+N-dimensional rotary positional encoding, reversible optimization of long temporal processes, and
+multi-stream latent video generation. The final hierarchical predictor uses a frozen two-level
+continuous latent representation, a shared joint-attention backbone, v-parameterized window
+diffusion, and autoregressive rollout. A purpose-built panning-world instrument provides exact
+geometric observability when content leaves and re-enters the viewport. Context packages are
+compared at explicit context-token budgets, and inference is based on paired clip-cluster
+resampling with simultaneous max-statistic intervals for registered comparison families.
 
-**Chapter 2** develops mathematical methods for uncertainty estimation and resource-efficient
-modeling of multi-step video processes. A method for estimating spatio-temporal uncertainty based
-on entropy metrics (the V-BLT architecture) is proposed, enabling adaptive decomposition of video
-data. The mathematical apparatus of N-dimensional rotary positional embedding (RoPE-ND) is
-developed to preserve the structural coherence of data, including the alignment of coordinate
-systems across abstraction levels of hierarchical models. A method for optimizing the
-computational resources of a complex system based on reversible transformations (TempVerseFormer)
-is proposed, and the time-agnostic backpropagation algorithm is mathematically substantiated,
-ensuring constant (independent of the optimization-horizon length) consumption of activation
-memory. The chapter closes with the extension of this apparatus to stochastic multi-level
-recurrences: an exactly invertible stochastic recurrence (the "store-the-noise" scheme) is proved
-and measured — reverse-replay gradients coincide with backpropagation through time (cosine
-similarity 1.000000), the invertibility error is at numerical precision ($5.5\times10^{-15}$ in
-fp64; $8.4\times10^{-13}$ for the stochastic scheme), and activation memory in a $K$-step rollout
-is $O(1)$ in $K$ — together with a three-axis applicability taxonomy (reversibility across depth,
-time, and computation) that delimits where reversibility pays (long temporal rollouts) and where
-it cannot (inner optimization loops, where the achievable saving versus gradient checkpointing is
-0.26% measured, with an analytic band of 0.6–1.0%).
+On a hash-pinned untouched holdout, hierarchy is confirmed where a token-matched flat
+full-resolution window cannot reach the relevant re-entry past. The registered 14-to-48-frame
+reach-band effects are +0.0980 and +0.0914 across two training seeds. The simultaneous tested
+frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792 unresolved, and confirms
+flat full-resolution context at 2,432 and 3,072. In the frozen interface, 48 fine frames require
+3,072 context tokens, while 48 coarse frames plus a two- or six-frame fine tail require 896 or
+1,152. Thus the confirmed hierarchical packages provide the same nominal 48-frame addressable
+reach with 2.67–3.43 times fewer context tokens; this is a reach-efficiency result, not a claim of
+equal information or equal prediction error.
 
-**Chapter 3** develops a mathematical model of multi-stream video sequence generation that
-packages long-range context across temporal rate and spatial resolution. The state space is a compact two-level hierarchical latent
-representation (a frozen two-level convolutional autoencoder interface with per-level decodable
-coarse and fine latents); its coarse stream is the measured spatially compressed implementation
-of long-history packaging, not the only possible carrier of the memory horizon. Per-frame generation uses an iterative refinement (denoising
-diffusion) core, selected empirically by the matched-capacity, matched-NFE mechanism analysis of Chapter 4. The
-inter-level transfer of context signals is realized within a single joint attention mechanism
-with per-token level, role, and frame conditioning (generalizing the cross-level cross-attention
-of the earlier design), with unidirectional control enforced by the information-design asymmetry
-of the two levels and by gradient detachment at the representation and rollout boundaries; the
-causality of the system is enforced by sequence construction and the autoregressive recursion;
-the autonomous autoregressive video-prediction algorithm rolls the model out window-by-window
-with a frozen pixel decoder. The chapter also gives the formal
-definition of the *memory-horizon looping testbed* and its re-entry-stratified evaluation
-protocol — a criterion-driven measurement instrument in which the hardness of every predicted
-frame ("recoverable only from memory") is an exactly computable analytic label — and derives the
-memory and complexity estimates of the rollout algorithm.
+The principal directions persist across registered sampler allocations and an independently
+trained codec, although the upper inversion is less precise under alternate sampler or codec
+conditions. A preregistered long-rollout study confirms an early hierarchy benefit at three
+training seeds but fails to replicate a seed-0 late inversion; no stable trust boundary is
+claimed. A protected persistent-object 48-to-300 Moving-MNIST study provides a mixed external
+boundary: hierarchy better preserves spatial support and trajectory continuity, whereas flat
+context better preserves digit identity. Both systems remain difficult in absolute terms.
 
-**Chapter 4** presents the experimental research and practical application of the developed
-methods and technologies. The information base includes procedurally synthesized datasets (2D
-shapes, 3D polycubes) used in the reversible-transformer studies, the purpose-built looping
-memory-horizon testbed (the primary benchmark: a $192\times64$ toroidal world observed through a
-panning $64\times64$ viewport, with 67% of the world off-screen at any instant and a re-entry loop
-period of approximately 48 frames), and a measured bridge evaluation on the standard Moving MNIST
-suite (canonical 10→10 protocol, n = 10,000; the model halves the persistence baseline's
-perceptual error, and the flat-versus-hierarchical null on this memory-horizon-free benchmark
-serves as the predicted negative control). A matched-capacity, matched-NFE comparison of
-prediction mechanisms (regression,
-diffusion, energy-based descent) on a shared backbone shows that regression averages over possible
-futures while diffusion commits to sharp, correctly located content (foreground error 0.0512
-versus 0.0664; on the hard, genuinely generative subset 0.1549 versus 0.1808), and includes a
-two-sided capability study of Energy-Based Transformers using the official implementation — a
-characterized negative result: one published recipe yields a stably mis-ordered energy landscape,
-the other repairs the ordering, yet gradient descent from the prescribed initialization does not
-reach structured outputs at the scale reachable in this work. On a hash-pinned untouched LoopMom
-holdout, the registered pair-specific reach effects at the 896-token operating point are +0.0980
-and +0.0914 across two training seeds, and the whole-population effects are +0.0474 and +0.0436.
-A simultaneous max-statistic family confirms hierarchical packaging at 896 and 1,152 context
-tokens, leaves 1,792 unresolved, and confirms flat full-resolution context at 2,432 and 3,072
-tokens. The frozen latent interface therefore supplies the same nominal 48-frame reach with
-2.7–3.4 times fewer context tokens in the two confirmed hierarchical packages, while the
-upper-budget reversals show that compression is not free. All 20 registered sampler/NFE point
-estimates retain their direction, with 18 simultaneous lower bounds above zero; an independently
-trained continuous codec retains all four registered directions, although the 2,432-token
-inversion becomes family-wise unresolved. A privileged pose-indexed raw-memory reference reaches
-foreground MSE 0.0494 and establishes a remaining explicit-access gap without constituting a
-token-matched competitor. On the persistent-object 48→300 Moving-MNIST boundary, hierarchy
-preserves spatial support and continuity better, whereas flat context preserves digit identity
-better. The constant-activation-memory capability is demonstrated separately: classical
-backpropagation through time exhausts GPU memory at rollout depth $K=120$, while the reversible
-implementation remains at approximately 1.1–1.2 GB through $K=160$.
-The practical application of the developed methods in the tasks of ORNETIKA LLC and in the
-educational process of VNTU is described (per the existing implementation acts, which cover the
-reversible-transformer method and entropy tokenization). [A2]'s published 2-D rotating-shape
-validation is reported as the receipt of the reversibility method; [A1] supplies the 2-D/3-D
-entropy-tokenization examples. Moving MNIST and TaxiBJ are separate dissertation bridges, while
-MMNIST-CIFAR and KTH remain explicitly unexecuted extensions. In the valid persistent-object
-48→300 Moving-MNIST bridge, hierarchy lowers union error on all three seeds and improves
-trajectory/coverage cleanly on two, while flat context preserves digit identity on all three;
-foreground-only error is unresolved. The result is reported as a mixed external boundary rather
-than a universal model ranking.
+The reversible-computation strand independently demonstrates exact reverse replay and constant
+activation-memory scaling with temporal horizon in the tested recurrence, while identifying
+gradient checkpointing as the appropriate practical competitor and delimiting cases in which
+reversibility does not pay. The dissertation therefore contributes an integrated systems
+methodology and research software toolkit, not one experimentally validated end-to-end model that
+combines every strand.
 
-The general conclusions present the main results of the dissertation research, confirming the
-fulfillment of all the set tasks, with honest scoping: the hierarchy is validated where its reach
-covers memory-relevant history under a bounded budget, while full-resolution fidelity can recover
-at larger tested budgets. A seed-0 late self-fed inversion did not replicate at two new training
-seeds and is therefore not stated as a general trust boundary. The energy-based mechanism is a
-characterized negative; reversibility is scoped by its applicability taxonomy. The four central
-reach–fidelity directions survive all registered NFE/sampler variants and an independently
-trained continuous codec at the point-estimate level; the upper inversion is explicitly retained
-as a family-wise precision boundary under alternate sampler and codec conditions. A separate
-privileged pose-indexed raw-memory reference reaches foreground MSE 0.0494 and beats all four
-registered neural references with positive simultaneous lower bounds, showing that geometric
-reach and reliable explicit addressing are distinct while making no token-matched model claim.
-The protected persistent-object long Moving-MNIST result further separates the axes: coarse
-long-memory packaging preserves spatial support and continuity, whereas flat full-resolution
-context preserves fine digit identity.
+The practical design rule is conditional: compress long-lived state when distant reach is the
+binding constraint; preserve dense detail when fidelity is limiting; reconstruct activations when
+the training tape dominates; and evaluate storage, addressing, and self-fed reuse as distinct
+failure modes.
 
-### 7 items, mapped 1:1 to the 7 tasks
-
-1. Characterized the process of hierarchical video data generation as a complex control system
-   with inherent informational, structural-algorithmic, computational, and target uncertainties;
-   performed structural, hierarchical, and temporal decompositions of the system and identified
-   the central systemic contradiction — the resource blow-up and consistency degradation of flat
-   long-context modeling — that the subsequent chapters resolve. *(Task 1)*
-
-2. Improved the criteria apparatus of systems analysis of generative processes by introducing the
-   criteria of conceptual, hierarchical, and trajectory consistency, and operationalized
-   trajectory consistency through measurable autoregressive-rollout metrics stratified by an
-   exactly computable re-entry hardness label. *(Task 2)*
-
-3. Developed a method for estimating the state of uncertainty of spatio-temporal data through
-   their adaptive decomposition based on entropy metrics (V-BLT) with N-dimensional rotary
-   positional embedding, which allows dynamic allocation of computational resources to
-   high-information zones of the scene and mathematical alignment of coordinate systems between
-   abstraction levels of hierarchical models. *(Task 3)*
-
-4. Developed a method for the computationally efficient optimization of multi-step iterative
-   systems based on reversible transformations for time-agnostic backpropagation, ensuring
-   constant activation-memory consumption independent of the temporal horizon; extended it to
-   stochastic multi-level recurrences via an exactly invertible stochastic recurrence
-   (store-the-noise; gradients coincide with backpropagation through time), and delimited its
-   applicability domain by a three-axis taxonomy. *(Task 4)*
-
-5. Developed a mathematical model of multi-stream video generation in compact hierarchical
-   latent state spaces, supporting context streams at different temporal rates and spatial
-   resolutions over a shared attention backbone, with unidirectional context transfer (gradient
-   detachment at the representation and rollout boundaries) and a per-frame iterative-refinement
-   generation core selected by controlled mechanism analysis; measured spatial and temporal
-   packages restore content beyond a contiguous flat window at bounded token budgets. *(Task 5)*
-
-6. Created an intelligent information technology and a software complex (Python/PyTorch) for the
-   systems analysis of hierarchical video generation processes, integrating the developed methods
-   of adaptive tokenization, resource-efficient optimization, and hierarchical generation,
-   together with the purpose-built memory-horizon looping testbed and its re-entry-stratified
-   evaluation protocol as a first-class measurement instrument. *(Task 6)*
-
-7. Conducted comprehensive experimental verification of the developed methods and technology:
-   a matched-capacity, matched-NFE comparison of prediction mechanisms (including the
-   two-sided characterized study of energy-based descent), single-step and 152-frame
-   autoregressive-rollout evaluations with clip-clustered paired-bootstrap confidence intervals, and
-   memory-consumption measurements; the developed system outperforms the token-budget-matched
-   flat control at the tested lower/interior points where its package alone reaches
-   memory-relevant history, while tested larger budgets expose a full-resolution-fidelity
-   inversion; the boundary conditions of every claim are stated explicitly. *(Task 7)*
-
-The main results of the dissertation research are published in 10 scientific works: 3 articles in
-professional journals of Ukraine in specialty 124; 1 article indexed in the Scopus scientometric
-database; and 6 conference abstracts. The final bibliographic details of the fourth article and
-the six conference abstracts require the applicant's publication records.
-
-### Scientific Novelty
-
-1. **For the first time**, a methodology for the systems analysis and evaluation of long-range
-   memory in hierarchical video generation processes was developed — a purpose-built
-   memory-horizon testbed whose re-entry hardness labels are exactly computable from recorded
-   control tracks, with a re-entry-stratified evaluation protocol and a matched-context-token-budget
-   comparison design — and it was demonstrated with its help that **long-span multi-stream
-   context packaging** — a hierarchical allocation of a fixed context-token budget across
-   spatial resolution and temporal rate, of which the coarse-level-memory paradigm of
-   hierarchical latent video models (§1.3.2, adopted prior art) is the measured spatial form
-   and strided full-resolution history the measured temporal form — restores content that re-enters the field of view beyond the horizon of
-   a flat context window at the same context-token budget, with tested lower/interior and upper
-   regimes bracketed by explicit token arithmetic; unlike existing evaluation practice, which aggregates
-   prediction error without isolating memory-dependent content, the developed methodology makes
-   the memory contribution of the packaging directly measurable and localizes the improvement of
-   temporal consistency to registered reach-differential populations.
-
-2. **For the first time**, a method for the computationally efficient optimization of processes in
-   multi-step iterative systems was developed based on reversible transformations for
-   time-agnostic backpropagation, which, unlike classical backpropagation through time, ensures
-   constant memory consumption regardless of the depth of the temporal horizon; the method is
-   extended to stochastic multi-level recurrences via an exactly invertible stochastic recurrence
-   with noise storage, and its applicability domain is delimited by a three-axis taxonomy of
-   reversibility (across depth, time, and computation).
-
-3. **Improved** the criteria apparatus of systems analysis of the results of generative models by
-   introducing the criteria of conceptual consistency (the ability to generate unknown
-   combinations), hierarchical consistency (alignment of structural levels), and trajectory
-   consistency, the latter operationalized through autoregressive-rollout degradation metrics
-   stratified by re-entry hardness, which allows a more comprehensive and measurable assessment of
-   the adequacy of complex generative systems.
-
-4. **Improved** the method for assessing the state of uncertainty of spatio-temporal data through
-   their adaptive decomposition using N-dimensional rotary positional embedding and per-pixel
-   entropy maps, which allows dynamic allocation of computational resources during the analysis of
-   complex visual scenes.
-
-### implementation acts — kept as-is, they match reality
-
-- practical activities of **ORNETIKA LLC** (Kyiv): the developed information technology was used
-  in designing intelligent systems for the analysis of spatio-temporal video data and anomaly
-  detection in complex technical environments; the resource-efficient methods (TempVerseFormer)
-  and adaptive entropy tokenization substantially reduced the computational cost of modeling long
-  temporal sequences (implementation act of October 14, 2025);
-- the **educational process of VNTU** in the disciplines *Information Technologies for Monitoring
-  and Analysing the State of Complex Systems* and *Internet of Things and Intelligent Data
-  Analysis* for PhD
-  students of specialty 124 (implementation act of September 19, 2025).
-
-### Practical significance
-
-The practical significance lies in the development of a complex of algorithms and software tools
-implementing the developed intelligent information technology for the systems analysis of
-hierarchical video generation processes (Python/PyTorch; repository modules for the hierarchical
-model, the reversible recurrence, and the testbed generator). Unique synthetic spatio-temporal
-datasets were created for testing generation and optimization systems: 2D shapes, 3D polycubes,
-and the looping memory-horizon testbed with recorded action tracks and analytic hardness labels
-(3,000 training clips × 100 frames; 500 test clips × 200 frames). The proposed technology can be
-applied to state estimation and prediction of future states of complex systems in technical,
-medical, and environmental monitoring.
-
-### Keywords
-
-systems analysis; complex system; mathematical modeling; intelligent information technology;
-decision making; neural network; deep learning; artificial intelligence; video data generation;
-**hierarchical video generation**; **compact hierarchical latent state spaces**; **memory
-horizon**; **temporal consistency**; **context packaging**; **reversible transformations**;
-**diffusion refinement core**; autoregressive prediction; state estimation; forecasting;
-consistency.
+**Keywords:** systems analysis; hierarchical video generation; long-horizon video prediction;
+context packaging; memory horizon; temporal consistency; reversible computation; activation
+memory; diffusion transformer; autoregressive prediction; geometric observability; clip-cluster
+inference.
 
 ---
 
@@ -287,21 +95,23 @@ consistency.
 
 The following stable labels are used throughout the dissertation:
 
-- **[A1]** — Kulyk L. R., Mokin O. B. «Scaling Video Prediction with Spatio-Temporal Patches»,
+- **[A1]** — Kulyk L. R., Mokin O. B. “Scaling Video Prediction with Spatio-Temporal Patches,”
   *Visnyk of Vinnytsia Politechnical Institute*, 2025, No. 5, pp. 129–139,
   DOI 10.31649/1997-9266-2025-182-5-129-139.
-- **[A2]** — Kulyk L. «Temporal modeling with reversible transformers» (TempVerseFormer),
+- **[A2]** — Kulyk L. “Temporal modeling with reversible transformers” (TempVerseFormer),
   *Neural Computing and Applications*, 2026, Vol. 38, article 30,
   DOI 10.1007/s00521-025-11707-3, sole author, Scopus-indexed.
-- **[A3]** — Kulyk L. R., Mokin O. B. «Methods for Ensuring Consistent Generation in Diffusion
-  Models», *Visnyk of Vinnytsia Politechnical Institute*, 2024, No. 4, pp. 75–85,
+- **[A3]** — Kulyk L. R., Mokin O. B. “Methods for Ensuring Consistent Generation in Diffusion
+  Models,” *Visnyk of Vinnytsia Politechnical Institute*, 2024, No. 4, pp. 75–85,
   DOI 10.31649/1997-9266-2024-175-4-75-85.
-- **[A4]** — the fourth article (in finalization): a controlled causal study of long-span
-  context packaging (rate × resolution × depth) for long-horizon video prediction — the
-  memory-horizon testbed, the matched-token-budget frontier with measured edges, the shape study,
-  the matched-capacity, matched-NFE mechanism study including the EBT characterized negative, and
-  the supporting reversibility theory. **[AUTHOR: supply target venue and status.]**
-- Six conference theses. **[AUTHOR: supply the six verified bibliographic entries.]**
+- **[A4]** — the fourth article, *When Does Hierarchical Video Memory Pay? Reach–Fidelity
+  Trade-offs under Fixed Context Budgets*, in finalization.
+  **[AUTHOR: supply target venue and status at submission/defence.]**
+- Six conference theses.
+  **[AUTHOR: supply the six verified bibliographic entries.]**
+
+Publication-administration facts that cannot be established from the scientific repository are
+collected in `docs/dissertation/AUTHOR_INPUT_CHECKLIST.md`; they must not be inferred.
 
 ---
 
@@ -321,6 +131,8 @@ The following stable labels are used throughout the dissertation:
 | EBM | Energy-Based Model |
 | EBT | Energy-Based Transformer |
 | EMA | Exponential Moving Average |
+| FID | Fréchet Inception Distance |
+| FVD | Fréchet Video Distance |
 | fg-MSE | Foreground Mean Squared Error |
 | GPU | Graphics Processing Unit |
 | LPIPS | Learned Perceptual Image Patch Similarity |
@@ -337,234 +149,314 @@ The following stable labels are used throughout the dissertation:
 
 ## 5. Table of Contents
 
-- Introduction
-- Chapter 1. Systems Analysis of Hierarchical Video Generation and Its Consistency Criteria
-- Chapter 2. Mathematical Methods for Uncertainty Estimation and Resource-Efficient Modelling of
-  Multi-Step Video Processes
-- Chapter 3. A Hierarchical Mathematical Model for Video Generation with Long Multi-Stream Context
-- Chapter 4. Experimental Evaluation and Practical Application
-- General Conclusions
-- References
-- Appendices: publications, implementation acts, experiment configurations, and the
-  OpenSTL/Moving-MNIST bridge
+The submission document must generate this list as a live table of contents with page numbers and
+cross-references:
+
+1. Introduction.
+2. Chapter 1. Systems Analysis of Hierarchical Video Generation and Its Consistency Criteria.
+3. Chapter 2. Mathematical Methods for Uncertainty Estimation and Resource-Efficient Modelling of
+   Multi-Step Video Processes.
+4. Chapter 3. A Hierarchical Mathematical Model for Video Generation with Long Multi-Stream
+   Context.
+5. Chapter 4. Experimental Evaluation and Practical Application.
+6. General Conclusions.
+7. References.
+8. Appendices: applicant publications; implementation acts; registered experimental
+   configurations; supplementary evidence tables; and reproduction information.
 
 <div style="page-break-after: always;"></div>
 
 # Introduction
 
-## Justification and Relevance
+## Relevance and Justification of the Research Topic
 
-The rapid development of information technologies and artificial-intelligence methods over the
-last decade has produced new classes of mathematical models capable of solving complex problems of
-analysis, prediction, and synthesis of multidimensional data. A special place among them is
-occupied by generative video models, which have evolved from simple statistical tools into highly
-complex multi-level systems capable of forming high-quality spatio-temporal video data. Such
-systems are critically important for many applied fields: from medical diagnostics and
-environmental monitoring to the prediction of the state of technical systems and the construction
-of simulators for autonomous control.
+Video generation and prediction are multi-step processes in which spatial appearance, object
+identity, motion, scene geometry, and control signals must remain mutually consistent over time.
+Recurrent prediction, stochastic latent modelling, transformer-based generation, and diffusion
+have progressively improved short-horizon visual quality
+[1] [2] [3] [4].
+Long-horizon use, however,
+introduces a systems problem: the generator must preserve information that may disappear from the
+current viewport, decide which detail should remain accessible, and propagate learning signals
+through an increasingly long computation.
 
-However, despite significant progress, the control of the generation process remains
-insufficiently formalized from the standpoint of systems analysis methodology. Modern
-architectures — diffusion and autoregressive video models — are mostly treated as "black-box"
-deep-learning algorithms. Operating under high structural, informational, and target uncertainty,
-these systems are prone to generating anomalies — spatial, logical, or temporal inconsistencies —
-which makes their outputs unreliable for decision-making. The use of single-level (flat) latent
-spaces mixes the levels of abstraction of the visual scene (semantic composition, geometry,
-texture) within one representation, which leads to the loss of hierarchical control over the
-generation process.
+From the viewpoint of systems analysis, a generative video model is a complex dynamic system with
+partially observed state, interacting representation levels, stochastic transitions, bounded
+resources, and multiple performance criteria. The relevant uncertainties are not only
+probabilistic. They include informational uncertainty about hidden content, structural uncertainty
+about the appropriate decomposition of state, algorithmic uncertainty about the generation
+mechanism, computational uncertainty about feasible horizons, and target uncertainty about which
+notion of consistency the task requires
+[5, 6, 7]
+[8, 9, 10, 11].
 
-The dominant engineering answer to the consistency problem — extending a *flat* spatio-temporal
-context window — runs into an objective systemic barrier. First, the computational cost and memory
-of the attention mechanism grow rapidly with the number of context tokens (quadratically in
-computation, linearly in the key–value cache), so long flat contexts are resource-prohibitive
-precisely at the horizons where they are most needed. Second, even where a long flat context is
-affordable, the temporal consistency of long generated sequences degrades: content that leaves the
-field of view is not restored consistently upon its return, and autoregressive error accumulation
-(exposure bias) destabilizes the trajectory of the generation process. Third, the identification
-of parameters of long-horizon models by backpropagation through time requires activation memory
-that grows linearly with the number of steps of the modeled process, which makes deep training
-trajectories unattainable on practically available computing systems.
+A common engineering response is to enlarge a flat spatio-temporal context. Standard dense
+self-attention has quadratic arithmetic in sequence length, while stored attention state and
+key–value caches grow with the number of retained tokens; memory-efficient implementations reduce
+data movement but do not make the choice of retained history irrelevant
+[12, 13]
+[14, 15, 16, 17, 18, 19]. Long-context video models
+therefore face an allocation problem: a fixed state budget can preserve many low-detail or sparse
+historical observations, or fewer dense high-detail observations
+[20] [21]
+[22, 23, 24].
 
-These are two different memory bottlenecks and the dissertation treats them separately. For
-systems analysis, peak memory is decomposed conceptually as
+Long self-fed rollout creates a second difficulty. A model trained predominantly on
+ground-truth-conditioned histories is evaluated on its own imperfect outputs; errors alter later
+inputs and can accumulate over time [25, 26]
+[27]. Extending the training horizon by ordinary backpropagation through time also stores
+intermediate activations whose memory grows with the differentiated process length
+[28] [29]. Gradient checkpointing trades recomputation for reduced
+activation storage, while reversible networks reconstruct intermediate states instead
+[30, 31]
+[32].
+
+These pressures are often described collectively as a “memory problem,” but they act on different
+terms. The dissertation uses the conceptual decomposition
 
 $$
 M_{\mathrm{system}} =
-M_{\mathrm{parameters}} + M_{\mathrm{optimizer}} +
-M_{\mathrm{context/state}} + M_{\mathrm{activations}} + M_{\mathrm{transient}} .
+M_{\mathrm{parameters}} +
+M_{\mathrm{optimizer}} +
+M_{\mathrm{context/state}} +
+M_{\mathrm{activations}} +
+M_{\mathrm{transient}}.
 $$
 
-The hierarchical context-packaging model of Chapters 3–4 reduces
-$M_{\mathrm{context/state}}$ for a required temporal reach by storing distant history at a lower
-spatial rate or a lower temporal rate. The reversible TempVerseFormer method of Chapter 2 reduces
-$M_{\mathrm{activations}}$ for long temporal computation by reconstructing intermediate states
-during the backward pass. These are complementary resource axes, not one integrated mechanism and
-not evidence that their savings automatically multiply. The common design principle is:
-**compress what must be remembered; reconstruct what need not be stored**.
+Hierarchical or multirate context packaging acts primarily on
+\(M_{\mathrm{context/state}}\): it changes how much historical state can be addressed under a
+fixed context budget. Reversible temporal computation acts primarily on
+\(M_{\mathrm{activations}}\): it reconstructs intermediate states during reverse replay instead
+of retaining the full activation tape. These mechanisms are complementary but separately
+measured. The dissertation does not assume that their savings multiply, and the final video
+predictor is not presented as an end-to-end combination of every dissertation strand. The shared
+systems principle is:
 
-A natural remedy is the hierarchical decomposition of the latent state space. Discrete
-vector-quantized hierarchies are an important reviewed family, but they also introduce codebook
-and assignment-specific optimization risks; this dissertation does not present a controlled
-VQ-versus-continuous comparison. The implemented direction is therefore stated constructively:
-hierarchical modeling of video generation processes in **compact continuous hierarchical latent
-state spaces**, in which multiple context streams can package long-range information at
-different temporal rates and spatial resolutions, context signals are transferred
-unidirectionally (with gradient detachment), per-frame generation is performed by an iterative
-refinement (denoising diffusion) core selected by controlled mechanism analysis, and the memory
-barrier of long-horizon activation-memory growth is bounded by reversible transformations that
-make backpropagation time-agnostic within their measured applicability domain. Chapter 1
-explicitly marks the representation evidence boundary; Chapter 4 tests robustness to a second
-continuous codec seed rather than claiming representation-family universality. That intervention
-preserves all four registered directions; three contrasts remain simultaneous-CI clean, while
-the alternate-codec 2,432-token inversion remains positive but family-wise unresolved. A
-separately gated exact-pose raw-memory reference then measures the remaining explicit-access gap:
-its 48-frame mosaic attains foreground MSE 0.0494 and all four registered neural-minus-reference
-simultaneous lower bounds are positive. Because this reference receives raw pixels and exact
-future poses, it is reported as a privileged ceiling rather than a token-matched competitor.
+> **Compress what must be remembered; reconstruct what need not be stored.**
 
-Thus an objective systemic contradiction arises between the necessity of ensuring multi-level
-consistency of video data over long time horizons (which requires long memory horizons and deep
-hierarchies) and the strict resource constraints of modern computing systems (the attention-memory
-blow-up of flat contexts and the linear growth of training memory with horizon length). Resolving
-this contradiction requires the creation of new mathematical methods of decomposition,
-resource-efficient control, and intelligent information technologies of systems analysis, which
-determines the high relevance of this dissertation research.
+The state-memory question also contains an information trade-off. A coarse, subsampled, or
+hierarchical package may extend addressable temporal reach but discard fine detail. A dense flat
+package may preserve identity and texture but cover a shorter history. Existing hierarchical and
+memory-augmented video models demonstrate that long history can be represented in several ways
+[33] [34]
+[20, 35, 36] [37], but cross-paper
+score comparisons do not isolate whether a difference is caused by reach, fidelity, target
+interface, sampler allocation, or evaluation population.
+
+This dissertation therefore treats context packaging as a controlled design space and introduces
+a memory-horizon measurement instrument in which geometric observability at viewport re-entry is
+known exactly. The resulting empirical rule is deliberately conditional:
+
+> **Hierarchy buys reach; flat context buys fidelity.**
+
+The hierarchy is confirmed at tested budgets where a flat full-resolution window cannot address
+the relevant past. Flat context recovers at larger tested budgets and better preserves digit
+identity in a persistent-object boundary study. This is not a universal architecture ranking; it
+locates operating regions and failure modes.
+
+The relevance of the research follows from the need for methods that jointly:
+
+1. decompose a complex video-generation process into measurable state, resource, and consistency
+   components;
+2. retain memory-relevant history under bounded context/state resources;
+3. reduce the activation cost of long temporal optimization;
+4. distinguish storage, addressing, fidelity, and self-fed reuse experimentally; and
+5. provide an auditable software and evidence chain for claims about complex generative systems.
 
 ## Relationship to Research Programmes, Plans and Topics
 
 The dissertation was carried out in accordance with the research plans of Vinnytsia National
-Technical University, in particular within the state-budget research topics:
+Technical University, including the following state-budget research topics:
 
 - Research topic No. **[AUTHOR: research-project number 1]**, *Development of Information
   Technologies and Mathematical Methods for Intelligent Analysis of Spatio-Temporal Data in
-  Complex Systems* (2021–2023), in
-  which the applicant developed the method of adaptive estimation of spatio-temporal uncertainty
-  and entropy-based tokenization of video data;
+  Complex Systems* (2021–2023), within which the applicant developed adaptive estimation of
+  spatio-temporal uncertainty and entropy-based tokenization of video data.
 - Research topic No. **[AUTHOR: research-project number 2]**, *Systems Analysis and Modelling of
-  Multi-Step Processes under Resource Constraints and Uncertainty* (2024–2026), in which the applicant
-  developed the method of computational-resource optimization based on reversible transformations
-  and the **hierarchical generative model of video data**. **[AUTHOR: verify both approved
-  project titles and the applicant's role against the official project reports.]**
+  Multi-Step Processes under Resource Constraints and Uncertainty* (2024–2026), within which the
+  applicant developed reversible temporal optimization and the hierarchical video-generation
+  model.
+
+**[AUTHOR: verify both approved project titles, numbers, dates, and the applicant’s role against
+the official project reports.]**
 
 ## Aim and Research Tasks
 
-**The purpose of the dissertation research** is to improve the efficiency and the temporal and
-spatial consistency of hierarchical video data generation processes through the development of
-systems analysis methods, mathematical models, and intelligent information technologies.
+**The aim of the dissertation** is to improve the resource efficiency and temporal and spatial
+consistency of hierarchical video-data generation processes through systems-analysis methods,
+mathematical models, and intelligent information technologies that separate context/state memory,
+activation memory, and task-dependent fidelity.
 
-The dissertation's components serve **one backbone question**:
-*how can hierarchical decomposition, temporal abstraction, and resource-aware rollout improve
-the consistency of long-horizon video generation under bounded memory and computation?* Each
-contribution has a defined role in answering it: adaptive entropy-based decomposition and
-RoPE-ND (Chapter 2) — how to represent uncertain visual information efficiently; reversible
-transformations and time-agnostic backpropagation (Chapter 2) — how to train and roll out long
-processes within memory limits; the multi-stream hierarchical predictor (Chapter 3) — the
-demonstrated system; the memory-horizon testbed and re-entry-stratified protocol (Chapters 3–4)
-— the causal instrument for measuring whether context memory actually matters; the frontier and
-shape experiments (Chapter 4) — the evidence for how to allocate a fixed context budget; the
-energy-based study (Chapter 4) — the measured mechanism-selection negative.
+The following seven tasks are solved:
 
-For the fourth article, context packaging is the manipulated design space. **Reach** asks whether
-the package contains the memory-relevant past; **fidelity** asks what useful information survives
-compression or subsampling; reliable reuse under self-fed generation is treated as a robustness
-question because the proposed late trust boundary did not replicate. The terminal empirical
-summary is conditional: **hierarchy buys reach; flat context buys fidelity**.
+1. Analyze video-data generation as a complex dynamic system; classify its informational,
+   structural-algorithmic, computational, and target uncertainties; and identify the resource and
+   consistency limitations of flat long-context modelling.
 
-To achieve this purpose, the following scientific and practical tasks had to be solved:
+2. Improve the criteria apparatus for generative processes by extending the taxonomy of
+   conceptual, hierarchical, and trajectory consistency and by operationalizing trajectory
+   consistency through measurable self-fed rollout and re-entry-stratified endpoints.
 
-1. Analyze the state and problems of generative video-data models as complex systems; classify
-   the types of uncertainty and identify the systemic causes of anomalies (inconsistencies) in
-   the generation process, including the resource and consistency limitations of flat
-   long-context modeling.
+3. Develop a method for estimating spatio-temporal uncertainty through adaptive entropy-based
+   decomposition and multidimensional rotary positional encoding.
 
-2. Improve the criteria apparatus of systems analysis of generative processes by extending the
-   taxonomy of consistency types (conceptual, hierarchical, trajectory) and operationalizing
-   trajectory consistency through measurable rollout metrics stratified by re-entry hardness.
+4. Develop a reversible method for optimizing long multi-step temporal processes, extend it to
+   stochastic multi-level recurrences, and delimit its applicability relative to
+   backpropagation through time and gradient checkpointing.
 
-3. Develop a method for estimating the state of uncertainty of spatio-temporal data through their
-   adaptive decomposition using entropy metrics and the mathematical apparatus of
-   multidimensional rotary positional embedding.
+5. Develop a mathematical model of multi-stream latent video generation whose context streams
+   retain history at different temporal rates and spatial resolutions over a shared
+   joint-attention backbone.
 
-4. Develop a method for optimizing the computational resources of multi-step iterative models
-   that ensures constant, process-length-independent consumption of memory on the basis of
-   reversible mathematical transformations; extend it to stochastic multi-level recurrences and
-   delimit its domain of applicability.
+6. Create a research software toolkit and intelligent information technology for systems
+   analysis of hierarchical video generation, including adaptive representation, reversible
+   optimization, context packaging, provenance controls, the memory-horizon testbed, and
+   re-entry-stratified evaluation. The modules are integrated at the methodology and software
+   environment level; no claim is made that every module forms one measured end-to-end predictor.
 
-5. Develop a mathematical model of multi-stream video generation in compact hierarchical latent
-   state spaces, supporting context streams at different temporal rates and spatial resolutions
-   over a shared attention backbone, with unidirectional transfer of context signals (gradient
-   detachment at the representation and rollout boundaries) and a per-frame iterative-refinement
-   generation core selected by controlled mechanism analysis.
+7. Experimentally evaluate the developed methods on controlled and open datasets; compare
+   generation mechanisms and context packages under declared budgets; measure memory use,
+   uncertainty, consistency, and robustness; and determine the operating regions and limitations
+   of the resulting methods.
 
-6. Create an intelligent information technology and a software complex for the systems analysis
-   of hierarchical video generation processes, integrating the developed methods of adaptive
-   tokenization, resource optimization, and hierarchical generation, together with a
-   purpose-built memory-horizon testbed and re-entry-stratified evaluation protocol as its
-   measurement instrument.
-
-7. Conduct comprehensive experimental studies and approbation of the developed methods and
-   technology on synthetic and open datasets — including a matched-capacity, matched-NFE
-   comparison of prediction mechanisms — and compare their efficiency and consistency with
-   modern analogues.
+The tasks correspond directly to the principal results and General Conclusions. The fourth
+article addresses the context-packaging part of Tasks 5–7; [A1], [A2], and [A3] support the
+representation, reversible-optimization, and consistency-criteria strands.
 
 ## Object and Subject of Research
 
-**The object of research** is the processes of systems analysis, mathematical modeling, and
-control of complex multi-level systems of video data generation under structural, informational,
-and computational uncertainty.
+**The object of research** is the processes of systems analysis, mathematical modelling, and
+control of complex multi-level video-data generation systems under structural, informational, and
+computational uncertainty.
 
-**The subject of research** is the mathematical models, methods, and intelligent information
-technologies of systems analysis, uncertainty estimation, criteria-based evaluation, and control
-in hierarchical generative systems.
+**The subject of research** is the mathematical models, methods, criteria, algorithms, and
+intelligent information technologies for uncertainty estimation, resource-efficient temporal
+optimization, hierarchical context representation, and consistency evaluation in generative
+video systems.
 
 ## Research Methods
 
-To solve the set tasks, a complex apparatus of modern science was used: the methodology of systems
-analysis for the decomposition of generative processes and the classification of uncertainty and
-consistency types; probability theory, mathematical statistics, and information theory for entropy
-estimation and the assessment of spatio-temporal uncertainty of data; the theory of stochastic
-processes for the mathematical description of the iterative refinement (denoising diffusion)
-generation core, with the Markov-chain formalism applied insofar as autoregressive generation
-constitutes a Markovian state transition and, within the experimental mechanism study, for the
-description of the gradient-descent (Langevin) sampling of energy-based models; optimization
-methods and matrix/tensor algebra for the formalization of training objectives and the development
-of reversible transformations and attention mechanisms; machine- and deep-learning methods,
-including backpropagation, for the identification of parameters of the mathematical models;
-elements of decision-making theory for the construction of criteria-based decision procedures —
-the pre-registered decision rules of the experimental program and the re-entry-stratified
-evaluation protocol, which operationalizes the acceptance or rejection of model configurations
-as a formal criteria-based choice; and methods of statistical inference (paired bootstrap
-confidence intervals, common random numbers) for the experimental evaluation protocol.
-- In **[A1]** (hierarchy/BLT-adaptation article), the applicant proposed and implemented the
-  method of adaptive decomposition of spatio-temporal data based on entropy metrics (the V-BLT
-  architecture) with multidimensional rotary positional embedding, and the procedural synthesis
-  of video datasets. The two-stage V-BLT architecture (local byte-level encoder/decoder around a
-  global latent transformer) is the applicant's **first realization of the hierarchical
-  adaptation of video generation** — the two-level decomposition whose mature, memory-carrying
-  form Chapter 3 develops; the dissertation's hierarchical line thus runs [A1] (two-stage
-  entropy-adaptive hierarchy) → [A4] (two-level latent hierarchy with coarse-level long-range
-  memory).
-- In **[A2]** (TempVerseFormer, Springer *Neural Computing and Applications* 2026, Scopus, sole
-  author), the applicant developed and mathematically substantiated the algorithm of
-  time-agnostic backpropagation based on reversible transformations, which resolved the
-  computational uncertainty of long-horizon training. The journal is described only as
-  Scopus-indexed; no unverified quartile claim is used.
-- In **[A3]** (consistency-criteria article), the applicant improved the criteria apparatus for
-  the evaluation of complex generative systems by formalizing the notion of «conceptual
-  consistency».
-- In **[A4]** (the fourth article, in finalization) and within the dissertation research, the
-  applicant developed the hierarchical latent video generation model with long-range coarse-level
-  memory; constructed the memory-horizon looping testbed and the re-entry-stratified evaluation
-  protocol; conducted the matched-capacity, matched-NFE study of prediction mechanisms,
-  including the two-sided capability study of energy-based transformers (a characterized negative
-  result); developed the theory of the exactly invertible stochastic recurrence with the
-  three-axis reversibility taxonomy; and performed all complex experimental studies.
+The research uses:
 
-## Validation and Presentation of Results
+- systems-analysis and hierarchical-decomposition methods to define the system boundary,
+  interacting state levels, uncertainty classes, resource terms, and evaluation criteria;
+- information theory and entropy estimation for adaptive spatio-temporal decomposition;
+- probability theory and stochastic-process models for diffusion, autoregressive rollout, and
+  uncertainty analysis;
+- tensor algebra, optimization, attention mechanisms, and deep learning for model construction
+  and parameter identification;
+- reversible computation, backpropagation through time, and checkpointing analysis for temporal
+  activation-memory optimization;
+- common random numbers, paired clip-level cluster bootstrap, training-seed summaries, and
+  simultaneous max-statistic inference for registered comparison families;
+- criteria-based decision rules, protected holdouts, content-addressed run specifications, and
+  immutable artifacts for outcome-independent experimental control.
 
-The main provisions, results, and conclusions of the dissertation were reported and discussed at
-6 scientific conferences: **[AUTHOR: verify every event below against the applicant's records and
-bind each event to the corresponding conference publication.]**
+The statistical sampling unit is the clip. Frames remain inside a resampled clip because rollout
+errors are temporally dependent. Clip-cluster intervals condition on a trained model; training
+seeds form a separate uncertainty level. Null intervals are not interpreted as equivalence without
+a justified smallest effect of interest.
+
+## Scientific Novelty
+
+The scientific novelty is scoped to the developed methods and controlled demonstrations rather
+than to the invention of hierarchical video models as a class.
+
+1. **For the first time, a controlled methodology for systems analysis of memory-dependent
+   re-entry in budgeted video prediction is developed.** It combines a purpose-built
+   memory-horizon testbed with exact geometric observability, pair-specific reach-differential
+   populations, complete false-positive-sensitive endpoints, matched context-token comparisons,
+   protected holdouts, and simultaneous clip-cluster inference. Unlike aggregate evaluation, the
+   methodology isolates records for which the longer package can address relevant history that
+   the comparator cannot.
+
+2. **A fixed-budget operating-region account of hierarchical video memory is established for the
+   tested system.** Hierarchical packages are confirmed at 896 and 1,152 context tokens, the
+   1,792-token point is unresolved, and flat full-resolution packages are confirmed at 2,432 and
+   3,072. At equal nominal 48-frame reach, the confirmed hierarchical packages use 2.67–3.43
+   times fewer context tokens. The contribution is the controlled reach–fidelity measurement and
+   tested bracket, not a universal hierarchy law or a unique continuous crossing.
+
+3. **For the first time in the dissertation’s temporal-optimization line, an exactly reversible
+   stochastic recurrence with stored noise and a three-axis applicability taxonomy is developed
+   and experimentally verified.** It extends time-agnostic reverse replay to the tested
+   stochastic multi-level process while distinguishing reversibility across depth, time, and
+   computation and identifying checkpointing as the relevant practical comparator.
+
+4. **The criteria apparatus for generative systems is improved** by formalizing conceptual,
+   hierarchical, and trajectory consistency and connecting trajectory consistency to
+   self-fed-rollout, object-support, re-entry, identity, miss/extra, and coverage endpoints.
+
+5. **The entropy-based adaptive decomposition method is improved** through N-dimensional rotary
+   positional encoding and spatio-temporal entropy maps, enabling resource allocation to
+   high-information regions while preserving multi-axis positional structure.
+
+## Practical Significance
+
+The practical result is a research software toolkit and evidence-controlled workflow that
+implements:
+
+- entropy-guided adaptive decomposition and RoPE-ND experiments;
+- reversible temporal blocks, reverse replay, and memory measurement;
+- flat, hierarchical, and temporally sparse context packages;
+- a shared latent diffusion-transformer predictor and regression/energy controls;
+- the LoopMom memory-horizon generator, persistent-object Moving-MNIST generator, and complete
+  frame/object metrics;
+- fail-closed experiment authorization, content-addressed run specifications, dataset-purpose
+  logging, immutable evidence artifacts, and generated tables.
+
+The toolkit supports research and education in the modelling of long spatio-temporal processes.
+Its present evidence establishes controlled synthetic and benchmark boundaries; it does not by
+itself establish deployment effectiveness in medical, environmental, or safety-critical
+monitoring.
+
+The reported implementation acts concern the reversible-transformer and entropy-tokenization
+strands:
+
+- ORNETIKA LLC, Kyiv, implementation act dated 14 October 2025;
+- the VNTU educational process for the disciplines *Information Technologies for Monitoring and
+  Analysing the State of Complex Systems* and *Internet of Things and Intelligent Data Analysis*,
+  implementation act dated 19 September 2025.
+
+The final submission should reproduce the wording of those acts exactly in the appendices.
+
+## Reliability and Validation of the Results
+
+Reliability is supported by analytical derivations, controlled synthetic instruments, protected
+and purpose-locked holdouts, multiple training seeds where registered, common-random-number paired
+evaluation, clip-cluster resampling, simultaneous inference, independent codec and sampler
+interventions, negative-replication reporting, hash-pinned datasets and artifacts, and executable
+CPU validation.
+
+The central hierarchy result is limited to the tested representation, predictor family, budgets,
+and datasets. LoopMom is a mechanistic synthetic instrument rather than natural-video evidence.
+Persistent-object Moving-MNIST is a valid external synthetic boundary, not a replication of
+LoopMom’s exact geometry. The reversible-memory result is independently measured and is not
+claimed as the cause of the context-package effects.
+
+## Personal Contribution of the Applicant
+
+The applicant’s contribution is separated by publication strand:
+
+- In **[A1]**, the applicant developed and implemented entropy-based adaptive decomposition of
+  spatio-temporal data, RoPE-ND, and the corresponding video-data experiments.
+- In **[A2]**, a sole-author article, the applicant developed and mathematically substantiated
+  TempVerseFormer and time-agnostic backpropagation based on reversible transformations.
+- In **[A3]**, the applicant developed the consistency-criteria treatment used in the
+  dissertation’s systems-analysis framework.
+- In **[A4]** and the associated dissertation programme, the applicant developed the controlled
+  context-packaging study, hierarchical latent predictor, LoopMom instrument, pair-specific
+  reach populations, persistent-object evaluation, experiment-control system, and the complete
+  reach–fidelity evidence chain.
+- The exactly reversible stochastic recurrence and applicability taxonomy are dissertation
+  developments connected to, but separately scoped from, the published TempVerseFormer result.
+
+For co-authored works, the final institutional version must reproduce the formally approved
+contribution statements.
+
+## Approbation and Publications
+
+The main provisions and results were reported at six scientific conferences:
 
 - 50th Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2021;
 - 51st Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2022;
@@ -573,51 +465,33 @@ bind each event to the corresponding conference publication.]**
 - 53rd Scientific and Technical Conference of VNTU Departments, Vinnytsia, 2024;
 - Dynamical System Modeling and Stability Investigation (DSMSI-2023), Kyiv, 2023.
 
-## Publications
+**[AUTHOR: verify every event, date, contribution, and corresponding publication against the
+applicant’s records.]**
 
-Based on the dissertation topic, 10 scientific works were published, including: 3 articles in
-professional journals of Ukraine included in the Ministry of Education and Science list for
-specialty 124 ([A1], [A3], [A4]);
-1 article in an international scientific journal indexed by the Scopus scientometric database
-([A2]); and 6 abstracts of reports at international and all-Ukrainian scientific-practical
-conferences. **[AUTHOR: supply the venue/status of [A4] and the six conference entries, then
-confirm that the 3+1+6 count is correct.]**
+The dissertation currently records four article strands—[A1], [A2], [A3], and the fourth article
+[A4]—plus six conference theses. **[AUTHOR: supply the target venue/status of [A4], the six
+conference entries, and the institutionally approved publication count and categories.]**
 
-## Dissertation Structure and Length
+## Dissertation Structure and Volume
 
-The dissertation consists of an introduction, four chapters, conclusions to each chapter, general
-conclusions, a list of references, and appendices.
+The dissertation consists of an Introduction, four chapters, chapter conclusions, General
+Conclusions, references, and appendices.
 
-- **Chapter 1** performs the systems analysis of hierarchical video generation processes and the
-  criteria of their consistency: generative video models as complex dynamic control systems;
-  structural, hierarchical, and temporal decomposition; the classification of uncertainty types;
-  the analysis of existing approaches (flat long-context diffusion and autoregressive generators
-  and their resource/consistency barrier; hierarchical latent modeling as the remedy; the
-  instability of discrete hierarchical video models; energy-based models as reviewed literature);
-  the improved consistency-criteria apparatus; and the statement of the research tasks.
-- **Chapter 2** develops the mathematical methods for uncertainty estimation and
-  resource-efficient modeling of multi-step video processes: the entropy-based V-BLT method,
-  RoPE-ND, reversible transformations with temporal chaining (TempVerseFormer), time-agnostic
-  backpropagation, and the exactly invertible stochastic recurrence with the three-axis
-  reversibility taxonomy.
-- **Chapter 3** develops the multi-stream mathematical model of video sequence generation with
-  context packaged across temporal rate and spatial resolution in compact hierarchical latent state spaces: the two-level
-  latent state space, the iterative-refinement generation core, joint inter-level attention with
-  unidirectional control (information-design asymmetry plus gradient detachment at the
-  representation and rollout boundaries), the autoregressive rollout algorithm with its memory
-  and complexity estimates, and the formal definition of the memory-horizon testbed with the
-  re-entry-stratified evaluation protocol.
-- **Chapter 4** presents the experimental research and practical application: the information
-  base; the matched-capacity, matched-NFE mechanism study (including the two-sided characterized study of
-  energy-based descent); the single-step and 152-frame autoregressive-rollout (after a 48-frame
-  ground-truth warm-up) evaluations of the hierarchical
-  model; the memory-consumption measurements; and the implementations.
+- **Chapter 1** analyses video generation as a complex hierarchical system, classifies its
+  uncertainties and consistency criteria, reviews flat, hierarchical, memory-augmented, and
+  energy-based approaches, and states the research tasks.
+- **Chapter 2** develops entropy-based adaptive decomposition, RoPE-ND, reversible temporal
+  transformations, time-agnostic backpropagation, the stochastic reversible recurrence, and the
+  applicability boundary relative to checkpointing.
+- **Chapter 3** develops the compact two-level latent state, joint-attention multi-stream
+  predictor, v-parameterized window diffusion, autoregressive rollout, token-cost model, LoopMom
+  instrument, complete endpoints, and clip-cluster inference.
+- **Chapter 4** evaluates mechanism selection, untouched reach confirmation, the tested
+  reach–fidelity frontier, package shape, robustness, negative replication, explicit access, the
+  persistent-object boundary, practical implementation, and limitations.
 
-The total volume of the work is **[AUTHOR: final page count]** pages; the main part comprises
-**[AUTHOR: final main-text page count]** pages, with the final figure and table counts obtained
-mechanically during typesetting. The bound scientific bibliography currently contains 79
-external sources. The appendices contain copies of the implementation acts, the preregistration
-trail, and the software and experiment-configuration map of the developed information technology.
+The final page, figure, table, reference, and appendix counts must be inserted after institutional
+typesetting. **[AUTHOR: supply the final pagination and confirm the appendix set.]**
 
 <div style="page-break-after: always;"></div>
 
@@ -629,18 +503,19 @@ The development of artificial-intelligence and machine-learning methods over the
 produced new classes of mathematical models capable of solving complex problems of data analysis,
 prediction, and synthesis. A special place among them is occupied by generative models, which have
 transformed from simple statistical tools into extremely complex multi-level information systems.
-Modern generative models — in particular those operating on spatio-temporal video data — hold
-billions of parameters and demand enormous computational resources [1]. Yet despite impressive visual results, the control of the generation
-process in such models remains insufficiently formalized. For the most part these models are
-treated as "black-box" deep-learning algorithms, which complicates guaranteeing the stability of
-their operation, the predictability of their results, and their resource efficiency [2, 3].
+Large generative models — including systems operating on spatio-temporal video data — can contain
+billions of parameters and require substantial computational resources [38]. Despite impressive visual results, their long-horizon
+state, resource, and failure behaviour is often difficult to characterize from aggregate output
+quality alone. Their learned components can be difficult to interpret, which complicates
+analysis of stability, predictability, and resource efficiency [39, 40].
 
 To address these problems it is necessary to change the paradigm of perceiving generative
 algorithms and to consider them as open complex dynamic systems. In this formulation the process
 of video data generation is not merely a mathematical transformation of information but a
 purposeful process of changing the state of a complex system under control actions and the
-influence of the external environment. Iterative generative models — diffusion models [4], autoregressive systems, and energy-based models employing Markov chain Monte Carlo —
-fall squarely under the definition of a complex dynamic control system.
+influence of the external environment. Iterative generative models — diffusion models [2], autoregressive systems, and energy-based models employing Markov chain Monte Carlo —
+can usefully be analysed as complex dynamic systems with state, inputs, outputs, feedback, and
+resource constraints.
 
 A complex system controlling the process of video data generation is characterized by input
 actions, a state space, and output data. The input actions of such a system are the initial noise
@@ -658,7 +533,7 @@ complex dynamic control system is shown in Fig. 1.1.
 source, previous frames and actions as control signals, and autoregressive feedback makes output
 quality a property of the complete self-fed trajectory. Source: author’s schematic.
 
-In accordance with classical systems theory [5], the object
+In accordance with classical systems theory [41], the object
 under study is characterized by a large number of interrelated elements, nonlinear interactions,
 emergence, and a hierarchical structure. In the context of computer vision the elements of the
 system are individual pixels or latent features (tokens). Their interaction is provided by
@@ -667,10 +542,10 @@ Nonlinearity is achieved through nonlinear activation functions in the artificia
 that form the core of the system.
 
 An important characteristic of such a system is the iterative nature of its state transitions.
-Unlike generative adversarial networks (GAN) [6] or variational
-autoencoders (VAE) [7], which attempt to map an input noise vector to an
-output image in a single computation step, iterative models such as denoising diffusion
-probabilistic models (DDPM) [4] decompose this process into a multitude of discrete steps.
+Unlike common GAN [42] or VAE
+[43] decoders, which synthesize an output through one feed-forward
+inference path, iterative models such as denoising diffusion probabilistic models (DDPM)
+[2] explicitly decompose sampling into many state transitions.
 This approach fundamentally changes the mathematical nature of the system: the state evolves in
 time (or in the pseudo-time of optimization steps), and every next state depends on the previous
 one, the current parameters, and the control action.
@@ -686,34 +561,29 @@ $\theta$ is the parameter matrix of the system (the neural network weights); $\x
 stochastic component (the random number generator); and $f$ is the nonlinear transition function
 describing the law of state change.
 
-The presence of the stochastic component $\xi_t$ indicates that the system operates under
-uncertainty. Every generation step is a probabilistic process, and the system produces not a
-deterministic result but a sample from a specified multidimensional probability distribution.
-According to research on complex systems under risk and uncertainty [8, 9], such operating conditions make the system
-extremely sensitive to initial conditions and create the threat of anomalous states. In
-generative models this manifests as artifacts in images or violations of physical logic in video.
+When the stochastic component $\xi_t$ is present, the transition samples from a conditional
+distribution; deterministic samplers correspond to a fixed or zero stochastic term. Systems
+methodology under risk and uncertainty [5, 6] motivates tracking how initial state, conditioning, sampling, and feedback
+affect later outputs. In generative video, failures can appear as visual artifacts, temporal
+discontinuities, or violations of the intended scene dynamics.
 
-A complex system always possesses a hierarchical structure [10],
-where every level describes the object with a certain degree of detail or abstraction. In video
-models this hierarchy is expressed with particular clarity. At the **macro level — the highest
-level of abstraction** — the system operates with semantic concepts (global style, the mutual
-arrangement of objects, scene composition). At the **meso level**, structural contours and
-geometry are determined. At the **micro level — the lowest level of abstraction, the highest
-level of detail** — high-frequency textures, lighting, and individual pixels are formed.
+Complex systems can be decomposed into interacting levels of detail or abstraction
+[7]. For video generation, a useful analytical decomposition
+distinguishes a **macro level** of scene composition and global relations, a **meso level** of
+geometry and object structure, and a **micro level** of high-frequency appearance, lighting, and
+pixels. This is a modelling choice used to expose cross-level consistency requirements; it is not
+a claim that every implemented model contains three explicit modules.
 
-It is the hierarchical structure that gives rise to such a systemic property as emergence: a
-meaningful image arises only thanks to complex spatial and temporal correlations between elements
-at different levels of the hierarchy. If the system controlling the generation process cannot
-ensure coherence between these levels, the emergent property is destroyed (for example, an object
-receives a correct texture imposed on a distorted global shape). Hence the task of ensuring
-stable generation reduces to the task of ensuring the stability of a complex hierarchical system.
+Meaningful video depends on spatial and temporal relations across these descriptive scales. A
+failure of cross-scale coherence may, for example, place plausible texture on an inconsistent
+shape. Hierarchical consistency is therefore one component of stable generation, alongside
+temporal, trajectory, conceptual, and object-level criteria developed later in the chapter.
 
 ### 1.1.1 Generation as an optimal-control problem
 
-Traditional deep-learning approaches attempt to solve the stability problem extensively, by
-increasing the number of parameters $\theta$ and the volume of the training sample. This path,
-however, has physical limits and leads to exponential growth of computational complexity. A need
-therefore arises for mathematical methods of optimal control of the generation trajectory.
+Increasing model capacity and training data can improve generation, but it also raises training
+and inference cost and does not by itself identify which state or trajectory constraint is
+violated. This motivates a complementary control formulation of the generation trajectory.
 
 Consider the generation process as an optimal-control problem. At the initial moment $t = 0$ the
 system state $x_0$ is fully chaotic (a pure-noise distribution), corresponding to the state of
@@ -828,7 +698,7 @@ hierarchical (semantic), and temporal.
 
 Structural (functional) decomposition treats the generative system as a set of functional
 information-processing blocks. In most modern architectures, irrespective of their mathematical
-basis, three basic macro-subsystems are distinguished [11].
+basis, three basic macro-subsystems are distinguished [44].
 
 The first subsystem is the **Encoder** — the block of condition preprocessing and encoding. Its
 function is to transform "raw" control signals (for example, a textual description, semantic
@@ -856,7 +726,7 @@ concentrated. Its detailed study requires the deeper kinds of decomposition that
 
 ### 1.2.2 Hierarchical decomposition of the state space
 
-Complex systems have a pronounced hierarchical nature [10].
+Complex systems have a pronounced hierarchical nature [7].
 Accordingly, the state space of the central generation subsystem cannot be "flat" — it must be
 decomposed into macro, meso, and micro levels.
 
@@ -872,8 +742,8 @@ At the **micro level** (high resolution) the questions of local pixel organizati
 the coherence of textures, lighting, and micro-details.
 
 The problem of many modern generative systems — for example, standard diffusion models built over
-variational autoencoders [12, 7] — is that they operate in a
-single-level latent space, ignoring the necessity of explicit hierarchical decomposition [13, 14, 15]. This produces an internal control conflict in which macro- and
+variational autoencoders [3, 43] — is that they operate in a
+single-level latent space, ignoring the necessity of explicit hierarchical decomposition [20, 35, 36]. This produces an internal control conflict in which macro- and
 micro-decisions are taken simultaneously. The mixing of levels is a direct source of generation
 anomalies: a correct object texture may be imposed on a distorted global shape.
 
@@ -930,23 +800,23 @@ the sliding context window bounds directly addressable history. Source: author�
 
 The performed decomposition of the complex system permits a classification of the kinds of
 uncertainty arising in it. In accordance with the theory of systems analysis of complex systems
-under risk [8, 9] and system methodology [8, 9], uncertainties are classified by source and nature. In the video generation system
+under risk [5, 6] and system methodology [5, 6], uncertainties are classified by source and nature. In the video generation system
 under study, four principal kinds of uncertainty are distinguished: informational,
 structural-algorithmic, computational, and target uncertainty.
 
 **Informational uncertainty** is conditioned by the very nature of the iterative generative
 process, which begins from a state of pure noise (the state of maximal entropy). Moreover,
-informational uncertainty is inevitably present in the control actions. For example, the textual
-description "a car drives along a road" or a coarse semantic mask is always incomplete: it
+informational uncertainty is commonly present in the control actions. For example, the textual
+description "a car drives along a road" or a coarse semantic mask is usually incomplete: it
 specifies only boundary macro-conditions, leaving a multitude of micro-details (the shape of the
 headlights, the texture of the asphalt, the lighting) undescribed. The task of the complex system
 is the correct and plausible resolution of this uncertainty during generation. If the system
 completes the missing information incorrectly, "hallucinations" and anomalies arise, rendering
-the result inconsistent [16].
+the result inconsistent [45].
 
-**Structural-algorithmic uncertainty** is connected with the rigid limitations of the
-mathematical apparatus itself (the neural network). Models always have finite capacity and use
-architectural inductive biases. A separate and extremely destructive manifestation of this
+**Structural-algorithmic uncertainty** is connected with limitations and inductive biases of the
+mathematical apparatus itself (the neural network). Implemented models have finite capacity. A
+separate manifestation of this
 uncertainty is the problem of spatio-temporal tokenization. Standard transformer architectures
 (ViT, ViViT) partition the image into a regular grid of fixed-size patches, ignoring the fact
 that the visual signal has non-uniform information density.
@@ -957,44 +827,40 @@ that the visual signal has non-uniform information density.
 patches assign equal token cost to static background and to high-information moving contours.
 Source: author’s schematic.
 
-As follows from the principle of optimal control, a uniform distribution of resources across
-monotonous background and complex moving objects is suboptimal. This gives rise to structural
-uncertainty: computational resources are lacking where they are genuinely needed and are wasted
-where there are no objects or dynamics. Solving this problem requires the creation of adaptive
-tokenization systems based on the measurement of local entropy (developed in Chapter 2).
+Uniform allocation can be inefficient when large low-variation regions and small high-detail
+moving regions have different representational requirements. This motivates—not logically
+requires—adaptive tokenization based on local entropy, developed and evaluated in Chapter 2.
 
 **Computational uncertainty** is the most critical for iterative multi-step models. It arises on
 two fronts, corresponding to the two temporal axes of §1.2.3. On the training front (the
 identification of model parameters), the backpropagation-through-time algorithm (BPTT) requires
 storing in operating memory all intermediate states for every step of the modeled process; since
 the state space of visual data is enormous, the linear growth $O(N \cdot K)$ of memory
-requirements quickly exceeds the physical limits of the hardware. The easiest "solution" — cutting
-the optimization trajectories down to a few steps — renders the system incapable of modeling
-long-term dynamics. On the operation front, the flat attention context over the physical time
+requirements can exceed the physical limits of the hardware. Truncating the differentiated
+trajectory removes gradient paths beyond the selected horizon and may therefore impair learning
+of long-range effects. On the operation front, the flat attention context over the physical time
 axis inflates the key–value memory linearly and the computation quadratically with the number of
 context tokens (§1.3.1, eq. (1.7)), so the memory horizon of a flat system is capped by the
-hardware precisely in the regimes where a long horizon is required. The task of radically
-reducing memory consumption — for gradient computation along deep trajectories and for context
-retention along long horizons — is a critically necessary condition for the viability of
-multi-step generative systems.
+hardware precisely in the regimes where a long horizon is required. Reducing memory consumption
+for gradient computation along deep trajectories and for context retention along long horizons
+is therefore an important design objective for multi-step generative systems.
 
 **Target uncertainty** arises when the criterion optimized by the model during training does not
 coincide with the global goal during generation. For example, diffusion models optimize the local
 error of noise prediction at one isolated step, but during generation these steps are chained
-into a long sequence in which errors accumulate. The absence of a single global objective
-functional of the form (1.2) makes the control process "blind" to the final result.
+into a long sequence in which errors accumulate. This local-versus-trajectory mismatch can leave
+terminal rollout quality only indirectly optimized.
 
 The performed multidimensional decomposition of the video generation control system and the
 classification of the identified kinds of uncertainty form a clear methodological basis for the
-further research. Systems analysis shows incontrovertibly that to ensure high generation
-consistency and to solve the anomaly problem it is insufficient to improve individual
-architectural elements empirically.
+further research. This decomposition shows why improving one architectural element or one
+aggregate metric need not resolve the complete consistency problem.
 
-What is required is a comprehensive mathematical approach comprising: methods of adaptive
+The dissertation therefore investigates a combined methodological toolkit comprising: methods of adaptive
 entropy-based state estimation for resolving spatial uncertainty; resource-saving algorithms
 based on reversible computation for overcoming computational uncertainty; and the creation of a
 new **hierarchical control apparatus over compact continuous hierarchical latent state spaces**
-for eliminating structural and target uncertainty.
+for measuring and reducing structural and target uncertainty.
 
 The next subsection conducts a detailed critical analysis of existing approaches to the
 mathematical modeling of visual data — diffusion, hierarchical latent and autoregressive, and
@@ -1007,21 +873,20 @@ To solve the posed problems of systems analysis and to construct an intelligent 
 technology of video data generation, a thorough critical review of the existing mathematical
 approaches to modeling complex multimodal spatio-temporal distributions is necessary. The modern
 scientific landscape offers several competing paradigms, each with its own architectural
-features, advantages, and fundamental systemic limitations. This subsection reviews three classes
+features, advantages, and limitations. This subsection reviews three classes
 of models **in the order dictated by the argument of this dissertation**: (i) diffusion models —
-the state of the art in generation quality, whose systemic limitation is the monolithic flat
-long-context attention; (ii) hierarchical latent and autoregressive approaches — the remedy
-direction, within which the choice between discrete and continuous latent spaces is examined;
+one major route to high generation quality, with costly dense long-context variants; (ii)
+hierarchical latent and autoregressive approaches — a possible remedy direction, within which the
+choice between discrete and continuous latent spaces is examined;
 (iii) energy-based models — reviewed as literature together with the resource-efficiency methods
 they motivated. The focus criteria are systemic consistency and resource control.
 
 ### 1.3.1 Diffusion models: generation quality and the flat long-context barrier
 
-Denoising diffusion probabilistic models (DDPM) [4] and their non-Markovian
-generalizations (DDIM) [17] are today the dominant standard in high-quality image and
-video generation. Unlike traditional generative approaches such as GAN [6], which attempt
-to map random noise directly onto the data, diffusion models implement a more effective and
-mathematically grounded iterative strategy.
+Denoising diffusion probabilistic models (DDPM) [2] and deterministic/non-Markovian
+samplers such as DDIM [46] are major approaches to high-quality image and video
+generation. Unlike a GAN generator [42], which maps noise to data through one learned
+forward path, diffusion models use an explicitly iterative denoising process.
 
 The mathematical basis of the diffusion approach rests on concepts of non-equilibrium
 thermodynamics. The modeling process is decomposed into two mutually inverse processes: forward
@@ -1060,14 +925,20 @@ $$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, t}\left[\,\bigl\|\epsilon - \ep
 noise. The sequence is conceptual and does not depict an experimental sample. Source: author’s
 schematic.
 
-This "forward–reverse" paradigm makes it possible to generate images of extremely high quality:
-the decomposition of denoising into steps naturally decomposes the learning problem and
-simplifies the model's acquisition of features. Classical pixel-space diffusion models, however,
-face colossal memory deficits, which led to latent diffusion models (LDM) [12] operating in
-the compressed space of a variational autoencoder. The architectural evolution then displayed a
-stable trend away from convolutional U-Nets toward transformers: Diffusion Transformers (DiT)
-[18] demonstrated that processing noised images as sequences of patches scales better, and
-in the video domain this approach evolved into systems of the Sora class [19], operating on spatio-temporal latent patches and generating video up to a minute long.
+The forward–reverse construction supports high-quality synthesis by turning sampling into a
+sequence of denoising decisions. Pixel-space diffusion is expensive at high spatial resolution;
+latent diffusion models (LDM) [3] reduce this cost by operating in a compressed
+autoencoder space. Diffusion Transformers (DiT) [4] provide a transformer alternative to
+convolutional denoisers, and video systems such as Sora [47] operate on
+spatio-temporal latent patches at substantially larger data and model scales.
+
+Modern video diffusion and token generators extend this lineage through spatio-temporal
+denoising, latent video diffusion, large-scale video pretraining, variable-length token
+generation, and masked video transformers [48, 49, 50, 51, 52, 53, 54, 55].
+Interactive and autonomous world models further shift evaluation from isolated clips toward
+action-conditioned state prediction and control [56, 57, 58, 59, 60, 61].
+These systems establish the scale and practical importance of the problem, but they do not remove
+the need to measure which historical information is retained under a bounded state interface.
 
 ![Latent diffusion architecture](../../figures/fig38_latent_diffusion.png)
 
@@ -1075,8 +946,8 @@ in the video domain this approach evolved into systems of the Sora class [19], o
 but it does not by itself solve the temporal-memory allocation problem. Source: author’s
 schematic.
 
-Despite their dominant generation quality, modern diffusion video systems possess systemic
-limitations that are the direct object of this dissertation's analysis. **The paradigm-level
+Despite their generation quality, dense-context diffusion video systems retain resource and
+long-horizon limitations that are the direct object of this dissertation's analysis. **The paradigm-level
 strengths of iterative refinement are not in question here** — on the contrary, Chapter 4's
 matched-capacity, matched-NFE mechanism study confirms empirically that an iterative refinement (diffusion)
 core commits to sharp, correctly located content where a regression core averages over futures;
@@ -1084,11 +955,9 @@ the per-frame generation core of the model developed in Chapter 3 is itself a di
 selected by exactly that controlled analysis. The limitations lie elsewhere — in *how the
 temporal context is represented and scaled*.
 
-The first limitation is the **flat, single-level latent space**. The latent space of the
-underlying autoencoder is single-level; the system is forced to solve macro-problems (global
-composition) and micro-problems (textures) simultaneously within one tensor, which precludes
-independent control of abstraction levels and, per §1.2.2, is a direct source of hierarchical
-inconsistency.
+One limitation of a **flat, single-level latent interface** is that global composition and local
+appearance share one token field. This does not make inconsistency inevitable, but it prevents
+explicit budget allocation and separate control across representation levels.
 
 The second limitation is the **resource blow-up of flat long-context attention**. To lengthen the
 memory horizon, a flat video transformer must lengthen its spatio-temporal token context. For a
@@ -1098,20 +967,19 @@ is $L = T_w \cdot N_s$, and the principal costs of the attention mechanism scale
 $$C_{\text{compute}} = O(L^2 \cdot D) = O(T_w^2 N_s^2 D), \qquad
 M_{\text{KV}} = O(L \cdot D) = O(T_w N_s D) \tag{1.7}$$
 
-where $D$ is the model width: computation grows quadratically and key–value cache memory linearly
-with the context length. Doubling the memory horizon of a flat system quadruples its attention
-computation and doubles its inference memory — the resource cost is paid *at every generation
-step, for every frame*, precisely at the horizons where long memory is most needed. This is the
-central resource contradiction of flat long-context modeling.
+where $D$ is the model width. For a standard dense attention layer, attention arithmetic grows
+quadratically with context length; when past keys and values are cached, cache storage grows
+linearly. Kernel improvements can reduce data movement and constants but do not remove the need
+to choose which historical tokens remain in the state interface.
 
 The third limitation is the **degradation of long-horizon temporal consistency** even where a
 long flat context is affordable. Empirical evaluations of long-video generators and world models
 show that content which leaves the field of view is not restored consistently upon its return,
-and that consistency metrics degrade with the distance to the relevant past [20, 21, 22, 23]. In systems-analysis terms, the flat
+and that consistency metrics degrade with the distance to the relevant past [62, 22, 24, 23]. In systems-analysis terms, the flat
 context window imposes a hard memory horizon (§1.2.3): information older than the window is not
 merely expensive — it is absent from the system state. Related to this is **target uncertainty**:
 during training the model optimizes the local error of one isolated step, while during generation
-errors accumulate along the whole autoregressive chain — the phenomenon of exposure bias [24, 25].
+errors accumulate along the whole autoregressive chain — the phenomenon of exposure bias [25, 26].
 
 ![Flat long-context barrier](../../figures/fig39_flat_long_context_barrier.png)
 
@@ -1132,8 +1000,8 @@ spaces made in this work.
 
 **Patch-based autoregressive transformers.** This line of work originates in the transfer of
 natural-language-processing principles to computer vision. The standard approach, popularized by
-the Vision Transformer (ViT) [26] and its video adaptations ViViT [27] and Video
-Swin Transformer [28], partitions the video into a grid of non-overlapping
+the Vision Transformer (ViT) [63] and its video adaptations ViViT [64] and Video
+Swin Transformer [65], partitions the video into a grid of non-overlapping
 spatio-temporal patches that are linearized and fed to a transformer. The principal advantage of
 transformer models is their capacity to model long-range dependencies between distant regions of
 the video; their principal cost is exactly the quadratic attention complexity (1.7). Although
@@ -1142,27 +1010,32 @@ a single-level latent space with fixed patching — remains. Fixed-grid tokeniza
 rigid, content-blind discretization: static low-information background and dynamic scene regions
 receive equal computational budgets, which §1.2.4 identified as a source of
 structural-algorithmic uncertainty. An analogous problem in language modeling was resolved by the
-Byte Latent Transformer (BLT) [29], which groups bytes into latent patches of variable size
+Byte Latent Transformer (BLT) [66], which groups bytes into latent patches of variable size
 governed by information density (entropy). Transferring this paradigm to the visual modality
 resolves the rigid-tokenization component of structural uncertainty; the V-BLT architecture
 developed in this dissertation realizes that transfer and is presented in Chapter 2. *(Preserved
 from old §1.3.2.)*
 
 **Discrete-token autoregressive models.** A prominent branch of autoregressive video modeling
-operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [30] compresses frames into grids of codebook indices, over which an autoregressive
-transformer learns the video distribution — the VideoGPT line [31] and its successors,
-including long-video architectures with compressed memory [15]. The attraction of this paradigm is genuine: discrete tokens give a clean autoregressive
+operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [67] compresses frames into grids of codebook indices, over which an autoregressive
+transformer learns the video distribution — the VideoGPT line [68] and its successors,
+including long-video architectures with compressed memory [36]. The attraction of this paradigm is genuine: discrete tokens give a clean autoregressive
 likelihood, natural compatibility with language-model tooling, and strong compression.
 
 Discrete bottlenecks also introduce specific optimization risks—straight-through assignment,
 codebook underutilization, dead codes and level collapse—that are documented in the VQ
-literature [30, 31]. The implemented fourth-article system
+literature [67, 68]. The implemented fourth-article system
 therefore uses **compact continuous hierarchical latent state spaces**, in which both levels are
 end-to-end differentiable and independently decodable. This is an implementation choice, not an
 empirical conclusion that continuous representations are universally superior: the present
 repository contains no controlled hierarchical-VQ-versus-continuous comparison and makes no such
 claim. Representation sensitivity is instead tested within the continuous-codec family by the
 pre-registered alternate-codec-seed study in Chapter 4.
+
+Hierarchical latent variables are themselves a broad prior lineage, including deep
+vector-quantized and variational hierarchies [69, 70, 71, 72]. The dissertation therefore assigns novelty to its systems methodology and
+controlled video-memory demonstration, not to the general idea of arranging latent variables at
+multiple levels.
 
 ![Representation interfaces and empirical scope](../../figures/fig56_representation_scope.png)
 
@@ -1174,9 +1047,9 @@ Source: author’s schematic.
 **Hierarchical latent video models.** The direct remedy for the flat-latent limitation is the
 class of models whose latent state space is explicitly multi-level, with distinct temporal or
 spatial rates per level. Early representatives use multi-rate recurrent latents — clockwork
-variational hierarchies [13] — where upper levels tick more slowly and thereby
+variational hierarchies [20] — where upper levels tick more slowly and thereby
 retain longer temporal context. The modern form of this idea in the diffusion family is the
-hierarchical latent video diffusion model of the MilliVid class [32]: a compact hierarchy of continuous latents (a low-rate *coarse* level and
+hierarchical latent video diffusion model of the MilliVid class [37]: a compact hierarchy of continuous latents (a low-rate *coarse* level and
 a high-rate *fine* level, each independently decodable to pixels), a diffusion core that denoises
 the levels jointly with cross-level attention, and autoregressive rollout along physical time.
 The systemic significance of this spatial construction follows directly from eq. (1.7): because the
@@ -1188,6 +1061,15 @@ carrier of long-range temporal memory. Temporal subsampling provides a distinct 
 span and is compared directly in Chapter 4. *(Chapter 3 develops the spatial form with a two-level
 continuous latent interface and unidirectional context transfer; Chapter 4 treats it as one point
 in the broader context-packaging design space.)*
+
+Recent work broadens the design space beyond hierarchical latent state. WorldPack compresses and
+retrieves trajectory memory; CaR/SceneFly and MemLearner study implicit or learned retrieval;
+GIM-World introduces geometry-aware memory; and MBench and MemoBench construct explicit
+long-memory evaluation tasks [23, 73, 74, 75, 76, 77, 22]. These papers
+make architecture-level novelty untenable for generic “video memory.” The dissertation’s novelty
+is instead the controlled package-by-budget intervention, exact LoopMom observability,
+pair-specific reach populations, tested lower and upper inversions, and outcome-independent
+simultaneous inference.
 
 ![Context-package comparison](../../figures/fig40_context_package_comparison.png)
 
@@ -1207,7 +1089,7 @@ without the flat blow-up (1.7).
 
 **Methodology for comparing hierarchical configurations.** The canonical comparison methodology
 of this class is the Clockwork-VAE benchmark
-[13]: one configuration table over several datasets and metrics, quality-retention
+[20]: one configuration table over several datasets and metrics, quality-retention
 curves over long open-loop rollouts, and level-content probes (an upper level following its
 prior while lower levels see the context). The dissertation adopts this *format* in §4.4 while
 tightening three controls the original lacks — a systems-analysis point in its own right. First,
@@ -1223,8 +1105,8 @@ CW-VAE on such aggregates on sparse-foreground video — hence the foreground-ma
 re-entry-stratified protocol of §3.4. It is also noted that the CW-VAE paper's depth evidence is
 an information-allocation (KL-per-level) analysis rather than a prediction-quality dose–response;
 the quality-per-depth cells are measured directly in §4.4.5. The temporal-abstraction relatives —
-VTA [33] (whose lower level resets when the upper level ticks) and the clockwork recurrent
-lineage [34] — complete the review of hierarchy *shapes*:
+VTA [34] (whose lower level resets when the upper level ticks) and the clockwork recurrent
+lineage [33] — complete the review of hierarchy *shapes*:
 spatial and temporal abstraction, depth and budget allocation are four axes of the design space.
 Which form of hierarchy pays and where is therefore a measurement question (§4.4), not a
 postulate.
@@ -1238,47 +1120,44 @@ this dissertation.
 ### 1.3.3 Energy-based models and resource efficiency
 
 The third class of the review is that of energy-based models (EBM). The EBM paradigm originates
-in statistical physics [35, 36]. Its basic principle is that the probability of a data configuration $x$ is defined by
+in statistical physics [78, 79]. Its basic principle is that the probability of a data configuration $x$ is defined by
 the Gibbs/Boltzmann distribution:
 
 $$p_\theta(x) = \frac{\exp\left(-E_\theta(x)\right)}{Z(\theta)} \tag{1.9}$$
 
 where $E_\theta(x)$ is a scalar energy function parameterized by a neural network and $Z(\theta)$
-is the partition function. The lower the energy, the higher the probability of the state and the
-more consistent it is deemed.
+is the partition function. Under a calibrated model, lower energy corresponds to higher model
+density; it does not automatically imply semantic or temporal consistency.
 
-An important theoretical bridge connects EBM to diffusion models through score matching [37, 38]: the score function approximated by a diffusion model is the negative gradient of
+An important theoretical bridge connects EBM to diffusion models through score matching [80, 81]: the score function approximated by a diffusion model is the negative gradient of
 an (implicit) energy,
 
 $$\nabla_x \log p(x) = -\nabla_x E(x) \tag{1.10}$$
 
-From the standpoint of systems analysis the attraction of this paradigm is evident: the energy is
-a single explicit optimization criterion; the system always moves toward equilibrium; and the
-energy value serves as a universal indicator of anomalies in a generated frame — if an artifact
-is generated, the local energy grows. Transformer-parameterized realizations of this idea —
-Energy-Based Transformers (EBT) [39] — extend it to autoregressive
-video modeling and add a systemically appealing property: the number of descent steps (1.11) is a
-natural "think-longer" control knob, allowing the system to spend more computation on harder
-predictions.
+From the standpoint of systems analysis, the attraction is that the energy supplies an explicit
+scalar criterion and its input gradient defines an inference direction. This does not guarantee
+convergence, calibrated probabilities, or anomaly detection: those properties depend on the
+learned landscape and sampler. Transformer-parameterized realizations such as Energy-Based
+Transformers (EBT) [82] expose the number of descent steps as an
+inference-compute control. This dissertation evaluates that mechanism for conditional video
+prediction without attributing that task or result to the original EBT publication.
 
 However, the broad application of EBM is critically limited by computational uncertainty. To
 train such a model, backpropagation must be threaded through $K$ MCMC iterations of the forward
 pass; BPTT memory grows as $O(K \cdot L)$, where $L$ is the network depth, and since every MCMC
 iteration requires a gradient with respect to the input (double backward), memory overflow occurs
-rapidly [40, 41], precluding deep optimization trajectories for
+rapidly [83, 84], precluding deep optimization trajectories for
 high-quality video data.
 
 Approaches to this barrier constitute the resource-efficiency toolbox of multi-step systems.
-Gradient checkpointing [42, 43] trades computation for memory by storing
-only a subset of activations and recomputing the rest, reducing memory to the order of the square
-root of the trajectory length. Neural ODEs [44] offer constant memory through
-adjoint integration of differential equations but suffer from numerical instability. The most
-promising direction is discrete reversible neural networks — RevNet [45] and its
-transformer form RevViT [46] — which restore activations mathematically instead of
-caching them. It is this apparatus of reversible computation, applied to removing the resource
-constraints of long-horizon *temporal* modeling, that forms the core of the TempVerseFormer
-method presented in Chapter 2 and underlies the constant-memory autoregressive rollout of the
-hierarchical model of Chapter 3.
+Gradient checkpointing [30, 31] trades computation for memory by storing
+only a subset of activations and recomputing the rest; a balanced segment schedule can achieve a
+square-root memory trade-off in trajectory length. Neural ODE adjoints [85] can avoid
+retaining the full forward tape but introduce reconstruction and numerical-accuracy concerns.
+Discrete reversible neural networks—RevNet [32] and RevViT [86]—instead
+reconstruct layer inputs algebraically. This apparatus forms the core of TempVerseFormer in
+Chapter 2. It is **not** used to train the final Chapter 3 hierarchical predictor through its
+rollout; the two resource strands are synthesized methodologically and measured separately.
 
 An honest forward reference completes this review. In the present research the energy-based
 mechanism was not adopted a priori but *examined experimentally* under matched conditions: the
@@ -1297,38 +1176,39 @@ published claims. For this dissertation its systemic significance is that the ch
 per-frame generation core in Chapter 3 is made *by controlled measurement, not by paradigm
 preference* — and the measurement selects diffusion.
 
-Summarizing the critical analysis of existing approaches: diffusion models deliver the highest
-generation quality, but their monolithic flat realization runs into the long-context resource
+Summarizing the critical analysis of existing approaches: diffusion models are a strong
+generation mechanism, but a dense flat realization runs into the long-context resource
 blow-up (1.7) and the memory-horizon consistency degradation; patch-based transformer models
 capture global context well but require entropy-based adaptation of their rigid tokenization;
-hierarchical latent models remedy the flat-latent and flat-context limitations, and in their
-continuous form are trainable at reachable scale (whereas the author's experiments found
-hierarchical VQ configurations unstable); energy-based models offer an attractive explicit
+hierarchical latent models provide an alternative to flat-latent and flat-context allocation, and
+the continuous form was trainable at the scale reached in this work (whereas the tested
+hierarchical VQ configurations were unstable); energy-based models offer an attractive explicit
 criterion but are resource-barred in training, and their descent mechanism is experimentally
 characterized as a negative at this work's reachable scale (Chapter 4). The synthesis defining
 this dissertation is therefore: **a hierarchical continuous-latent video model with a diffusion
 refinement core, whose coarse level carries the long memory horizon (Chapter 3), supported by
 entropy-adaptive decomposition (Chapter 2), reversible-computation resource optimization
-(Chapter 2), and a criterion-driven measurement instrument (Chapters 3–4)**.
+(Chapter 2), and a criterion-driven measurement instrument (Chapters 3–4)**. These are linked
+dissertation strands, not one experimentally integrated executable pipeline.
 
 ## 1.4 Consistency criteria and methods
 
 In the theory of complex systems one of the fundamental notions is the stability of a system
-[47] — its capacity to maintain a specified state or target
+[87] — its capacity to maintain a specified state or target
 trajectory under external disturbances and internal stochasticity. In the context of generative
 video models the notion of stability is most closely tied to the term "consistency" (coherence,
 non-contradiction). Traditionally, the evaluation of generation results in machine learning
 reduces to the subjective criterion of visual attractiveness or to statistical metrics of
-proximity to the training sample, such as FID [48]. From the standpoint of systems
+proximity to the training sample, such as FID [88]. From the standpoint of systems
 analysis such an approach is severely limited.
 
 Systems analysis requires the transition from abstract aesthetic evaluation to a formalized
 criteria apparatus. The generative model is treated as a system transforming the input
 information signal of the condition $u$ into the output state $x$. If the state $x$ contains
 internal logical, spatial, or physical contradictions, it is classified as anomalous.
-Accordingly, **consistency is the criterion of the absence of anomalies in the generated state of
-the complex system**; ensuring consistency becomes synonymous with ensuring the reliability and
-stability of the information technology of generation.
+Accordingly, **consistency is operationalized as the absence or bounded severity of specified
+contradictions in the generated state and trajectory**. It is related to, but not synonymous with,
+software reliability or dynamical stability.
 
 Since video data have a deep multidimensional structure, consistency cannot be described by one
 scalar parameter. It is a complex systemic phenomenon requiring an extended taxonomy. This
@@ -1339,9 +1219,8 @@ consistency, which are critically important for hierarchical multi-step generati
 
 The basic level of coherence for any visual signal is **spatial consistency**. This criterion
 determines the structural integrity of the generated frame at the level of geometry and the
-mutual arrangement of elements. Spatial consistency guarantees that objects in the image have
-correct proportions, that boundaries are sharp, and that perspective and lighting obey uniform
-physical laws across the whole scene.
+mutual arrangement of elements. Its endpoints concern object proportions, boundaries,
+perspective, and lighting coherence; no single endpoint guarantees all of these properties.
 
 The next level is **object consistency**. In many practical tasks the system must generate a
 series of states of one and the same object (from different viewpoints, under different
@@ -1349,7 +1228,7 @@ lighting), preserving its unique identifying features. Modern generative algorit
 task in several ways.
 
 The simplest method of achieving object consistency in diffusion models is generation by the
-image-to-image approach [49]: an existing reference image is used as
+image-to-image approach [89]: an existing reference image is used as
 the starting point to steer the generation toward a specified result. The diffusion model
 transfers the information of the image into its latent space, subtly influencing the direction of
 the process.
@@ -1363,13 +1242,13 @@ This approach, however, has rigid systemic limitations — the difficulty of pre
 higher degree of noising of the reference increases variability and loses the consistency of fine
 details (textures, scratches).
 
-A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [50] and its low-rank variation LoRA [51]. This method uses a set of reference
+A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [90] and its low-rank variation LoRA [91]. This method uses a set of reference
 images of a specific object to adjust the internal representation (the weight coefficients
 $\theta$) of the model. Although DreamBooth can secure the consistency of specific features (for
 example, facial features or the texture of a particular object), it is computationally heavy and
 works exclusively within the "learned" object.
 
-For enforcing strict spatial consistency of shape there exists the ControlNet architecture [52], which injects a special control signal (depth maps, contours, segmentation masks)
+For enforcing strict spatial consistency of shape there exists the ControlNet architecture [92], which injects a special control signal (depth maps, contours, segmentation masks)
 into the reverse diffusion process. Methods of the ControlNet type perform the function of hard
 boundary control of the admissible state space: the input image acts as a guiding form
 constraining the evolution of the system.
@@ -1378,7 +1257,7 @@ constraining the evolution of the system.
 
 **Figure 1.14 — Structural control with a ControlNet-class branch.** A trainable branch maps
 edges, depth or segmentation into residual constraints for a frozen diffusion backbone. Source:
-author’s schematic after the ControlNet architecture [52].
+author’s schematic after the ControlNet architecture [92].
 
 Despite the effectiveness of ControlNet, it is not a complete solution for object consistency,
 since it focuses only on the form ("how") and not on the properties ("what"). A fully autonomous
@@ -1418,7 +1297,7 @@ hierarchical model (Chapter 3).
 ### 1.4.3 Style and conceptual consistency
 
 Besides object consistency, complex systems must maintain a unified **stylistic** appearance of a
-series of generated data. Modern approaches such as StyleAligned [53] solve this
+series of generated data. Modern approaches such as StyleAligned [93] solve this
 problem through intervention in the attention mechanism (shared attention): target images receive
 information about the reference image during generation, copying its global stylistic
 characteristics (color palettes, brushwork) without interfering with spatial geometry.
@@ -1427,14 +1306,14 @@ characteristics (color palettes, brushwork) without interfering with spatial geo
 
 **Figure 1.15 — Style consistency through shared attention.** Reference attention features are
 shared across distinct target trajectories while their content conditions remain separate.
-Source: author’s schematic after StyleAligned [53].
+Source: author’s schematic after StyleAligned [93].
 
 For a more thorough and qualitative analysis of generative models, within this dissertation
 research — published in **[A3]** (the consistency-criteria article) — the notion of **conceptual
 consistency** was formalized.
 
 Marr's multi-stage account of visual representation — progressing from image evidence toward
-structured descriptions of the scene [54] — motivates a broad engineering analogy, but does not itself prescribe
+structured descriptions of the scene [94] — motivates a broad engineering analogy, but does not itself prescribe
 the taxonomy used here. The dissertation's narrower claim is that the traditional division into
 style and object alone is incomplete. Conceptual consistency is the capacity of the generative system for
 compositionality and extrapolation. It evaluates the ability of the model not merely to reproduce
@@ -1448,7 +1327,7 @@ generates objects side by side instead of combining them.
 
 As the metric for evaluating conceptual consistency, the cosine similarity between the semantic
 vectors of the generated image and the textual condition in the joint space of a contrastive
-model (CLIP score) [55] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
+model (CLIP score) [95] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
 encoder; then the measure of conceptual consistency is defined as:
 
 $$C_{\text{concept}}(x, u) = \frac{E_I(x) \cdot E_T(u)}{\left\|E_I(x)\right\| \left\|E_T(u)\right\|} \tag{1.13}$$
@@ -1539,21 +1418,16 @@ separation specifically on memory-relevant re-entry records beyond a short windo
 tests this prediction with exact generator-derived observability labels and paired rollouts.
 Source: author’s schematic; curves are illustrative, not measured.
 
-Systems analysis shows that none of the kinds of consistency can be considered in isolation:
-they form an interdependent hierarchy of criteria. For example, without trajectory consistency it
-is impossible to attain high spatial and temporal consistency of a long generated sequence; and
-without hierarchical consistency, the macro-level memory that trajectory consistency relies on at
-re-entry cannot be trusted by the lower levels.
+The criteria interact but are not interchangeable. A frame can be spatially plausible while
+identity is wrong, or retain identity while drifting in trajectory. This motivates reporting a
+suite of criteria rather than reducing consistency to one aggregate score.
 
-Classical approaches — adding a ControlNet or a LoRA — attempt to solve these problems locally,
-by patching individual criteria with external mechanisms. The systems approach instead requires
-an architecture in which the observance of the consistency criteria follows from the structure of
-the process itself: **an explicit multi-stream decomposition of context across temporal rate and
-spatial resolution with unidirectional context transfer** — so that hierarchical consistency is enforced by
-construction (stop-gradient control, §1.4.4), long-range temporal and trajectory consistency are
-supplied with the memory they informationally require (§§1.3.1–1.3.2), and the whole is trainable
-within realistic resource constraints thanks to reversible computation (Chapter 2). Constructing
-and validating exactly such an architecture is the subject of Chapters 3 and 4.
+ControlNet and LoRA address specific conditioning or adaptation objectives. The systems approach
+used here complements such mechanisms by making the state interface, context budget, temporal
+reach, and evaluation population explicit. Chapters 3–4 construct and evaluate a multi-stream
+context model; Chapter 2 measures reversible activation-memory savings separately. The
+dissertation does not claim that stop-gradient transfer or reversibility guarantees every form of
+consistency.
 
 ## 1.5 Conclusions and statement of the research tasks
 
@@ -1563,21 +1437,19 @@ generative video models have been characterized as open dynamic multi-level cont
 operating under substantial structural, informational, computational, and target uncertainty.
 
 The decomposition of the generation system revealed the key problems of contemporary approaches.
-The analysis of diffusion models showed that, while they define the state of the art in
-generation quality, their monolithic realization suffers from two systemic defects: a
-single-level (flat) latent space that mixes abstraction levels and loses hierarchical control,
-and a flat spatio-temporal attention context whose computation grows quadratically and whose
-memory grows linearly with context length — so that extending the memory horizon of a flat system
-is resource-prohibitive precisely where it is most needed, and the temporal consistency of long
-sequences degrades: content leaving the field of view is not restored consistently upon
-re-entry. In addition, the divergence between the local training objective and the long
+The analysis of diffusion models showed that dense flat realizations have two limitations relevant
+to this dissertation: a single-level latent interface provides no explicit allocation between
+abstraction levels, and a flat spatio-temporal attention context whose computation grows
+quadratically and whose
+memory grows linearly with context length. This makes dense extension increasingly costly, while
+long-video studies report consistency failures when content leaves and later re-enters the field
+of view. In addition, the divergence between the local training objective and the long
 autoregressive generation trajectory (exposure bias) undermines long-horizon stability.
 
 The review of patch-based transformer architectures demonstrated their advantages in capturing
-global contextual dependencies but revealed the critical problem of irrational computational
-resource allocation due to fixed spatio-temporal tokenization, which substantiates the necessity
-of methods for adaptive decomposition of visual data based on measuring their local entropy
-(developed in Chapter 2).
+global contextual dependencies but also identified a possible inefficiency of fixed
+spatio-temporal tokenization on non-uniform signals. This motivates the entropy-guided adaptive
+decomposition developed in Chapter 2; it does not imply that fixed patches are always inferior.
 
 The study of hierarchical latent approaches established the remedy direction: an explicitly
 multi-level latent state space in which a compact upper (coarse) level, carrying few tokens per
@@ -1588,13 +1460,13 @@ scope of this dissertation is a **compact continuous hierarchical latent state s
 no controlled VQ-versus-continuous receipts are present, representation-family superiority is
 not claimed.
 
-The examination of energy-based models (EBM) recorded their systemic attraction — an explicit
-scalar optimization criterion doubling as an anomaly indicator — alongside their fundamental
+The examination of energy-based models (EBM) recorded their systemic attraction—an explicit
+scalar optimization criterion and input-gradient inference direction—alongside their measured
 computational barrier: gradient identification through long MCMC trajectories with linear memory
 growth. In this dissertation the energy-based mechanism is treated as reviewed literature whose
 capability boundary at reachable scale is characterized experimentally in Chapter 4; the survey
 of resource-efficiency methods it motivated (checkpointing, Neural ODE, reversible networks)
-identified reversible transformations as the most promising apparatus, which Chapter 2 develops
+identified reversible transformations as one promising apparatus, which Chapter 2 develops
 into the time-agnostic backpropagation method and its extension to stochastic multi-level
 recurrences.
 
@@ -1683,24 +1555,20 @@ uncertainty is the problem of inefficient decomposition of the input spatio-temp
 In classical systems analysis, the decomposition of a complex system must reflect its internal
 information saturation and structure. However, the traditional approaches to the mathematical
 modeling of video data, popularized by architectures of the Vision Transformer (ViT) type
-[26] and their spatio-temporal extensions ViViT
-[27] and Video Swin Transformer [28],
+[63] and their spatio-temporal extensions ViViT
+[64] and Video Swin Transformer [65],
 are based on a rigid, a-priori-fixed partition of the image or video stream into a regular grid
 of non-overlapping patches of fixed size, e.g., 16×16 pixels.
 
-From the standpoint of optimal control and resource-allocation theory, such an approach is
-severely suboptimal. The visual signal, especially video data, is characterized by an extremely
-non-uniform distribution of information density. Large areas of the frame are often occupied by a
-static, low-information background (monotonous sky, walls), while the key dynamics and
-high-frequency details (moving objects, complex kinematics) are concentrated in small local
-zones. Using a fixed grid forces the system to distribute its limited computational resource
-uniformly across all regions of the frame, wasting it on the processing of redundant information.
+Fixed patches are simple and effective, but their token allocation is independent of local signal
+complexity. In videos with large low-variation regions and small high-detail moving regions, this
+can allocate equal token cost to areas with different representational demands. Whether that
+trade-off matters is empirical rather than a universal defect of fixed-grid models.
 
-To solve this problem, it is necessary to move from a rigid geometric decomposition to an
-adaptive decomposition of the state space that is driven by the data themselves. The conceptual
+The dissertation investigates adaptive, data-dependent decomposition as one response. The conceptual
 foundation for this transition is the new paradigm of byte-level language models that emerged in
 natural language processing, in particular the Byte Latent Transformer (BLT)
-[29]. These systems abandoned the paradigm of fixed token vocabularies
+[66]. These systems abandoned the paradigm of fixed token vocabularies
 in favor of dynamic grouping of elementary information units (bytes) into latent patches whose
 size is inversely proportional to the local complexity of the signal.
 
@@ -1709,19 +1577,19 @@ size is inversely proportional to the local complexity of the signal.
 **Figure 2.1 — Conceptual operating principle of entropy-driven byte patching.** Long
 low-entropy regions are grouped into larger latent patches, whereas locally surprising regions
 receive finer allocation. The values are schematic, not empirical measurements. Source:
-author’s schematic after BLT [29].
+author’s schematic after BLT [66].
 
 Within the dissertation research, the results of which are published in **[A1]**, the hypothesis
 was put forward that transferring the principles of adaptive entropy-based tokenization to the
-visual modality opens fundamental opportunities for optimizing and redistributing the
+visual modality may improve the allocation of
 computational resources of a generative system. On the basis of this approach, the author
 developed the method for estimating spatio-temporal uncertainty and a new mathematical
 architecture — the Vision Byte Latent Transformer (V-BLT).
 
-Working at the level of "raw" bytes of video data, where each pixel of an RGB channel is
-represented by a discrete integer from 0 to 255, allows the system to avoid the loss of
-information that is unavoidable when heuristic pre-compression or vector-quantization (VQ-VAE)
-algorithms are used [30]. The developed V-BLT architecture is
+Working at the input-byte level, where each RGB channel value is represented by an integer from
+0 to 255, avoids committing the target interface to a learned discrete visual codebook
+[67]. It does not make the learned hidden representation
+lossless. The developed V-BLT architecture is
 a three-tier hierarchical information-transformation system consisting of a Local Encoder, a
 Global Latent Transformer, and a Local Decoder. In the arc of this dissertation, V-BLT is the
 author's **first realization of the hierarchical adaptation of video generation** — a two-stage
@@ -1740,15 +1608,15 @@ The first subsystem — the **Local Encoder** — performs the function of prima
 aggregation. The input is a video sequence as a multidimensional tensor of raw bytes. The task of
 the Local Encoder is the dynamic grouping of locally correlated bytes into compact latent
 representations in the form of spatio-temporal patches $Z = \{z_1, z_2, \dots, z_M\}$.
-Mathematically it is realized as a lightweight convolutional-transformer network capable of
-determining the optimal boundaries of information aggregation.
+Mathematically it is realized as a lightweight convolutional-transformer network that predicts
+data-dependent boundaries of information aggregation.
 
 The second subsystem — the **Global Latent Transformer** — is the computational core and is
 responsible for modeling the long-term dynamics in the compressed space. Since this block
 performs autoregressive prediction for time-series modeling, its architecture requires a specific
-design of the attention-masking system in order to avoid structural uncertainty in the form of
-information leakage from the future [56], while
-fully resolving the spatial uncertainty within the current frame.
+design of the attention-masking system to prevent information leakage from future frames
+[12], while allowing tokens within the current
+and preceding frames to interact.
 
 For this purpose, a spatio-temporal attention-masking matrix is used. Let the latent space have
 dimensionality $T' \times S'$, where $T'$ is the number of time steps and $S'$ is the number of
@@ -1764,8 +1632,8 @@ M_{i,j} =
 \tag{2.1}
 $$
 
-This strictly time-causal but spatially fully-connected mask guarantees the physical and logical
-plausibility of the generation process.
+This time-causal, spatially connected mask prevents future-frame attention. It does not by itself
+guarantee physical plausibility or accurate dynamics.
 
 The third subsystem — the **Local Decoder** — projects the predicted latent macro-states back
 into the micro-space of image bytes. The key mathematical innovation of the developed method,
@@ -1785,7 +1653,7 @@ $$
 
 Such a mathematical formulation transforms the problem of minimizing the mean squared error
 (MSE), which by its nature is prone to smoothing and to the loss of high-frequency details, into
-a classification problem using the cross-entropy loss function [57]. This makes it possible to correctly model multimodal distributions:
+a classification problem using the cross-entropy loss function [96]. This makes it possible to correctly model multimodal distributions:
 for example, the contour of a moving object may shift one pixel to the left or to the right with
 equal probability, which cannot be described by a single mean value.
 
@@ -1884,14 +1752,14 @@ a precise coordinate anchoring makes it impossible to model adequate kinematics 
 the visual scene.
 
 The traditional approach to preserving positional information is absolute positional encoding
-[56]. This method adds a special coordinate
+[12]. This method adds a special coordinate
 vector $p_i$ to each latent token $z_i$. However, absolute encoding has fundamental drawbacks in
 this application: it destroys translation invariance, which is a natural property of the visual
 world, since the system must recognize and generate an object equally well regardless of its
 absolute coordinates in the frame.
 
 An alternative approach is relative positional encoding (Relative Positional Bias)
-[58, 28], where coordinate information is
+[97, 65], where coordinate information is
 added directly to the attention-weight matrix in the form of biases. Although this method models
 relative distances more correctly, it is accompanied by a significant growth of computational
 complexity and requires $O(L^2)$ memory for storing multidimensional bias matrices, which
@@ -1900,17 +1768,16 @@ consumption.
 
 To overcome these systemic contradictions, within the development of the information technology
 it is proposed to apply the mathematical apparatus of Rotary Positional Embedding (RoPE)
-[59] with its subsequent generalization to N-dimensional space. The
-RoPE method combines the advantages of absolute encoding — the absence of quadratic memory costs
-for storing positions — with the translation-invariance property of relative encoding. The core
-idea is to represent the state vectors of the system as complex numbers and to apply to them an
-orthogonal rotation operation in the complex space.
+[98] with its subsequent generalization to N-dimensional space. The
+RoPE applies position-dependent rotations without storing a learned pairwise relative-bias
+matrix. The core idea is to group feature pairs as complex coordinates and rotate them according
+to position.
 
 Let the attention subsystem operate on query vectors $q$ and key vectors $k$ of dimensionality
 $D$. For a one-dimensional sequence, the position of element $m$ is encoded by multiplying the
-vector by an orthogonal rotation matrix $R_{\Theta,m}$. Applying this operation to the query and
-key vectors before computing their scalar product makes the attention weight a function of their
-relative distance only. In the complex representation this is proved by the following equation:
+vector by an orthogonal rotation matrix $R_{\Theta,m}$. Applying this operation to query and key
+vectors makes the positional phase in their scalar product depend on relative displacement. In
+the complex representation:
 
 $$
 \left\langle R_{\Theta,m}\,q,\; R_{\Theta,n}\,k \right\rangle
@@ -1919,17 +1786,15 @@ $$
 \tag{2.4}
 $$
 
-As the equation shows, the absolute coordinates $m$ and $n$ cancel algebraically, leaving only
-their difference $m - n$. This mathematically guarantees that the attention system reacts
-exclusively to the relative arrangement of elements.
+As the equation shows, the positional phase contains the difference $m-n$. The complete attention
+score still depends on the learned content vectors \(q\) and \(k\); RoPE does not force a
+particular attention pattern.
 
-However, the original RoPE method [59] was developed exclusively for
-one-dimensional sequences such as text and cannot be applied directly to spatio-temporal video
-data without losing the multidimensional topology. To solve this problem, within the research
-underlying the results of **[A1]**, the method of N-dimensional rotary positional embedding
-(RoPE-ND) [59] is used, which allows the system to
-simultaneously account for the mutual arrangement of elements along several independent
-coordinate axes.
+The original RoPE formulation [98] uses a one-dimensional sequence coordinate.
+A flattened video index can be supplied, but it does not explicitly separate time, row, and
+column displacement. In the research underlying **[A1]**, N-dimensional rotary positional
+embedding (RoPE-ND) [98] assigns independent feature
+subspaces to these axes.
 
 The essence of the generalization is the decomposition of the latent token's feature space into
 $N$ independent subspaces, each responsible for its own physical coordinate. For video data the
@@ -1970,63 +1835,46 @@ axis. The same operation is applied to the key vector $k$.
 horizontal, vertical and temporal coordinates so attention depends on relative displacement
 along all three axes. Source: author’s schematic of the [A1] method.
 
-Applying such a multidimensional transformation restores the structural coherence of the complex
-system. When the attention-score matrix between two arbitrary tokens in the video sequence is
-computed, the scalar product decomposes into three independent sums, each depending exclusively
-on the coordinate difference along the corresponding axis:
+With disjoint coordinate subspaces, the rotary contribution to an attention score decomposes by
+axis. Each term depends on the corresponding relative coordinate difference:
 
 $$
 q'^{\top}_{\text{rotated}}\, k'_{\text{rotated}} = f(\Delta t, \Delta y, \Delta x)
 \tag{2.7}
 $$
 
-where $\Delta t = t_q - t_k$, $\Delta y = y_q - y_k$, $\Delta x = x_q - x_k$. This proves that
-the system mathematically identifies not the absolute position of objects in space but their
-relative spatio-temporal topology, which is critically important for modeling physical motion.
+where $\Delta t = t_q-t_k$, $\Delta y = y_q-y_k$, and $\Delta x=x_q-x_k$. The algebra establishes
+relative-coordinate dependence in the rotary score terms. It does not prove that a learned model
+recovers physical topology or attends to the correct object.
 
-**Systemic significance of the method for hierarchical architectures.** Beyond the plain modeling
-of temporal dynamics in patch-based systems, the RoPE-ND method is a universal instrument and
-plays a decisive role in ensuring *hierarchical consistency* in the hierarchical video generation
-model developed in Chapter 3. In multi-level architectures, a problem of resolving structural
-uncertainty arises between different levels of abstraction: for example, how to correctly
-transfer information between a fine level with a dense token grid (e.g., $32 \times 32$ tokens)
-and a coarse level with a sparser grid (e.g., $16 \times 16$ tokens).
+**Systemic significance and scope.** In an architecture with explicit cross-resolution
+attention, coordinates can be affinely mapped to a common physical scale before RoPE-ND is
+applied. This provides a consistent coordinate convention for fine and coarse tokens, but it does
+not force attention to select geometrically correct regions or guarantee semantic routing. The
+measured Chapter 3 predictor does **not** use this mechanism: it uses learned level, role, and
+frame embeddings with joint attention. RoPE-ND is therefore a separate representation result
+from [A1], not an explanation of the Chapter 4 context-package effects.
 
-For the correct routing of cross-attention signals, the coordinate systems of these levels must
-be mathematically aligned. The RoPE-ND method offers an elegant systemic solution through affine
-scaling of the coordinates. A parent coarse-level token physically covers a cluster of several
-child fine-level tokens; after the coordinates of both levels are brought to a common scale, the
-attention mechanism is forced to center precisely on the geometrically relevant zones. This
-eliminates the risk of chaotic mixing of semantic features between distant objects and ensures
-that the global composition governs exclusively its own local details — the mathematical basis of
-the unidirectional inter-level context-signal transfer developed in Chapter 3.
-
-From the standpoint of resource efficiency, the computational complexity of applying RoPE-ND is
-strictly linear, $O(D)$, with respect to the feature-space dimensionality, and it requires no
-additional memory for storing large bias matrices. This makes the developed mathematical
-apparatus an ideal candidate for integration into architectures with time-agnostic
-backpropagation, where memory is the most valuable resource. The description of such an
-architecture and the corresponding optimization method is given in the following subsections.
+Applying RoPE-ND costs $O(D)$ arithmetic per token and avoids storing a learned pairwise bias
+matrix. It is compatible with memory-efficient architectures, but no end-to-end experiment in
+this dissertation combines RoPE-ND, reversible rollout training, and the final hierarchical
+predictor.
 
 ## 2.3 Resource Optimization for Multi-Step Temporal Modelling
 
-The improvement of the mathematical methods for uncertainty estimation (V-BLT) and structural
-coherence (RoPE-ND) considered in the previous subsections substantially raises the quality of
-spatio-temporal data modeling. However, the practical implementation of iterative generative
-models inevitably runs into the exhaustion of available computational resources as a fundamental
-systemic constraint. From the standpoint of systems analysis, the effectiveness of controlling
-any process is determined not only by the adequacy of the mathematical model but also by the
-feasibility of its implementation under strict resource constraints.
+The V-BLT and RoPE-ND methods address representation and coordinate structure. A separate
+constraint arises when an iterative model must be differentiated through a long computation:
+activation storage can exceed available device memory. Systems analysis must therefore consider
+both model adequacy and implementation feasibility.
 
-In the modeling of multi-step temporal processes, the main bottleneck is not so much the
-computational throughput of the processors (the number of floating-point operations, FLOPs) as
-the amount of operating memory of the graphics accelerators [60, 61]. This problem arises from the architectural features of
-modern artificial neural networks and their optimization algorithms.
+For the long unrolls measured in this work, accelerator memory is a binding constraint alongside
+throughput [99, 100]. Which resource
+dominates is hardware- and model-dependent.
 
-The standard Backpropagation Through Time (BPTT) algorithm [62] is the basis
-for identifying the parameters of dynamic systems. To compute the control gradients, the
-algorithm requires the mandatory storage of all intermediate states of the system — the
-activations — at every layer and every time step during the forward pass.
+Backpropagation Through Time (BPTT) [28] differentiates a temporally unrolled
+dynamic system. A vanilla implementation retains the intermediate activations required by the
+reverse pass; checkpointing and reversible replay are alternative storage/recomputation
+schedules.
 
 Mathematically, the amount of operating memory $M$ required to store the full computation graph
 is linearly dependent on the depth of the temporal unrolling and the number of layers in the
@@ -2039,23 +1887,20 @@ $$
 
 where $N$ is the dimensionality of the spatial state (the number of tokens per frame), $T$ the
 number of time steps or optimization iterations, $L$ the number of model layers, and $D$ the
-dimensionality of the latent feature space. Since for video data the spatial parameter $N$ is
-extremely large, modeling long sequences $T$ very quickly leads to the exhaustion of the
-available physical memory (Out of Memory, OOM).
+dimensionality of the latent feature space. For video states, the product can exceed available
+memory as the differentiated horizon grows.
 
 The presence of such computational uncertainty forces various heuristic compromises. The most
-common approaches are truncated backpropagation (Truncated BPTT) [63] and
-gradient checkpointing [42, 43]. Truncated
-backpropagation artificially limits the gradient horizon — e.g., optimizing over only the last 5
-frames — which inevitably loses the memory of long-range cause-and-effect relations. The
-checkpointing method reduces memory consumption (to $O(\sqrt{T} \cdot L \cdot D)$ with the
-standard segment schedule; see Table 2.1), but the price is a significant slowdown of training
-due to redundant recomputation.
+common approaches are truncated backpropagation (Truncated BPTT) [29] and
+gradient checkpointing [30, 31]. Truncated
+backpropagation limits the gradient horizon—e.g., differentiating only the last five frames—and
+therefore removes learning signals that cross that boundary. Checkpointing reduces memory
+consumption (to a square-root trade-off under a balanced segment schedule; see Table 2.1) at the
+cost of recomputation.
 
-For the effective functioning of the generative model, a fundamental revision of its architecture
-is necessary. The systemic task is to develop a mathematical method of organizing the
-computations that would provide constant memory consumption, $O(1)$ with respect to the number of
-time steps $T$, without losing information about global long-range dependencies.
+The task considered here is to organize reverse differentiation so that activation memory is
+constant with respect to the number of reversible time steps \(T\), while preserving the
+full-horizon gradient for the tested recurrence.
 
 To solve this systemic problem, the dissertation research developed the Temporal Reversible
 Transformer (TempVerseFormer) architecture. The developed architecture and the mathematical
@@ -2068,10 +1913,10 @@ state-transition functions that are bijective (one-to-one). If the transition fu
 $l$ to layer $l+1$ has an exact analytic inverse, the system can restore its previous state
 purely from the current state, without storing it in memory during the forward pass.
 
-The introduction of the reversibility principle into deep neural networks was previously studied
-in continuous models of the Neural ODE type [44], but these suffer
-from numerical instability during integration. Discrete reversible models, e.g., RevViT
-[45], have shown high stability. The
+Continuous-time adjoint methods such as Neural ODEs [85] and
+discrete reversible models such as RevNet and RevViT
+[32] provide related
+storage/recomputation strategies with different numerical trade-offs. The
 scientific novelty of TempVerseFormer lies in combining structural reversibility at the level of
 individual transformer layers with an iterative temporal-chaining mechanism for modeling
 multi-step processes.
@@ -2169,37 +2014,28 @@ task of spatial compression from the task of temporal control.
 **Figure 2.8 — Global TempVerseFormer architecture.** A spatial VAE interfaces the video frames
 with the reversible temporal core. Source: author’s published TempVerseFormer project asset [A2].
 
-The integration of reversible blocks into a single system with temporal chaining creates an
-extremely powerful mathematical instrument: structural reversibility guarantees that information
-is not lost. Yet the main systemic challenge remains — converting this theoretical structural
-reversibility into an effective training algorithm for computing the control gradients of the
-loss function. Exactly how the reversibility property is exploited by the algorithm to remove the
-computational uncertainty is considered formally in the next subsection.
+Temporal chaining of reversible blocks provides algebraic state recoverability in exact
+arithmetic. It does not guarantee numerical stability, preservation of task-relevant
+information, or useful gradients. The next subsection shows how reverse replay is used for
+gradient computation and later measurements delimit its stability and memory behaviour.
 
 ## 2.4 Time-Agnostic Backpropagation through Reversible Transformations
 
-Solving the problem of computational uncertainty — the critical deficit of operating memory in
-the optimization of iterative and temporal systems — requires a transition from classical
-training algorithms to new mathematical paradigms. The traditional BPTT method
-[62] is the de-facto standard for identifying the parameters of dynamic
-systems modeled by neural networks, but its mathematical architecture contains a fundamental
-deficiency from the standpoint of resource control.
+Long temporal optimization requires an explicit policy for storing or reconstructing the reverse
+pass. BPTT [28] supplies the gradient semantics; the resource question is how
+its required intermediate values are made available.
 
-The BPTT algorithm is based on the chain rule of differentiation of a composite function. To
-compute the control gradient of the loss function $L_{\text{loss}}$ with respect to the weight
-parameters $\theta$ of the system at the current time step, one must know not only the derivative
-of the state at the next step but also the exact values of the internal activations of the system
-at every step. Mathematically this means that the forward pass must be accompanied by the caching
-of absolutely all intermediate vectors of the multidimensional state space, for all steps, in the
-operating memory of the computing device.
+The BPTT gradient follows the chain rule through the unrolled composite function. The reverse
+pass needs the corresponding states and local activations, but they need not all be cached:
+vanilla autograd retains them, checkpointing recomputes segments, and the developed method
+reconstructs reversible states before rebuilding each local graph.
 
-In the modeling of complex spatio-temporal video data, this requirement leads to a catastrophic
-growth of resource consumption. The control of the system reaches a dead end: to increase the
-temporal consistency of generation, the optimization trajectory $T$ must be lengthened, but
-lengthening the trajectory exhausts the memory and makes the gradient computation impossible.
+For large spatio-temporal states, vanilla retention makes activation memory grow with the unroll
+and can cause out-of-memory failure. This is the measured bottleneck addressed here; it is not a
+claim that every long-horizon model must use reversibility.
 
 Within this dissertation research, the method of **time-agnostic backpropagation** was developed
-to resolve this systemic contradiction. The method is based on integrating the mathematical
+for the tested reversible recurrence. The method is based on integrating the mathematical
 apparatus of discrete reversible transformations directly into the gradient-computation process
 along the temporal chain.
 
@@ -2353,7 +2189,7 @@ where $F$ is a transition operator built from reversible (additive-coupling) blo
 the noise scale, and $\epsilon_t$ is the noise sample of step $t$. Transformation (2.14), taken
 alone, is not invertible: the noise irreversibly injects new information. However, if the noise
 samples $\epsilon_t$ drawn during the forward pass are *stored* — the store-the-noise principle,
-extending the reversible recurrent networks of [64] — the
+extending the reversible recurrent networks of [101] — the
 recurrence becomes exactly invertible. Equations (2.14)–(2.15) state the principle in its
 simplest, *external-additive* form, in which the stored noise is subtracted before the inverse
 transition is applied:
@@ -2441,7 +2277,7 @@ i.e., the additive structure is inherently non-contractive — constraining $F$ 
 $\operatorname{Lip}(F) \le 1$ is *not* sufficient (the growth factor $26{,}600\times$ in
 Table 2.2), and bounded long-horizon dynamics require a *small* coupling Lipschitz constant
 ($\operatorname{Lip}(F) \lesssim 0.1$). This is the stability analysis of invertible networks
-[65, 66] instantiated
+[102, 103] instantiated
 for temporal recurrences and confirmed by measurement. The systemic conclusion: **invertibility
 is a memory-and-correctness property, not a stability property.** In the developed technology,
 reversibility is claimed exclusively as the constant-memory enabler of long-horizon training with
@@ -2494,7 +2330,7 @@ mechanisms developed and reviewed in this chapter can be organized along three o
 the computation graph on which reversibility can be exploited to avoid storing states:
 
 1. **The depth axis** — reversibility across the layers of a network at a single step (RevNet and
-   its descendants [45]): the
+   its descendants [32]): the
    literature baseline on which the developed blocks build.
 2. **The temporal axis** — reversibility along the physical time of the modeled process
    (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16)). On this axis
@@ -2528,12 +2364,12 @@ crossover at which trajectory states would begin to dominate the second-order gr
 $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically meaningful refinement
 depth. The underlying storage arithmetic — counting the bits per step that an optimizer
 trajectory consumes versus the volume contraction of the update map — is due to
-[67], **applied** here to the video-generation inner loop, not claimed as a new theorem.
+[104], **applied** here to the video-generation inner loop, not claimed as a new theorem.
 Moreover, plain gradient descent is not closed-form invertible at all (inversion requires the
 momentum-buffer scheme of Maclaurin et al., whose kilobyte-scale state itself demonstrates that
 trajectory storage was never the binding constraint), and the reversible-sampler variants for
-diffusion inner loops are already published [68, 69, 70], with large-scale practice choosing checkpointing
-or truncation precisely because state $\ll$ graph [71, 72].
+diffusion inner loops are already published [105, 106, 107], with large-scale practice choosing checkpointing
+or truncation precisely because state $\ll$ graph [108, 109].
 
 ![Axes of reversible computation](../../figures/fig52_reversibility_axes.png)
 
@@ -2564,23 +2400,21 @@ multi-step video generation systems. The main results are as follows.
 1. In accordance with **Task 3** of the dissertation research, a method for estimating the
    spatio-temporal uncertainty of video data was developed through the transition from rigid
    patch tokenization to adaptive entropy-based decomposition (the V-BLT architecture). It was
-   established that computing the information entropy at the level of raw bytes yields per-pixel
-   entropy maps that act as a reliable diagnostic indicator of complex kinematics and can be used
-   for the optimal redistribution of the system's computational resources.
+   established that computing entropy over byte predictions yields per-pixel uncertainty maps
+   that can guide non-uniform allocation. The evidence supports the reported [A1] setting; it
+   does not prove globally optimal token boundaries.
 
 2. To ensure the structural coherence of data under spatial linearization, the mathematical
-   apparatus of N-dimensional rotary positional embedding (RoPE-ND) was developed. It was proven
-   that the method algebraically guarantees the preservation of the multidimensional
-   spatio-temporal topology inside the attention mechanisms. A coordinate-scaling mechanism was
-   developed that provides an instrument for precise spatial localization of cross-level
-   cross-attention between abstraction levels. This is a level-appropriate instrument for
+   apparatus of N-dimensional rotary positional embedding (RoPE-ND) was developed. The derivation
+   shows that its rotary score terms depend on relative displacement along each encoded axis. A
+   coordinate-scaling mechanism provides a common convention for cross-level coordinates but does
+   not guarantee learned attention localization. This is a level-appropriate instrument for
    architectures that require spatial coordinate transfer; the measured Chapter 3 predictor
    instead uses learned level/role/frame embeddings in joint attention, so its results do not
    depend on RoPE-ND.
 
-3. In accordance with **Task 4**, the fundamental problem of computational uncertainty — the
-   critical deficit of operating memory in BPTT optimization of long processes — was resolved.
-   The TempVerseFormer mathematical architecture was developed on the basis of discrete
+3. In accordance with **Task 4**, activation-memory growth in vanilla BPTT was addressed for the
+   tested recurrence. The TempVerseFormer mathematical architecture was developed from discrete
    reversible transformer blocks joined by the temporal-chaining mechanism.
 
 4. The lemma on the computational complexity of the time-agnostic backpropagation algorithm was
@@ -2598,21 +2432,22 @@ multi-step video generation systems. The main results are as follows.
    alternative (1.47–1.97 GB) — i.e., the method provides a constant-memory capability relative
    to vanilla BPTT and approximate Pareto equivalence with checkpointing, which is stated
    honestly. The **applicability domain** of reversible computation was delimited by the
-   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and forms the
-   resource foundation for the long-horizon autoregressive training of the hierarchical video
-   generation model of Chapter 3; the inner-optimization-loop axis provably cannot pay against
+   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and can support
+   future rollout-through-time training of hierarchical video generators; the final Chapter 3
+   predictor is trained on individual windows and does not use that integration. The
+   inner-optimization-loop axis cannot pay against
    checkpointing (a saving of $\approx 0.2\%$ at $K = 128$, with the state-versus-graph
    accounting applied after Maclaurin et al.). It was additionally established by measurement
    that **invertibility does not imply stability**: exactly invertible recurrences span
    perturbation-growth regimes from $333\times$ to $1.0\times$ over 100 steps purely as a
    function of the Lipschitz bound on the coupling, so trajectory stability is a separate design
-   requirement (a Lipschitz constraint), which is taken into account in the architecture of
-   Chapter 3.
+   requirement (a Lipschitz constraint). This is an applicability result for reversible temporal
+   recurrences; the final Chapter 3 predictor does not use reversible rollout training.
 
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
-(§§2.3–2.4), and the extension to stochastic recurrences with the three-axis applicability
-taxonomy in **[A4]**. These stable labels are bound mechanically to the final numbered publication
-list.
+(§§2.3–2.4). The stochastic-recurrence extension and three-axis applicability taxonomy are
+dissertation developments building on [A2]; they are not attributed to the context-packaging
+article [A4]. These stable labels are bound mechanically to the final numbered publication list.
 
 ---
 
@@ -2620,23 +2455,21 @@ list.
 
 # Chapter 3 — A Hierarchical Mathematical Model for Video Generation with Long Multi-Stream Context
 
-The preceding chapters performed the decomposition of the video-generation system and developed
-the mathematical instruments for uncertainty estimation (entropy-based adaptive decomposition,
-RoPE-ND) and for resource-efficient multi-step optimization (reversible transformations,
-time-agnostic backpropagation). This chapter synthesizes these results into the central
-contribution of the dissertation: a hierarchical mathematical model of video-sequence generation
-in a compact continuous hierarchical latent state space with **long-span multi-stream context**:
-the demonstrated system carries long-range temporal memory in a long-span context stream — the
-coarse (spatially downsampled) stream being its measured spatial implementation within the
-multi-stream family of §3.1/§3.3.5 — context signals are
-transferred between abstraction levels within a single joint attention mechanism, and per-frame
-generation is performed by an iterative-refinement (denoising diffusion) core whose selection is
-justified empirically by the matched-capacity and matched-NFE mechanism study of Chapter 4.
+The preceding chapters decomposed the video-generation system and developed separate instruments
+for entropy-based representation, positional structure, and reversible temporal optimization.
+This chapter develops the dissertation's context/state-memory strand: a hierarchical mathematical
+model of video-sequence generation in a compact continuous latent state space with
+**long-span multi-stream context**. The demonstrated predictor carries long-range history in a
+context stream; a spatially downsampled coarse stream is its measured hierarchical
+implementation, while temporally sparse full-resolution history is evaluated as an alternative
+package. Context signals are processed in one joint-attention mechanism, and target windows are
+generated by a v-parameterized latent diffusion core selected by the controlled mechanism study
+of Chapter 4. RoPE-ND and reversible temporal optimization remain complementary dissertation
+methods, but they are not components of this executed predictor.
 
 Two methodological commitments frame the chapter. First, the model is described exactly as
-implemented and verified in the software complex (module `hvp_rev/rhvd.py` of the developed
-system; the design was pre-registered before the experimental campaign): every architectural
-constant quoted below is the constant of the working system, not a proposal. Second, alongside
+implemented and verified in the frozen research implementation (`hvp_rev/rhvd.py`): every
+architectural constant quoted below is a constant of the measured system, not a proposal. Second, alongside
 the generative model itself, the chapter formalizes the **measurement instrument** — a
 purpose-built memory-horizon testbed with a re-entry-stratified evaluation protocol (§3.4). Under
 the systems-analysis methodology of specialty 124, the instrument is a deliverable of equal rank
@@ -2645,14 +2478,29 @@ with the model: it is what operationalizes the trajectory-consistency criterion 
 
 ## 3.1 Formalization of the Hierarchical Latent State Space
 
-The chapter's organizing object, defined here once and used throughout (full formalization in
-§3.3.5): a **context-stream family**. Each context stream is a triple
-$s_i = (r_i,\; k_i,\; n_i)$ — spatial resolution $r_i$, temporal stride $k_i$, and slot count $n_i$, and a system configuration is a set of such streams
-consumed by one shared attention backbone. In this vocabulary: a **flat** configuration is a
+The chapter's organizing object is a **context-stream family**. Stream \(i\) is represented by
+
+$$
+\mathcal S_i=(\ell_i,\;s_i,\;n_i,\;a_i),
+$$
+
+where \(\ell_i\) is the representation level, \(s_i\) the temporal stride, \(n_i\) the retained
+slot count, and \(a_i\) the lag of the most recent anchor. Its lag set is
+\(K_i=\{a_i+j s_i:j=0,\ldots,n_i-1\}\). If one slot at level \(\ell\) contains
+\(q_\ell=H_\ell W_\ell\) tokens, then
+
+$$
+B_{\mathrm{ctx}}=\sum_i n_iq_{\ell_i},\qquad
+R=\max_i\left[a_i+(n_i-1)s_i\right].
+$$
+
+This explicit anchor geometry avoids treating reach as a hard-coded consequence of one stride.
+A system configuration is a set of streams consumed by one shared attention backbone. In this
+vocabulary, a **flat** configuration is a
 single fine-resolution stride-1 stream; a **temporal (rate) hierarchy** has two or more tick
 rates at any resolution; a **resolution hierarchy** has two or more spatial resolutions; a
 **deep hierarchy** has three or more streams; the **context budget** counts context tokens only,
-with total sequence length and compute reported separately (§4.1). The two-level
+with target tokens, total sequence length, and compute reported separately (§4.1). The two-level
 coarse-plus-fine model developed next is the family's per-level-decodable resolution form — the
 dissertation's demonstrated system, not the family's definition.
 
@@ -2689,7 +2537,7 @@ position); the fine code carries texture and stroke detail. In the macro/meso/mi
 absorbed — a two-level pyramid is the minimal sufficient instantiation for the claims under test.
 
 The defining structural property of the autoencoder — adopted from the hierarchical latent video
-modeling line of work [32, 13, 15] in minimal form — is **per-level decodability**: each level is *independently* decodable to
+modeling line of work [37, 20, 36] in minimal form — is **per-level decodability**: each level is *independently* decodable to
 the full frame by its own decoder,
 
 $$
@@ -2939,7 +2787,7 @@ package-specific input/output interface). Attention is full (every token attends
 overall system is enforced by sequence construction and by the autoregressive recursion (§3.3.2),
 not by an attention mask inside the step.
 
-Each block applies **adaLN-Zero conditioning** [18]: the per-token
+Each block applies **adaLN-Zero conditioning** [4]: the per-token
 conditioning vector $c$ is mapped (SiLU → linear) to six modulation signals
 $(\gamma_1, \beta_1, g_1, \gamma_2, \beta_2, g_2)$, and the block computes
 
@@ -2991,7 +2839,7 @@ y \;=\; \sqrt{\bar\alpha_\tau}\, z_0 \;+\; \sqrt{1 - \bar\alpha_\tau}\,\varepsil
 \tag{3.8}
 $$
 
-with the cosine noise schedule [4]
+with the cosine noise schedule [2]
 
 $$
 \bar\alpha_\tau \;=\; \frac{f(\tau)}{f(0)},
@@ -3004,7 +2852,7 @@ s = 0.008,
 \tag{3.9}
 $$
 
-The network is trained in the **v-parameterization** [73]: the regression target is the velocity
+The network is trained in the **v-parameterization** [110]: the regression target is the velocity
 
 $$
 v \;=\; \sqrt{\bar\alpha_\tau}\,\varepsilon \;-\; \sqrt{1 - \bar\alpha_\tau}\, z_0,
@@ -3053,7 +2901,7 @@ instrument; the two contributions compose but do not presuppose each other.
 
 ### 3.2.4 DDIM
 
-Generation inverts the diffusion with a deterministic DDIM sampler [17] over $N_{\mathrm{DDIM}} = 16$ steps on a rounded-linear sub-grid
+Generation inverts the diffusion with a deterministic DDIM sampler [46] over $N_{\mathrm{DDIM}} = 16$ steps on a rounded-linear sub-grid
 $\tau_1 = T > \tau_2 > \cdots > \tau_{16} \ge 1$ of the training schedule. Starting from pure
 noise $y^{(1)} \sim \mathcal{N}(0, I)$ over the whole two-level window, each step evaluates the
 network once and converts its v-output into the implied clean-data and noise estimates:
@@ -3330,8 +3178,8 @@ future frame is either fully determined by a short context or permanently unknow
 exists no *hard-but-computable-with-memory* regime in which a long-memory mechanism could
 demonstrate its value — this project's own null results on such data (Chapter 1, §1.3; Chapter 4)
 trace to exactly this degeneracy. Existing memory-oriented benchmarks (Memory Maze and
-TECO-Minecraft [20, 15], and the recent long-term spatial-memory evaluation protocols for world
-models [21, 23, 22]) pose genuine
+TECO-Minecraft [62, 36], and the recent long-term spatial-memory evaluation protocols for world
+models [22, 23, 24]) pose genuine
 long-horizon problems but derive their re-entry events from 3-D egomotion in rendered
 environments, where determining *which* pixels of a target frame were knowable from a given
 context requires geometry processing at best — and their model scales exceed a single-GPU
@@ -3464,14 +3312,17 @@ All system-versus-system comparisons are **paired**: evaluation draws use fixed 
 arm sees identical (clip, target) pairs; stochastic samplers are re-seeded per batch with common
 random numbers; and rollout records pair exactly across arms by (clip, horizon) thanks to the
 universal 48-frame warm-up (§3.3.1). Headline deltas are reported with 95% confidence intervals
-from a paired **clip-cluster** bootstrap (10{,}000 resamples), so all horizons belonging to one
-clip are resampled together. The untouched frontier and protected robustness families use a
+from a paired **clip-cluster** bootstrap (10{,}000 resamples): clips are the resampling units and
+all horizons belonging to a selected clip remain inside the replicate. This preserves
+within-rollout dependence rather than treating frames as independent observations
+[111, 112, 113, 114]. The untouched frontier and protected robustness families use a
 studentized max-statistic clip-cluster procedure for simultaneous coverage across their
 registered contrasts. Intervals are computed within each stated hardness×horizon population;
 single-step evaluation pools are sized at ≈768 samples
 so the hard stratum retains power, and rollout evaluation covers 100 clips × 152 generated frames
-= 15{,}200 records per arm. The headline arms (hier-long, flat-budget) are replicated over 2
-seeds. Where a best-of-$N$ statistic appears it is an oracle *coverage* diagnostic (selection by
+= 15{,}200 records per arm. Clip-cluster intervals condition on each trained model; training
+seeds are a separate uncertainty level and are reported individually or summarized with seeds as
+units. Where a best-of-$N$ statistic appears it is an oracle *coverage* diagnostic (selection by
 pixel-space fg-MSE against ground truth) and is always reported alongside the mean over $N$;
 headline tables use best-of-1.
 
@@ -3541,8 +3392,9 @@ natural next rung (Chapter 4 and General Conclusions).
    schedule (3.9) with per-target-frame action conditioning, trained on single windows (3.11)
    and sampled by 16-step deterministic DDIM (3.12)–(3.13) at a fixed cost of 4 network
    evaluations per generated frame. The window length equals the recursion advance, which makes
-   the training and rollout context distributions identical by construction — the property that
-   permits clean-context training without rollout-time distribution shift of the context layout.
+   the training and rollout **layout and temporal indexing** identical by construction. It does
+   not make their values identically distributed: training uses clean contexts, while rollout
+   contains self-generated values and therefore retains exposure-bias risk.
    A capacity-matched regression variant on the identical backbone (§3.2.5) completes the model
    family for the mechanism claims whose evidence is presented in Chapter 4.
 
@@ -3554,14 +3406,15 @@ natural next rung (Chapter 4 and General Conclusions).
    removes the complexity-claim inconsistency of the earlier chapter version, and the earlier
    reversible-inner-loop proposal is disposed of honestly: by the three-axis taxonomy of
    Chapter 2 that axis cannot outperform checkpointing, and the selected diffusion core requires
-   no gradient through its sampler — reversibility remains a contribution on the temporal-rollout
-   axis where it pays.
+   no gradient through its sampler. Reversibility remains a separately measured contribution on
+   the temporal-rollout axis and a potential enabler for future rollout-through-time training; it
+   is not used to produce the Chapter 4 context-package gains.
 
 5. In accordance with **Task 6**, the measurement instrument of the intelligent information
    technology has been formalized: the momentum looping memory-horizon testbed (3.17) with
    exactly computable re-entry hardness labels (3.18), foreground-masked per-image metrics with
    verified thresholds and decoder-set ceilings, mandatory decoded-sample review, and a paired
-   bootstrap protocol with common random numbers and a universal warm-up that pairs every record
+   clip-cluster bootstrap protocol with common random numbers and a universal warm-up that pairs every record
    across systems. The instrument operationalizes the trajectory-consistency criterion of
    Chapter 1 into an analytic, statistically disciplined measurement procedure, and its scope
    limits are stated as part of the deliverable.
@@ -3576,7 +3429,8 @@ natural next rung (Chapter 4 and General Conclusions).
    pre-registered hypotheses on this design — including the honest fallback conclusions specified
    in advance — constitutes §§4.2–4.4 of Chapter 4.
 
-The results of this chapter form the methods and model section of [A4]. Its final numbered
+The context-packaging, model, and evaluation results of this chapter form the methods section of
+[A4]. Its final numbered
 bibliographic position and any related conference theses are publication-administration fields,
 not scientific dependencies of the chapter.
 
@@ -3584,1397 +3438,377 @@ not scientific dependencies of the chapter.
 
 <div style="page-break-after: always;"></div>
 
-# Chapter 4 — Experimental Evaluation and Practical Application
+# Chapter 4 — Experimental Evaluation, Operating Regions, and Practical Application
 
-This chapter performs the comprehensive experimental verification required by **Task 7** of the
-dissertation research: the developed methods and the intelligent information technology are
-evaluated on the testbed family formalized in §3.4, under the pre-registered protocol of
-Table 3.1/Table 3.2, with every quoted comparison paired, stratified by the exact re-entry
-hardness label, and interval-estimated by the clip-level cluster bootstrap. The order of the
-sections is deliberate. The generation-head study (§4.2) is settled first, because every
-subsequent table depends on knowing how much of a system arm's score is owed to its head rather
-than to its memory design. The matched-token-budget memory study (§4.3) is the headline result of
-the dissertation. The spatial-abstraction factorial (§4.4) isolates the factor that every
-hierarchical arm otherwise confounds. The temporal-capability boundary study at the second
-operating point (§4.5) closes the capability line of the experimental program with an honestly
-bounded negative and the methodology lessons it produced. The generalization study (§4.6) then
-carries the configuration selected by §§4.2–4.4 onto the standard and synthetic benchmark
-suites — its measured components include the standard Moving-MNIST negative-control bridge and
-the corrected persistent-object long Moving-MNIST external boundary. §4.7 documents the
-implementation of the results,
-and §4.8 concludes the chapter.
+This chapter evaluates the developed methods by scientific question rather than by campaign
+chronology. The complete chronological record, gate history, secondary arm tables, and
+future-study shells are preserved in
+`docs/dissertation/rewrite/appendices/CHAPTER4_CAMPAIGN_ARCHIVE.md`. The main chapter answers:
 
-Two standing conventions of the chapter, fixed by the validity audit of the experimental campaign
-and stated once here: (i) the long-horizon evaluation protocol is a **48-frame ground-truth
-warm-up followed by 152 autoregressive frames** (38 scheduler steps × 4 frames) — all text says
-"152 AR frames", never "200-frame rollout"; (ii) all confidence intervals quoted in this chapter
-are 95% paired **clip-level cluster bootstrap** intervals unless a disclosure states otherwise
-(§4.1.5).
+1. Which generation mechanism is appropriate for the controlled predictor, and under which
+   inference regime?
+2. Does hierarchical context retrieve memory-relevant content beyond a token-matched flat window?
+3. Where is the tested reach–fidelity frontier, and what context-state efficiency does it imply?
+4. Which context-package shape is preferred?
+5. Which directions survive training seeds, sampler allocation, and codec changes?
+6. Which proposed effects fail to replicate?
+7. What do explicit access and persistent-object evaluation reveal about the mechanism’s limits?
 
-## 4.1 Data, Hardware and Measurement Protocol
+The chapter reports frozen evidence only. Moving-MNIST-CIFAR, KTH, E5b, E9, and the B1
+fixed-target control are not executed results. E9 is terminally skipped because it provides no
+incremental utility after the protected evidence programme; B1 retains whole-configuration
+wording, so the unexecuted control is not required for the present claims.
 
-### 4.1.1 Testbed Family: Two Operating Points
+## 4.1 Evaluation Design and Evidence Levels
 
-All experiments of §§4.2–4.5 run on the memory-horizon testbed family of §3.4 at two operating
-points.
+### 4.1.1 Testbeds and roles
 
-**Operating point A (primary)** is the momentum looping world *loopmom* formalized in §3.4.1: a
-$192 \times 64$ toroidal world observed through a panning $64 \times 64$ viewport at 4 px/frame
-($x^{\mathrm{vp}}_t = (x^{\mathrm{vp}}_{t-1} + 4a_t) \bmod 192$; measured
-$p_{\mathrm{hold}} \approx 0.10$, $p_{\mathrm{cont}} \approx 0.90$), so ~67% of the world is
-off-screen at any instant and off-screen content re-enters with a loop period of ≈48 frames.
-Datasets: 3,000 training clips × 100 frames and 500 test clips × 200 frames, clip-disjoint
-(§3.4.1); the frozen two-level autoencoder interface, standardization, hardness labels, metrics,
-and floors are exactly those of §§3.1.1 and 3.4.2–3.4.4.
+The experimental programme separates mechanism identification, confirmation, robustness, and
+external-boundary evidence.
 
-**Operating point B (capability regime)** is *hgrid3*: the same generator scaled to a 768-px
-world (12 digits, speed 4 px/frame, near-ballistic circulation), whose **effective loop** is
-$L_{\mathrm{eff}} \approx 213$ frames (eq. 4.1, §4.5.2) — deliberately beyond any affordable flat
-context window, which is what makes it the *capability* rather than *efficiency* operating point.
-Operating point B carries its own frozen autoencoder (fine reconstruction MSE 0.0024, coarse
-0.0059) and its own re-measured references (Table 4.1); its regime properties are verified before
-any model run: median re-entry gap 192 frames, 204 beyond-48 re-entry frames per clip, warm-up
-world-coverage 88.5%, and viewport-crop uniqueness 0.004–0.010 (the positional-landmark property
-whose destruction is diagnosed in §4.5.1).
+**LoopMom** is the primary mechanistic instrument. A \(64\times64\) viewport moves over a
+\(192\times64\) toroidal world containing background texture and digit sprites. At any instant,
+two thirds of the world is outside the viewport. Recorded actions and viewport positions identify
+when each world region was last visible; at the main operating point, relevant content re-enters
+after approximately 48 frames. This geometry provides exact *geometric observability*: it tells
+whether the information required for a re-entry was previously visible within a package’s reach.
+It does not prove information-theoretic necessity because common digit priors can make unseen
+content statistically predictable.
 
-**Table 4.1 — Reference floors and ceilings, measured under the identical pipeline per operating
-point (never mixed across operating points).**
+**Moving-MNIST 10-to-10** is a short, no-re-entry competence boundary using the canonical
+OpenSTL protocol [1] [115]. It asks whether the general predictor
+functions on a standard dataset, not whether hierarchical memory pays.
 
-| Reference | Op. point A (loopmom) | Op. point B (hgrid3) |
-|---|---:|---:|
-| Persistence floor, fg-MSE (single-step, k = 4) | 0.2367 | 0.2381 |
-| Persistence floor, fg-MSE (rollout protocol) | 0.2552 | — |
-| Persistence fg-sharp (k = 4) | 0.0515 | — |
-| AE round-trip fg-MSE ceiling | — | 0.0108 |
-| AE round-trip sharpness ceiling | 0.2412 | 0.2084 |
-| Raw ground-truth sharpness | 0.4785 | 0.4218 |
-| Collapse threshold (no digit structure below) | ≈0.08 | ≈0.08 |
-| Frozen AE reconstruction (fine / coarse MSE) | 0.0020 / — | 0.0024 / 0.0059 |
+**Persistent-object long Moving-MNIST (E6)** uses a 48-frame warm-up followed by 300 self-fed
+frames. The generator saves persistent object and source-glyph identities, boxes, and
+trajectories. The evaluator uses one-to-one Hungarian assignment
+[116], explicit misses and extras, a fixed ground-truth denominator for
+identity accuracy, and object coverage. E6 is an external synthetic boundary, not a replication of
+LoopMom’s geometry.
 
-**Figure 4.A — LoopMom geometry and the registered reach band.**
-*Content:* toroidal world, moving viewport, persistent digits and the pair-derived
-`14 < dt <= 48` population. The privileged pose-indexed raw-memory reference is drawn
-separately from token-budget-matched neural packages.
-*Source:* `docs/figures/fig15_loopmom_observability_schematic.png` and vector PDF; generated
-deterministically from the frozen E2 geometry by `scripts/make_rft_core_schematics.py`.
+**TaxiBJ** is a real spatio-temporal forecasting competence bridge under the OpenSTL 4-to-4
+protocol [117] [1]. It does not contain the off-screen re-entry mechanism required by
+the article’s central claim and is therefore not treated as memory confirmation.
 
-### 4.1.2 [A2]
+### 4.1.2 Evidence hierarchy
 
-The experimental validation of the reversible-transformer method and time-agnostic
-backpropagation (§§2.3–2.4) was published in [A2] on procedurally synthesized **2-D rotating
-shapes** at $64 \times 64$ resolution. The suite controls the temporal law—constant, changing,
-oscillating, interrupted, and combined rotation—and therefore isolates the effect of prediction
-depth and temporal discontinuity. The published regime uses a 12-frame context, grows the
-prediction depth from one to five frames during 30,000 training steps, evaluates 2,000 independently
-generated sequences, and trains all compared models with Adam at learning rate $10^{-5}$ on one
-NVIDIA RTX 4060 Ti 16 GB. The memory-scaling measurements use batch 32. These values replace the
-unsupported old-draft claims of AdamW with cosine decay, 100–300 epochs, and A100 80 GB hardware.
+Four evidence levels are kept distinct:
 
-The **3-D polycube** and entropy-tokenization material belongs to [A1], not [A2]. Moving MNIST,
-MMNIST-CIFAR, TaxiBJ, and KTH are likewise not reported as [A2] experiments: Moving MNIST and
-TaxiBJ are separate dissertation bridges (§§4.6.2 and 4.6.5), whereas MMNIST-CIFAR and KTH remain
-explicitly unexecuted extensions. This separation preserves the content and scope of the existing
-publications instead of retroactively enlarging them.
+1. **Development evidence** uses the original evaluation pool that informed theory and arm
+   selection.
+2. **Untouched confirmation** evaluates frozen checkpoints and registered populations once on a
+   newly generated, hash-pinned holdout rejected by training and monitoring loaders.
+3. **Robustness evidence** changes sampler allocation or the entire latent codec under separately
+   purpose-locked data.
+4. **External-boundary evidence** changes the task and object semantics and is interpreted as a
+   scope test rather than a replication.
 
-### 4.1.3 Bridge to the OpenSTL/Moving-MNIST Benchmark
+The source of truth is the immutable local NPZ/JSON evidence, not dashboard summaries. Protected
+data require purpose-specific access records. Each accepted result is linked to a content-addressed
+run specification, dataset hash, checkpoint provenance, source revision, and completion
+validator.
 
-**[MEASURED 2026-07-06 — full results, table, and reading in §4.6.2 (Table 4.8).]** For
-continuity with the literature, the developed stack is additionally evaluated on the standard
-OpenSTL Moving-MNIST suite [74]. The pre-registered expectation, recorded before the
-runs: mid-pack aggregate MSE/SSIM against the OpenSTL leaderboard — aggregate metrics on a
-≈93%-black-background benchmark reward mean prediction (this project's own measurement: a
-constant all-black prediction outperforms a trained CW-VAE [13] on aggregate SSIM/PSNR,
-§3.4.3) — together with competitive perceptual (LPIPS) behavior and an autoencoder round-trip
-ceiling row that decomposes decoder error from dynamics error. The purpose of the bridge is
-connectivity to the standard suite, not a leaderboard claim; the memory-horizon claims of this
-chapter cannot be tested on Moving MNIST at all, for the degeneracy reasons established in §3.4.
-The measured outcome (§4.6.2) confirmed the connectivity, ceiling-row, and
-perceptual-versus-persistence clauses, **refuted the "mid-pack aggregate MSE" clause** (180.91
-against the deterministic specialists' 22.06–29.80 — reported as a refutation, per the standing
-convention of §4.2.3), and returned the predicted flat ≈ hierarchical null as the negative
-control of the memory-horizon claim.
+### 4.1.3 Endpoints and statistical protocol
 
-### 4.1.4 Hardware and Software Environment
+Sparse-video evaluation requires more than aggregate full-frame error. Every accepted evaluation
+retains full-frame MSE, non-empty ground-truth-foreground MSE, background MSE, union-mask MSE,
+foreground precision/recall/F1, component counts, misses, extras, overlap, and coverage.
+Persistent-object studies additionally retain trajectory error and identity accuracy. SSIM, PSNR,
+LPIPS, FID, and FVD remain useful conventional metrics
+[118, 119, 88, 120], but no one aggregate score is allowed to substitute for
+re-entry, hallucination, support, identity, and coverage endpoints.
 
-All experiments of the [A4] campaign (§§4.2–4.5) were performed on a single consumer-grade GPU
-(NVIDIA GeForce RTX 4060 Ti, 16 GB) — a deliberate constraint of the research design: the
-resource-efficiency claims of Chapter 2 are made *for* this class of hardware, and the complete
-benchmark (data generation, autoencoder training, all system arms, all evaluations) reproduces on
-one such device. The software complex is implemented in Python/PyTorch (§4.7; the module map is
-given in the appendix **[AUTHOR: appendix letter]**). The memory-consumption measurements quoted
-in Chapter 2 (Table 2.3: BPTT 12.2 GB at rollout length $K = 40$ and OOM at $K = 120$ versus the
-developed method's ≈1.1–1.2 GB through $K = 160$; the inner-loop panel behind the 0.26%-measured no-go
-result) were performed in this same environment, on the implemented stochastic hierarchical
-recurrent core, and constitute part of the experimental program of this chapter even though their
-tables live with the theory they verify.
+For a registered pair, record-level differences are paired by clip and horizon. The sampling unit
+is the clip: a bootstrap replicate samples clips with replacement and retains all rollout frames
+inside each selected clip. This preserves within-rollout dependence. Clip-cluster intervals
+condition on the trained model, while training seeds are a separate uncertainty level.
+Registered families use a studentized maximum statistic across all contrasts in each bootstrap
+replicate, producing simultaneous intervals rather than interpreting many marginal intervals
+independently [111, 112, 113, 114].
 
-Training protocol of the rollout arms (operating point A): 30,000 optimizer steps, batch 16,
-bf16, EMA decay 0.999, evaluation on EMA weights (§3.2.3); the flat-long arm is the disclosed
-exception (§4.3.4). The DiT backbone of every arm is the §3.2.2 configuration (d = 384, depth 8,
-6 heads; 22.19 M parameters).
+Effects are reported as comparator loss minus candidate loss unless a table states otherwise;
+positive values therefore favor the registered candidate. A null interval is unresolved, not
+evidence of equivalence. Equivalence would require a justified smallest effect of interest,
+adequate measurement reliability, and a confidence interval wholly inside that margin.
 
-### 4.1.5 Statistical Protocol and Threats to Validity
+### 4.1.4 Computational environment and budget vocabulary
 
-The evaluation protocol is the §3.4.4 instrument, hardened by a six-surface adversarial validity
-audit of the campaign (data/splits, rollout protocol, gate protocol, energy-model protocol,
-autoencoder provenance, metrics/statistics; 24 findings, 2 confirmed major, both fixed and
-recomputed the same day). The audit's material corrections and standing disclosures are part of
-the protocol definition and are stated here once:
+The main experiments use the recorded Python/PyTorch environments and NVIDIA GPU configurations
+stored with their run specifications. CPU-only gates validate dataset integrity, package
+interfaces, experiment authorization, metric semantics, and deterministic evidence generation.
+GPU-hour accounting includes training, evaluation, pilots, failures, and retries.
 
-1. **Cluster-robust intervals.** Rollout records are 100 clips × 152 consecutive AR frames with
-   lag-1 autocorrelation +0.86; frame-iid bootstrap intervals are 2–7× too narrow. All quoted CIs
-   are therefore paired clip-level cluster bootstrap intervals. Under the corrected intervals,
-   three secondary bin verdicts of the campaign flipped to null; **every headline verdict
-   survived**. Records whose ground-truth frame contains no foreground (3,263 of 15,200 = 21.5%,
-   where fg-MSE would silently fall back to full-frame MSE) are excluded from all stratified bins
-   and reported as their own background-only row.
+“Matched budget” always names the matched resource:
 
-2. **Corrected hardness anchoring.** An audit-confirmed bug in the mechanism-study hardness
-   labels (the target-anchored coverage window counted the k − 1 = 3 bridge frames as covered,
-   mislabeling 11–14% of hard samples as easy; hard fraction 0.19 buggy → 0.27 correct) was fixed
-   and Table 4.2 recomputed from the saved checkpoints with a single raw-ground-truth metric
-   reference for all rows. The memory-gate and rollout evaluations always used the correct
-   anchor. All hardness labels are computed from ground-truth geometry, independently of any
-   model and identically across arms.
+- context-token matched;
+- target-interface matched;
+- total-sequence-token matched;
+- parameter matched;
+- training-example matched;
+- optimizer-update matched; or
+- inference-NFE matched.
 
-3. **Metric scope disclosures.** fg-MSE scores only ground-truth-sprite pixels; hallucinated
-   off-sprite content is invisible to it — it is therefore never interpreted alone but jointly
-   with foreground sharpness, decoded-sample review (§3.4.3), and the complete-metric evidence
-   artifacts, which include full-frame, union-mask and false-positive-sensitive endpoints.
-   Per-horizon *sharpness* series are chunk-batch means duplicated per record — valid for overall
-   means and trend curves, never for per-bin or per-clip readings; every sharpness-versus-horizon
-   statement in this chapter is so scoped.
+The B16×30k and B8×60k regimes process approximately the same number of examples but differ in
+updates, gradient noise, grouping, and effective EMA horizon. They are optimizer-regime
+comparisons, not “twice the data.”
 
-4. **Pairing and replication conventions.** All arm-versus-arm comparisons share evaluation
-   clips and horizons; sampling noise is common only when target tensor shapes match. Cross-shape
-   cells retain record pairing but not elementwise CRN (unbiased, with less variance reduction).
-   "2 seeds" for the single-step
-   memory gate means two *training* seeds sharing one CRN evaluation set (by design, for exact
-   pairing). At operating point B the evaluation adds the pre-registered
-   **dt-since-last-visible** stratifier (per-record time since the target region was last in
-   view, computed from the recorded trajectory; bins dt ∈ (48, 96], (96, 192], > 192, crossed
-   with hardness) and a warm-up-SEEN restriction, so that gates are read only on re-entries of
-   content that was answerable by construction.
+## 4.2 Selection of the Generation Mechanism
 
-5. **External validity.** The testbed is purpose-built and synthetic; digit assets are shared
-   across splits (texture familiarity only — re-entry memory requires clip-specific trajectory
-   content, which does not transfer across clips), while trajectories and world layouts are
-   split-disjoint. All claims are scoped to the memory-horizon regime the testbed
-   operationalizes; the OpenSTL bridge (§4.1.3, measured in §4.6.2) anchors short-horizon
-   behavior on a standard benchmark. Generation seeds of the shipped dataset files were not recorded (measured
-   properties are stated as measured; a frame-hash duplication check found no cross-file clip
-   duplication).
+The model chapter uses v-parameterized latent diffusion, but the experiment does not assume that
+diffusion wins every evaluation regime. Regression, diffusion, and energy-based descent are
+compared on the same conditioning structure and closely matched transformer capacity.
 
-## 4.2 Matched-Compute Mechanism Study: Selecting the Generative Core
+### 4.2.1 Shared single-step mechanism study
 
-The claim defended in this section is deliberately conditional: **which prediction head wins
-depends on the inference regime; there is no one best head.** Three results establish this — the
-single-step coverage study (§4.2.2), its rollout reversal (§4.2.3), and the two-sided study of
-the energy-based head (§4.2.4). The section thereby supplies the empirical selection evidence
-promised in §3.2 (the diffusion core) *and* the honest boundary of that selection.
+The regression and diffusion predictors use width 256, six transformer blocks, eight heads, and a
+shared context layout; their parameter counts are 7.27 M and 7.53 M. Context contains six frames
+at both latent levels, and the target lies four actions after the last context frame. Per-level
+latent standardization is essential: without it, unit-scale diffusion noise overwhelms raw latent
+scales and reverses the observed ranking. Inference work is measured in network function
+evaluations (NFE). Best-of-\(N\) is an oracle coverage diagnostic selected by decoded foreground
+MSE against the ground truth and is always separated from mean-over-\(N\) and best-of-1.
 
-**Figure 4.1 — Three prediction heads in the shared context testbed.**
-Direct regression predicts one target latent, diffusion predicts a denoising velocity and commits
-through DDIM sampling, while the energy head learns a scalar landscape traversed by candidate
-descent. The diagram separates objective and inference from the shared context question.
-*Source:* `docs/figures/fig24_generation_objectives.png`; deterministic source
-`scripts/make_dissertation_missing_figures.py`.
+**Table 4.1 — Matched-capacity single-step mechanism comparison.**
 
-### 4.2.1 Shared Mechanism Testbed
-
-All Part-A predictors are transformers of one shape (width 256, 6 blocks, 8 heads) over one token
-layout — 16 coarse plus 64 fine tokens per frame with joint attention over both levels' tokens
-(the §3.1.2 conditioning mechanism) — with parameter counts 7.27 M (regression), 7.53 M
-(diffusion), and 7.28 M (energy-based): the differences are the mechanism-specific heads and
-embeddings only. Context is 6 frames of both levels; the target is the frame k = 4 steps after
-the last context frame; the four bridging actions are embedded through the same conditioning path
-in every arm. Training is single-step and leakage-free (ground-truth context and target; no
-prediction fed back); batch 48, fp32; the regressor trains 6,000 steps (its loss plateaus at
-0.096), the diffusion arm 8,000 steps. Latents are standardized per channel and per level with
-training-set statistics — the §3.1.1 protocol requirement, and a finding in its own right: with
-raw latents (per-channel scale ≈0.12 coarse / ≈0.16 fine) the diffusion arm *underperformed* the
-regressor, because unit-scale noise buried the signal mid-schedule and sampling initialized 4–7×
-off-scale; the one-line standardization fix reversed the mechanism ranking. The failure mode is
-silent — losses fall, samples look plausible, nothing errors — which is why standardization is
-elevated to a protocol requirement rather than an implementation detail.
-
-Inference budgets are matched in network function evaluations (NFE), not step counts: one DDIM
-step = 1 forward pass; one energy-descent step = forward + gradient ≈ 2 forward passes; one
-regression sample = 1 forward pass (evaluation keeps dropout 0.1 active, so N stochastic passes
-yield N samples — MC-dropout, making best-of-N comparable across arms). Best-of-N selection is
-performed in decoded pixel space on foreground MSE against ground truth — an **oracle coverage
-diagnostic** (§3.4.4), always reported alongside the mean over N.
-
-### 4.2.2 Single-Step Oracle-Coverage Regime: Diffusion Wins Every Column
-
-Table 4.2 reports the corrected mechanism comparison (single-step, k = 4, best-of-8, NFE 16;
-six evaluation batches of 48; hard split = novel-strip > 0, covering 27% of samples; references
-per Table 4.1).
-
-**Table 4.2 — Matched-capacity head comparison, single-step (corrected hardness anchor, single
-raw-GT reference).**
-
-| Head | fg-MSE (all) | easy | HARD | mean-over-8 | fg-sharp |
+| Head | fg-MSE, all | Easy | Hard novel strip | Mean over 8 | fg-sharpness |
 |---|---:|---:|---:|---:|---:|
-| Regression (MC-dropout) | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
-| Diffusion (v-pred, DDIM) | **0.0512** | **0.0120** | **0.1549** | **0.0640** | **0.1886** |
-| Persistence floor | 0.2367 | — | — | — | 0.0515 |
+| Regression with MC dropout | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
+| Diffusion, v-prediction + DDIM | **0.0512** | **0.0120** | **0.1549** | **0.0640** | **0.1886** |
+| Persistence reference | 0.2367 | — | — | — | 0.0515 |
 
-**Table 4.3 — Matched-NFE control (best-of-8 fg-MSE).**
+Diffusion wins every column in this single-step best-of-8 coverage regime and is already better at
+NFE 4. The separation is largest on the genuinely generative hard subset. The regressor’s
+mean-over-8 and best-of-8 values are close, while diffusion gains more from multiple samples,
+consistent with the established distinction between mean-seeking regression and stochastic
+coverage [121, 122, 123].
 
-| NFE per sample | Regression | Diffusion |
+### 4.2.2 Best-of-1 rollout reverses the head ranking
+
+During deterministic best-of-1 self-fed rollout, regression performs better: `reg-long` reaches
+foreground MSE 0.1682 versus 0.1848 for `hier-long`, with paired interval
+\([+0.0110,+0.0227]\) for diffusion-minus-regression and nearly equal sharpness
+(0.0741 versus 0.0729). At the matched flat context, regression reaches 0.2015 versus 0.2038 for
+diffusion.
+
+The two results answer different questions. Diffusion wins an oracle-coverage regime in which
+multiple samples are compared to the ground truth. Regression wins the deterministic best-of-1
+rollout in which every prediction is fed back. The defensible conclusion is regime dependence,
+not a universal best head.
+
+### 4.2.3 Energy-based descent is a characterized negative
+
+The energy-based study uses the official Energy-Based Transformer implementation and two reported
+training recipes [82]. It separates two capabilities:
+whether the trained energy orders true targets below mismatched targets, and whether candidate
+descent from the prescribed initialization reaches structured outputs.
+
+One recipe produces a persistently misordered landscape. The second repairs the ordering but
+descent still fails to reach structured video targets at the scale feasible in this programme.
+This is a two-sided characterized negative, not a proof that energy-based video generation is
+impossible at larger scale. It justifies selecting diffusion for the coverage-oriented
+single-step mechanism while retaining regression as a best-of-1 control. Detailed energy
+landscapes, scale gaps, and descent trajectories remain in the campaign appendix.
+
+## 4.3 Untouched Confirmation of Reach
+
+The original LoopMom pool informed qualitative monitoring and configuration selection. The
+central reach claims were therefore tested once on the newly generated hash-pinned holdout
+`loopmom-confirmation_holdout-20260712-e033abee6e04`. Before access, the protocol froze
+checkpoint evaluations, pair definitions, reach bands, endpoints, table shells, and the
+simultaneous frontier family.
+
+For `hier-min` versus `flat-min`, the registered population contains non-empty answerable records
+with
+
+$$
+14 < \Delta t \le 48,
+$$
+
+so the relevant past lies outside the 14-frame flat reach and inside the 48-frame hierarchical
+reach. The effects are:
+
+| Training seed | Reach-band effect | 95% CI |
 |---:|---:|---:|
-| 4 | 0.0680 | 0.0546 |
-| 8 | 0.0680 | 0.0514 |
-| 16 | 0.0680 | 0.0503 |
+| 0 | +0.0980 | [0.0788, 0.1179] |
+| 1 | +0.0914 | [0.0736, 0.1098] |
 
-Three observations. First, both heads are far below the persistence floor on every column: the
-action-conditioned warp is learned by everything, as expected where the easy region is
-deterministic given the action. Second, the separation concentrates exactly where the hardness
-stratification says it should: on the easy bin diffusion's advantage is 0.011 absolute (0.0232 →
-0.0120), on the genuinely generative HARD bin it is 0.026 (0.1808 → 0.1549), and diffusion is
-sharper (0.1886 vs 0.1591 against the 0.2412 ceiling). Third, the advantage is not an
-inference-budget artefact (Table 4.3): the regressor is budget-flat at 0.0680 while diffusion
-already leads at NFE 4 and improves monotonically. The regressor's mean-over-8 ≈ best-of-8 gap is
-near zero — it has *averaged over* the possible futures rather than distributing probability mass
-across them; diffusion's best-of-N gap (0.0640 → 0.0512) is the coverage signature of a head that
-commits to distinct hypotheses per sample. This is a controlled replication of the
-"regression averages, sampling-based generation commits" finding of the stochastic
-video-prediction literature [75, 76, 77] under matched capacity, matched conditioning, matched inference
-budget, and exact hardness stratification — and its protocol scope is the point: best-of-8
-selection is an oracle coverage regime.
+Whole-population effects are +0.0474 \([0.0354,0.0595]\) and +0.0436
+\([0.0326,0.0549]\). Union-mask, full-frame, recall/F1, missed-component, and coverage endpoints
+support the same direction. The concentration of the larger effects inside the pair-derived band
+supports reach as the mechanism.
 
-**Figure 4.2 — Single-step regression and diffusion predictions.**
-Each row shows last context, prediction and ground truth on identical inputs. The panels are
-descriptive examples of the registered single-step regime; the aggregate and paired results,
-not a selected row, determine the comparison.
-*Source:* `docs/figures/fig29_mechanism_single_step_samples.png`, composed without pixel editing
-from `logs_rhcp/step1_mech_clean_{reg,diff}.png` by
-`scripts/make_dissertation_missing_figures.py`.
+For B1 versus `flat-short`, the registered \(8<\Delta t\le48\) effects are +0.0692
+\([0.0543,0.0845]\) and +0.0743 \([0.0588,0.0899]\). B1 changes context stride, target stride,
+target slots, auxiliary loss, sequence length, and optimization difficulty together. It is
+therefore a confirmed *whole-configuration* effect, not a pure causal stride estimate.
 
-### 4.2.3 Rollout Reversal: Regression Wins Best-of-1
+Geometric observability is exact for the generator but not information-theoretic necessity. A
+stronger necessity experiment would require paired worlds identical over the short visible
+context but different in hidden content that determines re-entry.
 
-The pre-registered expectation for the rollout campaign was that the regressor, rolled out
-autoregressively, would fade toward the mean while diffusion held sharpness. The measured outcome
-**refutes** this expectation, and the reversal is reported as such, not reframed: under the
-deterministic best-of-1 rollout protocol (§4.1), **the regression arm beats the hierarchical
-diffusion arm at every horizon band and every hard bin at equal sharpness** — reg-long vs
-hier-long: fg-sharp 0.0741 vs 0.0729; ALL fg-MSE 0.1682 vs 0.1848; direct paired cluster CI on
-the ALL delta [+0.0110, +0.0227]. The same holds at the matched flat context: reg-flat 0.2015 vs
-flat-budget (diffusion) 0.2038.
+## 4.4 Tested Reach–Fidelity Frontier and Memory Efficiency
 
-The two results reconcile without contradiction once the protocols are stated side by side: the
-Table 4.2 diffusion win is single-step **best-of-8** — oracle coverage switched on; the rollout
-result is **best-of-1** — coverage off, and every sampled hypothesis is fed back and compounded
-over 152 frames. Diffusion wins the coverage regime; regression wins the deterministic best-of-1
-rollout regime. Any claim of the form "head X is better" that omits the regime is, on this
-evidence, wrong.
+The untouched E2 simultaneous family is the principal frontier evidence:
 
-### 4.2.4 Two-Sided Energy-Head Study: A Characterized Negative Result
+**Table 4.2 — Registered tested frontier.**
 
-The third candidate head is energy-based descent: Energy-Based Transformers [39] train a scalar energy $E(\text{context}, \text{candidate})$ — reviewed in
-§1.3.3 as a global consistency criterion — and generate by gradient descent on the candidate. The
-mechanism is attractive for this dissertation's problem precisely because descent steps are a
-natural "think-longer" knob for hard re-entry frames. The study below is *two-sided* in that it
-decomposes the observed failure into two separable capabilities: whether the trained energy
-landscape **orders** candidates correctly (target below mean below noise), and whether descent
-from the prescribed initialization can **reach** a structured output. The headline result is that
-these dissociate.
+| Context-token point | Registered interpretation | Training-seed coverage |
+|---:|---|---|
+| 896 | hierarchy confirmed over matched flat | seeds 0–1 |
+| 1,152 | hierarchy confirmed over matched flat | seeds 0–2 |
+| 1,792 | unresolved | registered simultaneous interval crosses zero |
+| 2,432 | flat full-resolution context confirmed | primary B16×30k and B8×60k regimes |
+| 3,072 | flat full-resolution context confirmed | seeds 0–1 |
 
-**Setup: the official implementation, imported unchanged.** This dissertation's own
-reimplementation of the mechanism, trained in the §4.2.1 harness, collapsed to a blank near-mean
-output; a reimplementation failure is uninformative, so the study removes the author's code from
-the loop entirely. The control module of the software complex imports the reference repository's
-model classes unmodified (RMSNorm blocks, rotary positions, causal autoregressive attention, the
-prepended descent-step time-embedding token, the bias-free linear energy head, the causal replay
-buffer), and transcribes the reference MCMC descent control flow line-for-line (random-noise
-initialization, per-step step-size randomization, Langevin noise, gradients with respect to the
-pre-projection frame embeddings, single-graph and truncated variants per recipe). Two adaptations
-were unavoidable and are flagged: (i) *frame-as-token* — the reference flattens each frame's
-latent into one token via a learned down-projection; the identical scheme is applied to the
-concatenated standardized latents of §3.1.1 ($16 \cdot 4 \cdot 4 + 16 \cdot 8 \cdot 8 = 1{,}280$
-dimensions), with descent performed in the original 1,280-d space exactly as in the reference;
-(ii) an additive learned *action embedding* on the candidate tokens (the reference video task is
-action-free; this testbed is action-conditioned). One recipe number is re-tuned: the descent step
-size $\alpha$, whose published values are calibrated to the reference latent space's gradient
-scale, is recalibrated to this latent scale by the reference's own movement principle
-($\alpha \cdot |\nabla E| \cdot n_{\text{steps}} \approx$ the initialization-to-target distance).
+The largest tested family-wise-confirmed hierarchy point is 1,152; the smallest tested confirmed
+flat point is 2,432. No monotonicity, unique crossing, interpolation, or asymptotic law is inferred
+between them.
 
-Both published training recipes are run at the paper's "xxs" video shape — width 384, 6 layers, 6
-heads, FFN multiplier 4, context 16 frames; 14.66 M parameters in the frame-token instantiation —
-with the paper's scheduler shape, peak learning rate $4 \times 10^{-4}$, weight decay 0.01,
-gradient clip 1.0, effective batch 128 (micro-batch 32 × 4 accumulation), 20,000 optimizer steps,
-fp32. The **S2 recipe** uses a single training landscape with randomized extra final-landscape
-steps, truncated second-order graph, Langevin noise, a replay buffer, and fixed recalibrated
-$\alpha = 15.97$; the **S1 recipe** (the configuration behind the paper's published video
-generations) uses two descent steps with detach between them, a second-order graph on every step,
-no replay, no training-time Langevin noise, and a learnable $\alpha$ (recalibrated initialization
-23.95). Every 1,000 steps, held-out probes record: the energies $E(\text{target})$,
-$E(\text{mean latent})$, $E(\text{random noise})$ on the final landscape; the cold-descent
-output's latent distance to target $d_{\mathrm{tgt}}$ (the mean-to-target distance is 0.964 in
-the same units); and the decoded output's foreground sharpness (collapse threshold ≈0.08; ceiling
-≈0.24). For S1, the paper's own inference recipe is additionally run at each probe (best-of-4 by
-minimum energy, 4 descent steps, inference $\alpha/4$, Langevin noise, probed at both the
-current-$\alpha$ and initial-$\alpha$ readings).
+At the frozen latent resolution, one fine frame costs \(8\times8=64\) tokens and one coarse
+frame costs \(4\times4=16\). The 48-frame arithmetic is:
 
-**Figure 4.3 — Energy head and gradient-descent generation loop.**
-The tested head scores a 1,280-dimensional per-frame candidate together with context and actions.
-Generation repeatedly updates the candidate using its energy gradient and the registered noise
-rule. This makes landscape ordering and reachability by descent separately testable.
-*Source:* `docs/figures/fig25_ebt_generation_loop.png`; deterministic source
-`scripts/make_dissertation_missing_figures.py`.
+**Table 4.3 — Context-state cost at equal nominal 48-frame addressable reach.**
 
-**The S2 recipe: a stably mis-ordered landscape.** The S2 run converges (training loss settles at
-≈0.597 from roughly step 7,000 to the end) — and its landscape is stably wrong. At **every one of
-the 21 probes** from step 0 to step 20,000, $E(\text{mean}) < E(\text{target})$: the batch-mean
-latent has strictly lower energy than the true target, with a stable gap of ≈0.6–1.2 energy units
-from step 3,000 onward. Cold descent behaves accordingly: $d_{\mathrm{tgt}}$ stays flat at
-1.26–1.29 (against the mean's own 0.964 — the output is no closer to the target than the mean
-is), and decoded foreground sharpness never leaves the collapse regime (0.008–0.014 across all
-probes, versus the 0.08 structure threshold). Twenty thousand converged steps at the paper's
-shape, batch semantics, and scheduler do not repair the ordering; the objection that the earlier
-negative was an under-training artefact is thereby closed for this recipe. One disclosure: the
-batch-mean latent has roughly eight times lower norm than an individual target, so a norm
-preference could in principle carry part of the ordering; two probe features rebut a pure norm
-artefact — $E(\text{random noise})$ sits far above both throughout, and the S1 recipe flips the
-*same* probe to the correct ordering, which a norm effect alone cannot do.
+| Package | Context-token calculation | Context tokens | Relative cost |
+|---|---:|---:|---:|
+| 48 dense fine frames | \(48\times64\) | 3,072 | 1.00× |
+| 48 coarse + 6 fine | \(48\times16+6\times64\) | 1,152 | 2.67× fewer |
+| 48 coarse + 2 fine | \(48\times16+2\times64\) | 896 | 3.43× fewer |
 
-**The S1 recipe: ordering repaired, generation still out of reach.** The S1 run is the
-informative one. Its loss falls further (0.361 at 20,000 steps, still improving), the learnable
-$\alpha$ drifts upward (23.95 → 33.27), and — unlike S2 — the landscape *becomes correctly
-ordered*: $E(\text{target})$ is strictly lowest at **all fifteen consecutive probes from step
-6,000 to 20,000**, with a target-below-mean gap ranging from +0.22 to +3.09 energy units across
-those probes (the exact flip-onset step rests on one fixed 64-sample probe batch; the
-fifteen-consecutive-probe persistence is the claim, not the onset). By the ordering criterion
-that indicted S2, S1's energy is *right*. Generation still never materializes: cold descent from
-the prescribed random-noise initialization stays at $d_{\mathrm{tgt}} \approx 1.12$–$1.17$, with
-foreground sharpness creeping from 0.011 to a maximum of 0.035 — a real but small trend that
-remains a factor of ≈2.3 below the structure threshold and ≈7 below the decoder ceiling. The
-paper's own inference recipe does no better: $d_{\mathrm{tgt}} \approx 1.19$–$1.24$ and fg-sharp
-0.010–0.015 at every probe and both $\alpha$ readings (final probe: 1.207 / 0.0127 at the
-current-$\alpha$ reading; 1.233 / 0.0120 at the init-$\alpha$ reading). A correctly ordered
-landscape, probed under the publication's own sampler, produces no structured output at this
-scale.
+The result is **same nominal reach with fewer context tokens**. It is not a claim of equal
+information, equal error, equal total tokens, equal compute, or equal wall time. Target tokens and
+total sequence tokens are reported separately.
 
-**Decomposition: ordering × reachability.** Combining the two runs with the positive-control
-probes gives a clean two-factor decomposition. *(a) Landscape ordering is recipe-dependent:* S2
-never orders the landscape correctly (21/21 mean-lowest probes at converged loss); S1 orders it
-correctly from step 6,000 onward (15/15 target-lowest). The choice between the two published
-training recipes decides whether the energy function even prefers the truth. *(b) Descent
-reachability from noise fails under both, and is not bought back by inference-time compute.* In
-positive-control experiments on the same official model (copy and shift tasks), the trained
-landscape is correct by every probe — on copy, $E(\text{target}) = -65.6$ vs mean $-57.2$ vs
-noise $-14.8$, and an energy-conditioning matrix identifies the matching context for 8/8 targets
-with an off-diagonal gap of +26.4 — yet cold descent still lands blank (fg-sharp 0.030 on copy,
-0.016 on shift). Sweeping cold-descent steps 2 → 128 leaves $d_{\mathrm{tgt}}$ flat
-(1.131–1.149); warm-starting *at the target* and descending does not hold it (at the operating
-step size the output drifts to $d_{\mathrm{tgt}} 0.41 \to \approx 0.55$, settling in a shallow
-basin between target and mean — the target is at best a weak attractor along the descent
-dynamics); the minimum-energy sample among 16 cold descents remains collapsed (fg-sharp 0.0145);
-and a persistence-initialized descent also fails to move toward the target ($d_{\mathrm{tgt}}$
-0.835, fg-sharp 0.046, versus 0.348 and 0.088 for a plain regressor on the same task). The two
-factors are separable because S1 fixes (a) while leaving (b) intact: what is observed at
-16 GB-reachable scale is not "the energy model learns the wrong criterion" simpliciter — with the
-generation recipe it learns a usefully ordered criterion whose minima are nonetheless unreachable
-by the prescribed sampler from the prescribed initialization. This is consistent with theoretical
-accounts of entropy collapse in gradient-descent sampling [78], cited as context being instantiated, not as a discovered mechanism.
+![Untouched reach–fidelity frontier and memory arithmetic](../../figures/article_confirmed_frontier.png)
 
-**Scope and non-claims.** This study tests a capability the EBT publication does not claim at a
-scale it did not run: the paper's video-section claims concern validation-loss scaling and
-energy-as-uncertainty, not sharp generation, and its published video generations come from a
-larger model class trained on natural video through a large pretrained autoencoder on multi-GPU
-hardware. Nothing here is a reproduction failure, and nothing here contradicts the published
-claims; published small-model positives in other domains [79] are
-likewise untouched. What the study establishes is a **capability boundary with a mechanism
-attached**: at the scales reachable in this work (Table 4.4), the energy-descent head does not
-convert even a correctly ordered landscape into committed video predictions — while the diffusion
-control at roughly half the parameter count (7.53 M vs 14.66 M), on the same frozen latents and
-the same standardization, shows recognizable digit structure by 1,500 optimizer steps and at
-convergence commits to sharp, correctly located digits (Table 4.2). Whatever resource the
-energy sampler is missing at this scale, diffusion does not miss it. Residual limitations are
-stated: the scaled runs remain a factor of 3–5 below the reference step budgets and 2 below its
-batch size; the S1 sharpness trend (0.011 → 0.035), while far below structure, is non-zero, and a
-longer run could in principle continue it — the claim is scoped accordingly.
+**Figure 4.1 — Untouched tested frontier and exact context-token arithmetic.** Positive effects
+favor hierarchy. Intervals belong to one simultaneous family; no line is drawn through the tested
+points and 1,792 is shown as unresolved. Source:
+`artifacts/confirmation_e2/results.json`.
 
-**Table 4.4 — Configuration gap between this study's fair-scale runs and the reference training
-configurations (the extrapolation-risk record).**
+The frontier supports the dissertation’s central state-memory interpretation. Hierarchy pays when
+compression buys access to otherwise unreachable evidence. Once the flat package can afford the
+relevant span, discarded fine information becomes an abstraction cost and flat fidelity recovers.
 
-| | This study (S2 / S1 arms) | Reference S2 | Reference S1 |
-|---|---|---|---|
-| Model shape | xxs: d 384, 6L, 6H, FFN 4× (14.66 M with 1,280-d frame tokens) | xxs | xxs |
-| Context | 16 frames | 16 frames | 16 frames |
-| Steps (warm-up) | 20,000 (5,000) | 60,000 (10,000) | 100,000 (10,000) |
-| Effective batch | 128 fresh + 64 replay / 128 fresh | 256 fresh + replay | 256 fresh |
-| Step size $\alpha$ | fixed 15.97 / learnable, init 23.95 (recalibrated to latent scale) | fixed 3,000 | learnable 30,000 |
-| Data | synthetic 64×64 grayscale; 2,700 clips × 100 frames | natural video, 224×224, pretrained-AE latents | same |
-| Hardware | 1× RTX 4060 Ti 16 GB, fp32 | 4 GPUs/node | 4 GPUs/node |
+## 4.5 Context-Package Shape
 
-**Figure 4.4 — Energy-landscape ordering under two recipes.**
-S1 changes to the desired target-below-mean ordering after approximately 6,000 updates; S2 keeps
-the batch mean below the target through 20,000 updates. Both series include the random-candidate
-reference.
-*Source:* `docs/figures/fig26_ebt_landscape_ordering.png`, parsed deterministically from
-`logs_rhcp/ebt_scaled_{s1,s2}.log` by `scripts/make_dissertation_missing_figures.py`.
+Temporal subsampling and spatial coarsening both buy reach, but they preserve different
+information. The near-matched comparison uses a 1,088-token temporally sparse full-resolution
+package and a 1,152-token spatial hierarchy. The 64-token deficit favors the temporal package, so
+the pair is near-matched rather than exactly matched.
 
-**Figure 4.5 — Foreground sharpness after cold energy descent.**
-Both recipes remain below the preregistered 0.08 structure threshold and far below the
-approximately 0.24 decoder reference, even after S1 learns the desired energy ordering.
-*Source:* `docs/figures/fig27_ebt_descent_sharpness.png`, parsed deterministically from
-`logs_rhcp/ebt_scaled_{s1,s2}.log` by `scripts/make_dissertation_missing_figures.py`.
+Across five diffusion training seeds, temporal-package advantages are:
 
-### 4.2.5 Generative-Core Conclusion
+| Seed | Temporal-package effect | 95% clip-cluster CI |
+|---:|---:|---:|
+| 0 | +0.0197 | [+0.0143, +0.0252] |
+| 1 | +0.0046 | [+0.0007, +0.0084] |
+| 2 | +0.0111 | [+0.0070, +0.0151] |
+| 3 | +0.0075 | [+0.0037, +0.0114] |
+| 4 | +0.0060 | [+0.0027, +0.0092] |
 
-The head ranking is **regime-dependent**: diffusion for the single-step best-of-N coverage
-regime, regression for the deterministic best-of-1 rollout regime, energy-based descent for
-neither at 16 GB-reachable scale (a two-sided characterized negative: ordering recipe-dependent,
-reachability failing under both recipes and under the paper's own sampler). The memory studies
-that follow therefore use **both** viable heads for the central matched-budget memory comparison
-(§4.3.5), while §4.4 estimates and reports package preference separately by head and training
-seed. The central reach result is not tied to one head; the broader ordering of temporal and
-spatial packages is explicitly head- and seed-conditional.
+The across-seed mean is +0.0098, SD 0.0060, with t95
+\([+0.0023,+0.0173]\). Thus temporal full-resolution anchors are stable at the tested static-world
+diffusion operating point.
 
-## 4.3 Single-Step Memory Gate and Matched-Budget Rollout Study
+Regression does not reproduce a stable package direction: effects are
++0.0107, −0.0104, −0.0208, +0.0248, and −0.0166. The head-by-package interaction also changes
+sign. The correct conclusion is therefore:
 
-This section tests the central pre-registered prediction of Table 3.1: at an equal
-context-token budget, does a hierarchical allocation (long coarse memory + recent fine window)
-beat a flat allocation when only the former reaches memory-relevant history? The measured studies
-then bracket the tested budgets where that prediction holds and where full-resolution fidelity
-instead wins; they do not assume a continuous or unique transition.
+- temporal packaging is stable across the five tested diffusion seeds;
+- regression package use and the cross-head interaction are training-seed-sensitive;
+- neither package is universally superior independent of head, task dynamics, or required detail.
 
-### 4.3.1 Preliminary Gate: Recall Emerges Only after Sufficient Optimization
+Static hidden content can reward sparse full-resolution anchors because old pixels remain
+informative. Dynamically evolving or low-detail hidden state may reward spatial compression
+instead. This study locates one operating region.
 
-Before any rollout machinery, the single-step memory gate asked whether a long *coarse* context
-helps at all: coarse context 48 versus 6 at fixed fine context 6 (1,232 vs 560 tokens including
-the target slots), best-of-8, stratified by the exact hardness label. The result is an
-emergence-with-budget pattern: at 6,000 steps the HARD-bin delta is null on both training seeds
-(+0.0014 [−0.0004, +0.0033] and +0.0008 [−0.0009, +0.0025]); at 20,000 steps it is a decisive win
-on both (+0.0135 [+0.0080, +0.0196] and +0.0143 [+0.0083, +0.0208]; hard-bin absolute error
-0.1053 → 0.0918 on seed 0 — a ≈13% relative reduction), with sharpness tied (≈0.188 both arms):
-the win is retrieval, not sharpness. Four disclosures attach: "2 seeds" means two training seeds
-sharing one CRN evaluation set (§4.1.5); these evaluation windows are near-independent rather
-than fully clustered, so the audit's worst-case design-effect correction widens the 20k hard-bin
-CIs to ≈[+0.005, +0.022] (seed 0) and ≈[+0.006, +0.023] (seed 1) — the win survives; **each
-budget is its own complete, fully annealed training schedule** (a 6,000-step run and a
-20,000-step run, budget-matched within each contrast), so the compared quantity is the
-optimization budget with schedule shape a bundled covariate — and the 6,000-step arms were the
-better-converged endpoints of their own schedules, which works against a mid-anneal objection;
-and the 20,000-step budget was a **disclosed post-null follow-up** — the originally registered
-read at 6,000 steps returned its null, which is on the record, and the extension was then run
-and replicated on both seeds, so the claim rests on the twice-replicated 20k result, not on a
-selected read. The methodological moral carries through the whole chapter:
-**retrieval-from-memory requires a large optimization budget, and short-budget ablations (6,000
-steps here) would have spuriously killed it.**
+![Five-seed package and head effects](../../figures/fig17_head_package_seed_heterogeneity.png)
 
-**Figure 4.6 — Emergence of single-step memory benefit with optimization budget.**
-The HARD-bin effect is unresolved at 6,000 updates for both seeds and positive with intervals
-excluding zero at 20,000 updates for both seeds. This is an optimization-budget result, not a
-claim about asymptotic convergence.
-*Source:* `docs/figures/fig28_memory_gate_optimization.png`, parsed deterministically from the
-four `logs_rhcp/mem_gate_full_s{0,1}{,_t20k}.log` files by
-`scripts/make_dissertation_missing_figures.py`.
+**Figure 4.2 — Package effects by training seed.** Per-seed intervals condition on each trained
+model; the seed summary uses training seeds as units.
 
-### 4.3.2 Rollout Matrix
+## 4.6 Robustness of the Principal Directions
 
-Table 4.5 gives the full arm ordering under the rollout protocol (ALL-row fg-MSE over 152 AR
-frames after the 48-frame ground-truth warm-up, seed 0; arms per Table 3.1).
-
-**Table 4.5 — Rollout arm ordering, operating point A.**
-
-| Arm | Context | Ctx tokens | ALL fg-MSE | fg-sharp | Note |
-|---|---|---:|---:|---:|---|
-| flat-long (diff) | 48 fine frames | 3072 (2.7×) | **0.1564** | **0.0996** | B = 8 × 60k sample-matched (caveat, §4.3.4) |
-| reg-long | 48c + 6f, regression | 1152 | 0.1682 | 0.0741 | |
-| hier-long (diff) | 48c + 6f | 1152 | 0.1848 | 0.0729 | THE system arm |
-| reg-flat | 18 fine frames, regression | 1152 | 0.2015 | 0.0512 | |
-| flat-budget (diff) | 18 fine frames | 1152 | 0.2038 | 0.0582 | token-matched flat control |
-| hier-short (diff) | 6c + 6f | 480 | 0.2260 | 0.0392 | memory ablation |
-| persistence | — | — | 0.2552 | — | floor |
-
-Three seed-0 regularities are visible in the ordering, each defended separately below: (i) the
-48-frame coarse-plus-fine arm beats the shorter contiguous-fine control under both tested heads
-at this seed; (ii) regression wins the deterministic best-of-1 rollout (§4.2.3); and (iii) the
-full-resolution 48-frame window wins outright at 2.7× the tokens (§4.3.4). The first observation
-replicates at seed 1 for this particular long-versus-short comparison, but it must not be promoted
-to a head-independent law. The complete five-seed temporal-versus-spatial factorial (§4.4.3)
-instead finds stable package direction under diffusion and sign-changing direction under
-regression. The defensible claim is therefore configuration- and head-scoped: reach helps where
-the shorter control cannot address the relevant past, while the preferred way to package that
-reach is not universally mechanism-agnostic.
-
-**Figure 4.7 — Error and sharpness by rollout horizon.**
-*Content:* foreground MSE on all frames, foreground MSE on HARD re-entry frames, and
-foreground-sharpness retention, with persistence and frozen-decoder references.
-*Source:* `docs/figures/fig1_claim1_horizon_curves.png`; deterministic source
-`scripts/make_figures.py`.
-
-### 4.3.3 Main Two-Seed Pair: Advantage beyond the Flat Memory Horizon
-
-Table 4.6 is the headline of the dissertation: hier-long versus flat-budget at equal 1,152
-context tokens, the full horizon × hardness matrix (Δ = flat − hier; positive = hierarchy
-better).
-
-**Table 4.6 — hier-long vs flat-budget (seed 0), 152 AR frames after the 48-frame GT warm-up,
-paired per-frame fg-MSE, clip-level cluster bootstrap; empty-GT-foreground records (21.5%)
-excluded from stratified bins.** Sharpness 0.0729 vs 0.0582; persistence floor 0.2552.
-
-| Horizon | Hardness | n | flat-budget | hier-long | Δ | 95% CI | Verdict |
-|---|---|---:|---:|---:|---:|---|---|
-| h 1–8 | easy | 434 | 0.0440 | 0.0419 | +0.0022 | [−0.0040, +0.0089] | null |
-| h 1–8 | HARD | 150 | 0.1435 | 0.1359 | +0.0075 | [−0.0164, +0.0327] | null |
-| h 9–24 | easy | 919 | 0.1216 | 0.1189 | +0.0028 | [−0.0075, +0.0133] | null |
-| h 9–24 | mid | 45 | 0.1661 | 0.1624 | +0.0038 | [−0.0121, +0.0182] | null |
-| h 9–24 | HARD | 282 | 0.1800 | 0.1728 | +0.0071 | [−0.0110, +0.0260] | null |
-| h 25–60 | easy | 2286 | 0.2210 | 0.1989 | +0.0221 | [+0.0080, +0.0368] | **WIN** |
-| h 25–60 | mid | 79 | 0.2218 | 0.2036 | +0.0182 | [−0.0049, +0.0437] | null |
-| h 25–60 | HARD | 550 | 0.2554 | 0.2209 | **+0.0344** | [+0.0162, +0.0531] | **WIN** |
-| h 61+ | easy | 5610 | 0.3060 | 0.2788 | +0.0272 | [+0.0166, +0.0382] | **WIN** |
-| h 61+ | mid | 209 | 0.3224 | 0.2842 | +0.0382 | [+0.0178, +0.0616] | **WIN** |
-| h 61+ | HARD | 1353 | 0.3073 | 0.2759 | **+0.0314** | [+0.0202, +0.0431] | **WIN** |
-| bg-only | | 3263 | 0.0067 | 0.0047 | +0.0020 | [+0.0013, +0.0026] | WIN |
-| **ALL** | | 15200 | 0.2038 | 0.1848 | **+0.0189** | [+0.0121, +0.0264] | **WIN** |
-
-On seed 0 the matrix reads as the claim in one table: **null in every bin below horizon 25; a
-CI-excluding-zero win in every easy/HARD bin from h 25–60 onward** (the sparse mid cell, n = 79,
-is null at h 25–60 and a win at h 61+). The advantage appears exactly where the memory horizon
-demands it — h ≈ 24 is half a loop period, past which the required horizon exceeds what 18 flat
-frames carry — and nowhere else.
-
-**Seed-1 replication (pre-registered before running).** The same pairing retrained at seed 1 wins
-**in every cell**: ALL +0.0354 [+0.0267, +0.0447]; HARD h 25–60 +0.0622; sharpness 0.088 vs
-0.057. Two-seed status of the headline: **CONFIRMED** (seed 0: ALL +0.0189 [+0.0121, +0.0264]).
-The honest nuance is the onset boundary: it is seed-variable — seed 0 is null below h 25 while
-seed 1 wins already from h 1–8, and the hier-long arm itself moves 0.1848 → 0.1690 across seeds
-over a stable flat baseline. The robust two-seed claim is therefore **the win and its mid-horizon
-concentration, not the exact onset frame**; the "no advantage before h 25" phrasing is a seed-0
-observation, retained only as such.
-
-**Per-horizon behavior and the deep-horizon disclosure.** hier-long stays below the persistence
-floor at *every* horizon out to 152 frames (more than three loop periods); its error saturates at
-0.221–0.222 over the last 70 frames rather than diverging — bounded drift. Sharpness, however,
-fades monotonically for **all** arms (hier-long 0.2023 at h 1–4 → 0.0323 at h 105–152; batch-mean
-series, §4.1.5): the pre-registered sharpness-retention clause of gate G2b (> 0.5× single-step
-sharpness at depth) is **not met** at h ≥ 81, and this is stated plainly as the deep-horizon
-limitation rather than tuned away. The blur ceiling is owned by the frozen decoder (AE round-trip
-0.2412), not by the dynamics.
-
-**Figure 4.8 — Effect map by horizon and difficulty.**
-*Content:* horizon × hardness map of Δ(flat − hierarchy), seeds 0 and 1 side by side. The
-horizon-gated onset is seed-0-specific; the common feature is the positive effect and
-mid-horizon peak rather than one exact onset.
-*Source:* `docs/figures/fig2_claim1_winmap.png`; deterministic source
-`scripts/make_figures.py`.
-
-**Figure 4.9 — Qualitative slices of autoregressive rollout.**
-*Content:* identical ground truth and seed-1 `hier-long`/`flat-budget` predictions at registered
-horizons. Both models become blurred at long horizon; the figure illustrates a modest average
-advantage, not a universal per-frame recovery or a claim that one named arm uniquely
-hallucinates.
-*Source:* `docs/figures/fig7_samples_claim1.png`, from the saved rollout checkpoints.
-
-### 4.3.4 flat-long: the 2.7×-Token Pareto Reference
-
-The flat-long arm (48 full-resolution frames, 3,072 tokens) beats every other arm on both error
-and sharpness: ALL 0.1564, fg-sharp 0.0996; against flat-budget its ALL delta is +0.0473
-[+0.0362, +0.0592]. This is reported with the same prominence as the headline, because it is what
-keeps the claim honest: **at operating point A, hierarchy is an efficiency point, not a
-capability necessity.** The hierarchical arm recovers most of the long-memory benefit at ≈37% of
-the context tokens; a party willing to pay 2.7× buys the frontier outright. (Protocol caveat,
-disclosed wherever flat-long is quoted: it trained at B = 8 × 60k steps — sample-matched to
-B = 16 × 30k, but with a different EMA horizon and gradient-noise scale than the other arms.) The
-regime where no affordable flat window can cover the loop at all is exactly what operating
-point B exists to test (§4.5).
-
-### 4.3.5 Prediction-Head Robustness and Its Boundary
-
-The preregistered two-seed gate asked whether the specific `reg-long` versus token-matched
-`reg-flat` comparison reproduced the diffusion reach result. It did: `reg-long` beats `reg-flat`
-in every bin at both tested seeds (ALL +0.0334 [+0.0248, +0.0423] at seed 0 and +0.0501
-[+0.0396, +0.0612] at seed 1; hard-bin wins at every horizon, including h 1–8 HARD +0.0447;
-sharpness 0.0741 versus 0.0512 at seed 0). The regression pairing has no null prelude, so the
-seed-0 diffusion onset near h = 25 is not a general property of the memory geometry.
-
-This is evidence that one long-coarse-versus-short-fine reach advantage is not solely an artifact
-of the diffusion head. It is **not** evidence that package preference is mechanism-agnostic. The
-complete five-seed temporal-versus-spatial factorial in §4.4.3 gives two temporal and three
-spatial regression winners and a sign-changing head × package interaction. Accordingly, the
-dissertation reports the two-seed replication as a scoped robustness result and rejects the
-broader head-independent wording.
-
-### 4.3.6 Completing the Token-Budget Frontier with Matched Upper and Lower Partners
-
-The arm matrix of Table 4.5 leaves the two extreme token budgets without same-budget partners:
-flat-long (3,072 tokens) has no hierarchical arm at its budget, and hier-short (480 tokens) has
-no flat control at its. Two frontier-completion arms close the grid,
-pre-registered before launch (the FRONTIER COMPLETION block of the factorial pre-registration):
-**hier-rich** (48 coarse + 36 fine frames = 3,072 tokens, trained B = 8 × 60,000 steps —
-sample-matched to flat-long's disclosed regime, so the pairing inherits flat-long's §4.3.4
-protocol caveat *symmetrically*) and **flat-short** (8 fine frames = 512 tokens ≈ hier-short's
-480, standard B = 16 × 30,000). Diffusion heads first; the regression twins are optional.
-
-The reading was fixed in advance and is quoted verbatim from the pre-registration: "at 3072
-tokens the window is SATURATED at 48 frames by the T=100 train clips — hierarchy cannot buy more
-window, so per the factorial's abstraction cost the honest expectation is hier-rich ~<= flat-long
-(CONVERGENCE at the frontier top). The efficiency claim's correct form is 'the hierarchy curve
-reaches a given quality at fewer tokens and converges with flat where the window saturates' — a
-frontier-from-below, not dominance at every budget. At the low end, hier-short vs flat-short
-tests the frontier's bottom."
-
-**Table 4.6a — Token-budget frontier of operating point A (letter-suffixed to avoid renumbering
-the audited table register; final numbering at typeset). Measured anchor rows from Tables
-4.5/4.6; frontier-completion cells measured 2026-07-07 (`logs_rhcp/frontier_top.log`,
-`logs_rhcp/frontier_bottom.log`); lower-edge pair measured 2026-07-07
-(`logs_rhcp/frontier_low.log`, pre-registered the same morning before the runs).**
-
-| Token budget | Flat arm | ALL fg-MSE | Hierarchical arm | ALL fg-MSE | Paired Δ (flat − hier), cluster CI |
-|---|---|---:|---|---:|---|
-| ≈3,072 | flat-long | 0.1564 | hier-rich | 0.1695 | **−0.0131 [−0.0201, −0.0069]** (flat wins; seed 1 REPLICATED: −0.0107 [−0.0163, −0.0058]) |
-| 1,152 | flat-budget | 0.2038 | hier-long | 0.1848 | +0.0189 [+0.0121, +0.0264] (Table 4.6) |
-| **896** | flat-min (14 f) | 0.2106 | hier-min (48c+2f) | **0.1706** | **+0.0399 [+0.0299, +0.0501]** (hier wins EVERY cell; seed 1 REPLICATED: +0.0358 [+0.0267, +0.0454], every cell) |
-| ≈480–512 | flat-short | 0.2224 | hier-short | 0.2260 | **−0.0036 [−0.0063, −0.0010]** (flat wins) |
-
-**Figure 4.10 — Confirmed token-budget frontier.**
-*Content:* ALL fg-MSE versus context-token budget at operating point A, one 6-point curve per
-family (flat: flat-short → flat-min → flat-budget → flat-c1 → flat-c2 → flat-long; hierarchical:
-hier-short → hier-min → hier-long → hier-c1 → hier-c2 → hier-rich). Mark the tested
-family-wise-confirmed hierarchy points at 896/1,152, the unresolved 1,792 point, and the confirmed
-flat points at 2,432/3,072. Draw the geometric span threshold as an explanatory annotation and
-the persistence floor (0.2552); do not shade an interpolated win band.
-*Source:* `docs/figures/article_confirmed_frontier.png`, generated from the untouched E2
-simultaneous family in `artifacts/confirmation_e2/results.json`. The historical development
-`fig9_frontier.png` is retained for provenance but is not used for confirmation.
-
-The measurement resolved the pre-registered dual branch to a **third outcome, stricter than the
-pre-registered convergence expectation, and reported as measured under the no-soft-reads rule**
-(the default-to-FAIL discipline of §4.5 applied to wording). At the top budget hier-rich does
-not converge with flat-long — it loses CI-clean at equal tokens and equal training regime
-(−0.0131 [−0.0201, −0.0069], a small uniform loss across essentially every horizon × hardness
-bin); at the bottom budget flat-short beats hier-short (−0.0036 [−0.0063, −0.0010], concentrated
-at h ≤ 60, null beyond). The frontier therefore *inverts at both ends*: this lands on the first
-fallback branch at the top (the abstraction cost does not vanish at the top budget — the −0.0131
-loss is of the same kind as the diffusion-head abstraction cost of §4.4) and refutes the
-matched-budget law at the bottom, where the 6–8-frame window is below the memory-relevance scale
-and coarse slots are redundancy rather than memory. The mechanism reading: hierarchy pays where
-its coarse tokens buy a memory window that (a) exceeds what fine tokens afford and (b) matters;
-at window saturation (48 frames, clip-bounded) coarse slots merely displace full-resolution
-frames, and below the memory-relevance threshold they duplicate it. Sharpness follows the window,
-not the hierarchy: hier-rich 0.0898 versus flat-long 0.0996, hier-short 0.0392 versus flat-short
-0.0432 — at matched saturation the hierarchy does **not** retain sharpness better.
-
-This mechanism reading makes a quantitative prediction, which was pre-registered and then
-measured the same day (the lower-edge row of Table 4.6a): the win must switch on at the cheapest
-budget whose coarse span covers the ≈48-frame loop — 48 × 16 coarse tokens plus a minimal fine
-tail, ≈896 tokens, a budget at which a flat model affords only a 14-frame window. The measured
-pair confirms the prediction, and more strongly than expected: hier-min beats flat-min in
-**every horizon × hardness cell** (overall +0.0399 [+0.0299, +0.0501] — the largest hierarchical
-advantage measured in the campaign), with the visibility-stratified gates showing the reach
-signature exactly where the mechanism operates (dt ≤ 48 HARD +0.0750; dt 49–96 HARD +0.0282;
-dt 97–192, beyond the 48-frame span, null). Two structural conclusions follow. First, the win
-smallest tested dense-family hierarchy win coincides with the geometric span-threshold arithmetic
-written before the run: the next smaller dense-family point favors flat, while hierarchy wins at
-896. This is a tested ordering rather than a continuous switch. Second, the **largest tested
-dense-family advantage occurs at 896 tokens**: reducing the
-budget removes the flat model's window from the memory horizon faster than the hierarchical
-abstraction cost grows — the efficiency argument is strongest exactly where budgets are
-tightest, and hier-min at 896 tokens (0.1706) reaches a quality the flat curve attains only at
-substantially larger budgets in the development curve. The untouched family leaves 1,792
-unresolved and confirms flat at 2,432, so no equal-quality multiplier or interpolated crossing is
-claimed.
-The pre-registered seed-1 replication confirmed the point: every cell WIN again (overall
-+0.0358 [+0.0267, +0.0454]) with the same visibility-stratified reach signature — the 896-token
-896-token point is therefore a two-seed result (seed-mean Δ ≈ +0.0379, the largest two-seed effect
-of the campaign), alongside the two-seed 1,152-token pairing of §4.3.3. The §4.3
-efficiency claim takes its final, tested-bracket form: **the simultaneous confirmation family
-supports hierarchy at 896/1,152, leaves 1,792 unresolved, and supports flat fidelity at
-2,432/3,072; no interval, exact edge or unique crossing is inferred.**
-
-## 4.4 Forms of Hierarchical Abstraction: Spatial, Temporal and Depth
-
-A hierarchy in a latent video predictor is not one construction but a **family of forms**. A
-context-token budget can be packaged along four axes:
-**spatial abstraction** (every frame, at lower resolution), **temporal abstraction** (full
-resolution, at a coarser tick), **depth** (how many nested levels), and **allocation** (the split
-between long-span and recent-detail streams). Each shape buys memory span at a different token
-price and pays a different information cost. Throughout, hierarchy means multi-rate and/or
-multi-RESOLUTION context — independent axes: a configuration can be hierarchical in tick rate
-while single-resolution (the §4.4.3 strided control — a two-rate temporal hierarchy in the
-clockwork/CW-VAE sense, whose levels are likewise temporal) or hierarchical in resolution while
-single-rate (dense coarse arms); where the two depth counts differ, both are reported
-(resolution depth / temporal-rate depth). The systems-analysis question is therefore not whether
-hierarchy helps universally, but **which form pays, where, and why**. Three cells of this grid
-are measured in earlier sections (allocation — §4.3.6; the spatial factorial — §4.4.1 below; the
-slow-clock boundary — §4.5); the remaining cells (temporal family §4.4.2, span control §4.4.3,
-depth §4.4.5) follow the pre-registered program of `SPATIAL_FACTORIAL.md` (final block), and
-§4.4.5 assembles the grid into one comparison table in the manner of the Clockwork VAE benchmark
-[13] — the format adopted, the controls tightened (Chapter 1, §1.3; fourth article):
-matched token budgets, backbone-capacity-neutral depth (levels add tokens to a shared
-backbone; per-level I/O heads +0.30 M / +1.4% on the 22.19 M predictor + the frozen 1.25 M AE
-tap, disclosed), foreground-masked metrics.
-
-**Table 4.7-A — What each packaging axis buys and costs.**
-
-| Axis | Form | What it buys | Information or causal cost | Evidence |
-|---|---|---|---|---|
-| spatial | dense 4×4 coarse stream, stride 1 | 4× reach per token; per-level decodability; dense temporal coverage | −0.008 under diffusion and approximately null under regression at fixed window | §4.4.1, measured |
-| temporal | full-resolution anchors, stride 4 | 4× reach per token while retaining detail at anchors | blind intervals between anchors; no cheap dense decodable level | §4.4.3: temporal package wins under diffusion on all five seeds; regression is heterogeneous |
-| spatial × temporal | coarse stream, stride 2 | 8× nominal reach per token; cheapest tested loop coverage | couples both information costs and the legacy target-interface change | §4.4.2: +0.0330/+0.0338 at 512 tokens under diffusion |
-| depth | additional 2×2 stream | a third representational scale | target-loss allocation, optimization load and top-stream floor are inseparable | §4.4.5: −0.0196 versus two levels at fixed budget, seed 0; appendix-grade |
-| allocation | spend on reach before recency/detail | confirmed lower/interior hierarchy operating points | sacrifices full-resolution fidelity after reach is saturated | E2: hierarchy at 896/1,152; 1,792 unresolved; flat at 2,432/3,072 |
-
-### 4.4.1 Spatial Factorial: an Economical, Head-Dependent Verdict
-
-Every hierarchy arm of §4.3 confounds two factors: the coarse spatial resolution of the history,
-and the longer window its cheaper tokens buy (an accepted external-review finding). The factorial
-of this section isolates the resolution factor: a window × history-resolution grid at operating
-point A (shared frozen AE, seed 0, protocol identical to the rollout campaign so all existing
-records pair exactly), holding recency equal — every coarse-history arm keeps the 6 most recent
-fine frames, exactly the hier-long design. The hypothesis under test, in its original form:
-coarse history is a *more abstract, less distracted* memory representation.
-
-**Table 4.7 — Window × history-resolution factorial (fg-MSE ALL over 152 AR frames, cluster CIs;
-context tokens in parentheses).**
-
-| Window | Full-res history | Coarse history | Paired Δ (full − coarse) |
-|---|---|---|---|
-| 18 f, diffusion | flat-budget 0.2038 (1152) | spat18 0.2120 (672) | **−0.0082 [−0.0115, −0.0050] LOSS** (short-horizon-concentrated, null by h > 120; sharp 0.058 vs 0.050) |
-| 18 f, regression | reg-flat 0.2015 (1152) | spat18-reg 0.2008 (672) | **+0.0008 [−0.0013, +0.0029] null** (h 61–120 HARD +0.0047 WIN; tiny h 1–8 loss) |
-| 48 f, diffusion | flat-long 0.1564 (3072) | hier-long 0.1848 (1152) | −0.0284 (from Tables 4.5/4.6; 2.7× token gap) |
-
-**Abstraction sufficiency at the fixed 18-frame window (read G-S1) — head-dependent.** For the
-diffusion head, coarse history is a small, real, short-horizon-concentrated cost: −0.0082 ALL at
-42% token savings. For the regression head — the better rollout head (§4.2.3) — coarse history is
-**statistically free**: +0.0008 [−0.0013, +0.0029], null ALL at the same 42% savings, with the
-long-horizon HARD bin slightly *better* (h 61–120 HARD +0.0047). The "intrinsically better
-abstraction" hypothesis is therefore **not supported**; the supported form of the claim is
-**economic and head-conditional**: spatial abstraction is lossy compression whose token savings
-buy the memory window, and under the regression head the loss term is ≈0.
-
-**Interaction (read G-S2).** The abstraction cost per saved token is similar at both windows for
-the diffusion head (≈0.007–0.008 per 480 tokens); there is no evidence the cost shrinks as the
-window grows.
-
-**Window at fixed representation (read G-S3).** hier-long 0.1848 (W48, 1,152 tokens) versus
-spat18 0.2120 (W18, 672 tokens): extending the window via coarse tokens buys −0.027 — an order
-that dwarfs the abstraction cost, the same window-ordering law as Table 4.5.
-
-**Within-family readout (measured arm ordering, not a factorial claim).** spat18-reg (672
-tokens) at 0.2008 matches or beats the diffusion flat control flat-budget (1,152 tokens) at
-0.2038 — regression + coarse history at 58% of the tokens. At the long window, the complete
-five-seed factorial below separates a stable diffusion package effect from regression and
-cross-head training-seed heterogeneity.
-
-**Honest link to the prior spatial-gate null.** This project's earlier per-pixel spatial-gate
-study on Moving MNIST found that an upper spatial level engaged unstably and added no quality — a
-clean null for spatial abstraction as an *intrinsic* representational win. The factorial is
-consistent with that history rather than overturning it: isolated from the window confound,
-coarse history is not intrinsically better (it costs under diffusion and is at best free under
-regression); its value is what its cheapness buys. The temporal-only corner (strided
-full-resolution history), declared an omission in the factorial's pre-registration, is filled at
-operating point A by the span control of §4.4.3.
-
-**Figure 4.11 — Spatial factorial by prediction head.**
-*Content:* the 2×2 factorial as a diagram: axes window (18/48) × history resolution (full/
-coarse), each cell annotated with arm name, token count, ALL fg-MSE; paired deltas drawn on the
-edges (resolution edges: −0.0082 diff / +0.0008 reg; window edge: −0.027 at fixed coarse
-representation), with the combined-optimum path highlighted.
-*Source:* `docs/figures/fig4_claim3_factorial.png`; deterministic source
-`scripts/make_figures.py`. The figure does not promote the combined arm ordering to a
-training-seed-robust head interaction.
-
-### 4.4.2 Temporal Family and the Moving Tested Boundary
-
-Span-per-token provides an explanatory calculation, not an exact edge law. The dense coarse
-configuration first favors hierarchy at the tested 896-token point. The stride-2 coarse
-configuration (`hier-s2-min`, 24 slots + 2 fine) purchases the same 48-frame reach at **512
-tokens** and wins on both development seeds (+0.0330/+0.0338) and on the untouched E2 holdout
-(+0.0340/+0.0381). Its reach-band effects are also positive on both E2 seeds. This is strong
-evidence for the complete stride-2 configuration and is consistent with the span calculation.
-
-It is not a pure context-stride intervention: the legacy arm also changes target slots,
-target-token count, auxiliary supervision and total sequence length. Therefore the result is not
-worded as an exactly moved lower edge. A future stride dose-response, including any 320-token
-point, would require a fixed target interface and a new preregistration; it is not part of the
-current closure portfolio. The measured regression seed-0 B1 result (+0.0639
-[+0.0516,+0.0763]) supports the configuration but does not remove this confound.
-**Figure 4.13:** `docs/figures/fig13_family_edges.png`; the caption treats B1 as a configuration
-comparison and does not draw a continuous edge or unmeasured point.
-
-### 4.4.3 Coarse Level or Reach Alone? Sparse Full-Resolution Control
-
-The control `strided-flat` keeps NO coarse level: 11 full-resolution slots at stride 4 (span 48)
-+ 6 recent fine = 1,088 tokens — 64 short of the 1,152 pairing, a deficit that *favors the
-control*. The complete five-seed factorial returns the following package effects (positive means
-the temporal package wins; negative interaction means regression shifts toward spatial
-coarsening):
-
-| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
-|---:|---:|---:|---:|
-| 0 | +0.0197 [+0.0143, +0.0252] | +0.0107 [+0.0062, +0.0158] | **−0.0089 [−0.0151, −0.0025]** |
-| 1 | +0.0046 [+0.0007, +0.0084] | −0.0104 [−0.0146, −0.0062] | **−0.0150 [−0.0199, −0.0104]** |
-| 2 | +0.0111 [+0.0070, +0.0151] | −0.0208 [−0.0270, −0.0150] | **−0.0319 [−0.0401, −0.0245]** |
-| 3 | +0.0075 [+0.0037, +0.0114] | +0.0248 [+0.0181, +0.0323] | **+0.0173 [+0.0106, +0.0245]** |
-| 4 | +0.0060 [+0.0027, +0.0092] | −0.0166 [−0.0229, −0.0108] | **−0.0226 [−0.0297, −0.0160]** |
-
-Diffusion favors temporal subsampling on all five seeds (mean +0.0098, SD 0.0060, t95 [+0.0023,
-+0.0173]). Regression has two temporal and three spatial material winners (mean −0.0024, SD
-0.0195, t95 [−0.0266, +0.0217]). The head interaction changes sign and has mean −0.0122 with t95
-[−0.0353, +0.0109], so the preregistered robust negative-shift rule fails. The clip-cluster
-intervals condition on each trained model; the t intervals use training seeds as units. The
-measured statement is that, at this operating point, the diffusion head consistently uses
-temporally sparse full-resolution packaging, whereas the regression head is training-seed
-dependent—not that one package is universally preferred or that a directional head law holds.
-
-All cells in this factorial use the existing adaptively used evaluation pool; E4a/E4b is
-seed-resolved development evidence, not a second untouched confirmation.
-
-**Figure 4.12 — Head × package heterogeneity across training seeds.**
-*Content:* five seed-resolved diffusion, regression and interaction effects. Clip-bootstrap
-intervals condition on each trained model; the shaded t intervals use the five training seeds as
-the inferential units.
-*Source:* `docs/figures/fig17_head_package_seed_heterogeneity.png`, generated directly from
-`artifacts/e4b_head_package/results.json`.
-
-Three binding scope qualifiers (mirror of
-the article §4.4.3): (1) **static world** — nothing changes between stride-4 anchors, so the
-testbed is maximally kind to temporal subsampling; on data with inter-anchor dynamics the stride
-aliases what a dense stream tracks—this is an operating-point result, not a general law;
-(2) the abstraction cost is a property of this autoencoder's 4×4
-layout code (frozen-AE discipline fixes the choice); (3) the winning control is itself a
-hierarchy in the RATE sense (two tick rates, one resolution — the clockwork quadrant), so the
-measured statement is that the multi-rate form beats the multi-resolution form at this operating
-point under diffusion, not that hierarchy is unnecessary.
-
-### 4.4.4 What Each Level Preserves: Blinding Probes
-
-Rerun the trained arm's full 152-frame rollout with one context stream **blinded** (zeroed in
-standardized latent space) at every step. **MEASURED (2026-07-10): asymmetric essentiality.** Blind-coarse = the predicted
-retrieval signature (hard re-entry +0.073 vs h1–8 +0.022; ALL 0.2236 past flat-budget) ✓;
-blind-fine = renderer collapse, expectation partially wrong (h1–8 0.2427; sharp 0.0086 below
-the structural threshold; ALL below persistence — brittleness-dominated per the binding OOD
-caveat); blind-top (hier3) = +0.0035 ALL only — the top stream carries almost nothing usable,
-independent convergent evidence for the §4.4.5 mechanism reading. Report-only. Binding
-interpretation caveat (per the
-pre-registered amendment): a zeroed stream is an out-of-distribution input, so the collapse
-magnitude bounds the stream's contribution from below confounded with OOD brittleness from
-above — the probe licenses “stream removed → capability lost,” not a precise information
-accounting. **Figure 4.14:** `docs/figures/fig14_level_blinding.png`; measured
-eval-only blinding curves with the out-of-distribution qualification retained.
-
-### 4.4.5 Consolidated Comparison: Depth, Heads and the Assembled Grid
-
-**Table 4.7-B — Consolidated context-shape grid (152-step autoregressive rollout; `ALL`
-foreground MSE, lower is better).**
-
-| Context budget | Resolution / temporal depth | Temporal factor | Spatial factor | Head | Configuration | Reach | ALL fg-MSE |
-|---:|---|---:|---:|---|---|---:|---:|
-| 512 | 1 / 1 | 1 | 1 | diffusion | `flat-short` | 8 | 0.2215 (2 seeds) |
-| 512 | 2 / 2 | 2 | 2 | diffusion | `hier-s2-min` | 48 | 0.1881 (2 seeds) |
-| 512 | 2 / 2 | 2 | 2 | regression | `hier-s2-min-reg` | 48 | 0.1566 (1 seed) |
-| 896 | 1 / 1 | 1 | 1 | diffusion | `flat-min` | 14 | 0.2104 (2 seeds) |
-| 896 | 2 / 1 | 1 | 2 | diffusion | `hier-min` | 48 | 0.1725 (2 seeds) |
-| 1,088 | 1 / 2 | 4 | 1 | diffusion | `strided-flat` | 48 | 0.1644 (2 seeds) |
-| 1,088 | 1 / 2 | 4 | 1 | regression | `strided-flat-reg` | 48 | 0.1590 (5 seeds) |
-| 1,152 | 1 / 1 | 1 | 1 | diffusion | `flat-budget` | 18 | 0.2042 (3 seeds) |
-| 1,152 | 2 / 1 | 1 | 2 | diffusion | `hier-long` | 48 | 0.1762 (3 seeds) |
-| 1,152 | 1 / 1 | 1 | 1 | regression | `reg-flat` | 18 | 0.2009 (5 seeds) |
-| 1,152 | 2 / 1 | 1 | 2 | regression | `reg-long` | 48 | 0.1592 (5 seeds) |
-| 1,152 | 3 / 1 | 1 | 2×2 | diffusion | `hier3` | 48 | 0.2044 (1 seed) |
-| 1,792 | 1 / 1 | 1 | 1 | diffusion | `flat-c1` | 28 | 0.1876 (1 development seed) |
-| 1,792 | 2 / 1 | 1 | 2 | diffusion | `hier-c1` | 48 | 0.1799 (1 development seed; E2 simultaneous result unresolved) |
-| 2,432 | 1 / 1 | 1 | 1 | diffusion | `flat-c2` | 38 | 0.1703 (B16×30k) |
-| 2,432 | 2 / 1 | 1 | 2 | diffusion | `hier-c2` | 48 | 0.1820 (B16×30k) |
-| 3,072 | 1 / 1 | 1 | 1 | diffusion | `flat-long` | 48 | 0.1572 (B8×60k; 2 seeds) |
-| 3,072 | 2 / 1 | 1 | 2 | diffusion | `hier-rich` | 48 | 0.1691 (B8×60k; 2 seeds) |
-
-*Notes.* Multi-seed values are means; exact seed effects and intervals appear in the corresponding
-subsections. `hier-s2-min` also changes the target interface and is therefore a whole-configuration
-effect. `strided-flat` has 1,088 context tokens and `hier-long` 1,152: the comparison is near
-matched, not exact. The machine-generated grid with sequence length, throughput, VRAM and
-sharpness is stored in `docs/CWSTYLE_TABLE.md`.
-
-The depth row `hier3` (2×2/4×4/8×8 factor-2 pyramid,
-48 top + 24 coarse + 9 fine = the same 1,152 tokens) tests a task with a single memory scale and a
-protocol-capped 48-frame history. **MEASURED (2026-07-10, s0) — the pre-registered ALTERNATIVE (loss) branch:** hier3 ALL
-**0.2044** / sharp 0.0564 (class-lowest): CI-clean loss to hier-long (**−0.0196
-[−0.0248, −0.0146]**), null vs flat-budget (−0.0007) — the third stream erases the two-stream
-win at fixed budget. Three inseparable disclosed mechanisms: loss-weight dilution (per the
-amendment; the class-lowest sharpness is its predicted signature), fixed-step optimization
-load, and the top-stream information floor (2×2 = 32-px cells vs ~20-px digits, with the coarse
-stream cut 48→24 to pay for the top). It is reported as a depth-plus-loss-allocation probe that
-costs approximately 0.02 at fixed budget, not as evidence that depth is intrinsically harmful;
-the depth hypothesis
-stands (single-scale data cannot reward a third scale — consistent with the per-pixel-gate
-null, the §4.5 boundary, CW-VAE's two-levels-sufficed observation). Disposition:
-appendix-grade; a weight-matched follow-up would be required for any causal depth statement.
-**Figure 4.15:** `docs/figures/fig12_cwstyle_curves.png`, degradation curves over the
-152-frame rollout for the measured configuration grid.
-
-## 4.5 Operating Point B
-
-Operating point A proves *efficiency at matched budget*: the loop (≈48 frames) sits inside the
-affordable flat window (48 frames), so flat-long can always buy the result with tokens. The
-boundary study asks the capability question on the pre-registered design frozen before any
-launch (the `docs/HGRID_DESIGN.md` preregistration trail is included in the reproducibility
-appendix): in a regime where
-**no affordable flat window covers the memory horizon** (hgrid3, effective loop ≈196–213 frames),
-does temporal abstraction — a strided, slow-rate coarse level — deliver what flat context cannot?
-The seed-0 study closed with a **negative rollout outcome under a binding pre-committed decision
-rule**. The registered E5a repetition then retained the genuine single-step positive and the early
-self-fed benefit, but did not reproduce the late inversion at either new training seed. This
-section therefore reports a negative replication and three diagnosed methodology lessons, not a
-trust boundary or capability law. The §4.3 matched-budget
-result is unaffected under every branch of this study, and remains the headline of the
-dissertation.
-
-### 4.5.1 Aliasing Episode: Diagnosed Failure, Not a Discarded Run
-
-The first dataset iteration at the wide operating point (*hgrid*: world 768 px, with background
-wavenumbers scaled ×4 so that the frozen loopmom autoencoder could be reused) produced a
-dead-flat null at the 20,000-step single-step pre-check (HARD −0.0008 [−0.0027, +0.0012]; all dt
-bands null) and a CI-clean **LOSS** at the budget-matched 40,000-step extension (HARD −0.0025
-[−0.0042, −0.0008]; ALL −0.0012; dt > 192 −0.0026): more optimization made the unaddressable
-memory slots a pure attention cost. The cause is established, not speculative: the ×4 wavenumber
-scaling made the background **exactly 192-px periodic**, so the four aliased viewport positions
-are pixel-identical — the crop test measures pairwise MSE **0.000000** between them. Retrieval
-lost the absolute-position landmark it plausibly used at operating point A (where unit-wavenumber
-components made positions unique). The autoencoder-reuse constraint *caused* the failure and was
-dropped (rule adopted: a fresh autoencoder per testbed variant; within-grid comparability needs
-only one shared autoencoder per campaign). The second iteration (hgrid2, a DC brightness cue) was
-aborted mid-run in favor of the mechanistically stronger variant; two position-probe attempts
-from that period failed their own positive controls and are **retracted on the record**. The
-third iteration, **hgrid3** (unscaled background with unit wavenumber forced), restores position
-uniqueness (crop-uniqueness 0.004–0.010, versus hgrid2's 0.0006–0.003) and passes the full
-regime verification of §4.1.1.
-
-### 4.5.2 Geometry: Memory Reach versus Effective Loop Period
-
-The pre-check arm carries 48 coarse slots at stride 4 — a nominal memory span of 192 frames. The
-relevant horizon, however, is not $\mathrm{world}/\mathrm{speed} = 192$ but the **effective
-loop**
-
-$$
-L_{\mathrm{eff}}
-\;=\;
-\frac{\mathrm{world}}{\mathrm{speed} \cdot (1 - p_{\mathrm{hold}})}
-\;\approx\;
-\frac{768}{4 \cdot 0.9}
-\;\approx\; 213 \ \text{frames},
-\tag{4.1}
-$$
-
-because hold frames advance time without advancing the pan. The 48-slot arm's 192-frame span
-therefore falls *short* of its own target loop (≈196–213 measured) — a geometry error inherited
-from the operating-point-A intuition, and the motivation for the span-224 arm of §4.5.4.
-
-### 4.5.3 Recall Exists: Extended Evaluation and Internal Control
-
-The 4×-widened paired re-evaluation of the same hgrid3 models (evaluation batches 24 → 96;
-pre-registered before running; both reads disclosed) flips the underpowered nb = 24 nulls to
-CI-clean wins for the strided arm — **48-slot stride-4 (reach 195 frames): HARD +0.0016
-[+0.0007, +0.0025] WIN; REACHABLE-HARD +0.0021 [+0.0008, +0.0036] WIN; dt 49–96 +0.0032 WIN; ALL
-+0.0005 WIN** — while the contiguous-48 positive-control arm (operating point A's exact winning
-design, but with reach only 51 frames here) is **null in every cell**. The effect appears exactly
-where the memory reach covers the re-entry interval and vanishes where it cannot: a reach
-dose-response, serving as the internal control. Two readings attach. First, beyond-flat-window
-retrieval on the position-unique wide world **exists** but is ≈7× smaller than at operating
-point A (+0.002 vs +0.0135 absolute; ≈2% vs ≈13% relative) — consistent with the span shortfall
-of §4.5.2 diluting it and with the harder addressing problem at this scale. Second, the nb = 24
-pre-checks were underpowered for effects of this magnitude, not wrong about the aliased hgrid
-(whose 40k read was a CI-clean LOSS; the aliasing verdict stands).
-
-### 4.5.4 Reach-Threshold Hypothesis and Preregistered Single-Step Test
-
-The pre-approved span-fix shot — 56 slots at stride 4, span 224 > loop, 40,000 steps, evaluation
-width 96 — returned, on a single seed: **HARD +0.0273; REACHABLE-HARD +0.0363; beyond-227 null**,
-with the effect confined to the hard-reachable cells (easy, mid, and beyond-reach all null).
-Taken at face value this is the threshold signature — an order-of-magnitude jump once the span
-exceeds the effective loop, localized exactly where reach predicts — but it was explicitly
-recorded as *"threshold HYPOTHESIS — systematic-or-lucky, undetermined"* (single seed, no
-same-pool 48-vs-56 comparison, measured against the weakest baseline). The resolution rule was
-written before the disambiguation runs, converged with two external reviewers, and was binding;
-it is quoted verbatim in the pre-registration appendix: R1 (replication on an independent seed,
-CI > 0), R2 (reach causality: the strided arm must beat a contiguous arm with *identical* token
-and slot counts, reach 227 vs 59, CI > 0), R3 (informative, non-gating: the 48-slot arm at
-seed 1), with PASS = R1 AND R2 gating the decisive rollout pair, any uncovered outcome defaulting
-to FAIL, and FAIL closing the study with no further capability spend.
-
-**Single-step outcomes (the characterized positive).** R1 passed: the span-224 arm beats its
-baseline on an independent seed — REACHABLE-HARD +0.0134 [+0.0107, +0.0161], HARD +0.0089
-[+0.0069, +0.0109] — at 2.7× smaller magnitude than seed 0 (+0.0363 / +0.0273; seed mean
-≈ +0.025 reachable): replicable but seed-noisy. R2 passed: the strided arm beats the contiguous
-same-token control at both seeds (differential-reach band +0.0374 [+0.0334, +0.0416] seed 0;
-+0.0144 [+0.0118, +0.0171] seed 1). R3: the span-192 arm stays ≈flat at both seeds (+0.0004;
-+0.0011), and the contiguous arms never help at either seed. The mechanism *attribution* is
-seed-dependent and is not over-read: at seed 1 the win concentrates in the reach-differential
-bands exactly as a per-sample reach-causal account predicts (shared +0.0053 vs differential
-+0.0181; versus the contiguous control, shared null −0.0005 vs differential +0.0144), but at
-seed 0 it is uniform across shared and differential bands (+0.0343 vs +0.0366) — a circuit-level
-rather than per-sample-reach signature. The reliable two-seed single-step statement is therefore:
-**a memory span exceeding the effective loop reliably enables retrieval learning (2/2 span > loop
-runs CI-positive versus 0/4 span ≤ loop runs at ≈0), while the magnitude and per-sample usage
-pattern of the learned circuit vary by seed.** Disclosure: the single-step gate CIs in this
-subsection are sample-iid, not clip-clustered; the load-bearing cells survive a conservative 2–3×
-design-effect widening, and a clip-clustered recomputation is reported alongside. The
-teacher-forced caveat is stated where it belongs: the single-step study conditions on
-ground-truth context, and the rollout pair of §4.5.5 is the real test.
-
-### 4.5.5 Decisive Rollout Pair and Registered Negative Replication
-
-The pre-registered decisive pair (the span-224 strided arm versus the long-context diffusion
-baseline on hgrid3; warm-up 224 frames; uniform B = 8 × 40k training) returned **RED**: over 256
-self-fed rollout frames the pre-registered gate cells are null — dt 49–96 HARD +0.0020
-[−0.0071, +0.0111]; dt 97–192 −0.0028 [−0.0088, +0.0035]; dt > 192 −0.0018 [−0.0065, +0.0027] —
-so the seed-0 programme did not establish rollout capability on its registered gate. Its horizon
-profile nevertheless suggested an early hierarchy benefit followed by a late inversion.
-
-E5a preregistered this early-positive/late-negative pattern and repeated the same pair at training
-seeds 1 and 2. Positive effects favor the hierarchy: seed 0 is +0.0204
-[+0.0133,+0.0279] at h 1–24 and −0.0064 [−0.0095,−0.0032] at h 61–256; seed 1 is +0.0082
-[+0.0035,+0.0133] and +0.0074 [+0.0038,+0.0112]; seed 2 is +0.0230
-[+0.0150,+0.0315] and +0.0087 [+0.0035,+0.0139]. Thus the early benefit is CI-clean at all
-three seeds, but neither new seed reproduces the late-negative direction. The registered verdict
-is **NOT_REPLICATED**, and the gated dose-response is not authorized. Addressability and self-fed
-reliability remain distinct constructs, but the present study does not establish a stable
-approximately-24-frame trust boundary. The §4.3 matched-budget result is unaffected.
-
-**Figure 4.16 — Registered negative replication of the self-fed boundary.**
-*Content:* seed-resolved paired Δ (strided − baseline) versus rollout horizon with cluster-CI
-bands: early hierarchy benefit at seeds 0–2, late inversion at seed 0 only, and positive late
-effects at seeds 1–2; the registered primary windows are highlighted.
-*Source:* `docs/figures/fig18_trust_negative_replication.png`, generated from
-`artifacts/e5a_trust_replication/results.json` and independently validated E5a manifests.
-
-### 4.5.6 Methodological Lessons from the Boundary Study
-
-1. **The effective-loop formula.** A memory mechanism's span must be sized against
-   $L_{\mathrm{eff}} = \mathrm{world}/(\mathrm{speed} \cdot (1 - p_{\mathrm{hold}}))$ (eq. 4.1),
-   not $\mathrm{world}/\mathrm{speed}$: hold frames consume slots without advancing the loop. The
-   48-slot arm's 192-frame span silently fell ≈2–10% short of its own target (≈196–213),
-   plausibly diluting the effect it was built to detect.
-2. **The autoencoder-reuse trap.** Reusing a frozen autoencoder across testbed variants forced a
-   background transformation (×4 wavenumber scaling) that made the world exactly
-   viewport-periodic and destroyed the positional landmarks retrieval depends on — a dataset-side
-   confound that manifested as a *mechanism* failure (memory slots scoring as pure attention
-   cost). Rule adopted: a fresh autoencoder per testbed variant; share one autoencoder only
-   within a campaign.
-3. **Evaluation power.** The nb = 24 pre-checks were adequately powered for operating-point-A
-   magnitudes (+0.0135) but not for the ≈+0.002 effects of the harder regime; the pre-registered
-   4× widening flipped nulls to CI-clean wins on the *same* checkpoints. Reading a null requires
-   a power argument against the plausible effect size, not just a confidence interval spanning
-   zero — and both the underpowered and the widened reads are disclosed.
-
-## 4.6 Generalization across Standard and Synthetic Datasets
-
-The studies of §§4.2–4.5 select a configuration and delimit it on the purpose-built testbed
-family; this section carries that configuration outward — to the standard benchmark of the field
-and to the synthetic suites on which the reversible-transformation method was published ([A2],
-§4.1.2) — so that the dissertation's two experimental programs meet on shared ground. Scope
-discipline, stated once: **§§4.6.2 and 4.6.5 are measured**; the 2D-rotation, 3D-polycube,
-MMNIST-CIFAR and KTH extensions in §§4.6.3, 4.6.4 and 4.6.6 are future protocols and contribute
-no projected number or performance claim.
-
-### 4.6.1 Selected Configuration by Inference Regime
-
-The recipe transferred below is not a preference but the measured selection of §§4.2–4.4, and it
-is regime-dependent, exactly as §4.2.5 concluded. For the **deterministic best-of-1
-autoregressive rollout** — the deployment regime of every long-horizon claim — the selected head
-is **regression** (it wins the rollout reversal, §4.2.3, and the memory win replicates under it,
-§4.3.5), combined with a context package selected to cover the relevant span with the least
-measured information loss. The coarse-plus-fine package (long coarse memory + recent fine
-window) is the replicated spatial option, whose coarse history is statistically free under this head
-(+0.0008 [−0.0013, +0.0029], Table 4.7), at the **largest affordable window** — window extension
-at fixed representation dwarfs the abstraction cost (−0.027 versus −0.008, read G-S3). The
-strongest replicated spatial recipe is reg-long (seed mean 0.1593 at 1,152 tokens, §4.4), while
-the cross-family temporal option remains seed/head-gated. For the **single-step best-of-N coverage regime**, the selected head is **diffusion** (it
-wins every column at matched capacity and NFE, Table 4.2), with the same hierarchical context
-rule. Transfers below use the rollout recipe as primary and report the diffusion head where
-sampling diversity is part of the question; where a measured transfer predates this formulation,
-its actual arm configuration is disclosed in place (§4.6.2 used the diffusion head, best-of-1).
-
-### 4.6.2 OpenSTL Moving-MNIST Bridge: Measured Negative Control
-
-The bridge announced in §4.1.3 is measured. Protocol: the canonical OpenSTL 10→10 suite on the
-canonical test set (n = 10,000 sequences), with bit-verified reimplementations of the OpenSTL
-metric conventions (pixel-sum MSE/MAE) and a faithful port of the standard sequence generator; a
-fresh two-level autoencoder trained for this benchmark (per the §4.5.6 rule: a fresh autoencoder
-per testbed variant); the unmodified hierarchical DiT backbone of §3.2.2 (22.19 M parameters),
-trained B = 16 × 15,000 steps, bf16, evaluated best-of-1 with three autoregressive window steps
-(4 + 4 + 2 frames). Two arms: **mm-flat** (10 fine frames of context, 640 tokens) and
-**mm-hier** (10 coarse + 6 fine, 544 tokens).
-
-**Table 4.8 — OpenSTL Moving-MNIST bridge (10→10, canonical test set, n = 10,000; pixel-sum
-MSE/MAE per the OpenSTL convention).**
-
-| Arm | MSE | MAE | SSIM | PSNR | LPIPS |
-|---|---:|---:|---:|---:|---:|
-| mm-flat (10 fine frames, 640 tokens) | 180.91 | 229.94 | 0.7625 | 13.55 | **0.1320** |
-| mm-hier (10 coarse + 6 fine frames, 544 tokens) | 181.29 | 230.45 | 0.7607 | 13.54 | 0.1389 |
-| AE round-trip ceiling | 3.30 | 20.79 | 0.9917 | 30.93 | 0.0062 |
-| Persistence | 286.28 | 337.89 | 0.6528 | 11.56 | 0.2533 |
-
-Leaderboard reference (deterministic specialist regressors at ≈200 epochs, OpenSTL
-documentation): ConvLSTM-S 29.80, PredRNN 23.97, PredRNN++ 22.06, SimVP+gSTA-S 26.69, TAU 24.60 aggregate MSE [74] (range parity with article Table 5.1; the strongest specialist, PredRNN++ 22.06, sets the quoted floor).
-
-Three readings, in the order of their epistemic weight.
-
-1. **The protocol anchor is achieved.** The harness reproduces the standard benchmark protocol
-   exactly (canonical test sequences, bit-verified metric conventions), and the autoencoder
-   ceiling row (3.30 against the arms' ≈181) shows the tokenizer is not the limiter: the gap to
-   the specialists is owned by the dynamics model and objective, not the representation.
-
-2. **The absolute aggregate numbers are modest, with disclosed reasons — and the "mid-pack
-   aggregate MSE" clause of the §4.1.3 pre-registered expectation is refuted and reported as
-   such.** The measured 180.91 stands against the specialists' 22.06–29.80: the evaluated arm is
-   a 22 M stochastic latent-diffusion *generalist* at ≈15,000 optimizer steps, evaluated
-   best-of-1, against deterministic pixel-regressors trained roughly an order of magnitude longer
-   and optimized exactly for the pixel-sum-MSE aggregate — an aggregate that structurally
-   punishes sampling variance (§3.4.3: on this ≈93%-black benchmark, aggregate metrics reward
-   mean prediction). Accordingly, **no statement of the form "competitive with, or beating, the
-   OpenSTL leaderboard on aggregate MSE" appears anywhere in this dissertation** — the
-   measurement refutes it. What does hold: the model halves persistence's LPIPS (0.1320 vs
-   0.2533) and beats persistence on every metric of the table.
-
-3. **The flat ≈ hier null (Δ ≈ 0.4 aggregate MSE ≈ 0) is the measured short-protocol boundary,
-   not a failure.** Moving MNIST has no off-screen re-entry at 10→10, so this protocol does not
-   expose the re-entry-defined demand isolated at operating point A. It does not prove that
-   persistent identity/velocity is irrelevant over long rollout; a valid persistent-object study
-   would test that separately.
-   Thus the bridge supplies a short/no-re-entry boundary observation, while the matched-budget
-   hierarchy win is two-seed CI-clean (§4.3.3). The question "when does hierarchy pay" receives
-   its negative control from the standard benchmark itself.
-
-**Historical Phase C preregistration (2026-07-10; before any result).** The original
-long-horizon design registered `mmL-flat` and `mmL-hier` at seeds 0/1/2, a 48-frame warm-up and
-approximately 300 self-fed frames. Its continuity primary was paired foreground-MSE: replicated
-practical equivalence required every seed's complete clip-cluster interval to lie inside ±0.005,
-with horizon bins secondary. The design also proposed digit identity, trajectory and count
-endpoints with preliminary margins ±0.02 accuracy, ±1 pixel and ±0.05 digit/frame. A sound
-positive hierarchical effect was to be examined and reported. **The study did not launch.**
-
-**Validity amendment (2026-07-11; before launch).** The registered foreground-MSE question is
-retained narrowly. The legacy factor evaluator inferred identity from horizontal component order,
-merged overlaps, used many-to-one trajectory matching and intersected frames scorable in both
-arms; those choices cannot support identity, trajectory, coverage or equivalence conclusions. The
-corrected hybrid protocol stores persistent object/glyph IDs, official train/test glyph splits,
-boxes and per-object trajectories; uses one-to-one Hungarian assignment; penalizes misses and
-extras; reports coverage; validates the digit classifier on rendered, overlapping and
-autoencoder-reconstructed crops; and justifies native-unit margins. The original registration and
-this amendment are both retained in the scientific record. The conditional protocol is documented
-in `docs/PHASE_C_V2_PROTOCOL_2026-07-11.md`; no result or figure enters the dissertation until its
-CPU, classifier and protocol-freeze gates pass.
-
-### 4.6.2a Persistent-object long Moving-MNIST: a measured external boundary
-
-The corrected E6 protocol passed every CPU, codec, classifier, production-crop, data-integrity and
-protocol-freeze gate before protected evaluation. The frozen comparison used `mmL-flat` and
-`mmL-hier` at training seeds 0/1/2, a 48-frame ground-truth warm-up, 300 self-fed target frames and
-100 protected test clips. Both arms used the same 1,152 context-token budget, predictor regime,
-codec, sampler and evaluation geometry. The generator saved persistent object and source-glyph
-identity, boxes and trajectories; the evaluator used one-to-one Hungarian assignment, explicit
-missed/extra-object penalties and intention-to-score coverage. The official train/test glyph split
-and classifier-domain floors were verified before the holdout was opened.
-
-**Table 4.8a — E6 persistent-object long Moving-MNIST.** Positive effects favor hierarchy; all
-intervals belong to one simultaneous 95% max-statistic clip-cluster family over the 15
-co-primary effects.
-
-| Seed | Foreground MSE | Union MSE | Trajectory error, px | Identity accuracy | Object coverage |
-|---:|---:|---:|---:|---:|---:|
-| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
-| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
-| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
-
-The preregistered verdict is **MIXED_BOUNDARY**, not equivalence and not a null result. Union-mask
-error favors hierarchy on all three seeds. Trajectory and coverage favor hierarchy cleanly on
-seeds 0 and 2 and are directionally positive but unresolved on seed 1. Missed-object rate,
-full-frame error, background error and foreground F1 also improve for hierarchy at all seeds as
-secondary descriptive endpoints. Digit identity, however, favors flat context with simultaneous
-intervals wholly below zero at all three seeds; foreground-only MSE is unresolved and changes
-sign.
-
-This division is consistent with the dissertation's systems interpretation. The coarse stream
-retains spatial support economically—where an object is, whether it persists and how its motion
-continues—but discards fine glyph information needed to preserve what the object is. Flat
-full-resolution storage retains that identity fidelity better. Thus E6 extends, but does not
-universally generalize, the LoopMom reach–fidelity frontier. It is a controlled synthetic external
-boundary, not evidence of natural-video transfer.
-
-![E6 persistent-object boundary](../../figures/fig22_phasec_v2_boundary.png)
-
-**Figure 4.22 —** Persistent-object long Moving-MNIST simultaneous effects. Positive favors
-hierarchy; support/continuity and fine identity fidelity separate.
-
-### 4.6.3 Synthetic [A1]/[A2] Testbeds: 2D Rotations and 3D Polycubes
-
-Two distinct published sources motivate this future bridge. [A2] supplies the $64 \times 64$
-procedural 2-D rotation suite and its controlled temporal laws; [A1] supplies the V-BLT
-2-D-polygon and 3-D-polycube sequences with entropy maps. Neither publication evaluates the
-Chapter 3 reach–fidelity model. A future transfer study would therefore ask whether the selected
-hierarchical configuration retains accuracy and consistency on these source-faithful suites,
-using each publication's exact split, metrics, horizon and baselines. No such transfer has been
-executed, so no result table or projected advantage is inserted here. The published examples
-remain documented in Chapter 2, Figures 2.3–2.4.
-
-### 4.6.4 Moving-MNIST-CIFAR
-
-The MMNIST-CIFAR variant replaces the black background with natural-image texture, removing the
-background degeneracy that makes aggregate metrics mean-seeking on standard Moving MNIST
-(§3.4.3) while keeping the same no-re-entry kinematics — so the pre-registered expectation of
-the §4.6.2 negative control (flat ≈ hier) carries over, now with more informative aggregate
-metrics. This extension is not required to establish the present reach–fidelity result and has
-not been executed; no numerical outcome is implied.
-
-### 4.6.5 TaxiBJ: Measured Real Spatio-Temporal Forecasting Data
-
-TaxiBJ is the one *real-data* suite of the transfer set: Beijing taxi in/out-flow grids,
-$32 \times 32 \times 2$ (two flow channels), 4 → 4 frame prediction under the standard OpenSTL
-protocol, scored by the benchmark's own metric implementation invoked verbatim (the
-normalization convention — data rescaled to $[0,1]$ by the benchmark's loader — was verified in
-the OpenSTL source before any model number was read). Instead of the anticipated dedicated
-32-px model variant, the transfer used the **exact-upsample equivalent** (disclosed, registered
-before the runs): frames nearest-upsampled ×2 through the *unchanged* 64-px two-level
-autoencoder (2-channel input) and WindowDiT stack of Chapter 3, predictions downsampled back by
-the exactly inverse 2×2 mean before scoring — an information-identical formulation that keeps
-the architectural constants of §3.2 literally unchanged across every dataset of the study.
-Regime: fresh autoencoder (12,000 steps), four arms at batch 64 × 15,000 steps (≈48 epochs,
-comparable to the leaderboard's 50-epoch protocol), best-of-1, unconditional, seed 0.
-
-**Table 4.9 — TaxiBJ 4→4, MEASURED (n = 500 canonical test pairs; OpenSTL convention;
-leaderboard rows = OpenSTL's own 50-epoch retraining, locally verified).**
-
-| Arm | MSE | MAE | SSIM | PSNR |
-|---|---:|---:|---:|---:|
-| **Flat, regression (256 ctx tokens)** | **0.3642** | **14.96** | 0.9781 | **39.83** |
-| Hierarchical, regression (128 ctx tokens) | 0.4170 | 15.44 | 0.9772 | 39.64 |
-| Hierarchical, diffusion (128 ctx tokens) | 0.4986 | 18.37 | 0.9692 | 37.87 |
-| Flat, diffusion (256 ctx tokens) | 0.5152 | 18.44 | 0.9686 | 37.85 |
-| AE round-trip ceiling (2-ch) | 0.0192 | 4.48 | 0.9987 | 50.92 |
-| Persistence | 3.8268 | 48.63 | 0.7853 | 30.20 |
-| TAU (OpenSTL, 50 ep) | 0.3108 | 14.93 | 0.9848 | 39.74 |
-| MIM (OpenSTL, 50 ep) | 0.3110 | 14.96 | 0.9847 | 39.65 |
-| PredRNN (OpenSTL, 50 ep) | 0.3194 | 15.31 | 0.9838 | 39.51 |
-| SimVP+gSTA-S (OpenSTL, 50 ep) | 0.3246 | 15.03 | 0.9844 | 39.71 |
-| PhyDNet (OpenSTL, 50 ep) | 0.3622 | 15.53 | 0.9828 | 39.46 |
-
-The measured readings, stated per metric and without a leaderboard-superiority headline (the
-§4.2.3 rule): the regression arm of the *unchanged generalist stack* lands **inside the
-leaderboard band on MAE (14.96 — tying MIM for second-best of the quoted rows) and on PSNR
-(39.83 — above every quoted row)**, at the band's lower edge on MSE (0.3642, 0.55% above
-PhyDNet), and below the band on SSIM (0.9781 vs 0.9828–0.9848). Persistence is beaten ≈10.5×;
-the autoencoder ceiling (0.0192, 16× below the best specialist row) shows the frozen tokenizer
-is not the limiter — the pre-registered decoder-capacity fallback branch is measured-moot. The
-regression-over-diffusion best-of-1 ordering replicates on real data (0.364/0.417 vs
-0.515/0.499), and the no-memory-horizon boundary replicates as pre-registered: at half the
-context tokens the hierarchical regression arm pays −0.053 MSE with faster per-horizon
-degradation (4-frame protocol → coarse history is pure token economy). Disclosure: single seed
-(a transfer row, not a claim-bearing contrast, per the campaign's two-seed rule).
-
-### 4.6.6 KTH-64 — Future Extension
-
-KTH (human actions, grayscale, evaluated at 64 × 64) is a natural-video extension named in the
-research prospects; it is not an [A2] result. It is retained as a future external-validity test,
-not as an optional empty result shell.
-
-### 4.6.7 Boundaries of the Measured Generalization Claim
-
-The measured generalization claim is deliberately narrow. On OpenSTL Moving MNIST the package
-comparison is a no-re-entry negative control and does not match specialist aggregate MSE. On
-TaxiBJ the unchanged generalist stack is competitive on some reported metrics, but the
-hierarchical package loses to the larger flat regression context and only one training seed was
-tested. The remaining synthetic and natural-video suites are future work. Accordingly, **a
-claim of beating (or matching) the OpenSTL leaderboard on aggregate MSE is never made** — Table
-4.8 refutes it (180.91 versus SimVP's 26.69), and the honest statement of that comparison is the
-disclosed-generalist reading of §4.6.2.
-
-### 4.6.8 Independent Confirmation on an Untouched LoopMom Holdout
-
-The original test population informed qualitative monitoring and configuration selection.
-Accordingly, the central reach claims were evaluated once on the newly generated, hash-pinned
-holdout `loopmom-confirmation_holdout-20260712-e033abee6e04`. Before first access, the protocol
-froze 26 checkpoint evaluations, two primary pairs, their geometric reach bands, the complete
-metric suite and one studentized max-statistic clip-cluster family for 12 correlated frontier
-contrasts. No model was trained or selected on this holdout.
-
-For `hier-min` versus `flat-min`, the registered `14 < dt <= 48` effects are +0.0980
-[0.0788, 0.1179] at seed 0 and +0.0914 [0.0736, 0.1098] at seed 1. For the B1
-configuration versus `flat-short`, the `8 < dt <= 48` effects are +0.0692
-[0.0543, 0.0845] and +0.0743 [0.0588, 0.0899]. Whole-population, union-mask,
-full-frame, recall/F1, missed-component and coverage endpoints corroborate both directions.
-B1 still changes its target interface and is therefore a whole-configuration result.
-
-The simultaneous frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792
-unresolved, and confirms flat full-resolution context at 2,432 and 3,072. Thus 1,152 is the
-largest tested family-wise-confirmed hierarchy point and 2,432 the smallest tested confirmed flat
-point. No monotonic curve, unique crossing or interpolation is inferred. In exact memory
-arithmetic, 48 fine frames cost 3,072 context tokens, while 48 coarse frames plus two or six recent
-fine frames cost 896 or 1,152. The hierarchy therefore provides the same nominal 48-frame reach
-with 2.7–3.4 times fewer context tokens. This is a reach-efficiency statement, not a claim of
-equal retained information or equal performance at every budget.
-
-![Untouched frontier and exact context-token arithmetic](../../figures/article_confirmed_frontier.png)
-
-**Figure 4.18 — Untouched reach–fidelity frontier and memory arithmetic.** Positive effects favor
-hierarchy. All intervals in the left panel belong to one simultaneous family; the right panel
-shows exact token counts for nominal 48-frame reach.
-*Source:* `artifacts/confirmation_e2/results.json`; generated by
-`scripts/make_rft_result_figures.py`.
-
-### 4.6.9 Robustness to Sampling Budget and DDIM Randomness
-
-E7c separates a property of the trained checkpoints from dependence on one default diffusion
-allocation. Four frozen seed-0 contrasts—896-token reach, the 1,152-token interior point, the
-near-matched 1,088-token temporal versus 1,152-token spatial package shape, and the 2,432-token
-flat-fidelity inversion—were crossed with NFE 8/16/32 at sampler seed 0 and NFE 16 at sampler
-seeds 1/2. All 20 effects were covered by one preregistered simultaneous family.
-
-All 20 point estimates retain the registered direction and 18 simultaneous lower bounds exceed
-zero. The reach, interior and package-shape contrasts are family-wise clean for every variant.
-The upper inversion remains positive but is unresolved at sampler seed 1
-(+0.0098 [−0.0001,+0.0196]) and seed 2 (+0.0077 [−0.0013,+0.0167]). The registered verdict is
-therefore `DIRECTIONALLY_ROBUST`, not universal sampler invariance. Non-empty foreground,
-full-frame, background and union-mask error, recall and F1 agree in all 20 variants; component
-counts are not uniformly favorable.
+### 4.6.1 Sampler allocation and randomness
+
+E7c crosses four frozen seed-0 diffusion contrasts with NFE 8/16/32 at sampler seed 0 and NFE 16
+at sampler seeds 1/2:
+
+1. 896-token reach;
+2. 1,152-token interior frontier;
+3. 1,088-versus-1,152 package shape; and
+4. the 2,432-token flat-fidelity inversion.
+
+All 20 point estimates retain their registered direction, and 18 simultaneous lower bounds exceed
+zero. The first three contrasts are family-wise clean under every variant. The 2,432 inversion
+remains positive but is unresolved at sampler seed 1
+\(+0.0098[-0.0001,+0.0196]\) and seed 2
+\(+0.0077[-0.0013,+0.0167]\). The verdict is **directionally robust**, not sampler invariant.
+This study changes inference allocation for frozen seed-0 predictors; it does not add
+training-seed or dataset robustness.
 
 ![Sampler and NFE robustness](../../figures/fig19_sampler_nfe_robustness.png)
 
-**Figure 4.19 — Robustness to NFE and sampler randomness.** The two open upper-inversion points
-have simultaneous intervals that include zero.
-*Source:* `artifacts/e7c_sampler_nfe/results.json`.
+**Figure 4.3 — Sampler/NFE robustness.** Open points mark upper-inversion intervals that include
+zero.
 
-### 4.6.10 Robustness to an Independently Trained Latent Representation
+### 4.6.2 Independently trained codec
 
-E7a is a whole-codec intervention: a second codec seed is trained independently, normalization is
-recomputed, and the same seven seed-0 diffusion predictors are retrained in the new latent space.
-It does not isolate codec weights, reconstruction error, latent scale or normalization. Four
-original-codec and four alternate-codec effects share one new purpose-locked holdout and one
-simultaneous family.
+E7a changes the whole continuous latent interface: a second codec is trained independently,
+normalization is recomputed, and the seven seed-0 predictors are retrained. Codec weights,
+reconstruction error, latent geometry, and normalization therefore change together.
 
-**Table 4.10 — Robustness of the four registered directions to an independent codec.**
+**Table 4.4 — Whole-codec robustness.**
 
 | Codec | 896 reach | 1,152 interior | 1,088 vs 1,152 shape | 2,432 inversion |
 |---|---:|---:|---:|---:|
 | Original | +0.0494 [0.0339, 0.0649] | +0.0283 [0.0169, 0.0397] | +0.0253 [0.0163, 0.0343] | +0.0150 [0.0065, 0.0235] |
 | Alternate | +0.0521 [0.0374, 0.0669] | +0.0439 [0.0310, 0.0569] | +0.0112 [0.0039, 0.0184] | +0.0079 [−0.0006, 0.0165] |
 
-All eight point estimates retain direction and seven simultaneous lower bounds exceed zero. The
-sole unresolved interval is the alternate-codec 2,432-token inversion. The verdict is
-`CODEC_DIRECTIONALLY_ROBUST`. Codec seed is not an inferential replicate, so descriptive effect
-changes do not identify a component-level latent-space cause.
+All eight point estimates retain direction, and seven simultaneous lower bounds exceed zero. The
+alternate-codec upper inversion is unresolved. The verdict is
+**codec-directionally robust**, conditional on predictor seed 0 and one alternative codec; codec
+seed is not an inferential replicate and no component-level cause is identified.
 
 ![Alternate-codec robustness](../../figures/fig20_alternate_codec_robustness.png)
 
-**Figure 4.20 — Whole-codec robustness.** The open alternate-codec upper-inversion interval
-includes zero.
-*Source:* `artifacts/e7a_codec_robustness/results.json`.
+**Figure 4.4 — Original and alternate codec effects under one simultaneous family.**
 
-### 4.6.11 Privileged Pose-Indexed Explicit-Access Reference
+## 4.7 Boundary and Negative Evidence
 
-E8a separates having relevant history from addressing and reusing it. A fixed world-coordinate
-mosaic is built from raw warm-up pixels and queried at the exact saved future viewport positions.
-Unobserved columns use a row prior computed only from training data. The mosaic receives raw
-pixels and future poses, has no token-matched budget and is not learned; it is therefore a
-privileged access reference, not an architecture or efficiency competitor.
+### 4.7.1 The proposed late trust boundary does not replicate
 
-**Table 4.11 — Simultaneous E8a effects for pose-indexed raw memory.**
+At a longer-loop operating point, seed 0 showed an early hierarchy benefit followed by a late
+inversion during self-fed rollout. E5a preregistered that horizon pattern and repeated the pair at
+two new training seeds.
+
+**Table 4.5 — Registered self-fed reliability replication. Positive favors hierarchy.**
+
+| Training seed | Early h1–24 | Late h61–256 |
+|---:|---:|---:|
+| 0 | +0.0204 [+0.0133, +0.0279] | −0.0064 [−0.0095, −0.0032] |
+| 1 | +0.0082 [+0.0035, +0.0133] | +0.0074 [+0.0038, +0.0112] |
+| 2 | +0.0230 [+0.0150, +0.0315] | +0.0087 [+0.0035, +0.0139] |
+
+The early advantage is positive at all three seeds. Neither new seed reproduces the required late
+negative direction; both reverse it. The registered verdict is **NOT_REPLICATED**. No stable
+approximately-24-frame trust boundary is established, and the gated E5b localization programme
+is not authorized. The conceptual distinction between addressable history and reliable self-fed
+reuse remains valid, but it is not a third empirical law.
+
+![Negative trust-boundary replication](../../figures/fig18_trust_negative_replication.png)
+
+**Figure 4.5 — Early benefit and seed-0-only late inversion.**
+
+### 4.7.2 Privileged pose-indexed raw access
+
+E8a asks how much error remains when addressing is explicit. A world-coordinate mosaic stores raw
+warm-up pixels and is queried using exact saved future viewport positions. It receives raw pixels,
+future poses, and no token-matched budget; it is therefore a privileged access reference, not a
+deployable neural competitor.
+
+**Table 4.6 — Simultaneous pose-indexed raw-memory effects.**
 
 | Registered contrast | Estimate | Simultaneous 95% CI |
 |---|---:|---:|
@@ -4985,424 +3819,322 @@ privileged access reference, not an architecture or efficiency competitor.
 | `strided-flat` minus raw K48 | +0.1134 | [+0.0944, +0.1324] |
 | `flat-c2` minus raw K48 | +0.1310 | [+0.1122, +0.1498] |
 
-K48 reaches foreground MSE 0.0494, full-frame MSE 0.0027 and foreground recall 0.8438, versus
-foreground MSE 0.1628–0.1862 for the four neural references. All neural-minus-K48 lower bounds
-are positive, yielding `RAW_ACCESS_CEILING_CI_CLEAN`. Median stored world columns rise from 80 at
-K6 to 154 at K48, and mean observed future-crop coverage from 0.454 to 0.809. The result shows
-that reach alone does not guarantee reliable access; it does not rank the privileged mosaic
-against deployable neural models.
+Raw K48 reaches foreground MSE 0.0494, full-frame MSE 0.0027, and foreground recall 0.8438,
+versus foreground MSE 0.1628–0.1862 for the four neural references. The result shows that
+geometric reach is not sufficient for reliable addressing and reuse. It does not show that raw
+mosaics are practical or that hierarchy is unnecessary.
 
-![Privileged pose-indexed raw memory](../../figures/fig21_pose_indexed_raw_memory.png)
+![Pose-indexed raw memory](../../figures/fig21_pose_indexed_raw_memory.png)
 
-**Figure 4.21 — Pose-indexed raw-memory reference.** Coverage grows with the stored span and all
-six registered K48 effects have positive simultaneous lower bounds.
-*Source:* `artifacts/e8a_pose_mosaic/results.json`.
+**Figure 4.6 — Privileged explicit-access reference.**
 
-## 4.7 Implementation and Use of the Research Results
+### 4.7.3 Persistent-object external boundary
 
-The results of the dissertation research have been implemented in:
+E6 compares matched 1,152-token flat and hierarchical packages at training seeds 0–2, using a
+48-frame warm-up, 300 self-fed targets, and 100 protected clips.
 
-- the **practical activities of ORNETIKA LLC** (Kyiv): the developed information technology was
-  used in designing intelligent systems for the analysis of spatio-temporal video data and
-  anomaly detection in complex technical environments; the resource-efficient methods (the
-  TempVerseFormer reversible-transformer method) and adaptive entropy-based tokenization
-  substantially reduced the computational cost of modeling long temporal sequences
-  (implementation act of October 14, 2025);
-- the **educational process of VNTU** in the disciplines *Information Technologies for Monitoring
-  and Analysing the State of Complex Systems* and *Internet of Things and Intelligent Data
-  Analysis* for PhD
-  students of specialty 124 (implementation act of September 19, 2025).
+**Table 4.7 — E6 simultaneous effects. Positive favors hierarchy.**
 
-Copies of the implementation acts are given in the appendices **[AUTHOR: assign the final
-appendix letters and insert the signed act copies]**.
+| Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
+| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
+| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
 
-## 4.8 Chapter Conclusions
+Absolute performance prevents overstatement:
 
-1. In accordance with **Task 7** of the dissertation research, comprehensive experimental studies
-   of the developed methods and the intelligent information technology were conducted on the
-   two-operating-point testbed family (§4.1) under an audit-hardened measurement protocol:
-   paired clip-level cluster bootstrap confidence intervals (frame-iid intervals were shown to be
-   2–7× too narrow at lag-1 autocorrelation +0.86), exact analytic hardness stratification with
-   an audit-corrected anchoring, common random numbers, per-operating-point reference floors and
-   ceilings (Table 4.1), and full disclosure of every correction and caveat (§4.1.5). The [A2]
-   receipt datasets (2D/3D rotations, Moving MNIST, MMNIST-CIFAR, TaxiBJ, KTH) are retained as
-   the published validations of the reversibility method; the OpenSTL bridge is **measured**
-   (§4.6.2, Table 4.8): the protocol anchor is achieved, and the pre-registered "mid-pack
-   aggregate MSE" clause is refuted and reported as such.
+| Seed | Arm | Union MSE ↓ | Trajectory error ↓ | Identity accuracy ↑ | Coverage ↑ |
+|---:|---|---:|---:|---:|---:|
+| 0 | flat / hierarchy | 0.6861 / 0.6759 | 42.19 / 39.71 | 0.214 / 0.138 | 0.619 / 0.650 |
+| 1 | flat / hierarchy | 0.6901 / 0.6779 | 40.20 / 38.77 | 0.244 / 0.188 | 0.646 / 0.662 |
+| 2 | flat / hierarchy | 0.6931 / 0.6763 | 43.79 / 39.65 | 0.222 / 0.158 | 0.599 / 0.649 |
 
-2. The matched-capacity and matched-NFE mechanism study (§4.2) established that **the generation-head ranking is
-   regime-dependent**: the diffusion core wins the single-step oracle-coverage regime on every
-   column at matched capacity and NFE (fg-MSE 0.0512 vs 0.0664 overall; 0.1549 vs 0.1808 on the
-   hard, genuinely generative stratum), while the regression core wins the deterministic
-   best-of-1 rollout at equal sharpness (ALL delta CI [+0.0110, +0.0227]) — a refutation of the
-   pre-registered fade expectation, reported as such. No statement of the form "one best head"
-   survives the chapter; the memory claims were therefore verified under both viable heads.
+The preregistered verdict is **MIXED_BOUNDARY**. Union-mask error favors hierarchy at every seed.
+Trajectory and coverage favor hierarchy cleanly at seeds 0 and 2 and remain directionally positive
+but unresolved at seed 1. Identity favors flat context at every seed; foreground-only MSE is
+unresolved. Hierarchy therefore better preserves *where* an object is and whether its support
+continues, while flat context better preserves *what* digit it is. Neither system solves the
+task.
 
-3. The energy-based head was characterized by the two-sided capability study (§4.2.4) with the
-   official implementation and both published recipes at 20,000 converged steps: landscape
-   ordering is recipe-dependent (S2 stably mis-ordered, 21/21 probes; S1 correctly ordered,
-   15/15 probes from step 6,000), while descent reachability fails under both recipes and under
-   the paper's own inference procedure ($d_{\mathrm{tgt}} \approx 1.12$–$1.29$ against the mean's
-   0.964; foreground sharpness ≤ 0.035 against the 0.08 structure threshold). The result is a
-   **characterized negative** — a capability boundary at 16 GB-reachable scale with the
-   configuration gap stated (Table 4.4), not a reproduction failure — and it empirically
-   justifies the diffusion selection of Chapter 3 jointly with conclusion 2.
+![Persistent-object long Moving-MNIST boundary](../../figures/fig22_phasec_v2_boundary.png)
 
-4. The headline claim of the dissertation was confirmed (§4.3): **at an equal context-token
-   budget (1,152 tokens), the hierarchical long-coarse-memory model beats the flat control on
-   152-frame autoregressive rollouts on two seeds and under both heads** — seed 0 ALL +0.0189
-   [+0.0121, +0.0264] with the win concentrated from h ≥ 25 on hard re-entry bins (h 25–60 HARD
-   +0.0344 [+0.0162, +0.0531]); seed 1 ALL +0.0354 [+0.0267, +0.0447], winning every cell;
-   regression pairing ALL +0.0334 seed 0 and +0.0501 seed 1 — two-seed. The single-step memory
-   gate showed the
-   underlying retrieval capability emerging late in training (null at 6,000 steps, ≈13% hard-bin
-   win at 20,000 on both seeds). The claim is honestly bounded: the onset horizon is
-   seed-variable (the robust claim is the win and its mid-horizon concentration); sharpness fades
-   for all arms at depth (the G2b retention clause is not met at h ≥ 81; the ceiling is owned by
-   the frozen decoder); and flat-long at 2.7× the tokens is the outright Pareto frontier
-   (0.1564) — at operating point A, hierarchy is an efficiency point, not a capability necessity.
+**Figure 4.7 — Spatial-support/identity division of labour in E6.**
 
-5. The spatial-abstraction factorial (§4.4) returned an **economic, head-conditional** verdict.
-   At the fixed 18-frame window, coarse history costs diffusion −0.0082 [−0.0115, −0.0050] at
-   42% token savings and is statistically free for regression (+0.0008 [−0.0013, +0.0029]); its
-   value is what the savings buy. At 48-frame reach, temporal full-resolution anchors beat spatial
-   coarsening under diffusion on all five seeds, while regression has two temporal and three
-   spatial material winners. The head × package interaction changes sign and its five-seed t95
-   crosses zero. The robust conclusion is a stable diffusion package result plus regression and
-   cross-head training-seed heterogeneity, not a directional head law or one universally optimal
-   package. The separate E7c inference study (§4.6.9) preserved the expected point-estimate
-   direction in all 20 registered NFE/sampler variants, with 18 simultaneous lower bounds above
-   zero. The 2,432-token inversion is family-wise unresolved at alternate sampler seeds 1/2;
-   therefore the result is directionally robust rather than universally sampler-invariant.
-   The independent-codec study E7a (§4.6.10) likewise preserves all four point-estimate
-   directions: the 896 reach, 1,152 interior and package-shape contrasts remain
-   simultaneous-CI clean, while the alternate-codec 2,432 inversion is +0.0079
-   [−0.0006, 0.0165]. Thus the reach–fidelity account is directionally robust to both inference
-   allocation/randomness and one whole-codec intervention, while its upper tested edge remains
-   the precision-limited boundary. The privileged explicit-access study E8a (§4.6.11) further
-   gives a clean simultaneous reference: raw K48 foreground MSE is 0.0494, and all four
-   registered neural-minus-K48 lower bounds are positive. This is evidence that geometric reach
-   and reliable addressing are distinct, not a token-matched model comparison.
+### 4.7.4 Short and real-data competence boundaries
 
-6. The temporal-capability study at operating point B (§4.5) closed with a characterized
-   single-step positive and a **registered negative replication of the proposed late trust
-   boundary**: retrieval beyond the flat window exists on the position-unique wide world and is
-   reach-causal (dose-response with the internal contiguous control), a memory span exceeding the
-   effective loop $L_{\mathrm{eff}}$ (eq. 4.1) reliably enables single-step retrieval learning
-   (2/2 span > loop runs CI-positive vs 0/4 span ≤ loop). The early rollout benefit is positive
-   at all three training seeds, whereas the late inversion appears only at seed 0 and reverses at
-   seeds 1–2. No stable trust boundary is therefore claimed. The negative replication, together
-   with the three methodology lessons (effective-loop sizing; the autoencoder-reuse trap;
-   evaluation power), constitutes the honest delimitation of this mechanism.
+On canonical Moving-MNIST 10-to-10, the general predictor beats persistence but remains far behind
+specialized OpenSTL pixel predictors on aggregate MSE. Flat and hierarchical packages are nearly
+equal because no off-screen re-entry mechanism requires a longer addressable history. This is a
+negative control for the reach account, not a claim of benchmark leadership.
 
-7. The generalization study (§4.6) carries the measured per-regime configuration selection —
-   regression head for the deterministic best-of-1 rollout, diffusion for the single-step
-   coverage regime, hierarchical coarse-plus-fine context at the largest affordable window —
-   onto the standard and synthetic suites. Its measured component, the OpenSTL Moving-MNIST
-   bridge (Table 4.8), achieves the protocol anchor (bit-verified standard metrics; the
-   autoencoder ceiling 3.30 shows the tokenizer is not the limiter) and returns the **predicted
-   negative control**: flat ≈ hierarchical (180.91 vs 181.29 aggregate MSE) on a benchmark with
-   no off-screen re-entry — hierarchy pays where the memory horizon exists (§4.3) and is a null
-   where it does not, while the aggregate-MSE gap to the deterministic specialists (22.06–29.80)
-   is disclosed as the refutation of the pre-registered "mid-pack" clause, and no leaderboard
-   claim is made. The valid persistent-object long Moving-MNIST study (§4.6.2a, Table 4.8a)
-   returns a separate **mixed boundary**: hierarchy improves union error at all three seeds and
-   trajectory/coverage cleanly at two, while flat context preserves digit identity at all three
-   and foreground-only error is unresolved. It therefore supports a support/continuity-versus-
-   identity-fidelity interpretation rather than universal superiority. TaxiBJ is a measured
-   real-data transfer (§4.6.5); the unexecuted 2D-rotation,
-   3D-polycube, MMNIST-CIFAR and optional KTH-64 protocols are retained only as future-work
-   designs and contribute no projected result to this conclusion. The token-budget frontier
-   completion (§4.3.6; hier-rich at 3,072 tokens, flat-short at 512) is **measured**: the
-   frontier inverts at both ends (hier-rich loses to flat-long −0.0131 [−0.0201, −0.0069] at
-   equal budget and regime; flat-short beats hier-short −0.0036 [−0.0063, −0.0010]) — an outcome
-   stricter than the pre-registered convergence expectation, reported as measured. The final
-   bounded efficiency claim is therefore discrete and empirical: hierarchy is family-wise
-   confirmed at the tested 896- and 1,152-token points, unresolved at 1,792, and full-resolution
-   flat context is confirmed at 2,432 and 3,072; no untested interval or unique crossing is
-   inferred.
+On TaxiBJ 4-to-4, the unchanged general stack is competitive with quoted OpenSTL rows on some
+metrics but not uniformly. The flat regression arm uses 256 context tokens and reaches MSE
+0.3642; the hierarchical regression arm uses 128 tokens and reaches 0.4170. Because only one
+training seed was used and the task has no long memory horizon, this row demonstrates transfer
+competence and the cost of unnecessary abstraction, not a claim-bearing hierarchy comparison.
 
-8. The results of the research have been implemented in the practical activities of ORNETIKA LLC
-   and in the educational process of VNTU (§4.7, per the implementation acts).
+## 4.8 Context-State and Activation-Memory Synthesis
 
-The results of this chapter have been published in [A4] (the mechanism, memory, factorial, and
-boundary studies) and are connected to [A2] through the published receipt summarized in §4.1.2.
-The stable labels are bound mechanically to the final numbered publication list.
+The context-package experiments and reversible-computation experiments act on different resource
+terms:
 
-9. The chapter's findings consolidate into **scoped empirical regularities and explicit
-   boundaries** (single source of truth: `docs/CLAIM_LEDGER.md`; every statement names its
-   testbed, head, representation and seed level): **(L1) reach** — long-span packaging wins at
-   tested lower/interior budgets when it contains the relevant re-entry past and the comparator
-   does not; **(L2) fidelity inversion** — the simultaneous family confirms hierarchy at
-   896/1,152, leaves 1,792 unresolved and confirms flat at 2,432/3,072, without interpolation;
-   **(L3) stride-family configuration** — the 512-token stride-2 arm wins strongly but changes
-   its target interface; **(L4) package shape** — sparse full-resolution history wins under
-   diffusion on five seeds, while regression and the cross-head interaction are
-   training-seed-heterogeneous; **(L5) depth — hypothesis, not law** — a
-   depth-plus-objective-allocation probe on single-scale data; **(L6) self-fed reliability —
-   negative replication, not law** — the seed-0 late inversion is not reproduced at seeds 1–2;
-   and **(F4) inference robustness** — E7c retains all 20 NFE/sampler effect directions, with
-   18 simultaneous lower bounds positive and the upper inversion unresolved at alternate sampler
-   seeds 1/2; **(F5) representation robustness** — E7a retains all four alternate-codec point
-   directions, with three family-wise clean contrasts and the upper inversion again
-   precision-limited; **(F6) explicit-access reference** — E8a gives a clean privileged
-   raw-memory ceiling while remaining outside token-matched model ranking; and **(X3) external
-   persistent-object boundary** — E6 separates hierarchy-favoring spatial support/continuity from
-    flat-favoring digit identity under one valid protected simultaneous family. Together, these
-    confirmed regularities and explicit boundaries form a scoped, falsifiable theory of context
-    allocation—the main scientific conclusion of the chapter.
+| Method | Primary term affected | Benefit | Cost or boundary | Evidence |
+|---|---|---|---|---|
+| Dense flat context | \(M_{\mathrm{context/state}}\) | preserves fine identity/detail | short reach at fixed budget; high cost at long reach | flat wins at 2,432/3,072 and on E6 identity |
+| Spatial hierarchy | \(M_{\mathrm{context/state}}\) | economical dense historical support | loses fine detail | hierarchy wins at 896/1,152; E6 support/continuity |
+| Temporal subsampling | \(M_{\mathrm{context/state}}\) | preserves old full-resolution anchors | can miss intermediate dynamics | five-seed diffusion package-shape result |
+| Gradient checkpointing | \(M_{\mathrm{activations}}\) | general recomputation-based memory reduction | recomputation and schedule-dependent memory | Chapter 2 comparator |
+| Reversible temporal replay | \(M_{\mathrm{activations}}\) | constant activation scaling in tested recurrence | invertibility/stability constraints; no inner-loop advantage | Chapter 2 measured frontier |
 
----
+The savings are not automatically multiplicative. The Chapter 4 predictor uses bounded context
+state but is trained on individual windows without differentiating through the long rollout.
+TempVerseFormer and the stochastic reversible recurrence show how activation memory can be reduced
+when such long temporal differentiation is required; they are not the cause of the context-package
+effects.
+
+## 4.9 Software Toolkit and Practical Application
+
+The research software comprises separately validated modules for:
+
+- entropy-guided representation and RoPE-ND;
+- reversible temporal transformations and memory measurement;
+- hierarchical, flat, and temporally sparse context packages;
+- latent diffusion, regression, and energy-based mechanism controls;
+- LoopMom and persistent-object Moving-MNIST generation;
+- frame, component, trajectory, identity, and coverage metrics;
+- experiment authorization, purpose-locked access, content-addressed run specifications, and
+  generated evidence artifacts.
+
+This is an integrated research methodology and software toolkit. It is not one executable predictor
+that jointly uses adaptive tokenization, RoPE-ND, reversible rollout training, and hierarchical
+context.
+
+The methods were used in the practical activities of ORNETIKA LLC and in the educational process
+of VNTU according to implementation acts dated 14 October 2025 and 19 September 2025. Those acts
+concern the reversible-transformer and entropy-tokenization strands. The final appendices must
+reproduce their approved wording and copies.
+
+## 4.10 Threats to Validity and Research Limits
+
+The principal limitations are:
+
+1. **Synthetic mechanism scope.** LoopMom provides exact geometry and causal interpretability but
+   is not natural video. E6 is also synthetic.
+2. **Representation scope.** The main predictor uses one frozen two-level continuous codec. One
+   independently trained codec supports directional robustness but not representation-family
+   universality.
+3. **Training-seed scope.** Central points use two or three training seeds; clip intervals provide
+   conditional data uncertainty and do not replace seed replication.
+4. **B1 confounding.** B1 changes target and optimization properties with context stride.
+5. **No equivalence claim.** Context-token efficiency does not establish equal performance at
+   fewer tokens.
+6. **No unique crossing.** The frontier contains tested discrete points; 1,792 is unresolved.
+7. **Self-fed reliability.** The late trust-boundary hypothesis does not replicate.
+8. **Absolute E6 difficulty.** Identity accuracy, coverage, and trajectory error show that neither
+   package solves the persistent-object task.
+9. **Pipeline scope.** State-memory and activation-memory savings are separately measured.
+10. **Release scope.** Hash-pinned artifacts support auditability, but public archive availability
+    must be distinguished from local provenance until external URLs are published.
+
+Future work should prioritize counterfactual hidden-state instruments, dynamic hidden content,
+natural-video memory benchmarks, explicit learned retrieval, and larger training-seed panels. Such
+work would extend external validity; it is not required to support the present conditional
+dissertation claims.
+
+## 4.11 Chapter Conclusions
+
+1. The generation-head study establishes a regime boundary rather than a universal ranking:
+   diffusion is superior in the matched single-step oracle-coverage regime, regression is superior
+   in deterministic best-of-1 rollout, and energy-based descent is a characterized negative at the
+   tested scale.
+
+2. On the untouched LoopMom holdout, hierarchy is confirmed precisely in registered populations
+   where the longer package contains re-entry evidence outside the comparator’s reach. This
+   supports reach as the mechanism under the tested representation and head.
+
+3. The simultaneous frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792
+   unresolved, and confirms flat full-resolution context at 2,432 and 3,072. No continuous
+   crossing or universal hierarchy advantage is inferred.
+
+4. At nominal 48-frame reach, the confirmed hierarchical packages use 2.67–3.43 times fewer
+   context tokens than dense fine history. This is context-state reach efficiency, not equal
+   performance, compute, or information.
+
+5. Temporal full-resolution anchors are stable across five diffusion training seeds at the tested
+   static-world point, while regression and the head-by-package interaction are
+   training-seed-sensitive. Spatial and temporal compression are therefore not interchangeable.
+
+6. Sampler/NFE and alternate-codec studies retain all principal point-estimate directions; the
+   upper flat-fidelity inversion becomes a precision boundary in some variants.
+
+7. The proposed late self-fed trust boundary fails to replicate. Explicit pose-indexed raw access
+   shows a substantial addressing gap, and E6 separates hierarchy-favouring spatial
+   support/continuity from flat-favouring identity fidelity.
+
+8. The complete systems result has two independently measured resource axes. Context packaging
+   reduces the state cost of retaining distant history; reversible replay reduces the activation
+   cost of differentiating through long processes. The practical design rule is to compress
+   long-lived state when reach is limiting, preserve detail when fidelity is limiting, and
+   reconstruct activations when the training tape dominates.
+
+The results of this chapter provide the experimental basis for Tasks 5–7 and for article [A4].
+Detailed campaign chronology and secondary receipts are retained in the appendix source rather
+than repeated in the main argument.
 
 <div style="page-break-after: always;"></div>
 
 # General Conclusions
 
-In the dissertation research, the actual scientific and applied problem of systems analysis,
-mathematical modeling, and uncertainty resolution in complex multi-step systems of hierarchical
-video data generation has been solved: methods of systems analysis, mathematical models, and
-intelligent information technologies have been developed that improve the efficiency and the
-temporal and spatial consistency of hierarchical video generation processes. The purpose of the
-research has been achieved, and all seven of the set tasks have been fulfilled.
+The dissertation addresses the systems problem of consistent long-horizon video generation under
+bounded computation and memory. Its central methodological result is that “memory” must be
+decomposed before it can be optimized:
 
-The resource contribution is best understood along two orthogonal memory axes. The hierarchical
-context-packaging model reduces the context/state memory needed to reach task-relevant history:
-distant frames can be stored at a cheaper spatial or temporal rate, while a short recent tail
-retains detail. TempVerseFormer reduces the activation memory needed to optimize long temporal
-computations by reconstructing intermediate states during the backward pass. These are
-complementary dissertation results, not one experimentally integrated architecture and not a
-claim that their savings multiply. Together they support one systems principle: **compress what
-must be remembered; reconstruct what need not be stored**.
+$$
+M_{\mathrm{system}}=
+M_{\mathrm{parameters}}+
+M_{\mathrm{optimizer}}+
+M_{\mathrm{context/state}}+
+M_{\mathrm{activations}}+
+M_{\mathrm{transient}}.
+$$
 
-The main scientific and practical results of the dissertation research are as follows.
+Hierarchical and multirate context packaging reduce the context/state cost of retaining distant
+history. Reversible temporal computation reduces the activation cost of differentiating through a
+long process. The two mechanisms were measured separately and are not presented as one
+experimentally integrated predictor or as automatically multiplicative savings. Their shared
+design principle is:
 
-**1.** *(Task 1)* The process of hierarchical video data generation has been characterized as a
-complex control system with inherent informational, structural-algorithmic, computational, and
-target uncertainties; structural, hierarchical, and temporal decompositions of the system have
-been performed, and the central systemic contradiction of the field has been identified — the
-resource blow-up (quadratic attention compute, linearly growing key–value memory, linearly
-growing training-activation memory) and the consistency degradation of flat long-context
-modeling, whereby content that leaves the field of view is not restored consistently upon its
-return. The analysis of existing approaches (Chapter 1) identified codebook-specific
-optimization risks in discrete vector-quantized hierarchies and delimited the implemented scope:
-hierarchical modeling in compact continuous hierarchical latent state spaces. Because the
-repository contains no controlled VQ-versus-continuous experiment, no representation-family
-superiority is claimed. Energy-based models are reviewed as literature and later characterized
-experimentally at the tested scale.
+> **Compress what must be remembered; reconstruct what need not be stored.**
 
-**2.** *(Task 2)* The criteria apparatus of systems analysis of generative processes has been
-improved by introducing the criteria of conceptual consistency (the ability to generate unknown
-combinations), hierarchical consistency (alignment of structural levels), and trajectory
-consistency, the latter operationalized through measurable autoregressive-rollout degradation
-metrics stratified by an exactly computable re-entry hardness label (the novel-foreground
-fraction $\nu_m$, eq. 3.18). The operationalized criterion proved decision-grade in practice: it
-is what localized the hierarchical model's advantage to the hard re-entry strata and the
-beyond-flat-horizon bins (Table 4.6), and what turned the boundary study's negative into an
-exactly stated boundary rather than an unexplained failure.
+The aim of the research has been achieved through the following principal results, aligned with
+the seven tasks.
 
-**3.** *(Task 3)* A method for estimating the state of uncertainty of spatio-temporal data has
-been developed through their adaptive decomposition based on entropy metrics (the V-BLT
-architecture) with N-dimensional rotary positional embedding (RoPE-ND), which allows dynamic
-allocation of computational resources to high-information zones of the scene and mathematical
-alignment of coordinate systems between abstraction levels of hierarchical models. Per-pixel
-byte-level entropy maps were shown to act as a reliable diagnostic indicator of complex
-kinematics, and the RoPE-ND coordinate-scaling mechanism provides an instrument for cross-level
-attention localization in architectures that require spatial coordinate transfer. The measured
-Chapter 3 predictor uses learned level/role/frame embeddings in joint attention and therefore
-does not depend on RoPE-ND; the two results are complementary instruments rather than one being
-the implementation basis of the other.
+**1. Systems decomposition and problem formulation (Task 1).** Video generation is formalized as
+a complex dynamic system with interacting representation levels, partial observability,
+stochastic transitions, bounded resources, and informational, structural-algorithmic,
+computational, and target uncertainties. The analysis identifies two independent resource
+bottlenecks: the context/state cost of retaining historical evidence and the activation cost of
+long temporal optimization. This decomposition replaces the ambiguous claim that long video has
+one generic memory problem.
 
-**4.** *(Task 4)* A method for the computationally efficient optimization of multi-step iterative
-systems has been developed based on reversible transformations for time-agnostic
-backpropagation, ensuring constant activation-memory consumption independent of the temporal
-horizon (Lemma 1: $O(T \cdot L \cdot D) \to O(L \cdot D)$), and extended to stochastic
-multi-level recurrences via the exactly invertible store-the-noise recurrence: state
-reconstruction is exact at numerical precision ($5.5 \times 10^{-15}$ in fp64 for the
-deterministic coupling; $8.4 \times 10^{-13}$ for the stochastic scheme), and reverse-replay
-gradients coincide with backpropagation through time (cosine similarity 1.000000). The measured
-memory frontier confirms the practical payoff on a consumer-grade 16 GB device: classical BPTT
-consumes 12.2 GB at rollout length $K = 40$ and fails with out-of-memory at $K = 120$, whereas
-the developed method remains at ≈1.1–1.2 GB through $K = 160$, with gradient checkpointing a
-comparable alternative (1.47–1.97 GB). The method's applicability domain has been delimited by
-the three-axis reversibility taxonomy (depth — time — computation): the temporal-rollout axis
-pays and is the resource foundation of long-horizon training; the inner-optimization-loop axis
-provably cannot pay against checkpointing (measured saving 0.26% of peak at $K = 128$, analytic band ≈0.6–1.0%; crossover at
-$K \approx 5{,}000$–$30{,}000$ inner steps, far beyond practical refinement depths) — a
-characterized negative stated as a scoping theorem of the method. It has additionally been
-established by measurement that invertibility does not imply stability (perturbation growth from
-$333\times$ to $1.0\times$ over 100 steps purely as a function of the coupling Lipschitz bound),
-so trajectory stability is a separate design requirement.
+**2. Consistency criteria and measurement (Task 2).** The criteria apparatus is extended with
+conceptual, hierarchical, and trajectory consistency. Trajectory consistency is operationalized
+through self-fed rollout, re-entry, foreground/background/union, miss/extra, object-support,
+trajectory, identity, and coverage endpoints. The LoopMom instrument makes geometric
+observability exactly computable and defines pair-specific reach-differential populations. Clips,
+not autocorrelated frames, are the inference units; training seeds are treated as a separate
+uncertainty level, and registered families use simultaneous max-statistic intervals.
 
-**5.** *(Task 5)* A hierarchical mathematical model of multi-level video generation in compact
-hierarchical latent state spaces has been developed, supporting **multiple context streams at
-different temporal rates and spatial resolutions** over one shared attention backbone (the
-context-stream family of §3.1/§3.3.5). Long-range temporal memory is carried by a long-span
-stream: the **coarse stream is the measured spatial implementation** (48-frame coarse context at
-16 tokens per remembered frame versus the fine level's 64 — a 4× token and asymptotically ≈16×
-attention-cost advantage per memory frame), and **strided full-resolution history is the
-measured temporal implementation** (span 48 at 11 anchors; it beats the coarse form under the
-diffusion head on all five tested training seeds, while regression package ordering is
-seed-heterogeneous) — with unidirectional
-inter-level context transfer (gradient
-detachment at the representation/dynamics and past/future boundaries) and a per-frame
-iterative-refinement (diffusion) generation core selected by controlled mechanism analysis. The
-model demonstrably restores content re-entering the field of view beyond the horizon of a flat
-context window at a matched context-token budget: on 152-frame autoregressive rollouts the
-hierarchical model beats the token-matched flat control on two training seeds (seed 0: ALL
-+0.0189 [+0.0121, +0.0264], with the win concentrated from horizon 25 onward and peaking on hard
-re-entry bins, h 25–60 HARD +0.0344 [+0.0162, +0.0531]; seed 1: ALL +0.0354 [+0.0267, +0.0447],
-winning every horizon-hardness cell). This specific reach comparison also replicates under the
-regression head (every bin at both seeds, ALL +0.0334 [+0.0248, +0.0423] and +0.0501
-[+0.0396, +0.0612]), and the underlying single-step retrieval
-capability reduces the hard re-entry error by ≈13% on both seeds (+0.0135 [+0.0080, +0.0196] and
-+0.0143 [+0.0083, +0.0208]), emerging only at the larger optimization budget (null at 6,000
-steps, win at 20,000). The claim is honestly scoped: **the hierarchy is validated where its
-package reaches memory-relevant history under the tested budget, while full-resolution fidelity
-can recover at larger tested budgets**. At the primary operating point a flat model
-paying 2.7× the tokens remains the outright Pareto frontier (0.1564), so hierarchy there is an
-efficiency point, not a capability necessity; and at the capability operating point the
-single-step span-threshold capability (memory span exceeding the effective loop
-$L_{\mathrm{eff}} = \mathrm{world}/(\mathrm{speed}(1 - p_{\mathrm{hold}}))$ enables retrieval
-learning in 2/2 runs versus 0/4 below the threshold). In self-fed rollout, the hierarchy's early
-benefit is positive and CI-clean at all three training seeds, but the late inversion appears only
-at seed 0 and reverses to a positive late hierarchy effect at seeds 1–2. The registered E5a
-verdict is NOT_REPLICATED; no general trust boundary is claimed.
+**3. Adaptive representation of spatio-temporal uncertainty (Task 3).** The V-BLT method uses
+entropy-guided adaptive decomposition to allocate representation resources to high-information
+regions. RoPE-ND preserves multi-axis positional structure and provides a coordinate system for
+variable-patch and cross-resolution models. This strand is validated in [A1]. The final Chapter 3
+predictor uses learned level/role/frame embeddings instead; its context-package result does not
+depend on an unmeasured RoPE-ND retrofit.
 
-**6.** *(Task 6)* An intelligent information technology and a software complex (Python/PyTorch)
-have been created for the systems analysis of hierarchical video generation processes,
-integrating the developed methods of adaptive entropy-based tokenization, resource-efficient
-reversible optimization, and hierarchical generation, together with the purpose-built
-memory-horizon looping testbed and its re-entry-stratified evaluation protocol as a first-class
-measurement instrument: analytic (exactly computable) hardness labels from recorded control
-tracks, foreground-masked per-image metrics with verified thresholds and decoder-set ceilings,
-mandatory decoded-sample review, paired clip-level cluster bootstrap confidence intervals with
-common random numbers (frame-iid intervals were measured to be 2–7× too narrow at rollout
-autocorrelation +0.86), and per-operating-point reference floors and ceilings. The instrument
-operationalizes the trajectory-consistency criterion into a statistically disciplined measurement
-procedure, and the complete benchmark trains and evaluates on a single consumer-grade 16 GB GPU.
+**4. Reversible optimization of long temporal processes (Task 4).** TempVerseFormer and
+time-agnostic backpropagation reconstruct intermediate states during reverse replay, giving
+activation-memory scaling that is constant in the temporal horizon for the tested reversible
+recurrence. The stochastic extension stores the sampled noise and reproduces states at numerical
+precision; reverse-replay gradients match BPTT. In the measured rollout-training frontier, BPTT
+uses 12.2 GB at \(K=40\) and fails at \(K=120\), while reversible replay remains approximately
+1.1–1.2 GB through \(K=160\). Gradient checkpointing remains a strong and appropriate competitor
+at 1.47–1.97 GB. The three-axis taxonomy shows where reversibility pays—network depth and
+invertible temporal recurrence—and where it does not: in the tested inner optimization loop it
+saves only 0.26% relative to checkpointing while increasing computation. Invertibility also does
+not guarantee trajectory stability.
 
-**7.** *(Task 7)* Comprehensive experimental verification of the developed methods and technology
-has been conducted (Chapter 4): a matched-capacity, matched-NFE comparison of prediction
-mechanisms established that the generation-head ranking is regime-dependent — diffusion wins the
-single-step oracle-coverage regime on every column (foreground error 0.0512 versus 0.0664
-overall; 0.1549 versus 0.1808 on the hard, genuinely generative stratum), regression wins the
-deterministic best-of-1 rollout at equal sharpness (ALL delta CI [+0.0110, +0.0227]; a
-pre-registered expectation refuted and reported as such) — and included the two-sided
-characterized study of energy-based descent with the official implementation (landscape ordering
-recipe-dependent: stably mis-ordered under one published recipe at 21/21 probes, correctly
-ordered under the other at 15/15 probes from step 6,000; descent reachability failing under both
-recipes and under the paper's own sampler — a capability boundary at 16 GB-reachable scale, not a
-reproduction failure). The spatial-abstraction factorial isolated resolution from window length
-and returned an economic, head-conditional verdict (coarse history costs the diffusion head
-−0.0082 [−0.0115, −0.0050] at 42% token savings and is statistically free for the regression head,
-+0.0008 [−0.0013, +0.0029]; window extension at fixed representation is worth −0.027 and dwarfs
-the abstraction cost). The temporal-capability study at the second operating point closed with a
-registered negative replication of the seed-0 late trust inversion (conclusion 5) and three
-transferable methodology lessons (effective-loop span sizing; the autoencoder-reuse trap;
-evaluation power against plausible effect sizes). Memory-consumption
-measurements confirmed the constant-memory rollout capability (conclusion 4). The measured two-level spatial
-package outperforms the token-budget-matched flat control in the tested lower/interior
-memory-horizon regime (the shape comparison across packagings is conclusion 7's separate,
-seed-resolved statement),
-and the boundary conditions of every claim are stated explicitly. The published validation of
-the reversibility method ([A2]: procedurally generated 2-D rotating shapes under controlled
-temporal laws) is retained as its receipt; the bridge evaluation on the standard OpenSTL
-Moving-MNIST suite is a separate measured dissertation experiment and returns the predicted
-negative control — flat ≈ hierarchical (180.91 vs 181.29
-aggregate pixel-sum MSE; autoencoder ceiling 3.30, so the tokenizer is not the limiter) on a
-benchmark with no off-screen re-entry and hence no memory horizon to carry, exactly
-complementing the operating-point-A win, with the aggregate-MSE gap to the deterministic
-specialist regressors (22.06–29.80) disclosed and no leaderboard claim made. A separate valid
-persistent-object 48→300 Moving-MNIST study resolves the long-rollout external boundary:
-hierarchy improves union error at all three seeds and trajectory/coverage cleanly at two, while
-flat context preserves digit identity at all three and foreground-only error is unresolved. This
-`MIXED_BOUNDARY` result shows that spatial support/continuity and fine identity fidelity can favor
-different packages. The shape study (§4.4)
-established that the packaging axes are not interchangeable: the win band's lower edge follows
-each family's measured configuration (896 tokens for the stride-1 coarse family, two seeds; the
-stride-2 512-token configuration wins on both diffusion seeds but changes its target interface),
-and temporally subsampled full-resolution history beats the coarse packaging under the diffusion
-head on all five training seeds (effects +0.0046 to +0.0197), whereas regression has two temporal
-and three spatial material winners and the head × package interaction changes sign — the findings
-motivating the scoped empirical regularities of §4.8 (ledger:
-`docs/CLAIM_LEDGER.md`), whose conclusion is a testable conditional design rule rather than universal
-superiority: allocate context tokens to cover the task-relevant span with the least lossy family
-that achieves it; spend the remainder on resolution and recency; add depth only where the data
-contain a distinct slower factor. Extension to the remaining synthetic suites (2D rotations,
-3D polycubes, MMNIST-CIFAR) is stated as **future work of the dissertation programme** (Chapter 4
-§§4.6.3–4.6.5 carry the pre-registered protocols; per the shell end-state rule no projected
-result is claimed here). Measured in full, by contrast, is the **token-budget frontier
-completion** (hier-rich at 3,072 tokens loses to flat-long, −0.0131
-[−0.0201, −0.0069] at seed 0 and −0.0107 [−0.0163, −0.0058] at seed 1 — a two-seed inversion —
-at equal budget and training regime; flat-short at 512 beats hier-short,
-−0.0036 [−0.0063, −0.0010] — the frontier inverts at both ends, an outcome stricter than the
-pre-registered convergence-at-saturation expectation and reported as measured) and the
-**measured lower edge of the win band** (a pre-registered geometric prediction confirmed the
-same day: at 896 tokens — the cheapest budget whose 48-slot coarse span covers the ≈48-frame
-loop, against a flat window of only 14 frames — the hierarchical arm wins every horizon ×
-hardness cell, +0.0399 [+0.0299, +0.0501] at seed 0 and +0.0358 [+0.0267, +0.0454] at seed 1 —
-a two-seed result, the largest hierarchical advantage of the campaign), which together give the efficiency
-claim its final, tested-bracket form: **the simultaneous family confirms hierarchy at the tested
-896- and 1,152-token lower/interior points, leaves 1,792 unresolved, and confirms flat fidelity at
-2,432 and 3,072 tokens**. Thus 1,152 is the largest tested family-wise-confirmed hierarchy win and
-2,432 the smallest tested confirmed flat win; monotonicity, a unique crossing and interpolation
-between tested budgets are not claimed. A separate frozen E7c study retained the expected
-point-estimate sign in all 20 NFE/sampler variants, with 18 simultaneous lower bounds positive;
-the upper inversion remains family-wise unresolved at alternate sampler seeds 1/2, so the result
-is directionally robust rather than universally sampler-invariant. The independent-codec E7a
-study retained all four registered directions: 896 reach +0.0521 [0.0374,0.0669], 1,152 interior
-+0.0439 [0.0310,0.0569], package shape +0.0112 [0.0039,0.0184], and the 2,432 inversion +0.0079
-[−0.0006,0.0165]. Hence representation robustness is directional for this whole-codec
-intervention, while the upper edge remains family-wise precision-limited. The separate E8a
-explicit-access reference reaches foreground MSE 0.0494 with raw K48 memory; the four registered
-neural-minus-K48 effects range from +0.1134 to +0.1368 and all simultaneous lower bounds are
-positive. Its `RAW_ACCESS_CEILING_CI_CLEAN` verdict shows that exact addressing and lossless
-storage can remove much of the remaining static-world error, but the exact future poses,
-raw-pixel payload and unmatched budget prohibit a neural-model or efficiency ranking.
-The E6 result is therefore not averaged into one architecture score: it is retained as the
-external reach–fidelity boundary showing what coarse long memory preserves and what it loses.
+**5. Multi-stream latent video model and context-packaging operating regions (Task 5).** A
+two-level continuous latent predictor is developed with flat, spatially hierarchical, and
+temporally sparse context streams, a shared joint-attention backbone, v-parameterized window
+diffusion, and autoregressive ring-buffer rollout. The manipulated object is context packaging;
+reach and fidelity are explanatory consequences.
 
-Beyond the numbered results, the dissertation deliberately records its **characterized
-negatives** as scientific results of equal epistemic rank: (i) the energy-based generation core
-is a two-sided characterized negative at 16 GB-reachable scale (ordering versus reachability
-dissociate); (ii) reversibility on the inner-optimization-loop axis cannot pay against gradient
-checkpointing (0.26% measured saving — the three-axis taxonomy closes this axis by analysis and
-measurement); (iii) spatial abstraction is not an intrinsically better representation — its
-verdict is economic and head-conditional; and (iv) the **combined-optimum readout** (regression
-head + coarse history + long window: 0.1682 at 1,152 tokens; at the short window, 0.2008 at 672
-tokens versus the diffusion flat control's 0.2038 at 1,152) is reported as a *measured arm
-ordering* within the evaluated campaign, **not** as a factorial-interaction claim.
+On the hash-pinned untouched LoopMom holdout, the registered
+\(14<\Delta t\le48\) reach-band effects are +0.0980 and +0.0914 across two training seeds. The
+simultaneous frontier confirms hierarchy at 896 and 1,152 context tokens, leaves 1,792 unresolved,
+and confirms flat full-resolution context at 2,432 and 3,072. At equal nominal 48-frame
+addressable reach, 48 dense fine frames cost 3,072 context tokens, while 48 coarse frames plus a
+two- or six-frame fine tail cost 896 or 1,152. The hierarchy therefore obtains the same nominal
+reach with 2.67–3.43 times fewer context tokens.
 
-**The practical significance** of the obtained results lies in the development of a complex of
-algorithms and software-information tools implementing the developed intelligent information
-technology for the systems analysis of hierarchical video generation processes (Python/PyTorch;
-repository modules for the hierarchical model, the reversible recurrence, and the testbed
-generator). Unique synthetic spatio-temporal datasets have been created for testing generation
-and optimization systems: 2D shapes, 3D polycubes, and the looping memory-horizon testbed with
-recorded action tracks and analytic hardness labels (3,000 training clips × 100 frames; 500 test
-clips × 200 frames at the primary operating point). The developed technology has been implemented
-in the practical activities of ORNETIKA LLC (implementation act of October 14, 2025) and in the
-educational process of VNTU (implementation act of September 19, 2025), per the acts covering the
-reversible-transformer method and entropy-based tokenization. The proposed technology can be
-applied to state estimation and prediction of future states of complex systems in technical,
-medical, and environmental monitoring.
+This is a context-state reach-efficiency result, not proof of equal performance, equal information,
+equal total compute, or universal hierarchy superiority. The largest tested confirmed
+hierarchy-favouring point is 1,152 and the smallest tested confirmed flat-favouring point is
+2,432; no unique crossing or interpolation is inferred.
 
-**Prospects for further research** follow directly from the measured boundary conditions rather
-than from speculation. First, **self-fed reliability across tasks and seeds**: single-step
-span-threshold retrieval exists, but the proposed late rollout inversion is training-seed-sensitive
-rather than a replicated boundary. A future study, if pursued, must be newly preregistered across
-multiple tasks, horizons and training seeds; it should compare teacher-forced, self-fed and
-controlled-refresh conditions instead of treating E5b as localization of an established
-boundary. Distribution-matching rollout objectives remain a possible intervention, with the
-constant-memory reversible method of Chapter 2 providing an implementation path [80]. Second, the **extension
-of the memory-horizon protocol to real video**: transferring the re-entry-stratified evaluation
-methodology from the analytic testbed family to natural-video data of the KTH class (where
-hardness labels must be estimated rather than computed exactly), building on the completed
-OpenSTL bridge as the connectivity anchor and executing the future-work protocols of §4.6.
-These directions require no revision of the present results: they extend a boundary currently
-stated only for its measured testbeds and configurations.
+**6. Research toolkit and intelligent information technology (Task 6).** A research software
+toolkit implements entropy-based representation experiments, reversible temporal optimization,
+context packages, latent diffusion and control heads, LoopMom and persistent-object generators,
+complete metrics, fail-closed experiment authorization, purpose-locked access, content-addressed
+run specifications, and immutable evidence generation. These modules form an integrated
+methodology and software environment. They are not described as one measured end-to-end model
+combining adaptive tokenization, RoPE-ND, reversible rollout training, and hierarchical
+prediction.
 
----
+**7. Experimental verification and boundary identification (Task 7).** The mechanism comparison
+shows that head preference depends on inference regime: diffusion wins the single-step
+best-of-8 coverage study, regression wins deterministic best-of-1 rollout, and energy-based
+descent is a characterized negative at the tested scale. Temporal full-resolution packaging is
+stable over five diffusion seeds at the tested static-world operating point, whereas regression
+and the head-by-package interaction are training-seed-sensitive.
+
+All principal point-estimate directions survive the registered sampler/NFE grid and one
+independently trained codec. The 2,432-token flat inversion becomes family-wise unresolved under
+some alternate sampler seeds and under the alternate codec, so the upper edge is a precision
+boundary rather than a universally robust threshold.
+
+The preregistered self-fed reliability study reproduces the early hierarchy advantage at all three
+training seeds but not the seed-0 late inversion. No stable trust boundary is established.
+Privileged pose-indexed raw access substantially outperforms the registered neural references on
+the static world, showing that placing information in context is not the same as addressing and
+reusing it reliably.
+
+The protected persistent-object 48-to-300 Moving-MNIST study provides a mixed external boundary.
+Hierarchy reduces union-mask error at all three seeds and improves trajectory/coverage cleanly at
+two; flat context preserves digit identity better at every seed; foreground-only MSE is
+unresolved. Absolute identity accuracy remains approximately 0.14–0.24 and coverage approximately
+0.60–0.66, so neither package solves the task. The result separates *where an object is and whether
+it persists* from *what the object is*.
+
+The dissertation’s empirical rule is therefore conditional:
+
+> **Hierarchy buys reach; flat context buys fidelity.**
+
+Hierarchy pays when compression or multirate storage brings memory-relevant history within the
+budget. Flat context recovers when reach is already available and fine identity or appearance is
+the limiting resource. Storage, addressing, compression, and self-fed reuse must be evaluated as
+different system properties.
+
+## Practical Significance
+
+The developed methods and software support reproducible study of long spatio-temporal processes on
+bounded hardware. The reversible-transformer and entropy-tokenization strands were used in the
+activities documented by the ORNETIKA LLC and VNTU implementation acts. The repository supplies
+controlled datasets, generators, evaluation code, protocols, and evidence provenance. The present
+research establishes synthetic and benchmark operating regions; it does not claim deployment
+validation in medical, environmental, or safety-critical systems.
+
+## Limitations and Directions for Further Research
+
+The main limitations are the controlled synthetic nature of LoopMom, the synthetic status of E6,
+the modest number of training seeds, dependence on one predictor family and two continuous codec
+instances, the whole-configuration B1 confound, and the absence of one end-to-end experiment
+combining state-memory and activation-memory interventions.
+
+The most informative extensions are:
+
+1. paired counterfactual worlds identical over the visible short context but different in hidden
+   re-entry content;
+2. dynamic hidden-state tasks crossed with low- and high-detail identity requirements;
+3. natural-video disappearance/reappearance benchmarks and explicit learned-retrieval baselines;
+4. larger training-seed panels at the unresolved and upper-frontier points;
+5. rollout-through-time objectives that compare checkpointing and reversible replay directly in a
+   hierarchical predictor.
+
+These directions extend external validity and integration. They do not alter the present
+conclusion: compress historical state when reach is limiting, preserve dense detail when fidelity
+is limiting, and reconstruct activations when the temporal training tape is the binding resource.
 
 <div style="page-break-after: always;"></div>
 
@@ -5410,83 +4142,126 @@ stated only for its measured testbeds and configurations.
 
 External sources are numbered by first appearance in the assembled dissertation.
 
-1. Liu Y., Zhang K., Li Y., Yan Z., Gao C., Chen R., Yuan Z., Huang Y., Sun H., Gao J., He L., Sun L. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024.
-2. Lipton Z. C. The Mythos of Model Interpretability. *Communications of the ACM* 61(10), 2018.
-3. Rudin C. Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. *Nature Machine Intelligence* 1, 2019.
-4. Ho J., Jain A., Abbeel P. Denoising Diffusion Probabilistic Models. *NeurIPS 33*, 2020.
-5. von Bertalanffy L. *General System Theory: Foundations, Development, Applications*. George Braziller, 1968.
-6. Goodfellow I., Pouget-Abadie J., Mirza M., et al. Generative Adversarial Networks. *NeurIPS 27*, 2014.
-7. Kingma D. P., Welling M. Auto-Encoding Variational Bayes. *ICLR*, 2014.
-8. Згуровський М. З., Панкратова Н. Д. *Основи системного аналізу: підручник*. Київ: Видавнича група BHV, 2007. 544 с. ISBN 978-966-552-153-2.
-9. Zgurovsky M. Z., Pankratova N. D. *System Analysis: Theory and Applications*. 1st ed. Springer Berlin, Heidelberg, 2007. XXII, 447 p. DOI: 10.1007/978-3-540-48880-4.
-10. Mesarović M. D., Macko D., Takahara Y. *Theory of Hierarchical, Multilevel Systems*. Academic Press, 1970.
-11. Bond-Taylor S., Leach A., Long Y., Willcocks C. G. Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive Models. *IEEE TPAMI* 44(11), 2022.
-12. Rombach R., Blattmann A., Lorenz D., Esser P., Ommer B. High-Resolution Image Synthesis with Latent Diffusion Models. *CVPR*, 2022.
-13. Saxena V., Ba J., Hafner D. Clockwork Variational Autoencoders. *NeurIPS 34*, 2021.
-14. Zakharov A., Guo Q., Fountas Z. Long-Horizon Video Prediction Using a Dynamic Latent Hierarchy. arXiv:2212.14376, submitted 2022, revised 2023.
-15. Yan W., Hafner D., James S., Abbeel P. Temporally Consistent Transformers for Video Generation (TECO). *ICML*, 2023.
-16. Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023.
-17. Song J., Meng C., Ermon S. Denoising Diffusion Implicit Models. *ICLR*, 2021.
-18. Peebles W., Xie S. Scalable Diffusion Models with Transformers (DiT). *ICCV*, 2023.
-19. OpenAI (Brooks T., Peebles B., et al.). Video Generation Models as World Simulators (Sora technical report), 2024.
-20. Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022.
-21. Po R., Nitzan Y., Zhang R., Chen B., Dao T., Shechtman E., Wetzstein G., Huang X. Long-Context State-Space Video World Models. arXiv:2505.20171, 2025.
-22. Wu T., Yang S., Po R., Xu Y., Liu Z., Lin D., Wetzstein G. Video World Models with Long-term Spatial Memory. arXiv:2506.05284, 2025.
+1. Tan C., Li S., Gao Z., et al. OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning. *NeurIPS 36 (D&B)*, 2023.
+2. Ho J., Jain A., Abbeel P. Denoising Diffusion Probabilistic Models. *NeurIPS 33*, 2020.
+3. Rombach R., Blattmann A., Lorenz D., Esser P., Ommer B. High-Resolution Image Synthesis with Latent Diffusion Models. *CVPR*, 2022.
+4. Peebles W., Xie S. Scalable Diffusion Models with Transformers (DiT). *ICCV*, 2023.
+5. Згуровський М. З., Панкратова Н. Д. *Основи системного аналізу: підручник*. Київ: Видавнича група BHV, 2007. 544 с. ISBN 978-966-552-153-2.
+6. Zgurovsky M. Z., Pankratova N. D. *System Analysis: Theory and Applications*. 1st ed. Springer Berlin, Heidelberg, 2007. XXII, 447 p. DOI: 10.1007/978-3-540-48880-4.
+7. Mesarović M. D., Macko D., Takahara Y. *Theory of Hierarchical, Multilevel Systems*. Academic Press, 1970.
+8. Simon H. A. The Architecture of Complexity. *Proceedings of the American Philosophical Society* 106(6):467–482, 1962.
+9. Shannon C. E. A Mathematical Theory of Communication. *Bell System Technical Journal* 27:379–423, 623–656, 1948.
+10. Kalman R. E. A New Approach to Linear Filtering and Prediction Problems. *Journal of Basic Engineering* 82(1):35–45, 1960.
+11. Ashby W. R. *An Introduction to Cybernetics*. Chapman & Hall, 1956.
+12. Vaswani A., Shazeer N., Parmar N., et al. Attention Is All You Need. *NeurIPS 30*, 2017.
+13. Dao T., Fu D. Y., Ermon S., Rudra A., Ré C. FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness. *NeurIPS 35*, 2022.
+14. Dai Z., Yang Z., Yang Y., Carbonell J., Le Q. V., Salakhutdinov R. Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context. *ACL*, 2019.
+15. Rae J. W., Potapenko A., Jayakumar S. M., Lillicrap T. P. Compressive Transformers for Long-Range Sequence Modelling. *ICLR*, 2020.
+16. Wu Y., Rabe M. N., Hutchins D., Szegedy C. Memorizing Transformers. *ICLR*, 2022.
+17. Kitaev N., Kaiser Ł., Levskaya A. Reformer: The Efficient Transformer. *ICLR*, 2020.
+18. Beltagy I., Peters M. E., Cohan A. Longformer: The Long-Document Transformer. arXiv:2004.05150, 2020.
+19. Gu A., Dao T. Mamba: Linear-Time Sequence Modeling with Selective State Spaces. arXiv:2312.00752, 2023.
+20. Saxena V., Ba J., Hafner D. Clockwork Variational Autoencoders. *NeurIPS 34*, 2021.
+21. Harvey W., Naderiparizi S., Masrani V., Weilbach C., Wood F. Flexible Diffusion Modeling of Long Videos (FDM). *NeurIPS 35*, 2022.
+22. Po R., Nitzan Y., Zhang R., Chen B., Dao T., Shechtman E., Wetzstein G., Huang X. Long-Context State-Space Video World Models. arXiv:2505.20171, 2025.
 23. Oshima Y., Iwasawa Y., Suzuki M., Matsuo Y., Furuta H. WorldPack: Compressed Memory Improves Spatial Consistency in Video World Modeling. arXiv:2512.02473, 2025.
-24. Ranzato M., Chopra S., Auli M., Zaremba W. Sequence Level Training with Recurrent Neural Networks (exposure bias). *ICLR*, 2016.
-25. Bengio S., Vinyals O., Jaitly N., Shazeer N. Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks. *NeurIPS 28*, 2015.
-26. Dosovitskiy A., Beyer L., Kolesnikov A., et al. An Image is Worth 16×16 Words: Transformers for Image Recognition at Scale (ViT). *ICLR*, 2021.
-27. Arnab A., Dehghani M., Heigold G., et al. ViViT: A Video Vision Transformer. *ICCV*, 2021.
-28. Liu Z., Ning J., Cao Y., et al. Video Swin Transformer. *CVPR*, 2022.
-29. Pagnoni A., Pasunuru R., Rodriguez P., et al. Byte Latent Transformer: Patches Scale Better Than Tokens. arXiv:2412.09871, 2024.
-30. van den Oord A., Vinyals O., Kavukcuoglu K. Neural Discrete Representation Learning (VQ-VAE). *NeurIPS 30*, 2017.
-31. Yan W., Zhang Y., Abbeel P., Srinivas A. VideoGPT: Video Generation using VQ-VAE and Transformers. arXiv:2104.10157, 2021.
-32. Chandratreya I. P., Charatan D., Van Hoorick B., Zakharov S., Guizilini V., Isola P., Sitzmann V. MilliVid: Hierarchical Latents for Long-Range Consistency in Video Generation. arXiv:2606.09056, 2026.
-33. Kim T., Ahn S., Bengio Y. Variational Temporal Abstraction. *NeurIPS 32*, 2019.
-34. Koutník J., Greff K., Gomez F., Schmidhuber J. A Clockwork RNN. *Proceedings of Machine Learning Research* 32(2):1863–1871, ICML, 2014.
-35. LeCun Y., Chopra S., Hadsell R., Ranzato M., Huang F. A Tutorial on Energy-Based Learning. In *Predicting Structured Data*, MIT Press, 2006.
-36. Ackley D. H., Hinton G. E., Sejnowski T. J. A Learning Algorithm for Boltzmann Machines. *Cognitive Science* 9(1), 1985.
-37. Hyvärinen A. Estimation of Non-Normalized Statistical Models by Score Matching. *JMLR* 6, 2005.
-38. Song Y., Ermon S. Generative Modeling by Estimating Gradients of the Data Distribution. *NeurIPS 32*, 2019.
-39. Gladstone A., Nanduru G., Islam M. M., Han P., Ha H., Chadha A., Du Y., Ji H., Li J., Iqbal T. Energy-Based Transformers are Scalable Learners and Thinkers. arXiv:2507.02092, 2025.
-40. Du Y., Mordatch I. Implicit Generation and Modeling with Energy-Based Models. *NeurIPS 32*, 2019.
-41. Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019.
-42. Chen T., Xu B., Zhang C., Guestrin C. Training Deep Nets with Sublinear Memory Cost. arXiv:1604.06174, 2016.
-43. Griewank A., Walther A. Algorithm 799: revolve — An Implementation of Checkpointing for the Reverse or Adjoint Mode of Computational Differentiation. *ACM TOMS* 26(1), 2000.
-44. Chen R. T. Q., Rubanova Y., Bettencourt J., Duvenaud D. Neural Ordinary Differential Equations. *NeurIPS 31*, 2018.
-45. Gomez A. N., Ren M., Urtasun R., Grosse R. B. The Reversible Residual Network: Backpropagation Without Storing Activations. *NeurIPS 30*, 2017.
-46. Mangalam K., Fan H., Li Y., et al. Reversible Vision Transformers. *CVPR*, 2022.
-47. Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002.
-48. Heusel M., Ramsauer H., Unterthiner T., et al. GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium (FID). *NeurIPS 30*, 2017.
-49. Saharia C., Chan W., Chang H., et al. Palette: Image-to-Image Diffusion Models. *SIGGRAPH*, 2022.
-50. Ruiz N., Li Y., Jampani V., et al. DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation. *CVPR*, 2023.
-51. Hu E. J., Shen Y., Wallis P., et al. LoRA: Low-Rank Adaptation of Large Language Models. *ICLR*, 2022.
-52. Zhang L., Rao A., Agrawala M. Adding Conditional Control to Text-to-Image Diffusion Models (ControlNet). *ICCV*, 2023.
-53. Hertz A., Voynov A., Fruchter S., Cohen-Or D. Style Aligned Image Generation via Shared Attention. *CVPR*, 2024.
-54. Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982.
-55. Radford A., Kim J. W., Hallacy C., et al. Learning Transferable Visual Models From Natural Language Supervision (CLIP). *ICML*, 2021.
-56. Vaswani A., Shazeer N., Parmar N., et al. Attention Is All You Need. *NeurIPS 30*, 2017.
-57. Goodfellow I., Bengio Y., Courville A. *Deep Learning*. MIT Press, 2016.
-58. Shaw P., Uszkoreit J., Vaswani A. Self-Attention with Relative Position Representations. *NAACL*, 2018.
-59. Su J., Ahmed M., Lu Y., et al. RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing* 568, 2024 (arXiv:2104.09864, 2021).
-60. Rajbhandari S., Rasley J., Ruwase O., He Y. ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. *SC20*, 2020.
-61. Korthikanti V., Casper J., Lym S., McAfee L., Andersch M., Shoeybi M., Catanzaro B. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022.
-62. Werbos P. J. Backpropagation Through Time: What It Does and How to Do It. *Proceedings of the IEEE* 78(10), 1990.
-63. Williams R. J., Peng J. An Efficient Gradient-Based Algorithm for On-Line Training of Recurrent Network Trajectories (truncated BPTT). *Neural Computation* 2(4), 1990.
-64. MacKay M., Vicol P., Ba J., Grosse R. B. Reversible Recurrent Neural Networks. *NeurIPS 31*, 2018.
-65. Behrmann J., Grathwohl W., Chen R. T. Q., Duvenaud D., Jacobsen J.-H. Invertible Residual Networks (i-ResNet). *ICML*, 2019.
-66. Behrmann J., Vicol P., Wang K.-C., Grosse R., Jacobsen J.-H. Understanding and Mitigating Exploding Inverses in Invertible Neural Networks. *AISTATS*, 2021.
-67. Maclaurin D., Duvenaud D., Adams R. P. Gradient-Based Hyperparameter Optimization Through Reversible Learning. *ICML*, 2015.
-68. Wallace B., Gokul A., Ermon S., Naik N. End-to-End Diffusion Latent Optimization Improves Classifier Guidance (DOODL). *ICCV*, 2023.
-69. Wallace B., Gokul A., Naik N. EDICT: Exact Diffusion Inversion via Coupled Transformations. *CVPR*, 2023.
-70. Zhuang J., Dvornek N. C., Tatikonda S., Duncan J. S. MALI: A Memory-Efficient and Reverse-Accurate Integrator for Neural ODEs. *ICLR*, 2021.
-71. Prabhudesai M., Goyal A., Pathak D., Fragkiadaki K. Aligning Text-to-Image Diffusion Models with Reward Backpropagation (AlignProp). arXiv:2310.03739, 2023.
-72. Clark K., Vicol P., Swersky K., Fleet D. J. Directly Fine-Tuning Diffusion Models on Differentiable Rewards (DRaFT). *ICLR*, 2024.
-73. Salimans T., Ho J. Progressive Distillation for Fast Sampling of Diffusion Models. *ICLR*, 2022.
-74. Tan C., Li S., Gao Z., et al. OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning. *NeurIPS 36 (D&B)*, 2023.
-75. Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018.
-76. Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018.
-77. Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024.
-78. Häggbom M., Karlsmark M., Andén J. Mean-Field Microcanonical Gradient Descent. arXiv:2403.08362, 2024.
-79. Davies T., Huang Y., Gladstone A., Liu Y., Chen X., Ji H., Liu H., Hu L. EBT-Policy: Energy Unlocks Emergent Physical Reasoning Capabilities. arXiv:2510.27545, 2025.
-80. Huang X., Li Z., He G., Zhou M., Shechtman E. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS 2025* (spotlight); arXiv:2506.08009.
+24. Wu T., Yang S., Po R., Xu Y., Liu Z., Lin D., Wetzstein G. Video World Models with Long-term Spatial Memory. arXiv:2506.05284, 2025.
+25. Ranzato M., Chopra S., Auli M., Zaremba W. Sequence Level Training with Recurrent Neural Networks (exposure bias). *ICLR*, 2016.
+26. Bengio S., Vinyals O., Jaitly N., Shazeer N. Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks. *NeurIPS 28*, 2015.
+27. Huang X., Li Z., He G., Zhou M., Shechtman E. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion. *NeurIPS 2025* (spotlight); arXiv:2506.08009.
+28. Werbos P. J. Backpropagation Through Time: What It Does and How to Do It. *Proceedings of the IEEE* 78(10), 1990.
+29. Williams R. J., Peng J. An Efficient Gradient-Based Algorithm for On-Line Training of Recurrent Network Trajectories (truncated BPTT). *Neural Computation* 2(4), 1990.
+30. Chen T., Xu B., Zhang C., Guestrin C. Training Deep Nets with Sublinear Memory Cost. arXiv:1604.06174, 2016.
+31. Griewank A., Walther A. Algorithm 799: revolve — An Implementation of Checkpointing for the Reverse or Adjoint Mode of Computational Differentiation. *ACM TOMS* 26(1), 2000.
+32. Gomez A. N., Ren M., Urtasun R., Grosse R. B. The Reversible Residual Network: Backpropagation Without Storing Activations. *NeurIPS 30*, 2017.
+33. Koutník J., Greff K., Gomez F., Schmidhuber J. A Clockwork RNN. *Proceedings of Machine Learning Research* 32(2):1863–1871, ICML, 2014.
+34. Kim T., Ahn S., Bengio Y. Variational Temporal Abstraction. *NeurIPS 32*, 2019.
+35. Zakharov A., Guo Q., Fountas Z. Long-Horizon Video Prediction Using a Dynamic Latent Hierarchy. arXiv:2212.14376, submitted 2022, revised 2023.
+36. Yan W., Hafner D., James S., Abbeel P. Temporally Consistent Transformers for Video Generation (TECO). *ICML*, 2023.
+37. Chandratreya I. P., Charatan D., Van Hoorick B., Zakharov S., Guizilini V., Isola P., Sitzmann V. MilliVid: Hierarchical Latents for Long-Range Consistency in Video Generation. arXiv:2606.09056, 2026.
+38. Liu Y., Zhang K., Li Y., Yan Z., Gao C., Chen R., Yuan Z., Huang Y., Sun H., Gao J., He L., Sun L. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024.
+39. Lipton Z. C. The Mythos of Model Interpretability. *Communications of the ACM* 61(10), 2018.
+40. Rudin C. Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. *Nature Machine Intelligence* 1, 2019.
+41. von Bertalanffy L. *General System Theory: Foundations, Development, Applications*. George Braziller, 1968.
+42. Goodfellow I., Pouget-Abadie J., Mirza M., et al. Generative Adversarial Networks. *NeurIPS 27*, 2014.
+43. Kingma D. P., Welling M. Auto-Encoding Variational Bayes. *ICLR*, 2014.
+44. Bond-Taylor S., Leach A., Long Y., Willcocks C. G. Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive Models. *IEEE TPAMI* 44(11), 2022.
+45. Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023.
+46. Song J., Meng C., Ermon S. Denoising Diffusion Implicit Models. *ICLR*, 2021.
+47. OpenAI (Brooks T., Peebles B., et al.). Video Generation Models as World Simulators (Sora technical report), 2024.
+48. Ho J., Salimans T., Gritsenko A., Chan W., Norouzi M., Fleet D. J. Video Diffusion Models. *NeurIPS 35*, 2022.
+49. Blattmann A., Rombach R., Ling H., Dockhorn T., Kim S. W., Fidler S., Kreis K. Align Your Latents: High-Resolution Video Synthesis with Latent Diffusion Models. *CVPR*, 2023.
+50. Blattmann A., Dockhorn T., Kulal S., et al. Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets. arXiv:2311.15127, 2023.
+51. Singer U., Polyak A., Hayes T., et al. Make-A-Video: Text-to-Video Generation without Text-Video Data. *ICLR*, 2023.
+52. Ho J., Chan W., Saharia C., et al. Imagen Video: High Definition Video Generation with Diffusion Models. arXiv:2210.02303, 2022.
+53. Villegas R., Babaeizadeh M., Kindermans P.-J., et al. Phenaki: Variable Length Video Generation from Open Domain Textual Descriptions. arXiv:2210.02399, 2022.
+54. Yu L., Lezama J., Gundavarapu N. B., et al. MAGVIT: Masked Generative Video Transformer. *CVPR*, 2023.
+55. Yu L., Lezama J., Gundavarapu N. B., et al. Language Model Beats Diffusion — Tokenizer Is Key to Visual Generation. *ICLR*, 2024.
+56. Bruce J., Dennis M., Edwards A., et al. Genie: Generative Interactive Environments. *ICML*, 2024.
+57. Hu A., Russell L., Yeo H., et al. GAIA-1: A Generative World Model for Autonomous Driving. arXiv:2309.17080, 2023.
+58. Ha D., Schmidhuber J. World Models. arXiv:1803.10122, 2018.
+59. Hafner D., Lillicrap T., Ba J., Norouzi M. Dream to Control: Learning Behaviors by Latent Imagination. *ICLR*, 2020.
+60. Hafner D., Pasukonis J., Ba J., Lillicrap T. Mastering Diverse Domains through World Models. arXiv:2301.04104, 2023.
+61. Micheli V., Alonso E., Fleuret F. Transformers Are Sample-Efficient World Models. *ICLR*, 2023.
+62. Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022.
+63. Dosovitskiy A., Beyer L., Kolesnikov A., et al. An Image is Worth 16×16 Words: Transformers for Image Recognition at Scale (ViT). *ICLR*, 2021.
+64. Arnab A., Dehghani M., Heigold G., et al. ViViT: A Video Vision Transformer. *ICCV*, 2021.
+65. Liu Z., Ning J., Cao Y., et al. Video Swin Transformer. *CVPR*, 2022.
+66. Pagnoni A., Pasunuru R., Rodriguez P., et al. Byte Latent Transformer: Patches Scale Better Than Tokens. arXiv:2412.09871, 2024.
+67. van den Oord A., Vinyals O., Kavukcuoglu K. Neural Discrete Representation Learning (VQ-VAE). *NeurIPS 30*, 2017.
+68. Yan W., Zhang Y., Abbeel P., Srinivas A. VideoGPT: Video Generation using VQ-VAE and Transformers. arXiv:2104.10157, 2021.
+69. Razavi A., van den Oord A., Vinyals O. Generating Diverse High-Fidelity Images with VQ-VAE-2. *NeurIPS 32*, 2019.
+70. Child R. Very Deep VAEs Generalize Autoregressive Models and Can Outperform Them on Images. *ICLR*, 2021.
+71. Vahdat A., Kautz J. NVAE: A Deep Hierarchical Variational Autoencoder. *NeurIPS 33*, 2020.
+72. Sønderby C. K., Raiko T., Maaløe L., Sønderby S. K., Winther O. Ladder Variational Autoencoders. *NeurIPS 29*, 2016.
+73. Peng Z., Ma J., Sun H., et al. Compression and Retrieval: Implicit Memory Retrieval for Video World Models. arXiv:2606.23105, 2026.
+74. Yu J., Gao J., Bai J., et al. MemLearner: Learning to Query Context Memory for Video World Models. arXiv:2606.31734; ECCV 2026.
+75. Wei Z., Guo X., Li X., et al. Geometry-Aware Implicit Memory for Video World Models. arXiv:2606.02436, 2026.
+76. Zhang S., Zhang Z., Huang S., et al. MBench: A Comprehensive Benchmark on Memory Capability for Video World Models. arXiv:2606.00793, 2026.
+77. Chen H., Zhou K., Hua H., et al. MemoBench: Benchmarking World Modeling in Dynamically Changing Environments. arXiv:2606.27537, 2026.
+78. LeCun Y., Chopra S., Hadsell R., Ranzato M., Huang F. A Tutorial on Energy-Based Learning. In *Predicting Structured Data*, MIT Press, 2006.
+79. Ackley D. H., Hinton G. E., Sejnowski T. J. A Learning Algorithm for Boltzmann Machines. *Cognitive Science* 9(1), 1985.
+80. Hyvärinen A. Estimation of Non-Normalized Statistical Models by Score Matching. *JMLR* 6, 2005.
+81. Song Y., Ermon S. Generative Modeling by Estimating Gradients of the Data Distribution. *NeurIPS 32*, 2019.
+82. Gladstone A., Nanduru G., Islam M. M., Han P., Ha H., Chadha A., Du Y., Ji H., Li J., Iqbal T. Energy-Based Transformers are Scalable Learners and Thinkers. arXiv:2507.02092, 2025.
+83. Du Y., Mordatch I. Implicit Generation and Modeling with Energy-Based Models. *NeurIPS 32*, 2019.
+84. Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019.
+85. Chen R. T. Q., Rubanova Y., Bettencourt J., Duvenaud D. Neural Ordinary Differential Equations. *NeurIPS 31*, 2018.
+86. Mangalam K., Fan H., Li Y., et al. Reversible Vision Transformers. *CVPR*, 2022.
+87. Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002.
+88. Heusel M., Ramsauer H., Unterthiner T., et al. GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium (FID). *NeurIPS 30*, 2017.
+89. Saharia C., Chan W., Chang H., et al. Palette: Image-to-Image Diffusion Models. *SIGGRAPH*, 2022.
+90. Ruiz N., Li Y., Jampani V., et al. DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation. *CVPR*, 2023.
+91. Hu E. J., Shen Y., Wallis P., et al. LoRA: Low-Rank Adaptation of Large Language Models. *ICLR*, 2022.
+92. Zhang L., Rao A., Agrawala M. Adding Conditional Control to Text-to-Image Diffusion Models (ControlNet). *ICCV*, 2023.
+93. Hertz A., Voynov A., Fruchter S., Cohen-Or D. Style Aligned Image Generation via Shared Attention. *CVPR*, 2024.
+94. Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982.
+95. Radford A., Kim J. W., Hallacy C., et al. Learning Transferable Visual Models From Natural Language Supervision (CLIP). *ICML*, 2021.
+96. Goodfellow I., Bengio Y., Courville A. *Deep Learning*. MIT Press, 2016.
+97. Shaw P., Uszkoreit J., Vaswani A. Self-Attention with Relative Position Representations. *NAACL*, 2018.
+98. Su J., Ahmed M., Lu Y., et al. RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing* 568, 2024 (arXiv:2104.09864, 2021).
+99. Rajbhandari S., Rasley J., Ruwase O., He Y. ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. *SC20*, 2020.
+100. Korthikanti V., Casper J., Lym S., McAfee L., Andersch M., Shoeybi M., Catanzaro B. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022.
+101. MacKay M., Vicol P., Ba J., Grosse R. B. Reversible Recurrent Neural Networks. *NeurIPS 31*, 2018.
+102. Behrmann J., Grathwohl W., Chen R. T. Q., Duvenaud D., Jacobsen J.-H. Invertible Residual Networks (i-ResNet). *ICML*, 2019.
+103. Behrmann J., Vicol P., Wang K.-C., Grosse R., Jacobsen J.-H. Understanding and Mitigating Exploding Inverses in Invertible Neural Networks. *AISTATS*, 2021.
+104. Maclaurin D., Duvenaud D., Adams R. P. Gradient-Based Hyperparameter Optimization Through Reversible Learning. *ICML*, 2015.
+105. Wallace B., Gokul A., Ermon S., Naik N. End-to-End Diffusion Latent Optimization Improves Classifier Guidance (DOODL). *ICCV*, 2023.
+106. Wallace B., Gokul A., Naik N. EDICT: Exact Diffusion Inversion via Coupled Transformations. *CVPR*, 2023.
+107. Zhuang J., Dvornek N. C., Tatikonda S., Duncan J. S. MALI: A Memory-Efficient and Reverse-Accurate Integrator for Neural ODEs. *ICLR*, 2021.
+108. Prabhudesai M., Goyal A., Pathak D., Fragkiadaki K. Aligning Text-to-Image Diffusion Models with Reward Backpropagation (AlignProp). arXiv:2310.03739, 2023.
+109. Clark K., Vicol P., Swersky K., Fleet D. J. Directly Fine-Tuning Diffusion Models on Differentiable Rewards (DRaFT). *ICLR*, 2024.
+110. Salimans T., Ho J. Progressive Distillation for Fast Sampling of Diffusion Models. *ICLR*, 2022.
+111. Efron B. Bootstrap Methods: Another Look at the Jackknife. *The Annals of Statistics* 7(1):1–26, 1979.
+112. Cameron A. C., Gelbach J. B., Miller D. L. Bootstrap-Based Improvements for Inference with Clustered Errors. *Review of Economics and Statistics* 90(3):414–427, 2008.
+113. Westfall P. H., Young S. S. *Resampling-Based Multiple Testing: Examples and Methods for p-Value Adjustment*. Wiley, 1993.
+114. Romano J. P., Wolf M. Exact and Approximate Stepdown Methods for Multiple Hypothesis Testing. *Econometrica* 73(4):1237–1282, 2005.
+115. Srivastava N., Mansimov E., Salakhutdinov R. Unsupervised Learning of Video Representations using LSTMs (Moving MNIST). *ICML*, 2015.
+116. Kuhn H. W. The Hungarian Method for the Assignment Problem. *Naval Research Logistics Quarterly* 2(1–2):83–97, 1955. DOI: 10.1002/nav.3800020109.
+117. Zhang J., Zheng Y., Qi D. Deep Spatio-Temporal Residual Networks for Citywide Crowd Flows Prediction (TaxiBJ). *AAAI*, 2017.
+118. Wang Z., Bovik A. C., Sheikh H. R., Simoncelli E. P. Image Quality Assessment: From Error Visibility to Structural Similarity. *IEEE Transactions on Image Processing* 13(4):600–612, 2004. DOI: 10.1109/TIP.2003.819861.
+119. Zhang R., Isola P., Efros A. A., Shechtman E., Wang O. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. *CVPR*, 2018.
+120. Unterthiner T., van Steenkiste S., Kurach K., et al. Towards Accurate Generative Models of Video: A New Metric and Challenges. arXiv:1812.01717, 2019.
+121. Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018.
+122. Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018.
+123. Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024.

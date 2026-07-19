@@ -899,20 +899,25 @@ def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, 
     return path
 
 
-def paired_ci(delta, clips=None, n_boot=10000, seed=0):
-    """95% CI of the mean paired delta. With clips given, resamples CLIPS (cluster bootstrap):
-    frames within one AR rollout are strongly autocorrelated (measured lag-1 ~ +0.86), so
-    frame-level iid resampling understates CI widths 2-7x [validity audit 2026-07-03]."""
+def paired_ci(delta, clips, n_boot=10000, seed=0):
+    """Return a clip-cluster bootstrap interval for the mean paired delta.
+
+    ``clips`` is mandatory because frames within one autoregressive rollout are strongly
+    autocorrelated (measured lag-1 approximately +0.86). Frame-IID resampling understated
+    interval widths by factors of 2--7 in the validity audit of 2026-07-03.
+    """
     rng = np.random.RandomState(seed)
-    if clips is None:
-        idx = rng.randint(0, len(delta), (n_boot, len(delta)))
-        m = delta[idx].mean(axis=1)
-    else:
-        uc = np.unique(clips)
-        s = np.array([delta[clips == c].sum() for c in uc])
-        n = np.array([(clips == c).sum() for c in uc], dtype=np.float64)
-        pick = rng.randint(0, len(uc), (n_boot, len(uc)))
-        m = s[pick].sum(axis=1) / n[pick].sum(axis=1)
+    delta = np.asarray(delta)
+    clips = np.asarray(clips)
+    if delta.shape[0] != clips.shape[0]:
+        raise ValueError("delta and clips must contain the same number of records")
+    if delta.size == 0:
+        raise ValueError("paired_ci requires at least one paired record")
+    uc = np.unique(clips)
+    s = np.array([delta[clips == c].sum() for c in uc])
+    n = np.array([(clips == c).sum() for c in uc], dtype=np.float64)
+    pick = rng.randint(0, len(uc), (n_boot, len(uc)))
+    m = s[pick].sum(axis=1) / n[pick].sum(axis=1)
     return float(np.percentile(m, 2.5)), float(np.percentile(m, 97.5))
 
 

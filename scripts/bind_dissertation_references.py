@@ -30,6 +30,75 @@ CHAPTERS = [
 # Ordered rules intentionally resolve the narrowest descriptors first. Values are stable keys
 # from 07_REFERENCES.md. Several broad review claims appropriately cite more than one source.
 RULES: list[tuple[str, tuple[str, ...]]] = [
+    (
+        r"recent long-memory retrieval and benchmark work",
+        (
+            "WorldPack2025",
+            "Peng2026car",
+            "Yu2026memlearner",
+            "Wei2026gimworld",
+            "Zhang2026mbench",
+            "Chen2026memobench",
+            "LSSVWM2025",
+        ),
+    ),
+    (
+        r"efficient long-sequence state and attention alternatives",
+        (
+            "Dai2019txl",
+            "Rae2020compressive",
+            "Wu2022memorizing",
+            "Kitaev2020reformer",
+            "Beltagy2020longformer",
+            "Gu2023mamba",
+        ),
+    ),
+    (
+        r"modern video diffusion and token generation",
+        (
+            "Ho2022video",
+            "Blattmann2023videoldm",
+            "Blattmann2023svd",
+            "Singer2023makeavideo",
+            "Ho2022imagenvideo",
+            "Villegas2022phenaki",
+            "Yu2023magvit",
+            "Yu2024magvit2",
+        ),
+    ),
+    (
+        r"interactive and autonomous world models",
+        (
+            "Bruce2024genie",
+            "Hu2023gaia1",
+            "Ha2018worldmodels",
+            "Hafner2020dreamer",
+            "Hafner2023dreamerv3",
+            "Micheli2023iris",
+        ),
+    ),
+    (
+        r"hierarchical latent representation foundations",
+        ("Razavi2019vqvae2", "Child2021vdvae", "Vahdat2020nvae", "Sonderby2016laddervae"),
+    ),
+    (
+        r"systems foundations for complexity, information, state, and control",
+        ("Simon1962", "Shannon1948", "Kalman1960", "Ashby1956"),
+    ),
+    (
+        r"bootstrap, clustered resampling, and simultaneous inference",
+        ("Efron1979", "Cameron2008cluster", "WestfallYoung1993", "RomanoWolf2005"),
+    ),
+    (
+        r"ssim, lpips, fid, and fvd",
+        ("Wang2004ssim", "Zhang2018lpips", "Heusel2017", "Unterthiner2019fvd"),
+    ),
+    (r"attention scaling and memory-efficient exact attention", ("Vaswani2017", "Dao2022flash")),
+    (r"hungarian assignment", ("Kuhn1955",)),
+    (r"moving-mnist original", ("Srivastava2015",)),
+    (r"taxibj", ("Zhang2017taxibj",)),
+    (r"svg.*/.*savp", ("Denton2018", "Lee2018savp")),
+    (r"harvey.*fdm|\bfdm\b", ("Harvey2022",)),
     (r"survey of large-scale generative video", ("SoraSurvey2024",)),
     (r"black-box critique|interpretability of deep generative", ("Lipton2018", "Rudin2019")),
     (r"ddpm|ho et al", ("Ho2020",)),
@@ -103,7 +172,7 @@ RULES: list[tuple[str, tuple[str, ...]]] = [
     (r"openstl", ("Tan2023openstl",)),
     (r"svg.*denton", ("Denton2018",)),
     (r"savp.*lee", ("Lee2018savp",)),
-    (r"diamond.*alonso", ("Alonso2024",)),
+    (r"\bdiamond\b", ("Alonso2024",)),
     (r"mean-field entropy-collapse", ("MeanField2024",)),
     (r"ebt-policy", ("EBTPolicy2025",)),
     (r"self-forcing", ("Huang2025selfforcing",)),
