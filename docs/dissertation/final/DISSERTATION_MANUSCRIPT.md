@@ -2595,6 +2595,8 @@ merely gradient-detached but entirely frozen): pixel-space rendering can never d
 optimization of the dynamics core, and all pixel-space metrics of §3.4.3 are measured through one
 and the same fixed decoder for every compared system.
 
+![Model architecture and context-packaging alternatives](../../figures/fig16_context_packaging_architecture.png)
+
 **Figure 3.1 — Model architecture and context-packaging alternatives.**
 *Content:* input frames → frozen two-level conv-AE (shared encoder trunk; coarse
 $16{\times}4{\times}4$ and fine $16{\times}8{\times}8$ taps); training-only latent
@@ -2768,6 +2770,8 @@ prediction loss is computed on target tokens only. Second, the action conditioni
 **per-target-frame**: frame $t{+}j$ receives exactly its own action $a_{t+j}$, so the network
 never needs to disentangle a summed multi-step action code — each generated frame is bound to
 the control signal that produced it.
+
+![Token layout for one prediction step](../../figures/fig22_token_sequence_layout.png)
 
 **Figure 3.2 — Token layout for one prediction step.**
 The 1,472-token sequence contains 768 coarse-context tokens, 384 recent fine-context tokens and
@@ -3002,6 +3006,8 @@ the flat control warms its 18-frame buffer from ground-truth frames 30–47): ev
 generating at the same frame of the same clip, so the per-(clip, horizon) records of §3.4 pair
 exactly across arms.
 
+![Ring buffers for autoregressive rollout](../../figures/fig23_rollout_ring_buffer.png)
+
 **Figure 3.3 — Ring buffers for autoregressive rollout.**
 After the common 48-frame ground-truth warm-up, each step combines the fixed 48-slot coarse and
 6-slot fine buffers with four actions, samples four latent pairs with DDIM-16, and appends/evicts
@@ -3223,6 +3229,8 @@ Datasets (fixed, generated once, shared by every experiment): `loopmom_train` �
 200 frames, providing a held-out pool of 250 evaluation clips whose 200-frame duration supports
 the multi-loop rollouts of Algorithm 3.1 (rollout evaluation uses 100 of them per arm). Test
 latents are standardized with the training statistics (3.3).
+
+![LoopMom geometry and analytic reach band](../../figures/fig15_loopmom_observability_schematic.png)
 
 **Figure 3.4 — LoopMom geometry and analytic reach band.**
 The 64-pixel viewport traverses a 192-pixel toroidal static world. Saved positions make geometric

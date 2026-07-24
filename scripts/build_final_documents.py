@@ -365,7 +365,7 @@ def _add_cover(doc: Document, *, kicker: str, title: str, subtitle: str, author:
     _font(author_p.add_run(author), size=11, bold=True)
     date_p = doc.add_paragraph()
     date_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    _font(date_p.add_run("English review edition · 18 July 2026"), size=9.5,
+    _font(date_p.add_run("English review edition · 24 July 2026"), size=9.5,
           color=RGBColor.from_string(MUTED))
     doc.add_page_break()
 
