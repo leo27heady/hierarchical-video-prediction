@@ -1,21 +1,25 @@
 """Build polished DOCX review editions from the assembled Markdown manuscripts.
 
 The design resolves the ``narrative_proposal`` preset with an ``editorial_cover`` opening.
-Equations are retained as centered Cambria Math text; the Markdown remains the authoritative
-equation source for later LaTeX/institutional-template typesetting.
+LaTeX expressions are converted to native Word equations (OMML), so both the editable DOCX
+and the Word-exported PDF contain typeset mathematics rather than literal source commands.
 """
 from __future__ import annotations
 
+import html
+import os
 import re
 from pathlib import Path
 
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
+from latex2mathml.converter import convert as latex_to_mathml
+from lxml import etree
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,6 +34,9 @@ TABLE_HEADER = "F4F6F9"
 CAUTION = "FFF3CD"
 PAGE_WIDTH_DXA = 9360
 TABLE_INDENT_DXA = 120
+MATH_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+_MATHML_TO_OMML: etree.XSLT | None = None
 
 
 def _font(run, name: str = "Calibri", size: float | None = None, **kwargs) -> None:
@@ -248,38 +255,210 @@ def _configure_styles(doc: Document) -> None:
 
 
 INLINE = re.compile(
-    r"(\*\*.*?\*\*|`.*?`|\*[^*].*?\*|\$[^$]+\$|\[[^\]]+\]\([^)]+\))"
+    r"(\\\(.*?\\\)|(?<!\$)\$(?!\$)[^$]+(?<!\$)\$(?!\$)|"
+    r"\*\*.*?\*\*|`.*?`|\*[^*].*?\*|\[[^\]]+\]\([^)]+\))"
 )
 
 
-def _add_inline(paragraph, text: str, *, size: float | None = None) -> None:
+def _mml2omml_stylesheet() -> Path:
+    override = os.environ.get("MML2OMML_XSL")
+    if override:
+        path = Path(override)
+        if path.is_file():
+            return path
+        raise FileNotFoundError(f"MML2OMML_XSL does not point to a file: {path}")
+
+    candidates: list[Path] = []
+    for variable in ("ProgramFiles", "ProgramFiles(x86)"):
+        root = os.environ.get(variable)
+        if not root:
+            continue
+        office = Path(root) / "Microsoft Office"
+        candidates.extend(
+            office / "root" / f"Office{version}" / "MML2OMML.XSL"
+            for version in (16, 15, 14)
+        )
+        candidates.extend(
+            office / f"Office{version}" / "MML2OMML.XSL"
+            for version in (16, 15, 14)
+        )
+    for path in candidates:
+        if path.is_file():
+            return path
+    raise FileNotFoundError(
+        "Microsoft Office's MML2OMML.XSL was not found. "
+        "Set MML2OMML_XSL to its absolute path."
+    )
+
+
+def _mathml_to_omml_transform() -> etree.XSLT:
+    global _MATHML_TO_OMML
+    if _MATHML_TO_OMML is None:
+        _MATHML_TO_OMML = etree.XSLT(etree.parse(str(_mml2omml_stylesheet())))
+    return _MATHML_TO_OMML
+
+
+def _normalize_latex(source: str) -> str:
+    """Normalize a few TeX spellings that MathML/OMML otherwise leaves literal."""
+    normalized = source.strip()
+    replacements = (
+        (r"\bigl\lVert", r"\left\Vert "),
+        (r"\bigr\rVert", r"\right\Vert"),
+        (r"\bigl\|", r"\left\Vert "),
+        (r"\bigr\|", r"\right\Vert"),
+        (r"\left\lVert", r"\left\Vert "),
+        (r"\right\rVert", r"\right\Vert"),
+        (r"\left\|", r"\left\Vert "),
+        (r"\right\|", r"\right\Vert"),
+        (r"\lVert", r"\Vert "),
+        (r"\rVert", r"\Vert"),
+        (r"\ ", r"\,"),
+    )
+    for old, new in replacements:
+        normalized = normalized.replace(old, new)
+    normalized = re.sub(
+        r"\\arg\s*\\min",
+        r"\\operatorname{arg\\,min}",
+        normalized,
+    )
+    return normalized
+
+
+def _split_equation_tag(source: str) -> tuple[str, str | None]:
+    match = re.search(r"\\tag\{([^{}]+)\}", source)
+    if match is None:
+        return source, None
+    equation = (source[: match.start()] + source[match.end() :]).strip()
+    return equation, match.group(1).strip()
+
+
+def _omml_element(
+    source: str,
+    *,
+    size: float | None = None,
+    bold: bool = False,
+) -> etree._Element:
+    mathml = latex_to_mathml(_normalize_latex(source))
+    mathml_root = etree.fromstring(mathml.encode("utf-8"))
+    omml = _mathml_to_omml_transform()(mathml_root).getroot()
+    for math_run in omml.iter(f"{{{MATH_NS}}}r"):
+        run_properties = math_run.find(f"{{{WORD_NS}}}rPr")
+        if run_properties is None:
+            run_properties = etree.Element(f"{{{WORD_NS}}}rPr")
+            math_run.insert(0, run_properties)
+        fonts = etree.SubElement(run_properties, f"{{{WORD_NS}}}rFonts")
+        fonts.set(f"{{{WORD_NS}}}ascii", "Cambria Math")
+        fonts.set(f"{{{WORD_NS}}}hAnsi", "Cambria Math")
+        if size is not None:
+            half_points = str(round(size * 2))
+            etree.SubElement(
+                run_properties,
+                f"{{{WORD_NS}}}sz",
+            ).set(f"{{{WORD_NS}}}val", half_points)
+            etree.SubElement(
+                run_properties,
+                f"{{{WORD_NS}}}szCs",
+            ).set(f"{{{WORD_NS}}}val", half_points)
+        if bold:
+            etree.SubElement(run_properties, f"{{{WORD_NS}}}b")
+    return omml
+
+
+def _append_math(
+    paragraph,
+    source: str,
+    *,
+    size: float | None = None,
+    bold: bool = False,
+) -> None:
+    paragraph._p.append(_omml_element(source, size=size, bold=bold))
+
+
+def _add_display_equation(doc: Document, source: str) -> None:
+    equation, tag = _split_equation_tag(source)
+    paragraph = doc.add_paragraph()
+    paragraph.paragraph_format.space_before = Pt(4)
+    paragraph.paragraph_format.space_after = Pt(8)
+    paragraph.paragraph_format.keep_together = True
+    if tag is None:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        _append_math(paragraph, equation, size=10.5)
+        return
+
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    paragraph.paragraph_format.tab_stops.add_tab_stop(
+        Inches(3.25),
+        WD_TAB_ALIGNMENT.CENTER,
+    )
+    paragraph.paragraph_format.tab_stops.add_tab_stop(
+        Inches(6.5),
+        WD_TAB_ALIGNMENT.RIGHT,
+    )
+    paragraph.add_run("\t")
+    _append_math(paragraph, equation, size=10.5)
+    paragraph.add_run("\t")
+    _font(paragraph.add_run(f"({tag})"), name="Cambria Math", size=10.5)
+
+
+def _add_inline(
+    paragraph,
+    text: str,
+    *,
+    size: float | None = None,
+    bold: bool = False,
+    italic: bool = False,
+) -> None:
+    text = html.unescape(text)
     cursor = 0
     for match in INLINE.finditer(text):
         if match.start() > cursor:
             run = paragraph.add_run(text[cursor : match.start()])
-            _font(run, size=size)
+            _font(run, size=size, bold=bold, italic=italic)
         token = match.group(0)
-        if token.startswith("**"):
-            run = paragraph.add_run(token[2:-2])
-            _font(run, size=size, bold=True)
+        if token.startswith(r"\("):
+            _append_math(paragraph, token[2:-2], size=size, bold=bold)
+        elif token.startswith("$"):
+            _append_math(paragraph, token[1:-1], size=size, bold=bold)
+        elif token.startswith("**"):
+            _add_inline(
+                paragraph,
+                token[2:-2],
+                size=size,
+                bold=True,
+                italic=italic,
+            )
         elif token.startswith("`"):
             run = paragraph.add_run(token[1:-1])
-            _font(run, name="Consolas", size=(size or 10))
+            _font(
+                run,
+                name="Consolas",
+                size=(size or 10),
+                bold=bold,
+                italic=italic,
+            )
         elif token.startswith("*"):
-            run = paragraph.add_run(token[1:-1])
-            _font(run, size=size, italic=True)
-        elif token.startswith("$"):
-            run = paragraph.add_run(token[1:-1])
-            _font(run, name="Cambria Math", size=size)
+            _add_inline(
+                paragraph,
+                token[1:-1],
+                size=size,
+                bold=bold,
+                italic=True,
+            )
         else:
             link = re.match(r"\[([^\]]+)\]\(([^)]+)\)", token)
             run = paragraph.add_run(link.group(1) if link else token)
-            _font(run, size=size, color=RGBColor.from_string(BLUE))
+            _font(
+                run,
+                size=size,
+                bold=bold,
+                italic=italic,
+                color=RGBColor.from_string(BLUE),
+            )
             run.underline = True
         cursor = match.end()
     if cursor < len(text):
         run = paragraph.add_run(text[cursor:])
-        _font(run, size=size)
+        _font(run, size=size, bold=bold, italic=italic)
     if "[AUTHOR:" in text:
         p_pr = paragraph._p.get_or_add_pPr()
         shd = p_pr.find(qn("w:shd"))
@@ -365,7 +544,7 @@ def _add_cover(doc: Document, *, kicker: str, title: str, subtitle: str, author:
     _font(author_p.add_run(author), size=11, bold=True)
     date_p = doc.add_paragraph()
     date_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    _font(date_p.add_run("English review edition · 24 July 2026"), size=9.5,
+    _font(date_p.add_run("English review edition · 25 July 2026"), size=9.5,
           color=RGBColor.from_string(MUTED))
     doc.add_page_break()
 
@@ -412,11 +591,7 @@ def _markdown_to_docx(markdown_path: Path, output: Path, *, cover: dict[str, str
                 index += 1
                 equation += " " + lines[index].strip()
             equation = equation.removesuffix("$$").strip()
-            paragraph = doc.add_paragraph()
-            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            paragraph.paragraph_format.space_before = Pt(4)
-            paragraph.paragraph_format.space_after = Pt(8)
-            _font(paragraph.add_run(equation), name="Cambria Math", size=10.5)
+            _add_display_equation(doc, equation)
             index += 1
             continue
 
@@ -476,12 +651,34 @@ def _markdown_to_docx(markdown_path: Path, output: Path, *, cover: dict[str, str
                 _apply_numbering(paragraph, ordered_num_id, depth)
             else:
                 ordered_num_id = None
-            _add_inline(paragraph, item.group(3))
             index += 1
+            parts = [item.group(3)]
+            base_indent = len(item.group(1))
+            while index < len(lines):
+                continuation = lines[index]
+                continuation_stripped = continuation.strip()
+                continuation_indent = len(continuation) - len(continuation.lstrip())
+                if (
+                    not continuation_stripped
+                    or continuation_indent <= base_indent
+                    or continuation_stripped.startswith(("#", "|", "```", "$$", ">", "![", "<div"))
+                    or re.match(r"^(\s*)([-+*]|\d+\.)\s+", continuation)
+                ):
+                    break
+                parts.append(continuation_stripped)
+                index += 1
+            _add_inline(paragraph, " ".join(parts))
             continue
 
         if stripped.startswith(">"):
             ordered_num_id = None
+            quote = stripped.lstrip("> ")
+            while quote.count("$") % 2 and index + 1 < len(lines):
+                candidate = lines[index + 1].strip()
+                if not candidate.startswith(">"):
+                    break
+                index += 1
+                quote += " " + candidate.lstrip("> ")
             paragraph = doc.add_paragraph()
             paragraph.paragraph_format.left_indent = Inches(0.3)
             paragraph.paragraph_format.right_indent = Inches(0.2)
@@ -491,7 +688,7 @@ def _markdown_to_docx(markdown_path: Path, output: Path, *, cover: dict[str, str
             shd = OxmlElement("w:shd")
             shd.set(qn("w:fill"), LIGHT)
             p_pr.append(shd)
-            _add_inline(paragraph, stripped.lstrip("> "))
+            _add_inline(paragraph, quote)
             index += 1
             continue
 
