@@ -1,8 +1,6 @@
 # When Does Hierarchical Video Memory Pay?
 ## Reach–Fidelity Trade-offs under Fixed Context Budgets
 
-<!-- canonical-id: binding fourth-article manuscript -->
-
 **Keywords:** long-horizon video prediction; context compression; hierarchical latent models;
 memory; observability; re-entry; diffusion transformer; reproducible evaluation.
 
@@ -25,7 +23,8 @@ equal information or equal prediction error.
 
 The principal directions persist across sampler allocations and an independently trained codec,
 with reduced precision for the upper inversion. A preregistered long-rollout study replicates the
-early hierarchy benefit but not a seed-0 late inversion, rejecting a stable trust boundary. In
+early hierarchy benefit but not a seed-0 late inversion, and therefore fails to establish a stable
+trust boundary. In
 persistent-object long Moving-MNIST, hierarchy better preserves spatial support and trajectory
 continuity, whereas flat context better preserves digit identity; both systems remain difficult in
 absolute terms.
@@ -126,8 +125,12 @@ demonstrated long video prediction over sequences up to 1,000 frames [Saxena et 
 Dynamic latent hierarchies, TECO, MilliVid and flexible diffusion conditioning likewise pursue
 long-horizon generation through hierarchical state, latent temporal consistency, coarse-to-fine
 rollout or variable history [Zakharov et al., 2023; Yan et al., 2023; Chandratreya et al., 2026;
-Harvey et al., 2022]. These works motivate temporal abstraction, but they do not provide the
-matched package-by-budget intervention or exact pair-derived observability bands used here.
+Harvey et al., 2022]. MilliVid is the closest architectural comparator: it allocates a fixed or
+closely matched transformer sequence budget across hierarchical levels and flat/packed controls.
+The distinction is therefore not that prior hierarchy studies ignore token budgets. It is that the
+present study crosses explicit flat, spatial and temporal packages over several matched budgets,
+derives the affected population from exact observability geometry, and reports both lower and
+upper inversions under one simultaneous confirmation family.
 Clocked recurrence, variational temporal abstraction, multiscale prediction and nested long-video
 diffusion provide additional antecedents for representing different temporal rates
 [Koutník et al., 2014; Kim et al., 2019; Villar-Corrales et al., 2022; Yin et al., 2023].
@@ -164,19 +167,20 @@ pose and is therefore reported separately from token-budget comparisons. Cross-p
 ranking is not attempted because datasets, context, decoders, horizons, samplers and endpoints are
 not protocol-equivalent.
 
-**Table 1 — Protocol positioning relative to representative long-memory video work.**
+**Table 1 — Protocol positioning relative to representative long-memory video work.** Binary
+yes/no cells are avoided where papers control different resource axes.
 
-| Work | Memory mechanism | Matched package budget | Exact observability | Explicitly self-fed evaluation | Role here |
+| Work | Memory mechanism | Reported resource control | Observability instrument | Rollout/evaluation form | Role here |
 |---|---|---|---|---|---|
-| CW-VAE | clocked hierarchical latent state | no | no | yes | temporal-hierarchy lineage |
-| FDM | flexible sparse/long-range diffusion conditioning | no | no | yes | conditioning lineage |
-| TECO | compressed latent sequence + temporal transformer | no | no | yes | long-consistency lineage |
-| MilliVid | coarse-to-fine hierarchical latent rollout | no | no | yes | modern hierarchy comparator |
-| WorldPack | trajectory packing + retrieval | no | no | yes | compressed-memory comparator |
-| CaR / MemLearner / GIM-World | learned or geometry-conditioned retrieval | no | annotated or learned geometry | yes | modern retrieval comparators |
-| MBench / MemoBench | benchmark instruments | n/a | task-dependent | model-dependent | memory-evaluation context |
-| Self Forcing | rollout-distribution training | no | no | explicitly targeted | self-fed mismatch intervention |
-| This work | flat, spatial and temporal context packages | yes where stated | analytic LoopMom labels | yes | controlled reach–fidelity study |
+| CW-VAE | clocked hierarchical latent state | temporal-factor/depth ablations; not an exact flat–hierarchical package-budget series | no pair-derived re-entry labels | long latent-dynamics prediction | temporal-hierarchy lineage |
+| FDM | flexible sparse/long-range diffusion conditioning | fixed model window with alternative frame-generation/conditioning schedules | no pair-derived re-entry labels | previously sampled frames condition later samples | conditioning lineage |
+| TECO | compressed latent sequence + temporal transformer | model/baseline comparison rather than a matched package frontier | benchmark scene revisitation, not analytic visibility labels | autoregressive latent prediction | long-consistency lineage |
+| MilliVid | coarse-to-fine hierarchical latent rollout | fixed or closely matched sequence lengths; 3,072 context tokens in the principal hierarchical/packed comparison | long Minecraft revisitation, not pair-derived analytic bands | coarse-to-fine autoregressive diffusion rollout | closest modern hierarchy comparator |
+| WorldPack | trajectory packing + retrieval | compressed-memory/model comparison; not this article's multi-budget package intervention | LoopNav benchmark rather than analytic visibility labels | long action-conditioned rollout | compressed-memory comparator |
+| CaR / MemLearner / GIM-World | learned or geometry-conditioned retrieval | method-specific memory/compression controls | annotated, learned or distilled geometry | long interactive rollout | modern retrieval comparators |
+| MBench / MemoBench | benchmark instruments | n/a | task-dependent benchmark labels | model-dependent | memory-evaluation context |
+| Self Forcing | rollout-distribution training | training-distribution intervention rather than context packaging | no geometric reach instrument | self-fed mismatch explicitly targeted | self-fed mismatch intervention |
+| This work | flat, spatial and temporal context packages | exact context/target/total tokens; matched and labelled near-matched pairs across a tested frontier | analytic LoopMom visibility and pair-derived reach bands | self-fed rollout plus untouched/robustness families | controlled reach–fidelity study |
 
 This table compares experimental roles, not scores. In particular, the later pose-indexed mosaic
 receives raw pixels and exact pose, so it is visually separated from the matched-budget neural
@@ -232,7 +236,12 @@ package; they are not separately trained modules.
 | `flat-budget` | 18 contiguous fine frames | 18 | 1,152 | 320 | 1,472 |
 | `hier-long` | 48 dense coarse + 6 fine | 48 | 1,152 | 320 | 1,472 |
 | `strided-flat` | 11 stride-4 fine anchors + 6 fine | 48 | 1,088 | 320 | 1,408 |
-| `flat-c2` / `hier-c2` | contiguous fine / dense coarse + fine | 38 / 48 | 2,432 | 320 | 2,752 |
+| `flat-c1` | 28 contiguous fine frames | 28 | 1,792 | 320 | 2,112 |
+| `hier-c1` | 48 dense coarse + 16 fine | 48 | 1,792 | 320 | 2,112 |
+| `flat-c2` | 38 contiguous fine frames | 38 | 2,432 | 320 | 2,752 |
+| `hier-c2` | 48 dense coarse + 26 fine | 48 | 2,432 | 320 | 2,752 |
+| `flat-long` | 48 contiguous fine frames | 48 | 3,072 | 320 | 3,392 |
+| `hier-rich` | 48 dense coarse + 36 fine | 48 | 3,072 | 320 | 3,392 |
 
 The `strided-flat` package is near-matched, not exactly matched, to `hier-long`: it uses 64 fewer
 context tokens, a deficit that favors the temporal-package control. B1 changes 32 target tokens
@@ -273,20 +282,24 @@ $$
 p_\theta\!\left(z_{t+1:t+m}\mid \mathcal P_t,u_{t+1:t+m}\right).
 $$
 
-At diffusion time $\tau$, a clean target latent $z$ is perturbed as
-$z_\tau=\alpha_\tau z+\sigma_\tau\epsilon$. The executed head uses the velocity target
-$v_\tau=\alpha_\tau\epsilon-\sigma_\tau z$ and minimizes
+At diffusion time $\tau$, clean coarse and fine target latents are perturbed as
+$z^\ell_\tau=\alpha_\tau z^\ell+\sigma_\tau\epsilon^\ell$ for
+$\ell\in\{\mathrm c,\mathrm f\}$. The executed head uses velocity targets
+$v^\ell_\tau=\alpha_\tau\epsilon^\ell-\sigma_\tau z^\ell$ and minimizes
 
 $$
-\mathcal L_v=
-\mathbb E_{z,\epsilon,\tau}
-\left\|v_\tau-v_\theta(z_\tau,\tau,\mathcal P_t,u)\right\|_2^2 ,
+\mathcal L_v=\mathbb E\!\left[
+\operatorname{MSE}(v^{\mathrm c}_\theta,v^{\mathrm c}_\tau)+
+\operatorname{MSE}(v^{\mathrm f}_\theta,v^{\mathrm f}_\tau)
+\right],
 $$
 
-following the stable diffusion parameterization described by Salimans and Ho (2022). The
-regression control instead predicts the clean target latents directly. The principal paired
-effect is always reported as comparator loss minus candidate loss, so positive values favor the
-registered candidate. For a long package $\mathcal P_l$ and shorter comparator $\mathcal P_s$,
+where each level's MSE averages its batch, channel, target-frame and spatial entries before the two
+level means are summed. This follows the parameterization described by Salimans and Ho (2022). The
+regression control instead predicts the clean target latents directly. Effect signs are harmonized
+so that positive values always favor the registered candidate: comparator minus candidate for
+lower-is-better errors and candidate minus comparator for higher-is-better accuracy or coverage.
+For a long package $\mathcal P_l$ and shorter comparator $\mathcal P_s$,
 the reach-specific population is
 
 $$
@@ -294,6 +307,27 @@ $$
 \{i:R(\mathcal P_s)<\Delta t_i\le R(\mathcal P_l),\
 \text{answerable}_i,\ \text{foreground}_i\ne\varnothing\}.
 $$
+
+The evaluator constructs the foreground world-column set
+$F_i=\{(r_i+x)\bmod192:\max_y g_i(y,x)>0.5\}$ and the fixed six-frame novel set
+$N_i=F_i\setminus\operatorname{cov}_6(i)$. If
+$v_i(c)=\max\{u<i:c\text{ was visible at }u\}$ and
+$A_i=\{c\in N_i:v_i(c)\text{ exists}\}$, define, for $|N_i|>0$,
+
+$$
+\rho_i=\frac{|A_i|}{|N_i|}.
+$$
+
+For $|A_i|>0$, define
+
+$$
+\Delta t_i=\operatorname*{median}_{c\in A_i}[i-v_i(c)].
+$$
+
+Set $\rho_i=0$ when $N_i=\varnothing$ and $\Delta t_i=0$ when $A_i=\varnothing$. Define
+$\operatorname{answerable}_i\Longleftrightarrow |N_i|>0\ \land\ \rho_i\ge0.5$. Columns, not
+foreground pixels, are the weighting unit. Thus records with no novel columns cannot enter a
+positive reach band, and records with no previously seen novel column are unanswerable.
 
 The diffusion schedule follows Ho et al. (2020) and Nichol and Dhariwal (2021), deterministic
 sampling follows Song et al. (2021), and the latent-token transformer follows the DiT design
@@ -307,12 +341,57 @@ batch size, EMA, per-step and total NFE, runtime and peak memory. The B16x30k an
 process approximately the same examples but differ in updates, gradient noise, grouping and
 effective EMA horizon; c2 is an optimizer-regime robustness control.
 
+**Table 3 — Executed architecture, training, and evaluation settings.**
+
+| Subsystem | Executed setting |
+|---|---|
+| Frozen codec | 1.85 M-parameter two-level conv-AE; coarse $16\times4\times4$, fine $16\times8\times8$; each level independently decodable; per-channel, per-level training-set z-score |
+| Rollout predictor | WindowDiT, width 384, 8 blocks, 6 heads, MLP ratio 4, full joint attention, adaLN-Zero; approximately 22.18–22.19 M trainable parameters across two-level arms |
+| Target interface | four consecutive target frames; 80 coarse-plus-fine target tokens per frame (320 normally); action bound separately to each target frame |
+| Diffusion / regression | $T=1000$ clipped cosine schedule, v-prediction, deterministic DDIM-16 by default; regression uses summed per-level smooth-L1 and one forward pass |
+| Optimization | AdamW, learning rate $3\times10^{-4}$, weight decay $10^{-4}$, 2,000-update linear warm-up then constant rate, gradient clip 1.0, EMA 0.999; clean contexts; bf16 training |
+| Training regimes | main B16×30k; disclosed optimizer-regime control B8×60k; both process approximately 480,000 examples but do not match update dynamics |
+| Rollout evaluation | 48 ground-truth warm-up frames; 38 four-frame steps = 152 self-fed targets; 100 clips per arm; common random numbers for paired stochastic comparisons |
+
+**Table 4 — Exact context payload and materialized-embedding accounting at 48-frame reach.** Each
+spatial token contains 16 frozen-codec coefficients; the rollout transformer has width \(d=384\).
+
+| Package | Context tokens | Latent payload, fp32 | Latent payload, fp16/bf16 | Width-384 embeddings, bf16 | Relative cost |
+|---|---:|---:|---:|---:|---:|
+| 48 dense fine frames | 3,072 | 192 KiB | 96 KiB | 2.250 MiB | 1.00× |
+| 48 coarse + 6 fine | 1,152 | 72 KiB | 36 KiB | 0.844 MiB | 2.67× fewer |
+| 48 coarse + 2 fine | 896 | 56 KiB | 28 KiB | 0.656 MiB | 3.43× fewer |
+
+The latent columns are exact contiguous-array payloads. The embedding column is a
+model-implementation tensor; fp32 doubles it. These values exclude target tokens, attention and
+MLP intermediates, allocator/container overhead, parameters, optimizer state and activations. They
+therefore quantify stored context representations, not end-to-end training VRAM.
+
 ### 2.5 Development and confirmation populations
 
 The existing test pool informed qualitative monitoring, arm selection and theory development. It
 provides development evidence, not an untouched final holdout. Confirmation uses a newly
 generated, hash-pinned set rejected by training and monitoring loaders. The analysis, thresholds,
-reach bands, table shells and interpretation branches are frozen before access.
+reach bands, table layouts and interpretation branches are frozen before access.
+
+**Table 5 — Publication-facing study map.** “Seeds” denotes training seeds unless sampler or
+codec seeds are named explicitly. The licence limits what can be inferred from each study.
+
+| Study | Scientific role | Population / protected status | Intervention | Seeds | Inferential family | Terminal reading |
+|---|---|---|---|---:|---|---|
+| Mechanism study | select a generation head by regime | LoopMom development / no | matched-capacity regression–diffusion interface plus a separate official-code EBM capability study | one regression, one diffusion, two EBM recipes | best-of-8 coverage and per-candidate NFE sensitivity with unequal total inference work; EBM diagnostic | diffusion for stochastic coverage; regression for deterministic rollout; EBM characterized negative |
+| E2 | confirm reach and the fixed-budget frontier | hash-pinned untouched LoopMom / yes | registered flat–hierarchical package pairs | pair-specific 0–2 | one simultaneous frontier family plus frozen reach bands | hierarchy at 896/1,152; 1,792 unresolved; flat at 2,432/3,072 |
+| B1 within E2 | test the complete stride-2 configuration | same E2 holdout / yes | 512-token B1 versus `flat-short` | 0–1 | registered reach-band family | whole configuration confirmed; pure stride effect not identified |
+| E4b | test head × package stability | adaptively used LoopMom pool / no | temporal versus spatial package crossed with diffusion/regression | 0–4 | per-seed clip intervals and seed-level t summaries | stable diffusion package direction; regression and interaction heterogeneous |
+| E5a | replicate a late self-fed inversion | registered long-loop replication set | frozen long-reach pair at new seeds | 0–2 | fixed early/late contrasts | early benefit repeats; late inversion **NOT_REPLICATED** |
+| E7c | sampler/NFE robustness | purpose-locked LoopMom set / yes | five sampler allocations on frozen seed-0 checkpoints | training 0; sampler 0–2 | one 20-effect simultaneous family | directionally robust; upper inversion less precise |
+| E7a | whole-codec robustness | purpose-locked LoopMom set / yes | independently trained codec, new normalization and retrained predictors | predictor 0; one alternate codec | one eight-effect simultaneous family | codec-directionally robust |
+| E8a | explicit-addressing reference | purpose-locked LoopMom set / yes | raw warm-up mosaic queried with exact future pose | n/a | one six-effect simultaneous family | privileged access substantially lowers error |
+| E6 | persistent-object external boundary | protected long Moving-MNIST / yes | matched 1,152-token flat and hierarchical packages | 0–2 | one 15-effect simultaneous family | hierarchy support/continuity; flat identity; neither solves task |
+
+Rows labelled robustness, privileged reference or external boundary do not become extra cells in
+the E2 causal frontier. The supplementary configuration section reports the complete observed
+interface and cost fields and marks structurally absent cells explicitly.
 
 ## 3. Endpoints and inference
 
@@ -343,6 +422,28 @@ Object claims require stable generator IDs, glyph classes, trajectories, boxes a
 Predicted components are assigned jointly with a frozen Hungarian cost [Kuhn, 1955]. Misses receive a
 trajectory penalty, extras remain visible, and identity accuracy is intention-to-score over all
 labelled GT objects. Matched-only performance is diagnostic; coverage is co-primary.
+
+Let $p,g\in[0,1]^{H\times W}$, $P_\tau=\{p>\tau\}$,
+$G_\tau=\{g>\tau\}$, $U_\tau=P_\tau\cup G_\tau$, and $e=(p-g)^2$. The four error endpoints are
+$\sum e/(HW)$, $\sum e\mathbf1_{G_\tau}/|G_\tau|$,
+$\sum e\mathbf1_{\neg G_\tau}/|\neg G_\tau|$, and
+$\sum e\mathbf1_{U_\tau}/|U_\tau|$ for full, foreground, background, and union MSE,
+respectively. Foreground MSE is undefined on empty GT masks and excluded from non-empty analyses;
+background and union MSE take value 0 on an empty denominator. Precision and recall each take
+value 1 when their own denominator is empty; F1 takes value 0 when precision plus recall is zero.
+
+**Table 6 — Reproducible endpoint and assignment rules.** $M$ is the number of accepted matches and
+$D=\sqrt{H^2+W^2}$ is the frame diagonal.
+
+| Population | Instance rule | Assignment | Denominators and penalties |
+|---|---|---|---|
+| LoopMom frame | $\tau=0.5$; masks defined above | none | pixel denominators above; foreground-empty records explicit |
+| LoopMom component | connected components after threshold 0.5; minimum 4 pixels | Hungarian cost $1-\operatorname{IoU}$; discard zero-IoU pairs | misses $=n_{GT}-M$; extras $=n_{pred}-M$; IoU and centroid error over accepted matches |
+| E6 persistent object | threshold 0.3; minimum 30 pixels; intensity-weighted detection centroid and component box; all detections classified (confidence threshold 0) | generator metadata supplies visible GT boxes and labels; $q_g$ is the GT-box center; Hungarian cost $0.5\min(\lVert q_g-q_d\rVert_2/D,1)+0.5(1-\operatorname{IoU})$; accept cost $\le0.65$ | coverage $=M/n_{GT}$; trajectory $=[\sum_{\mathcal M}\lVert q_g-q_d\rVert_2+(n_{GT}-M)D]/n_{GT}$; identity $=$ correct accepted labels / visible labelled GT, so misses fail; extras remain explicit but are outside these two denominators |
+
+With no visible E6 GT object, coverage is 1 and trajectory error is 0; identity is undefined if no
+visible labelled GT exists. These conventions and the matched-only diagnostics are fixed before
+protected evaluation.
 
 ### 3.3 Pair-specific reach analysis
 
@@ -382,6 +483,11 @@ that control the familywise error rate rather than interpreting many marginal in
 independently [Westfall and Young, 1993; Romano and Wolf, 2005].
 
 ## 4. Results
+
+The main claim path is the untouched frontier (§4.1), the package-form boundary (§4.4), the failed
+replication (§4.5), and the persistent-object boundary (§4.9). Development evidence (§§4.2–4.3)
+explains how the confirmation was designed. Sampler, codec, and privileged-access studies
+(§§4.6–4.8) support scope and mechanism without redefining the primary frontier.
 
 ### 4.1 Untouched confirmation of reach and the fixed-budget frontier
 
@@ -471,8 +577,8 @@ The early advantage is positive and CI-clean at all three seeds. Neither new see
 required late-negative direction; both instead show a positive, CI-clean late hierarchy effect.
 The registered verdict is **NOT_REPLICATED**, so the gated horizon/refresh/corruption programme is
 not authorized. This result preserves the conceptual distinction between addressability and
-self-fed reliability while rejecting a stable approximately-24-frame trust boundary in the
-current evidence.
+self-fed reliability while failing to establish a stable approximately-24-frame trust boundary in
+the current evidence.
 
 ![Registered long-loop replication](../../figures/fig18_trust_negative_replication.png)
 
@@ -489,7 +595,7 @@ flat-fidelity inversion—are crossed with five frozen NFE/sampler variants. Pos
 the registered candidate. The 64-token deficit favors the temporal control; this package-shape
 comparison is not described as exactly token matched.
 
-All 20 point estimates retain their expected direction. The 896 reach effects range from +0.0465
+All 20 point estimates retain their registered direction. The 896 reach effects range from +0.0465
 to +0.0482; the 1,152 interior effects from +0.0140 to +0.0201; the package-shape effects from
 +0.0221 to +0.0292; and the 2,432 inversion effects from +0.0077 to +0.0122. The simultaneous
 family-wise lower bound is positive for every variant of the first three contrasts and for the
@@ -590,7 +696,20 @@ persistent digit identities, collisions and 300-frame self-fed prediction. The c
 three training seeds, a 48-frame warm-up, matched 1,152-token flat and hierarchical packages, an
 official train/test glyph split, generator-saved object identity and trajectory, one-to-one
 Hungarian assignment, explicit missed/extra-object accounting, and a protected 100-clip holdout.
-Positive effects below favor hierarchy. All 15 intervals belong to one preregistered
+Because three co-primary endpoints are losses and two are scores, signs are harmonized as
+
+$$
+\Delta_m=
+\begin{cases}
+\overline m_{\mathrm{flat}}-\overline m_{\mathrm{hier}},
+&m\in\{\mathrm{foreground\ MSE},\mathrm{union\ MSE},\mathrm{trajectory\ error}\},\\
+\overline m_{\mathrm{hier}}-\overline m_{\mathrm{flat}},
+&m\in\{\mathrm{identity\ accuracy},\mathrm{coverage}\}.
+\end{cases}
+$$
+
+Positive effects below therefore favor hierarchy without changing the underlying endpoint
+denominators or paired records. All 15 intervals belong to one preregistered
 studentized max-statistic clip-cluster family.
 
 | Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
@@ -628,6 +747,8 @@ continuity endpoints separate from identity fidelity, producing the preregistere
 
 ## 5. Reproducibility and evidence availability
 
+### 5.1 Provenance and validation
+
 Every confirmatory or robustness dataset has a purpose string, generation seed, split indices and
 SHA-256 hashes in a committed manifest. Opening a protected dataset requires the matching
 purpose-specific access log. Each model or evaluation cell has a content-addressed `RunSpec`,
@@ -649,6 +770,31 @@ authorization gates, exact command wrappers, access logs, generated tables and f
 Large datasets and checkpoints are identified by cryptographic hashes even when distributed
 separately. Smoke tests cannot overwrite canonical result names, and a completed study is not
 accepted unless its independent completion validator passes.
+
+### 5.2 Code, data, model and licence availability
+
+The source-code release is licensed under the MIT License recorded in the repository. That
+software licence does not automatically cover third-party datasets, pretrained assets, or their
+derivatives. The submission package must therefore give a separate licence/terms row for MNIST,
+OpenSTL inputs, generated LoopMom data, persistent-object Moving-MNIST, codecs and model
+checkpoints.
+
+The local release manifest already identifies evidence artifacts, datasets and checkpoints by
+cryptographic hash. A public-availability claim will be made only after the corresponding archive
+is deposited. **Review-edition author action (administrative, not a missing scientific result):**
+insert the public repository URL, archive DOI or stable URL, packaged filenames, exact byte sizes,
+per-package licences, and checkpoint/data download commands. Until those fields are inserted and
+tested from a clean download, the defensible wording
+is “hash-identified and preserved in the research release,” not “publicly available.”
+
+### 5.3 Ethics and data-governance statement
+
+The reported studies recruit no human participants and collect no new personal, clinical, private,
+or user-generated data. They use procedurally generated scenes and established digit benchmark
+assets. Human-subject review is therefore not applicable to the experimental design, subject to
+the institution's required submission wording. Third-party dataset terms and redistribution
+rights remain licence questions and must be verified in the availability statement rather than
+being inferred from the code licence.
 
 ## 6. Boundaries and positioning
 
@@ -698,6 +844,69 @@ The practical rule is therefore conditional: buy enough reach to include the rel
 preserve the detail the task needs, and evaluate storage, addressing and self-fed reuse as
 different failure modes. Within the tested regime, hierarchy buys reach and flat context buys
 fidelity.
+
+## Supplementary configuration and cost tables
+
+### S1. Common rollout training and inference regimes
+
+The rollout backbone has approximately 22.19 M trainable parameters for the flat, two-level and
+temporally sparse arms. The `hier3` probe adds approximately 0.30 M level-specific I/O parameters
+and a separately frozen top-level codec tap. B16×30k and B8×60k each process approximately
+480,000 examples, but they differ in update count, grouping, gradient noise and effective EMA
+horizon.
+
+| Regime / head | Batch | Updates | Approx. examples | EMA | NFE per rollout step | NFE per 38-step / 152-frame rollout | Role |
+|---|---:|---:|---:|---:|---:|---:|---|
+| B16×30k diffusion | 16 | 30,000 | 480,000 | 0.999 | 16 default | 608 default | primary frontier and factorial regime |
+| B8×60k diffusion | 8 | 60,000 | 480,000 | 0.999 | 16 default | 608 default | matched-example optimizer-regime control |
+| B16×30k regression | 16 | 30,000 | 480,000 | 0.999 | 1 | 38 | deterministic rollout control |
+
+The corrected small single-step receipt executes only the closely matched regression (7.27 M
+parameters, 6,000 steps) and diffusion (7.53 M, 8,000 steps) heads. The 7.28 M energy head was
+instantiated by that harness but was not an executed result cell. Energy-based evidence instead
+comes from the separate official-code 14.66 M-parameter S1/S2 capability study. For best-of-8,
+regression consumes eight MC-dropout evaluations per record; diffusion consumes eight times its
+declared per-candidate DDIM NFE. Total inference work is therefore unequal.
+
+| Per-candidate NFE | Regression best-of-8 fg-MSE | Diffusion best-of-8 fg-MSE | Total regression / diffusion evaluations per record |
+|---:|---:|---:|---:|
+| 4 | 0.0680 | 0.0546 | 8 / 32 |
+| 8 | 0.0680 | 0.0514 | 8 / 64 |
+| 16 | 0.0680 | 0.0503 | 8 / 128 |
+
+This frozen two-batch sweep is an inference-allocation sensitivity receipt, not an equal-total-work
+comparison. The main six-batch, 16-NFE-per-candidate table reported in Chapter 4 yields regression
+0.0664 and diffusion 0.0512; the different aggregation pool is kept explicit.
+
+### S2. Complete observed package and interface registry
+
+“Observed” means that a completed model/evaluation cell exists. It does not make rows with
+different evidence roles mutually comparable. `NR` means that no common profiling receipt was
+recorded; no value is estimated.
+
+| Arm | Package / reach | Context / target / total tokens | Head and executed seeds | Training regime | Default NFE/clip | Measured step time / peak VRAM | Evidence role |
+|---|---|---:|---|---|---:|---|---|
+| `hier-short` | 6 coarse + 6 fine / 6 | 480 / 320 / 800 | diffusion 0–1 | B16×30k | 608 | NR / NR | lower near-match; span below loop |
+| `flat-short` / `flat-short-reg` | 8 fine / 8 | 512 / 320 / 832 | diffusion 0–1; regression 0 | B16×30k | 608 diffusion; 38 regression | NR / NR | lower comparator and B1 baseline |
+| `hier-s2-min` / `hier-s2-min-reg` | 24 stride-2 coarse + 2 fine / 48 | 512 / 288 / 800 | diffusion 0–1; regression 0 | B16×30k | 608 diffusion; 38 regression | 0.19–0.23 s / 3.8 GB for diffusion | B1 whole configuration |
+| `spat18` / `spat18-reg` | 18 coarse + 6 fine / 18 | 672 / 320 / 992 | diffusion 0; regression 0 | B16×30k | 608 diffusion; 38 regression | NR / NR | fixed-span resolution diagnostic |
+| `flat-min` | 14 fine / 14 | 896 / 320 / 1,216 | diffusion 0–1 | B16×30k | 608 | NR / NR | 896-token comparator |
+| `hier-min` | 48 coarse + 2 fine / 48 | 896 / 320 / 1,216 | diffusion 0–1 | B16×30k | 608 | NR / NR | 896-token candidate |
+| `strided-flat` / `strided-flat-reg` | 11 stride-4 fine anchors + 6 fine / 48 | 1,088 / 320 / 1,408 | diffusion 0–4; regression 0–4 | B16×30k | 608 diffusion; 38 regression | 0.37–0.42 s / 6.3 GB for diffusion | near-matched package factorial |
+| `flat-budget` / `reg-flat` | 18 fine / 18 | 1,152 / 320 / 1,472 | diffusion 0–2; regression 0–1 | B16×30k; diffusion 0 also B8×60k | 608 diffusion; 38 regression | NR / NR | 1,152-token comparator |
+| `hier-long` / `reg-long` | 48 coarse + 6 fine / 48 | 1,152 / 320 / 1,472 | diffusion 0–4; regression 0–4 | B16×30k; diffusion 0 also B8×60k | 608 diffusion; 38 regression | NR / NR | 1,152-token candidate and package arm |
+| `hier3` | 48 top + 24 coarse + 9 fine / 48 | 1,152 / 336 / 1,488 | diffusion 0 | B16×30k | 608 | 0.41–0.48 s / 6.5 GB | depth-plus-objective/allocation diagnostic |
+| `flat-c1` | 28 fine / 28 | 1,792 / 320 / 2,112 | diffusion 0 | B16×30k | 608 | NR / NR | intermediate frontier comparator |
+| `hier-c1` | 48 coarse + 16 fine / 48 | 1,792 / 320 / 2,112 | diffusion 0 | B16×30k | 608 | NR / NR | intermediate frontier candidate |
+| `flat-c2` | 38 fine / 38 | 2,432 / 320 / 2,752 | diffusion 0 | B16×30k and B8×60k | 608 | 0.82–0.84 s / 11.8 GB in B16 profile | upper frontier comparator |
+| `hier-c2` | 48 coarse + 26 fine / 48 | 2,432 / 320 / 2,752 | diffusion 0 | B16×30k and B8×60k | 608 | NR / NR | upper frontier candidate |
+| `flat-long` | 48 fine / 48 | 3,072 / 320 / 3,392 | diffusion 0–1 | B8×60k | 608 | NR / NR | equal-reach dense comparator |
+| `hier-rich` | 48 coarse + 36 fine / 48 | 3,072 / 320 / 3,392 | diffusion 0–1 | B8×60k | 608 | NR / NR | equal-budget hierarchy |
+
+The following proposed cells are terminally absent: `flat-320`, `hier-s4-min`, and `hier3-reg`
+are **NOT_EXECUTED / OUT_OF_SCOPE**; E5b/E5c were not authorized after E5a failed to replicate;
+E9 is **SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY**; and the B1 fixed-target control is not
+executed because the article permanently retains a whole-configuration claim. None is “pending.”
 
 ## References
 

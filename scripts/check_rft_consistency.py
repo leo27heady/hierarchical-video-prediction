@@ -79,9 +79,21 @@ def main() -> None:
         header = "\n".join(path.read_text(encoding="utf-8").splitlines()[:8]).lower()
         if "detailed" not in header or "not the binding" not in header:
             failures.append(f"article chapter lacks the detailed/non-binding authority marker: {path}")
-    binding_header = "\n".join(BINDING_ARTICLE.read_text(encoding="utf-8").splitlines()[:10]).lower()
-    if "binding fourth-article" not in binding_header:
-        failures.append("compact reach–fidelity article is not marked as the binding specification")
+    binding_text = " ".join(
+        BINDING_ARTICLE.read_text(encoding="utf-8").lower().split()
+    )
+    # Authority follows from the canonical final-source path plus a stable scientific identity,
+    # not from editorial metadata that would leak into the submission manuscript.
+    for marker in (
+        "# when does hierarchical video memory pay?",
+        "## abstract",
+        "hierarchy buys reach",
+        "flat context buys fidelity",
+    ):
+        if marker not in binding_text:
+            failures.append(
+                f"canonical final article lacks stable scientific identity marker {marker!r}"
+            )
     introduction = Path("docs/dissertation/rewrite/01_VSTUP.md").read_text(encoding="utf-8")
     for publication in ("[A1]", "[A2]", "[A3]", "[A4]"):
         if publication not in introduction:

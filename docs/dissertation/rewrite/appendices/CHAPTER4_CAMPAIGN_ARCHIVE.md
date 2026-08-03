@@ -8,7 +8,7 @@
 This chapter performs the comprehensive experimental verification required by **Task 7** of the
 dissertation research: the developed methods and the intelligent information technology are
 evaluated on the testbed family formalized in §3.4, under the pre-registered protocol of
-Table 3.1/Table 3.2, with every quoted comparison paired, stratified by the exact re-entry
+Tables 3.1 and 3.3, with every quoted comparison paired, stratified by the exact re-entry
 hardness label, and interval-estimated by the clip-level cluster bootstrap. The order of the
 sections is deliberate. The generation-head study (§4.2) is settled first, because every
 subsequent table depends on knowing how much of a system arm's score is owed to its head rather

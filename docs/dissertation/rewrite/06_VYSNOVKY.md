@@ -21,6 +21,19 @@ design principle is:
 
 > **Compress what must be remembered; reconstruct what need not be stored.**
 
+Three propositions connect the dissertation's article strands.
+
+1. **Information allocation is task-dependent.** Representation and context design must trade
+   temporal reach against the spatial or semantic detail that the task requires.
+2. **Retained-state memory and activation-tape memory are distinct resource axes.** Context
+   packaging changes which past evidence remains addressable; reversible replay changes which
+   intermediate computations must be retained for differentiation. Their benefits were measured
+   separately and are not assumed to multiply.
+3. **The appropriate intervention is determined by the operating region and the evaluation
+   construct.** Entropy-guided representation, dense or multirate context, checkpointing,
+   reversibility, and consistency endpoints answer different system questions; none is a universal
+   replacement for the others.
+
 The aim of the research has been achieved through the following principal results, aligned with
 the seven tasks.
 
@@ -32,8 +45,11 @@ bottlenecks: the context/state cost of retaining historical evidence and the act
 long temporal optimization. This decomposition replaces the ambiguous claim that long video has
 one generic memory problem.
 
-**2. Consistency criteria and measurement (Task 2).** The criteria apparatus is extended with
-conceptual, hierarchical, and trajectory consistency. Trajectory consistency is operationalized
+**2. Consistency criteria and measurement (Task 2).** Established consistency concerns are
+organized into the dissertation-specific [A3] systems taxonomy, within which conceptual,
+hierarchical, and trajectory consistency are explicitly defined and operationalized. This claims
+the dissertation's formalization and measurement apparatus, not priority over the general terms.
+Trajectory consistency is operationalized
 through self-fed rollout, re-entry, foreground/background/union, miss/extra, object-support,
 trajectory, identity, and coverage endpoints. The LoopMom instrument makes geometric
 observability exactly computable and defines pair-specific reach-differential populations. Clips,
@@ -49,13 +65,19 @@ depend on an unmeasured RoPE-ND retrofit.
 
 **4. Reversible optimization of long temporal processes (Task 4).** TempVerseFormer and
 time-agnostic backpropagation reconstruct intermediate states during reverse replay, giving
-activation-memory scaling that is constant in the temporal horizon for the tested reversible
-recurrence. The stochastic extension stores the sampled noise and reproduces states at numerical
-precision; reverse-replay gradients match BPTT. In the measured rollout-training frontier, BPTT
+an approximately horizon-independent peak activation-tape footprint for the tested reversible
+recurrence. The stochastic extension stores a sampled-noise sequence whose size grows with the
+horizon (or would require equivalent deterministic regeneration metadata), while avoiding the
+larger layer-by-time activation graph. With the correct noise replayed, states are reconstructed
+within reported numerical tolerances. In the reported numerical gradient test, reverse replay and
+BPTT have cosine similarity \(1.000000\), establishing directional agreement but not, by itself,
+gradient-magnitude equality. In the measured rollout-training frontier, BPTT
 uses 12.2 GB at \(K=40\) and fails at \(K=120\), while reversible replay remains approximately
-1.1–1.2 GB through \(K=160\). Gradient checkpointing remains a strong and appropriate competitor
-at 1.47–1.97 GB. The three-axis taxonomy shows where reversibility pays—network depth and
-invertible temporal recurrence—and where it does not: in the tested inner optimization loop it
+1.1–1.2 GB through \(K=160\). Gradient checkpointing remains memory-feasible at 1.47–1.97 GB;
+because matched runtime was not reported for these temporal-rollout arms, no Pareto equivalence is
+claimed. The three-axis taxonomy shows where reversibility pays in the tested network-depth
+and invertible-temporal-recurrence settings, and where it does not pay in the measured inner
+optimization loop: there it
 saves only 0.26% relative to checkpointing while increasing computation. Invertibility also does
 not guarantee trajectory stability.
 
@@ -150,3 +172,7 @@ The most informative extensions are:
 These directions extend external validity and integration. They do not alter the present
 conclusion: compress historical state when reach is limiting, preserve dense detail when fidelity
 is limiting, and reconstruct activations when the temporal training tape is the binding resource.
+
+Taken together, the dissertation is an integrated systems methodology with separately measured
+representation, retained-state, activation-memory, and evaluation contributions. It is not one
+executable pipeline in which every published strand is claimed to cause the Chapter 4 effects.

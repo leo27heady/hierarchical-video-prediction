@@ -2,7 +2,7 @@
 
 > **Status (2026-07-19):** master dissertation bibliography and binding table. The article
 > maintains a venue-neutral 46-entry subset in its own authoritative source. The dissertation
-> binder currently emits 123 external references in order of first mention; source descriptors
+> binder currently emits 132 external references in order of first mention; source descriptors
 > remain visible only in the editable rewrite files and are absent from the assembled manuscript.
 >
 > **Numbering policy:** entries carry STABLE KEYS, not numbers. Final numbers are assigned
@@ -24,7 +24,7 @@
 | KulykA1 | Kulyk L. R., Mokin O. B. Scaling Video Prediction with Spatio-Temporal Patches. *Visnyk of Vinnytsia Politechnical Institute*. 2025. No. 5. P. 129–139. DOI: 10.31649/1997-9266-2025-182-5-129-139. | **Verified against the journal article and PDF. Ukrainian title: «Масштабування прогнозування відео за допомогою просторово-часових патчів».** |
 | KulykA2 | Kulyk L. Temporal modeling with reversible transformers. *Neural Computing and Applications*. 2026. Vol. 38. Article 30. DOI: 10.1007/s00521-025-11707-3. | **Verified against the Springer version of record (published 03 February 2026); sole author. Author preprint: DOI 10.21203/rs.3.rs-6293520/v1.** |
 | KulykA3 | Kulyk L. R., Mokin O. B. Methods for Ensuring Consistent Generation in Diffusion Models. *Visnyk of Vinnytsia Politechnical Institute*. 2024. No. 4. P. 75–85. DOI: 10.31649/1997-9266-2024-175-4-75-85. | **Verified against the journal record and PDF. Ukrainian title: «Методи забезпечення консистентності генерації в дифузійних моделях».** |
-| KulykA4 | Kulyk L. R. [The fourth article — controlled reach–fidelity study of budgeted video-memory context packaging; memory-horizon testbed; matched-capacity, matched-NFE mechanism study]. In finalization. | **[AUTHOR: target venue; status by defense]** |
+| KulykA4 | Kulyk L. R. [The fourth article — controlled reach–fidelity study of budgeted video-memory context packaging; memory-horizon testbed; matched-capacity regression–diffusion study with explicit inference-work accounting]. In finalization. | **[AUTHOR: target venue; status by defense]** |
 | KulykT1–T6 | Six conference theses (VNTU L–LIII conференції; «Проблеми вищої математичної освіти»; DSMSI-2023). | **[AUTHOR: identify all six; DSMSI-2023 unverified]** |
 
 ## B. Master list (grouped; key → full entry → status)
@@ -165,6 +165,15 @@
 - **Hu2022lora** — Hu E. J., Shen Y., Wallis P., et al. LoRA: Low-Rank Adaptation of Large Language Models. *ICLR*, 2022. ✓
 - **Hertz2024** — Hertz A., Voynov A., Fruchter S., Cohen-Or D. Style Aligned Image Generation via Shared Attention. *CVPR*, 2024. ✓
 - **Ji2023** — Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023. ✓ *(hallucination phenomenology)*
+- **Kendall2017uncertainty** — Kendall A., Gal Y. What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision? *NeurIPS 30*, 2017. ✓ *(aleatoric/epistemic uncertainty decomposition; not evidence that raw predictive entropy is calibrated)*
+- **Guo2017calibration** — Guo C., Pleiss G., Sun Y., Weinberger K. Q. On Calibration of Modern Neural Networks. *Proceedings of Machine Learning Research* 70:1321–1330, ICML, 2017. ✓
+- **Bhadra2021hallucinations** — Bhadra S., Kelkar V. A., Brooks F. J., Anastasio M. A. On Hallucinations in Tomographic Image Reconstruction. *IEEE Transactions on Medical Imaging* 40(11):3249–3260, 2021. DOI: 10.1109/TMI.2021.3077857. ✓
+- **Ebel2023uncrtaints** — Ebel P., Sainte Fare Garnot V., Schmitt M., Wegner J. D., Zhu X. X. UnCRtainTS: Uncertainty Quantification for Cloud Removal in Optical Satellite Time Series. *IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops*, pp. 2086–2096, 2023. DOI: 10.1109/CVPRW59228.2023.00202. ✓
+- **Huot2022wildfire** — Huot F., Hu R. L., Goyal N., Sankar T., Ihme M., Chen Y.-F. Next Day Wildfire Spread: A Machine Learning Data Set to Predict Wildfire Spreading From Remote-Sensing Data. *IEEE Transactions on Geoscience and Remote Sensing* 60:1–13, 2022. DOI: 10.1109/TGRS.2022.3192974. ✓
+- **Shaddy2024wildfire** — Shaddy B., Ray D., Farguell A., et al. Generative Algorithms for Fusion of Physics-Based Wildfire Spread Models with Satellite Data for Initializing Wildfire Forecasts. *Artificial Intelligence for the Earth Systems* 3(3):e230087, 2024. DOI: 10.1175/AIES-D-23-0087.1. ✓
+- **Hessel2021clipscore** — Hessel J., Holtzman A., Forbes M., Le Bras R., Choi Y. CLIPScore: A Reference-free Evaluation Metric for Image Captioning. *EMNLP*, pp. 7514–7528, 2021. DOI: 10.18653/v1/2021.emnlp-main.595. ✓
+- **Otani2023t2ieval** — Otani M., Togashi R., Sawai Y., et al. Toward Verifiable and Reproducible Human Evaluation for Text-to-Image Generation. *CVPR*, pp. 14277–14286, 2023. ✓ *(evidence that automatic text-to-image metrics, including CLIPScore, do not replace controlled human/task-specific evaluation)*
+- **Thrush2022winoground** — Thrush T., Jiang R., Bartolo M., et al. Winoground: Probing Vision and Language Models for Visio-Linguistic Compositionality. *CVPR*, pp. 5238–5248, 2022. ✓ *(direct compositional-reasoning stress test including CLIP)*
 - **Lipton2018** — Lipton Z. C. The Mythos of Model Interpretability. *Communications of the ACM* 61(10), 2018. ✓ *(black-box critique)*
 - **Rudin2019** — Rudin C. Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. *Nature Machine Intelligence* 1, 2019. ✓
 - **SoraSurvey2024** — Liu Y., Zhang K., Li Y., Yan Z., Gao C., Chen R., Yuan Z., Huang Y., Sun H., Gao J., He L., Sun L. Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177, 2024. ✓
@@ -206,6 +215,7 @@
 | Chen et al. 2018, Neural ODE / Neural ODE | Chen2018ode |
 | classical systems theory textbook | Bertalanffy1968 |
 | CLIP | Radford2021 |
+| CLIP-score validity and limitations | Hessel2021clipscore; Otani2023t2ieval; Thrush2022winoground |
 | Clockwork VAE / CW-VAE | Saxena2021 |
 | Clockwork RNN / Koutník et al. 2014 | Koutnik2014 |
 | VTA / Variational Temporal Abstraction | Kim2019vta |
@@ -230,6 +240,7 @@
 | Gomez et al. 2017 / RevNet (+ Mangalam, RevViT forms) | Gomez2017; Mangalam2022 |
 | GPU memory as the binding constraint | Rajbhandari2020; Korthikanti2022 |
 | hallucination phenomenology | Ji2023 |
+| medical image reconstruction hallucination risk | Bhadra2021hallucinations |
 | attention scaling and memory-efficient exact attention | Vaswani2017; Dao2022flash |
 | bootstrap, clustered resampling, and simultaneous inference | Efron1979; Cameron2008cluster; WestfallYoung1993; RomanoWolf2005 |
 | Hungarian assignment | Kuhn1955 |
@@ -261,6 +272,8 @@
 | RoPE (all forms; RoPE-ND / multi-axis) | Su2024rope *(RoPE-ND itself = KulykA1)* |
 | score matching | HyvSM2005; Song2019score |
 | Self-Forcing (both forms) | Huang2025selfforcing |
+| scheduled sampling | Bengio2015 |
+| sequence-level training / self-forcing | Ranzato2016; Huang2025selfforcing |
 | Sora technical report | Sora2024 |
 | stability of complex systems | Khalil2002 |
 | statistical-physics foundations of EBM; Boltzmann-distribution modeling | LeCun2006; Ackley1985 |
@@ -268,6 +281,11 @@
 | survey of large-scale generative video models | SoraSurvey2024 |
 | SVG / SAVP (all forms) | Denton2018; Lee2018savp |
 | system methodology monograph; systems-under-risk methodology | Zgurovsky2007; Zgurovsky2007en |
+| uncertainty decomposition | Kendall2017uncertainty |
+| calibration of modern neural networks | Guo2017calibration |
+| uncertainty-aware resource allocation | Kendall2017uncertainty; Guo2017calibration |
+| physics-informed and uncertainty-aware remote-sensing imputation | Ebel2023uncrtaints; Huot2022wildfire; Shaddy2024wildfire |
+| Revolve checkpoint scheduling | Griewank2000 |
 | TECO (all forms) | Yan2023teco |
 | truncated BPTT | Williams1990 |
 | multi-stage visual representation (image evidence toward a 3-D description) | Marr1982 |
@@ -289,7 +307,5 @@
    numbers independently by its venue style from the same keys).
 3. The dissertation copy is reformatted to ДСТУ 8302:2015 at the UA pass; the count line in
    VSTUP («Список джерел містить N найменувань») is filled from the final count
-   (current census: ~85 external entries + ~10 author entries; the old draft's target of ~145
-   is met once the Chapter-1 topical sections are bound with multi-source citations —
-   [AUTHOR: decide whether to enrich §1.1.2 applications and §1.3 with additional per-topic
-   sources at the verification pass; the current list covers every inline claim]).
+   (current bound census: 132 external entries; the applicant's own publications remain a
+   separately administered list and do not enter this binder count).

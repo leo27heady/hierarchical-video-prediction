@@ -10,11 +10,27 @@ computational uncertainty at every stage of information processing. One of the f
 problems that generates a significant share of the structural-algorithmic and computational
 uncertainty is the problem of inefficient decomposition of the input spatio-temporal data.
 
+The chapter is organized by two resource questions inherited from Chapter 1. **Representation
+allocation:** where should a finite token budget preserve more detail, and how should spatial and
+temporal coordinates remain visible after linearization? **Activation-tape allocation:** which
+intermediate values of a long computation must be stored, and which can be reconstructed during
+the reverse pass? Sections 2.1–2.2 answer the first question through the published [A1] methods;
+§§2.3–2.4 answer the second through the published [A2] method and the dissertation-level
+stochastic extension. These strands share a resource-decision framework but remain separately
+implemented and evaluated.
+
+> **Published basis and dissertation-level extension.** Sections 2.1–2.2 reconstruct the [A1]
+> contribution (V-BLT and RoPE-ND); §§2.3–2.4 reconstruct the deterministic TempVerseFormer and
+> time-agnostic backpropagation contribution of [A2]. The store-the-noise recurrence, explicit
+> replay-memory accounting, perturbation study, and three-axis applicability boundary are the
+> dissertation-level extension built around those published results. None of these additions is
+> attributed to [A4], and the Chapter 3 predictor does not execute them.
+
 In classical systems analysis, the decomposition of a complex system must reflect its internal
 information saturation and structure. However, the traditional approaches to the mathematical
 modeling of video data, popularized by architectures of the Vision Transformer (ViT) type
-[63] and their spatio-temporal extensions ViViT
-[64] and Video Swin Transformer [65],
+[69] and their spatio-temporal extensions ViViT
+[70] and Video Swin Transformer [71],
 are based on a rigid, a-priori-fixed partition of the image or video stream into a regular grid
 of non-overlapping patches of fixed size, e.g., 16×16 pixels.
 
@@ -26,7 +42,7 @@ trade-off matters is empirical rather than a universal defect of fixed-grid mode
 The dissertation investigates adaptive, data-dependent decomposition as one response. The conceptual
 foundation for this transition is the new paradigm of byte-level language models that emerged in
 natural language processing, in particular the Byte Latent Transformer (BLT)
-[66]. These systems abandoned the paradigm of fixed token vocabularies
+[72]. These systems abandoned the paradigm of fixed token vocabularies
 in favor of dynamic grouping of elementary information units (bytes) into latent patches whose
 size is inversely proportional to the local complexity of the signal.
 
@@ -35,7 +51,7 @@ size is inversely proportional to the local complexity of the signal.
 **Figure 2.1 — Conceptual operating principle of entropy-driven byte patching.** Long
 low-entropy regions are grouped into larger latent patches, whereas locally surprising regions
 receive finer allocation. The values are schematic, not empirical measurements. Source:
-author’s schematic after BLT [66].
+author’s schematic after BLT [72].
 
 Within the dissertation research, the results of which are published in **[A1]**, the hypothesis
 was put forward that transferring the principles of adaptive entropy-based tokenization to the
@@ -46,15 +62,16 @@ architecture — the Vision Byte Latent Transformer (V-BLT).
 
 Working at the input-byte level, where each RGB channel value is represented by an integer from
 0 to 255, avoids committing the target interface to a learned discrete visual codebook
-[67]. It does not make the learned hidden representation
+[73]. It does not make the learned hidden representation
 lossless. The developed V-BLT architecture is
 a three-tier hierarchical information-transformation system consisting of a Local Encoder, a
 Global Latent Transformer, and a Local Decoder. In the arc of this dissertation, V-BLT is the
 author's **first realization of the hierarchical adaptation of video generation** — a two-stage
 decomposition in which local byte-level stages surround a global latent stage and an entropy
-criterion governs the allocation of capacity between them; the mature form of this hierarchical
-decomposition, in which the upper level carries the long-range temporal memory of the process,
-is developed in Chapter 3.
+criterion governs the allocation of capacity between them. Chapter 3 applies the **shared systems
+principle** of non-uniform allocation to a different object—the retained context package—but its
+continuous two-level autoencoder and predictor are not a mature or executable continuation of
+V-BLT.
 
 ![Vision Byte Latent Transformer architecture](../../figures/fig46_vblt_architecture.png)
 
@@ -111,7 +128,7 @@ $$
 
 Such a mathematical formulation transforms the problem of minimizing the mean squared error
 (MSE), which by its nature is prone to smoothing and to the loss of high-frequency details, into
-a classification problem using the cross-entropy loss function [96]. This makes it possible to correctly model multimodal distributions:
+a classification problem using the cross-entropy loss function [105]. This makes it possible to correctly model multimodal distributions:
 for example, the contour of a moving object may shift one pixel to the left or to the right with
 equal probability, which cannot be described by a single mean value.
 
@@ -125,23 +142,24 @@ H_i = -\sum_{k=0}^{255} p(x_i = k)\,\log_2 p(x_i = k)
 \tag{2.3}
 $$
 
-The entropy value lies in the range from 0 (absolute determinism and confidence of the system in
-its prediction) to 8 bits (maximum informational uncertainty, a uniform distribution). By
-computing this value for all pixels of a frame, the generative system forms a two-dimensional
-per-pixel entropy map.
+The entropy value lies between 0 bits (a point-mass categorical prediction) and 8 bits (a uniform
+distribution over 256 byte values). These are properties of the model's predictive distribution,
+not proofs of real-world determinism or calibrated confidence. Computing the value for all pixels
+forms a two-dimensional per-pixel entropy map.
 
-Entropy maps are a direct indicator of the state of structural uncertainty and serve as a
-powerful diagnostic instrument. Empirical studies, the results of which are presented in **[A1]**
-and are considered in detail in Chapter 4, confirm that the highest entropy values systematically
-concentrate on the contours of fast-moving objects and in occlusion zones with complex
-kinematics, whereas the static, predictable background exhibits entropy rapidly approaching zero.
+Entropy maps provide a local diagnostic of how dispersed the learned byte distribution is.
+Empirical studies reported in **[A1]** show, for the evaluated sequences, higher entropy near
+moving contours and newly exposed or occluded regions than in static background. This spatial
+association supports their use as an allocation proxy in that setting; without calibration and
+uncertainty decomposition it does not identify aleatoric uncertainty, epistemic uncertainty, or
+prediction error separately [44, 45].
 Figures 2.3 and 2.4 show prediction examples for a simple 2D and a complex 3D sequence
 respectively, where the first row contains the expected frames of the sequence, the second the
 frames predicted by the V-BLT model, and the third the entropy maps corresponding to the
 predicted frames (black indicates high entropy, white low entropy). A key aspect of the V-BLT
-architecture is its ability to operate on raw bytes, which makes it possible to compute per-pixel
-entropy for every prediction. Entropy in this context is a measure of the model's uncertainty:
-the higher the entropy, the less "confident" the model is in its prediction for the given pixel.
+architecture is its ability to operate on categorical raw-byte targets, which makes per-pixel
+predictive entropy directly computable. Higher entropy means a more dispersed categorical output;
+"confidence" is used only in this model-internal sense.
 
 ![V-BLT prediction and entropy maps for a rotating 2D shape](../../figures/fig59_vblt_2d_entropy_published.png)
 
@@ -161,12 +179,12 @@ along moving and newly exposed boundaries. Source: Kulyk and Mokin, *Scaling Vid
 Spatio-Temporal Patches*, published Fig. 8,
 DOI 10.31649/1997-9266-2025-182-5-129-139.
 
-From the standpoint of complex-system control, the entropy map is an ideal feedback signal. It
-allows the problem of structural-algorithmic uncertainty to be solved by dynamically forming
-latent patches of variable size. Low-entropy regions (background) can be aggregated into large
-spatial blocks, saving the $O(L^2)$ resources of the global attention mechanisms. High-entropy
-regions (motion, fine details) can be split into small patches, concentrating the maximum
-computational power of the transformer exactly on the zones where the uncertainty is highest.
+From the standpoint of complex-system control, the entropy map is a **candidate feedback signal**
+for dynamically forming latent patches of variable size. Low-entropy regions can be aggregated
+into larger spatial blocks and high-entropy regions assigned finer patches, reducing the global
+sequence length when the observed entropy pattern is informative. The resulting computational
+saving depends on the realized patch-count reduction, and useful allocation depends on the
+predictive distribution being sufficiently calibrated for the decision [44, 45].
 
 It is important to note the place of this instrument within the overall system developed in this
 dissertation. The per-pixel entropy is a *local* measure of informational complexity: it answers
@@ -178,28 +196,27 @@ degradation metrics stratified by re-entry hardness. The local entropy signal go
 allocation of computational resources within a frame, while the global criteria evaluate the
 consistency of the generated process as a whole.
 
-The successful substantiation and approbation of the entropy-based method for estimating
-spatio-temporal uncertainty opens the path to building fully resource-efficient video-generation
-models. However, the process of transforming a multidimensional spatio-temporal data array into a
-linear sequence of patches for transformer processing carries a serious mathematical problem —
-the loss of structural topology. The next subsection is devoted to solving this problem by
-adapting and integrating multidimensional rotary positional encoding.
+The [A1] results establish the feasibility of entropy-guided allocation in the reported setting;
+they do not establish globally optimal patch boundaries or a fully resource-efficient generator.
+The next question is how a linear token sequence retains explicit spatial and temporal
+coordinates. Section 2.2 develops RoPE-ND for that coordinate-interface problem.
 
 ## 2.2 Structural Coherence through Multidimensional Positional Encoding
 
-During the transformation of a multidimensional spatio-temporal information array into a form
-suitable for processing by the model, the primary topology of the complex system is destroyed.
-Therefore, an important step is to ensure structural coherence before feeding the data into the
-system.
+Flattening a multidimensional spatio-temporal array into a sequence removes **explicit coordinate
+structure from token order** unless positional information is supplied. The pixel/patch values are
+not themselves erased, but permutation-equivariant self-attention otherwise has no basis for
+distinguishing the physical axes. A positional interface is therefore needed before structural
+relations can be learned.
 
 The multidimensional tensor of visual data, mathematically described as
 $X \in \mathbb{R}^{T \times H \times W \times C}$, where $T$ is the temporal dimension, $H$ and
 $W$ are the spatial coordinates, and $C$ the information channels, necessarily undergoes a
 linearization operation. As a result, a one-dimensional sequence of latent vectors
 $Z = \{z_1, z_2, \dots, z_L\}$ is formed, with total sequence length $L = T \cdot H \cdot W$.
-This change of dimensionality is a necessary condition for applying global self-attention
-mechanisms, but it completely erases the information about the mutual spatio-temporal arrangement
-of the elements.
+This linearization is a conventional interface for global self-attention. By itself, it does not
+encode the mutual spatio-temporal arrangement of the elements; the arrangement must be supplied
+through positional features, architectural locality, or an equivalent signal.
 
 In the theory of complex systems, such a loss of information is classified as a critical growth
 of structural uncertainty. The transformer architecture is, by its mathematical nature, invariant
@@ -209,24 +226,20 @@ one frame, or belonged to entirely different frames of the video sequence in tim
 a precise coordinate anchoring makes it impossible to model adequate kinematics and geometry of
 the visual scene.
 
-The traditional approach to preserving positional information is absolute positional encoding
-[12]. This method adds a special coordinate
-vector $p_i$ to each latent token $z_i$. However, absolute encoding has fundamental drawbacks in
-this application: it destroys translation invariance, which is a natural property of the visual
-world, since the system must recognize and generate an object equally well regardless of its
-absolute coordinates in the frame.
+One common approach is absolute positional encoding [12], which adds a coordinate vector $p_i$ to each latent token $z_i$. Absolute positions
+break strict translation equivariance of an otherwise equivariant token operation, although a
+learned model can still represent relative relationships and may benefit from absolute location
+when the task is not translation invariant.
 
-An alternative approach is relative positional encoding (Relative Positional Bias)
-[97, 65], where coordinate information is
-added directly to the attention-weight matrix in the form of biases. Although this method models
-relative distances more correctly, it is accompanied by a significant growth of computational
-complexity and requires $O(L^2)$ memory for storing multidimensional bias matrices, which
-directly contradicts one of the main tasks of this research — the optimization of resource
-consumption.
+An alternative is relative positional encoding or bias [106, 71], where the attention score depends on relative displacement. A naively
+materialized pairwise bias tensor has $O(L^2)$ entries, but parameterized, bucketed, local, and
+kernel-fused implementations need not store a separate dense learned matrix. The relevant design
+question is therefore which positional interface expresses the required axes with acceptable
+materialized memory and computation.
 
 To overcome these systemic contradictions, within the development of the information technology
 it is proposed to apply the mathematical apparatus of Rotary Positional Embedding (RoPE)
-[98] with its subsequent generalization to N-dimensional space. The
+[107] with its subsequent generalization to N-dimensional space. The
 RoPE applies position-dependent rotations without storing a learned pairwise relative-bias
 matrix. The core idea is to group feature pairs as complex coordinates and rotate them according
 to position.
@@ -248,10 +261,10 @@ As the equation shows, the positional phase contains the difference $m-n$. The c
 score still depends on the learned content vectors \(q\) and \(k\); RoPE does not force a
 particular attention pattern.
 
-The original RoPE formulation [98] uses a one-dimensional sequence coordinate.
+The original RoPE formulation [107] uses a one-dimensional sequence coordinate.
 A flattened video index can be supplied, but it does not explicitly separate time, row, and
 column displacement. In the research underlying **[A1]**, N-dimensional rotary positional
-embedding (RoPE-ND) [98] assigns independent feature
+embedding (RoPE-ND) [107] assigns independent feature
 subspaces to these axes.
 
 The essence of the generalization is the decomposition of the latent token's feature space into
@@ -260,10 +273,10 @@ dimensionality of the coordinate system is $N = 3$: the time axis $t$, the verti
 the horizontal axis $x$. Accordingly, the state vectors $q$ and $k$ of total dimensionality $D$
 are split into three equal non-overlapping segments of dimensionality $d = D/3$.
 
-For the mathematical rotation operation in the complex plane to be possible, the dimensionality
-of each subspace must be an even number. This yields a hard architectural requirement on the
-generative system: the total dimensionality of the latent feature space $D$ must be divisible by
-$2N$, i.e., divisible by 6 in the case of video data.
+For the equal disjoint-subspace construction used here, each subspace has even dimensionality.
+Thus this **implementation** chooses $D$ divisible by $2N$ (by 6 for three video axes). Other
+allocations can reserve unequal subspaces or leave channels unrotated, so divisibility by six is
+not a universal requirement of video transformers.
 
 For each of the three coordinates, an independent set of basis rotation frequencies $\theta_j$ is
 formed. The frequencies are typically defined by a geometric progression:
@@ -293,15 +306,21 @@ axis. The same operation is applied to the key vector $k$.
 horizontal, vertical and temporal coordinates so attention depends on relative displacement
 along all three axes. Source: author’s schematic of the [A1] method.
 
-With disjoint coordinate subspaces, the rotary contribution to an attention score decomposes by
-axis. Each term depends on the corresponding relative coordinate difference:
+With disjoint coordinate subspaces, the rotary attention logit decomposes by axis while retaining
+the learned query and key content. For token positions
+$\mathbf p_q=(t_q,y_q,x_q)$ and $\mathbf p_k=(t_k,y_k,x_k)$,
 
 $$
-q'^{\top}_{\text{rotated}}\, k'_{\text{rotated}} = f(\Delta t, \Delta y, \Delta x)
+s(q,k;\mathbf p_q,\mathbf p_k)
+=\frac{1}{\sqrt D}
+\sum_{a\in\{t,y,x\}}
+q_a^{\top}R^{d}_{\Theta,\,p_{k,a}-p_{q,a}}k_a.
 \tag{2.7}
 $$
 
-where $\Delta t = t_q-t_k$, $\Delta y = y_q-y_k$, and $\Delta x=x_q-x_k$. The algebra establishes
+Thus each term depends jointly on the learned content vectors $q_a,k_a$ and the corresponding
+relative coordinate displacement. With $\Delta t=t_q-t_k$, $\Delta y=y_q-y_k$, and
+$\Delta x=x_q-x_k$, the algebra establishes
 relative-coordinate dependence in the rotary score terms. It does not prove that a learned model
 recovers physical topology or attends to the correct object.
 
@@ -326,7 +345,7 @@ activation storage can exceed available device memory. Systems analysis must the
 both model adequacy and implementation feasibility.
 
 For the long unrolls measured in this work, accelerator memory is a binding constraint alongside
-throughput [99, 100]. Which resource
+throughput [108, 109]. Which resource
 dominates is hardware- and model-dependent.
 
 Backpropagation Through Time (BPTT) [28] differentiates a temporally unrolled
@@ -356,22 +375,22 @@ therefore removes learning signals that cross that boundary. Checkpointing reduc
 consumption (to a square-root trade-off under a balanced segment schedule; see Table 2.1) at the
 cost of recomputation.
 
-The task considered here is to organize reverse differentiation so that activation memory is
-constant with respect to the number of reversible time steps \(T\), while preserving the
-full-horizon gradient for the tested recurrence.
+The task considered here is to organize reverse differentiation so that the transient local
+activation graph is constant with respect to the number of reversible time steps \(T\), while
+preserving the full-horizon gradient semantics for the tested recurrence.
 
 To solve this systemic problem, the dissertation research developed the Temporal Reversible
 Transformer (TempVerseFormer) architecture. The developed architecture and the mathematical
 method of computational-resource optimization were published by the author as the sole author in
 an international scientific journal indexed by the Scopus scientometric database (**[A2]**).
 
-The method is based on the transition from traditional directed acyclic computation graphs to
-discrete reversible architectures. The core idea of reversible computation is to build
-state-transition functions that are bijective (one-to-one). If the transition function from layer
-$l$ to layer $l+1$ has an exact analytic inverse, the system can restore its previous state
-purely from the current state, without storing it in memory during the forward pass.
+The method replaces a stored long activation tape with discrete reversible transitions. If the
+transition from layer $l$ to layer $l+1$ has a closed-form algebraic inverse, the preceding state
+can be reconstructed from the current state during reverse replay. In finite precision the
+reconstruction is approximate and its error must be measured; parameters, optimizer state, and
+any exogenous replay information remain resident.
 
-Continuous-time adjoint methods such as Neural ODEs [85] and
+Continuous-time adjoint methods such as Neural ODEs [91] and
 discrete reversible models such as RevNet and RevViT
 [32] provide related
 storage/recomputation strategies with different numerical trade-offs. The
@@ -403,10 +422,10 @@ y_2^{(l)} = x_2^{(l)} + \operatorname{MLP}\!\left(y_1^{(l)}\right)
 \tag{2.10}
 $$
 
-This specific algebraic structure guarantees that only $x_2$ — which remains unchanged during the
-first stage — is used to compute the additive update of $x_1$. Accordingly, the input information
-can be reconstructed absolutely without loss by performing the operations in reverse order and
-replacing addition with subtraction.
+This algebraic structure ensures that only $x_2$—unchanged during the first stage—is used to
+compute the additive update of $x_1$. Accordingly, in exact arithmetic the inputs are recovered
+by evaluating the couplings in reverse order and replacing addition with subtraction; numerical
+reconstruction error is reported separately.
 
 Reverse reconstruction of the second branch:
 
@@ -425,7 +444,8 @@ $$
 ![Forward and reverse information flow in the reversible block](../../figures/fig53_reversible_block_published.png)
 
 **Figure 2.6 — Forward and reverse information flow in a reversible transformer block.** The
-additive coupling structure permits exact reconstruction of block inputs from its outputs.
+additive coupling structure permits algebraic reconstruction of block inputs from its outputs;
+finite-precision error is measured separately.
 Source: author’s published TempVerseFormer project asset [A2].
 
 For the reversible blocks to solve the task of controlling generation in time, they are
@@ -454,10 +474,11 @@ transformer blocks.
 transition is applied along physical time while the realized state is passed to the next step.
 Source: author’s published TempVerseFormer project asset [A2].
 
-Since the functor $\Phi$ consists of reversible elements, the entire multi-step trajectory
-$V_1 \to V_2 \to \dots \to V_T$ preserves the property of global reversibility. Knowing only the
-final state $V_T$, the system has the mathematical ability to reconstruct, step by step, all
-intermediate values without storing them in memory.
+For a deterministic recurrence composed of these reversible elements, and given unchanged model
+parameters and all conditioning inputs, the trajectory
+$V_1 \to V_2 \to \dots \to V_T$ is algebraically invertible. Reverse replay reconstructs its
+intermediate states from $V_T$ one step at a time instead of retaining their activation graphs;
+finite-precision error and any stochastic replay signal remain separate accounting terms.
 
 To focus the computational resource of the reversible transformer exclusively on the analysis of
 complex temporal dynamics, the global architecture of the TempVerseFormer information technology
@@ -497,12 +518,10 @@ for the tested reversible recurrence. The method is based on integrating the mat
 apparatus of discrete reversible transformations directly into the gradient-computation process
 along the temporal chain.
 
-The main idea of the developed method is a change in the paradigm of computation-graph
-construction. Instead of statically caching all system states during the forward pass, they are
-reconstructed dynamically during the backward pass. This reconstruction is mathematically exact
-and requires no additional training or approximation, since it relies on the algebraic properties
-of the inverse transition functions $R^{-1}$ built into the architecture of the reversible
-blocks.
+The main idea is to reconstruct states during the backward pass instead of caching the full
+activation trajectory during the forward pass. The inverse transition functions $R^{-1}$ are
+algebraically exact for the stated recurrence; an implementation reconstructs them within
+floating-point tolerance and pays recomputation cost without requiring a learned inverse.
 
 The training strategy of the complex generative system under this algorithm splits into two
 phases.
@@ -536,54 +555,59 @@ time step. Source: author’s algorithmic schematic.
 ![Two-phase time-agnostic backpropagation](../../figures/fig50_time_agnostic_backprop.png)
 
 **Figure 2.11 — Two-phase time-agnostic backpropagation.** A tape-free forward phase is followed
-by exact reverse reconstruction and local gradient accumulation. Source: author’s algorithmic
-schematic.
+by algebraic reverse replay, local graph reconstruction, and gradient accumulation. Source:
+author’s algorithmic schematic.
 
 For a rigorous confirmation of the effectiveness of the developed method, we formulate and prove
 a lemma on the optimization of operating-memory consumption.
 
-**Lemma 1 (on the computational complexity of time-agnostic backpropagation).** *Let a discrete
-dynamic system be given with a trajectory length of $T$ steps, where the transition functor is
-parameterized by a reversible neural network with $L$ layers and per-layer state dimensionality
-$D$. Then the peak amount of operating memory required to compute the gradients of the objective
-function with respect to the system parameters is $O(L \cdot D)$ and is constant, $O(1)$, with
-respect to the length $T$ of the temporal trajectory.*
+**Lemma 1 (activation-tape complexity of deterministic time-agnostic backpropagation).** *Let a
+deterministic discrete dynamic system have a trajectory of $T$ steps, with a transition
+parameterized by a reversible neural network of $L$ layers and complete per-layer state footprint
+$D_s$ (for $N$ tokens of width $D$, $D_s=ND$). Excluding model/optimizer state, and assuming the transition needs no $T$-dependent
+exogenous replay record, the peak transient activation graph needed for reverse replay is
+$O(L \cdot D_s)$ and therefore $O(1)$ in $T$.*
 
 **Proof.**
 
-1. Assume the dimensionality of the state tensor at one layer is $D$. Under classical BPTT the
+1. Assume the state footprint at one layer is $D_s$. Under classical BPTT the
    algorithm caches all inputs for every layer $l \in \{1, \dots, L\}$ and every time step
    $t \in \{1, \dots, T\}$; hence the peak memory is
-   $M_{\text{BPTT}} = T \cdot L \cdot D = O(T \cdot L \cdot D)$.
+   $M_{\text{BPTT}} = T \cdot L \cdot D_s = O(T \cdot L \cdot D_s)$.
 
-2. The proposed algorithm stores, during the forward pass, only the final state at step $T$. The
-   memory for this is $O(D)$. Activations for $t < T$ and $l < L$ are deleted immediately after
-   they are used for the next step. Hence the forward-pass memory does not depend on $T$.
+2. The proposed deterministic algorithm stores, during the forward pass, the terminal state and
+   horizon-independent control information. The terminal state costs $O(D_s)$. Activations for
+   $t < T$ and $l < L$ are deleted after use, so this activation term does not depend on $T$.
 
 3. During the reverse pass the algorithm processes the steps sequentially: $t = T, T-1, \dots, 1$.
    At the current step $t$ the algorithm reconstructs the inputs and unrolls the local
-   computation graph of a single transition. The size of this graph is $O(L \cdot D)$.
+   computation graph of a single transition. The size of this graph is $O(L \cdot D_s)$.
 
 4. Immediately after the gradients $\nabla_{\theta} L_{\text{loss}}$ and
    $\nabla_{x_{t-1}} L_{\text{loss}}$ are computed, this local graph is completely destroyed and
    its memory freed before the algorithm proceeds to step $t-1$.
 
-5. Therefore, the maximum number of tensors simultaneously resident in the system memory at any
-   moment equals the size of one local graph, $O(L \cdot D)$, plus a constant volume for the
-   gradient-accumulation buffer. Since the temporal parameter $T$ does not enter this expression,
-   the peak memory consumption is mathematically $O(1)$ with respect to the sequence length.
-   $\blacksquare$
+5. Therefore, the maximum transient activation graph equals one local graph,
+   $O(L \cdot D_s)$, plus horizon-independent gradient buffers. Model parameters and optimizer
+   state are common base costs. If a stochastic recurrence stores one conditioning/noise tensor
+   per step, the additional persistent replay term is $O(TD_{\epsilon})$ (§2.4(i)); it is not
+   covered by this deterministic lemma. $\blacksquare$
 
 For comparative analysis, Table 2.1 presents the theoretical complexity estimates of the
 developed method against the existing approaches.
 
 **Table 2.1 — Theoretical estimate of computational complexity in multi-step optimization**
 
-| Optimization method | Memory consumption | Operation count | Gradient exactness |
+| Optimization method | Horizon-dependent storage | Recomputation | Gradient semantics |
 |---|---|---|---|
-| Standard BPTT | $O(T \cdot L \cdot D)$ | $C$ | exact |
-| Gradient checkpointing | $O(\sqrt{T} \cdot L \cdot D)$ | $\approx 1.5\,C$ | $\pm 10^{-6}$ |
-| Developed method (time-agnostic BP) | $O(L \cdot D) \sim O(1)$ in $T$ | $2\,C$ | $\pm 10^{-6}$ |
+| Standard BPTT | $O(T \cdot L \cdot D_s)$ activation tape | baseline $C$ | reverse-mode gradient |
+| Gradient checkpointing | schedule-dependent; $O(\sqrt{T}\cdot L\cdot D_s)$ for a balanced segment schedule | schedule-dependent, typically $>C$ | same gradient in exact arithmetic; floating-point differences implementation-dependent |
+| Developed method (deterministic recurrence) | $O(L \cdot D_s)$ transient local graph, $O(1)$ in $T$ | approximately one local recomputation per reverse step | same gradient in exact arithmetic; numerical agreement measured |
+
+The table isolates horizon-dependent activation storage. Parameters, optimizer state, allocator
+overheads, and—in the stochastic extension—the replay signal are additional terms. Consequently,
+the square-root checkpoint row and any compute multiplier describe a particular schedule rather
+than a universal property [30, 31].
 
 ![GPU memory consumption versus prediction horizon](../../figures/fig57_tempverse_memory_published.png)
 
@@ -615,26 +639,24 @@ additional computation for the critically scarce resource — GPU memory — and
 hundreds or thousands of steps operationally possible when the non-reversible activation tape
 would exceed the device budget.
 
-In addition, the proposed architecture enables a unique **selective backpropagation** strategy.
-In many control problems the initial steps of a process are noisy, while the most informative
-steps are the last ones. The method allows the system to run the forward pass to full length and
-then reconstruct activations and compute gradients only for a narrow target segment
-$[T - K_{\text{opt}},\; T]$, ignoring the rest of the chain. This focuses the optimization on the
-relevant portions of the trajectory with zero memory cost for the skipped stages.
+The implementation also supports **selective backpropagation** over a chosen terminal segment.
+The system can run the forward process to full length and reconstruct local graphs only for
+$[T-K_{\text{opt}},T]$. This is a form of deliberately truncated or partial-loss optimization,
+not a unique gradient semantics: it omits learning signals through earlier steps. Skipped stages
+avoid activation-graph reconstruction, but the terminal/base state and any replay metadata still
+consume memory.
 
 ### Extension to Stochastic Recurrences and Limits of Reversible Computation
 
-The time-agnostic backpropagation method was substantiated above for *deterministic* transition
-functors (2.13). The hierarchical video generation model developed in Chapter 3, however, is a
-*stochastic* dynamic system: its state transitions include an injected noise component, both as a
-generative modeling choice and within its iterative-refinement generation core. For the developed
-resource-optimization method to serve as the training foundation of that model, it must be
-extended to stochastic recurrences, and the boundaries of its applicability must be established.
-This section performs both steps; all numerical values are measured properties of the software
-implementation (the measurement methodology and the experimental environment are described in
-Chapter 4).
+The time-agnostic backpropagation method was substantiated above for deterministic transition
+functors (2.13). Many generative recurrences also inject stochastic conditioning, which creates an
+additional replay-information requirement. This section extends the accounting to that case and
+delimits when reversible replay is useful. The final Chapter 3 predictor samples stochastically
+but is trained on individual clean-context windows and does **not** differentiate through its
+rollout or sampler; the extension is therefore a separately measured method that could support a
+future rollout-through-time objective, not the training foundation of the reported context result.
 
-**(i) The exactly invertible stochastic recurrence (store-the-noise).** Consider the stochastic
+**(i) A conditionally invertible stochastic recurrence (store-the-noise).** Consider the stochastic
 generalization of the temporal chain (2.13), in which the latent state $h_t$ of the modeled
 process evolves as
 
@@ -646,9 +668,10 @@ $$
 where $F$ is a transition operator built from reversible (additive-coupling) blocks, $\sigma$ is
 the noise scale, and $\epsilon_t$ is the noise sample of step $t$. Transformation (2.14), taken
 alone, is not invertible: the noise irreversibly injects new information. However, if the noise
-samples $\epsilon_t$ drawn during the forward pass are *stored* — the store-the-noise principle,
-extending the reversible recurrent networks of [101] — the
-recurrence becomes exactly invertible. Equations (2.14)–(2.15) state the principle in its
+samples $\epsilon_t$ drawn during the forward pass are *stored*—the store-the-noise principle,
+extending the reversible recurrent networks of [110]—the
+preceding state becomes algebraically recoverable conditional on replaying the identical noise.
+Equations (2.14)–(2.15) state the principle in its
 simplest, *external-additive* form, in which the stored noise is subtracted before the inverse
 transition is applied:
 
@@ -674,46 +697,53 @@ s_2 = y_2 - G(y_1), \qquad s_1 = y_1 - F(s_2, \epsilon_t).
 \tag{2.16'}
 $$
 
-The additive-coupling inverse is exact for an *arbitrary* conditioning argument, so (2.16')
-holds verbatim for any signal injected this way (noise, actions, level context); the
+The additive-coupling inverse is algebraically valid for an *arbitrary* fixed conditioning
+argument, so (2.16') holds for any identically replayed signal injected this way (noise, actions,
+level context); the
 external-additive scheme (2.14)–(2.15) is recovered as the special case in which the noise
 enters only as a final additive term. All numerical properties quoted below are measured on the
 conditioning-injected construction (2.16)–(2.16'), which is the one realized in the software
-complex. The memory cost of storing the noise sequence grows only as $O(T \cdot D_{\epsilon})$ —
-one noise tensor per step, with no layer factor $L$ and no computation-graph factor — and is
-negligible against the $O(T \cdot L \cdot D)$ activation graph that BPTT would store (confirmed
-by the direct measurement in part (iii): the total memory of the reversible method stays flat).
+complex. Storing one noise tensor per step costs $O(T \cdot D_{\epsilon})$. It has no layer or
+computation-graph factor and is much smaller than the $O(T \cdot L \cdot D_s)$ BPTT activation tape
+in the measured configuration, but it is still linear in $T$. Accordingly, the method has a
+constant-in-$T$ **transient local activation graph**, not a universal $O(1)$ total-memory claim.
+Table 2.3 reports the resulting modest growth of measured peak memory.
 
 The following properties of this construction were verified numerically on the implemented
 hierarchical multi-rate recurrent core (software complex of the dissertation; measurement details
 in Chapter 4):
 
-- **Exact invertibility of the deterministic coupling:** maximum state-reconstruction error
+- **Algebraic invertibility of the deterministic coupling:** maximum numerical
+  state-reconstruction error
   $5.5 \times 10^{-15}$ (fp64); for the Lipschitz-constrained coupling in fp32,
   $3.1 \times 10^{-5}$.
-- **Exact invertibility of the stochastic recurrence:** with the stored noise replayed, the
-  maximum reconstruction error over the trajectory is $8.4 \times 10^{-13}$; replaying *wrong*
-  noise destroys the reconstruction (error of order $10^{1}$) — i.e., the stored noise is
-  exactly the information-theoretic price of inverting a stochastic step.
-- **Gradient equivalence:** the gradients obtained by reverse-replay (reconstructing states
-  backward by (2.15) and rebuilding local graphs, as in Lemma 1) coincide with the gradients of
-  full BPTT with cosine similarity $1.000000$ — the extension preserves the exact-gradient
-  property of the deterministic method.
+- **Conditional algebraic invertibility of the stochastic recurrence:** with the stored noise
+  replayed, the maximum numerical reconstruction error over the trajectory is
+  $8.4 \times 10^{-13}$; replaying *wrong* noise destroys the reconstruction (error of order
+  $10^{1}$). The replay signal is therefore necessary information for this implementation and
+  must be counted.
+- **Gradient direction agreement:** gradients obtained by reverse replay (reconstructing the
+  implemented conditioning-injected states backward by (2.16') and rebuilding local graphs, as in
+  Lemma 1) have cosine similarity $1.000000$ with the full-BPTT gradients in the reported numerical
+  test. Cosine similarity establishes directional agreement, not equality of gradient magnitude.
+  The algebraic procedures implement the same chain rule under exact reconstruction in exact
+  arithmetic; finite-precision componentwise or norm equality is not established by this test.
 
-Thus the time-agnostic backpropagation of §2.4 transfers to stochastic multi-level recurrences
-without loss of exactness, which is precisely the form required by the hierarchical generation
-model of Chapter 3 (Task 4 of the research in its extended formulation).
+Thus the local reverse-replay construction transfers to stochastic multi-level recurrences when
+the identical conditioning is available, with explicit $O(TD_{\epsilon})$ replay storage in the
+measured implementation. This extends the [A2] resource method; it is compatible with, but not
+required by or used in, the Chapter 3 predictor.
 
-**(ii) Invertibility does not imply stability: the Lipschitz characterization.** A separate
+**(ii) Invertibility does not imply stability: a Lipschitz diagnostic.** A separate
 systemic question is whether the reversibility of the transition operator stabilizes the
 long-horizon behavior of the modeled process. The answer, established by direct measurement, is
 negative — and this delimits what the developed method may and may not be credited with. All
-recurrences in Table 2.2 are *exactly invertible* (the additive coupling has unit Jacobian
-determinant); they differ only in the spectral-norm bound imposed on the coupling function $F$.
+recurrences in Table 2.2 are algebraically invertible under identical conditioning; they differ
+only in the spectral-norm bound imposed on the coupling function $F$.
 The measured perturbation growth $\lVert \delta_K \rVert / \lVert \delta_0 \rVert$ of a
 free-running rollout over $K = 100$ steps spans four orders of magnitude:
 
-**Table 2.2 — Perturbation growth of exactly invertible recurrences over $K = 100$ free-running
+**Table 2.2 — Perturbation growth of algebraically invertible recurrences over $K = 100$ free-running
 steps as a function of the Lipschitz bound on the coupling**
 
 | Coupling constraint | $\lVert \delta_{100} \rVert / \lVert \delta_0 \rVert$ | Regime |
@@ -723,35 +753,35 @@ steps as a function of the Lipschitz bound on the coupling**
 | spectral norm, $\operatorname{Lip}(F) \le 0.1$ | $1.5\times$ | bounded |
 | spectral norm, $\operatorname{Lip}(F) \le 0.02$ | $1.0\times$ | tightly bounded |
 
-The mechanism is elementary: the additive-coupling step $s \mapsto s + F(s)$ has a step-Lipschitz
-constant
+For the residual map $G=I+F$, the triangle inequality gives the valid general upper bound
 
 $$
-\operatorname{Lip}(\text{step}) \approx 1 + \operatorname{Lip}(F) \;\ge\; 1,
+\operatorname{Lip}(G)
+\;=\;\operatorname{Lip}(I+F)
+\;\le\;1+\operatorname{Lip}(F).
 \tag{2.17}
 $$
 
-i.e., the additive structure is inherently non-contractive — constraining $F$ to
-$\operatorname{Lip}(F) \le 1$ is *not* sufficient (the growth factor $26{,}600\times$ in
-Table 2.2), and bounded long-horizon dynamics require a *small* coupling Lipschitz constant
-($\operatorname{Lip}(F) \lesssim 0.1$). This is the stability analysis of invertible networks
-[102, 103] instantiated
-for temporal recurrences and confirmed by measurement. The systemic conclusion: **invertibility
-is a memory-and-correctness property, not a stability property.** In the developed technology,
-reversibility is claimed exclusively as the constant-memory enabler of long-horizon training with
-exact gradients; the stability of the modeled trajectory is a separate design requirement,
-enforced by the Lipschitz constraint on the coupling (this requirement informs the architecture
-of Chapter 3).
+This bound is neither an equality nor a lower bound: cancellation can make $I+F$ contractive, and
+the bound alone cannot predict realized perturbation growth. Table 2.2 supplies the empirical
+result for the tested recurrences: imposing $\operatorname{Lip}(F)\le1$ did not prevent growth,
+whereas the tested constraints at 0.1 and 0.02 yielded bounded trajectories over 100 steps. These
+measurements motivate a small-coupling condition in this implementation; they do not prove a
+universal threshold [111, 112]. The
+systemic conclusion is narrower and valid: **algebraic invertibility enables reconstruction but
+does not imply stable forward dynamics.** Stability must be established separately for the
+recurrence being used. The final Chapter 3 predictor does not use this reversible recurrence or
+its Lipschitz constraint.
 
 ![Measured reversible memory frontier](../../figures/fig51_reversible_memory_frontier.png)
 
 **Figure 2.14 — Measured memory frontier of the stochastic recurrent core.** Standard BPTT
 reaches 12.2 GB at $K=40$, spills at $K=80$ and cannot run at $K=120$ on the 16 GB device;
 checkpointing grows slowly, while reverse replay stays near 1.1–1.2 GB through $K=160$. Source:
-repository Panel-A measurements (`hvp_rev/mem_frontier.py`,
-`docs/SESSION_JOURNEY_AND_EBT_PLAN.md`, §2.2).
+author’s measurements summarized in Table 2.3; artifact provenance is listed in the reproducibility
+appendix.
 
-**(iii) The constant-memory autoregressive-rollout frontier (measured).** The practical payoff of
+**(iii) The activation-tape frontier for autoregressive rollout (measured).** The practical payoff of
 the extended method is measured on the real training loop of the implemented stochastic
 hierarchical recurrent core (three levels, batch 32, Adam optimizer, NVIDIA RTX 4060 Ti 16 GB;
 the full environment is specified in Chapter 4, §4.1.4). Table 2.3 gives the peak training memory as a function of the
@@ -771,19 +801,22 @@ checkpointing, and the developed reversible reverse-replay on the same model**
 training step by a factor of $\approx 60$ (from 0.74 s at $K = 40$ to 43.8 s); at $K = 120$ it
 fails with a hard out-of-memory error.
 
-The frontier confirms Lemma 1 and its stochastic extension empirically: BPTT consumes 12.2 GB
-already at $K = 40$ and becomes infeasible at $K = 120$, while the developed method remains
-essentially flat ($\approx$1.1–1.2 GB through $K = 160$), making long-horizon rollout training
-feasible on a consumer-grade 16 GB device. **The honest reading of Table 2.3, however, must
+The frontier supports Lemma 1 and the stochastic accounting in the tested range: BPTT consumes
+12.2 GB already at $K = 40$ and becomes infeasible at $K = 120$, while the developed method grows
+modestly from 1.091 to 1.176 GB through $K = 160$, making the measured long-horizon rollout
+training feasible on a consumer-grade 16 GB device. This curve includes the replay information;
+the constant-in-$K$ claim applies to the transient local activation graph. **The interpretation
+of Table 2.3 must
 include the checkpointing column:** gradient checkpointing also remains feasible at all measured
 $K$ (1.47–1.97 GB, growing slowly). The correct claim for the developed method is therefore a
-**constant-memory capability relative to vanilla BPTT** — with strictly exact reconstruction and
-gradients equal to BPTT — and an approximate **Pareto equivalence with gradient checkpointing**
-(comparable memory order and comparable recomputation overhead), *not* a memory victory over
-checkpointing. This scoping is stated deliberately: it is what the three-axis analysis below
-turns into a general applicability boundary.
+**constant activation-tape capability relative to vanilla BPTT**—with algebraically valid replay
+and measured gradient-direction agreement. Reverse replay also has lower peak memory than the
+checkpointing arm at every $K$ in Table 2.3, but the temporal-rollout experiment does not report a
+matched checkpointing-versus-replay runtime comparison. It therefore establishes neither Pareto
+dominance nor Pareto equivalence between those two methods. This scoping is stated deliberately:
+the three-axis analysis below turns it into an applicability boundary.
 
-**(iv) The three-axis taxonomy of reversible computation and its no-go result.** The reversible
+**(iv) The three-axis taxonomy of reversible computation and its measured boundary.** The reversible
 mechanisms developed and reviewed in this chapter can be organized along three orthogonal axes of
 the computation graph on which reversibility can be exploited to avoid storing states:
 
@@ -791,17 +824,17 @@ the computation graph on which reversibility can be exploited to avoid storing s
    its descendants [32]): the
    literature baseline on which the developed blocks build.
 2. **The temporal axis** — reversibility along the physical time of the modeled process
-   (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16)). On this axis
-   reversibility **pays**: the stored quantity that BPTT accumulates is the $O(T \cdot L \cdot D)$
-   activation trajectory itself, exactly what the inverse coupling reconstructs; the measured
-   result is the frontier of Table 2.3.
+   (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16')). On the tested
+   recurrence this axis **paid** because the BPTT activation trajectory dominated the avoidable
+   horizon-dependent storage; inverse coupling reconstructed that trajectory, while replay noise
+   remained explicitly counted. The measured result is Table 2.3.
 3. **The computational axis** — reversibility along the *inner optimization loop*: the $K$
    pseudo-time steps of iterative refinement (gradient descent, MCMC/Langevin sampling, or a
-   diffusion sampler) executed *inside* one generation step. The original draft of this
-   dissertation asserted that the graph isomorphism between the temporal chain $T$ and the inner
-   chain $K$ makes time-agnostic backpropagation the foundation for differentiating through such
-   loops. The isomorphism of the graph *structure* is real, but the memory *accounting* is
-   opposite, and on this axis reversibility **provably cannot pay** against checkpointing.
+   diffusion sampler) executed inside one generation step. Although this is also a chain, its
+   stored trajectory state can be much smaller than the derivative graph rebuilt at each reverse
+   step. The comparison must therefore be decided by state-versus-graph accounting rather than by
+   graph shape alone. In the tested implementation, reversibility did not improve the practical
+   trade-off over checkpointing.
 
 The accounting for the third axis is as follows. Differentiating through a $K$-step
 gradient-descent (or Langevin) inner loop requires, at each reverse step, a Hessian-vector
@@ -822,32 +855,32 @@ crossover at which trajectory states would begin to dominate the second-order gr
 $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically meaningful refinement
 depth. The underlying storage arithmetic — counting the bits per step that an optimizer
 trajectory consumes versus the volume contraction of the update map — is due to
-[104], **applied** here to the video-generation inner loop, not claimed as a new theorem.
-Moreover, plain gradient descent is not closed-form invertible at all (inversion requires the
-momentum-buffer scheme of Maclaurin et al., whose kilobyte-scale state itself demonstrates that
-trajectory storage was never the binding constraint), and the reversible-sampler variants for
-diffusion inner loops are already published [105, 106, 107], with large-scale practice choosing checkpointing
-or truncation precisely because state $\ll$ graph [108, 109].
+[113], **applied** here to the video-generation inner loop, not claimed as a new theorem.
+Moreover, a generic nonlinear gradient-descent update does not provide the closed-form inverse
+assumed by the local replay algorithm; the reversible momentum-buffer construction of Maclaurin
+et al. supplies additional replay information. In this measured configuration its kilobyte-scale
+state confirms that trajectory storage was not the binding constraint. Reversible-sampler variants for
+diffusion inner loops are already published [114, 115, 116], while related optimization-through-sampling work
+also uses checkpointing or truncation [117, 118].
 
 ![Axes of reversible computation](../../figures/fig52_reversibility_axes.png)
 
 **Figure 2.15 — Three axes of reversible computation and their measured applicability.**
-Reconstruction pays along network depth and temporal recurrence. In the tested inner-optimization
+Reconstruction can save activation storage along network depth and temporal recurrence. In the tested inner-optimization
 loop the model/optimizer base state dominates: reversible replay saves only 14 MB (0.26% of peak)
-relative to checkpointing while approximately doubling wall time. Source: author’s taxonomy from
-`logs_rhcp/mem_panel.md`.
+relative to checkpointing while approximately doubling wall time. Source: author’s taxonomy and
+measurements; artifact provenance is listed in the reproducibility appendix.
 
-The resulting **applicability boundary** of the developed resource-optimization method is stated
-as the closing result of this chapter: *reversibility pays on recurrences whose transition
-operator is the invertible coupling itself — the temporal rollout of the modeled video process —
-and cannot pay on inner optimization loops, whose reverse step is dominated by the reconstruction
-of a per-step derivative graph; the latter regime belongs to gradient checkpointing.* This
-scoping replaces the earlier $T \leftrightarrow K$ isomorphism claim with a two-sided,
-measurement-backed delimitation: it simultaneously establishes where the method is the correct
-tool — as the **enabling instrument** for constant-memory rollout-through-time training, whose
-feasibility Chapter 4 demonstrates by direct memory measurement (the validated Chapter 3 model
-itself is trained single-window and does not presuppose it) — and closes, on the record, the
-axis where it is not.
+The resulting **applicability boundary** is conditional rather than universal. Reversible replay
+is attractive when the avoidable activation trajectory is a material fraction of peak memory and
+the transition has a stable, economical inverse. In the measured temporal recurrence those
+conditions hold relative to vanilla BPTT. In the measured inner-optimization loop, the per-step
+state is only 0.28% of peak, reverse replay saves 0.26% relative to checkpointing, and
+recomputation roughly doubles wall time; checkpointing is therefore the appropriate method in
+that tested regime. A crossover would require much larger state relative to the derivative graph
+or an extreme inner depth (the present accounting estimates $K\approx5{,}000$–$30{,}000$), so no
+benefit is claimed beyond the measured and analyzed conditions. The Chapter 3 predictor is
+single-window trained and does not presuppose this method.
 
 ## 2.5 Chapter Conclusions
 
@@ -876,31 +909,44 @@ multi-step video generation systems. The main results are as follows.
    reversible transformer blocks joined by the temporal-chaining mechanism.
 
 4. The lemma on the computational complexity of the time-agnostic backpropagation algorithm was
-   formulated and proven: the algebraic reconstruction of local graphs during the reverse pass
-   reduces the peak memory consumption from $O(T \cdot L \cdot D)$ to $O(L \cdot D)$ — a constant
-   with respect to the trajectory length — while preserving gradient exactness.
+   formulated for the deterministic recurrence: algebraic state replay reduces the transient
+   activation graph from $O(T \cdot L \cdot D_s)$ to $O(L \cdot D_s)$, constant in trajectory length,
+   while implementing the same reverse-mode derivative in exact arithmetic. Parameters,
+   optimizer state, and stochastic replay information are accounted separately.
 
 5. The time-agnostic backpropagation method was **extended to stochastic multi-level
-   recurrences** via the exactly invertible store-the-noise recurrence: with stored noise, state
-   reconstruction is exact (measured error $8.4 \times 10^{-13}$) and the reverse-replay
-   gradients coincide with BPTT (cosine similarity $1.000000$). The measured memory frontier of
+   recurrences** through a store-the-noise construction that is algebraically invertible given
+   identical replay conditioning. Numerical state-reconstruction error is
+   $8.4 \times 10^{-13}$ and the reverse-replay and BPTT gradient vectors have cosine similarity
+   $1.000000$ in the reported test. This is directional agreement; gradient-magnitude equality is
+   not inferred from cosine similarity. The stored noise costs $O(TD_{\epsilon})$; it is smaller than
+   the removed activation tape here but is not zero. The measured memory frontier of
    the real training loop confirms the practical payoff — BPTT consumes 12.2 GB at rollout length
    $K = 40$ and fails (OOM) at $K = 120$, whereas the developed method remains at
-   $\approx$1.1–1.2 GB through $K = 160$, with gradient checkpointing remaining a comparable
-   alternative (1.47–1.97 GB) — i.e., the method provides a constant-memory capability relative
-   to vanilla BPTT and approximate Pareto equivalence with checkpointing, which is stated
-   honestly. The **applicability domain** of reversible computation was delimited by the
-   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and can support
+   $\approx$1.1–1.2 GB through $K = 160$, with gradient checkpointing remaining memory-feasible
+   (1.47–1.97 GB). Thus the method provides a constant-local-activation capability relative to
+   vanilla BPTT. Because matched runtime was not reported for the temporal-rollout replay and
+   checkpointing arms, no Pareto-equivalence claim is made between them.
+   The **applicability domain** of reversible computation was delimited by the three-axis taxonomy
+   (depth — time — computation): the measured temporal-rollout axis paid and can support
    future rollout-through-time training of hierarchical video generators; the final Chapter 3
    predictor is trained on individual windows and does not use that integration. The
-   inner-optimization-loop axis cannot pay against
-   checkpointing (a saving of $\approx 0.2\%$ at $K = 128$, with the state-versus-graph
-   accounting applied after Maclaurin et al.). It was additionally established by measurement
-   that **invertibility does not imply stability**: exactly invertible recurrences span
+   inner-optimization-loop implementation did not pay against checkpointing (a saving of
+   $\approx 0.2\%$ at $K = 128$, with the state-versus-graph accounting applied after Maclaurin
+   et al.); the stated crossover conditions bound this conclusion. Measurement also established
+   that **invertibility does not imply stability**: the tested algebraically invertible recurrences span
    perturbation-growth regimes from $333\times$ to $1.0\times$ over 100 steps purely as a
    function of the Lipschitz bound on the coupling, so trajectory stability is a separate design
-   requirement (a Lipschitz constraint). This is an applicability result for reversible temporal
+   requirement for the tested recurrence. This is an applicability result for reversible temporal
    recurrences; the final Chapter 3 predictor does not use reversible rollout training.
+
+The chapter therefore hands two distinct instruments to the rest of the dissertation. [A1]
+provides a representation-allocation method and a multi-axis coordinate interface; [A2] and its
+stochastic extension provide an activation-tape storage/recomputation method with a measured
+boundary against checkpointing. Chapter 3 does not combine these modules into its predictor.
+Instead, it takes forward their systems question—how finite capacity should be allocated—and
+applies it to retained context/state. Chapter 4 keeps the corresponding evidence streams separate
+and compares their operating regions in the final synthesis.
 
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
 (§§2.3–2.4). The stochastic-recurrence extension and three-axis applicability taxonomy are

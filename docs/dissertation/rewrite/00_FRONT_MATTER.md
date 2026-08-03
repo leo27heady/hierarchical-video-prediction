@@ -72,10 +72,12 @@ claimed. A protected persistent-object 48-to-300 Moving-MNIST study provides a m
 boundary: hierarchy better preserves spatial support and trajectory continuity, whereas flat
 context better preserves digit identity. Both systems remain difficult in absolute terms.
 
-The reversible-computation strand independently demonstrates exact reverse replay and constant
-activation-memory scaling with temporal horizon in the tested recurrence, while identifying
-gradient checkpointing as the appropriate practical competitor and delimiting cases in which
-reversibility does not pay. The dissertation therefore contributes an integrated systems
+The reversible-computation strand independently demonstrates algebraic reverse replay, numerical
+state reconstruction within reported tolerances, and an approximately horizon-independent peak
+activation-tape footprint in the tested recurrence. Replay noise or equivalent reproducibility
+metadata remains a separately accounted horizon-dependent input. Gradient checkpointing is the
+appropriate practical comparator, and the measured applicability analysis identifies cases in
+which reversibility does not pay. The dissertation therefore contributes an integrated systems
 methodology and research software toolkit, not one experimentally validated end-to-end model that
 combines every strand.
 

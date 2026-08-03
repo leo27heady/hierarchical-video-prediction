@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REWRITE = ROOT / "docs" / "dissertation" / "rewrite"
 DISS_FINAL = ROOT / "docs" / "dissertation" / "final"
 ARTICLE_SOURCE = ROOT / "docs" / "article" / "final" / "ARTICLE_REACH_FIDELITY_TRUST.md"
+APPENDIX_SOURCE = REWRITE / "appendices"
 
 DISSERTATION_PARTS = [
     REWRITE / "00_FRONT_MATTER.md",
@@ -27,6 +28,12 @@ DISSERTATION_PARTS = [
     DISS_FINAL / "06_VYSNOVKY.md",
     DISS_FINAL / "07_REFERENCES_BOUND.md",
 ]
+
+
+def _curated_appendices() -> list[Path]:
+    """Return submission-facing appendices, excluding the historical campaign archive."""
+
+    return sorted(APPENDIX_SOURCE.glob("APPENDIX_*.md"))
 
 
 def _validate_images(path: Path, text: str) -> list[Path]:
@@ -48,9 +55,10 @@ def _caption_count(text: str, label: str) -> int:
 def main() -> None:
     bind_references()
 
+    dissertation_parts = DISSERTATION_PARTS + _curated_appendices()
     separator = "\n\n<div style=\"page-break-after: always;\"></div>\n\n"
     dissertation = separator.join(
-        path.read_text(encoding="utf-8").strip() for path in DISSERTATION_PARTS
+        path.read_text(encoding="utf-8").strip() for path in dissertation_parts
     ) + "\n"
     dissertation_path = DISS_FINAL / "DISSERTATION_MANUSCRIPT.md"
     dissertation_path.write_text(dissertation, encoding="utf-8", newline="\n")
@@ -85,6 +93,7 @@ def main() -> None:
             f"- Dissertation figure captions: {_caption_count(dissertation, 'Figure')}",
             f"- Dissertation table captions: {_caption_count(dissertation, 'Table')}",
             f"- Bound external references: {references}",
+            f"- Curated appendix files: {len(_curated_appendices())}",
             f"- Remaining author-input markers: {dissertation.count('[AUTHOR:')}",
             "- Local figure-link validation: PASS",
             "- Reference-marker validation: PASS",

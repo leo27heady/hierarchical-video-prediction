@@ -153,13 +153,13 @@ def make_confirmed_frontier() -> None:
     ax.set_ylabel("Flat error - hierarchy error")
     ax.set_title("A  Untouched simultaneous frontier", loc="left", fontweight="bold")
     ax.text(
-        0.02,
+        0.98,
         0.97,
         "blue: hierarchy confirmed\n"
         "grey: unresolved\n"
         "red: flat confirmed",
         transform=ax.transAxes,
-        ha="left",
+        ha="right",
         va="top",
         fontsize=8.5,
     )
@@ -189,18 +189,23 @@ def make_confirmed_frontier() -> None:
     ax.set_xlabel("Context tokens for nominal 48-frame reach")
     ax.set_title("B  Exact memory arithmetic", loc="left", fontweight="bold")
     ax.grid(axis="x", color=GRID, linewidth=0.7)
-    for bar, value in zip(bars, values):
-        ax.text(value + 45, bar.get_y() + bar.get_height() / 2, f"{value:,}", va="center")
-    ax.text(
-        0.98,
-        0.96,
-        "2.7-3.4x fewer tokens\nfor the same nominal reach",
-        transform=ax.transAxes,
-        ha="right",
-        va="top",
-        fontsize=8.5,
-        color=HIER,
-    )
+    bar_notes = ["reference", "2.67x fewer", "3.43x fewer"]
+    for bar, value, note in zip(bars, values, bar_notes):
+        yc = bar.get_y() + bar.get_height() / 2
+        ax.text(value + 45, yc, f"{value:,}", va="center")
+        # Put the efficiency statement inside its own bar instead of over the
+        # neighbouring dense-context bar.  White text remains readable in
+        # greyscale and the exact value stays outside the bar.
+        ax.text(
+            max(value * 0.53, 250),
+            yc,
+            note,
+            ha="center",
+            va="center",
+            color="white",
+            fontsize=8.2,
+            fontweight="bold",
+        )
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
 
@@ -225,7 +230,7 @@ def make_confirmed_frontier() -> None:
 def make_head_package() -> None:
     result = _read("artifacts/e4b_head_package/results.json")
     seeds = result["seeds"]
-    fig, axes = plt.subplots(1, 3, figsize=(11.6, 4.3), sharey=True, constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(11.6, 5.0), sharey=True, constrained_layout=True)
     panels = [
         ("diffusion", DIFF, "A  Diffusion", "temporal package advantage"),
         ("regression", REG, "B  Regression", "temporal package advantage"),
@@ -246,15 +251,16 @@ def make_head_package() -> None:
         ax.axvspan(summary["lo"], summary["hi"], color=color, alpha=0.10)
         ax.axvline(summary["mean"], color=color, linewidth=1.3, linestyle="--")
         ax.text(
-            0.02,
-            0.03,
+            0.50,
+            -0.18,
             f"across-seed mean {summary['mean']:+.4f}\n"
             f"t95 [{summary['lo']:+.4f}, {summary['hi']:+.4f}]",
             transform=ax.transAxes,
-            ha="left",
-            va="bottom",
+            ha="center",
+            va="top",
             fontsize=8,
             color=color,
+            clip_on=False,
         )
         for side in ("top", "right"):
             ax.spines[side].set_visible(False)
@@ -269,7 +275,7 @@ def make_head_package() -> None:
 def make_trust_replication() -> None:
     result = _read("artifacts/e5a_trust_replication/results.json")
     seeds = result["seeds"]
-    fig, ax = plt.subplots(figsize=(8.3, 4.5), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(8.3, 4.8), constrained_layout=True)
     y = np.arange(len(seeds), dtype=float)
     early = [row["primary"]["early_benefit"] for row in seeds]
     late = [row["primary"]["late_inversion"] for row in seeds]
@@ -288,14 +294,16 @@ def make_trust_replication() -> None:
     )
     ax.legend(frameon=False, ncol=2, loc="lower right")
     ax.text(
-        0.99,
-        0.97,
+        1.0,
+        1.08,
         "registered verdict: NOT_REPLICATED",
         transform=ax.transAxes,
         ha="right",
-        va="top",
+        va="bottom",
         color=LATE,
         fontsize=9,
+        fontweight="bold",
+        clip_on=False,
     )
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)

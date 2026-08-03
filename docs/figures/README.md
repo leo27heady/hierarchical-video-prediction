@@ -1,5 +1,16 @@
 # Figures — generated from audited artifacts, logs and frozen interfaces (2026-07-17)
 
+## Published-figure preservation policy (2026-08-03)
+
+Figures whose filenames end in `_published` reproduce artwork from the author's published
+articles. Their pixels, vector content, labels, aspect ratios, and level of detail are frozen and
+must not be redrawn during dissertation finalization. In particular, the detailed
+TempVerseFormer architecture is deliberately retained as the complete published architecture;
+the dissertation should place it at full usable page width and may improve only its caption and
+surrounding explanation. The authoritative SHA-256 baseline is
+`docs/reviews/PUBLISHED_FIGURE_FREEZE_2026-08-03.sha256` and is enforced by
+`scripts/check_manuscript_finalization.py`.
+
 All produced by `scripts/make_figures.py` (CPU, from `logs_rhcp/rhvd_eval_*.npz` + bridge logs),
 `scripts/make_samples.py` (light GPU decode), and `scripts/make_fig9_frontier.py` (fig9, CPU).
 Regenerable from the committed data.
@@ -65,6 +76,9 @@ Regenerable from the committed data.
 | fig58_tempverse_time_published.png/.pdf | training time versus 1–1,024 prediction steps | Розділ 2 Fig. 2.13 | author preprint Fig. 14, DOI `10.21203/rs.3.rs-6293520/v1` (CC BY 4.0); version of record DOI `10.1007/s00521-025-11707-3` |
 | fig59_vblt_2d_entropy_published.png/.pdf | V-BLT ground truth, prediction and entropy for a rotating 2-D shape | Розділ 2 Fig. 2.3 | Kulyk & Mokin 2025, published Fig. 7, DOI `10.31649/1997-9266-2025-182-5-129-139` |
 | fig60_vblt_3d_entropy_published.png/.pdf | V-BLT ground truth, prediction and entropy for a rotating 3-D polycube | Розділ 2 Fig. 2.4 | Kulyk & Mokin 2025, published Fig. 8, DOI `10.31649/1997-9266-2025-182-5-129-139` |
+| fig61_dissertation_systems_map.png/.pdf | four publication strands mapped to the shared resource-constrained systems problem, with implemented/measured and conceptual links distinguished | Introduction Fig. I.1 | author’s dissertation-level synthesis; deterministic `scripts/make_dissertation_foundation_figures.py` |
+| fig62_two_resource_synthesis.png/.pdf | separately measured context-state quality frontier and TempVerseFormer activation-memory frontier; no multiplicative-savings claim | Розділ 4 Fig. 4.9 | frozen Chapter 4 evidence plus published TempVerseFormer measurements; deterministic `scripts/make_dissertation_foundation_figures.py` |
+| fig63_executed_configuration_matrix.png/.pdf | principal executed studies and explicit non-executed controls, including population, package, head, seed, codec, and sampler scope | Розділ 4 Fig. 4.2 | terminal experiment registry; deterministic `scripts/make_dissertation_foundation_figures.py` |
 
 ## Honesty notes carried in the figures
 - fig1(c) + fig7: sharpness fades for ALL arms; the hierarchy advantage is a modest average gain,

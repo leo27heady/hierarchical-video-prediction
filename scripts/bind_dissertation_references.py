@@ -30,6 +30,28 @@ CHAPTERS = [
 # Ordered rules intentionally resolve the narrowest descriptors first. Values are stable keys
 # from 07_REFERENCES.md. Several broad review claims appropriately cite more than one source.
 RULES: list[tuple[str, tuple[str, ...]]] = [
+    (r"^uncertainty decomposition$", ("Kendall2017uncertainty",)),
+    (r"^calibration of modern neural networks$", ("Guo2017calibration",)),
+    (r"^medical image reconstruction hallucination risk$", ("Bhadra2021hallucinations",)),
+    (
+        r"^physics-informed and uncertainty-aware remote-sensing imputation$",
+        ("Ebel2023uncrtaints", "Huot2022wildfire", "Shaddy2024wildfire"),
+    ),
+    (
+        r"^clip-score validity and limitations$",
+        ("Hessel2021clipscore", "Otani2023t2ieval", "Thrush2022winoground"),
+    ),
+    (
+        r"^uncertainty-aware resource allocation$",
+        ("Kendall2017uncertainty", "Guo2017calibration"),
+    ),
+    (r"^revolve checkpoint scheduling$", ("Griewank2000",)),
+    (r"^chen et al\.? 2016$", ("Chen2016ckpt",)),
+    (r"^scheduled sampling$", ("Bengio2015",)),
+    (
+        r"^sequence-level training / self-forcing$",
+        ("Ranzato2016", "Huang2025selfforcing"),
+    ),
     (
         r"recent long-memory retrieval and benchmark work",
         (
@@ -149,7 +171,7 @@ RULES: list[tuple[str, tuple[str, ...]]] = [
     (r"controlnet", ("Zhang2023controlnet",)),
     (r"stylealigned", ("Hertz2024",)),
     (r"multi-stage visual representation", ("Marr1982",)),
-    (r"\bclip\b", ("Radford2021",)),
+    (r"^clip$", ("Radford2021",)),
     (r"information leakage", ("Vaswani2017",)),
     (r"cross-entropy classification", ("Goodfellow2016book",)),
     (r"absolute positional encoding", ("Vaswani2017",)),

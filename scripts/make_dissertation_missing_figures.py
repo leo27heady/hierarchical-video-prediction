@@ -6,6 +6,7 @@ rows named in the dissertation; they do not recompute or alter any experimental 
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib as mpl
@@ -29,6 +30,7 @@ REG = "#d97706"
 EBT = "#8a5aa5"
 BAD = "#b6463d"
 GOOD = "#3a9d78"
+PDF_TIMESTAMP = datetime(2026, 8, 3, tzinfo=timezone.utc)
 
 
 def style() -> None:
@@ -53,8 +55,17 @@ def style() -> None:
 
 def save(fig: plt.Figure, stem: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{stem}.png")
-    fig.savefig(OUT / f"{stem}.pdf")
+    fig.savefig(OUT / f"{stem}.png", facecolor="white", transparent=False)
+    fig.savefig(
+        OUT / f"{stem}.pdf",
+        facecolor="white",
+        transparent=False,
+        metadata={
+            "Creator": "hierarchical-video-prediction",
+            "CreationDate": PDF_TIMESTAMP,
+            "ModDate": PDF_TIMESTAMP,
+        },
+    )
     plt.close(fig)
 
 
@@ -170,47 +181,49 @@ def make_token_layout() -> None:
 
 
 def make_rollout_buffer() -> None:
-    fig, ax = plt.subplots(figsize=(12.2, 5.2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(12.2, 5.8), constrained_layout=True)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
     ax.set_title(
-        "Autoregressive rollout keeps a fixed-size two-resolution memory",
+        "Autoregressive rollout updates both levels of a fixed-size context state",
         loc="left",
         fontweight="bold",
     )
-    ax.add_patch(Rectangle((0.05, 0.12), 0.25, 0.08, facecolor="#dbe7f3", edgecolor=INK))
-    ax.add_patch(Rectangle((0.30, 0.12), 0.65, 0.08, facecolor="#f2f2f2", edgecolor=INK))
-    ax.text(0.175, 0.16, "48 ground-truth warm-up frames", ha="center", va="center")
-    ax.text(0.625, 0.16, "152 self-fed frames, generated four at a time", ha="center", va="center")
-    ax.text(0.05, 0.08, "t = 0", ha="center", color=MUTED)
-    ax.text(0.30, 0.08, "t = 48", ha="center", color=MUTED)
-    ax.text(0.95, 0.08, "t = 200", ha="center", color=MUTED)
-
-    box(ax, (0.06, 0.66), 0.24, 0.12, "coarse ring buffer\n48 × 16 tokens", COARSE)
-    box(ax, (0.06, 0.47), 0.24, 0.12, "fine ring buffer\n6 × 64 tokens", FINE)
-    box(ax, (0.38, 0.54), 0.16, 0.16, "4 future actions\n+ DDIM (16 NFE)", "#efe6f5")
-    box(ax, (0.63, 0.54), 0.15, 0.16, "4 new\ncoarse + fine\nlatent pairs", TARGET)
-    box(ax, (0.84, 0.54), 0.11, 0.16, "append\n+ evict", "#e7ecef")
-    arrow(ax, (0.30, 0.72), (0.38, 0.65))
-    arrow(ax, (0.30, 0.53), (0.38, 0.59))
-    arrow(ax, (0.54, 0.62), (0.63, 0.62))
-    arrow(ax, (0.78, 0.62), (0.84, 0.62))
-    arrow(ax, (0.89, 0.53), (0.28, 0.44), color=MUTED)
+    box(ax, (0.04, 0.68), 0.25, 0.12, "coarse context buffer\n48 frames × 16 tokens", COARSE)
+    box(ax, (0.04, 0.43), 0.25, 0.12, "recent fine buffer\n6 frames × 64 tokens", FINE)
+    box(ax, (0.37, 0.54), 0.17, 0.17, "joint predictor\n4 future actions\n+ DDIM (16 NFE)", "#efe6f5")
+    box(ax, (0.63, 0.54), 0.18, 0.17, "4 generated pairs\n$(z^c,z^f)_{t:t+3}$", TARGET)
+    box(ax, (0.84, 0.70), 0.12, 0.11, "append coarse\n+ evict 4", "#e7ecef")
+    box(ax, (0.84, 0.40), 0.12, 0.11, "append fine\n+ evict 4", "#e7ecef")
+    arrow(ax, (0.29, 0.74), (0.37, 0.65), color=COARSE)
+    arrow(ax, (0.29, 0.49), (0.37, 0.59), color=FINE)
+    arrow(ax, (0.54, 0.625), (0.63, 0.625), color=TARGET)
+    arrow(ax, (0.81, 0.65), (0.84, 0.755), color=COARSE)
+    arrow(ax, (0.81, 0.58), (0.84, 0.455), color=FINE)
+    arrow(ax, (0.90, 0.81), (0.24, 0.82), color=COARSE)
+    arrow(ax, (0.24, 0.82), (0.18, 0.80), color=COARSE)
+    arrow(ax, (0.90, 0.40), (0.24, 0.36), color=FINE)
+    arrow(ax, (0.24, 0.36), (0.18, 0.43), color=FINE)
     ax.text(
-        0.55,
-        0.34,
-        "advance pointer by 4; training and rollout use the same consecutive buffer layout",
+        0.50,
+        0.28,
+        "advance by four frames; both buffers retain the same fixed geometry at every step",
         ha="center",
         fontweight="bold",
     )
     ax.text(
-        0.55,
-        0.27,
-        "memory state = 48×256 + 6×1024 = 18,432 latent numbers, independent of rollout length",
+        0.50,
+        0.20,
+        "context state = 48×256 + 6×1,024 = 18,432 latent numbers, independent of rollout length",
         ha="center",
         color=MUTED,
     )
+    ax.add_patch(Rectangle((0.05, 0.06), 0.25, 0.07, facecolor="#dbe7f3", edgecolor=INK))
+    ax.add_patch(Rectangle((0.30, 0.06), 0.65, 0.07, facecolor="#f2f2f2", edgecolor=INK))
+    ax.text(0.175, 0.095, "48 ground-truth warm-up frames", ha="center", va="center", fontsize=8.5)
+    ax.text(0.625, 0.095, "152 self-fed frames, generated four at a time", ha="center", va="center", fontsize=8.5)
+    ax.text(0.50, 0.015, "The layout matches training, but self-fed values need not follow the clean-context training distribution.", ha="center", color=BAD, fontsize=8.2)
     save(fig, "fig23_rollout_ring_buffer")
 
 

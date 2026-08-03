@@ -53,18 +53,19 @@ This approach fundamentally changes the mathematical nature of the system: the s
 time (or in the pseudo-time of optimization steps), and every next state depends on the previous
 one, the current parameters, and the control action.
 
-Mathematically, the evolution of the state of such a system is described by a recurrent equation
-of Markov type:
+Mathematically, the evolution of the state of such a system can be written as a controlled Markov
+transition:
 
-$$x_t = f(x_{t-1}, u_t, \theta, \xi_t) \tag{1.1}$$
+$$z_{s+1} = f_\theta(z_s, a_s, c, \xi_s) \tag{1.1}$$
 
-where $x_t$ is the system state (a multidimensional tensor of video data or its latent
-representations) at step $t$; $u_t$ is the vector of control actions (generation conditions);
-$\theta$ is the parameter matrix of the system (the neural network weights); $\xi_t$ is the
-stochastic component (the random number generator); and $f$ is the nonlinear transition function
-describing the law of state change.
+where $z_s$ is the system state (a multidimensional tensor of video data or its latent
+representation) at a generic transition index $s$; $a_s$ is an admissible decision or scheduled
+control action; $c$ is fixed exogenous conditioning; $\theta$ denotes the learned parameters; $\xi_s$ is a
+stochastic input; and $f_\theta$ is the nonlinear state-transition map. The generic index $s$ is
+used here deliberately. In the temporal decomposition below, $t$ is reserved for physical video
+time and $k$ for refinement or sampling pseudo-time.
 
-When the stochastic component $\xi_t$ is present, the transition samples from a conditional
+When the stochastic component $\xi_s$ is present, the transition samples from a conditional
 distribution; deterministic samplers correspond to a fixed or zero stochastic term. Systems
 methodology under risk and uncertainty [5, 6] motivates tracking how initial state, conditioning, sampling, and feedback
 affect later outputs. In generative video, failures can appear as visual artifacts, temporal
@@ -88,57 +89,71 @@ Increasing model capacity and training data can improve generation, but it also 
 and inference cost and does not by itself identify which state or trajectory constraint is
 violated. This motivates a complementary control formulation of the generation trajectory.
 
-Consider the generation process as an optimal-control problem. At the initial moment $t = 0$ the
-system state $x_0$ is fully chaotic (a pure-noise distribution), corresponding to the state of
-maximal informational uncertainty. At the final moment $t = T$ the system must arrive at a state
-$x_T$ belonging to the target distribution of real video data (a state of high internal
-structural organization).
+Consider the generation path through the analytical lens of an optimal-control problem. At the
+initial control step $s=0$, the state $z_0$ may be sampled from a noise distribution. At the final
+step $s=S$, the induced state $z_S$ should satisfy the target and conditioning requirements. This
+is a systems-level abstraction: a trained sampler usually executes a learned transition under a
+fixed schedule rather than solving a new optimal-control problem online for every sample.
 
-The formalization of this process requires a systemic criteria apparatus. In the present research
-the quality of the terminal state and of the trajectory leading to it is described by a
-**consistency criterion functional** $J(x, u)$, which quantitatively expresses the degree of
-non-correspondence between the current state $x$ and the target concept under conditions $u$.
-Generation then becomes a constrained optimization problem over the state space:
+The formalization of this process requires a systemic criteria apparatus. Let
+$\mathbf z=(z_0,\ldots,z_S)$ be an admissible state trajectory and
+$\mathbf a=(a_0,\ldots,a_{S-1})$ its control sequence under fixed condition $c$. A
+**consistency criterion functional** can combine terminal and path costs. The corresponding
+constrained problem optimizes the controls and their induced trajectory, not an unconstrained
+terminal tensor:
 
-$$x^{*} = \arg\min_{x} J(x, u) \tag{1.2}$$
+$$
+(\mathbf z^{*},\mathbf a^{*}) \in
+\arg\min_{\mathbf z,\mathbf a}
+J(\mathbf z,\mathbf a;c)
+=\arg\min_{\mathbf z,\mathbf a}
+\left[\Phi(z_S;c)+\sum_{s=0}^{S-1}\ell_s(z_s,a_s;c)\right]
+\quad\text{subject to}\quad
+z_{s+1}=f_\theta(z_s,a_s,c,\xi_s),\;
+(z_s,a_s)\in\mathcal Z\times\mathcal A.
+\tag{1.2}
+$$
 
-subject to the state-transition law (1.1). The smaller the value of the criterion, the more
-consistent and realistic the generated object.
+Equation (1.2) is conditional on a fixed realization of $\boldsymbol\xi$; a stochastic-control
+formulation instead minimizes the corresponding expected cost (or optimizes a feedback policy).
+Smaller values indicate lower measured inconsistency under the chosen functional; they do not by
+themselves establish perceptual realism or make every evaluation endpoint a training objective.
 
 ![Multi-step generation on a consistency landscape](../../figures/fig31_consistency_landscape.png)
 
-**Figure 1.2 — Conceptual multi-step generation on the landscape of a consistency criterion
-$J(x,u)$.** The trajectory moves from a high-criterion noise state toward a structured
+**Figure 1.2 — Conceptual multi-step generation on the landscape of a consistency criterion.**
+The trajectory moves from a high-criterion noise state toward a structured
 low-criterion region. This is a systems-level abstraction; only energy-based models instantiate
 the landscape as an explicit learned scalar energy. Source: author’s schematic.
 
 In the context of the intelligent information technology being developed, it is important to
 clearly delimit the roles of two fundamental system concepts: the **global consistency criterion**
-and **entropy**. The global criterion (1.2) is trajectory-level: it is a functional the modeling
-system strives to minimize along the entire multi-step generation trajectory in order to reach
-integral consistency of the object; in this dissertation it is operationalized not by a learned
-scalar energy but by the measurable consistency criteria of §1.4 — in particular the
-re-entry-stratified rollout metrics of §1.4.5, which the hierarchical model of Chapter 3 is built
-to optimize. Entropy, by contrast, acts as a **local diagnostic indicator**: it quantifies the
-level of structural informational uncertainty at specific spatio-temporal coordinates of the
-data. Entropy maps allow the system to "understand" where complex moving contours are located and
-where there is static background, and accordingly to adaptively redistribute limited
-computational resources (this apparatus is realized in the V-BLT subsystem in Chapter 2).
-Together these two system concepts form a closed loop of analysis and control.
+and **entropy**. The global criterion (1.2) is trajectory-level: it is a functional used to assess
+or design the entire multi-step generation trajectory; in this dissertation it is operationalized
+not by a learned scalar energy but by the measurable consistency criteria of §1.4—in particular the
+re-entry-stratified rollout metrics of §1.4.5, which evaluate the hierarchical model of Chapter 3
+without being its direct training loss. Entropy, by contrast, acts as a **local diagnostic indicator**: the predictive
+entropy of a model-provided categorical distribution measures how dispersed that distribution is
+at specific spatio-temporal coordinates. In the reported V-BLT setting, entropy maps highlight
+locations that the model predicts less decisively and can therefore guide
+non-uniform allocation of limited computational resources (Chapter 2). Predictive entropy is not
+automatically a calibrated estimate of data uncertainty and can mix ambiguity, model error, and
+miscalibration [44, 45]. It
+is therefore used here as an allocation proxy, not as evidence that the system "understands" the
+scene.
 
 Controlling this system runs into **computational uncertainty** on two fronts. First, at the
-stage of parameter identification (training): since the transition function is realized by a deep
-neural network, identifying the system parameters along a long chain of iterations requires
-storing all intermediate states (activations) in operating memory, so the memory of
-backpropagation through time grows linearly with the trajectory length. This creates a resource
-barrier that rules out long control trajectories on practically available computing systems.
+stage of parameter identification (training): a vanilla implementation of backpropagation through
+a long neural computation retains the intermediate activations needed by the reverse pass, so its
+activation tape grows with trajectory length. Checkpointing and reversible replay change this
+storage–recomputation schedule; Chapter 2 measures their operating regions rather than treating
+one method as universally required.
 Second, at the stage of operation (inference): extending the temporal context of a flat attention
 mechanism inflates its key–value memory linearly and its computation quadratically with context
-length (analyzed quantitatively in §1.3.1). Overcoming the first front requires special methods
-of structural optimization — in particular the introduction of reversible transformations that
-reduce the memory-consumption complexity (developed in Chapter 2); overcoming the second requires
-hierarchical decomposition of the state space with a compact long-memory level (developed in
-Chapter 3).
+length (analyzed quantitatively in §1.3.1). Chapter 2 studies reversible replay as one
+storage–recomputation policy for the first front, alongside checkpointing. Chapter 3 studies
+hierarchical and sparse context packages as alternatives for the second front. The interventions
+act on different memory terms and are measured separately.
 
 ### 1.1.2 Applied domains
 
@@ -148,43 +163,44 @@ systems intertwine closely with the objects of study of the specialty "System An
 
 The first important application domain is medical imaging and the development of intelligent
 systems for supporting clinical decision-making. Complex multidimensional spatial data (MRI, CT)
-often require reconstruction, super-resolution, or cross-modal generation to minimize the
-radiation load on the patient. In this domain any generation anomaly (a "hallucination" in the
-form of non-existent tumors, or the loss of real anatomical structures) has fatal consequences,
-so the requirement of absolute structural consistency is critical.
+can require reconstruction, super-resolution, or cross-modal generation. Distribution-matching
+reconstruction can add or suppress diagnostically relevant structures, so generated outputs need
+task-specific validation, uncertainty reporting, and clinical oversight rather than an assumed
+guarantee of structural faithfulness [46].
 
 The second domain is ecological and technical monitoring using remote sensing data. Satellite
-data often contain gaps due to cloud cover or technical failures. Generative systems are used for
-spatial or temporal interpolation of missing data and for predicting the development of
-ecological catastrophes (for example, the spread of forest fires). In this case the generated
-intermediate states must strictly obey the laws of physics, thermodynamics, and the topology of
-the terrain.
+data can contain gaps due to cloud cover or technical failures, motivating spatial or temporal
+imputation and forecasting. In applications such as fire-spread analysis, physical and terrain
+constraints are important evaluation or conditioning information; their satisfaction must be
+measured for the particular task and is not implied by visual plausibility alone [47, 48, 49].
 
 The third domain is the creation of educational and training simulators (for example, for
 autonomous vehicle control systems). Training robots requires millions of hours of synthetic
 video data with diverse scenarios (including extreme ones). The requirement imposed on the
 generative system is long-term temporal coherence: objects cannot suddenly disappear, deform over
 time, or violate the logic of physical interactions. In particular, an object that leaves the
-camera's field of view must reappear in a consistent state and position when the camera returns
-to it — a requirement that, as will be shown in §1.3.1 and §1.4.5, directly demands a long memory
-horizon from the modeling system.
+camera's field of view should reappear in a consistent state and position when the camera returns
+to it. In a controlled setting where the missing state cannot be inferred from recent frames
+alone, this requires retained or retrievable evidence spanning the relevant absence (§1.3.1 and
+§1.4.5).
 
 The analysis of the listed practical domains shows that modern generative systems are subject to
 the following strict systemic requirements:
 
 1. High visual quality and detail of the target data distribution;
 2. Controllability of the system and the ability to respond to control actions;
-3. Hierarchical representations without loss of coupling between levels;
-4. Absence of spatial, temporal, and logical anomalies — including over long horizons, when
-   content leaves and re-enters the field of view;
+3. Representations that preserve the cross-scale information needed by the task, whether learned
+   implicitly or encoded through an explicit hierarchy;
+4. Measured control of spatial, temporal, and logical anomalies — including over long horizons,
+   when content leaves and re-enters the field of view;
 5. Resource efficiency under constraints of computational memory;
 6. Interpretability of the process.
 
-Summarizing, it can be stated that generative video models have reached the stage of evolution at
-which their further development by empirical architecture search exhausts its potential. What is
-required is the treatment of these algorithms as complex systems controlling dynamic processes,
-which demands the development of a corresponding mathematical apparatus: methods of
-decomposition, identification of uncertainty types, introduction of new consistency criteria, and
+Summarizing, empirical architecture search alone does not expose which state, resource, or
+trajectory constraint causes a failure. A complementary treatment of generative algorithms as
+complex dynamic systems therefore motivates a corresponding mathematical apparatus: methods of
+decomposition, identification of uncertainty types, explicit formalization and operationalization
+of consistency criteria, and
 creation of algorithms for optimal resource control. The following subsections of this research
 are devoted precisely to these questions.
 
@@ -201,7 +217,7 @@ hierarchical (semantic), and temporal.
 
 Structural (functional) decomposition treats the generative system as a set of functional
 information-processing blocks. In most modern architectures, irrespective of their mathematical
-basis, three basic macro-subsystems are distinguished [44].
+basis, three basic macro-subsystems are distinguished [50].
 
 The first subsystem is the **Encoder** — the block of condition preprocessing and encoding. Its
 function is to transform "raw" control signals (for example, a textual description, semantic
@@ -229,9 +245,11 @@ concentrated. Its detailed study requires the deeper kinds of decomposition that
 
 ### 1.2.2 Hierarchical decomposition of the state space
 
-Complex systems have a pronounced hierarchical nature [7].
-Accordingly, the state space of the central generation subsystem cannot be "flat" — it must be
-decomposed into macro, meso, and micro levels.
+Many complex systems admit useful descriptions at several spatial or semantic scales
+[7]. For video generation, an explicit macro/meso/micro
+decomposition is therefore a testable **inductive bias and resource-allocation strategy**, not a
+logical requirement: a single latent grid can learn multiscale features, while an explicit
+hierarchy makes the allocation between coarse reach and fine detail directly controllable.
 
 At the **macro level** (the level of highest abstraction) the system operates with semantic
 vectors of low spatial resolution but high semantic saturation. Here the questions of conceptual
@@ -244,11 +262,12 @@ geometry, and the spatial relations of object parts.
 At the **micro level** (high resolution) the questions of local pixel organization are decided:
 the coherence of textures, lighting, and micro-details.
 
-The problem of many modern generative systems — for example, standard diffusion models built over
-variational autoencoders [3, 43] — is that they operate in a
-single-level latent space, ignoring the necessity of explicit hierarchical decomposition [20, 35, 36]. This produces an internal control conflict in which macro- and
-micro-decisions are taken simultaneously. The mixing of levels is a direct source of generation
-anomalies: a correct object texture may be imposed on a distorted global shape.
+Many modern generative systems — for example, diffusion models built over variational
+autoencoders [3, 43] — operate on one explicit latent grid. Such a
+model can still learn multiscale internal features, but it offers no explicit interface for
+assigning different context horizons or token rates to those scales. Joint coarse and fine
+decisions can also conflict in practice; the brick-texture/wood-shape example below illustrates a
+failure mode, not a causal diagnosis that follows from using a flat grid.
 
 ![Hierarchical decomposition of visual state](../../figures/fig33_visual_hierarchy.png)
 
@@ -256,9 +275,10 @@ anomalies: a correct object texture may be imposed on a distorted global shape.
 abstraction and lowest spatial rate; micro denotes the pixel-proximal level and highest detail.
 Source: author’s schematic.
 
-The systems approach requires the development of mathematical models of explicit hierarchical
-decomposition with mechanisms of strict coherence between these orthogonal levels of
-representation. This decomposition is the core of the present dissertation's topic. Moreover — a
+The systems approach motivates mathematical models of explicit hierarchical decomposition with
+mechanisms that **bias and measure** coherence between these levels of representation. Such a
+model cannot guarantee coherence by structure alone. This decomposition is the core of the
+present dissertation's topic. Moreover — a
 property central to the direction developed in Chapters 2–4 — an explicitly decomposed hierarchy
 allows the levels to run at *different temporal rates and context lengths*: a compact upper
 (coarse) level with a low information rate can afford to retain a long temporal context at the
@@ -268,16 +288,17 @@ and developed in Chapter 3).
 
 ### 1.2.3 Temporal decomposition
 
-The third necessary kind of stratification is temporal decomposition. When modeling systems that
-generate video data, time must be considered in two entirely different, orthogonal dimensions,
-which creates the so-called "two-dimensional temporal grid".
+A third useful analytical stratification is temporal decomposition. When modeling systems that
+generate video data, two distinct axes should be separated, creating a "two-dimensional temporal
+grid" for the analysis that follows.
 
 The first dimension concerns the internal **pseudo-time** of the generation process — the
 partition of the continuous process of state change into discrete refinement steps
 $k = 1, \dots, K$ *per generated frame*: the steps of the reverse diffusion process, the token
 steps of an autoregressive decoder, or the descent steps of an energy-based sampler. Every such
-step is a micro-transition of the system in phase space, during which the total entropy of the
-state decreases and its consistency increases.
+step is a micro-transition of the system in phase space. The algorithm is designed to move toward
+a more probable or lower-objective state, but monotonic entropy reduction or consistency
+improvement is not guaranteed for every realized trajectory.
 
 The second dimension is introduced upon the transition to processing video sequences and reflects
 the **physical time axis** $t = 1, \dots, T$, where every discrete slice is a separate frame. The
@@ -286,12 +307,14 @@ ensure stability in both temporal dimensions: the system state must evolve corre
 optimization axis $k$ for every individual frame, and at the same time all generated frames must
 be spatio-temporally coherent along the physical axis $t$, forming smooth motion kinematics.
 
-The physical axis, in turn, gives rise to the key quantitative characteristic of this
-dissertation: the **memory horizon** — the maximal temporal distance $\Delta t$ at which
-information about the past state of the modeled process can still influence the generated present
-state. For a system whose central subsystem attends to a flat context window of $w$ frames, the
-memory horizon is bounded by $w$; events separated by more than $w$ frames (for example, content
-that left the field of view and returns later) are informationally inaccessible to it.
+The physical axis, in turn, gives rise to a key quantitative characteristic of this dissertation:
+the **explicit context reach** — the maximal temporal distance $\Delta t$ represented directly by
+an item in the configured context package. For a system whose central subsystem receives only a
+flat window of $w$ preceding frames, this package-addressable reach is bounded by $w$. An event
+older than the window (for example, content that left the field of view and returns later) has no
+explicit source-frame token in that interface. This is not an information-theoretic
+inaccessibility claim: evidence may persist indirectly in recent observations, learned weights,
+or another recurrent or retrieved state if the architecture supplies one.
 
 ![Physical time and refinement pseudo-time](../../figures/fig34_temporal_grid.png)
 
@@ -315,7 +338,7 @@ specifies only boundary macro-conditions, leaving a multitude of micro-details (
 headlights, the texture of the asphalt, the lighting) undescribed. The task of the complex system
 is the correct and plausible resolution of this uncertainty during generation. If the system
 completes the missing information incorrectly, "hallucinations" and anomalies arise, rendering
-the result inconsistent [45].
+the result inconsistent [51].
 
 **Structural-algorithmic uncertainty** is connected with limitations and inductive biases of the
 mathematical apparatus itself (the neural network). Implemented models have finite capacity. A
@@ -335,16 +358,17 @@ moving regions have different representational requirements. This motivates—no
 requires—adaptive tokenization based on local entropy, developed and evaluated in Chapter 2.
 
 **Computational uncertainty** is the most critical for iterative multi-step models. It arises on
-two fronts, corresponding to the two temporal axes of §1.2.3. On the training front (the
-identification of model parameters), the backpropagation-through-time algorithm (BPTT) requires
-storing in operating memory all intermediate states for every step of the modeled process; since
-the state space of visual data is enormous, the linear growth $O(N \cdot K)$ of memory
-requirements can exceed the physical limits of the hardware. Truncating the differentiated
+two fronts, corresponding to the two temporal axes of §1.2.3. On the training front, a vanilla
+autograd realization of backpropagation through time stores intermediate activations for the
+unrolled process; the resulting horizon-dependent activation tape can exceed available hardware
+memory. Checkpointing and reversible replay reduce this term through recomputation rather than
+changing the underlying gradient objective. Truncating the differentiated
 trajectory removes gradient paths beyond the selected horizon and may therefore impair learning
 of long-range effects. On the operation front, the flat attention context over the physical time
 axis inflates the key–value memory linearly and the computation quadratically with the number of
-context tokens (§1.3.1, eq. (1.7)), so the memory horizon of a flat system is capped by the
-hardware precisely in the regimes where a long horizon is required. Reducing memory consumption
+context tokens (§1.3.1, eq. (1.7)), so the package-addressable reach of a dense flat interface is
+capped by its token and hardware budget precisely in the regimes where longer explicit history is
+required. Reducing memory consumption
 for gradient computation along deep trajectories and for context retention along long horizons
 is therefore an important design objective for multi-step generative systems.
 
@@ -387,40 +411,41 @@ they motivated. The focus criteria are systemic consistency and resource control
 ### 1.3.1 Diffusion models: generation quality and the flat long-context barrier
 
 Denoising diffusion probabilistic models (DDPM) [2] and deterministic/non-Markovian
-samplers such as DDIM [46] are major approaches to high-quality image and video
+samplers such as DDIM [52] are major approaches to high-quality image and video
 generation. Unlike a GAN generator [42], which maps noise to data through one learned
 forward path, diffusion models use an explicitly iterative denoising process.
 
 The mathematical basis of the diffusion approach rests on concepts of non-equilibrium
-thermodynamics. The modeling process is decomposed into two mutually inverse processes: forward
-and reverse diffusion.
+thermodynamics. The modeling process is decomposed into forward corruption and a learned reverse
+process. In equations (1.3)–(1.6), $k$ denotes diffusion pseudo-time; it must not be confused with
+the physical video-frame index $t$ introduced in §1.2.3.
 
 The forward diffusion stage is fixed and consists in the gradual addition of Gaussian noise to
 the original "clean" data sample $x_0$, progressively driving it to the state of random noise
-$x_T$. The process is modeled as a Markov chain:
+$x_K$. The process is modeled as a Markov chain:
 
-$$q(x_t \mid x_{t-1}) = \mathcal{N}\!\left(x_t;\; \sqrt{1-\beta_t}\, x_{t-1},\; \beta_t \mathbf{I}\right) \tag{1.3}$$
+$$q(x_k \mid x_{k-1}) = \mathcal{N}\!\left(x_k;\; \sqrt{1-\beta_k}\, x_{k-1},\; \beta_k \mathbf{I}\right) \tag{1.3}$$
 
-where $\beta_t$ is a predetermined deterministic schedule of noise variance at step $t$. A
+where $\beta_k$ is a predetermined deterministic schedule of noise variance at step $k$. A
 mathematical advantage of this construction is the closed-form availability of the noised state
 at an arbitrary step directly from the original state:
 
-$$q(x_t \mid x_0) = \mathcal{N}\!\left(x_t;\; \sqrt{\bar\alpha_t}\, x_0,\; (1-\bar\alpha_t)\mathbf{I}\right) \tag{1.4}$$
+$$q(x_k \mid x_0) = \mathcal{N}\!\left(x_k;\; \sqrt{\bar\alpha_k}\, x_0,\; (1-\bar\alpha_k)\mathbf{I}\right) \tag{1.4}$$
 
 ![Forward diffusion](../../figures/fig36_forward_diffusion.png)
 
 **Figure 1.7 — Forward diffusion.** Progressive Gaussian corruption destroys the information
-structure of a sample from $x_0$ toward $x_T$. Source: author’s schematic.
+structure of a sample from $x_0$ toward $x_K$. Source: author’s schematic.
 
 At the reverse diffusion stage the system learns to invert this process, denoising the corrupted
 sample and restoring the data. Unlike forward diffusion, the reverse process constitutes a
 complex computational problem solved by deep neural networks:
 
-$$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}\!\left(x_{t-1};\; \mu_\theta(x_t, t),\; \Sigma_\theta(x_t, t)\right) \tag{1.5}$$
+$$p_\theta(x_{k-1} \mid x_k) = \mathcal{N}\!\left(x_{k-1};\; \mu_\theta(x_k, k),\; \Sigma_\theta(x_k, k)\right) \tag{1.5}$$
 
 In practice the model is optimized to predict the added noise $\epsilon$ via the simplified loss:
 
-$$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, t}\left[\,\bigl\|\epsilon - \epsilon_\theta\bigl(\sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon,\; t\bigr)\bigr\|^2\,\right] \tag{1.6}$$
+$$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, k}\left[\,\bigl\|\epsilon - \epsilon_\theta\bigl(\sqrt{\bar\alpha_k}\,x_0 + \sqrt{1-\bar\alpha_k}\,\epsilon,\; k\bigr)\bigr\|^2\,\right] \tag{1.6}$$
 
 ![Reverse diffusion](../../figures/fig37_reverse_diffusion.png)
 
@@ -432,14 +457,14 @@ The forward–reverse construction supports high-quality synthesis by turning sa
 sequence of denoising decisions. Pixel-space diffusion is expensive at high spatial resolution;
 latent diffusion models (LDM) [3] reduce this cost by operating in a compressed
 autoencoder space. Diffusion Transformers (DiT) [4] provide a transformer alternative to
-convolutional denoisers, and video systems such as Sora [47] operate on
+convolutional denoisers, and video systems such as Sora [53] operate on
 spatio-temporal latent patches at substantially larger data and model scales.
 
 Modern video diffusion and token generators extend this lineage through spatio-temporal
 denoising, latent video diffusion, large-scale video pretraining, variable-length token
-generation, and masked video transformers [48, 49, 50, 51, 52, 53, 54, 55].
+generation, and masked video transformers [54, 55, 56, 57, 58, 59, 60, 61].
 Interactive and autonomous world models further shift evaluation from isolated clips toward
-action-conditioned state prediction and control [56, 57, 58, 59, 60, 61].
+action-conditioned state prediction and control [62, 63, 64, 65, 66, 67].
 These systems establish the scale and practical importance of the problem, but they do not remove
 the need to measure which historical information is retained under a bounded state interface.
 
@@ -451,19 +476,20 @@ schematic.
 
 Despite their generation quality, dense-context diffusion video systems retain resource and
 long-horizon limitations that are the direct object of this dissertation's analysis. **The paradigm-level
-strengths of iterative refinement are not in question here** — on the contrary, Chapter 4's
-matched-capacity, matched-NFE mechanism study confirms empirically that an iterative refinement (diffusion)
-core commits to sharp, correctly located content where a regression core averages over futures;
-the per-frame generation core of the model developed in Chapter 3 is itself a diffusion core,
-selected by exactly that controlled analysis. The limitations lie elsewhere — in *how the
-temporal context is represented and scaled*.
+strengths of iterative refinement are not in question here**. Chapter 4 selects diffusion for the
+stochastic generative frontier because of its single-window coverage and sharp commitment under
+the controlled mechanism study. The same study also shows that regression is stronger in the
+deterministic best-of-1 self-fed rollout. The mechanism decision is therefore task-dependent; the
+context question studied later is *how temporal evidence is represented and scaled* within the
+selected generative evaluation programme.
 
 One limitation of a **flat, single-level latent interface** is that global composition and local
 appearance share one token field. This does not make inconsistency inevitable, but it prevents
 explicit budget allocation and separate control across representation levels.
 
 The second limitation is the **resource blow-up of flat long-context attention**. To lengthen the
-memory horizon, a flat video transformer must lengthen its spatio-temporal token context. For a
+explicit history span of a flat video transformer without another memory mechanism, its
+spatio-temporal token context must grow. For a
 context of $T_w$ frames tokenized at $N_s$ spatial tokens per frame, the attention context length
 is $L = T_w \cdot N_s$, and the principal costs of the attention mechanism scale as
 
@@ -478,9 +504,10 @@ to choose which historical tokens remain in the state interface.
 The third limitation is the **degradation of long-horizon temporal consistency** even where a
 long flat context is affordable. Empirical evaluations of long-video generators and world models
 show that content which leaves the field of view is not restored consistently upon its return,
-and that consistency metrics degrade with the distance to the relevant past [62, 22, 24, 23]. In systems-analysis terms, the flat
-context window imposes a hard memory horizon (§1.2.3): information older than the window is not
-merely expensive — it is absent from the system state. Related to this is **target uncertainty**:
+and that consistency metrics degrade with the distance to the relevant past [68, 22, 24, 23]. In systems-analysis terms, the flat
+context window imposes a hard bound on explicit package reach (§1.2.3): source-frame tokens older
+than the window are absent from that context interface. This does not rule out indirect evidence
+in recent frames, model weights, or a separate state mechanism. Related to this is **target uncertainty**:
 during training the model optimizes the local error of one isolated step, while during generation
 errors accumulate along the whole autoregressive chain — the phenomenon of exposure bias [25, 26].
 
@@ -490,7 +517,6 @@ errors accumulate along the whole autoregressive chain — the phenomenon of exp
 than a hardware benchmark: key–value memory grows linearly and attention work quadratically with
 sequence length. Panel B shows why a low-rate long-memory stream can remain addressable after the
 relevant content has left a short flat window. Source: author’s schematic.
-Source: NEW (draw)
 
 ### 1.3.2 Hierarchical latent approaches and autoregressive prediction
 
@@ -503,8 +529,8 @@ spaces made in this work.
 
 **Patch-based autoregressive transformers.** This line of work originates in the transfer of
 natural-language-processing principles to computer vision. The standard approach, popularized by
-the Vision Transformer (ViT) [63] and its video adaptations ViViT [64] and Video
-Swin Transformer [65], partitions the video into a grid of non-overlapping
+the Vision Transformer (ViT) [69] and its video adaptations ViViT [70] and Video
+Swin Transformer [71], partitions the video into a grid of non-overlapping
 spatio-temporal patches that are linearized and fed to a transformer. The principal advantage of
 transformer models is their capacity to model long-range dependencies between distant regions of
 the video; their principal cost is exactly the quadratic attention complexity (1.7). Although
@@ -513,21 +539,20 @@ a single-level latent space with fixed patching — remains. Fixed-grid tokeniza
 rigid, content-blind discretization: static low-information background and dynamic scene regions
 receive equal computational budgets, which §1.2.4 identified as a source of
 structural-algorithmic uncertainty. An analogous problem in language modeling was resolved by the
-Byte Latent Transformer (BLT) [66], which groups bytes into latent patches of variable size
+Byte Latent Transformer (BLT) [72], which groups bytes into latent patches of variable size
 governed by information density (entropy). Transferring this paradigm to the visual modality
 resolves the rigid-tokenization component of structural uncertainty; the V-BLT architecture
-developed in this dissertation realizes that transfer and is presented in Chapter 2. *(Preserved
-from old §1.3.2.)*
+developed in this dissertation realizes that transfer and is presented in Chapter 2.
 
 **Discrete-token autoregressive models.** A prominent branch of autoregressive video modeling
-operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [67] compresses frames into grids of codebook indices, over which an autoregressive
-transformer learns the video distribution — the VideoGPT line [68] and its successors,
+operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [73] compresses frames into grids of codebook indices, over which an autoregressive
+transformer learns the video distribution — the VideoGPT line [74] and its successors,
 including long-video architectures with compressed memory [36]. The attraction of this paradigm is genuine: discrete tokens give a clean autoregressive
 likelihood, natural compatibility with language-model tooling, and strong compression.
 
 Discrete bottlenecks also introduce specific optimization risks—straight-through assignment,
 codebook underutilization, dead codes and level collapse—that are documented in the VQ
-literature [67, 68]. The implemented fourth-article system
+literature [73, 74]. The implemented fourth-article system
 therefore uses **compact continuous hierarchical latent state spaces**, in which both levels are
 end-to-end differentiable and independently decodable. This is an implementation choice, not an
 empirical conclusion that continuous representations are universally superior: the present
@@ -536,7 +561,7 @@ claim. Representation sensitivity is instead tested within the continuous-codec 
 pre-registered alternate-codec-seed study in Chapter 4.
 
 Hierarchical latent variables are themselves a broad prior lineage, including deep
-vector-quantized and variational hierarchies [69, 70, 71, 72]. The dissertation therefore assigns novelty to its systems methodology and
+vector-quantized and variational hierarchies [75, 76, 77, 78]. The dissertation therefore assigns novelty to its systems methodology and
 controlled video-memory demonstration, not to the general idea of arranging latent variables at
 multiple levels.
 
@@ -558,17 +583,20 @@ the levels jointly with cross-level attention, and autoregressive rollout along 
 The systemic significance of this spatial construction follows directly from eq. (1.7): because the
 coarse level carries far fewer tokens per frame than the fine level, a *heterogeneous* context —
 long in coarse tokens, short in fine tokens — covers a memory horizon many times longer than a
-flat context of the same total token budget. The hierarchy converts the quadratic cost of horizon
-extension into a near-linear one along the cheap level, making the coarse level one economical
-carrier of long-range temporal memory. Temporal subsampling provides a distinct route to the same
+flat context of the same total token budget. Hierarchy therefore reduces the rate at which token
+count grows with temporal reach and can cover more frames at fixed $L$; it does **not** change the
+$O(L^2D)$ asymptotic cost of dense self-attention in the retained token count. The coarse level is
+an economical carrier of long-range temporal evidence because its per-frame token slope is
+smaller. Temporal subsampling provides a distinct route to the same
 span and is compared directly in Chapter 4. *(Chapter 3 develops the spatial form with a two-level
-continuous latent interface and unidirectional context transfer; Chapter 4 treats it as one point
+continuous latent interface, asymmetric long-range history allocation, and bidirectional joint
+attention between target levels; Chapter 4 treats it as one point
 in the broader context-packaging design space.)*
 
 Recent work broadens the design space beyond hierarchical latent state. WorldPack compresses and
 retrieves trajectory memory; CaR/SceneFly and MemLearner study implicit or learned retrieval;
 GIM-World introduces geometry-aware memory; and MBench and MemoBench construct explicit
-long-memory evaluation tasks [23, 73, 74, 75, 76, 77, 22]. These papers
+long-memory evaluation tasks [23, 79, 80, 81, 82, 83, 22]. These papers
 make architecture-level novelty untenable for generic “video memory.” The dissertation’s novelty
 is instead the controlled package-by-budget intervention, exact LoopMom observability,
 pair-specific reach populations, tested lower and upper inversions, and outcome-independent
@@ -587,7 +615,7 @@ $$p_\theta\!\left(z^{c}_{t}, z^{f}_{t} \,\middle|\, z^{c}_{t-w_c:t-1},\; z^{f}_{
 
 where $z^{c}$ and $z^{f}$ are the coarse- and fine-level latent states, $w_c$ and $w_f$ their
 context windows, and $u_t$ the control signals; the asymmetry $w_c \gg w_f$ at a matched token
-budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the memory horizon
+budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the explicit context reach
 without the flat blow-up (1.7).
 
 **Methodology for comparing hierarchical configurations.** The canonical comparison methodology
@@ -623,7 +651,7 @@ this dissertation.
 ### 1.3.3 Energy-based models and resource efficiency
 
 The third class of the review is that of energy-based models (EBM). The EBM paradigm originates
-in statistical physics [78, 79]. Its basic principle is that the probability of a data configuration $x$ is defined by
+in statistical physics [84, 85]. Its basic principle is that the probability of a data configuration $x$ is defined by
 the Gibbs/Boltzmann distribution:
 
 $$p_\theta(x) = \frac{\exp\left(-E_\theta(x)\right)}{Z(\theta)} \tag{1.9}$$
@@ -632,77 +660,95 @@ where $E_\theta(x)$ is a scalar energy function parameterized by a neural networ
 is the partition function. Under a calibrated model, lower energy corresponds to higher model
 density; it does not automatically imply semantic or temporal consistency.
 
-An important theoretical bridge connects EBM to diffusion models through score matching [80, 81]: the score function approximated by a diffusion model is the negative gradient of
+An important theoretical bridge connects EBM to diffusion models through score matching [86, 87]: the score function approximated by a diffusion model is the negative gradient of
 an (implicit) energy,
 
 $$\nabla_x \log p(x) = -\nabla_x E(x) \tag{1.10}$$
+
+For the deterministic conditional descent mechanism evaluated later in this dissertation, the
+sampling pseudo-trajectory is written with its own state $y_k$:
+
+$$
+y_{k+1}=y_k-\eta_k\nabla_y E_\theta(y_k;c),
+\qquad k=0,\ldots,K-1,
+\tag{1.11}
+$$
+
+where $c$ is the conditioning input and $\eta_k$ is the prescribed step size. Equation (1.11)
+describes the tested gradient-descent sampler; it is not a claim that all EBM inference or
+training uses this deterministic chain.
 
 From the standpoint of systems analysis, the attraction is that the energy supplies an explicit
 scalar criterion and its input gradient defines an inference direction. This does not guarantee
 convergence, calibrated probabilities, or anomaly detection: those properties depend on the
 learned landscape and sampler. Transformer-parameterized realizations such as Energy-Based
-Transformers (EBT) [82] expose the number of descent steps as an
+Transformers (EBT) [88] expose the number of descent steps as an
 inference-compute control. This dissertation evaluates that mechanism for conditional video
 prediction without attributing that task or result to the original EBT publication.
 
-However, the broad application of EBM is critically limited by computational uncertainty. To
-train such a model, backpropagation must be threaded through $K$ MCMC iterations of the forward
-pass; BPTT memory grows as $O(K \cdot L)$, where $L$ is the network depth, and since every MCMC
-iteration requires a gradient with respect to the input (double backward), memory overflow occurs
-rapidly [83, 84], precluding deep optimization trajectories for
-high-quality video data.
+The particular **differentiable-through-descent** formulation studied here has an important
+computational limitation. If a training loss is differentiated through all $K$ updates of
+(1.11), the reverse pass must differentiate the input gradient $\nabla_yE_\theta$ and therefore
+evaluate Hessian–vector and mixed parameter–state derivative terms (often called “double
+backward”). A vanilla unroll retains a layer-by-step graph whose activation storage grows with
+$K$ and network depth [89, 90]. This cost characterizes the tested
+unrolled-descent formulation; it is not an inherent requirement of every EBM objective, sampler,
+or training algorithm.
 
 Approaches to this barrier constitute the resource-efficiency toolbox of multi-step systems.
 Gradient checkpointing [30, 31] trades computation for memory by storing
 only a subset of activations and recomputing the rest; a balanced segment schedule can achieve a
-square-root memory trade-off in trajectory length. Neural ODE adjoints [85] can avoid
+square-root memory trade-off in trajectory length. Neural ODE adjoints [91] can avoid
 retaining the full forward tape but introduce reconstruction and numerical-accuracy concerns.
-Discrete reversible neural networks—RevNet [32] and RevViT [86]—instead
+Discrete reversible neural networks—RevNet [32] and RevViT [92]—instead
 reconstruct layer inputs algebraically. This apparatus forms the core of TempVerseFormer in
 Chapter 2. It is **not** used to train the final Chapter 3 hierarchical predictor through its
 rollout; the two resource strands are synthesized methodologically and measured separately.
 
-An honest forward reference completes this review. In the present research the energy-based
-mechanism was not adopted a priori but *examined experimentally* under matched conditions: the
-matched-capacity, matched-NFE mechanism study of Chapter 4 (§4.2) includes a two-sided
-capability study of Energy-Based Transformers, run with the official published implementation and
+A scoped forward reference completes this review. In the present research the energy-based
+mechanism was not adopted a priori but *examined experimentally* under controlled conditions: the
+matched-capacity regression–diffusion comparison and explicit NFE-sensitivity study of Chapter 4
+(§4.2) are reported separately from a two-sided capability study of Energy-Based Transformers,
+run with the official published implementation and
 both published training recipes at the largest scale reachable on the available hardware. Its
 outcome is a **characterized negative** at that scale: one published recipe converges to a stably
 *mis-ordered* energy landscape (the mean of the data attains lower energy than the true target);
 the other recipe repairs the ordering — the true target becomes the energy minimum among probed
 candidates — yet gradient descent from the prescribed initialization still does not reach
-structured outputs, and inference-time computation does not buy the capability back; meanwhile a
-diffusion core of roughly half the parameter count, on the same latents and protocol, commits to
-sharp and correctly located predictions. The study is scoped explicitly: it tests a capability
+structured outputs, and inference-time computation does not buy the capability back. This EBM
+evidence comes from a separate 14.66 M-parameter official-code capability study, not from a third
+matched-capacity cell. In the shared-interface comparison, the closely matched 7.53 M diffusion
+and 7.27 M regression cores instead show regime-dependent strengths: diffusion gives better
+best-of-8 stochastic coverage, whereas regression gives better deterministic best-of-1 rollout.
+The study is scoped explicitly: it tests a capability
 the EBT publication does not claim at a scale it did not run, and contradicts none of the
 published claims. For this dissertation its systemic significance is that the choice of the
 per-frame generation core in Chapter 3 is made *by controlled measurement, not by paradigm
 preference* — and the measurement selects diffusion.
 
 Summarizing the critical analysis of existing approaches: diffusion models are a strong
-generation mechanism, but a dense flat realization runs into the long-context resource
-blow-up (1.7) and the memory-horizon consistency degradation; patch-based transformer models
-capture global context well but require entropy-based adaptation of their rigid tokenization;
-hierarchical latent models provide an alternative to flat-latent and flat-context allocation, and
-the continuous form was trainable at the scale reached in this work (whereas the tested
-hierarchical VQ configurations were unstable); energy-based models offer an attractive explicit
-criterion but are resource-barred in training, and their descent mechanism is experimentally
-characterized as a negative at this work's reachable scale (Chapter 4). The synthesis defining
-this dissertation is therefore: **a hierarchical continuous-latent video model with a diffusion
-refinement core, whose coarse level carries the long memory horizon (Chapter 3), supported by
-entropy-adaptive decomposition (Chapter 2), reversible-computation resource optimization
-(Chapter 2), and a criterion-driven measurement instrument (Chapters 3–4)**. These are linked
-dissertation strands, not one experimentally integrated executable pipeline.
+generation mechanism, but a dense flat realization incurs rapidly growing long-context cost;
+fixed-patch transformers can capture global context, while entropy-guided adaptation offers one
+way to allocate their tokens non-uniformly; hierarchical latent models make cross-scale and
+cross-rate allocation explicit; and energy-based models offer an attractive scalar criterion but
+did not provide usable descent generation at the scale tested in Chapter 4. These observations
+define an **integrated systems methodology with evidentiary separation**. Chapter 2 studies how
+representational capacity can follow an uncertainty proxy and how long differentiation tapes can
+be reconstructed. Chapter 3 independently studies how retained context can be packaged across
+scales and rates, while Chapters 3–4 turn the Chapter 1 criteria into a measurement instrument.
+Only the components explicitly specified in Chapter 3 belong to the executed predictor; the
+other strands share the resource problem and decision framework, not an unmeasured architectural
+dependency.
 
 ## 1.4 Consistency criteria and methods
 
 In the theory of complex systems one of the fundamental notions is the stability of a system
-[87] — its capacity to maintain a specified state or target
+[93] — its capacity to maintain a specified state or target
 trajectory under external disturbances and internal stochasticity. In the context of generative
 video models the notion of stability is most closely tied to the term "consistency" (coherence,
 non-contradiction). Traditionally, the evaluation of generation results in machine learning
 reduces to the subjective criterion of visual attractiveness or to statistical metrics of
-proximity to the training sample, such as FID [88]. From the standpoint of systems
+proximity to the training sample, such as FID [94]. From the standpoint of systems
 analysis such an approach is severely limited.
 
 Systems analysis requires the transition from abstract aesthetic evaluation to a formalized
@@ -731,7 +777,7 @@ lighting), preserving its unique identifying features. Modern generative algorit
 task in several ways.
 
 The simplest method of achieving object consistency in diffusion models is generation by the
-image-to-image approach [89]: an existing reference image is used as
+image-to-image approach [95]: an existing reference image is used as
 the starting point to steer the generation toward a specified result. The diffusion model
 transfers the information of the image into its latent space, subtly influencing the direction of
 the process.
@@ -745,13 +791,13 @@ This approach, however, has rigid systemic limitations — the difficulty of pre
 higher degree of noising of the reference increases variability and loses the consistency of fine
 details (textures, scratches).
 
-A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [90] and its low-rank variation LoRA [91]. This method uses a set of reference
+A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [96] and its low-rank variation LoRA [97]. This method uses a set of reference
 images of a specific object to adjust the internal representation (the weight coefficients
 $\theta$) of the model. Although DreamBooth can secure the consistency of specific features (for
 example, facial features or the texture of a particular object), it is computationally heavy and
 works exclusively within the "learned" object.
 
-For enforcing strict spatial consistency of shape there exists the ControlNet architecture [92], which injects a special control signal (depth maps, contours, segmentation masks)
+For enforcing strict spatial consistency of shape there exists the ControlNet architecture [98], which injects a special control signal (depth maps, contours, segmentation masks)
 into the reverse diffusion process. Methods of the ControlNet type perform the function of hard
 boundary control of the admissible state space: the input image acts as a guiding form
 constraining the evolution of the system.
@@ -760,14 +806,13 @@ constraining the evolution of the system.
 
 **Figure 1.14 — Structural control with a ControlNet-class branch.** A trainable branch maps
 edges, depth or segmentation into residual constraints for a frozen diffusion backbone. Source:
-author’s schematic after the ControlNet architecture [92].
+author’s schematic after the ControlNet architecture [98].
 
 Despite the effectiveness of ControlNet, it is not a complete solution for object consistency,
-since it focuses only on the form ("how") and not on the properties ("what"). A fully autonomous
-system must be able to maintain object identity through internal control mechanisms, without
-mandatory external structural prompts. *(This requirement — identity maintenance by internal
-memory rather than external prompts — is exactly the long-memory requirement that the coarse
-level of the Chapter 3 model serves.)*
+since it focuses on supplied structure rather than persistent internal identity. In autonomous
+prediction, retaining or retrieving earlier evidence is one possible mechanism when identity is
+not recoverable from the recent view. Chapter 3 tests coarse long-span context as such a carrier;
+Chapter 4 also records the boundary where fine full-resolution context preserves identity better.
 
 ### 1.4.2 Temporal consistency
 
@@ -776,31 +821,41 @@ consistency**. It requires that the sequence of generated states $x_1, x_2, \dot
 logical and smooth video stream. Anomalies of temporal consistency manifest as flicker, sudden
 background color changes, or deformation of objects during motion.
 
-The mathematically strict local requirement of temporal consistency is formalized through
-optical flow or a warping function $W$: if the vector field of motion between frames $t-1$ and
-$t$ is known, the generated state $x_t$ must maximally correspond to the warped previous state
-$W(x_{t-1})$. The local temporal-consistency error is defined as:
+One local diagnostic of temporal consistency uses optical flow or a warping operator $W$: where
+the correspondence from frame $t-1$ to frame $t$ is valid, the generated state $x_t$ should agree
+with the warped previous state. Let $M_t(p)\in\{0,1\}$ select valid, non-occluded pixels $p$, and
+let $W_{t-1\rightarrow t}$ warp into frame $t$. A normalized masked pixelwise error is
 
-$$L_{\text{temp}} = \left\|\left(x_t - W(x_{t-1})\right)\right\|^2 \odot M \tag{1.12}$$
+$$
+L_{\text{temp}}(t)=
+\frac{\displaystyle\sum_{p}M_t(p)
+\left\|x_t(p)-W_{t-1\rightarrow t}(x_{t-1})(p)\right\|_2^2}
+{\displaystyle\sum_{p}M_t(p)+\varepsilon},
+\qquad \varepsilon>0.
+\tag{1.12}
+$$
 
-where $M$ is a binary mask excluding occlusion regions.
+The denominator makes values comparable across different valid-mask areas and $\varepsilon$
+handles a frame pair with no valid correspondence.
 
-It must be emphasized, however, that the warp criterion (1.12) is **local**: it couples only
-adjacent frames and therefore certifies only short-range temporal consistency. It is entirely
-blind to the long-range regime identified in §1.3.1: content that leaves the field of view exits
-the domain of the mask $M$, and its consistent restoration upon re-entry many frames later is not
-constrained by any chain of local warp terms — it is constrained only by the memory of the
-generating system. Long-range temporal consistency is therefore operationalized separately, as
-part of trajectory consistency (§1.4.5), through metrics stratified by re-entry hardness. For
-ensuring temporal consistency in the developed information technology, the following mechanisms
-are used: multidimensional positional encoding 3D-RoPE, block-causal attention masks, and
-temporal chaining mechanisms (Chapter 2), together with the coarse-level long memory of the
-hierarchical model (Chapter 3).
+It must be emphasized, however, that the warp criterion (1.12) is **local**: it tests one
+adjacent-frame correspondence condition and does not certify even short-range temporal quality as
+a whole. It does not directly evaluate the long-range regime identified in §1.3.1: content that
+leaves the field of view exits the valid correspondence mask, so correct re-entry many frames
+later is not observed by the intervening local warp terms. Re-entry then depends on whatever
+context, recurrent state, learned dynamics, or prior carries the relevant evidence. Long-range
+temporal consistency is therefore operationalized separately, as
+part of trajectory consistency (§1.4.5), through metrics stratified by re-entry hardness. The
+dissertation studies several level-appropriate mechanisms: RoPE-ND and reversible temporal
+chaining in the separate [A1]/[A2] strands of Chapter 2, and learned window-relative embeddings,
+block-causal autoregressive recursion, and coarse long-span context in the executed Chapter 3
+predictor. Their shared role is to expose or manage temporal structure; they are not all
+components of one implemented architecture.
 
 ### 1.4.3 Style and conceptual consistency
 
 Besides object consistency, complex systems must maintain a unified **stylistic** appearance of a
-series of generated data. Modern approaches such as StyleAligned [93] solve this
+series of generated data. Modern approaches such as StyleAligned [99] solve this
 problem through intervention in the attention mechanism (shared attention): target images receive
 information about the reference image during generation, copying its global stylistic
 characteristics (color palettes, brushwork) without interfering with spatial geometry.
@@ -809,14 +864,16 @@ characteristics (color palettes, brushwork) without interfering with spatial geo
 
 **Figure 1.15 — Style consistency through shared attention.** Reference attention features are
 shared across distinct target trajectories while their content conditions remain separate.
-Source: author’s schematic after StyleAligned [93].
+Source: author’s schematic after StyleAligned [99].
 
-For a more thorough and qualitative analysis of generative models, within this dissertation
-research — published in **[A3]** (the consistency-criteria article) — the notion of **conceptual
-consistency** was formalized.
+Article **[A3]** is the published basis for the dissertation-specific consistency-criteria
+apparatus. Its contribution is the explicit systems taxonomy and operationalization used here,
+not priority over earlier notions of semantic, conceptual, compositional, hierarchical, or
+temporal consistency. Within that scoped apparatus, **conceptual consistency** denotes the
+criterion defined below.
 
 Marr's multi-stage account of visual representation — progressing from image evidence toward
-structured descriptions of the scene [94] — motivates a broad engineering analogy, but does not itself prescribe
+structured descriptions of the scene [100] — motivates a broad engineering analogy, but does not itself prescribe
 the taxonomy used here. The dissertation's narrower claim is that the traditional division into
 style and object alone is incomplete. Conceptual consistency is the capacity of the generative system for
 compositionality and extrapolation. It evaluates the ability of the model not merely to reproduce
@@ -830,20 +887,22 @@ generates objects side by side instead of combining them.
 
 As the metric for evaluating conceptual consistency, the cosine similarity between the semantic
 vectors of the generated image and the textual condition in the joint space of a contrastive
-model (CLIP score) [95] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
+model (CLIP score) [101] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
 encoder; then the measure of conceptual consistency is defined as:
 
 $$C_{\text{concept}}(x, u) = \frac{E_I(x) \cdot E_T(u)}{\left\|E_I(x)\right\| \left\|E_T(u)\right\|} \tag{1.13}$$
 
-High values of this indicator testify that the system has successfully resolved the target
-uncertainty and learned the deep causal relations of the visual space.
+High values of this indicator show alignment in the contrastive embedding space between the
+generated image and the textual condition. CLIP score is therefore used as a **semantic-alignment
+proxy**; it neither identifies causal relations nor guarantees compositional understanding, and
+must be interpreted together with task-specific and human evaluation [102, 103, 104].
 
 ### 1.4.4 Hierarchical consistency
 
-For the transition to systems of a higher order of complexity — multi-level generative models —
-this research introduces the notion of **hierarchical consistency**, developed within the
-construction of the hierarchical generation model of Chapter 3. This criterion follows directly
-from the principles of systems analysis of multi-level objects.
+For multi-level generative models, this dissertation operationalizes **hierarchical consistency**
+as a distinct criterion within the [A3]-based systems taxonomy and the Chapter 3 model. The claim
+is the dissertation-specific definition, placement, and measurement role of the criterion—not
+that the general idea of agreement across representational levels originates here.
 
 Hierarchical consistency is defined as the strict informational and structural coherence between
 the representations of one and the same visual object at different levels of abstraction: the
@@ -852,20 +911,16 @@ anomaly of hierarchical consistency is a situation of internal system conflict: 
 macro signal forms the contour of a brick building while at the micro level the system generates
 organic wood patterns.
 
-Ensuring this property requires the introduction of an inter-level coherence operator. From the
-standpoint of system control, the essential requirement is that the junior (fine/detailed) level
-must not be able to contradict the senior (coarse/abstract) level's decisions at long range. In
-the Chapter 3 model this requirement is satisfied by two complementary mechanisms (§3.1.2–3.1.3).
-First, by **information-design asymmetry**: within a prediction step both levels are denoised
-jointly in one shared attention pass, but only the coarse level's history extends over the full
-memory horizon — long-range structure can therefore *originate only from the coarse channel*,
-and the fine level physically lacks the inputs to contradict it at long range; the control is
-unidirectional in the information-theoretic sense (coarse → fine for long-horizon signals), not
-in the scheduling sense. Second, by **gradient detachment at the system boundaries** where it is
-exact and load-bearing: between the frozen representation subsystem and the prediction core (the
-state coordinate system is a constant of the control problem), and between past and future along
-the autoregressive rollout (previously generated context enters as a constant, excluding
-destructive gradient interference between successive windows).
+An explicit inter-level communication mechanism can bias a model toward this property, but it
+cannot guarantee it: representation loss, imperfect attention, and decoding error can still make
+the levels disagree. In the Chapter 3 model, **information-design asymmetry** assigns long-span
+history only to coarse tokens, while both target levels are denoised jointly in shared attention
+(§3.1.2–3.1.3). Thus long-range observed evidence enters through the coarse channel and can
+condition fine prediction. The fine target can nevertheless conflict with the coarse target, so
+hierarchical consistency remains an evaluated criterion rather than a structural theorem.
+Gradient detachment at the frozen representation boundary and between autoregressive windows
+stabilizes the optimization interface; it does not itself establish semantic or structural
+agreement between levels.
 
 ### 1.4.5 Trajectory consistency
 
@@ -878,18 +933,22 @@ generation lives: the degradation of **autoregressive rollout**, in which the sy
 own outputs as context and errors compound along $t$ (the realization of the target uncertainty
 of §1.2.4 and the exposure bias of §1.3.1).
 
-A trajectory-consistent system must satisfy two requirements. First, **bounded degradation**: the
-prediction error along an autoregressive rollout must grow in a controlled manner, without
-divergence or collapse of the generated content. Second — the requirement that separates a
-long-memory system from a flat one — **consistent re-entry**: content that left the field of view
-must be restored correctly when it returns, at any temporal distance within the modeled process.
+The dissertation evaluates trajectory consistency through two requirements. First, **bounded
+degradation**: prediction error along an autoregressive rollout should grow in a controlled manner,
+without divergence or collapse of the generated content. Second, **consistent re-entry**: within
+the evaluated horizon, content that left the field of view should be restored correctly when it
+returns. Re-entry records whose source views lie outside a short flat package are especially
+diagnostic of whether a longer-span context mechanism is useful; they do not make all flat
+architectures information-theoretically incapable.
 
 The operationalization of this criterion, developed in Chapters 3–4, stratifies rollout error by
-an exactly computable hardness label. For a generated frame $x_t$ with context window $C$, let
-the **novel-foreground fraction** $\nu_t(C) \in [0, 1]$ be the fraction of the frame's foreground
-content that was informationally inaccessible from $C$ (in the purpose-built testbed of Chapter 3
-this quantity is computed *exactly* from the recorded control-action track, rather than
-estimated). Trajectory consistency is then measured as the family of stratified degradation
+an exactly computable hardness label. For a generated frame $x_t$ with explicit context package
+$C$, let the **novel-foreground fraction** $\nu_t(C) \in [0, 1]$ be the fraction of target
+foreground whose underlying world columns are absent from the views represented directly in
+$C$. In the purpose-built testbed of Chapter 3 this geometric package-novelty quantity is computed
+*exactly* from the recorded control-action track rather than estimated. It does not assert that
+the model could possess no indirect information about those columns. Trajectory consistency is
+then measured as the family of stratified degradation
 curves
 
 $$\mathcal{E}_{b}(h) = \mathbb{E}\!\left[\, e\!\left(x_{t+h},\, \hat{x}_{t+h}\right) \,\middle|\, \nu_{t+h} \in b \,\right] \tag{1.14}$$
@@ -902,17 +961,20 @@ differing qualitatively on the hard re-entry bin beyond the flat window's horizo
 anomaly of trajectory consistency (divergence, mean-collapse, identity loss at re-entry)
 localizes to specific bins and horizons.
 
-For energy-based mechanisms the trajectory criterion has a specialized classical diagnostic in
-pseudo-time: the divergence of the sampling chain (1.11) is monitored by the **energy gap**
+For energy-based mechanisms the trajectory criterion has a specialized diagnostic in
+pseudo-time: the progress of the descent chain (1.11) is monitored by the **energy gap**
 between the initial and final states of the descent,
 
-$$\Delta E = \frac{E(x_0) - E(x_K)}{E(x_0)} \tag{1.15}$$
+$$\Delta E = E_\theta(y_0;c) - E_\theta(y_K;c) \tag{1.15}$$
 
-which must be strictly positive, and by the ordering of the trained landscape (whether the true
-target attains lower energy than degenerate candidates). Finally, the practical attainability of long
-consistent trajectories depends on resolving the computational uncertainty of §1.2.4: removing
-the memory limits on trajectory depth by the time-agnostic backpropagation developed in **[A2]**
-and Chapter 2.
+This raw difference is invariant to an additive energy offset but is not compared across
+independently trained energy gauges. It is reported within a fixed model together with the more
+direct ordering diagnostic: whether the true target attains lower energy than degenerate
+candidates.
+If an objective is differentiated through a long trajectory, its practical feasibility also
+depends on the activation-storage policy. Chapter 2 compares reversible replay with BPTT and
+checkpointing for that setting. The Chapter 3 predictor is instead trained on individual windows;
+its measured long-horizon behavior does not depend on reversible rollout training.
 
 ![Trajectory consistency operationalization](../../figures/fig44_trajectory_consistency.png)
 
@@ -964,28 +1026,29 @@ no controlled VQ-versus-continuous receipts are present, representation-family s
 not claimed.
 
 The examination of energy-based models (EBM) recorded their systemic attraction—an explicit
-scalar optimization criterion and input-gradient inference direction—alongside their measured
-computational barrier: gradient identification through long MCMC trajectories with linear memory
-growth. In this dissertation the energy-based mechanism is treated as reviewed literature whose
+scalar optimization criterion and input-gradient inference direction—alongside a computational
+barrier of the differentiable-through-descent formulation tested here: differentiating a loss
+through a long input-gradient trajectory requires second-order derivative operations and a
+horizon-dependent vanilla computation graph. In this dissertation the energy-based mechanism is
+treated as reviewed literature whose
 capability boundary at reachable scale is characterized experimentally in Chapter 4; the survey
 of resource-efficiency methods it motivated (checkpointing, Neural ODE, reversible networks)
 identified reversible transformations as one promising apparatus, which Chapter 2 develops
 into the time-agnostic backpropagation method and its extension to stochastic multi-level
 recurrences.
 
-Furthermore, the chapter extended and improved the criteria apparatus for evaluating the results
-of generative models. The notion of consistency was reconceived as the systemic property of the
-absence of anomalies and the stability of the generation trajectory. To the classical criteria
-(spatial, object, temporal consistency) new kinds were added: conceptual, hierarchical, and
-trajectory consistency — the last operationalized through autoregressive-rollout degradation
-metrics stratified by an exactly computable re-entry hardness label, which converts a previously
-declarative criterion into a measurable instrument of systems analysis.
+Furthermore, the chapter organized established consistency concerns into the dissertation-specific
+[A3] systems taxonomy and supplied explicit operational roles for conceptual, hierarchical, and
+trajectory consistency. The claim is this formalization and operationalization, not priority over
+the general terms. Trajectory consistency is measured through autoregressive-rollout degradation
+metrics stratified by an exactly computable re-entry hardness label, converting a broad systems
+requirement into a diagnostic instrument.
 
-The identified systemic contradiction — between the necessity of ensuring multi-level consistency
-of video data over long time horizons (which requires long memory horizons and deep hierarchies)
-and the strict resource constraints of modern computing systems (the attention-memory blow-up of
-flat contexts and the linear growth of training memory with horizon length) — determines the
-relevance of this dissertation research and forms its purpose.
+The identified systemic contradiction is between the demand for consistency over longer
+processes and finite resources for retaining context and differentiating through computation.
+Explicit hierarchy and reversible replay are two candidate interventions on different resource
+terms; neither is asserted to be universally necessary. This contradiction determines the
+relevance of the dissertation and forms its purpose.
 
 **The purpose of the dissertation research** is to improve the efficiency and the temporal and
 spatial consistency of hierarchical video data generation processes through the development of
@@ -1009,32 +1072,34 @@ research tasks must be solved:
    adaptive decomposition using entropy metrics and the mathematical apparatus of
    multidimensional rotary positional embedding.
 
-4. Develop a method for optimizing the computational resources of multi-step iterative models
-   that ensures constant, process-length-independent consumption of memory on the basis of
-   reversible mathematical transformations; extend it to stochastic multi-level recurrences and
-   delimit its domain of applicability.
+4. Develop a method for optimizing the activation-tape resources of multi-step iterative models
+   through reversible mathematical transformations; characterize its horizon scaling, extend it
+   to stochastic multi-level recurrences with explicit replay-information accounting, and delimit
+   its domain of applicability relative to checkpointing.
 
 5. Develop a mathematical model of multi-stream video data generation in compact hierarchical
    latent state spaces, supporting context streams at different temporal rates and spatial
-   resolutions over a shared attention backbone, with unidirectional context-signal transfer
-   and a per-frame iterative-refinement generation core selected by controlled mechanism analysis.
+   resolutions over a shared attention backbone, with explicit long-range context allocation and
+   a per-frame iterative-refinement generation core selected by controlled mechanism analysis.
 
-6. Create an intelligent information technology and a software complex for the systems analysis
-   of hierarchical video generation processes, integrating the developed methods of adaptive
-   tokenization, resource optimization, and hierarchical generation, together with a
-   purpose-built memory-horizon testbed and re-entry-stratified evaluation protocol as its
-   measurement instrument.
+6. Create an intelligent information technology and a software complex for systems analysis of
+   hierarchical video generation processes: a common methodology connecting adaptive
+   representation, activation-resource optimization, context packaging, and a purpose-built
+   memory-horizon measurement instrument, while retaining the experimentally verified boundary
+   between separately measured components and the executed predictor.
 
 7. Conduct comprehensive experimental studies and approbation of the developed methods and
-   technology on synthetic and open datasets — including a matched-capacity, matched-NFE
-   comparison of prediction mechanisms — and compare their efficiency and consistency with
+   technology on synthetic and open datasets — including a matched-capacity regression–diffusion
+   comparison with explicit inference-work accounting — and compare their efficiency and consistency with
    modern analogues.
 
-The solution of tasks 3–7 is the subject of the following chapters of the dissertation. Chapter 2
-presents the mathematical apparatus of adaptive data tokenization and computational-resource
-optimization; Chapter 3 develops the hierarchical mathematical model with long-range coarse-level
-memory and the memory-horizon measurement instrument; Chapter 4 presents the experimental
-research and practical application.
+The chapter therefore hands forward two resource questions. Chapter 2 asks **what information
+deserves representational capacity** and **what part of a long differentiation tape must be stored
+rather than reconstructed**. Chapter 3 asks **which past state must remain addressable at
+inference time and how it should be packaged under a fixed context budget**. Chapter 4 then keeps
+the evidence for these questions separate while comparing their operating regions. This is the
+systems connection among the publication strands; it is not a claim that every method is executed
+inside one model.
 
 The results of this chapter are published in the author's work [A3] and in the conference
 publications to be identified in the final author-supplied publication list.

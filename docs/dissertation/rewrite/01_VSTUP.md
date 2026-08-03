@@ -66,6 +66,46 @@ systems principle is:
 
 > **Compress what must be remembered; reconstruct what need not be stored.**
 
+This principle is used as an organising systems formulation rather than as a claim that every
+method was optimized jointly. Let \(\mathcal R\) denote the representation and allocation rule,
+\(\mathcal P\) the retained context package, and \(\mathcal A\) the method used to differentiate
+through a temporal computation. The dissertation studies components of the constrained design
+problem
+
+$$
+\min_{\mathcal R,\mathcal P,\mathcal A}
+\mathbb E\!\left[\mathbf L_{\mathrm{cons}}\right]
+\quad\text{subject to}\quad
+B_{\mathrm{ctx}}(\mathcal P)\le B,\qquad
+M_{\mathrm{act}}(\mathcal A)\le M,\qquad
+C_{\mathrm{train/infer}}\le C.
+$$
+
+The vector \(\mathbf L_{\mathrm{cons}}\) collects the task-appropriate consistency endpoints rather
+than reducing every failure to one aggregate score. The representation strand informs
+\(\mathcal R\), the context-packaging strand manipulates \(\mathcal P\), the reversible-computation
+strand studies \(\mathcal A\), and the criteria strand supplies the measurement and decision
+layer. These links are methodological. Their evidence remains study-specific; the dissertation
+therefore presents an integrated systems methodology, not one experimentally validated
+end-to-end model.
+
+Four kinds of connection are distinguished throughout the dissertation. **Problem-level
+integration** means that all strands address resource-constrained modelling of long multi-step
+visual processes. **Methodological integration** means that each strand acts on a named resource,
+representation, or measurement term. **Evidentiary separation** means that every result retains
+its own population, comparator, and limitation. **Executable integration** is claimed only for
+components actually present in the Chapter 3 predictor. This vocabulary permits a coherent
+systems methodology without implying an unmeasured end-to-end model.
+
+![Dissertation systems map](../../figures/fig61_dissertation_systems_map.png)
+
+**Figure I.1 — Dissertation systems map and evidence boundaries.** A1 allocates representation
+capacity, A2 reconstructs temporal computations, A3 supplies the measurement language, and A4
+allocates retained context. Solid links identify implemented or directly measured dependencies;
+dashed links identify conceptual or methodological transfer. The separate evidence boxes make
+explicit that the four strands answer one systems question without constituting one experimentally
+validated executable pipeline. Source: author's dissertation-level synthesis of [A1]–[A4].
+
 The state-memory question also contains an information trade-off. A coarse, subsampled, or
 hierarchical package may extend addressable temporal reach but discard fine detail. A dense flat
 package may preserve identity and texture but cover a shorter history. Existing hierarchical and
@@ -156,6 +196,21 @@ The tasks correspond directly to the principal results and General Conclusions. 
 article addresses the context-packaging part of Tasks 5–7; [A1], [A2], and [A3] support the
 representation, reversible-optimization, and consistency-criteria strands.
 
+### Contribution and Evidence Crosswalk
+
+The contribution strands are connected at the problem and methodology levels, while their
+experimental evidence remains separate. The following crosswalk is the authoritative scope map
+used by the later chapters.
+
+| Strand | Research problem | Intervention | System or resource term | Evidence and principal result | Boundary | Used in the final Chapter 3 predictor? |
+|---|---|---|---|---|---|---|
+| [A1] V-BLT | non-uniform information density | entropy-guided adaptive decomposition | representation and capacity allocation | resources are allocated using measured spatio-temporal information structure | entropy is an informative proxy, not an automatically calibrated uncertainty estimate | no |
+| [A1] RoPE-ND | multi-axis positional structure | independent rotary coordinates | representation-coordinate interface | preserves explicit horizontal, vertical, and temporal coordinates in the tested variable-patch system | does not guarantee correct semantic routing or consistency | no |
+| [A2] TempVerseFormer and dissertation extension | activation growth through long temporal differentiation | reversible temporal replay | activation-tape memory | reconstructs local states/graphs and keeps the measured activation-tape frontier approximately flat with horizon | replay noise/metadata and numerical stability remain separate costs; checkpointing is the practical comparator | no |
+| [A3] consistency criteria | an overloaded and weakly operationalized notion of consistency | conceptual, hierarchical, and trajectory criteria | measurement and decision layer | trajectory consistency is operationalized through self-fed, re-entry, support, identity, miss/extra, and coverage endpoints | semantic proxies and architectural conditioning do not guarantee causal understanding or cross-level coherence | methodologically consumed by Chapters 3–4 |
+| [A4] hierarchical predictor | retaining distant evidence under a fixed context budget | flat, spatially hierarchical, and temporally sparse packages | context/state memory | establishes the tested reach–fidelity operating regions and external support–identity boundary | synthetic instruments, modest seed panels, and no universal hierarchy ranking | yes |
+| Dissertation synthesis | auditable operating-region decisions | exact observability, clip-cluster inference, registered families, and provenance controls | evidence and system-control layer | links each claim to a population, intervention, uncertainty level, and decision boundary | an integrated methodology and toolkit, not one jointly validated executable pipeline | toolkit level |
+
 ## Object and Subject of Research
 
 **The object of research** is the processes of systems analysis, mathematical modelling, and
@@ -195,8 +250,8 @@ a justified smallest effect of interest.
 The scientific novelty is scoped to the developed methods and controlled demonstrations rather
 than to the invention of hierarchical video models as a class.
 
-1. **For the first time, a controlled methodology for systems analysis of memory-dependent
-   re-entry in budgeted video prediction is developed.** It combines a purpose-built
+1. **A controlled methodology for systems analysis of memory-dependent re-entry in budgeted video
+   prediction is developed.** It combines a purpose-built
    memory-horizon testbed with exact geometric observability, pair-specific reach-differential
    populations, complete false-positive-sensitive endpoints, matched context-token comparisons,
    protected holdouts, and simultaneous clip-cluster inference. Unlike aggregate evaluation, the
@@ -210,11 +265,12 @@ than to the invention of hierarchical video models as a class.
    times fewer context tokens. The contribution is the controlled reach–fidelity measurement and
    tested bracket, not a universal hierarchy law or a unique continuous crossing.
 
-3. **For the first time in the dissertation’s temporal-optimization line, an exactly reversible
-   stochastic recurrence with stored noise and a three-axis applicability taxonomy is developed
-   and experimentally verified.** It extends time-agnostic reverse replay to the tested
-   stochastic multi-level process while distinguishing reversibility across depth, time, and
-   computation and identifying checkpointing as the relevant practical comparator.
+3. **The dissertation's temporal-optimization line is extended with an algebraically reversible
+   stochastic recurrence, stored-noise replay, and a three-axis applicability taxonomy.** The
+   recurrence is reconstructed within reported numerical tolerances and its reverse-replay
+   gradients are compared with BPTT in the tested stochastic multi-level process. The taxonomy
+   distinguishes reversibility across depth, time, and computation and identifies checkpointing
+   as the relevant practical comparator.
 
 4. **The criteria apparatus for generative systems is improved** by formalizing conceptual,
    hierarchical, and trajectory consistency and connecting trajectory consistency to
@@ -281,8 +337,9 @@ The applicant’s contribution is separated by publication strand:
   context-packaging study, hierarchical latent predictor, LoopMom instrument, pair-specific
   reach populations, persistent-object evaluation, experiment-control system, and the complete
   reach–fidelity evidence chain.
-- The exactly reversible stochastic recurrence and applicability taxonomy are dissertation
-  developments connected to, but separately scoped from, the published TempVerseFormer result.
+- The algebraically reversible stochastic recurrence, numerical replay validation, and
+  applicability taxonomy are dissertation developments connected to, but separately scoped
+  from, the published TempVerseFormer result.
 
 For co-authored works, the final institutional version must reproduce the formally approved
 contribution statements.
@@ -322,6 +379,12 @@ Conclusions, references, and appendices.
 - **Chapter 4** evaluates mechanism selection, untouched reach confirmation, the tested
   reach–fidelity frontier, package shape, robustness, negative replication, explicit access, the
   persistent-object boundary, practical implementation, and limitations.
+
+Article [A4] is the empirical culmination of the dissertation's context-state and measurement
+arc: it connects the systems decomposition, the multi-stream context model, exact observability,
+trajectory-consistency endpoints, and operating-boundary inference. It is not the culmination by
+virtue of executing V-BLT, RoPE-ND, and reversible temporal training inside one predictor; those
+methods remain separately validated parts of the systems methodology.
 
 The final page, figure, table, reference, and appendix counts must be inserted after institutional
 typesetting. **[AUTHOR: supply the final pagination and confirm the appendix set.]**

@@ -72,10 +72,12 @@ claimed. A protected persistent-object 48-to-300 Moving-MNIST study provides a m
 boundary: hierarchy better preserves spatial support and trajectory continuity, whereas flat
 context better preserves digit identity. Both systems remain difficult in absolute terms.
 
-The reversible-computation strand independently demonstrates exact reverse replay and constant
-activation-memory scaling with temporal horizon in the tested recurrence, while identifying
-gradient checkpointing as the appropriate practical competitor and delimiting cases in which
-reversibility does not pay. The dissertation therefore contributes an integrated systems
+The reversible-computation strand independently demonstrates algebraic reverse replay, numerical
+state reconstruction within reported tolerances, and an approximately horizon-independent peak
+activation-tape footprint in the tested recurrence. Replay noise or equivalent reproducibility
+metadata remains a separately accounted horizon-dependent input. Gradient checkpointing is the
+appropriate practical comparator, and the measured applicability analysis identifies cases in
+which reversibility does not pay. The dissertation therefore contributes an integrated systems
 methodology and research software toolkit, not one experimentally validated end-to-end model that
 combines every strand.
 
@@ -234,6 +236,46 @@ systems principle is:
 
 > **Compress what must be remembered; reconstruct what need not be stored.**
 
+This principle is used as an organising systems formulation rather than as a claim that every
+method was optimized jointly. Let \(\mathcal R\) denote the representation and allocation rule,
+\(\mathcal P\) the retained context package, and \(\mathcal A\) the method used to differentiate
+through a temporal computation. The dissertation studies components of the constrained design
+problem
+
+$$
+\min_{\mathcal R,\mathcal P,\mathcal A}
+\mathbb E\!\left[\mathbf L_{\mathrm{cons}}\right]
+\quad\text{subject to}\quad
+B_{\mathrm{ctx}}(\mathcal P)\le B,\qquad
+M_{\mathrm{act}}(\mathcal A)\le M,\qquad
+C_{\mathrm{train/infer}}\le C.
+$$
+
+The vector \(\mathbf L_{\mathrm{cons}}\) collects the task-appropriate consistency endpoints rather
+than reducing every failure to one aggregate score. The representation strand informs
+\(\mathcal R\), the context-packaging strand manipulates \(\mathcal P\), the reversible-computation
+strand studies \(\mathcal A\), and the criteria strand supplies the measurement and decision
+layer. These links are methodological. Their evidence remains study-specific; the dissertation
+therefore presents an integrated systems methodology, not one experimentally validated
+end-to-end model.
+
+Four kinds of connection are distinguished throughout the dissertation. **Problem-level
+integration** means that all strands address resource-constrained modelling of long multi-step
+visual processes. **Methodological integration** means that each strand acts on a named resource,
+representation, or measurement term. **Evidentiary separation** means that every result retains
+its own population, comparator, and limitation. **Executable integration** is claimed only for
+components actually present in the Chapter 3 predictor. This vocabulary permits a coherent
+systems methodology without implying an unmeasured end-to-end model.
+
+![Dissertation systems map](../../figures/fig61_dissertation_systems_map.png)
+
+**Figure I.1 — Dissertation systems map and evidence boundaries.** A1 allocates representation
+capacity, A2 reconstructs temporal computations, A3 supplies the measurement language, and A4
+allocates retained context. Solid links identify implemented or directly measured dependencies;
+dashed links identify conceptual or methodological transfer. The separate evidence boxes make
+explicit that the four strands answer one systems question without constituting one experimentally
+validated executable pipeline. Source: author's dissertation-level synthesis of [A1]–[A4].
+
 The state-memory question also contains an information trade-off. A coarse, subsampled, or
 hierarchical package may extend addressable temporal reach but discard fine detail. A dense flat
 package may preserve identity and texture but cover a shorter history. Existing hierarchical and
@@ -323,6 +365,21 @@ The tasks correspond directly to the principal results and General Conclusions. 
 article addresses the context-packaging part of Tasks 5–7; [A1], [A2], and [A3] support the
 representation, reversible-optimization, and consistency-criteria strands.
 
+### Contribution and Evidence Crosswalk
+
+The contribution strands are connected at the problem and methodology levels, while their
+experimental evidence remains separate. The following crosswalk is the authoritative scope map
+used by the later chapters.
+
+| Strand | Research problem | Intervention | System or resource term | Evidence and principal result | Boundary | Used in the final Chapter 3 predictor? |
+|---|---|---|---|---|---|---|
+| [A1] V-BLT | non-uniform information density | entropy-guided adaptive decomposition | representation and capacity allocation | resources are allocated using measured spatio-temporal information structure | entropy is an informative proxy, not an automatically calibrated uncertainty estimate | no |
+| [A1] RoPE-ND | multi-axis positional structure | independent rotary coordinates | representation-coordinate interface | preserves explicit horizontal, vertical, and temporal coordinates in the tested variable-patch system | does not guarantee correct semantic routing or consistency | no |
+| [A2] TempVerseFormer and dissertation extension | activation growth through long temporal differentiation | reversible temporal replay | activation-tape memory | reconstructs local states/graphs and keeps the measured activation-tape frontier approximately flat with horizon | replay noise/metadata and numerical stability remain separate costs; checkpointing is the practical comparator | no |
+| [A3] consistency criteria | an overloaded and weakly operationalized notion of consistency | conceptual, hierarchical, and trajectory criteria | measurement and decision layer | trajectory consistency is operationalized through self-fed, re-entry, support, identity, miss/extra, and coverage endpoints | semantic proxies and architectural conditioning do not guarantee causal understanding or cross-level coherence | methodologically consumed by Chapters 3–4 |
+| [A4] hierarchical predictor | retaining distant evidence under a fixed context budget | flat, spatially hierarchical, and temporally sparse packages | context/state memory | establishes the tested reach–fidelity operating regions and external support–identity boundary | synthetic instruments, modest seed panels, and no universal hierarchy ranking | yes |
+| Dissertation synthesis | auditable operating-region decisions | exact observability, clip-cluster inference, registered families, and provenance controls | evidence and system-control layer | links each claim to a population, intervention, uncertainty level, and decision boundary | an integrated methodology and toolkit, not one jointly validated executable pipeline | toolkit level |
+
 ## Object and Subject of Research
 
 **The object of research** is the processes of systems analysis, mathematical modelling, and
@@ -362,8 +419,8 @@ a justified smallest effect of interest.
 The scientific novelty is scoped to the developed methods and controlled demonstrations rather
 than to the invention of hierarchical video models as a class.
 
-1. **For the first time, a controlled methodology for systems analysis of memory-dependent
-   re-entry in budgeted video prediction is developed.** It combines a purpose-built
+1. **A controlled methodology for systems analysis of memory-dependent re-entry in budgeted video
+   prediction is developed.** It combines a purpose-built
    memory-horizon testbed with exact geometric observability, pair-specific reach-differential
    populations, complete false-positive-sensitive endpoints, matched context-token comparisons,
    protected holdouts, and simultaneous clip-cluster inference. Unlike aggregate evaluation, the
@@ -377,11 +434,12 @@ than to the invention of hierarchical video models as a class.
    times fewer context tokens. The contribution is the controlled reach–fidelity measurement and
    tested bracket, not a universal hierarchy law or a unique continuous crossing.
 
-3. **For the first time in the dissertation’s temporal-optimization line, an exactly reversible
-   stochastic recurrence with stored noise and a three-axis applicability taxonomy is developed
-   and experimentally verified.** It extends time-agnostic reverse replay to the tested
-   stochastic multi-level process while distinguishing reversibility across depth, time, and
-   computation and identifying checkpointing as the relevant practical comparator.
+3. **The dissertation's temporal-optimization line is extended with an algebraically reversible
+   stochastic recurrence, stored-noise replay, and a three-axis applicability taxonomy.** The
+   recurrence is reconstructed within reported numerical tolerances and its reverse-replay
+   gradients are compared with BPTT in the tested stochastic multi-level process. The taxonomy
+   distinguishes reversibility across depth, time, and computation and identifies checkpointing
+   as the relevant practical comparator.
 
 4. **The criteria apparatus for generative systems is improved** by formalizing conceptual,
    hierarchical, and trajectory consistency and connecting trajectory consistency to
@@ -448,8 +506,9 @@ The applicant’s contribution is separated by publication strand:
   context-packaging study, hierarchical latent predictor, LoopMom instrument, pair-specific
   reach populations, persistent-object evaluation, experiment-control system, and the complete
   reach–fidelity evidence chain.
-- The exactly reversible stochastic recurrence and applicability taxonomy are dissertation
-  developments connected to, but separately scoped from, the published TempVerseFormer result.
+- The algebraically reversible stochastic recurrence, numerical replay validation, and
+  applicability taxonomy are dissertation developments connected to, but separately scoped
+  from, the published TempVerseFormer result.
 
 For co-authored works, the final institutional version must reproduce the formally approved
 contribution statements.
@@ -489,6 +548,12 @@ Conclusions, references, and appendices.
 - **Chapter 4** evaluates mechanism selection, untouched reach confirmation, the tested
   reach–fidelity frontier, package shape, robustness, negative replication, explicit access, the
   persistent-object boundary, practical implementation, and limitations.
+
+Article [A4] is the empirical culmination of the dissertation's context-state and measurement
+arc: it connects the systems decomposition, the multi-stream context model, exact observability,
+trajectory-consistency endpoints, and operating-boundary inference. It is not the culmination by
+virtue of executing V-BLT, RoPE-ND, and reversible temporal training inside one predictor; those
+methods remain separately validated parts of the systems methodology.
 
 The final page, figure, table, reference, and appendix counts must be inserted after institutional
 typesetting. **[AUTHOR: supply the final pagination and confirm the appendix set.]**
@@ -550,18 +615,19 @@ This approach fundamentally changes the mathematical nature of the system: the s
 time (or in the pseudo-time of optimization steps), and every next state depends on the previous
 one, the current parameters, and the control action.
 
-Mathematically, the evolution of the state of such a system is described by a recurrent equation
-of Markov type:
+Mathematically, the evolution of the state of such a system can be written as a controlled Markov
+transition:
 
-$$x_t = f(x_{t-1}, u_t, \theta, \xi_t) \tag{1.1}$$
+$$z_{s+1} = f_\theta(z_s, a_s, c, \xi_s) \tag{1.1}$$
 
-where $x_t$ is the system state (a multidimensional tensor of video data or its latent
-representations) at step $t$; $u_t$ is the vector of control actions (generation conditions);
-$\theta$ is the parameter matrix of the system (the neural network weights); $\xi_t$ is the
-stochastic component (the random number generator); and $f$ is the nonlinear transition function
-describing the law of state change.
+where $z_s$ is the system state (a multidimensional tensor of video data or its latent
+representation) at a generic transition index $s$; $a_s$ is an admissible decision or scheduled
+control action; $c$ is fixed exogenous conditioning; $\theta$ denotes the learned parameters; $\xi_s$ is a
+stochastic input; and $f_\theta$ is the nonlinear state-transition map. The generic index $s$ is
+used here deliberately. In the temporal decomposition below, $t$ is reserved for physical video
+time and $k$ for refinement or sampling pseudo-time.
 
-When the stochastic component $\xi_t$ is present, the transition samples from a conditional
+When the stochastic component $\xi_s$ is present, the transition samples from a conditional
 distribution; deterministic samplers correspond to a fixed or zero stochastic term. Systems
 methodology under risk and uncertainty [5, 6] motivates tracking how initial state, conditioning, sampling, and feedback
 affect later outputs. In generative video, failures can appear as visual artifacts, temporal
@@ -585,57 +651,71 @@ Increasing model capacity and training data can improve generation, but it also 
 and inference cost and does not by itself identify which state or trajectory constraint is
 violated. This motivates a complementary control formulation of the generation trajectory.
 
-Consider the generation process as an optimal-control problem. At the initial moment $t = 0$ the
-system state $x_0$ is fully chaotic (a pure-noise distribution), corresponding to the state of
-maximal informational uncertainty. At the final moment $t = T$ the system must arrive at a state
-$x_T$ belonging to the target distribution of real video data (a state of high internal
-structural organization).
+Consider the generation path through the analytical lens of an optimal-control problem. At the
+initial control step $s=0$, the state $z_0$ may be sampled from a noise distribution. At the final
+step $s=S$, the induced state $z_S$ should satisfy the target and conditioning requirements. This
+is a systems-level abstraction: a trained sampler usually executes a learned transition under a
+fixed schedule rather than solving a new optimal-control problem online for every sample.
 
-The formalization of this process requires a systemic criteria apparatus. In the present research
-the quality of the terminal state and of the trajectory leading to it is described by a
-**consistency criterion functional** $J(x, u)$, which quantitatively expresses the degree of
-non-correspondence between the current state $x$ and the target concept under conditions $u$.
-Generation then becomes a constrained optimization problem over the state space:
+The formalization of this process requires a systemic criteria apparatus. Let
+$\mathbf z=(z_0,\ldots,z_S)$ be an admissible state trajectory and
+$\mathbf a=(a_0,\ldots,a_{S-1})$ its control sequence under fixed condition $c$. A
+**consistency criterion functional** can combine terminal and path costs. The corresponding
+constrained problem optimizes the controls and their induced trajectory, not an unconstrained
+terminal tensor:
 
-$$x^{*} = \arg\min_{x} J(x, u) \tag{1.2}$$
+$$
+(\mathbf z^{*},\mathbf a^{*}) \in
+\arg\min_{\mathbf z,\mathbf a}
+J(\mathbf z,\mathbf a;c)
+=\arg\min_{\mathbf z,\mathbf a}
+\left[\Phi(z_S;c)+\sum_{s=0}^{S-1}\ell_s(z_s,a_s;c)\right]
+\quad\text{subject to}\quad
+z_{s+1}=f_\theta(z_s,a_s,c,\xi_s),\;
+(z_s,a_s)\in\mathcal Z\times\mathcal A.
+\tag{1.2}
+$$
 
-subject to the state-transition law (1.1). The smaller the value of the criterion, the more
-consistent and realistic the generated object.
+Equation (1.2) is conditional on a fixed realization of $\boldsymbol\xi$; a stochastic-control
+formulation instead minimizes the corresponding expected cost (or optimizes a feedback policy).
+Smaller values indicate lower measured inconsistency under the chosen functional; they do not by
+themselves establish perceptual realism or make every evaluation endpoint a training objective.
 
 ![Multi-step generation on a consistency landscape](../../figures/fig31_consistency_landscape.png)
 
-**Figure 1.2 — Conceptual multi-step generation on the landscape of a consistency criterion
-$J(x,u)$.** The trajectory moves from a high-criterion noise state toward a structured
+**Figure 1.2 — Conceptual multi-step generation on the landscape of a consistency criterion.**
+The trajectory moves from a high-criterion noise state toward a structured
 low-criterion region. This is a systems-level abstraction; only energy-based models instantiate
 the landscape as an explicit learned scalar energy. Source: author’s schematic.
 
 In the context of the intelligent information technology being developed, it is important to
 clearly delimit the roles of two fundamental system concepts: the **global consistency criterion**
-and **entropy**. The global criterion (1.2) is trajectory-level: it is a functional the modeling
-system strives to minimize along the entire multi-step generation trajectory in order to reach
-integral consistency of the object; in this dissertation it is operationalized not by a learned
-scalar energy but by the measurable consistency criteria of §1.4 — in particular the
-re-entry-stratified rollout metrics of §1.4.5, which the hierarchical model of Chapter 3 is built
-to optimize. Entropy, by contrast, acts as a **local diagnostic indicator**: it quantifies the
-level of structural informational uncertainty at specific spatio-temporal coordinates of the
-data. Entropy maps allow the system to "understand" where complex moving contours are located and
-where there is static background, and accordingly to adaptively redistribute limited
-computational resources (this apparatus is realized in the V-BLT subsystem in Chapter 2).
-Together these two system concepts form a closed loop of analysis and control.
+and **entropy**. The global criterion (1.2) is trajectory-level: it is a functional used to assess
+or design the entire multi-step generation trajectory; in this dissertation it is operationalized
+not by a learned scalar energy but by the measurable consistency criteria of §1.4—in particular the
+re-entry-stratified rollout metrics of §1.4.5, which evaluate the hierarchical model of Chapter 3
+without being its direct training loss. Entropy, by contrast, acts as a **local diagnostic indicator**: the predictive
+entropy of a model-provided categorical distribution measures how dispersed that distribution is
+at specific spatio-temporal coordinates. In the reported V-BLT setting, entropy maps highlight
+locations that the model predicts less decisively and can therefore guide
+non-uniform allocation of limited computational resources (Chapter 2). Predictive entropy is not
+automatically a calibrated estimate of data uncertainty and can mix ambiguity, model error, and
+miscalibration [44, 45]. It
+is therefore used here as an allocation proxy, not as evidence that the system "understands" the
+scene.
 
 Controlling this system runs into **computational uncertainty** on two fronts. First, at the
-stage of parameter identification (training): since the transition function is realized by a deep
-neural network, identifying the system parameters along a long chain of iterations requires
-storing all intermediate states (activations) in operating memory, so the memory of
-backpropagation through time grows linearly with the trajectory length. This creates a resource
-barrier that rules out long control trajectories on practically available computing systems.
+stage of parameter identification (training): a vanilla implementation of backpropagation through
+a long neural computation retains the intermediate activations needed by the reverse pass, so its
+activation tape grows with trajectory length. Checkpointing and reversible replay change this
+storage–recomputation schedule; Chapter 2 measures their operating regions rather than treating
+one method as universally required.
 Second, at the stage of operation (inference): extending the temporal context of a flat attention
 mechanism inflates its key–value memory linearly and its computation quadratically with context
-length (analyzed quantitatively in §1.3.1). Overcoming the first front requires special methods
-of structural optimization — in particular the introduction of reversible transformations that
-reduce the memory-consumption complexity (developed in Chapter 2); overcoming the second requires
-hierarchical decomposition of the state space with a compact long-memory level (developed in
-Chapter 3).
+length (analyzed quantitatively in §1.3.1). Chapter 2 studies reversible replay as one
+storage–recomputation policy for the first front, alongside checkpointing. Chapter 3 studies
+hierarchical and sparse context packages as alternatives for the second front. The interventions
+act on different memory terms and are measured separately.
 
 ### 1.1.2 Applied domains
 
@@ -645,43 +725,44 @@ systems intertwine closely with the objects of study of the specialty "System An
 
 The first important application domain is medical imaging and the development of intelligent
 systems for supporting clinical decision-making. Complex multidimensional spatial data (MRI, CT)
-often require reconstruction, super-resolution, or cross-modal generation to minimize the
-radiation load on the patient. In this domain any generation anomaly (a "hallucination" in the
-form of non-existent tumors, or the loss of real anatomical structures) has fatal consequences,
-so the requirement of absolute structural consistency is critical.
+can require reconstruction, super-resolution, or cross-modal generation. Distribution-matching
+reconstruction can add or suppress diagnostically relevant structures, so generated outputs need
+task-specific validation, uncertainty reporting, and clinical oversight rather than an assumed
+guarantee of structural faithfulness [46].
 
 The second domain is ecological and technical monitoring using remote sensing data. Satellite
-data often contain gaps due to cloud cover or technical failures. Generative systems are used for
-spatial or temporal interpolation of missing data and for predicting the development of
-ecological catastrophes (for example, the spread of forest fires). In this case the generated
-intermediate states must strictly obey the laws of physics, thermodynamics, and the topology of
-the terrain.
+data can contain gaps due to cloud cover or technical failures, motivating spatial or temporal
+imputation and forecasting. In applications such as fire-spread analysis, physical and terrain
+constraints are important evaluation or conditioning information; their satisfaction must be
+measured for the particular task and is not implied by visual plausibility alone [47, 48, 49].
 
 The third domain is the creation of educational and training simulators (for example, for
 autonomous vehicle control systems). Training robots requires millions of hours of synthetic
 video data with diverse scenarios (including extreme ones). The requirement imposed on the
 generative system is long-term temporal coherence: objects cannot suddenly disappear, deform over
 time, or violate the logic of physical interactions. In particular, an object that leaves the
-camera's field of view must reappear in a consistent state and position when the camera returns
-to it — a requirement that, as will be shown in §1.3.1 and §1.4.5, directly demands a long memory
-horizon from the modeling system.
+camera's field of view should reappear in a consistent state and position when the camera returns
+to it. In a controlled setting where the missing state cannot be inferred from recent frames
+alone, this requires retained or retrievable evidence spanning the relevant absence (§1.3.1 and
+§1.4.5).
 
 The analysis of the listed practical domains shows that modern generative systems are subject to
 the following strict systemic requirements:
 
 1. High visual quality and detail of the target data distribution;
 2. Controllability of the system and the ability to respond to control actions;
-3. Hierarchical representations without loss of coupling between levels;
-4. Absence of spatial, temporal, and logical anomalies — including over long horizons, when
-   content leaves and re-enters the field of view;
+3. Representations that preserve the cross-scale information needed by the task, whether learned
+   implicitly or encoded through an explicit hierarchy;
+4. Measured control of spatial, temporal, and logical anomalies — including over long horizons,
+   when content leaves and re-enters the field of view;
 5. Resource efficiency under constraints of computational memory;
 6. Interpretability of the process.
 
-Summarizing, it can be stated that generative video models have reached the stage of evolution at
-which their further development by empirical architecture search exhausts its potential. What is
-required is the treatment of these algorithms as complex systems controlling dynamic processes,
-which demands the development of a corresponding mathematical apparatus: methods of
-decomposition, identification of uncertainty types, introduction of new consistency criteria, and
+Summarizing, empirical architecture search alone does not expose which state, resource, or
+trajectory constraint causes a failure. A complementary treatment of generative algorithms as
+complex dynamic systems therefore motivates a corresponding mathematical apparatus: methods of
+decomposition, identification of uncertainty types, explicit formalization and operationalization
+of consistency criteria, and
 creation of algorithms for optimal resource control. The following subsections of this research
 are devoted precisely to these questions.
 
@@ -698,7 +779,7 @@ hierarchical (semantic), and temporal.
 
 Structural (functional) decomposition treats the generative system as a set of functional
 information-processing blocks. In most modern architectures, irrespective of their mathematical
-basis, three basic macro-subsystems are distinguished [44].
+basis, three basic macro-subsystems are distinguished [50].
 
 The first subsystem is the **Encoder** — the block of condition preprocessing and encoding. Its
 function is to transform "raw" control signals (for example, a textual description, semantic
@@ -726,9 +807,11 @@ concentrated. Its detailed study requires the deeper kinds of decomposition that
 
 ### 1.2.2 Hierarchical decomposition of the state space
 
-Complex systems have a pronounced hierarchical nature [7].
-Accordingly, the state space of the central generation subsystem cannot be "flat" — it must be
-decomposed into macro, meso, and micro levels.
+Many complex systems admit useful descriptions at several spatial or semantic scales
+[7]. For video generation, an explicit macro/meso/micro
+decomposition is therefore a testable **inductive bias and resource-allocation strategy**, not a
+logical requirement: a single latent grid can learn multiscale features, while an explicit
+hierarchy makes the allocation between coarse reach and fine detail directly controllable.
 
 At the **macro level** (the level of highest abstraction) the system operates with semantic
 vectors of low spatial resolution but high semantic saturation. Here the questions of conceptual
@@ -741,11 +824,12 @@ geometry, and the spatial relations of object parts.
 At the **micro level** (high resolution) the questions of local pixel organization are decided:
 the coherence of textures, lighting, and micro-details.
 
-The problem of many modern generative systems — for example, standard diffusion models built over
-variational autoencoders [3, 43] — is that they operate in a
-single-level latent space, ignoring the necessity of explicit hierarchical decomposition [20, 35, 36]. This produces an internal control conflict in which macro- and
-micro-decisions are taken simultaneously. The mixing of levels is a direct source of generation
-anomalies: a correct object texture may be imposed on a distorted global shape.
+Many modern generative systems — for example, diffusion models built over variational
+autoencoders [3, 43] — operate on one explicit latent grid. Such a
+model can still learn multiscale internal features, but it offers no explicit interface for
+assigning different context horizons or token rates to those scales. Joint coarse and fine
+decisions can also conflict in practice; the brick-texture/wood-shape example below illustrates a
+failure mode, not a causal diagnosis that follows from using a flat grid.
 
 ![Hierarchical decomposition of visual state](../../figures/fig33_visual_hierarchy.png)
 
@@ -753,9 +837,10 @@ anomalies: a correct object texture may be imposed on a distorted global shape.
 abstraction and lowest spatial rate; micro denotes the pixel-proximal level and highest detail.
 Source: author’s schematic.
 
-The systems approach requires the development of mathematical models of explicit hierarchical
-decomposition with mechanisms of strict coherence between these orthogonal levels of
-representation. This decomposition is the core of the present dissertation's topic. Moreover — a
+The systems approach motivates mathematical models of explicit hierarchical decomposition with
+mechanisms that **bias and measure** coherence between these levels of representation. Such a
+model cannot guarantee coherence by structure alone. This decomposition is the core of the
+present dissertation's topic. Moreover — a
 property central to the direction developed in Chapters 2–4 — an explicitly decomposed hierarchy
 allows the levels to run at *different temporal rates and context lengths*: a compact upper
 (coarse) level with a low information rate can afford to retain a long temporal context at the
@@ -765,16 +850,17 @@ and developed in Chapter 3).
 
 ### 1.2.3 Temporal decomposition
 
-The third necessary kind of stratification is temporal decomposition. When modeling systems that
-generate video data, time must be considered in two entirely different, orthogonal dimensions,
-which creates the so-called "two-dimensional temporal grid".
+A third useful analytical stratification is temporal decomposition. When modeling systems that
+generate video data, two distinct axes should be separated, creating a "two-dimensional temporal
+grid" for the analysis that follows.
 
 The first dimension concerns the internal **pseudo-time** of the generation process — the
 partition of the continuous process of state change into discrete refinement steps
 $k = 1, \dots, K$ *per generated frame*: the steps of the reverse diffusion process, the token
 steps of an autoregressive decoder, or the descent steps of an energy-based sampler. Every such
-step is a micro-transition of the system in phase space, during which the total entropy of the
-state decreases and its consistency increases.
+step is a micro-transition of the system in phase space. The algorithm is designed to move toward
+a more probable or lower-objective state, but monotonic entropy reduction or consistency
+improvement is not guaranteed for every realized trajectory.
 
 The second dimension is introduced upon the transition to processing video sequences and reflects
 the **physical time axis** $t = 1, \dots, T$, where every discrete slice is a separate frame. The
@@ -783,12 +869,14 @@ ensure stability in both temporal dimensions: the system state must evolve corre
 optimization axis $k$ for every individual frame, and at the same time all generated frames must
 be spatio-temporally coherent along the physical axis $t$, forming smooth motion kinematics.
 
-The physical axis, in turn, gives rise to the key quantitative characteristic of this
-dissertation: the **memory horizon** — the maximal temporal distance $\Delta t$ at which
-information about the past state of the modeled process can still influence the generated present
-state. For a system whose central subsystem attends to a flat context window of $w$ frames, the
-memory horizon is bounded by $w$; events separated by more than $w$ frames (for example, content
-that left the field of view and returns later) are informationally inaccessible to it.
+The physical axis, in turn, gives rise to a key quantitative characteristic of this dissertation:
+the **explicit context reach** — the maximal temporal distance $\Delta t$ represented directly by
+an item in the configured context package. For a system whose central subsystem receives only a
+flat window of $w$ preceding frames, this package-addressable reach is bounded by $w$. An event
+older than the window (for example, content that left the field of view and returns later) has no
+explicit source-frame token in that interface. This is not an information-theoretic
+inaccessibility claim: evidence may persist indirectly in recent observations, learned weights,
+or another recurrent or retrieved state if the architecture supplies one.
 
 ![Physical time and refinement pseudo-time](../../figures/fig34_temporal_grid.png)
 
@@ -812,7 +900,7 @@ specifies only boundary macro-conditions, leaving a multitude of micro-details (
 headlights, the texture of the asphalt, the lighting) undescribed. The task of the complex system
 is the correct and plausible resolution of this uncertainty during generation. If the system
 completes the missing information incorrectly, "hallucinations" and anomalies arise, rendering
-the result inconsistent [45].
+the result inconsistent [51].
 
 **Structural-algorithmic uncertainty** is connected with limitations and inductive biases of the
 mathematical apparatus itself (the neural network). Implemented models have finite capacity. A
@@ -832,16 +920,17 @@ moving regions have different representational requirements. This motivates—no
 requires—adaptive tokenization based on local entropy, developed and evaluated in Chapter 2.
 
 **Computational uncertainty** is the most critical for iterative multi-step models. It arises on
-two fronts, corresponding to the two temporal axes of §1.2.3. On the training front (the
-identification of model parameters), the backpropagation-through-time algorithm (BPTT) requires
-storing in operating memory all intermediate states for every step of the modeled process; since
-the state space of visual data is enormous, the linear growth $O(N \cdot K)$ of memory
-requirements can exceed the physical limits of the hardware. Truncating the differentiated
+two fronts, corresponding to the two temporal axes of §1.2.3. On the training front, a vanilla
+autograd realization of backpropagation through time stores intermediate activations for the
+unrolled process; the resulting horizon-dependent activation tape can exceed available hardware
+memory. Checkpointing and reversible replay reduce this term through recomputation rather than
+changing the underlying gradient objective. Truncating the differentiated
 trajectory removes gradient paths beyond the selected horizon and may therefore impair learning
 of long-range effects. On the operation front, the flat attention context over the physical time
 axis inflates the key–value memory linearly and the computation quadratically with the number of
-context tokens (§1.3.1, eq. (1.7)), so the memory horizon of a flat system is capped by the
-hardware precisely in the regimes where a long horizon is required. Reducing memory consumption
+context tokens (§1.3.1, eq. (1.7)), so the package-addressable reach of a dense flat interface is
+capped by its token and hardware budget precisely in the regimes where longer explicit history is
+required. Reducing memory consumption
 for gradient computation along deep trajectories and for context retention along long horizons
 is therefore an important design objective for multi-step generative systems.
 
@@ -884,40 +973,41 @@ they motivated. The focus criteria are systemic consistency and resource control
 ### 1.3.1 Diffusion models: generation quality and the flat long-context barrier
 
 Denoising diffusion probabilistic models (DDPM) [2] and deterministic/non-Markovian
-samplers such as DDIM [46] are major approaches to high-quality image and video
+samplers such as DDIM [52] are major approaches to high-quality image and video
 generation. Unlike a GAN generator [42], which maps noise to data through one learned
 forward path, diffusion models use an explicitly iterative denoising process.
 
 The mathematical basis of the diffusion approach rests on concepts of non-equilibrium
-thermodynamics. The modeling process is decomposed into two mutually inverse processes: forward
-and reverse diffusion.
+thermodynamics. The modeling process is decomposed into forward corruption and a learned reverse
+process. In equations (1.3)–(1.6), $k$ denotes diffusion pseudo-time; it must not be confused with
+the physical video-frame index $t$ introduced in §1.2.3.
 
 The forward diffusion stage is fixed and consists in the gradual addition of Gaussian noise to
 the original "clean" data sample $x_0$, progressively driving it to the state of random noise
-$x_T$. The process is modeled as a Markov chain:
+$x_K$. The process is modeled as a Markov chain:
 
-$$q(x_t \mid x_{t-1}) = \mathcal{N}\!\left(x_t;\; \sqrt{1-\beta_t}\, x_{t-1},\; \beta_t \mathbf{I}\right) \tag{1.3}$$
+$$q(x_k \mid x_{k-1}) = \mathcal{N}\!\left(x_k;\; \sqrt{1-\beta_k}\, x_{k-1},\; \beta_k \mathbf{I}\right) \tag{1.3}$$
 
-where $\beta_t$ is a predetermined deterministic schedule of noise variance at step $t$. A
+where $\beta_k$ is a predetermined deterministic schedule of noise variance at step $k$. A
 mathematical advantage of this construction is the closed-form availability of the noised state
 at an arbitrary step directly from the original state:
 
-$$q(x_t \mid x_0) = \mathcal{N}\!\left(x_t;\; \sqrt{\bar\alpha_t}\, x_0,\; (1-\bar\alpha_t)\mathbf{I}\right) \tag{1.4}$$
+$$q(x_k \mid x_0) = \mathcal{N}\!\left(x_k;\; \sqrt{\bar\alpha_k}\, x_0,\; (1-\bar\alpha_k)\mathbf{I}\right) \tag{1.4}$$
 
 ![Forward diffusion](../../figures/fig36_forward_diffusion.png)
 
 **Figure 1.7 — Forward diffusion.** Progressive Gaussian corruption destroys the information
-structure of a sample from $x_0$ toward $x_T$. Source: author’s schematic.
+structure of a sample from $x_0$ toward $x_K$. Source: author’s schematic.
 
 At the reverse diffusion stage the system learns to invert this process, denoising the corrupted
 sample and restoring the data. Unlike forward diffusion, the reverse process constitutes a
 complex computational problem solved by deep neural networks:
 
-$$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}\!\left(x_{t-1};\; \mu_\theta(x_t, t),\; \Sigma_\theta(x_t, t)\right) \tag{1.5}$$
+$$p_\theta(x_{k-1} \mid x_k) = \mathcal{N}\!\left(x_{k-1};\; \mu_\theta(x_k, k),\; \Sigma_\theta(x_k, k)\right) \tag{1.5}$$
 
 In practice the model is optimized to predict the added noise $\epsilon$ via the simplified loss:
 
-$$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, t}\left[\,\bigl\|\epsilon - \epsilon_\theta\bigl(\sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon,\; t\bigr)\bigr\|^2\,\right] \tag{1.6}$$
+$$L_{\text{simple}} = \mathbb{E}_{x_0, \epsilon, k}\left[\,\bigl\|\epsilon - \epsilon_\theta\bigl(\sqrt{\bar\alpha_k}\,x_0 + \sqrt{1-\bar\alpha_k}\,\epsilon,\; k\bigr)\bigr\|^2\,\right] \tag{1.6}$$
 
 ![Reverse diffusion](../../figures/fig37_reverse_diffusion.png)
 
@@ -929,14 +1019,14 @@ The forward–reverse construction supports high-quality synthesis by turning sa
 sequence of denoising decisions. Pixel-space diffusion is expensive at high spatial resolution;
 latent diffusion models (LDM) [3] reduce this cost by operating in a compressed
 autoencoder space. Diffusion Transformers (DiT) [4] provide a transformer alternative to
-convolutional denoisers, and video systems such as Sora [47] operate on
+convolutional denoisers, and video systems such as Sora [53] operate on
 spatio-temporal latent patches at substantially larger data and model scales.
 
 Modern video diffusion and token generators extend this lineage through spatio-temporal
 denoising, latent video diffusion, large-scale video pretraining, variable-length token
-generation, and masked video transformers [48, 49, 50, 51, 52, 53, 54, 55].
+generation, and masked video transformers [54, 55, 56, 57, 58, 59, 60, 61].
 Interactive and autonomous world models further shift evaluation from isolated clips toward
-action-conditioned state prediction and control [56, 57, 58, 59, 60, 61].
+action-conditioned state prediction and control [62, 63, 64, 65, 66, 67].
 These systems establish the scale and practical importance of the problem, but they do not remove
 the need to measure which historical information is retained under a bounded state interface.
 
@@ -948,19 +1038,20 @@ schematic.
 
 Despite their generation quality, dense-context diffusion video systems retain resource and
 long-horizon limitations that are the direct object of this dissertation's analysis. **The paradigm-level
-strengths of iterative refinement are not in question here** — on the contrary, Chapter 4's
-matched-capacity, matched-NFE mechanism study confirms empirically that an iterative refinement (diffusion)
-core commits to sharp, correctly located content where a regression core averages over futures;
-the per-frame generation core of the model developed in Chapter 3 is itself a diffusion core,
-selected by exactly that controlled analysis. The limitations lie elsewhere — in *how the
-temporal context is represented and scaled*.
+strengths of iterative refinement are not in question here**. Chapter 4 selects diffusion for the
+stochastic generative frontier because of its single-window coverage and sharp commitment under
+the controlled mechanism study. The same study also shows that regression is stronger in the
+deterministic best-of-1 self-fed rollout. The mechanism decision is therefore task-dependent; the
+context question studied later is *how temporal evidence is represented and scaled* within the
+selected generative evaluation programme.
 
 One limitation of a **flat, single-level latent interface** is that global composition and local
 appearance share one token field. This does not make inconsistency inevitable, but it prevents
 explicit budget allocation and separate control across representation levels.
 
 The second limitation is the **resource blow-up of flat long-context attention**. To lengthen the
-memory horizon, a flat video transformer must lengthen its spatio-temporal token context. For a
+explicit history span of a flat video transformer without another memory mechanism, its
+spatio-temporal token context must grow. For a
 context of $T_w$ frames tokenized at $N_s$ spatial tokens per frame, the attention context length
 is $L = T_w \cdot N_s$, and the principal costs of the attention mechanism scale as
 
@@ -975,9 +1066,10 @@ to choose which historical tokens remain in the state interface.
 The third limitation is the **degradation of long-horizon temporal consistency** even where a
 long flat context is affordable. Empirical evaluations of long-video generators and world models
 show that content which leaves the field of view is not restored consistently upon its return,
-and that consistency metrics degrade with the distance to the relevant past [62, 22, 24, 23]. In systems-analysis terms, the flat
-context window imposes a hard memory horizon (§1.2.3): information older than the window is not
-merely expensive — it is absent from the system state. Related to this is **target uncertainty**:
+and that consistency metrics degrade with the distance to the relevant past [68, 22, 24, 23]. In systems-analysis terms, the flat
+context window imposes a hard bound on explicit package reach (§1.2.3): source-frame tokens older
+than the window are absent from that context interface. This does not rule out indirect evidence
+in recent frames, model weights, or a separate state mechanism. Related to this is **target uncertainty**:
 during training the model optimizes the local error of one isolated step, while during generation
 errors accumulate along the whole autoregressive chain — the phenomenon of exposure bias [25, 26].
 
@@ -987,7 +1079,6 @@ errors accumulate along the whole autoregressive chain — the phenomenon of exp
 than a hardware benchmark: key–value memory grows linearly and attention work quadratically with
 sequence length. Panel B shows why a low-rate long-memory stream can remain addressable after the
 relevant content has left a short flat window. Source: author’s schematic.
-Source: NEW (draw)
 
 ### 1.3.2 Hierarchical latent approaches and autoregressive prediction
 
@@ -1000,8 +1091,8 @@ spaces made in this work.
 
 **Patch-based autoregressive transformers.** This line of work originates in the transfer of
 natural-language-processing principles to computer vision. The standard approach, popularized by
-the Vision Transformer (ViT) [63] and its video adaptations ViViT [64] and Video
-Swin Transformer [65], partitions the video into a grid of non-overlapping
+the Vision Transformer (ViT) [69] and its video adaptations ViViT [70] and Video
+Swin Transformer [71], partitions the video into a grid of non-overlapping
 spatio-temporal patches that are linearized and fed to a transformer. The principal advantage of
 transformer models is their capacity to model long-range dependencies between distant regions of
 the video; their principal cost is exactly the quadratic attention complexity (1.7). Although
@@ -1010,21 +1101,20 @@ a single-level latent space with fixed patching — remains. Fixed-grid tokeniza
 rigid, content-blind discretization: static low-information background and dynamic scene regions
 receive equal computational budgets, which §1.2.4 identified as a source of
 structural-algorithmic uncertainty. An analogous problem in language modeling was resolved by the
-Byte Latent Transformer (BLT) [66], which groups bytes into latent patches of variable size
+Byte Latent Transformer (BLT) [72], which groups bytes into latent patches of variable size
 governed by information density (entropy). Transferring this paradigm to the visual modality
 resolves the rigid-tokenization component of structural uncertainty; the V-BLT architecture
-developed in this dissertation realizes that transfer and is presented in Chapter 2. *(Preserved
-from old §1.3.2.)*
+developed in this dissertation realizes that transfer and is presented in Chapter 2.
 
 **Discrete-token autoregressive models.** A prominent branch of autoregressive video modeling
-operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [67] compresses frames into grids of codebook indices, over which an autoregressive
-transformer learns the video distribution — the VideoGPT line [68] and its successors,
+operates over *discrete* latent spaces: a vector-quantized autoencoder (VQ-VAE) [73] compresses frames into grids of codebook indices, over which an autoregressive
+transformer learns the video distribution — the VideoGPT line [74] and its successors,
 including long-video architectures with compressed memory [36]. The attraction of this paradigm is genuine: discrete tokens give a clean autoregressive
 likelihood, natural compatibility with language-model tooling, and strong compression.
 
 Discrete bottlenecks also introduce specific optimization risks—straight-through assignment,
 codebook underutilization, dead codes and level collapse—that are documented in the VQ
-literature [67, 68]. The implemented fourth-article system
+literature [73, 74]. The implemented fourth-article system
 therefore uses **compact continuous hierarchical latent state spaces**, in which both levels are
 end-to-end differentiable and independently decodable. This is an implementation choice, not an
 empirical conclusion that continuous representations are universally superior: the present
@@ -1033,7 +1123,7 @@ claim. Representation sensitivity is instead tested within the continuous-codec 
 pre-registered alternate-codec-seed study in Chapter 4.
 
 Hierarchical latent variables are themselves a broad prior lineage, including deep
-vector-quantized and variational hierarchies [69, 70, 71, 72]. The dissertation therefore assigns novelty to its systems methodology and
+vector-quantized and variational hierarchies [75, 76, 77, 78]. The dissertation therefore assigns novelty to its systems methodology and
 controlled video-memory demonstration, not to the general idea of arranging latent variables at
 multiple levels.
 
@@ -1055,17 +1145,20 @@ the levels jointly with cross-level attention, and autoregressive rollout along 
 The systemic significance of this spatial construction follows directly from eq. (1.7): because the
 coarse level carries far fewer tokens per frame than the fine level, a *heterogeneous* context —
 long in coarse tokens, short in fine tokens — covers a memory horizon many times longer than a
-flat context of the same total token budget. The hierarchy converts the quadratic cost of horizon
-extension into a near-linear one along the cheap level, making the coarse level one economical
-carrier of long-range temporal memory. Temporal subsampling provides a distinct route to the same
+flat context of the same total token budget. Hierarchy therefore reduces the rate at which token
+count grows with temporal reach and can cover more frames at fixed $L$; it does **not** change the
+$O(L^2D)$ asymptotic cost of dense self-attention in the retained token count. The coarse level is
+an economical carrier of long-range temporal evidence because its per-frame token slope is
+smaller. Temporal subsampling provides a distinct route to the same
 span and is compared directly in Chapter 4. *(Chapter 3 develops the spatial form with a two-level
-continuous latent interface and unidirectional context transfer; Chapter 4 treats it as one point
+continuous latent interface, asymmetric long-range history allocation, and bidirectional joint
+attention between target levels; Chapter 4 treats it as one point
 in the broader context-packaging design space.)*
 
 Recent work broadens the design space beyond hierarchical latent state. WorldPack compresses and
 retrieves trajectory memory; CaR/SceneFly and MemLearner study implicit or learned retrieval;
 GIM-World introduces geometry-aware memory; and MBench and MemoBench construct explicit
-long-memory evaluation tasks [23, 73, 74, 75, 76, 77, 22]. These papers
+long-memory evaluation tasks [23, 79, 80, 81, 82, 83, 22]. These papers
 make architecture-level novelty untenable for generic “video memory.” The dissertation’s novelty
 is instead the controlled package-by-budget intervention, exact LoopMom observability,
 pair-specific reach populations, tested lower and upper inversions, and outcome-independent
@@ -1084,7 +1177,7 @@ $$p_\theta\!\left(z^{c}_{t}, z^{f}_{t} \,\middle|\, z^{c}_{t-w_c:t-1},\; z^{f}_{
 
 where $z^{c}$ and $z^{f}$ are the coarse- and fine-level latent states, $w_c$ and $w_f$ their
 context windows, and $u_t$ the control signals; the asymmetry $w_c \gg w_f$ at a matched token
-budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the memory horizon
+budget $w_c N_s^{c} + w_f N_s^{f} \approx \mathrm{const}$ is what extends the explicit context reach
 without the flat blow-up (1.7).
 
 **Methodology for comparing hierarchical configurations.** The canonical comparison methodology
@@ -1120,7 +1213,7 @@ this dissertation.
 ### 1.3.3 Energy-based models and resource efficiency
 
 The third class of the review is that of energy-based models (EBM). The EBM paradigm originates
-in statistical physics [78, 79]. Its basic principle is that the probability of a data configuration $x$ is defined by
+in statistical physics [84, 85]. Its basic principle is that the probability of a data configuration $x$ is defined by
 the Gibbs/Boltzmann distribution:
 
 $$p_\theta(x) = \frac{\exp\left(-E_\theta(x)\right)}{Z(\theta)} \tag{1.9}$$
@@ -1129,77 +1222,95 @@ where $E_\theta(x)$ is a scalar energy function parameterized by a neural networ
 is the partition function. Under a calibrated model, lower energy corresponds to higher model
 density; it does not automatically imply semantic or temporal consistency.
 
-An important theoretical bridge connects EBM to diffusion models through score matching [80, 81]: the score function approximated by a diffusion model is the negative gradient of
+An important theoretical bridge connects EBM to diffusion models through score matching [86, 87]: the score function approximated by a diffusion model is the negative gradient of
 an (implicit) energy,
 
 $$\nabla_x \log p(x) = -\nabla_x E(x) \tag{1.10}$$
+
+For the deterministic conditional descent mechanism evaluated later in this dissertation, the
+sampling pseudo-trajectory is written with its own state $y_k$:
+
+$$
+y_{k+1}=y_k-\eta_k\nabla_y E_\theta(y_k;c),
+\qquad k=0,\ldots,K-1,
+\tag{1.11}
+$$
+
+where $c$ is the conditioning input and $\eta_k$ is the prescribed step size. Equation (1.11)
+describes the tested gradient-descent sampler; it is not a claim that all EBM inference or
+training uses this deterministic chain.
 
 From the standpoint of systems analysis, the attraction is that the energy supplies an explicit
 scalar criterion and its input gradient defines an inference direction. This does not guarantee
 convergence, calibrated probabilities, or anomaly detection: those properties depend on the
 learned landscape and sampler. Transformer-parameterized realizations such as Energy-Based
-Transformers (EBT) [82] expose the number of descent steps as an
+Transformers (EBT) [88] expose the number of descent steps as an
 inference-compute control. This dissertation evaluates that mechanism for conditional video
 prediction without attributing that task or result to the original EBT publication.
 
-However, the broad application of EBM is critically limited by computational uncertainty. To
-train such a model, backpropagation must be threaded through $K$ MCMC iterations of the forward
-pass; BPTT memory grows as $O(K \cdot L)$, where $L$ is the network depth, and since every MCMC
-iteration requires a gradient with respect to the input (double backward), memory overflow occurs
-rapidly [83, 84], precluding deep optimization trajectories for
-high-quality video data.
+The particular **differentiable-through-descent** formulation studied here has an important
+computational limitation. If a training loss is differentiated through all $K$ updates of
+(1.11), the reverse pass must differentiate the input gradient $\nabla_yE_\theta$ and therefore
+evaluate Hessian–vector and mixed parameter–state derivative terms (often called “double
+backward”). A vanilla unroll retains a layer-by-step graph whose activation storage grows with
+$K$ and network depth [89, 90]. This cost characterizes the tested
+unrolled-descent formulation; it is not an inherent requirement of every EBM objective, sampler,
+or training algorithm.
 
 Approaches to this barrier constitute the resource-efficiency toolbox of multi-step systems.
 Gradient checkpointing [30, 31] trades computation for memory by storing
 only a subset of activations and recomputing the rest; a balanced segment schedule can achieve a
-square-root memory trade-off in trajectory length. Neural ODE adjoints [85] can avoid
+square-root memory trade-off in trajectory length. Neural ODE adjoints [91] can avoid
 retaining the full forward tape but introduce reconstruction and numerical-accuracy concerns.
-Discrete reversible neural networks—RevNet [32] and RevViT [86]—instead
+Discrete reversible neural networks—RevNet [32] and RevViT [92]—instead
 reconstruct layer inputs algebraically. This apparatus forms the core of TempVerseFormer in
 Chapter 2. It is **not** used to train the final Chapter 3 hierarchical predictor through its
 rollout; the two resource strands are synthesized methodologically and measured separately.
 
-An honest forward reference completes this review. In the present research the energy-based
-mechanism was not adopted a priori but *examined experimentally* under matched conditions: the
-matched-capacity, matched-NFE mechanism study of Chapter 4 (§4.2) includes a two-sided
-capability study of Energy-Based Transformers, run with the official published implementation and
+A scoped forward reference completes this review. In the present research the energy-based
+mechanism was not adopted a priori but *examined experimentally* under controlled conditions: the
+matched-capacity regression–diffusion comparison and explicit NFE-sensitivity study of Chapter 4
+(§4.2) are reported separately from a two-sided capability study of Energy-Based Transformers,
+run with the official published implementation and
 both published training recipes at the largest scale reachable on the available hardware. Its
 outcome is a **characterized negative** at that scale: one published recipe converges to a stably
 *mis-ordered* energy landscape (the mean of the data attains lower energy than the true target);
 the other recipe repairs the ordering — the true target becomes the energy minimum among probed
 candidates — yet gradient descent from the prescribed initialization still does not reach
-structured outputs, and inference-time computation does not buy the capability back; meanwhile a
-diffusion core of roughly half the parameter count, on the same latents and protocol, commits to
-sharp and correctly located predictions. The study is scoped explicitly: it tests a capability
+structured outputs, and inference-time computation does not buy the capability back. This EBM
+evidence comes from a separate 14.66 M-parameter official-code capability study, not from a third
+matched-capacity cell. In the shared-interface comparison, the closely matched 7.53 M diffusion
+and 7.27 M regression cores instead show regime-dependent strengths: diffusion gives better
+best-of-8 stochastic coverage, whereas regression gives better deterministic best-of-1 rollout.
+The study is scoped explicitly: it tests a capability
 the EBT publication does not claim at a scale it did not run, and contradicts none of the
 published claims. For this dissertation its systemic significance is that the choice of the
 per-frame generation core in Chapter 3 is made *by controlled measurement, not by paradigm
 preference* — and the measurement selects diffusion.
 
 Summarizing the critical analysis of existing approaches: diffusion models are a strong
-generation mechanism, but a dense flat realization runs into the long-context resource
-blow-up (1.7) and the memory-horizon consistency degradation; patch-based transformer models
-capture global context well but require entropy-based adaptation of their rigid tokenization;
-hierarchical latent models provide an alternative to flat-latent and flat-context allocation, and
-the continuous form was trainable at the scale reached in this work (whereas the tested
-hierarchical VQ configurations were unstable); energy-based models offer an attractive explicit
-criterion but are resource-barred in training, and their descent mechanism is experimentally
-characterized as a negative at this work's reachable scale (Chapter 4). The synthesis defining
-this dissertation is therefore: **a hierarchical continuous-latent video model with a diffusion
-refinement core, whose coarse level carries the long memory horizon (Chapter 3), supported by
-entropy-adaptive decomposition (Chapter 2), reversible-computation resource optimization
-(Chapter 2), and a criterion-driven measurement instrument (Chapters 3–4)**. These are linked
-dissertation strands, not one experimentally integrated executable pipeline.
+generation mechanism, but a dense flat realization incurs rapidly growing long-context cost;
+fixed-patch transformers can capture global context, while entropy-guided adaptation offers one
+way to allocate their tokens non-uniformly; hierarchical latent models make cross-scale and
+cross-rate allocation explicit; and energy-based models offer an attractive scalar criterion but
+did not provide usable descent generation at the scale tested in Chapter 4. These observations
+define an **integrated systems methodology with evidentiary separation**. Chapter 2 studies how
+representational capacity can follow an uncertainty proxy and how long differentiation tapes can
+be reconstructed. Chapter 3 independently studies how retained context can be packaged across
+scales and rates, while Chapters 3–4 turn the Chapter 1 criteria into a measurement instrument.
+Only the components explicitly specified in Chapter 3 belong to the executed predictor; the
+other strands share the resource problem and decision framework, not an unmeasured architectural
+dependency.
 
 ## 1.4 Consistency criteria and methods
 
 In the theory of complex systems one of the fundamental notions is the stability of a system
-[87] — its capacity to maintain a specified state or target
+[93] — its capacity to maintain a specified state or target
 trajectory under external disturbances and internal stochasticity. In the context of generative
 video models the notion of stability is most closely tied to the term "consistency" (coherence,
 non-contradiction). Traditionally, the evaluation of generation results in machine learning
 reduces to the subjective criterion of visual attractiveness or to statistical metrics of
-proximity to the training sample, such as FID [88]. From the standpoint of systems
+proximity to the training sample, such as FID [94]. From the standpoint of systems
 analysis such an approach is severely limited.
 
 Systems analysis requires the transition from abstract aesthetic evaluation to a formalized
@@ -1228,7 +1339,7 @@ lighting), preserving its unique identifying features. Modern generative algorit
 task in several ways.
 
 The simplest method of achieving object consistency in diffusion models is generation by the
-image-to-image approach [89]: an existing reference image is used as
+image-to-image approach [95]: an existing reference image is used as
 the starting point to steer the generation toward a specified result. The diffusion model
 transfers the information of the image into its latent space, subtly influencing the direction of
 the process.
@@ -1242,13 +1353,13 @@ This approach, however, has rigid systemic limitations — the difficulty of pre
 higher degree of noising of the reference increases variability and loses the consistency of fine
 details (textures, scratches).
 
-A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [90] and its low-rank variation LoRA [91]. This method uses a set of reference
+A deeper method is fine-tuning of the model itself by approaches of the DreamBooth family [96] and its low-rank variation LoRA [97]. This method uses a set of reference
 images of a specific object to adjust the internal representation (the weight coefficients
 $\theta$) of the model. Although DreamBooth can secure the consistency of specific features (for
 example, facial features or the texture of a particular object), it is computationally heavy and
 works exclusively within the "learned" object.
 
-For enforcing strict spatial consistency of shape there exists the ControlNet architecture [92], which injects a special control signal (depth maps, contours, segmentation masks)
+For enforcing strict spatial consistency of shape there exists the ControlNet architecture [98], which injects a special control signal (depth maps, contours, segmentation masks)
 into the reverse diffusion process. Methods of the ControlNet type perform the function of hard
 boundary control of the admissible state space: the input image acts as a guiding form
 constraining the evolution of the system.
@@ -1257,14 +1368,13 @@ constraining the evolution of the system.
 
 **Figure 1.14 — Structural control with a ControlNet-class branch.** A trainable branch maps
 edges, depth or segmentation into residual constraints for a frozen diffusion backbone. Source:
-author’s schematic after the ControlNet architecture [92].
+author’s schematic after the ControlNet architecture [98].
 
 Despite the effectiveness of ControlNet, it is not a complete solution for object consistency,
-since it focuses only on the form ("how") and not on the properties ("what"). A fully autonomous
-system must be able to maintain object identity through internal control mechanisms, without
-mandatory external structural prompts. *(This requirement — identity maintenance by internal
-memory rather than external prompts — is exactly the long-memory requirement that the coarse
-level of the Chapter 3 model serves.)*
+since it focuses on supplied structure rather than persistent internal identity. In autonomous
+prediction, retaining or retrieving earlier evidence is one possible mechanism when identity is
+not recoverable from the recent view. Chapter 3 tests coarse long-span context as such a carrier;
+Chapter 4 also records the boundary where fine full-resolution context preserves identity better.
 
 ### 1.4.2 Temporal consistency
 
@@ -1273,31 +1383,41 @@ consistency**. It requires that the sequence of generated states $x_1, x_2, \dot
 logical and smooth video stream. Anomalies of temporal consistency manifest as flicker, sudden
 background color changes, or deformation of objects during motion.
 
-The mathematically strict local requirement of temporal consistency is formalized through
-optical flow or a warping function $W$: if the vector field of motion between frames $t-1$ and
-$t$ is known, the generated state $x_t$ must maximally correspond to the warped previous state
-$W(x_{t-1})$. The local temporal-consistency error is defined as:
+One local diagnostic of temporal consistency uses optical flow or a warping operator $W$: where
+the correspondence from frame $t-1$ to frame $t$ is valid, the generated state $x_t$ should agree
+with the warped previous state. Let $M_t(p)\in\{0,1\}$ select valid, non-occluded pixels $p$, and
+let $W_{t-1\rightarrow t}$ warp into frame $t$. A normalized masked pixelwise error is
 
-$$L_{\text{temp}} = \left\|\left(x_t - W(x_{t-1})\right)\right\|^2 \odot M \tag{1.12}$$
+$$
+L_{\text{temp}}(t)=
+\frac{\displaystyle\sum_{p}M_t(p)
+\left\|x_t(p)-W_{t-1\rightarrow t}(x_{t-1})(p)\right\|_2^2}
+{\displaystyle\sum_{p}M_t(p)+\varepsilon},
+\qquad \varepsilon>0.
+\tag{1.12}
+$$
 
-where $M$ is a binary mask excluding occlusion regions.
+The denominator makes values comparable across different valid-mask areas and $\varepsilon$
+handles a frame pair with no valid correspondence.
 
-It must be emphasized, however, that the warp criterion (1.12) is **local**: it couples only
-adjacent frames and therefore certifies only short-range temporal consistency. It is entirely
-blind to the long-range regime identified in §1.3.1: content that leaves the field of view exits
-the domain of the mask $M$, and its consistent restoration upon re-entry many frames later is not
-constrained by any chain of local warp terms — it is constrained only by the memory of the
-generating system. Long-range temporal consistency is therefore operationalized separately, as
-part of trajectory consistency (§1.4.5), through metrics stratified by re-entry hardness. For
-ensuring temporal consistency in the developed information technology, the following mechanisms
-are used: multidimensional positional encoding 3D-RoPE, block-causal attention masks, and
-temporal chaining mechanisms (Chapter 2), together with the coarse-level long memory of the
-hierarchical model (Chapter 3).
+It must be emphasized, however, that the warp criterion (1.12) is **local**: it tests one
+adjacent-frame correspondence condition and does not certify even short-range temporal quality as
+a whole. It does not directly evaluate the long-range regime identified in §1.3.1: content that
+leaves the field of view exits the valid correspondence mask, so correct re-entry many frames
+later is not observed by the intervening local warp terms. Re-entry then depends on whatever
+context, recurrent state, learned dynamics, or prior carries the relevant evidence. Long-range
+temporal consistency is therefore operationalized separately, as
+part of trajectory consistency (§1.4.5), through metrics stratified by re-entry hardness. The
+dissertation studies several level-appropriate mechanisms: RoPE-ND and reversible temporal
+chaining in the separate [A1]/[A2] strands of Chapter 2, and learned window-relative embeddings,
+block-causal autoregressive recursion, and coarse long-span context in the executed Chapter 3
+predictor. Their shared role is to expose or manage temporal structure; they are not all
+components of one implemented architecture.
 
 ### 1.4.3 Style and conceptual consistency
 
 Besides object consistency, complex systems must maintain a unified **stylistic** appearance of a
-series of generated data. Modern approaches such as StyleAligned [93] solve this
+series of generated data. Modern approaches such as StyleAligned [99] solve this
 problem through intervention in the attention mechanism (shared attention): target images receive
 information about the reference image during generation, copying its global stylistic
 characteristics (color palettes, brushwork) without interfering with spatial geometry.
@@ -1306,14 +1426,16 @@ characteristics (color palettes, brushwork) without interfering with spatial geo
 
 **Figure 1.15 — Style consistency through shared attention.** Reference attention features are
 shared across distinct target trajectories while their content conditions remain separate.
-Source: author’s schematic after StyleAligned [93].
+Source: author’s schematic after StyleAligned [99].
 
-For a more thorough and qualitative analysis of generative models, within this dissertation
-research — published in **[A3]** (the consistency-criteria article) — the notion of **conceptual
-consistency** was formalized.
+Article **[A3]** is the published basis for the dissertation-specific consistency-criteria
+apparatus. Its contribution is the explicit systems taxonomy and operationalization used here,
+not priority over earlier notions of semantic, conceptual, compositional, hierarchical, or
+temporal consistency. Within that scoped apparatus, **conceptual consistency** denotes the
+criterion defined below.
 
 Marr's multi-stage account of visual representation — progressing from image evidence toward
-structured descriptions of the scene [94] — motivates a broad engineering analogy, but does not itself prescribe
+structured descriptions of the scene [100] — motivates a broad engineering analogy, but does not itself prescribe
 the taxonomy used here. The dissertation's narrower claim is that the traditional division into
 style and object alone is incomplete. Conceptual consistency is the capacity of the generative system for
 compositionality and extrapolation. It evaluates the ability of the model not merely to reproduce
@@ -1327,20 +1449,22 @@ generates objects side by side instead of combining them.
 
 As the metric for evaluating conceptual consistency, the cosine similarity between the semantic
 vectors of the generated image and the textual condition in the joint space of a contrastive
-model (CLIP score) [95] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
+model (CLIP score) [101] is proposed. Let $E_I$ be the visual encoder and $E_T$ the textual
 encoder; then the measure of conceptual consistency is defined as:
 
 $$C_{\text{concept}}(x, u) = \frac{E_I(x) \cdot E_T(u)}{\left\|E_I(x)\right\| \left\|E_T(u)\right\|} \tag{1.13}$$
 
-High values of this indicator testify that the system has successfully resolved the target
-uncertainty and learned the deep causal relations of the visual space.
+High values of this indicator show alignment in the contrastive embedding space between the
+generated image and the textual condition. CLIP score is therefore used as a **semantic-alignment
+proxy**; it neither identifies causal relations nor guarantees compositional understanding, and
+must be interpreted together with task-specific and human evaluation [102, 103, 104].
 
 ### 1.4.4 Hierarchical consistency
 
-For the transition to systems of a higher order of complexity — multi-level generative models —
-this research introduces the notion of **hierarchical consistency**, developed within the
-construction of the hierarchical generation model of Chapter 3. This criterion follows directly
-from the principles of systems analysis of multi-level objects.
+For multi-level generative models, this dissertation operationalizes **hierarchical consistency**
+as a distinct criterion within the [A3]-based systems taxonomy and the Chapter 3 model. The claim
+is the dissertation-specific definition, placement, and measurement role of the criterion—not
+that the general idea of agreement across representational levels originates here.
 
 Hierarchical consistency is defined as the strict informational and structural coherence between
 the representations of one and the same visual object at different levels of abstraction: the
@@ -1349,20 +1473,16 @@ anomaly of hierarchical consistency is a situation of internal system conflict: 
 macro signal forms the contour of a brick building while at the micro level the system generates
 organic wood patterns.
 
-Ensuring this property requires the introduction of an inter-level coherence operator. From the
-standpoint of system control, the essential requirement is that the junior (fine/detailed) level
-must not be able to contradict the senior (coarse/abstract) level's decisions at long range. In
-the Chapter 3 model this requirement is satisfied by two complementary mechanisms (§3.1.2–3.1.3).
-First, by **information-design asymmetry**: within a prediction step both levels are denoised
-jointly in one shared attention pass, but only the coarse level's history extends over the full
-memory horizon — long-range structure can therefore *originate only from the coarse channel*,
-and the fine level physically lacks the inputs to contradict it at long range; the control is
-unidirectional in the information-theoretic sense (coarse → fine for long-horizon signals), not
-in the scheduling sense. Second, by **gradient detachment at the system boundaries** where it is
-exact and load-bearing: between the frozen representation subsystem and the prediction core (the
-state coordinate system is a constant of the control problem), and between past and future along
-the autoregressive rollout (previously generated context enters as a constant, excluding
-destructive gradient interference between successive windows).
+An explicit inter-level communication mechanism can bias a model toward this property, but it
+cannot guarantee it: representation loss, imperfect attention, and decoding error can still make
+the levels disagree. In the Chapter 3 model, **information-design asymmetry** assigns long-span
+history only to coarse tokens, while both target levels are denoised jointly in shared attention
+(§3.1.2–3.1.3). Thus long-range observed evidence enters through the coarse channel and can
+condition fine prediction. The fine target can nevertheless conflict with the coarse target, so
+hierarchical consistency remains an evaluated criterion rather than a structural theorem.
+Gradient detachment at the frozen representation boundary and between autoregressive windows
+stabilizes the optimization interface; it does not itself establish semantic or structural
+agreement between levels.
 
 ### 1.4.5 Trajectory consistency
 
@@ -1375,18 +1495,22 @@ generation lives: the degradation of **autoregressive rollout**, in which the sy
 own outputs as context and errors compound along $t$ (the realization of the target uncertainty
 of §1.2.4 and the exposure bias of §1.3.1).
 
-A trajectory-consistent system must satisfy two requirements. First, **bounded degradation**: the
-prediction error along an autoregressive rollout must grow in a controlled manner, without
-divergence or collapse of the generated content. Second — the requirement that separates a
-long-memory system from a flat one — **consistent re-entry**: content that left the field of view
-must be restored correctly when it returns, at any temporal distance within the modeled process.
+The dissertation evaluates trajectory consistency through two requirements. First, **bounded
+degradation**: prediction error along an autoregressive rollout should grow in a controlled manner,
+without divergence or collapse of the generated content. Second, **consistent re-entry**: within
+the evaluated horizon, content that left the field of view should be restored correctly when it
+returns. Re-entry records whose source views lie outside a short flat package are especially
+diagnostic of whether a longer-span context mechanism is useful; they do not make all flat
+architectures information-theoretically incapable.
 
 The operationalization of this criterion, developed in Chapters 3–4, stratifies rollout error by
-an exactly computable hardness label. For a generated frame $x_t$ with context window $C$, let
-the **novel-foreground fraction** $\nu_t(C) \in [0, 1]$ be the fraction of the frame's foreground
-content that was informationally inaccessible from $C$ (in the purpose-built testbed of Chapter 3
-this quantity is computed *exactly* from the recorded control-action track, rather than
-estimated). Trajectory consistency is then measured as the family of stratified degradation
+an exactly computable hardness label. For a generated frame $x_t$ with explicit context package
+$C$, let the **novel-foreground fraction** $\nu_t(C) \in [0, 1]$ be the fraction of target
+foreground whose underlying world columns are absent from the views represented directly in
+$C$. In the purpose-built testbed of Chapter 3 this geometric package-novelty quantity is computed
+*exactly* from the recorded control-action track rather than estimated. It does not assert that
+the model could possess no indirect information about those columns. Trajectory consistency is
+then measured as the family of stratified degradation
 curves
 
 $$\mathcal{E}_{b}(h) = \mathbb{E}\!\left[\, e\!\left(x_{t+h},\, \hat{x}_{t+h}\right) \,\middle|\, \nu_{t+h} \in b \,\right] \tag{1.14}$$
@@ -1399,17 +1523,20 @@ differing qualitatively on the hard re-entry bin beyond the flat window's horizo
 anomaly of trajectory consistency (divergence, mean-collapse, identity loss at re-entry)
 localizes to specific bins and horizons.
 
-For energy-based mechanisms the trajectory criterion has a specialized classical diagnostic in
-pseudo-time: the divergence of the sampling chain (1.11) is monitored by the **energy gap**
+For energy-based mechanisms the trajectory criterion has a specialized diagnostic in
+pseudo-time: the progress of the descent chain (1.11) is monitored by the **energy gap**
 between the initial and final states of the descent,
 
-$$\Delta E = \frac{E(x_0) - E(x_K)}{E(x_0)} \tag{1.15}$$
+$$\Delta E = E_\theta(y_0;c) - E_\theta(y_K;c) \tag{1.15}$$
 
-which must be strictly positive, and by the ordering of the trained landscape (whether the true
-target attains lower energy than degenerate candidates). Finally, the practical attainability of long
-consistent trajectories depends on resolving the computational uncertainty of §1.2.4: removing
-the memory limits on trajectory depth by the time-agnostic backpropagation developed in **[A2]**
-and Chapter 2.
+This raw difference is invariant to an additive energy offset but is not compared across
+independently trained energy gauges. It is reported within a fixed model together with the more
+direct ordering diagnostic: whether the true target attains lower energy than degenerate
+candidates.
+If an objective is differentiated through a long trajectory, its practical feasibility also
+depends on the activation-storage policy. Chapter 2 compares reversible replay with BPTT and
+checkpointing for that setting. The Chapter 3 predictor is instead trained on individual windows;
+its measured long-horizon behavior does not depend on reversible rollout training.
 
 ![Trajectory consistency operationalization](../../figures/fig44_trajectory_consistency.png)
 
@@ -1461,28 +1588,29 @@ no controlled VQ-versus-continuous receipts are present, representation-family s
 not claimed.
 
 The examination of energy-based models (EBM) recorded their systemic attraction—an explicit
-scalar optimization criterion and input-gradient inference direction—alongside their measured
-computational barrier: gradient identification through long MCMC trajectories with linear memory
-growth. In this dissertation the energy-based mechanism is treated as reviewed literature whose
+scalar optimization criterion and input-gradient inference direction—alongside a computational
+barrier of the differentiable-through-descent formulation tested here: differentiating a loss
+through a long input-gradient trajectory requires second-order derivative operations and a
+horizon-dependent vanilla computation graph. In this dissertation the energy-based mechanism is
+treated as reviewed literature whose
 capability boundary at reachable scale is characterized experimentally in Chapter 4; the survey
 of resource-efficiency methods it motivated (checkpointing, Neural ODE, reversible networks)
 identified reversible transformations as one promising apparatus, which Chapter 2 develops
 into the time-agnostic backpropagation method and its extension to stochastic multi-level
 recurrences.
 
-Furthermore, the chapter extended and improved the criteria apparatus for evaluating the results
-of generative models. The notion of consistency was reconceived as the systemic property of the
-absence of anomalies and the stability of the generation trajectory. To the classical criteria
-(spatial, object, temporal consistency) new kinds were added: conceptual, hierarchical, and
-trajectory consistency — the last operationalized through autoregressive-rollout degradation
-metrics stratified by an exactly computable re-entry hardness label, which converts a previously
-declarative criterion into a measurable instrument of systems analysis.
+Furthermore, the chapter organized established consistency concerns into the dissertation-specific
+[A3] systems taxonomy and supplied explicit operational roles for conceptual, hierarchical, and
+trajectory consistency. The claim is this formalization and operationalization, not priority over
+the general terms. Trajectory consistency is measured through autoregressive-rollout degradation
+metrics stratified by an exactly computable re-entry hardness label, converting a broad systems
+requirement into a diagnostic instrument.
 
-The identified systemic contradiction — between the necessity of ensuring multi-level consistency
-of video data over long time horizons (which requires long memory horizons and deep hierarchies)
-and the strict resource constraints of modern computing systems (the attention-memory blow-up of
-flat contexts and the linear growth of training memory with horizon length) — determines the
-relevance of this dissertation research and forms its purpose.
+The identified systemic contradiction is between the demand for consistency over longer
+processes and finite resources for retaining context and differentiating through computation.
+Explicit hierarchy and reversible replay are two candidate interventions on different resource
+terms; neither is asserted to be universally necessary. This contradiction determines the
+relevance of the dissertation and forms its purpose.
 
 **The purpose of the dissertation research** is to improve the efficiency and the temporal and
 spatial consistency of hierarchical video data generation processes through the development of
@@ -1506,32 +1634,34 @@ research tasks must be solved:
    adaptive decomposition using entropy metrics and the mathematical apparatus of
    multidimensional rotary positional embedding.
 
-4. Develop a method for optimizing the computational resources of multi-step iterative models
-   that ensures constant, process-length-independent consumption of memory on the basis of
-   reversible mathematical transformations; extend it to stochastic multi-level recurrences and
-   delimit its domain of applicability.
+4. Develop a method for optimizing the activation-tape resources of multi-step iterative models
+   through reversible mathematical transformations; characterize its horizon scaling, extend it
+   to stochastic multi-level recurrences with explicit replay-information accounting, and delimit
+   its domain of applicability relative to checkpointing.
 
 5. Develop a mathematical model of multi-stream video data generation in compact hierarchical
    latent state spaces, supporting context streams at different temporal rates and spatial
-   resolutions over a shared attention backbone, with unidirectional context-signal transfer
-   and a per-frame iterative-refinement generation core selected by controlled mechanism analysis.
+   resolutions over a shared attention backbone, with explicit long-range context allocation and
+   a per-frame iterative-refinement generation core selected by controlled mechanism analysis.
 
-6. Create an intelligent information technology and a software complex for the systems analysis
-   of hierarchical video generation processes, integrating the developed methods of adaptive
-   tokenization, resource optimization, and hierarchical generation, together with a
-   purpose-built memory-horizon testbed and re-entry-stratified evaluation protocol as its
-   measurement instrument.
+6. Create an intelligent information technology and a software complex for systems analysis of
+   hierarchical video generation processes: a common methodology connecting adaptive
+   representation, activation-resource optimization, context packaging, and a purpose-built
+   memory-horizon measurement instrument, while retaining the experimentally verified boundary
+   between separately measured components and the executed predictor.
 
 7. Conduct comprehensive experimental studies and approbation of the developed methods and
-   technology on synthetic and open datasets — including a matched-capacity, matched-NFE
-   comparison of prediction mechanisms — and compare their efficiency and consistency with
+   technology on synthetic and open datasets — including a matched-capacity regression–diffusion
+   comparison with explicit inference-work accounting — and compare their efficiency and consistency with
    modern analogues.
 
-The solution of tasks 3–7 is the subject of the following chapters of the dissertation. Chapter 2
-presents the mathematical apparatus of adaptive data tokenization and computational-resource
-optimization; Chapter 3 develops the hierarchical mathematical model with long-range coarse-level
-memory and the memory-horizon measurement instrument; Chapter 4 presents the experimental
-research and practical application.
+The chapter therefore hands forward two resource questions. Chapter 2 asks **what information
+deserves representational capacity** and **what part of a long differentiation tape must be stored
+rather than reconstructed**. Chapter 3 asks **which past state must remain addressable at
+inference time and how it should be packaged under a fixed context budget**. Chapter 4 then keeps
+the evidence for these questions separate while comparing their operating regions. This is the
+systems connection among the publication strands; it is not a claim that every method is executed
+inside one model.
 
 The results of this chapter are published in the author's work [A3] and in the conference
 publications to be identified in the final author-supplied publication list.
@@ -1552,11 +1682,27 @@ computational uncertainty at every stage of information processing. One of the f
 problems that generates a significant share of the structural-algorithmic and computational
 uncertainty is the problem of inefficient decomposition of the input spatio-temporal data.
 
+The chapter is organized by two resource questions inherited from Chapter 1. **Representation
+allocation:** where should a finite token budget preserve more detail, and how should spatial and
+temporal coordinates remain visible after linearization? **Activation-tape allocation:** which
+intermediate values of a long computation must be stored, and which can be reconstructed during
+the reverse pass? Sections 2.1–2.2 answer the first question through the published [A1] methods;
+§§2.3–2.4 answer the second through the published [A2] method and the dissertation-level
+stochastic extension. These strands share a resource-decision framework but remain separately
+implemented and evaluated.
+
+> **Published basis and dissertation-level extension.** Sections 2.1–2.2 reconstruct the [A1]
+> contribution (V-BLT and RoPE-ND); §§2.3–2.4 reconstruct the deterministic TempVerseFormer and
+> time-agnostic backpropagation contribution of [A2]. The store-the-noise recurrence, explicit
+> replay-memory accounting, perturbation study, and three-axis applicability boundary are the
+> dissertation-level extension built around those published results. None of these additions is
+> attributed to [A4], and the Chapter 3 predictor does not execute them.
+
 In classical systems analysis, the decomposition of a complex system must reflect its internal
 information saturation and structure. However, the traditional approaches to the mathematical
 modeling of video data, popularized by architectures of the Vision Transformer (ViT) type
-[63] and their spatio-temporal extensions ViViT
-[64] and Video Swin Transformer [65],
+[69] and their spatio-temporal extensions ViViT
+[70] and Video Swin Transformer [71],
 are based on a rigid, a-priori-fixed partition of the image or video stream into a regular grid
 of non-overlapping patches of fixed size, e.g., 16×16 pixels.
 
@@ -1568,7 +1714,7 @@ trade-off matters is empirical rather than a universal defect of fixed-grid mode
 The dissertation investigates adaptive, data-dependent decomposition as one response. The conceptual
 foundation for this transition is the new paradigm of byte-level language models that emerged in
 natural language processing, in particular the Byte Latent Transformer (BLT)
-[66]. These systems abandoned the paradigm of fixed token vocabularies
+[72]. These systems abandoned the paradigm of fixed token vocabularies
 in favor of dynamic grouping of elementary information units (bytes) into latent patches whose
 size is inversely proportional to the local complexity of the signal.
 
@@ -1577,7 +1723,7 @@ size is inversely proportional to the local complexity of the signal.
 **Figure 2.1 — Conceptual operating principle of entropy-driven byte patching.** Long
 low-entropy regions are grouped into larger latent patches, whereas locally surprising regions
 receive finer allocation. The values are schematic, not empirical measurements. Source:
-author’s schematic after BLT [66].
+author’s schematic after BLT [72].
 
 Within the dissertation research, the results of which are published in **[A1]**, the hypothesis
 was put forward that transferring the principles of adaptive entropy-based tokenization to the
@@ -1588,15 +1734,16 @@ architecture — the Vision Byte Latent Transformer (V-BLT).
 
 Working at the input-byte level, where each RGB channel value is represented by an integer from
 0 to 255, avoids committing the target interface to a learned discrete visual codebook
-[67]. It does not make the learned hidden representation
+[73]. It does not make the learned hidden representation
 lossless. The developed V-BLT architecture is
 a three-tier hierarchical information-transformation system consisting of a Local Encoder, a
 Global Latent Transformer, and a Local Decoder. In the arc of this dissertation, V-BLT is the
 author's **first realization of the hierarchical adaptation of video generation** — a two-stage
 decomposition in which local byte-level stages surround a global latent stage and an entropy
-criterion governs the allocation of capacity between them; the mature form of this hierarchical
-decomposition, in which the upper level carries the long-range temporal memory of the process,
-is developed in Chapter 3.
+criterion governs the allocation of capacity between them. Chapter 3 applies the **shared systems
+principle** of non-uniform allocation to a different object—the retained context package—but its
+continuous two-level autoencoder and predictor are not a mature or executable continuation of
+V-BLT.
 
 ![Vision Byte Latent Transformer architecture](../../figures/fig46_vblt_architecture.png)
 
@@ -1653,7 +1800,7 @@ $$
 
 Such a mathematical formulation transforms the problem of minimizing the mean squared error
 (MSE), which by its nature is prone to smoothing and to the loss of high-frequency details, into
-a classification problem using the cross-entropy loss function [96]. This makes it possible to correctly model multimodal distributions:
+a classification problem using the cross-entropy loss function [105]. This makes it possible to correctly model multimodal distributions:
 for example, the contour of a moving object may shift one pixel to the left or to the right with
 equal probability, which cannot be described by a single mean value.
 
@@ -1667,23 +1814,24 @@ H_i = -\sum_{k=0}^{255} p(x_i = k)\,\log_2 p(x_i = k)
 \tag{2.3}
 $$
 
-The entropy value lies in the range from 0 (absolute determinism and confidence of the system in
-its prediction) to 8 bits (maximum informational uncertainty, a uniform distribution). By
-computing this value for all pixels of a frame, the generative system forms a two-dimensional
-per-pixel entropy map.
+The entropy value lies between 0 bits (a point-mass categorical prediction) and 8 bits (a uniform
+distribution over 256 byte values). These are properties of the model's predictive distribution,
+not proofs of real-world determinism or calibrated confidence. Computing the value for all pixels
+forms a two-dimensional per-pixel entropy map.
 
-Entropy maps are a direct indicator of the state of structural uncertainty and serve as a
-powerful diagnostic instrument. Empirical studies, the results of which are presented in **[A1]**
-and are considered in detail in Chapter 4, confirm that the highest entropy values systematically
-concentrate on the contours of fast-moving objects and in occlusion zones with complex
-kinematics, whereas the static, predictable background exhibits entropy rapidly approaching zero.
+Entropy maps provide a local diagnostic of how dispersed the learned byte distribution is.
+Empirical studies reported in **[A1]** show, for the evaluated sequences, higher entropy near
+moving contours and newly exposed or occluded regions than in static background. This spatial
+association supports their use as an allocation proxy in that setting; without calibration and
+uncertainty decomposition it does not identify aleatoric uncertainty, epistemic uncertainty, or
+prediction error separately [44, 45].
 Figures 2.3 and 2.4 show prediction examples for a simple 2D and a complex 3D sequence
 respectively, where the first row contains the expected frames of the sequence, the second the
 frames predicted by the V-BLT model, and the third the entropy maps corresponding to the
 predicted frames (black indicates high entropy, white low entropy). A key aspect of the V-BLT
-architecture is its ability to operate on raw bytes, which makes it possible to compute per-pixel
-entropy for every prediction. Entropy in this context is a measure of the model's uncertainty:
-the higher the entropy, the less "confident" the model is in its prediction for the given pixel.
+architecture is its ability to operate on categorical raw-byte targets, which makes per-pixel
+predictive entropy directly computable. Higher entropy means a more dispersed categorical output;
+"confidence" is used only in this model-internal sense.
 
 ![V-BLT prediction and entropy maps for a rotating 2D shape](../../figures/fig59_vblt_2d_entropy_published.png)
 
@@ -1703,12 +1851,12 @@ along moving and newly exposed boundaries. Source: Kulyk and Mokin, *Scaling Vid
 Spatio-Temporal Patches*, published Fig. 8,
 DOI 10.31649/1997-9266-2025-182-5-129-139.
 
-From the standpoint of complex-system control, the entropy map is an ideal feedback signal. It
-allows the problem of structural-algorithmic uncertainty to be solved by dynamically forming
-latent patches of variable size. Low-entropy regions (background) can be aggregated into large
-spatial blocks, saving the $O(L^2)$ resources of the global attention mechanisms. High-entropy
-regions (motion, fine details) can be split into small patches, concentrating the maximum
-computational power of the transformer exactly on the zones where the uncertainty is highest.
+From the standpoint of complex-system control, the entropy map is a **candidate feedback signal**
+for dynamically forming latent patches of variable size. Low-entropy regions can be aggregated
+into larger spatial blocks and high-entropy regions assigned finer patches, reducing the global
+sequence length when the observed entropy pattern is informative. The resulting computational
+saving depends on the realized patch-count reduction, and useful allocation depends on the
+predictive distribution being sufficiently calibrated for the decision [44, 45].
 
 It is important to note the place of this instrument within the overall system developed in this
 dissertation. The per-pixel entropy is a *local* measure of informational complexity: it answers
@@ -1720,28 +1868,27 @@ degradation metrics stratified by re-entry hardness. The local entropy signal go
 allocation of computational resources within a frame, while the global criteria evaluate the
 consistency of the generated process as a whole.
 
-The successful substantiation and approbation of the entropy-based method for estimating
-spatio-temporal uncertainty opens the path to building fully resource-efficient video-generation
-models. However, the process of transforming a multidimensional spatio-temporal data array into a
-linear sequence of patches for transformer processing carries a serious mathematical problem —
-the loss of structural topology. The next subsection is devoted to solving this problem by
-adapting and integrating multidimensional rotary positional encoding.
+The [A1] results establish the feasibility of entropy-guided allocation in the reported setting;
+they do not establish globally optimal patch boundaries or a fully resource-efficient generator.
+The next question is how a linear token sequence retains explicit spatial and temporal
+coordinates. Section 2.2 develops RoPE-ND for that coordinate-interface problem.
 
 ## 2.2 Structural Coherence through Multidimensional Positional Encoding
 
-During the transformation of a multidimensional spatio-temporal information array into a form
-suitable for processing by the model, the primary topology of the complex system is destroyed.
-Therefore, an important step is to ensure structural coherence before feeding the data into the
-system.
+Flattening a multidimensional spatio-temporal array into a sequence removes **explicit coordinate
+structure from token order** unless positional information is supplied. The pixel/patch values are
+not themselves erased, but permutation-equivariant self-attention otherwise has no basis for
+distinguishing the physical axes. A positional interface is therefore needed before structural
+relations can be learned.
 
 The multidimensional tensor of visual data, mathematically described as
 $X \in \mathbb{R}^{T \times H \times W \times C}$, where $T$ is the temporal dimension, $H$ and
 $W$ are the spatial coordinates, and $C$ the information channels, necessarily undergoes a
 linearization operation. As a result, a one-dimensional sequence of latent vectors
 $Z = \{z_1, z_2, \dots, z_L\}$ is formed, with total sequence length $L = T \cdot H \cdot W$.
-This change of dimensionality is a necessary condition for applying global self-attention
-mechanisms, but it completely erases the information about the mutual spatio-temporal arrangement
-of the elements.
+This linearization is a conventional interface for global self-attention. By itself, it does not
+encode the mutual spatio-temporal arrangement of the elements; the arrangement must be supplied
+through positional features, architectural locality, or an equivalent signal.
 
 In the theory of complex systems, such a loss of information is classified as a critical growth
 of structural uncertainty. The transformer architecture is, by its mathematical nature, invariant
@@ -1751,24 +1898,20 @@ one frame, or belonged to entirely different frames of the video sequence in tim
 a precise coordinate anchoring makes it impossible to model adequate kinematics and geometry of
 the visual scene.
 
-The traditional approach to preserving positional information is absolute positional encoding
-[12]. This method adds a special coordinate
-vector $p_i$ to each latent token $z_i$. However, absolute encoding has fundamental drawbacks in
-this application: it destroys translation invariance, which is a natural property of the visual
-world, since the system must recognize and generate an object equally well regardless of its
-absolute coordinates in the frame.
+One common approach is absolute positional encoding [12], which adds a coordinate vector $p_i$ to each latent token $z_i$. Absolute positions
+break strict translation equivariance of an otherwise equivariant token operation, although a
+learned model can still represent relative relationships and may benefit from absolute location
+when the task is not translation invariant.
 
-An alternative approach is relative positional encoding (Relative Positional Bias)
-[97, 65], where coordinate information is
-added directly to the attention-weight matrix in the form of biases. Although this method models
-relative distances more correctly, it is accompanied by a significant growth of computational
-complexity and requires $O(L^2)$ memory for storing multidimensional bias matrices, which
-directly contradicts one of the main tasks of this research — the optimization of resource
-consumption.
+An alternative is relative positional encoding or bias [106, 71], where the attention score depends on relative displacement. A naively
+materialized pairwise bias tensor has $O(L^2)$ entries, but parameterized, bucketed, local, and
+kernel-fused implementations need not store a separate dense learned matrix. The relevant design
+question is therefore which positional interface expresses the required axes with acceptable
+materialized memory and computation.
 
 To overcome these systemic contradictions, within the development of the information technology
 it is proposed to apply the mathematical apparatus of Rotary Positional Embedding (RoPE)
-[98] with its subsequent generalization to N-dimensional space. The
+[107] with its subsequent generalization to N-dimensional space. The
 RoPE applies position-dependent rotations without storing a learned pairwise relative-bias
 matrix. The core idea is to group feature pairs as complex coordinates and rotate them according
 to position.
@@ -1790,10 +1933,10 @@ As the equation shows, the positional phase contains the difference $m-n$. The c
 score still depends on the learned content vectors \(q\) and \(k\); RoPE does not force a
 particular attention pattern.
 
-The original RoPE formulation [98] uses a one-dimensional sequence coordinate.
+The original RoPE formulation [107] uses a one-dimensional sequence coordinate.
 A flattened video index can be supplied, but it does not explicitly separate time, row, and
 column displacement. In the research underlying **[A1]**, N-dimensional rotary positional
-embedding (RoPE-ND) [98] assigns independent feature
+embedding (RoPE-ND) [107] assigns independent feature
 subspaces to these axes.
 
 The essence of the generalization is the decomposition of the latent token's feature space into
@@ -1802,10 +1945,10 @@ dimensionality of the coordinate system is $N = 3$: the time axis $t$, the verti
 the horizontal axis $x$. Accordingly, the state vectors $q$ and $k$ of total dimensionality $D$
 are split into three equal non-overlapping segments of dimensionality $d = D/3$.
 
-For the mathematical rotation operation in the complex plane to be possible, the dimensionality
-of each subspace must be an even number. This yields a hard architectural requirement on the
-generative system: the total dimensionality of the latent feature space $D$ must be divisible by
-$2N$, i.e., divisible by 6 in the case of video data.
+For the equal disjoint-subspace construction used here, each subspace has even dimensionality.
+Thus this **implementation** chooses $D$ divisible by $2N$ (by 6 for three video axes). Other
+allocations can reserve unequal subspaces or leave channels unrotated, so divisibility by six is
+not a universal requirement of video transformers.
 
 For each of the three coordinates, an independent set of basis rotation frequencies $\theta_j$ is
 formed. The frequencies are typically defined by a geometric progression:
@@ -1835,15 +1978,21 @@ axis. The same operation is applied to the key vector $k$.
 horizontal, vertical and temporal coordinates so attention depends on relative displacement
 along all three axes. Source: author’s schematic of the [A1] method.
 
-With disjoint coordinate subspaces, the rotary contribution to an attention score decomposes by
-axis. Each term depends on the corresponding relative coordinate difference:
+With disjoint coordinate subspaces, the rotary attention logit decomposes by axis while retaining
+the learned query and key content. For token positions
+$\mathbf p_q=(t_q,y_q,x_q)$ and $\mathbf p_k=(t_k,y_k,x_k)$,
 
 $$
-q'^{\top}_{\text{rotated}}\, k'_{\text{rotated}} = f(\Delta t, \Delta y, \Delta x)
+s(q,k;\mathbf p_q,\mathbf p_k)
+=\frac{1}{\sqrt D}
+\sum_{a\in\{t,y,x\}}
+q_a^{\top}R^{d}_{\Theta,\,p_{k,a}-p_{q,a}}k_a.
 \tag{2.7}
 $$
 
-where $\Delta t = t_q-t_k$, $\Delta y = y_q-y_k$, and $\Delta x=x_q-x_k$. The algebra establishes
+Thus each term depends jointly on the learned content vectors $q_a,k_a$ and the corresponding
+relative coordinate displacement. With $\Delta t=t_q-t_k$, $\Delta y=y_q-y_k$, and
+$\Delta x=x_q-x_k$, the algebra establishes
 relative-coordinate dependence in the rotary score terms. It does not prove that a learned model
 recovers physical topology or attends to the correct object.
 
@@ -1868,7 +2017,7 @@ activation storage can exceed available device memory. Systems analysis must the
 both model adequacy and implementation feasibility.
 
 For the long unrolls measured in this work, accelerator memory is a binding constraint alongside
-throughput [99, 100]. Which resource
+throughput [108, 109]. Which resource
 dominates is hardware- and model-dependent.
 
 Backpropagation Through Time (BPTT) [28] differentiates a temporally unrolled
@@ -1898,22 +2047,22 @@ therefore removes learning signals that cross that boundary. Checkpointing reduc
 consumption (to a square-root trade-off under a balanced segment schedule; see Table 2.1) at the
 cost of recomputation.
 
-The task considered here is to organize reverse differentiation so that activation memory is
-constant with respect to the number of reversible time steps \(T\), while preserving the
-full-horizon gradient for the tested recurrence.
+The task considered here is to organize reverse differentiation so that the transient local
+activation graph is constant with respect to the number of reversible time steps \(T\), while
+preserving the full-horizon gradient semantics for the tested recurrence.
 
 To solve this systemic problem, the dissertation research developed the Temporal Reversible
 Transformer (TempVerseFormer) architecture. The developed architecture and the mathematical
 method of computational-resource optimization were published by the author as the sole author in
 an international scientific journal indexed by the Scopus scientometric database (**[A2]**).
 
-The method is based on the transition from traditional directed acyclic computation graphs to
-discrete reversible architectures. The core idea of reversible computation is to build
-state-transition functions that are bijective (one-to-one). If the transition function from layer
-$l$ to layer $l+1$ has an exact analytic inverse, the system can restore its previous state
-purely from the current state, without storing it in memory during the forward pass.
+The method replaces a stored long activation tape with discrete reversible transitions. If the
+transition from layer $l$ to layer $l+1$ has a closed-form algebraic inverse, the preceding state
+can be reconstructed from the current state during reverse replay. In finite precision the
+reconstruction is approximate and its error must be measured; parameters, optimizer state, and
+any exogenous replay information remain resident.
 
-Continuous-time adjoint methods such as Neural ODEs [85] and
+Continuous-time adjoint methods such as Neural ODEs [91] and
 discrete reversible models such as RevNet and RevViT
 [32] provide related
 storage/recomputation strategies with different numerical trade-offs. The
@@ -1945,10 +2094,10 @@ y_2^{(l)} = x_2^{(l)} + \operatorname{MLP}\!\left(y_1^{(l)}\right)
 \tag{2.10}
 $$
 
-This specific algebraic structure guarantees that only $x_2$ — which remains unchanged during the
-first stage — is used to compute the additive update of $x_1$. Accordingly, the input information
-can be reconstructed absolutely without loss by performing the operations in reverse order and
-replacing addition with subtraction.
+This algebraic structure ensures that only $x_2$—unchanged during the first stage—is used to
+compute the additive update of $x_1$. Accordingly, in exact arithmetic the inputs are recovered
+by evaluating the couplings in reverse order and replacing addition with subtraction; numerical
+reconstruction error is reported separately.
 
 Reverse reconstruction of the second branch:
 
@@ -1967,7 +2116,8 @@ $$
 ![Forward and reverse information flow in the reversible block](../../figures/fig53_reversible_block_published.png)
 
 **Figure 2.6 — Forward and reverse information flow in a reversible transformer block.** The
-additive coupling structure permits exact reconstruction of block inputs from its outputs.
+additive coupling structure permits algebraic reconstruction of block inputs from its outputs;
+finite-precision error is measured separately.
 Source: author’s published TempVerseFormer project asset [A2].
 
 For the reversible blocks to solve the task of controlling generation in time, they are
@@ -1996,10 +2146,11 @@ transformer blocks.
 transition is applied along physical time while the realized state is passed to the next step.
 Source: author’s published TempVerseFormer project asset [A2].
 
-Since the functor $\Phi$ consists of reversible elements, the entire multi-step trajectory
-$V_1 \to V_2 \to \dots \to V_T$ preserves the property of global reversibility. Knowing only the
-final state $V_T$, the system has the mathematical ability to reconstruct, step by step, all
-intermediate values without storing them in memory.
+For a deterministic recurrence composed of these reversible elements, and given unchanged model
+parameters and all conditioning inputs, the trajectory
+$V_1 \to V_2 \to \dots \to V_T$ is algebraically invertible. Reverse replay reconstructs its
+intermediate states from $V_T$ one step at a time instead of retaining their activation graphs;
+finite-precision error and any stochastic replay signal remain separate accounting terms.
 
 To focus the computational resource of the reversible transformer exclusively on the analysis of
 complex temporal dynamics, the global architecture of the TempVerseFormer information technology
@@ -2039,12 +2190,10 @@ for the tested reversible recurrence. The method is based on integrating the mat
 apparatus of discrete reversible transformations directly into the gradient-computation process
 along the temporal chain.
 
-The main idea of the developed method is a change in the paradigm of computation-graph
-construction. Instead of statically caching all system states during the forward pass, they are
-reconstructed dynamically during the backward pass. This reconstruction is mathematically exact
-and requires no additional training or approximation, since it relies on the algebraic properties
-of the inverse transition functions $R^{-1}$ built into the architecture of the reversible
-blocks.
+The main idea is to reconstruct states during the backward pass instead of caching the full
+activation trajectory during the forward pass. The inverse transition functions $R^{-1}$ are
+algebraically exact for the stated recurrence; an implementation reconstructs them within
+floating-point tolerance and pays recomputation cost without requiring a learned inverse.
 
 The training strategy of the complex generative system under this algorithm splits into two
 phases.
@@ -2078,54 +2227,59 @@ time step. Source: author’s algorithmic schematic.
 ![Two-phase time-agnostic backpropagation](../../figures/fig50_time_agnostic_backprop.png)
 
 **Figure 2.11 — Two-phase time-agnostic backpropagation.** A tape-free forward phase is followed
-by exact reverse reconstruction and local gradient accumulation. Source: author’s algorithmic
-schematic.
+by algebraic reverse replay, local graph reconstruction, and gradient accumulation. Source:
+author’s algorithmic schematic.
 
 For a rigorous confirmation of the effectiveness of the developed method, we formulate and prove
 a lemma on the optimization of operating-memory consumption.
 
-**Lemma 1 (on the computational complexity of time-agnostic backpropagation).** *Let a discrete
-dynamic system be given with a trajectory length of $T$ steps, where the transition functor is
-parameterized by a reversible neural network with $L$ layers and per-layer state dimensionality
-$D$. Then the peak amount of operating memory required to compute the gradients of the objective
-function with respect to the system parameters is $O(L \cdot D)$ and is constant, $O(1)$, with
-respect to the length $T$ of the temporal trajectory.*
+**Lemma 1 (activation-tape complexity of deterministic time-agnostic backpropagation).** *Let a
+deterministic discrete dynamic system have a trajectory of $T$ steps, with a transition
+parameterized by a reversible neural network of $L$ layers and complete per-layer state footprint
+$D_s$ (for $N$ tokens of width $D$, $D_s=ND$). Excluding model/optimizer state, and assuming the transition needs no $T$-dependent
+exogenous replay record, the peak transient activation graph needed for reverse replay is
+$O(L \cdot D_s)$ and therefore $O(1)$ in $T$.*
 
 **Proof.**
 
-1. Assume the dimensionality of the state tensor at one layer is $D$. Under classical BPTT the
+1. Assume the state footprint at one layer is $D_s$. Under classical BPTT the
    algorithm caches all inputs for every layer $l \in \{1, \dots, L\}$ and every time step
    $t \in \{1, \dots, T\}$; hence the peak memory is
-   $M_{\text{BPTT}} = T \cdot L \cdot D = O(T \cdot L \cdot D)$.
+   $M_{\text{BPTT}} = T \cdot L \cdot D_s = O(T \cdot L \cdot D_s)$.
 
-2. The proposed algorithm stores, during the forward pass, only the final state at step $T$. The
-   memory for this is $O(D)$. Activations for $t < T$ and $l < L$ are deleted immediately after
-   they are used for the next step. Hence the forward-pass memory does not depend on $T$.
+2. The proposed deterministic algorithm stores, during the forward pass, the terminal state and
+   horizon-independent control information. The terminal state costs $O(D_s)$. Activations for
+   $t < T$ and $l < L$ are deleted after use, so this activation term does not depend on $T$.
 
 3. During the reverse pass the algorithm processes the steps sequentially: $t = T, T-1, \dots, 1$.
    At the current step $t$ the algorithm reconstructs the inputs and unrolls the local
-   computation graph of a single transition. The size of this graph is $O(L \cdot D)$.
+   computation graph of a single transition. The size of this graph is $O(L \cdot D_s)$.
 
 4. Immediately after the gradients $\nabla_{\theta} L_{\text{loss}}$ and
    $\nabla_{x_{t-1}} L_{\text{loss}}$ are computed, this local graph is completely destroyed and
    its memory freed before the algorithm proceeds to step $t-1$.
 
-5. Therefore, the maximum number of tensors simultaneously resident in the system memory at any
-   moment equals the size of one local graph, $O(L \cdot D)$, plus a constant volume for the
-   gradient-accumulation buffer. Since the temporal parameter $T$ does not enter this expression,
-   the peak memory consumption is mathematically $O(1)$ with respect to the sequence length.
-   $\blacksquare$
+5. Therefore, the maximum transient activation graph equals one local graph,
+   $O(L \cdot D_s)$, plus horizon-independent gradient buffers. Model parameters and optimizer
+   state are common base costs. If a stochastic recurrence stores one conditioning/noise tensor
+   per step, the additional persistent replay term is $O(TD_{\epsilon})$ (§2.4(i)); it is not
+   covered by this deterministic lemma. $\blacksquare$
 
 For comparative analysis, Table 2.1 presents the theoretical complexity estimates of the
 developed method against the existing approaches.
 
 **Table 2.1 — Theoretical estimate of computational complexity in multi-step optimization**
 
-| Optimization method | Memory consumption | Operation count | Gradient exactness |
+| Optimization method | Horizon-dependent storage | Recomputation | Gradient semantics |
 |---|---|---|---|
-| Standard BPTT | $O(T \cdot L \cdot D)$ | $C$ | exact |
-| Gradient checkpointing | $O(\sqrt{T} \cdot L \cdot D)$ | $\approx 1.5\,C$ | $\pm 10^{-6}$ |
-| Developed method (time-agnostic BP) | $O(L \cdot D) \sim O(1)$ in $T$ | $2\,C$ | $\pm 10^{-6}$ |
+| Standard BPTT | $O(T \cdot L \cdot D_s)$ activation tape | baseline $C$ | reverse-mode gradient |
+| Gradient checkpointing | schedule-dependent; $O(\sqrt{T}\cdot L\cdot D_s)$ for a balanced segment schedule | schedule-dependent, typically $>C$ | same gradient in exact arithmetic; floating-point differences implementation-dependent |
+| Developed method (deterministic recurrence) | $O(L \cdot D_s)$ transient local graph, $O(1)$ in $T$ | approximately one local recomputation per reverse step | same gradient in exact arithmetic; numerical agreement measured |
+
+The table isolates horizon-dependent activation storage. Parameters, optimizer state, allocator
+overheads, and—in the stochastic extension—the replay signal are additional terms. Consequently,
+the square-root checkpoint row and any compute multiplier describe a particular schedule rather
+than a universal property [30, 31].
 
 ![GPU memory consumption versus prediction horizon](../../figures/fig57_tempverse_memory_published.png)
 
@@ -2157,26 +2311,24 @@ additional computation for the critically scarce resource — GPU memory — and
 hundreds or thousands of steps operationally possible when the non-reversible activation tape
 would exceed the device budget.
 
-In addition, the proposed architecture enables a unique **selective backpropagation** strategy.
-In many control problems the initial steps of a process are noisy, while the most informative
-steps are the last ones. The method allows the system to run the forward pass to full length and
-then reconstruct activations and compute gradients only for a narrow target segment
-$[T - K_{\text{opt}},\; T]$, ignoring the rest of the chain. This focuses the optimization on the
-relevant portions of the trajectory with zero memory cost for the skipped stages.
+The implementation also supports **selective backpropagation** over a chosen terminal segment.
+The system can run the forward process to full length and reconstruct local graphs only for
+$[T-K_{\text{opt}},T]$. This is a form of deliberately truncated or partial-loss optimization,
+not a unique gradient semantics: it omits learning signals through earlier steps. Skipped stages
+avoid activation-graph reconstruction, but the terminal/base state and any replay metadata still
+consume memory.
 
 ### Extension to Stochastic Recurrences and Limits of Reversible Computation
 
-The time-agnostic backpropagation method was substantiated above for *deterministic* transition
-functors (2.13). The hierarchical video generation model developed in Chapter 3, however, is a
-*stochastic* dynamic system: its state transitions include an injected noise component, both as a
-generative modeling choice and within its iterative-refinement generation core. For the developed
-resource-optimization method to serve as the training foundation of that model, it must be
-extended to stochastic recurrences, and the boundaries of its applicability must be established.
-This section performs both steps; all numerical values are measured properties of the software
-implementation (the measurement methodology and the experimental environment are described in
-Chapter 4).
+The time-agnostic backpropagation method was substantiated above for deterministic transition
+functors (2.13). Many generative recurrences also inject stochastic conditioning, which creates an
+additional replay-information requirement. This section extends the accounting to that case and
+delimits when reversible replay is useful. The final Chapter 3 predictor samples stochastically
+but is trained on individual clean-context windows and does **not** differentiate through its
+rollout or sampler; the extension is therefore a separately measured method that could support a
+future rollout-through-time objective, not the training foundation of the reported context result.
 
-**(i) The exactly invertible stochastic recurrence (store-the-noise).** Consider the stochastic
+**(i) A conditionally invertible stochastic recurrence (store-the-noise).** Consider the stochastic
 generalization of the temporal chain (2.13), in which the latent state $h_t$ of the modeled
 process evolves as
 
@@ -2188,9 +2340,10 @@ $$
 where $F$ is a transition operator built from reversible (additive-coupling) blocks, $\sigma$ is
 the noise scale, and $\epsilon_t$ is the noise sample of step $t$. Transformation (2.14), taken
 alone, is not invertible: the noise irreversibly injects new information. However, if the noise
-samples $\epsilon_t$ drawn during the forward pass are *stored* — the store-the-noise principle,
-extending the reversible recurrent networks of [101] — the
-recurrence becomes exactly invertible. Equations (2.14)–(2.15) state the principle in its
+samples $\epsilon_t$ drawn during the forward pass are *stored*—the store-the-noise principle,
+extending the reversible recurrent networks of [110]—the
+preceding state becomes algebraically recoverable conditional on replaying the identical noise.
+Equations (2.14)–(2.15) state the principle in its
 simplest, *external-additive* form, in which the stored noise is subtracted before the inverse
 transition is applied:
 
@@ -2216,46 +2369,53 @@ s_2 = y_2 - G(y_1), \qquad s_1 = y_1 - F(s_2, \epsilon_t).
 \tag{2.16'}
 $$
 
-The additive-coupling inverse is exact for an *arbitrary* conditioning argument, so (2.16')
-holds verbatim for any signal injected this way (noise, actions, level context); the
+The additive-coupling inverse is algebraically valid for an *arbitrary* fixed conditioning
+argument, so (2.16') holds for any identically replayed signal injected this way (noise, actions,
+level context); the
 external-additive scheme (2.14)–(2.15) is recovered as the special case in which the noise
 enters only as a final additive term. All numerical properties quoted below are measured on the
 conditioning-injected construction (2.16)–(2.16'), which is the one realized in the software
-complex. The memory cost of storing the noise sequence grows only as $O(T \cdot D_{\epsilon})$ —
-one noise tensor per step, with no layer factor $L$ and no computation-graph factor — and is
-negligible against the $O(T \cdot L \cdot D)$ activation graph that BPTT would store (confirmed
-by the direct measurement in part (iii): the total memory of the reversible method stays flat).
+complex. Storing one noise tensor per step costs $O(T \cdot D_{\epsilon})$. It has no layer or
+computation-graph factor and is much smaller than the $O(T \cdot L \cdot D_s)$ BPTT activation tape
+in the measured configuration, but it is still linear in $T$. Accordingly, the method has a
+constant-in-$T$ **transient local activation graph**, not a universal $O(1)$ total-memory claim.
+Table 2.3 reports the resulting modest growth of measured peak memory.
 
 The following properties of this construction were verified numerically on the implemented
 hierarchical multi-rate recurrent core (software complex of the dissertation; measurement details
 in Chapter 4):
 
-- **Exact invertibility of the deterministic coupling:** maximum state-reconstruction error
+- **Algebraic invertibility of the deterministic coupling:** maximum numerical
+  state-reconstruction error
   $5.5 \times 10^{-15}$ (fp64); for the Lipschitz-constrained coupling in fp32,
   $3.1 \times 10^{-5}$.
-- **Exact invertibility of the stochastic recurrence:** with the stored noise replayed, the
-  maximum reconstruction error over the trajectory is $8.4 \times 10^{-13}$; replaying *wrong*
-  noise destroys the reconstruction (error of order $10^{1}$) — i.e., the stored noise is
-  exactly the information-theoretic price of inverting a stochastic step.
-- **Gradient equivalence:** the gradients obtained by reverse-replay (reconstructing states
-  backward by (2.15) and rebuilding local graphs, as in Lemma 1) coincide with the gradients of
-  full BPTT with cosine similarity $1.000000$ — the extension preserves the exact-gradient
-  property of the deterministic method.
+- **Conditional algebraic invertibility of the stochastic recurrence:** with the stored noise
+  replayed, the maximum numerical reconstruction error over the trajectory is
+  $8.4 \times 10^{-13}$; replaying *wrong* noise destroys the reconstruction (error of order
+  $10^{1}$). The replay signal is therefore necessary information for this implementation and
+  must be counted.
+- **Gradient direction agreement:** gradients obtained by reverse replay (reconstructing the
+  implemented conditioning-injected states backward by (2.16') and rebuilding local graphs, as in
+  Lemma 1) have cosine similarity $1.000000$ with the full-BPTT gradients in the reported numerical
+  test. Cosine similarity establishes directional agreement, not equality of gradient magnitude.
+  The algebraic procedures implement the same chain rule under exact reconstruction in exact
+  arithmetic; finite-precision componentwise or norm equality is not established by this test.
 
-Thus the time-agnostic backpropagation of §2.4 transfers to stochastic multi-level recurrences
-without loss of exactness, which is precisely the form required by the hierarchical generation
-model of Chapter 3 (Task 4 of the research in its extended formulation).
+Thus the local reverse-replay construction transfers to stochastic multi-level recurrences when
+the identical conditioning is available, with explicit $O(TD_{\epsilon})$ replay storage in the
+measured implementation. This extends the [A2] resource method; it is compatible with, but not
+required by or used in, the Chapter 3 predictor.
 
-**(ii) Invertibility does not imply stability: the Lipschitz characterization.** A separate
+**(ii) Invertibility does not imply stability: a Lipschitz diagnostic.** A separate
 systemic question is whether the reversibility of the transition operator stabilizes the
 long-horizon behavior of the modeled process. The answer, established by direct measurement, is
 negative — and this delimits what the developed method may and may not be credited with. All
-recurrences in Table 2.2 are *exactly invertible* (the additive coupling has unit Jacobian
-determinant); they differ only in the spectral-norm bound imposed on the coupling function $F$.
+recurrences in Table 2.2 are algebraically invertible under identical conditioning; they differ
+only in the spectral-norm bound imposed on the coupling function $F$.
 The measured perturbation growth $\lVert \delta_K \rVert / \lVert \delta_0 \rVert$ of a
 free-running rollout over $K = 100$ steps spans four orders of magnitude:
 
-**Table 2.2 — Perturbation growth of exactly invertible recurrences over $K = 100$ free-running
+**Table 2.2 — Perturbation growth of algebraically invertible recurrences over $K = 100$ free-running
 steps as a function of the Lipschitz bound on the coupling**
 
 | Coupling constraint | $\lVert \delta_{100} \rVert / \lVert \delta_0 \rVert$ | Regime |
@@ -2265,35 +2425,35 @@ steps as a function of the Lipschitz bound on the coupling**
 | spectral norm, $\operatorname{Lip}(F) \le 0.1$ | $1.5\times$ | bounded |
 | spectral norm, $\operatorname{Lip}(F) \le 0.02$ | $1.0\times$ | tightly bounded |
 
-The mechanism is elementary: the additive-coupling step $s \mapsto s + F(s)$ has a step-Lipschitz
-constant
+For the residual map $G=I+F$, the triangle inequality gives the valid general upper bound
 
 $$
-\operatorname{Lip}(\text{step}) \approx 1 + \operatorname{Lip}(F) \;\ge\; 1,
+\operatorname{Lip}(G)
+\;=\;\operatorname{Lip}(I+F)
+\;\le\;1+\operatorname{Lip}(F).
 \tag{2.17}
 $$
 
-i.e., the additive structure is inherently non-contractive — constraining $F$ to
-$\operatorname{Lip}(F) \le 1$ is *not* sufficient (the growth factor $26{,}600\times$ in
-Table 2.2), and bounded long-horizon dynamics require a *small* coupling Lipschitz constant
-($\operatorname{Lip}(F) \lesssim 0.1$). This is the stability analysis of invertible networks
-[102, 103] instantiated
-for temporal recurrences and confirmed by measurement. The systemic conclusion: **invertibility
-is a memory-and-correctness property, not a stability property.** In the developed technology,
-reversibility is claimed exclusively as the constant-memory enabler of long-horizon training with
-exact gradients; the stability of the modeled trajectory is a separate design requirement,
-enforced by the Lipschitz constraint on the coupling (this requirement informs the architecture
-of Chapter 3).
+This bound is neither an equality nor a lower bound: cancellation can make $I+F$ contractive, and
+the bound alone cannot predict realized perturbation growth. Table 2.2 supplies the empirical
+result for the tested recurrences: imposing $\operatorname{Lip}(F)\le1$ did not prevent growth,
+whereas the tested constraints at 0.1 and 0.02 yielded bounded trajectories over 100 steps. These
+measurements motivate a small-coupling condition in this implementation; they do not prove a
+universal threshold [111, 112]. The
+systemic conclusion is narrower and valid: **algebraic invertibility enables reconstruction but
+does not imply stable forward dynamics.** Stability must be established separately for the
+recurrence being used. The final Chapter 3 predictor does not use this reversible recurrence or
+its Lipschitz constraint.
 
 ![Measured reversible memory frontier](../../figures/fig51_reversible_memory_frontier.png)
 
 **Figure 2.14 — Measured memory frontier of the stochastic recurrent core.** Standard BPTT
 reaches 12.2 GB at $K=40$, spills at $K=80$ and cannot run at $K=120$ on the 16 GB device;
 checkpointing grows slowly, while reverse replay stays near 1.1–1.2 GB through $K=160$. Source:
-repository Panel-A measurements (`hvp_rev/mem_frontier.py`,
-`docs/SESSION_JOURNEY_AND_EBT_PLAN.md`, §2.2).
+author’s measurements summarized in Table 2.3; artifact provenance is listed in the reproducibility
+appendix.
 
-**(iii) The constant-memory autoregressive-rollout frontier (measured).** The practical payoff of
+**(iii) The activation-tape frontier for autoregressive rollout (measured).** The practical payoff of
 the extended method is measured on the real training loop of the implemented stochastic
 hierarchical recurrent core (three levels, batch 32, Adam optimizer, NVIDIA RTX 4060 Ti 16 GB;
 the full environment is specified in Chapter 4, §4.1.4). Table 2.3 gives the peak training memory as a function of the
@@ -2313,19 +2473,22 @@ checkpointing, and the developed reversible reverse-replay on the same model**
 training step by a factor of $\approx 60$ (from 0.74 s at $K = 40$ to 43.8 s); at $K = 120$ it
 fails with a hard out-of-memory error.
 
-The frontier confirms Lemma 1 and its stochastic extension empirically: BPTT consumes 12.2 GB
-already at $K = 40$ and becomes infeasible at $K = 120$, while the developed method remains
-essentially flat ($\approx$1.1–1.2 GB through $K = 160$), making long-horizon rollout training
-feasible on a consumer-grade 16 GB device. **The honest reading of Table 2.3, however, must
+The frontier supports Lemma 1 and the stochastic accounting in the tested range: BPTT consumes
+12.2 GB already at $K = 40$ and becomes infeasible at $K = 120$, while the developed method grows
+modestly from 1.091 to 1.176 GB through $K = 160$, making the measured long-horizon rollout
+training feasible on a consumer-grade 16 GB device. This curve includes the replay information;
+the constant-in-$K$ claim applies to the transient local activation graph. **The interpretation
+of Table 2.3 must
 include the checkpointing column:** gradient checkpointing also remains feasible at all measured
 $K$ (1.47–1.97 GB, growing slowly). The correct claim for the developed method is therefore a
-**constant-memory capability relative to vanilla BPTT** — with strictly exact reconstruction and
-gradients equal to BPTT — and an approximate **Pareto equivalence with gradient checkpointing**
-(comparable memory order and comparable recomputation overhead), *not* a memory victory over
-checkpointing. This scoping is stated deliberately: it is what the three-axis analysis below
-turns into a general applicability boundary.
+**constant activation-tape capability relative to vanilla BPTT**—with algebraically valid replay
+and measured gradient-direction agreement. Reverse replay also has lower peak memory than the
+checkpointing arm at every $K$ in Table 2.3, but the temporal-rollout experiment does not report a
+matched checkpointing-versus-replay runtime comparison. It therefore establishes neither Pareto
+dominance nor Pareto equivalence between those two methods. This scoping is stated deliberately:
+the three-axis analysis below turns it into an applicability boundary.
 
-**(iv) The three-axis taxonomy of reversible computation and its no-go result.** The reversible
+**(iv) The three-axis taxonomy of reversible computation and its measured boundary.** The reversible
 mechanisms developed and reviewed in this chapter can be organized along three orthogonal axes of
 the computation graph on which reversibility can be exploited to avoid storing states:
 
@@ -2333,17 +2496,17 @@ the computation graph on which reversibility can be exploited to avoid storing s
    its descendants [32]): the
    literature baseline on which the developed blocks build.
 2. **The temporal axis** — reversibility along the physical time of the modeled process
-   (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16)). On this axis
-   reversibility **pays**: the stored quantity that BPTT accumulates is the $O(T \cdot L \cdot D)$
-   activation trajectory itself, exactly what the inverse coupling reconstructs; the measured
-   result is the frontier of Table 2.3.
+   (temporal chaining of §2.3–2.4 and the stochastic extension (2.14)–(2.16')). On the tested
+   recurrence this axis **paid** because the BPTT activation trajectory dominated the avoidable
+   horizon-dependent storage; inverse coupling reconstructed that trajectory, while replay noise
+   remained explicitly counted. The measured result is Table 2.3.
 3. **The computational axis** — reversibility along the *inner optimization loop*: the $K$
    pseudo-time steps of iterative refinement (gradient descent, MCMC/Langevin sampling, or a
-   diffusion sampler) executed *inside* one generation step. The original draft of this
-   dissertation asserted that the graph isomorphism between the temporal chain $T$ and the inner
-   chain $K$ makes time-agnostic backpropagation the foundation for differentiating through such
-   loops. The isomorphism of the graph *structure* is real, but the memory *accounting* is
-   opposite, and on this axis reversibility **provably cannot pay** against checkpointing.
+   diffusion sampler) executed inside one generation step. Although this is also a chain, its
+   stored trajectory state can be much smaller than the derivative graph rebuilt at each reverse
+   step. The comparison must therefore be decided by state-versus-graph accounting rather than by
+   graph shape alone. In the tested implementation, reversibility did not improve the practical
+   trade-off over checkpointing.
 
 The accounting for the third axis is as follows. Differentiating through a $K$-step
 gradient-descent (or Langevin) inner loop requires, at each reverse step, a Hessian-vector
@@ -2364,32 +2527,32 @@ crossover at which trajectory states would begin to dominate the second-order gr
 $K \approx 5{,}000$–$30{,}000$ inner steps, far beyond any practically meaningful refinement
 depth. The underlying storage arithmetic — counting the bits per step that an optimizer
 trajectory consumes versus the volume contraction of the update map — is due to
-[104], **applied** here to the video-generation inner loop, not claimed as a new theorem.
-Moreover, plain gradient descent is not closed-form invertible at all (inversion requires the
-momentum-buffer scheme of Maclaurin et al., whose kilobyte-scale state itself demonstrates that
-trajectory storage was never the binding constraint), and the reversible-sampler variants for
-diffusion inner loops are already published [105, 106, 107], with large-scale practice choosing checkpointing
-or truncation precisely because state $\ll$ graph [108, 109].
+[113], **applied** here to the video-generation inner loop, not claimed as a new theorem.
+Moreover, a generic nonlinear gradient-descent update does not provide the closed-form inverse
+assumed by the local replay algorithm; the reversible momentum-buffer construction of Maclaurin
+et al. supplies additional replay information. In this measured configuration its kilobyte-scale
+state confirms that trajectory storage was not the binding constraint. Reversible-sampler variants for
+diffusion inner loops are already published [114, 115, 116], while related optimization-through-sampling work
+also uses checkpointing or truncation [117, 118].
 
 ![Axes of reversible computation](../../figures/fig52_reversibility_axes.png)
 
 **Figure 2.15 — Three axes of reversible computation and their measured applicability.**
-Reconstruction pays along network depth and temporal recurrence. In the tested inner-optimization
+Reconstruction can save activation storage along network depth and temporal recurrence. In the tested inner-optimization
 loop the model/optimizer base state dominates: reversible replay saves only 14 MB (0.26% of peak)
-relative to checkpointing while approximately doubling wall time. Source: author’s taxonomy from
-`logs_rhcp/mem_panel.md`.
+relative to checkpointing while approximately doubling wall time. Source: author’s taxonomy and
+measurements; artifact provenance is listed in the reproducibility appendix.
 
-The resulting **applicability boundary** of the developed resource-optimization method is stated
-as the closing result of this chapter: *reversibility pays on recurrences whose transition
-operator is the invertible coupling itself — the temporal rollout of the modeled video process —
-and cannot pay on inner optimization loops, whose reverse step is dominated by the reconstruction
-of a per-step derivative graph; the latter regime belongs to gradient checkpointing.* This
-scoping replaces the earlier $T \leftrightarrow K$ isomorphism claim with a two-sided,
-measurement-backed delimitation: it simultaneously establishes where the method is the correct
-tool — as the **enabling instrument** for constant-memory rollout-through-time training, whose
-feasibility Chapter 4 demonstrates by direct memory measurement (the validated Chapter 3 model
-itself is trained single-window and does not presuppose it) — and closes, on the record, the
-axis where it is not.
+The resulting **applicability boundary** is conditional rather than universal. Reversible replay
+is attractive when the avoidable activation trajectory is a material fraction of peak memory and
+the transition has a stable, economical inverse. In the measured temporal recurrence those
+conditions hold relative to vanilla BPTT. In the measured inner-optimization loop, the per-step
+state is only 0.28% of peak, reverse replay saves 0.26% relative to checkpointing, and
+recomputation roughly doubles wall time; checkpointing is therefore the appropriate method in
+that tested regime. A crossover would require much larger state relative to the derivative graph
+or an extreme inner depth (the present accounting estimates $K\approx5{,}000$–$30{,}000$), so no
+benefit is claimed beyond the measured and analyzed conditions. The Chapter 3 predictor is
+single-window trained and does not presuppose this method.
 
 ## 2.5 Chapter Conclusions
 
@@ -2418,31 +2581,44 @@ multi-step video generation systems. The main results are as follows.
    reversible transformer blocks joined by the temporal-chaining mechanism.
 
 4. The lemma on the computational complexity of the time-agnostic backpropagation algorithm was
-   formulated and proven: the algebraic reconstruction of local graphs during the reverse pass
-   reduces the peak memory consumption from $O(T \cdot L \cdot D)$ to $O(L \cdot D)$ — a constant
-   with respect to the trajectory length — while preserving gradient exactness.
+   formulated for the deterministic recurrence: algebraic state replay reduces the transient
+   activation graph from $O(T \cdot L \cdot D_s)$ to $O(L \cdot D_s)$, constant in trajectory length,
+   while implementing the same reverse-mode derivative in exact arithmetic. Parameters,
+   optimizer state, and stochastic replay information are accounted separately.
 
 5. The time-agnostic backpropagation method was **extended to stochastic multi-level
-   recurrences** via the exactly invertible store-the-noise recurrence: with stored noise, state
-   reconstruction is exact (measured error $8.4 \times 10^{-13}$) and the reverse-replay
-   gradients coincide with BPTT (cosine similarity $1.000000$). The measured memory frontier of
+   recurrences** through a store-the-noise construction that is algebraically invertible given
+   identical replay conditioning. Numerical state-reconstruction error is
+   $8.4 \times 10^{-13}$ and the reverse-replay and BPTT gradient vectors have cosine similarity
+   $1.000000$ in the reported test. This is directional agreement; gradient-magnitude equality is
+   not inferred from cosine similarity. The stored noise costs $O(TD_{\epsilon})$; it is smaller than
+   the removed activation tape here but is not zero. The measured memory frontier of
    the real training loop confirms the practical payoff — BPTT consumes 12.2 GB at rollout length
    $K = 40$ and fails (OOM) at $K = 120$, whereas the developed method remains at
-   $\approx$1.1–1.2 GB through $K = 160$, with gradient checkpointing remaining a comparable
-   alternative (1.47–1.97 GB) — i.e., the method provides a constant-memory capability relative
-   to vanilla BPTT and approximate Pareto equivalence with checkpointing, which is stated
-   honestly. The **applicability domain** of reversible computation was delimited by the
-   three-axis taxonomy (depth — time — computation): the temporal-rollout axis pays and can support
+   $\approx$1.1–1.2 GB through $K = 160$, with gradient checkpointing remaining memory-feasible
+   (1.47–1.97 GB). Thus the method provides a constant-local-activation capability relative to
+   vanilla BPTT. Because matched runtime was not reported for the temporal-rollout replay and
+   checkpointing arms, no Pareto-equivalence claim is made between them.
+   The **applicability domain** of reversible computation was delimited by the three-axis taxonomy
+   (depth — time — computation): the measured temporal-rollout axis paid and can support
    future rollout-through-time training of hierarchical video generators; the final Chapter 3
    predictor is trained on individual windows and does not use that integration. The
-   inner-optimization-loop axis cannot pay against
-   checkpointing (a saving of $\approx 0.2\%$ at $K = 128$, with the state-versus-graph
-   accounting applied after Maclaurin et al.). It was additionally established by measurement
-   that **invertibility does not imply stability**: exactly invertible recurrences span
+   inner-optimization-loop implementation did not pay against checkpointing (a saving of
+   $\approx 0.2\%$ at $K = 128$, with the state-versus-graph accounting applied after Maclaurin
+   et al.); the stated crossover conditions bound this conclusion. Measurement also established
+   that **invertibility does not imply stability**: the tested algebraically invertible recurrences span
    perturbation-growth regimes from $333\times$ to $1.0\times$ over 100 steps purely as a
    function of the Lipschitz bound on the coupling, so trajectory stability is a separate design
-   requirement (a Lipschitz constraint). This is an applicability result for reversible temporal
+   requirement for the tested recurrence. This is an applicability result for reversible temporal
    recurrences; the final Chapter 3 predictor does not use reversible rollout training.
+
+The chapter therefore hands two distinct instruments to the rest of the dissertation. [A1]
+provides a representation-allocation method and a multi-axis coordinate interface; [A2] and its
+stochastic extension provide an activation-tape storage/recomputation method with a measured
+boundary against checkpointing. Chapter 3 does not combine these modules into its predictor.
+Instead, it takes forward their systems question—how finite capacity should be allocated—and
+applies it to retained context/state. Chapter 4 keeps the corresponding evidence streams separate
+and compares their operating regions in the final synthesis.
 
 The results of this chapter are published in the author's works **[A1]** (§§2.1–2.2), **[A2]**
 (§§2.3–2.4). The stochastic-recurrence extension and three-axis applicability taxonomy are
@@ -2467,9 +2643,10 @@ generated by a v-parameterized latent diffusion core selected by the controlled 
 of Chapter 4. RoPE-ND and reversible temporal optimization remain complementary dissertation
 methods, but they are not components of this executed predictor.
 
-Two methodological commitments frame the chapter. First, the model is described exactly as
-implemented and verified in the frozen research implementation (`hvp_rev/rhvd.py`): every
-architectural constant quoted below is a constant of the measured system, not a proposal. Second, alongside
+Two methodological commitments frame the chapter. First, the model is described as implemented
+and verified in the frozen research artifacts: every architectural constant quoted below belongs
+to the measured system, not to an unexecuted proposal. Code-to-claim mappings are consolidated in
+the reproducibility appendix rather than embedded in the scientific narrative. Second, alongside
 the generative model itself, the chapter formalizes the **measurement instrument** — a
 purpose-built memory-horizon testbed with a re-entry-stratified evaluation protocol (§3.4). Under
 the systems-analysis methodology of specialty 124, the instrument is a deliverable of equal rank
@@ -2506,9 +2683,8 @@ dissertation's demonstrated system, not the family's definition.
 
 ### 3.1.1 Two-Level State Decomposition and Frozen Autoencoder
 
-Chapter 1 (§1.2.2) established the hierarchical decomposition of the visual scene state into
-levels of abstraction as the core systems-analysis remedy for the anomalies of flat latent
-spaces. The developed model instantiates this decomposition with $L = 2$ levels, which is the
+Chapter 1 (§1.2.2) motivated explicit hierarchy as a resource-allocation strategy rather than a
+logical necessity. The developed model tests that strategy with $L = 2$ levels, which is the
 minimal configuration that exhibits the phenomenon under study (a low-rate upper level able to
 carry memory that the detailed lower level cannot afford), while remaining fully trainable and
 evaluable on a single consumer-grade GPU — a deliberate scoping decision consistent with the
@@ -2555,17 +2731,16 @@ random-level dropout: at each training step exactly one of the two reconstructio
 level is not ignored. The trained autoencoder has 1.85 M parameters and reaches a validation
 reconstruction error of 0.0020 (MSE, fine level) on the testbed data of §3.4.
 
-Two systemic decisions about this autoencoder follow the unidirectional-control principle
+Two systemic decisions about this autoencoder follow a fixed-interface and isolation principle
 (§3.1.3) and are stated here explicitly:
 
 1. **The autoencoder is frozen.** It is trained once, on the training clips only, and never
    fine-tuned afterwards; during the training and operation of the predictive core its parameters
    are algorithmically excluded from the gradient graph. The latent space is therefore a *fixed
-   coordinate system* for the entire study — every predictive mechanism compared in Chapter 4
-   operates in literally the same state space, which is a precondition for a valid matched-NFE
-   comparison. This decision retains, in the new architecture, exactly the systemic function that
-   the old design assigned to its frozen semantic encoder: invariance of the state coordinates
-   during generation.
+   coordinate system* for the entire study — the matched-capacity regression and diffusion
+   predictors compared in Chapter 4 operate in literally the same state space. Freezing makes the
+   state coordinates invariant during prediction and keeps the
+   representation interface identical across compared mechanisms.
 
 2. **The latent interface is standardized.** The raw $\tanh$-bounded codes are small in scale
    (per-channel standard deviations average 0.121 for the coarse and 0.162 for the fine level).
@@ -2588,12 +2763,10 @@ $$
    elevated to a protocol requirement. In the remainder of the chapter, $z$ denotes the
    standardized latents.
 
-The pixel decoders $\mathcal{D}_{\mathrm{c}}, \mathcal{D}_{\mathrm{f}}$ participate in the system
-only downstream of the predictive core and only through the frozen interface — the old chapter's
-"detached pixel decoder" principle survives here in a strictly stronger form (the decoder is not
-merely gradient-detached but entirely frozen): pixel-space rendering can never destabilize the
-optimization of the dynamics core, and all pixel-space metrics of §3.4.3 are measured through one
-and the same fixed decoder for every compared system.
+The pixel decoders $\mathcal{D}_{\mathrm{c}}, \mathcal{D}_{\mathrm{f}}$ participate only
+downstream of the predictive core through the frozen interface. Consequently, pixel-space
+rendering cannot update the dynamics core, and all pixel-space metrics of §3.4.3 use the same
+fixed decoder for every compared system.
 
 ![Model architecture and context-packaging alternatives](../../figures/fig16_context_packaging_architecture.png)
 
@@ -2604,108 +2777,77 @@ standardization; the shared WindowDiT generation core consuming a selected flat,
 temporal package together with actions; a jointly predicted four-frame latent window; and the
 frozen fine decoder. The lower panel reports exact package accounting and makes the 1,088-token
 temporal versus 1,152-token spatial comparison explicitly near-matched rather than exact.
-*Source:* **`docs/figures/fig16_context_packaging_architecture.png`** and vector PDF; generated
-deterministically by `scripts/make_rft_core_schematics.py` from the frozen interface.
+*Source:* author’s schematic generated from the frozen interface; file and generator provenance
+are listed in the reproducibility appendix.
 
 ### 3.1.2 Cross-Level Context Transfer: from Cross-Attention to Joint Attention
 
-If the two levels of the hierarchy were optimized in complete isolation, the generated states
-would contradict each other — the coarse level could place scene content at one position while
-the fine level renders texture consistent with another. Guaranteeing the integrity of the
-multi-level system requires a strict information channel between the levels; Chapter 1 (§1.4.4)
-introduced *hierarchical consistency* as the corresponding criterion. The question is the
-mechanism of this **inter-level context-signal transfer**.
+Generating the levels independently would permit coarse and fine targets to disagree. The
+implemented mechanism therefore places all context and target tokens from both levels into **one
+joint self-attention sequence** (§3.2.1). Within every layer, fine tokens can attend to coarse
+tokens and vice versa; level, temporal position, and role are supplied through additive
+embeddings and adaptive-normalization conditioning (§3.2.2).
 
-The classical mechanism, described in the earlier design iterations of this work, is cross-level
-cross-attention: queries formed from the child level, keys and values projected from the parent
-level, with positional coordinate scaling to align the two spatial resolutions. The developed
-model retains the *function* of this mechanism but generalizes its *form*: instead of a directed
-pair of attention maps between separate per-level networks, all tokens of both levels — context
-and target alike — are placed into **one joint self-attention sequence** of a single shared
-transformer (§3.2.1). Within every attention layer, each fine token attends to all coarse tokens
-(and vice versa), with the level identity, temporal position, and role of every token supplied to
-the network as additive embeddings and as per-token conditioning of the adaptive normalization
-(§3.2.2). Cross-level transfer is thus realized as a special case of joint attention: the
-attention sub-blocks between fine queries and coarse keys are exactly the cross-attention of the
-earlier design, but they are learned jointly with the within-level blocks rather than imposed as
-a separate module.
+This design has three relevant consequences:
 
-This generalization has three systemic consequences:
+1. **Joint cross-level conditioning.** Both target levels are denoised in one pass under a shared
+   noise level (§3.2.3), so each refinement step can exchange information across resolutions.
+   This is an inductive bias toward hierarchical consistency, not a guarantee; imperfect learned
+   routing, representation loss, or decoding can still produce cross-level disagreement.
 
-1. **Bidirectional consistency coupling at generation time.** Both levels of the target window
-   are denoised *jointly, in one pass, under a shared noise level* (§3.2.3). The fine level
-   conditions on the coarse level's current (partially denoised) state and the coarse level
-   conditions on the fine level's — at every one of the refinement steps. Hierarchical
-   consistency is therefore enforced continuously along the generation trajectory, not once at a
-   hand-off between stages.
+2. **Asymmetric information budgets without asymmetric wiring.** Long-span observed history
+   enters only as coarse tokens (48 frames × 16 tokens), while the fine context covers 6 recent
+   frames × 64 tokens. The shared architecture is bidirectional, but the package deliberately
+   makes the coarse stream the carrier of **observed long-range evidence** (§3.3.4). Model priors
+   and recent fine evidence can still affect either target level.
 
-2. **Asymmetric information budgets without asymmetric wiring.** The long memory enters the
-   sequence only as coarse tokens (48 frames × 16 tokens), while the fine level contributes only
-   a short window (6 frames × 64 tokens). The *architecture* is symmetric; the *information
-   design* is what makes the coarse level the carrier of long-range memory (§3.3.4). This is the
-   precise sense in which "the coarse level carries the memory horizon" is a designed property of
-   the developed model rather than an emergent accident.
+3. **Learned rather than hard-coded spatial routing.** Correspondence between the
+   $4{\times}4$ coarse grid and $8{\times}8$ fine grid is available through learned per-level
+   spatial embeddings and joint attention; no hard child-to-parent receptive-field mask is used.
+   RoPE-ND remains the separate coordinate-interface result of [A1], not a component or an
+   explanation of the measured Chapter 4 package effects.
 
-3. **No hand-crafted spatial masks.** The old design constrained the child-to-parent attention by
-   a hard $2{\times}2$ receptive-field mask routed by scaled positional coordinates. In the
-   developed model, the spatial correspondence between a $4{\times}4$ coarse cell and its
-   $2{\times}2$ block of $8{\times}8$ fine cells is available to the network through the learned
-   per-level spatial position embeddings, but it is not imposed as a hard constraint; at the
-   adopted resolutions the joint attention learns the routing directly. Thus the hard
-   $2{\times}2$ mask of the superseded 32×32 design is explicitly not part of the validated
-   4×4/8×8 implementation. RoPE-ND remains the scaled-coordinate instrument developed for the
-   [A1] system in Chapter 2.
+### 3.1.3 Information Asymmetry and Detached Gradient Boundaries
 
-### 3.1.3 One-Way Control with Detached Gradient Paths
+Within a prediction step the levels are generated jointly, not sequentially. The asymmetry lies
+in **what observed history each level receives**: only the coarse context spans the full memory
+horizon. This licenses the statement that long-span retrieved evidence is carried by the coarse
+stream. It does not license a macro-first execution claim or guarantee that a fine prediction
+cannot contradict a coarse one.
 
-The old chapter postulated a strict *sequential* ordering of level generation (macro level first,
-then meso, then micro, each receiving the previous level's output as a gradient-detached
-constant) — and simultaneously, in its own algorithmic listing, executed the levels in the
-opposite order. The resolution adopted in this dissertation is to state what the validated
-implementation actually does and to re-scope the unidirectionality principle to the boundaries
-where it is both real and load-bearing:
-
-**Within a prediction step, the levels are generated jointly, not sequentially.** As established
-in §3.1.2, one attention pass denoises both levels of the 4-frame target window simultaneously.
-There is no macro-first or micro-first ordering *inside* the step, and the dissertation makes no
-such claim. What survives of the top-down intuition is the **information-design asymmetry**: the
-coarse level is the only level whose history extends over the full memory horizon, so at
-generation time the long-range structure of the prediction can only originate from the coarse
-context — the fine level physically lacks the inputs to contradict it at long range. The control
-is unidirectional in the information-theoretic sense (long-horizon signals flow coarse → fine
-because only the coarse channel transports them), not in the scheduling sense.
-
-**Gradient detachment survives at two system boundaries**, where it is exact and deliberate:
+Gradients are detached at two deliberate system boundaries:
 
 1. **Between the representation subsystem and the prediction core.** The autoencoder is frozen
    (§3.1.1): no gradient of any prediction objective ever reaches $\mathcal{E}$,
    $\mathcal{D}_{\mathrm{c}}$, or $\mathcal{D}_{\mathrm{f}}$. The state coordinate system is a
-   fixed constant of the control problem. This is the direct descendant of the old design's
-   Detached-KV principle — the parent representation is a constant with respect to the child's
-   optimization — applied at the representation/dynamics boundary where it demonstrably matters.
+   fixed constant of the control problem. This isolates predictive-mechanism comparisons from
+   representation drift.
 
 2. **Between past and future along the rollout.** At every autoregressive step (§3.3.1), the
    context buffers contain previously generated latents that enter the network as constants:
    during training no gradient propagates from the current window's loss into earlier windows
    (training is single-window by design, §3.2.3), and during generation the sampled window is
-   appended to the buffers via an implicit detachment (sampling runs under no-grad). Destructive
-   interference between the optimization of successive windows — the failure mode the old
-   chapter's unidirectional control was designed to prevent — is thereby excluded structurally.
+   appended to the buffers without a gradient graph (sampling runs under no-grad). Consequently,
+   the reported training objective estimates single-window gradients and does not optimize
+   cross-window credit assignment.
 
-This formulation combines stop-gradient discipline, constant parent context and prevention of
-bidirectional gradient interference. The implemented and validated system generates both levels
-jointly in a single attention pass, with the coarse level distinguished by *what it remembers*,
-not by a separate execution phase.
+The implemented system therefore combines a frozen representation interface, single-window
+training, and joint cross-level generation. The coarse level is distinguished by *what it
+remembers*, not by a separate execution phase.
 
 ## 3.2 Generative Core: Windowed Latent Diffusion
 
-The per-frame generation mechanism of the developed model is an iterative-refinement (denoising
-diffusion) core. This choice is not aesthetic: Chapter 4 (§4.2) selects it by a matched-capacity,
-matched-capacity and matched-NFE comparison of three mechanisms sharing this chapter's backbone — direct
-regression, denoising diffusion, and energy-based gradient descent — in which diffusion commits
-to sharp, correctly located content where regression hedges toward the conditional mean and the
-energy-based alternative fails in a two-sided, characterized manner. This chapter presents the
-selected core; the selection evidence belongs to Chapter 4.
+The primary generative mechanism is an iterative-refinement (denoising diffusion) core. Chapter 4
+(§4.2) compares direct regression and denoising diffusion under a shared latent/context interface
+and closely matched backbone capacity, with per-candidate and total candidate-generation work
+reported rather than equated. A separate official-code, 14.66 M-parameter energy-based capability
+study tests landscape ordering and descent reachability; it is not a third matched-capacity cell.
+The **selection objective** is generative coverage and sharp commitment on the single-window task:
+diffusion provides the strongest best-of-8 coverage among the two matched-capacity heads, whereas
+the tested energy-based descent does not reach structured outputs. Regression remains an important task-dependent control and performs
+better in deterministic best-of-1 self-fed rollout. Thus diffusion is selected for the stochastic
+generative frontier, not declared universally superior; the later regression result defines a
+fidelity/stability boundary rather than being hidden by the selection.
 
 ### 3.2.1 Token Sequence and Component-Wise Conditioning
 
@@ -2778,9 +2920,8 @@ The 1,472-token sequence contains 768 coarse-context tokens, 384 recent fine-con
 four 80-token coarse-plus-fine targets. The bracket identifies the 1,152-token context budget
 matched by the central contiguous-fine control; the lower strips show the additive token
 embeddings and per-target action/noise conditioning.
-*Source:* `docs/figures/fig22_token_sequence_layout.png`; deterministic source
-`scripts/make_dissertation_missing_figures.py`, reflecting
-`hvp_rev/rhvd.py::WindowDiT._ctx_tokens/forward`.
+*Source:* author’s schematic of the frozen token interface; deterministic file and code provenance
+are listed in the reproducibility appendix.
 
 ### 3.2.2 Transformer Backbone with Adaptive Normalization
 
@@ -2815,21 +2956,26 @@ RMS-normalized per head. After the final block, only the 320 target tokens are r
 level has its own final adaptive layer-norm (again zero-initialized) and its own zero-initialized
 linear head projecting $d \to 16$ channels, after which the tokens are reshaped back into the
 latent geometry — $(W, 16, 4, 4)$ for the coarse and $(W, 16, 8, 8)$ for the fine level. The
-backbone, tokenizer, and conditioning are shared verbatim with the alternative mechanisms of the
-Chapter 4 mechanism study; only the output interpretation and the training objective differ —
-this is what "matched capacity" means operationally in this work.
+backbone and context interface are shared with the regression control, and trainable parameter
+counts are matched within the reported tolerance. Mechanism-specific pathways remain explicit:
+diffusion receives a corrupted target and noise-level conditioning, predicts velocity, and uses
+iterative DDIM inference; regression receives zero target placeholders, predicts clean latents
+with smooth-L1 loss, and uses one forward pass. The energy-based arm has its own scalar-energy
+objective and gradient-descent inference contract (§4.2). "Matched capacity" therefore refers to
+the controlled shared backbone/scale, not to identical inputs, objectives, or inference.
 
 ### 3.2.3 v-Parameterization
 
 Why a *window* of $W = 4$ frames rather than one frame at a time? The reason is
 rollout-consistency of the training distribution. The autoregressive rollout of §3.3 appends
 *all* frames it generates to the context buffers; if training predicted only a single frame at
-offset $k = 4$ (the design of the preliminary single-step harness), the rollout context would
+offset $k = 4$, the rollout context would
 consist of stride-4 samples while the training context consisted of consecutive frames — a
-train/rollout distribution mismatch built into the protocol itself. Predicting a window of $W$
-*consecutive* frames per step and advancing the recursion by exactly $W$ keeps the buffers
-consecutive at all times: the layout of every context the model sees at rollout is identically
-distributed with the contexts it saw in training.
+train/rollout layout mismatch built into the protocol itself. Predicting a window of $W$
+*consecutive* frames per step and advancing the recursion by exactly $W$ keeps the buffer layout
+and temporal indexing consistent with training. It does not make the values identically
+distributed: training contexts are ground truth, whereas self-fed rollout contexts contain model
+outputs and remain subject to exposure bias [26, 25, 27].
 
 Let $z_0 = \bigl(z^{\mathrm{c}}_{t..t+3},\, z^{\mathrm{f}}_{t..t+3}\bigr)$ denote the clean
 (standardized) target-window latents. The forward diffusion process corrupts them with Gaussian
@@ -2846,17 +2992,16 @@ $$
 with the cosine noise schedule [2]
 
 $$
-\bar\alpha_\tau \;=\; \frac{f(\tau)}{f(0)},
+\bar\alpha_\tau \;=\;
+\operatorname{clip}\!\left(\frac{f(\tau)}{f(0)},\,10^{-4},\,0.9999\right),
 \qquad
 f(\tau) \;=\; \cos^{2}\!\Bigl(\frac{\tau/T + s}{1 + s} \cdot \frac{\pi}{2}\Bigr),
 \qquad
-s = 0.008,
-\qquad
-\bar\alpha_\tau \in [10^{-4},\, 0.9999].
+s = 0.008.
 \tag{3.9}
 $$
 
-The network is trained in the **v-parameterization** [110]: the regression target is the velocity
+The network is trained in the **v-parameterization** [119]: the regression target is the velocity
 
 $$
 v \;=\; \sqrt{\bar\alpha_\tau}\,\varepsilon \;-\; \sqrt{1 - \bar\alpha_\tau}\, z_0,
@@ -2874,16 +3019,18 @@ $$
 \;=\;
 \mathbb{E}_{\,z_0,\,\tau,\,\varepsilon}
 \Bigl[
-\bigl\lVert v^{\mathrm{c}}_\theta - v^{\mathrm{c}} \bigr\rVert^2_2
+\operatorname{MSE}\!\left(v^{\mathrm{c}}_\theta,v^{\mathrm{c}}\right)
 \;+\;
-\bigl\lVert v^{\mathrm{f}}_\theta - v^{\mathrm{f}} \bigr\rVert^2_2
+\operatorname{MSE}\!\left(v^{\mathrm{f}}_\theta,v^{\mathrm{f}}\right)
 \Bigr].
 \tag{3.11}
 $$
 
-Equal weighting is meaningful only because of the standardization (3.3), which puts both levels'
-latents at unit per-channel variance; without it the loss would be silently dominated by whichever
-level's raw scale happened to be larger.
+Here each $\operatorname{MSE}$ averages over all batch, channel, target-frame, and spatial entries
+within that level; the two level means are then summed with equal weight, exactly as in the
+implementation. Equal weighting is meaningful only because of the standardization (3.3), which
+puts both levels' latents at unit per-channel variance; without it the loss would be silently
+dominated by whichever level's raw scale happened to be larger.
 
 Optimization protocol (constants of the validated system): AdamW, learning rate
 $3 \cdot 10^{-4}$, weight decay $10^{-4}$; linear warmup over the first 2{,}000 steps to a
@@ -2896,34 +3043,39 @@ context-noise augmentation as a single budgeted fallback. It was not activated: 
 deep-horizon sharpness-retention failure is reported as a boundary result rather than repaired by
 an adaptive retraining branch.
 
-Training-noise/teacher-forcing scope note for the defense: the long-horizon capability claimed in
+**Teacher-forcing scope.** The long-horizon capability reported in
 Chapter 4 is achieved *without* backpropagation through the rollout — the model is trained on
 single windows with clean contexts, and its long memory is an inference-time property of the
-information design (§3.1.2), not of a long-horizon training objective. Where a rollout-through-
-time objective would be required, the constant-memory machinery of Chapter 2 is the enabling
-instrument; the two contributions compose but do not presuppose each other.
+information design (§3.1.2), not of a long-horizon training objective. If a future
+rollout-through-time objective were adopted, the reversible replay method of Chapter 2 would be
+one candidate storage policy alongside checkpointing. That combination was not implemented or
+required for the evidence reported here.
 
 ### 3.2.4 DDIM
 
-Generation inverts the diffusion with a deterministic DDIM sampler [46] over $N_{\mathrm{DDIM}} = 16$ steps on a rounded-linear sub-grid
+Generation inverts the diffusion with a deterministic DDIM sampler [52] over $N_{\mathrm{DDIM}} = 16$ steps on a rounded-linear sub-grid
 $\tau_1 = T > \tau_2 > \cdots > \tau_{16} \ge 1$ of the training schedule. Starting from pure
 noise $y^{(1)} \sim \mathcal{N}(0, I)$ over the whole two-level window, each step evaluates the
 network once and converts its v-output into the implied clean-data and noise estimates:
 
 $$
-\hat{z}_0 \;=\; \sqrt{\bar\alpha_{\tau_i}}\, y^{(i)} \;-\; \sqrt{1 - \bar\alpha_{\tau_i}}\,
+\hat{z}^{(i)}_0 \;=\; \sqrt{\bar\alpha_{\tau_i}}\, y^{(i)} \;-\; \sqrt{1 - \bar\alpha_{\tau_i}}\,
 v_\theta\bigl(y^{(i)}, \cdot\bigr),
 \qquad
-\hat{\varepsilon} \;=\; \sqrt{1 - \bar\alpha_{\tau_i}}\, y^{(i)} \;+\;
+\hat{\varepsilon}^{(i)} \;=\; \sqrt{1 - \bar\alpha_{\tau_i}}\, y^{(i)} \;+\;
 \sqrt{\bar\alpha_{\tau_i}}\, v_\theta\bigl(y^{(i)}, \cdot\bigr),
 \tag{3.12}
 $$
 
 $$
-y^{(i+1)} \;=\; \sqrt{\bar\alpha_{\tau_{i+1}}}\; \hat{z}_0 \;+\;
-\sqrt{1 - \bar\alpha_{\tau_{i+1}}}\; \hat{\varepsilon},
-\qquad
-y^{(N_{\mathrm{DDIM}}+1)} \;:=\; \hat{z}_0 \ \ (\text{final step}),
+y^{(i+1)} \;=\;
+\begin{cases}
+\sqrt{\bar\alpha_{\tau_{i+1}}}\,\hat{z}^{(i)}_0
++\sqrt{1-\bar\alpha_{\tau_{i+1}}}\,\hat{\varepsilon}^{(i)},
+& i=1,\ldots,N_{\mathrm{DDIM}}-1,\\[2mm]
+\hat{z}^{(N_{\mathrm{DDIM}})}_0,
+& i=N_{\mathrm{DDIM}},
+\end{cases}
 \tag{3.13}
 $$
 
@@ -2938,11 +3090,12 @@ For the mechanism claims of Chapter 4 (hypothesis H2: the generative mechanism e
 rollout), the system admits a drop-in **regression** variant on the identical backbone: the noisy
 target inputs are replaced by zeros, the noise level is fixed at $\tau \equiv 0$, the output is
 interpreted directly as $\hat z_0$, and the objective is the smooth-L1 error on both levels. Its
-"sampling" is a single forward pass. Architecture, tokenization, conditioning, context design,
-parameter count, optimizer, and evaluation protocol are all shared with the diffusion core — the
-two systems differ in the training objective and nothing else. The chapter records this variant
-as part of the model family because the honest form of the dissertation's mechanism claim is
-comparative, and the comparison is meaningful only under this strict parity.
+"sampling" is a single forward pass. Backbone scale, tokenization, context design, optimizer
+family, and evaluation protocol are controlled against the diffusion core. The mechanisms
+necessarily differ in target input, noise-level conditioning, objective, output interpretation,
+and inference count: diffusion denoises a corrupted target iteratively, while regression predicts
+once from zero placeholders. The chapter records this variant because the mechanism claim is
+comparative and these controlled shared factors delimit what the comparison can support.
 
 ## 3.3 Autoregressive Rollout with Ring-Buffer Memory
 
@@ -2952,9 +3105,8 @@ control track; no exogenous modality (in particular, no text) steers the generat
 track is not a side channel of convenience: in the systems framing of Chapter 1 the actions *are*
 part of the observed state of the control system, and Chapter 4 (§4.2) documents that withholding
 them forces every mechanism to hedge over the control-marginal future and manufactures a spurious
-blur verdict. The salvaged autonomy principle of the old chapter therefore survives in a
-sharpened form: autonomous with respect to semantic side information, conditioned on the recorded
-control signal.
+blur verdict. "Autonomous" therefore means autonomous with respect to semantic side information,
+while remaining conditioned on the recorded control signal required by the modeled process.
 
 ### 3.3.1 Rollout Recurrence
 
@@ -2973,8 +3125,7 @@ holding the last $H_{\mathrm{c}} = 48$ coarse and the last $w_{\mathrm{f}} = 6$ 
 where $\hat z$ denotes ground-truth latents during warm-up and self-generated latents thereafter.
 The recursion is:
 
-**Algorithm 3.1 — Autoregressive rollout with ring-buffer memory** *(implemented as
-`hvp_rev/rhvd.py::rollout_eval`)*
+**Algorithm 3.1 — Autoregressive rollout with ring-buffer memory**
 
 > **Input:** ground-truth frames $x_{0..H_{\mathrm{w}}-1}$ for warm-up ($H_{\mathrm{w}} = 48$),
 > recorded actions $a_{1..T}$, frozen AE $(\mathcal{E}, \mathcal{D})$, trained EMA weights
@@ -2998,9 +3149,10 @@ The recursion is:
 > $(200 - 48)/4 = 38$ rollout steps, i.e. 152 self-generated frames per clip — more than three
 > full loop periods of the testbed world.
 
-Because the training windows are consecutive and the recursion advances by exactly $W$, the
-buffer contents at every rollout step are distributionally identical to training contexts
-(§3.2.3) — the property that makes clean-context training sufficient. The warm-up length is
+Because the training windows are consecutive and the recursion advances by exactly $W$, rollout
+buffers have the same **shape and temporal indexing** as training contexts. Their values are not
+distributionally identical: after warm-up they contain self-generated latents, so exposure bias
+and error accumulation remain explicit limitations (§3.2.3). The warm-up length is
 **universal across all compared systems** (48 frames even for arms whose context is shorter, e.g.
 the flat control warms its 18-frame buffer from ground-truth frames 30–47): every arm starts
 generating at the same frame of the same clip, so the per-(clip, horizon) records of §3.4 pair
@@ -3012,16 +3164,10 @@ exactly across arms.
 After the common 48-frame ground-truth warm-up, each step combines the fixed 48-slot coarse and
 6-slot fine buffers with four actions, samples four latent pairs with DDIM-16, and appends/evicts
 four positions. The stored state is 18,432 latent numbers and does not grow with rollout length.
-*Source:* `docs/figures/fig23_rollout_ring_buffer.png`; deterministic source
-`scripts/make_dissertation_missing_figures.py`, reflecting `hvp_rev/rhvd.py::rollout_eval`.
+*Source:* author’s schematic of Algorithm 3.1; deterministic file and code provenance are listed
+in the reproducibility appendix.
 
 ### 3.3.2 Temporal Routing and Block-Causal Semantics
-
-The old chapter's prediction skeleton promised two routing mechanisms: a block-causal attention
-mask (full attention within a frame, causal across frames) over a jointly optimized past+future
-token tensor, and 3D-RoPE relative spatio-temporal positional coding. The developed system
-realizes the *functions* of both, by different and simpler means, and the dissertation states the
-mapping explicitly rather than letting the old vocabulary stand:
 
 - **Block-causality holds at window granularity and is enforced by construction, not by a
   mask.** Within one prediction step, attention over the sequence (3.4) is full — and
@@ -3037,8 +3183,9 @@ mapping explicitly rather than letting the old vocabulary stand:
 - **Temporal position is encoded by learned absolute frame-index embeddings** (52-entry table,
   §3.2.1) rather than rotary relative coding. Because every prediction step re-indexes its
   context to the fixed range $0 \ldots 47$ and its targets to $48 \ldots 51$, the absolute
-  indices *are* relative to the window, so the scheme is translation-invariant across the rollout
-  by construction.
+  indices function as window-relative coordinates and repeat the same indexing convention at each
+  rollout step. This removes growth of the position table with absolute time; it is not a claim
+  of strict temporal-translation equivariance of the learned predictor.
   RoPE-ND and these learned indices are therefore presented as level-appropriate instruments:
   RoPE-ND for the variable-patch, cross-resolution [A1] system in Chapter 2, and fixed learned
   indices for the re-indexed window used by the validated hierarchical predictor. No unmeasured
@@ -3064,13 +3211,10 @@ $$
 plus the (constant) transient activations of one network evaluation. Generation compute is
 linear in the horizon with a fixed per-frame constant — $N_{\mathrm{DDIM}} / W = 4$ network
 evaluations per generated frame — and, crucially, the per-step attention cost never grows with
-how long the system has been rolling, because the sequence length (3.4) is fixed. This replaces
-the old chapter's inconsistent claims (its §3.4 derived a per-image memory reduction
-$O(K \cdot T \cdot L \cdot D) \to O(T \cdot L \cdot D)$ while its §3.5 asserted
-$O(K \cdot L \cdot D) \to O(D)$ for the same algorithm) with a single derivation that is true of
-the implemented system: there is no inner optimization chain $K$ to reverse at all — sampling
-runs gradient-free — and the memory object that matters for long-horizon operation, the rollout
-state (3.15), is constant by design.
+how long the system has been rolling, because the sequence length (3.4) is fixed. This is an
+inference-state result: sampling runs without a gradient graph, and the retained rollout state
+(3.15) is constant by design. It should not be conflated with the activation-tape accounting of
+Chapter 2, which applies when differentiating through a temporal process.
 
 **Training memory is single-window and horizon-independent.** The training graph spans one
 network evaluation over 1,472 tokens and $N_{\mathrm{blk}} = 8$ blocks; no gradient crosses window
@@ -3108,30 +3252,26 @@ features and not context length treated as a free variable: at equal budget,
 the flat alternative's horizon (18 frames) falls short of the testbed's loop period (≈48 frames,
 §3.4.1), while the hierarchical allocation covers it.
 
-**Disposition of the reversible inner loop (salvage of old §3.3).** The earlier design stage of
-this work proposed integrating the reversible-transformation apparatus of Chapter 2 *inside* the
-per-frame generation loop ("Reversible MCMC": reconstructing the activations of a $K$-step
-gradient-descent sampling chain instead of storing them). The final system contains no such
-component, for two reasons established in this dissertation. First, the three-axis reversibility
-taxonomy of Chapter 2 (§2.4) proves that the inner-optimization-loop axis cannot outperform
-gradient checkpointing there: the chain's states must be retained for exact reversal, which *is*
-checkpointing under another name — the axis is closed by analysis, not abandoned by neglect.
-Second, the mechanism study of Chapter 4 removed the premise: the energy-descent core whose
-$K$-step chains motivated the machinery was itself the characterized-negative mechanism, and the
-selected diffusion core requires no gradient flow through its sampling recursion (3.12)–(3.13) at
-all. Reversibility remains a contribution of this dissertation on the axis where it pays — the
-temporal-rollout axis of Chapter 2 — and this paragraph is the honest record of where it does
-not.
+**Relation to the Chapter 2 activation-memory method.** The reported sampler is executed under
+no-grad, so the predictor does not differentiate through its DDIM recursion and contains no
+reversible inner-loop component. Chapter 2 shows why this separation is appropriate in the tested
+regime: for the measured inner-optimization loop, trajectory state was only 0.28% of peak memory,
+reverse replay saved 0.26% relative to checkpointing, and recomputation roughly doubled wall
+time. This is a conditional operating-region result, not a theorem that reversibility can never
+help an inner loop. Reversible temporal replay remains separately relevant if a future training
+objective differentiates through many rollout windows; it is not used to obtain the Chapter 4
+context-package effects.
 
 ### 3.3.4 System Configurations and Matched-Budget Controls
 
 The information design of §3.1.2 turns context allocation into an experimental variable. The
-model family is parameterized by $(H_{\mathrm{c}}, w_{\mathrm{f}}, \text{core})$, and the
-dissertation's claims are comparative statements over the following pre-registered
-configurations (all sharing the backbone of §3.2.2, the training protocol of §3.2.3, and the
-evaluation protocol of §3.4):
+model family is parameterized by $(H_{\mathrm{c}}, w_{\mathrm{f}}, \text{core})$. Table 3.1 lists
+the **core initial configurations** needed to define the model and its principal controls. Later
+frontier, package-shape, sampler, codec, privileged-access, and external-boundary arms are
+registered canonically in Chapter 4 and its experimental appendix; they should not be inferred to
+be absent from the programme because they are not repeated here.
 
-**Table 3.1 — System configurations (arms) and context-token accounting.**
+**Table 3.1 — Core initial configurations and context-token accounting.**
 
 | Configuration | Coarse ctx $H_{\mathrm{c}}$ | Fine ctx $w_{\mathrm{f}}$ | Context tokens | Core | Systemic role |
 |---|---|---|---|---|---|
@@ -3140,18 +3280,16 @@ evaluation protocol of §3.4):
 | flat-budget | 0 | 18 | $18 \cdot 64 = 1152$ | diffusion | **token-budget-matched flat control** (equal cost, 18-frame horizon) |
 | flat-long | 0 | 48 | $48 \cdot 64 = 3072$ | diffusion | window-matched flat exhibit (equal horizon, 2.67× budget) |
 | reg-long | 48 | 6 | 1152 | regression | mechanism control (H2), §3.2.5 |
-| persistence / AE round-trip | — | — | — | — | floor / ceiling references (§3.4.4) |
+| persistence / AE round-trip | — | — | — | — | error and reconstruction reference points (§3.4.4) |
 
 The flat configurations set $H_{\mathrm{c}} = 0$: coarse *context* tokens are absent, while the
-coarse *target* tokens are retained, so the latent interface, the output heads, and the loss
-(3.11) remain identical across all arms — the flat arm differs from the hierarchical one in
-exactly one respect, the absence of coarse memory. The decisive comparison is hier-long versus
-flat-budget: both pay 1152 context tokens per step, but the hierarchical allocation stretches
-those tokens over a 48-frame horizon while the flat allocation reaches only 18 frames. The
-pre-registered prediction — validated in Chapter 4 — is that the two systems separate exactly
-where the testbed's re-entry events lie beyond the 18-frame flat horizon, and are otherwise
-comparable; if they had *not* separated, the honest conclusion recorded in the design memo was
-"context length, not hierarchy," and the dissertation would have reported it as such.
+coarse *target* tokens are retained, so the target interface, output heads, and loss (3.11) remain
+shared. The intervention is the context package: hier-long uses 48 coarse plus 6 fine frames,
+whereas flat-budget spends the same 1,152 tokens on 18 contiguous fine frames. The registered
+prediction is that any advantage of hier-long should concentrate in pair-derived populations
+whose relevant evidence lies beyond the 18-frame flat window. Chapter 4 tests that prediction;
+the interpretation remains support for a reach mechanism, not proof that every package difference
+has been isolated causally.
 
 ### 3.3.5 Generalization to a Family of Hierarchical Configurations
 
@@ -3166,8 +3304,8 @@ stream may itself be strided (temporal abstraction without a resolution change);
 per level ($2{\times}2 / 4{\times}4 / 8{\times}8$). The top latent is a third tap of the frozen
 autoencoder trained on the **frozen trunk** (§3.1.1), so the two lower levels remain bit-identical
 and every measurement of Chapter 4 stays valid across the extension. Two systemic properties
-distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth is
-backbone-capacity neutral** — all streams share one attention backbone; a third level adds only
+distinguish this family from recurrent hierarchies of the CW-VAE class: (i) **depth largely
+preserves backbone capacity** — all streams share one attention backbone; a third level adds
 per-level input/output parameters (+0.30 M on the 22.19 M predictor, +1.4%) and the frozen
 autoencoder tap (1.25 M), measured and disclosed; and (ii)
 every configuration's context cost is an exact token count, so families are comparable at
@@ -3182,9 +3320,9 @@ A model whose defining property is a *memory horizon* cannot be validated on ben
 not exercise one. On Moving-MNIST-class data nothing ever leaves the frame and returns: every
 future frame is either fully determined by a short context or permanently unknowable, so there
 exists no *hard-but-computable-with-memory* regime in which a long-memory mechanism could
-demonstrate its value — this project's own null results on such data (Chapter 1, §1.3; Chapter 4)
-trace to exactly this degeneracy. Existing memory-oriented benchmarks (Memory Maze and
-TECO-Minecraft [62, 36], and the recent long-term spatial-memory evaluation protocols for world
+demonstrate its value. This project's null results on such data (Chapter 1, §1.3; Chapter 4) are
+consistent with that lack of a memory-relevant re-entry population. Existing memory-oriented benchmarks (Memory Maze and
+TECO-Minecraft [68, 36], and the recent long-term spatial-memory evaluation protocols for world
 models [22, 23, 24]) pose genuine
 long-horizon problems but derive their re-entry events from 3-D egomotion in rendered
 environments, where determining *which* pixels of a target frame were knowable from a given
@@ -3195,7 +3333,7 @@ benchmark trains and evaluates on one 16 GB consumer GPU.
 
 ### 3.4.1 Cyclic World with Inertial Panning
 
-Each clip is generated (module `scripts/gen_looping.py`) from a static **world**: a
+Each clip is generated deterministically from a static **world**: a
 $192 \times 64$ texture on a horizontal torus, composed of a smooth background (a sum of four
 sinusoids with integer wavenumbers, hence seamlessly wrapping; intensities in $[0.15, 0.5]$) and
 three MNIST digits max-composited at fixed world positions. A $64 \times 64$ **viewport** pans
@@ -3219,7 +3357,8 @@ short context window (determined) or never seen again (unknowable) — reproduci
 Moving-MNIST regime. Directed motion cycles the torus with loop period $\approx 192/4 = 48$
 frames: a digit that exits the viewport re-enters roughly 48 frames later at a world position
 fixed since frame 0. A model with memory spanning the loop period can predict the re-entry
-exactly; a short-context model cannot — and 48 frames is precisely the coarse horizon
+from directly retained evidence; a short-context model lacks that evidence and can only exploit
+the recent view and learned priors. Forty-eight frames is the coarse horizon
 $H_{\mathrm{c}}$ of the developed system (§3.3.4), while the token-matched flat control's
 18-frame horizon falls short of it. The testbed thereby *instantiates* the memory-horizon regime
 as a controlled experimental variable.
@@ -3237,8 +3376,8 @@ The 64-pixel viewport traverses a 192-pixel toroidal static world. Saved positio
 observability exact; the highlighted 14-to-48-frame band contains evidence available to the
 long-reach package but outside the compared short flat window. The separate pose-mosaic inset is
 marked as a privileged reference because it receives exact pose and raw stored pixels.
-*Source:* `docs/figures/fig15_loopmom_observability_schematic.png`; deterministic source
-`scripts/make_rft_core_schematics.py`.
+*Source:* author’s schematic from the analytic generator geometry; deterministic file and code
+provenance are listed in the reproducibility appendix.
 
 ### 3.4.2 Exact Re-Entry Difficulty Labels
 
@@ -3246,18 +3385,28 @@ Because the viewport trajectory (3.17) is a deterministic function of the record
 set of world columns covered by any context window is computable in closed form — hardness is an
 analytic label, not a heuristic. For a target frame $t$ and a reference window of the $m$
 preceding frames, let $\mathrm{cov}_m(t) \subset \{0, \ldots, 191\}$ be the union of world
-columns visible in frames $t-m, \ldots, t-1$, and let $F(t)$ be the set of world columns occupied
-by the target frame's sprite pixels (detected by the foreground threshold of §3.4.3). The
-**novel-foreground fraction** is
+columns visible in frames $t-m, \ldots, t-1$. If $r_t$ is the viewport's saved world-coordinate
+offset and $x_t(y,x)$ is the target crop, the evaluator defines the foreground **column** set
 
 $$
-\nu_m(t) \;=\; \frac{\bigl|\, F(t) \setminus \mathrm{cov}_m(t) \,\bigr|}{\bigl|\, F(t) \,\bigr|}
+F_{\mathrm{col}}(t)=
+\left\{(r_t+x)\bmod 192:\max_y x_t(y,x)>0.5\right\}.
+$$
+
+One viewport column therefore counts once irrespective of how many foreground pixels it contains.
+The **novel-foreground fraction** is
+
+$$
+\nu_m(t) \;=\;
+\frac{\bigl|\, F_{\mathrm{col}}(t) \setminus \mathrm{cov}_m(t) \,\bigr|}
+{\bigl|\, F_{\mathrm{col}}(t) \,\bigr|}
 \;\in\; [0, 1],
 \tag{3.18}
 $$
 
-the fraction of the target sprite that is geometrically unobserved in that context. It is an exact
-observability label for the generator, not information-theoretic necessity: a shared digit prior
+the fraction of the target's foreground columns that is geometrically unobserved in that context.
+It is column-weighted rather than pixel-weighted and is an exact observability label for the
+generator, not information-theoretic necessity: a shared digit prior
 can still support a statistical guess. The protocol fixes the reference window at $m = 6$ frames for *all* systems regardless
 of their actual context length ("novel-fg-at-6"), so every arm is stratified on the same hardness
 axis, and defines three strata: **easy** ($\nu_6 = 0$ — the sprite was fully visible in the short
@@ -3269,20 +3418,44 @@ stratification is what turns the trajectory-consistency criterion of §1.4.5 int
 the dissertation's headline quantities are error deltas *within the hard re-entry stratum* as a
 function of rollout horizon.
 
+The pair-specific reach label uses the same foreground columns. Let
+$N_6(t)=F_{\mathrm{col}}(t)\setminus\mathrm{cov}_6(t)$ and let
+$v_t(c)=\max\{u<t:c\text{ was inside the viewport at }u\}$, with $v_t(c)$ undefined if
+column $c$ was never visible, and let
+$A_6(t)=\{c\in N_6(t):v_t(c)\text{ is defined}\}$. For $|N_6(t)|>0$, the evaluator records
+
+$$
+\operatorname{seen}(t)=
+\frac{|A_6(t)|}{|N_6(t)|}.
+$$
+
+For $|A_6(t)|>0$, it records
+
+$$
+\Delta t(t)=\operatorname*{median}_{c\in A_6(t)}\bigl[t-v_t(c)\bigr].
+$$
+
+The explicit empty-set conventions are $\operatorname{seen}(t)=0$ when
+$N_6(t)=\varnothing$ and $\Delta t(t)=0$ when $A_6(t)=\varnothing$. A record is
+**answerable** exactly when $|N_6(t)|>0$ and $\operatorname{seen}(t)\ge0.5$. Records with no novel
+columns therefore cannot enter a positive reach-differential band; records with no previously seen
+novel column are unanswerable and reported separately.
+
 ### 3.4.3 Decoded Frame, Foreground and Object Metrics
 
-Aggregate pixel metrics are excluded by protocol. On the archived CW-VAE Moving-MNIST population
+Aggregate full-frame pixel metrics are retained as secondary diagnostics but are not accepted as
+sole or headline evidence. On the archived CW-VAE Moving-MNIST population
 (100 clips, 36 context frames, 964 open-loop targets), a deterministic all-black prediction
 scores 0.7681 SSIM and 13.941 dB, while the trained CW-VAE's best-of-5-by-SSIM curve scores
-0.5708 and 12.918 dB. The source dataset, archived curve and evaluator are hash-pinned in
-`artifacts/cwvae_black_baseline/results.json`; record-level CW-VAE values were not retained, so
+0.5708 and 12.918 dB. The source dataset, archived curve, and evaluator are hash-pinned in the
+reproducibility manifest; record-level CW-VAE values were not retained, so
 this is a same-population metric diagnostic without paired inference, not a budget-matched model
 comparison. A benchmark on which the empty image wins its full-frame metrics is not evidence
 about dynamics. All metrics below are therefore computed on decoded pixels through the frozen
 fine decoder and reported with foreground, background, union, full-frame and component-sensitive
 views.
 
-**Table 3.4-A — Same-population Moving-MNIST metric sanity diagnostic.**
+**Table 3.2 — Same-population Moving-MNIST metric sanity diagnostic.**
 
 | Open-loop horizon | CW-VAE SSIM | All-black SSIM | CW-VAE PSNR, dB | All-black PSNR, dB |
 |---|---:|---:|---:|---:|
@@ -3314,6 +3487,36 @@ views.
   fade to the mean; a blank-output collapse) that one glance at the panels exposed; the protocol
   therefore mandates the panels alongside the numbers.
 
+For reproducibility, let $p,g\in[0,1]^{H\times W}$ be a decoded prediction and target,
+$P_\tau=\{p>\tau\}$, $G_\tau=\{g>\tau\}$,
+$U_\tau=P_\tau\cup G_\tau$, and $e=(p-g)^2$. The frame endpoints are
+
+$$
+\operatorname{MSE}_{\mathrm{full}}=\frac{\sum e}{HW},\quad
+\operatorname{MSE}_{\mathrm{fg}}=\frac{\sum e\,\mathbf 1_{G_\tau}}{|G_\tau|},\quad
+\operatorname{MSE}_{\mathrm{bg}}=\frac{\sum e\,\mathbf 1_{\neg G_\tau}}{|\neg G_\tau|},\quad
+\operatorname{MSE}_{\mathrm{union}}=\frac{\sum e\,\mathbf 1_{U_\tau}}{|U_\tau|}.
+\tag{3.19}
+$$
+
+Foreground MSE and foreground sharpness are missing (`NaN`) when $|G_\tau|=0$ and are excluded
+from non-empty-foreground populations; background and union MSE take value 0 when their
+denominator is empty. Precision is $|P_\tau\cap G_\tau|/|P_\tau|$, recall is
+$|P_\tau\cap G_\tau|/|G_\tau|$, and both take value 1 when their own denominator is empty;
+F1 is $2PR/(P+R)$ and takes value 0 when $P+R=0$.
+
+**Table 3.3 — Reproducible frame, component, and persistent-object endpoint definitions.**
+
+| Endpoint family | Mask / instances | Matching and acceptance | Primary denominator and penalties |
+|---|---|---|---|
+| LoopMom frame | $\tau=0.5$; $P_\tau,G_\tau,U_\tau$ as above | none | equation (3.19); explicit empty-mask conventions above |
+| LoopMom components | connected components of $P_{0.5}$ and $G_{0.5}$; discard components smaller than 4 pixels | Hungarian assignment minimizes $1-\operatorname{IoU}$; zero-IoU assignments are discarded | misses $=n_{\mathrm{GT}}-M$; extras $=n_{\mathrm{pred}}-M$; mean IoU and centroid distance use accepted matches only |
+| E6 detections | threshold 0.3; discard components smaller than 30 pixels; intensity-weighted detection centroids and component boxes; every detection receives a classifier label (confidence threshold 0) | generator-provided visible object boxes/labels are ground truth and $q_g$ is the GT-box center; Hungarian cost $c_{gd}=0.5\min(\lVert q_g-q_d\rVert_2/D,1)+0.5(1-\operatorname{IoU}_{gd})$; accept $c_{gd}\le0.65$, where $D=\sqrt{H^2+W^2}$ | coverage $=M/n_{\mathrm{GT}}$; trajectory error $=[\sum_{(g,d)\in\mathcal M}\lVert q_g-q_d\rVert_2+(n_{\mathrm{GT}}-M)D]/n_{\mathrm{GT}}$; identity accuracy $=$ correctly labelled accepted matches / visible labelled GT objects, so misses are failures; extras remain explicit but are not inserted into the trajectory or identity denominator |
+
+When an E6 frame has no visible GT object, coverage is 1 and trajectory error is 0; identity is
+undefined if there is no visible labelled GT object. Matched-only trajectory and identity values
+are retained as diagnostics and never replace the intention-to-score primary endpoints.
+
 ### 3.4.4 Statistical Protocol, References and Boundaries
 
 All system-versus-system comparisons are **paired**: evaluation draws use fixed seeds so every
@@ -3323,7 +3526,7 @@ universal 48-frame warm-up (§3.3.1). Headline deltas are reported with 95% conf
 from a paired **clip-cluster** bootstrap (10{,}000 resamples): clips are the resampling units and
 all horizons belonging to a selected clip remain inside the replicate. This preserves
 within-rollout dependence rather than treating frames as independent observations
-[111, 112, 113, 114]. The untouched frontier and protected robustness families use a
+[120, 121, 122, 123]. The untouched frontier and protected robustness families use a
 studentized max-statistic clip-cluster procedure for simultaneous coverage across their
 registered contrasts. Intervals are computed within each stated hardness×horizon population;
 single-step evaluation pools are sized at ≈768 samples
@@ -3335,16 +3538,17 @@ pixel-space fg-MSE against ground truth) and is always reported alongside the me
 headline tables use best-of-1.
 
 Every table is bracketed by references measured under the identical pipeline: the **persistence
-floor** (copy the last context frame's fine latent, decode) scores fg-MSE 0.2367 / fg-sharp
+reference** (copy the last context frame's fine latent, decode) scores fg-MSE 0.2367 / fg-sharp
 0.0515 at the 4-frame offset — any model below that error has learned at least the
-action-conditioned warp; and the **sharpness ceiling set by the frozen decoder**: raw
+action-conditioned warp; and the **AE round-trip sharpness reference**: raw
 ground-truth frames measure fg-sharp 0.4785, but their autoencoder round-trip measures 0.2412,
 so all model sharpness is read against ≈0.24 (roughly half the raw sharpness is spent in the
-autoencoder before any prediction model acts), and a decoded output below ≈0.08 contains no
+autoencoder before any prediction model acts). This is an empirical reconstruction reference, not
+a mathematical upper bound. A decoded output below ≈0.08 contains no
 digit structure at all (the empirically calibrated collapse threshold used throughout the
 mechanism study).
 
-**Table 3.2 — Testbed and evaluation protocol summary.**
+**Table 3.4 — Testbed and evaluation protocol summary.**
 
 | Component | Value | Notes |
 |---|---|---|
@@ -3356,18 +3560,19 @@ mechanism study).
 | Latent interface | frozen 2-level conv-AE, 1.85 M | coarse 16 ch @ 4×4, fine 16 ch @ 8×8, per-level decodable; fine val recon MSE 0.0020 |
 | Standardization | per-channel z-score, per level | training-set statistics only; eq. (3.3) |
 | Error metric | fg-MSE, threshold 0.5 | decoded pixels; background ≈0.18–0.41, sprite ≈0.99 |
-| Sharpness metric | per-image masked Laplacian energy | GT 0.4785; AE round-trip ceiling 0.2412; collapse < ≈0.08 |
+| Sharpness metric | per-image masked Laplacian energy | GT 0.4785; AE round-trip reference 0.2412; collapse < ≈0.08 |
 | Hardness axis | $\nu_6$ — novel-fg vs 6-frame window, exact | easy $=0$; mid $(0, 0.1]$; hard $> 0.1$; eq. (3.18) |
 | Rollout | 48-frame GT warm-up; 38 steps × 4 frames | 152 generated frames/clip; 100 clips; horizons binned 1–8 / 9–24 / 25–60 / 61+ |
 | Statistics | paired clip-cluster 95% CI; CRN for same target shapes | 10,000 resamples; simultaneous max-statistic families where registered; ≈768-sample single-step pools; 15,200 rollout records/arm; training seeds reported separately |
-| Floors / ceilings | persistence fg-MSE 0.2367 / fg-sharp 0.0515 | k = 4 offset; identical pipeline for every arm |
+| Reference points | persistence fg-MSE 0.2367 / fg-sharp 0.0515 | k = 4 offset; identical pipeline for every arm |
 
 Scope and limitations of the instrument are stated plainly, as required of a measurement
 deliverable: motion is one-dimensional and piecewise-deterministic given the action, so the
 generative burden is concentrated in the re-entry events by design; world content is static in
 world coordinates, so the testbed does not probe memory of *dynamic* off-screen state; all
-conclusions are at 64×64 grayscale and single-digit complexity; and the frozen decoder's
-sharpness ceiling caps every downstream comparison. The analytic hardness labels that justify
+conclusions are at 64×64 grayscale and single-digit complexity; and the frozen autoencoder's
+round-trip sharpness reference contextualizes every downstream comparison without constituting an
+upper bound. The analytic hardness labels that justify
 the design would not transfer unchanged to 3-D egomotion benchmarks, which are positioned as the
 natural next rung (Chapter 4 and General Conclusions).
 
@@ -3386,14 +3591,11 @@ natural next rung (Chapter 4 and General Conclusions).
    asymptotically ≈16× attention-cost advantage).
 
 2. The inter-level transfer of context signals has been formalized as joint self-attention over
-   a single token sequence of both levels (eq. 3.4–3.5), generalizing the cross-level
-   cross-attention of the earlier design and enforcing hierarchical consistency continuously
-   along the refinement trajectory (both levels denoised jointly under a shared noise level).
-   The unidirectional-control principle with gradient detachment has been retained at the two
-   boundaries where it is exact and load-bearing — between the frozen representation subsystem
-   and the prediction core, and between past and future along the autoregressive recursion —
-   while the internally contradictory strict level-ordering claim of the earlier formulation has
-   been withdrawn in favor of the validated joint-generation formulation (§3.1.3).
+   a single token sequence of both levels (eqs. 3.4–3.5). Both levels are denoised jointly under a
+   shared noise level, providing a learned cross-level conditioning path and an inductive bias
+   toward hierarchical consistency; consistency is evaluated rather than guaranteed. Gradient
+   detachment is applied at the frozen representation boundary and between autoregressive windows,
+   while within-window generation is joint rather than macro-first.
 
 3. The per-frame generation core has been formalized as window diffusion in the standardized
    latent space: v-parameterized (3.10) denoising of 4-frame two-level windows under a cosine
@@ -3410,32 +3612,38 @@ natural next rung (Chapter 4 and General Conclusions).
    developed and its resource profile derived: the inter-step state is constant at
    $48 \cdot 256 + 6 \cdot 1024 = 18{,}432$ numbers (3.15) independently of the rollout horizon,
    per-step cost is fixed by the constant 1472-token sequence, and block-causality holds at
-   window granularity by construction rather than by masking (§3.3.2). The re-derivation (§3.3.3)
-   removes the complexity-claim inconsistency of the earlier chapter version, and the earlier
-   reversible-inner-loop proposal is disposed of honestly: by the three-axis taxonomy of
-   Chapter 2 that axis cannot outperform checkpointing, and the selected diffusion core requires
-   no gradient through its sampler. Reversibility remains a separately measured contribution on
-   the temporal-rollout axis and a potential enabler for future rollout-through-time training; it
-   is not used to produce the Chapter 4 context-package gains.
+   window granularity by construction rather than by masking (§3.3.2). The selected diffusion
+   core requires no gradient through its sampler. Reversibility remains a separately measured
+   contribution on the temporal-rollout differentiation axis and a candidate, alongside
+   checkpointing, for future rollout-through-time training; it is not used to produce the
+   Chapter 4 context-package gains.
 
 5. In accordance with **Task 6**, the measurement instrument of the intelligent information
    technology has been formalized: the momentum looping memory-horizon testbed (3.17) with
    exactly computable re-entry hardness labels (3.18), foreground-masked per-image metrics with
-   verified thresholds and decoder-set ceilings, mandatory decoded-sample review, and a paired
+   verified thresholds and AE round-trip references, mandatory decoded-sample review, and a paired
    clip-cluster bootstrap protocol with common random numbers and a universal warm-up that pairs every record
    across systems. The instrument operationalizes the trajectory-consistency criterion of
    Chapter 1 into an analytic, statistically disciplined measurement procedure, and its scope
    limits are stated as part of the deliverable.
 
-6. The complete pre-registered experimental design has been fixed within the model chapter
-   (Table 3.1): the developed system (hier-long), the memory ablation (hier-short), the
+6. The core initial experimental configurations are fixed within the model chapter (Table 3.1):
+   the developed system (hier-long), the memory ablation (hier-short), the
    token-budget-matched flat control (flat-budget, 1152 tokens = 18-frame horizon), the
    window-matched flat exhibit (flat-long, 2.67× budget), and the regression control (reg-long) —
    with the decisive comparison, hier-long versus flat-budget at equal token cost, constructed so
    that the hierarchy's memory horizon (48 frames ≥ loop period) and the flat horizon (18 frames
    < loop period) straddle the testbed's re-entry structure. The experimental verification of the
-   pre-registered hypotheses on this design — including the honest fallback conclusions specified
-   in advance — constitutes §§4.2–4.4 of Chapter 4.
+   registered hypotheses on this design—including the fallback conclusions specified in
+   advance—constitutes §§4.2–4.4 of Chapter 4. The complete later arm and comparison registry is
+   presented with the results rather than being implied by this core table.
+
+The chapter therefore closes the methods-side link between the dissertation strands. It takes the
+shared allocation question from Chapter 2 and applies it to retained context/state, while the
+Chapter 1 trajectory criterion becomes the LoopMom observability and paired evaluation protocol.
+Chapter 4 supplies the empirical decision: which mechanism and context package pays in each
+tested operating region. Those results do not depend on RoPE-ND or reversible rollout training,
+so evidentiary separation is preserved while the systems narrative remains continuous.
 
 The context-packaging, model, and evaluation results of this chapter form the methods section of
 [A4]. Its final numbered
@@ -3448,10 +3656,11 @@ not scientific dependencies of the chapter.
 
 # Chapter 4 — Experimental Evaluation, Operating Regions, and Practical Application
 
-This chapter evaluates the developed methods by scientific question rather than by campaign
-chronology. The complete chronological record, gate history, secondary arm tables, and
-future-study shells are preserved in
-`docs/dissertation/rewrite/appendices/CHAPTER4_CAMPAIGN_ARCHIVE.md`. The main chapter answers:
+This chapter evaluates the developed methods by scientific question rather than by experiment
+chronology. A curated configuration-and-evidence appendix reports the complete observed arm grid,
+seed coverage, comparison licences, robustness cells, and provenance receipts. Historical gate
+decisions and exploratory branches remain research records rather than part of the scientific
+argument. The main chapter answers:
 
 1. Which generation mechanism is appropriate for the controlled predictor, and under which
    inference regime?
@@ -3484,18 +3693,18 @@ It does not prove information-theoretic necessity because common digit priors ca
 content statistically predictable.
 
 **Moving-MNIST 10-to-10** is a short, no-re-entry competence boundary using the canonical
-OpenSTL protocol [1] [115]. It asks whether the general predictor
+OpenSTL protocol [1] [124]. It asks whether the general predictor
 functions on a standard dataset, not whether hierarchical memory pays.
 
 **Persistent-object long Moving-MNIST (E6)** uses a 48-frame warm-up followed by 300 self-fed
 frames. The generator saves persistent object and source-glyph identities, boxes, and
 trajectories. The evaluator uses one-to-one Hungarian assignment
-[116], explicit misses and extras, a fixed ground-truth denominator for
+[125], explicit misses and extras, a fixed ground-truth denominator for
 identity accuracy, and object coverage. E6 is an external synthetic boundary, not a replication of
 LoopMom’s geometry.
 
 **TaxiBJ** is a real spatio-temporal forecasting competence bridge under the OpenSTL 4-to-4
-protocol [117] [1]. It does not contain the off-screen re-entry mechanism required by
+protocol [126] [1]. It does not contain the off-screen re-entry mechanism required by
 the article’s central claim and is therefore not treated as memory confirmation.
 
 ### 4.1.2 Evidence hierarchy
@@ -3516,6 +3725,23 @@ data require purpose-specific access records. Each accepted result is linked to 
 run specification, dataset hash, checkpoint provenance, source revision, and completion
 validator.
 
+**Table 4.1 — Experimental study map.** “Seeds” means training seeds unless sampler or codec
+seeds are named explicitly. A comparison license (written “licence” in the tables) states what
+kind of inference the design permits.
+
+| Study | Scientific question | Intervention and held-fixed quantities | Co-change / comparison licence | Seeds | Population and evidence level | Inferential family and terminal reading |
+|---|---|---|---|---:|---|---|
+| Mechanism study | Which prediction mechanism is useful? | regression/diffusion head and objective changed while context layout, latent interface and transformer capacity were closely matched; EBM tested separately in the official-code adaptation | objective and inference differ; best-of-8 total network work is not equal; EBM is not a third matched-capacity cell / **MATCHED_CAPACITY** for regression–diffusion, **DEVELOPMENT_DIAGNOSTIC** for EBM | one regression, one diffusion, two EBM recipes | LoopMom development | best-of-8 coverage with declared per-candidate and total work; NFE sensitivity; separate EBM capability verdict; regime-dependent selection |
+| E2 | Where does hierarchy pay at fixed context budget? | package geometry changed; codec, backbone, evaluation clips and pair budgets fixed | reach and retained spatial fidelity change together / **MATCHED** except the labelled 480-vs-512 near-match and B1 | pair-specific, 0–2 | protected LoopMom untouched holdout | one simultaneous frontier family; hierarchy at 896/1,152, unresolved at 1,792, flat at 2,432/3,072 |
+| B1 within E2 | Does the complete stride-2 configuration beat a short flat configuration? | 512 context tokens matched | target stride, target tokens, auxiliary loss and optimization load co-change / **WHOLE_CONFIGURATION** | 0–1 | protected LoopMom untouched holdout | registered reach band; configuration confirmed, pure stride claim prohibited |
+| E4b | Does package preference survive head and training-seed changes? | temporal and spatial 48-frame packages crossed with diffusion/regression; codec and backbone fixed | 1,088-vs-1,152 context tokens / **DEVELOPMENT_FACTORIAL, NEAR_MATCHED** | 0–4 | adaptively used LoopMom development pool | per-seed clip intervals plus across-seed summaries; stable diffusion direction, heterogeneous regression/interaction |
+| E5a | Does a late self-fed inversion replicate? | frozen long-loop pair repeated at two new seeds | seed 0 generated the hypothesis / **REGISTERED_REPLICATION** | 0–2 | long-loop development/replication set | early hierarchy benefit repeats; late negative direction **NOT_REPLICATED** |
+| E7c | Are central directions sensitive to sampler randomness or NFE? | frozen seed-0 predictors; NFE and sampler seed varied | checkpoint-only / **ROBUSTNESS_ONLY** | training seed 0; sampler seeds 0–2 | purpose-locked LoopMom robustness set | one 20-effect family; directionally robust, upper inversion less precise |
+| E7a | Do directions survive a newly trained codec? | full codec, normalization and all seven predictors retrained | whole latent interface changes / **ROBUSTNESS_ONLY** | predictor seed 0; one alternate codec | purpose-locked LoopMom robustness set | one eight-effect family; codec-directionally robust |
+| E8a | How much error remains when addressing is explicit? | exact future pose and lossless warm-up pixels supplied | not token or information matched / **PRIVILEGED_REFERENCE** | n/a | purpose-locked LoopMom reference | one six-effect family; large explicit-access advantage |
+| E6 | Does the support–identity boundary appear on persistent objects? | matched 1,152-token flat and hierarchical packages | task and object semantics changed / **EXTERNAL_BOUNDARY** | 0–2 | protected long Moving-MNIST | one 15-effect family; support/continuity favor hierarchy, identity favors flat |
+| Competence bridges | Does the general stack function outside the central instrument? | dataset/protocol changed | no re-entry mechanism and limited replication / **DESCRIPTIVE_BOUNDARY** | one reported model per arm | Moving-MNIST 10-to-10 and TaxiBJ | competence only; no hierarchy-generalization claim |
+
 ### 4.1.3 Endpoints and statistical protocol
 
 Sparse-video evaluation requires more than aggregate full-frame error. Every accepted evaluation
@@ -3523,7 +3749,7 @@ retains full-frame MSE, non-empty ground-truth-foreground MSE, background MSE, u
 foreground precision/recall/F1, component counts, misses, extras, overlap, and coverage.
 Persistent-object studies additionally retain trajectory error and identity accuracy. SSIM, PSNR,
 LPIPS, FID, and FVD remain useful conventional metrics
-[118, 119, 88, 120], but no one aggregate score is allowed to substitute for
+[127, 128, 94, 129], but no one aggregate score is allowed to substitute for
 re-entry, hallucination, support, identity, and coverage endpoints.
 
 For a registered pair, record-level differences are paired by clip and horizon. The sampling unit
@@ -3532,10 +3758,11 @@ inside each selected clip. This preserves within-rollout dependence. Clip-cluste
 condition on the trained model, while training seeds are a separate uncertainty level.
 Registered families use a studentized maximum statistic across all contrasts in each bootstrap
 replicate, producing simultaneous intervals rather than interpreting many marginal intervals
-independently [111, 112, 113, 114].
+independently [120, 121, 122, 123].
 
-Effects are reported as comparator loss minus candidate loss unless a table states otherwise;
-positive values therefore favor the registered candidate. A null interval is unresolved, not
+Effect signs are harmonized so that positive values favor the registered candidate: comparator
+minus candidate for lower-is-better errors, and candidate minus comparator for higher-is-better
+accuracy or coverage. A null interval is unresolved, not
 evidence of equivalence. Equivalence would require a justified smallest effect of interest,
 adequate measurement reliability, and a confidence interval wholly inside that margin.
 
@@ -3554,17 +3781,57 @@ GPU-hour accounting includes training, evaluation, pilots, failures, and retries
 - parameter matched;
 - training-example matched;
 - optimizer-update matched; or
-- inference-NFE matched.
+- per-candidate NFE declared, with total candidate-generation work reported.
 
 The B16×30k and B8×60k regimes process approximately the same number of examples but differ in
 updates, gradient noise, grouping, and effective EMA horizon. They are optimizer-regime
 comparisons, not “twice the data.”
 
+**Table 4.2 — Complete observed LoopMom package/interface registry.** Fine tokens are
+\(8\times8=64\) per frame and coarse tokens are \(4\times4=16\) per frame. “Observed” means that a
+completed model/evaluation cell exists; it does not make every row mutually comparable. The
+comparison licence in Table 4.1 and Table 4.8 controls interpretation.
+
+| Arm | Context geometry | Reach | Context | Target | Total | Head(s) and executed training seeds | Training regime | Scientific role |
+|---|---|---:|---:|---:|---:|---|---|---|
+| `hier-short` | 6 coarse + 6 fine, dense | 6 | 480 | 320 | 800 | diffusion 0–1 | B16×30k | lower near-match; span below loop |
+| `flat-short` / `flat-short-reg` | 8 contiguous fine | 8 | 512 | 320 | 832 | diffusion 0–1; regression 0 | B16×30k | lower comparator; B1 baseline |
+| `hier-s2-min` / `hier-s2-min-reg` | 24 stride-2 coarse + 2 recent fine | 48 | 512 | 288 | 800 | diffusion 0–1; regression 0 | B16×30k | B1 whole configuration |
+| `spat18` / `spat18-reg` | 18 dense coarse + 6 recent fine | 18 | 672 | 320 | 992 | diffusion 0; regression 0 | B16×30k | fixed-span resolution diagnostic |
+| `flat-min` | 14 contiguous fine | 14 | 896 | 320 | 1,216 | diffusion 0–1 | B16×30k | 896-token reach comparator |
+| `hier-min` | 48 dense coarse + 2 recent fine | 48 | 896 | 320 | 1,216 | diffusion 0–1 | B16×30k | 896-token reach candidate |
+| `strided-flat` / `strided-flat-reg` | 11 stride-4 fine anchors + 6 recent fine | 48 | 1,088 | 320 | 1,408 | diffusion 0–4; regression 0–4 | B16×30k | temporal-package factorial arm |
+| `flat-budget` / `reg-flat` | 18 contiguous fine | 18 | 1,152 | 320 | 1,472 | diffusion 0–2; regression 0–1 | B16×30k; diffusion seed 0 also B8×60k | 1,152-token comparator |
+| `hier-long` / `reg-long` | 48 dense coarse + 6 recent fine | 48 | 1,152 | 320 | 1,472 | diffusion 0–4; regression 0–4 | B16×30k; diffusion seed 0 also B8×60k | 1,152-token candidate and spatial package arm |
+| `hier3` | 48 top + 24 coarse + 9 fine | 48 | 1,152 | 336 | 1,488 | diffusion 0 | B16×30k | depth-plus-objective/allocation diagnostic |
+| `flat-c1` | 28 contiguous fine | 28 | 1,792 | 320 | 2,112 | diffusion 0 | B16×30k | intermediate frontier comparator |
+| `hier-c1` | 48 dense coarse + 16 recent fine | 48 | 1,792 | 320 | 2,112 | diffusion 0 | B16×30k | intermediate frontier candidate |
+| `flat-c2` | 38 contiguous fine | 38 | 2,432 | 320 | 2,752 | diffusion 0 | B16×30k and B8×60k | upper frontier comparator |
+| `hier-c2` | 48 dense coarse + 26 recent fine | 48 | 2,432 | 320 | 2,752 | diffusion 0 | B16×30k and B8×60k | upper frontier candidate |
+| `flat-long` | 48 contiguous fine | 48 | 3,072 | 320 | 3,392 | diffusion 0–1 | B8×60k | equal-reach dense comparator |
+| `hier-rich` | 48 dense coarse + 36 recent fine | 48 | 3,072 | 320 | 3,392 | diffusion 0–1 | B8×60k | equal-budget hierarchy |
+
+The registry deliberately contains no “pending” cells. The proposed `flat-320`, `hier-s4-min`, and
+`hier3-reg` cells were **NOT_EXECUTED / OUT_OF_SCOPE** when the frozen programme closed; they are
+not missing results and support no claim. The curated appendix reports the observed outcome grid,
+per-seed factorial cells, robustness families, measured cost fields, and artifact bindings.
+
 ## 4.2 Selection of the Generation Mechanism
 
 The model chapter uses v-parameterized latent diffusion, but the experiment does not assume that
-diffusion wins every evaluation regime. Regression, diffusion, and energy-based descent are
-compared on the same conditioning structure and closely matched transformer capacity.
+diffusion wins every evaluation regime. Regression and diffusion share the same conditioning
+structure and closely matched transformer capacity. Energy-based descent is assessed in a
+separate 14.66 M-parameter official-code adaptation; it contributes a capability diagnosis, not a
+third cell in the matched-capacity regression–diffusion comparison.
+
+**Table 4.3 — Mechanism-selection contract.** The table separates the question answered by each
+head from its final role; it does not collapse incompatible inference regimes into one ranking.
+
+| Mechanism | Training object | Additional inference input | Inference rule | Single-step result | Best-of-1 rollout result | Final role |
+|---|---|---|---|---|---|---|
+| Regression | clean target latent | none beyond context/actions | one direct pass; MC dropout only for coverage diagnostics | weaker best-of-8 coverage | stronger deterministic self-fed rollout | deterministic rollout control |
+| Diffusion | velocity of a noisy target latent | noisy candidate and diffusion time | DDIM at a declared NFE | stronger stochastic/oracle coverage | weaker than regression in tested deterministic rollout | primary head for the fixed-budget frontier |
+| Energy-based model | scalar energy of context–candidate pairs | initialized target candidate | gradient descent in candidate space | ordering/descent failure modes at reachable scale | no rollout grid after the gate failed | characterized negative; no universal impossibility claim |
 
 ### 4.2.1 Shared single-step mechanism study
 
@@ -3572,23 +3839,44 @@ The regression and diffusion predictors use width 256, six transformer blocks, e
 shared context layout; their parameter counts are 7.27 M and 7.53 M. Context contains six frames
 at both latent levels, and the target lies four actions after the last context frame. Per-level
 latent standardization is essential: without it, unit-scale diffusion noise overwhelms raw latent
-scales and reverses the observed ranking. Inference work is measured in network function
-evaluations (NFE). Best-of-\(N\) is an oracle coverage diagnostic selected by decoded foreground
-MSE against the ground truth and is always separated from mean-over-\(N\) and best-of-1.
+scales and reverses the observed ranking. Best-of-\(N\) is an oracle coverage diagnostic selected
+by decoded foreground MSE against the ground truth and is always separated from mean-over-\(N\)
+and best-of-1.
 
-**Table 4.1 — Matched-capacity single-step mechanism comparison.**
+The inference accounting is deliberately explicit. One regression candidate requires one
+MC-dropout network evaluation; one diffusion candidate requires the declared number of DDIM
+network function evaluations (NFE). Therefore best-of-8 uses 8 regression evaluations but 32, 64,
+or 128 diffusion evaluations at 4, 8, or 16 NFE per candidate. The study is matched in backbone
+capacity and interface, **not** in total inference work. The NFE sweep is a diffusion
+inference-allocation sensitivity analysis against a fixed-cost regression coverage diagnostic.
 
-| Head | fg-MSE, all | Easy | Hard novel strip | Mean over 8 | fg-sharpness |
+**Table 4.4 — Matched-capacity single-step best-of-8 mechanism comparison.** For the two learned
+heads, score columns except “mean over 8” use the per-record oracle-selected best candidate;
+diffusion uses 16 NFE per candidate (128 network evaluations per record), whereas regression uses
+eight evaluations per record. Persistence is a one-output reference.
+
+| Head | Best-of-8 fg-MSE, all | Best-of-8 easy | Best-of-8 hard novel strip | Mean over 8 candidates | Best-of-8 fg-sharpness |
 |---|---:|---:|---:|---:|---:|
 | Regression with MC dropout | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
 | Diffusion, v-prediction + DDIM | **0.0512** | **0.0120** | **0.1549** | **0.0640** | **0.1886** |
 | Persistence reference | 0.2367 | — | — | — | 0.0515 |
 
-Diffusion wins every column in this single-step best-of-8 coverage regime and is already better at
-NFE 4. The separation is largest on the genuinely generative hard subset. The regressor’s
+The frozen sensitivity receipt uses a smaller two-batch evaluation pool than Table 4.4 and is
+therefore reported separately rather than spliced into its columns:
+
+| Per-candidate NFE | Regression best-of-8 fg-MSE | Diffusion best-of-8 fg-MSE | Total regression / diffusion evaluations per record |
+|---:|---:|---:|---:|
+| 4 | 0.0680 | 0.0546 | 8 / 32 |
+| 8 | 0.0680 | 0.0514 | 8 / 64 |
+| 16 | 0.0680 | 0.0503 | 8 / 128 |
+
+Diffusion wins every column in Table 4.4's single-step best-of-8 coverage regime and remains lower
+in foreground MSE at each tested diffusion allocation in the sensitivity receipt. This does not
+show equal-work superiority because total candidate-generation work differs. The separation is
+largest on the genuinely generative hard subset. The regressor’s
 mean-over-8 and best-of-8 values are close, while diffusion gains more from multiple samples,
 consistent with the established distinction between mean-seeking regression and stochastic
-coverage [121, 122, 123].
+coverage [130, 131, 132].
 
 ### 4.2.2 Best-of-1 rollout reverses the head ranking
 
@@ -3606,7 +3894,7 @@ not a universal best head.
 ### 4.2.3 Energy-based descent is a characterized negative
 
 The energy-based study uses the official Energy-Based Transformer implementation and two reported
-training recipes [82]. It separates two capabilities:
+training recipes [88]. It separates two capabilities:
 whether the trained energy orders true targets below mismatched targets, and whether candidate
 descent from the prescribed initialization reaches structured outputs.
 
@@ -3615,14 +3903,22 @@ descent still fails to reach structured video targets at the scale feasible in t
 This is a two-sided characterized negative, not a proof that energy-based video generation is
 impossible at larger scale. It justifies selecting diffusion for the coverage-oriented
 single-step mechanism while retaining regression as a best-of-1 control. Detailed energy
-landscapes, scale gaps, and descent trajectories remain in the campaign appendix.
+landscapes, scale gaps, and descent trajectories remain in the curated evidence appendix.
+
+The receipt-level result is: S2 places the batch mean below the target on all 21 recorded probes
+(converged loss approximately 0.597); S1 places the target lowest on 15 consecutive probes from
+steps 6,000–20,000, with a target-below-mean gap of +0.22 to +3.09 and final loss 0.3614.
+Nevertheless, S1 cold-descent foreground sharpness never exceeds 0.0345, and its paper-style
+best-of-4 probes remain in 0.0102–0.0154, below the predeclared approximately-0.08 structured-output
+threshold. These receipts come from hash-listed legacy logs rather than the content-addressed E2–E8
+result schema; the appendix states that provenance distinction explicitly.
 
 ## 4.3 Untouched Confirmation of Reach
 
 The original LoopMom pool informed qualitative monitoring and configuration selection. The
 central reach claims were therefore tested once on the newly generated hash-pinned holdout
 `loopmom-confirmation_holdout-20260712-e033abee6e04`. Before access, the protocol froze
-checkpoint evaluations, pair definitions, reach bands, endpoints, table shells, and the
+checkpoint evaluations, pair definitions, reach bands, endpoints, table layouts, and the
 simultaneous frontier family.
 
 For `hier-min` versus `flat-min`, the registered population contains non-empty answerable records
@@ -3658,15 +3954,24 @@ context but different in hidden content that determines re-entry.
 
 The untouched E2 simultaneous family is the principal frontier evidence:
 
-**Table 4.2 — Registered tested frontier.**
+**Table 4.5 — Registered tested frontier with arm identities and simultaneous intervals.** Effects
+are flat loss minus hierarchical loss, so positive values favor hierarchy. The first two rows are
+a declared 480-versus-512 near-match and are not used to define the exact-budget confirmed bracket.
 
-| Context-token point | Registered interpretation | Training-seed coverage |
-|---:|---|---|
-| 896 | hierarchy confirmed over matched flat | seeds 0–1 |
-| 1,152 | hierarchy confirmed over matched flat | seeds 0–2 |
-| 1,792 | unresolved | registered simultaneous interval crosses zero |
-| 2,432 | flat full-resolution context confirmed | primary B16×30k and B8×60k regimes |
-| 3,072 | flat full-resolution context confirmed | seeds 0–1 |
+| Context budget | Flat arm / reach | Hierarchical arm / reach | Seed and regime | Effect | Simultaneous 95% CI | Decision |
+|---:|---|---|---|---:|---|---|
+| 480 vs 512 | `flat-short` / 8 | `hier-short` / 6 | seed 0, B16×30k | −0.0038 | [−0.0081,+0.0005] | unresolved near-match |
+| 480 vs 512 | `flat-short` / 8 | `hier-short` / 6 | seed 1, B16×30k | −0.0060 | [−0.0105,−0.0015] | flat favored; near-match |
+| 896 | `flat-min` / 14 | `hier-min` / 48 | seed 0, B16×30k | +0.0474 | [+0.0305,+0.0642] | hierarchy confirmed |
+| 896 | `flat-min` / 14 | `hier-min` / 48 | seed 1, B16×30k | +0.0436 | [+0.0280,+0.0592] | hierarchy confirmed |
+| 1,152 | `flat-budget` / 18 | `hier-long` / 48 | seed 0, B16×30k | +0.0195 | [+0.0070,+0.0320] | hierarchy confirmed |
+| 1,152 | `flat-budget` / 18 | `hier-long` / 48 | seed 1, B16×30k | +0.0389 | [+0.0228,+0.0549] | hierarchy confirmed |
+| 1,152 | `flat-budget` / 18 | `hier-long` / 48 | seed 2, B16×30k | +0.0307 | [+0.0159,+0.0455] | hierarchy confirmed |
+| 1,792 | `flat-c1` / 28 | `hier-c1` / 48 | seed 0, B16×30k | +0.0084 | [−0.0013,+0.0181] | unresolved |
+| 2,432 | `flat-c2` / 38 | `hier-c2` / 48 | seed 0, B16×30k | −0.0150 | [−0.0260,−0.0039] | flat confirmed |
+| 2,432 | `flat-c2` / 38 | `hier-c2` / 48 | seed 0, B8×60k | −0.0122 | [−0.0213,−0.0032] | flat confirmed; separate optimizer regime |
+| 3,072 | `flat-long` / 48 | `hier-rich` / 48 | seed 0, B8×60k | −0.0129 | [−0.0217,−0.0041] | flat confirmed |
+| 3,072 | `flat-long` / 48 | `hier-rich` / 48 | seed 1, B8×60k | −0.0134 | [−0.0215,−0.0053] | flat confirmed |
 
 The largest tested family-wise-confirmed hierarchy point is 1,152; the smallest tested confirmed
 flat point is 2,432. No monotonicity, unique crossing, interpolation, or asymptotic law is inferred
@@ -3675,24 +3980,30 @@ between them.
 At the frozen latent resolution, one fine frame costs \(8\times8=64\) tokens and one coarse
 frame costs \(4\times4=16\). The 48-frame arithmetic is:
 
-**Table 4.3 — Context-state cost at equal nominal 48-frame addressable reach.**
+**Table 4.6 — Context-state cost at equal nominal 48-frame addressable reach.** Each frozen-codec
+spatial token contains 16 latent coefficients. The rollout transformer width is \(d=384\).
 
-| Package | Context-token calculation | Context tokens | Relative cost |
-|---|---:|---:|---:|
-| 48 dense fine frames | \(48\times64\) | 3,072 | 1.00× |
-| 48 coarse + 6 fine | \(48\times16+6\times64\) | 1,152 | 2.67× fewer |
-| 48 coarse + 2 fine | \(48\times16+2\times64\) | 896 | 3.43× fewer |
+| Package | Context-token calculation | Tokens | Latent payload, fp32 | Latent payload, fp16/bf16 | Materialized width-384 embeddings, bf16 | Relative cost |
+|---|---:|---:|---:|---:|---:|---:|
+| 48 dense fine frames | \(48\times64\) | 3,072 | 192 KiB | 96 KiB | 2.250 MiB | 1.00× |
+| 48 coarse + 6 fine | \(48\times16+6\times64\) | 1,152 | 72 KiB | 36 KiB | 0.844 MiB | 2.67× fewer |
+| 48 coarse + 2 fine | \(48\times16+2\times64\) | 896 | 56 KiB | 28 KiB | 0.656 MiB | 3.43× fewer |
 
 The result is **same nominal reach with fewer context tokens**. It is not a claim of equal
 information, equal error, equal total tokens, equal compute, or equal wall time. Target tokens and
-total sequence tokens are reported separately.
+total sequence tokens are reported separately. The latent-payload columns are exact contiguous
+array payloads; the embedding column is an implementation-level materialization whose fp32 size is
+twice the value shown. These figures exclude target tokens, attention/MLP intermediates, allocator
+and container overhead, parameters, optimizer state and training activations. All representations
+therefore preserve the same 2.67× and 3.43× context-state ratios without implying equal end-to-end
+VRAM savings.
 
 ![Untouched reach–fidelity frontier and memory arithmetic](../../figures/article_confirmed_frontier.png)
 
 **Figure 4.1 — Untouched tested frontier and exact context-token arithmetic.** Positive effects
 favor hierarchy. Intervals belong to one simultaneous family; no line is drawn through the tested
-points and 1,792 is shown as unresolved. Source:
-`artifacts/confirmation_e2/results.json`.
+points and 1,792 is shown as unresolved. The values are bound to the frozen E2 result artifact in
+the curated evidence appendix.
 
 The frontier supports the dissertation’s central state-memory interpretation. Hierarchy pays when
 compression buys access to otherwise unreachable evidence. Once the flat package can afford the
@@ -3705,15 +4016,19 @@ information. The near-matched comparison uses a 1,088-token temporally sparse fu
 package and a 1,152-token spatial hierarchy. The 64-token deficit favors the temporal package, so
 the pair is near-matched rather than exactly matched.
 
-Across five diffusion training seeds, temporal-package advantages are:
+The complete five-seed head-by-package factorial is:
 
-| Seed | Temporal-package effect | 95% clip-cluster CI |
-|---:|---:|---:|
-| 0 | +0.0197 | [+0.0143, +0.0252] |
-| 1 | +0.0046 | [+0.0007, +0.0084] |
-| 2 | +0.0111 | [+0.0070, +0.0151] |
-| 3 | +0.0075 | [+0.0037, +0.0114] |
-| 4 | +0.0060 | [+0.0027, +0.0092] |
+**Table 4.7 — Package form by prediction head and training seed.** Positive package effects favor
+the temporally sparse full-resolution package. Negative interactions mean that changing from
+diffusion to regression shifts the contrast toward spatial coarsening.
+
+| Seed | Diffusion temporal advantage | Regression temporal advantage | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143,+0.0252] | +0.0107 [+0.0062,+0.0158] | −0.0089 [−0.0151,−0.0025] |
+| 1 | +0.0046 [+0.0007,+0.0084] | −0.0104 [−0.0146,−0.0062] | −0.0150 [−0.0199,−0.0104] |
+| 2 | +0.0111 [+0.0070,+0.0151] | −0.0208 [−0.0270,−0.0150] | −0.0319 [−0.0401,−0.0245] |
+| 3 | +0.0075 [+0.0037,+0.0114] | +0.0248 [+0.0181,+0.0323] | +0.0173 [+0.0106,+0.0245] |
+| 4 | +0.0060 [+0.0027,+0.0092] | −0.0166 [−0.0229,−0.0108] | −0.0226 [−0.0297,−0.0160] |
 
 The across-seed mean is +0.0098, SD 0.0060, with t95
 \([+0.0023,+0.0173]\). Thus temporal full-resolution anchors are stable at the tested static-world
@@ -3727,13 +4042,33 @@ sign. The correct conclusion is therefore:
 - regression package use and the cross-head interaction are training-seed-sensitive;
 - neither package is universally superior independent of head, task dynamics, or required detail.
 
+**Table 4.8 — Context-form evidence and comparison licences.** This table prevents rows from
+different designs being read as one Cartesian causal factorial.
+
+| Question | Tested comparison | What is held fixed or isolated | What remains co-changed or confounded | Licence and evidence level | Supported conclusion |
+|---|---|---|---|---|---|
+| Reach beyond a flat window | `hier-min` vs `flat-min` | context, target and total tokens; codec, head, clips; pair-derived reach band | resolution and nominal reach change together | **MATCHED**, untouched E2 | benefit concentrates where only the hierarchy can address the relevant past; supports reach |
+| Fixed-span spatial abstraction | `spat18` vs `flat-budget` under each head | 18-frame span, recent fine tail, head, codec and evaluation records | replacing older fine history with coarse history reduces tokens from 1,152 to 672 | **DEVELOPMENT_DIAGNOSTIC** | coarse history costs 0.0082 under diffusion and is unresolved under regression; no intrinsic-abstraction win |
+| Temporal versus spatial package | `strided-flat` vs `hier-long` under diffusion/regression | nominal 48-frame reach, six-frame fine tail, backbone, codec and training protocol | temporal sparsity versus spatial coarsening; 1,088 versus 1,152 tokens | **NEAR_MATCHED DEVELOPMENT_FACTORIAL**, five seeds | temporal anchors are stable under diffusion; regression and interaction are heterogeneous |
+| Stride-2 family | `hier-s2-min` vs `flat-short` | 512 context tokens and paired records | target stride/slots/tokens, auxiliary loss, total length and optimization load | **WHOLE_CONFIGURATION**, untouched E2 | the complete B1 configuration wins; no pure context-stride effect |
+| Third representation level | `hier3` vs `hier-long` | 1,152 context tokens, nominal reach and diffusion backbone | target tokens, loss allocation, fine/coarse allocation, optimization load and top-level information floor | **DEVELOPMENT_DIAGNOSTIC**, seed 0 | two-level error minus three-level error = −0.0196 [−0.0248,−0.0146], so the three-level probe is worse; no general depth law |
+| Stream contribution | coarse/fine blinding; `hier3` top blinding | trained weights and rollout records | zeroing a stream is out of distribution | **DEVELOPMENT_DIAGNOSTIC** | removing coarse history harms re-entry, removing fine history causes renderer collapse, and the tested top stream contributes little; magnitudes are not information accounting |
+
+![Executed experimental coverage and explicit non-executed cells](../../figures/fig63_executed_configuration_matrix.png)
+
+**Figure 4.2 — Executed configuration and evidence matrix.** Confirmatory, robustness,
+replication, privileged-reference and external-boundary rows retain their distinct evidence roles.
+Red-tinted rows are explicit structural gaps, not zero effects or invitations to infer unobserved
+Cartesian cells. In particular, the executed B1 whole-configuration result is separated from its
+unexecuted fixed-target control.
+
 Static hidden content can reward sparse full-resolution anchors because old pixels remain
 informative. Dynamically evolving or low-detail hidden state may reward spatial compression
 instead. This study locates one operating region.
 
 ![Five-seed package and head effects](../../figures/fig17_head_package_seed_heterogeneity.png)
 
-**Figure 4.2 — Package effects by training seed.** Per-seed intervals condition on each trained
+**Figure 4.3 — Package effects by training seed.** Per-seed intervals condition on each trained
 model; the seed summary uses training seeds as units.
 
 ## 4.6 Robustness of the Principal Directions
@@ -3758,7 +4093,7 @@ training-seed or dataset robustness.
 
 ![Sampler and NFE robustness](../../figures/fig19_sampler_nfe_robustness.png)
 
-**Figure 4.3 — Sampler/NFE robustness.** Open points mark upper-inversion intervals that include
+**Figure 4.4 — Sampler/NFE robustness.** Open points mark upper-inversion intervals that include
 zero.
 
 ### 4.6.2 Independently trained codec
@@ -3767,7 +4102,7 @@ E7a changes the whole continuous latent interface: a second codec is trained ind
 normalization is recomputed, and the seven seed-0 predictors are retrained. Codec weights,
 reconstruction error, latent geometry, and normalization therefore change together.
 
-**Table 4.4 — Whole-codec robustness.**
+**Table 4.9 — Whole-codec robustness.**
 
 | Codec | 896 reach | 1,152 interior | 1,088 vs 1,152 shape | 2,432 inversion |
 |---|---:|---:|---:|---:|
@@ -3781,7 +4116,7 @@ seed is not an inferential replicate and no component-level cause is identified.
 
 ![Alternate-codec robustness](../../figures/fig20_alternate_codec_robustness.png)
 
-**Figure 4.4 — Original and alternate codec effects under one simultaneous family.**
+**Figure 4.5 — Original and alternate codec effects under one simultaneous family.**
 
 ## 4.7 Boundary and Negative Evidence
 
@@ -3791,7 +4126,7 @@ At a longer-loop operating point, seed 0 showed an early hierarchy benefit follo
 inversion during self-fed rollout. E5a preregistered that horizon pattern and repeated the pair at
 two new training seeds.
 
-**Table 4.5 — Registered self-fed reliability replication. Positive favors hierarchy.**
+**Table 4.10 — Registered self-fed reliability replication. Positive favors hierarchy.**
 
 | Training seed | Early h1–24 | Late h61–256 |
 |---:|---:|---:|
@@ -3807,7 +4142,7 @@ reuse remains valid, but it is not a third empirical law.
 
 ![Negative trust-boundary replication](../../figures/fig18_trust_negative_replication.png)
 
-**Figure 4.5 — Early benefit and seed-0-only late inversion.**
+**Figure 4.6 — Early benefit and seed-0-only late inversion.**
 
 ### 4.7.2 Privileged pose-indexed raw access
 
@@ -3816,7 +4151,7 @@ warm-up pixels and is queried using exact saved future viewport positions. It re
 future poses, and no token-matched budget; it is therefore a privileged access reference, not a
 deployable neural competitor.
 
-**Table 4.6 — Simultaneous pose-indexed raw-memory effects.**
+**Table 4.11 — Simultaneous pose-indexed raw-memory effects.**
 
 | Registered contrast | Estimate | Simultaneous 95% CI |
 |---|---:|---:|
@@ -3834,14 +4169,29 @@ mosaics are practical or that hierarchy is unnecessary.
 
 ![Pose-indexed raw memory](../../figures/fig21_pose_indexed_raw_memory.png)
 
-**Figure 4.6 — Privileged explicit-access reference.**
+**Figure 4.7 — Privileged explicit-access reference.**
 
 ### 4.7.3 Persistent-object external boundary
 
 E6 compares matched 1,152-token flat and hierarchical packages at training seeds 0–2, using a
 48-frame warm-up, 300 self-fed targets, and 100 protected clips.
 
-**Table 4.7 — E6 simultaneous effects. Positive favors hierarchy.**
+To make unlike endpoint directions comparable, the registered harmonized effect is
+
+$$
+\Delta_m=
+\begin{cases}
+\overline{m}_{\mathrm{flat}}-\overline{m}_{\mathrm{hier}},
+& m\in\{\text{foreground MSE, union MSE, trajectory error}\},\\
+\overline{m}_{\mathrm{hier}}-\overline{m}_{\mathrm{flat}},
+& m\in\{\text{identity accuracy, coverage}\}.
+\end{cases}
+$$
+
+Thus positive values always favor hierarchy; the transformation changes only sign orientation,
+not the endpoint denominators or paired records.
+
+**Table 4.12 — E6 simultaneous effects. Positive favors hierarchy.**
 
 | Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
 |---:|---:|---:|---:|---:|---:|
@@ -3850,6 +4200,9 @@ E6 compares matched 1,152-token flat and hierarchical packages at training seeds
 | 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
 
 Absolute performance prevents overstatement:
+
+**Table 4.13 — E6 absolute performance.** Both packages remain difficult in absolute terms;
+paired values are shown as flat / hierarchy.
 
 | Seed | Arm | Union MSE ↓ | Trajectory error ↓ | Identity accuracy ↑ | Coverage ↑ |
 |---:|---|---:|---:|---:|---:|
@@ -3866,7 +4219,7 @@ task.
 
 ![Persistent-object long Moving-MNIST boundary](../../figures/fig22_phasec_v2_boundary.png)
 
-**Figure 4.7 — Spatial-support/identity division of labour in E6.**
+**Figure 4.8 — Spatial-support/identity division of labour in E6.**
 
 ### 4.7.4 Short and real-data competence boundaries
 
@@ -3886,13 +4239,25 @@ competence and the cost of unnecessary abstraction, not a claim-bearing hierarch
 The context-package experiments and reversible-computation experiments act on different resource
 terms:
 
-| Method | Primary term affected | Benefit | Cost or boundary | Evidence |
-|---|---|---|---|---|
-| Dense flat context | \(M_{\mathrm{context/state}}\) | preserves fine identity/detail | short reach at fixed budget; high cost at long reach | flat wins at 2,432/3,072 and on E6 identity |
-| Spatial hierarchy | \(M_{\mathrm{context/state}}\) | economical dense historical support | loses fine detail | hierarchy wins at 896/1,152; E6 support/continuity |
-| Temporal subsampling | \(M_{\mathrm{context/state}}\) | preserves old full-resolution anchors | can miss intermediate dynamics | five-seed diffusion package-shape result |
-| Gradient checkpointing | \(M_{\mathrm{activations}}\) | general recomputation-based memory reduction | recomputation and schedule-dependent memory | Chapter 2 comparator |
-| Reversible temporal replay | \(M_{\mathrm{activations}}\) | constant activation scaling in tested recurrence | invertibility/stability constraints; no inner-loop advantage | Chapter 2 measured frontier |
+**Table 4.14 — Dissertation-strand operating-region synthesis with evidentiary separation.**
+
+| Method / strand | Primary system term or layer | Benefit | Cost or boundary | Evidence source | In the final Chapter 3 predictor? |
+|---|---|---|---|---|---|
+| V-BLT entropy allocation [A1] | representation/capacity allocation | assigns finer capacity where the model's byte prediction is more dispersed | entropy is a model-internal proxy, not calibrated uncertainty or proof of optimal patches | published [A1] visual experiments and entropy maps, summarized in Chapter 2 | no; shared allocation principle only |
+| RoPE-ND [A1] | representation-coordinate interface | keeps horizontal, vertical, and temporal coordinates explicit after linearization | does not guarantee semantic routing or cross-level coherence | [A1] method and Chapter 2 derivation | no; final predictor uses learned level/role/frame embeddings |
+| Dense flat context [A4] | \(M_{\mathrm{context/state}}\) | preserves fine identity/detail | short reach at fixed budget; high cost at long reach | flat wins at 2,432/3,072 and on E6 identity | yes, as comparator packages |
+| Spatial hierarchy [A4] | \(M_{\mathrm{context/state}}\) | economical dense historical support | loses fine detail after reach saturates | hierarchy wins at 896/1,152; E6 support/continuity | yes |
+| Temporal subsampling [A4] | \(M_{\mathrm{context/state}}\) | preserves old full-resolution anchors | can miss intermediate dynamics | five-seed diffusion package-shape result | yes, as a comparator package |
+| Gradient checkpointing | \(M_{\mathrm{activations}}\) | general recomputation-based memory reduction | recomputation and schedule-dependent memory | Chapter 2 measured comparator | no |
+| Reversible temporal replay [A2 + dissertation extension] | \(M_{\mathrm{activations}}\) | approximately horizon-independent peak activation-tape footprint in the tested recurrence | invertibility/stability constraints, replay noise/metadata, and no inner-loop advantage | Chapter 2 measured memory frontier and numerical validation | no |
+| Consistency criteria [A3] and LoopMom instrument | measurement and decision layer | turns trajectory consistency into self-fed, re-entry-, support-, identity-, miss/extra-, and coverage-sensitive decisions | criteria remain task-dependent proxies; LoopMom provides exact geometric observability only in its synthetic generator | [A3] criteria; Chapters 3–4 executed LoopMom/E6 endpoint programme | not a predictive module; consumed by final evaluation |
+
+![Separately measured context-state and activation-memory axes](../../figures/fig62_two_resource_synthesis.png)
+
+**Figure 4.9 — Two independently measured resource axes.** Panel A reports the Chapter 4
+context-state frontier; Panel B reports the Chapter 2 activation-memory measurements. The panels
+do not form a joint factorial or an end-to-end model experiment. Their savings have not been shown
+to multiply and must not be added into one experimentally measured total-memory reduction.
 
 The savings are not automatically multiplicative. The Chapter 4 predictor uses bounded context
 state but is trained on individual windows without differentiating through the long rollout.
@@ -3926,8 +4291,9 @@ reproduce their approved wording and copies.
 
 The principal limitations are:
 
-1. **Synthetic mechanism scope.** LoopMom provides exact geometry and causal interpretability but
-   is not natural video. E6 is also synthetic.
+1. **Synthetic mechanism scope.** LoopMom provides exact geometric-observability labels and a
+   deliberately constrained mechanism test, but it is not natural video and does not establish
+   unrestricted causal interpretability. E6 is also synthetic.
 2. **Representation scope.** The main predictor uses one frozen two-level continuous codec. One
    independently trained codec supports directional robustness but not representation-family
    universality.
@@ -3952,7 +4318,8 @@ dissertation claims.
 ## 4.11 Chapter Conclusions
 
 1. The generation-head study establishes a regime boundary rather than a universal ranking:
-   diffusion is superior in the matched single-step oracle-coverage regime, regression is superior
+   diffusion is superior in the matched-capacity single-step oracle-coverage regime at the
+   reported, unequal total inference allocations, regression is superior
    in deterministic best-of-1 rollout, and energy-based descent is a characterized negative at the
    tested scale.
 
@@ -3986,8 +4353,8 @@ dissertation claims.
    reconstruct activations when the training tape dominates.
 
 The results of this chapter provide the experimental basis for Tasks 5–7 and for article [A4].
-Detailed campaign chronology and secondary receipts are retained in the appendix source rather
-than repeated in the main argument.
+The curated configuration-and-evidence appendix retains the complete observed grid and secondary
+receipts without interrupting the main argument.
 
 <div style="page-break-after: always;"></div>
 
@@ -4014,6 +4381,19 @@ design principle is:
 
 > **Compress what must be remembered; reconstruct what need not be stored.**
 
+Three propositions connect the dissertation's article strands.
+
+1. **Information allocation is task-dependent.** Representation and context design must trade
+   temporal reach against the spatial or semantic detail that the task requires.
+2. **Retained-state memory and activation-tape memory are distinct resource axes.** Context
+   packaging changes which past evidence remains addressable; reversible replay changes which
+   intermediate computations must be retained for differentiation. Their benefits were measured
+   separately and are not assumed to multiply.
+3. **The appropriate intervention is determined by the operating region and the evaluation
+   construct.** Entropy-guided representation, dense or multirate context, checkpointing,
+   reversibility, and consistency endpoints answer different system questions; none is a universal
+   replacement for the others.
+
 The aim of the research has been achieved through the following principal results, aligned with
 the seven tasks.
 
@@ -4025,8 +4405,11 @@ bottlenecks: the context/state cost of retaining historical evidence and the act
 long temporal optimization. This decomposition replaces the ambiguous claim that long video has
 one generic memory problem.
 
-**2. Consistency criteria and measurement (Task 2).** The criteria apparatus is extended with
-conceptual, hierarchical, and trajectory consistency. Trajectory consistency is operationalized
+**2. Consistency criteria and measurement (Task 2).** Established consistency concerns are
+organized into the dissertation-specific [A3] systems taxonomy, within which conceptual,
+hierarchical, and trajectory consistency are explicitly defined and operationalized. This claims
+the dissertation's formalization and measurement apparatus, not priority over the general terms.
+Trajectory consistency is operationalized
 through self-fed rollout, re-entry, foreground/background/union, miss/extra, object-support,
 trajectory, identity, and coverage endpoints. The LoopMom instrument makes geometric
 observability exactly computable and defines pair-specific reach-differential populations. Clips,
@@ -4042,13 +4425,19 @@ depend on an unmeasured RoPE-ND retrofit.
 
 **4. Reversible optimization of long temporal processes (Task 4).** TempVerseFormer and
 time-agnostic backpropagation reconstruct intermediate states during reverse replay, giving
-activation-memory scaling that is constant in the temporal horizon for the tested reversible
-recurrence. The stochastic extension stores the sampled noise and reproduces states at numerical
-precision; reverse-replay gradients match BPTT. In the measured rollout-training frontier, BPTT
+an approximately horizon-independent peak activation-tape footprint for the tested reversible
+recurrence. The stochastic extension stores a sampled-noise sequence whose size grows with the
+horizon (or would require equivalent deterministic regeneration metadata), while avoiding the
+larger layer-by-time activation graph. With the correct noise replayed, states are reconstructed
+within reported numerical tolerances. In the reported numerical gradient test, reverse replay and
+BPTT have cosine similarity \(1.000000\), establishing directional agreement but not, by itself,
+gradient-magnitude equality. In the measured rollout-training frontier, BPTT
 uses 12.2 GB at \(K=40\) and fails at \(K=120\), while reversible replay remains approximately
-1.1–1.2 GB through \(K=160\). Gradient checkpointing remains a strong and appropriate competitor
-at 1.47–1.97 GB. The three-axis taxonomy shows where reversibility pays—network depth and
-invertible temporal recurrence—and where it does not: in the tested inner optimization loop it
+1.1–1.2 GB through \(K=160\). Gradient checkpointing remains memory-feasible at 1.47–1.97 GB;
+because matched runtime was not reported for these temporal-rollout arms, no Pareto equivalence is
+claimed. The three-axis taxonomy shows where reversibility pays in the tested network-depth
+and invertible-temporal-recurrence settings, and where it does not pay in the measured inner
+optimization loop: there it
 saves only 0.26% relative to checkpointing while increasing computation. Invertibility also does
 not guarantee trajectory stability.
 
@@ -4144,6 +4533,10 @@ These directions extend external validity and integration. They do not alter the
 conclusion: compress historical state when reach is limiting, preserve dense detail when fidelity
 is limiting, and reconstruct activations when the temporal training tape is the binding resource.
 
+Taken together, the dissertation is an integrated systems methodology with separately measured
+representation, retained-state, activation-memory, and evaluation contributions. It is not one
+executable pipeline in which every published strand is claimed to cause the Chapter 4 effects.
+
 <div style="page-break-after: always;"></div>
 
 # References
@@ -4193,83 +4586,520 @@ External sources are numbered by first appearance in the assembled dissertation.
 41. von Bertalanffy L. *General System Theory: Foundations, Development, Applications*. George Braziller, 1968.
 42. Goodfellow I., Pouget-Abadie J., Mirza M., et al. Generative Adversarial Networks. *NeurIPS 27*, 2014.
 43. Kingma D. P., Welling M. Auto-Encoding Variational Bayes. *ICLR*, 2014.
-44. Bond-Taylor S., Leach A., Long Y., Willcocks C. G. Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive Models. *IEEE TPAMI* 44(11), 2022.
-45. Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023.
-46. Song J., Meng C., Ermon S. Denoising Diffusion Implicit Models. *ICLR*, 2021.
-47. OpenAI (Brooks T., Peebles B., et al.). Video Generation Models as World Simulators (Sora technical report), 2024.
-48. Ho J., Salimans T., Gritsenko A., Chan W., Norouzi M., Fleet D. J. Video Diffusion Models. *NeurIPS 35*, 2022.
-49. Blattmann A., Rombach R., Ling H., Dockhorn T., Kim S. W., Fidler S., Kreis K. Align Your Latents: High-Resolution Video Synthesis with Latent Diffusion Models. *CVPR*, 2023.
-50. Blattmann A., Dockhorn T., Kulal S., et al. Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets. arXiv:2311.15127, 2023.
-51. Singer U., Polyak A., Hayes T., et al. Make-A-Video: Text-to-Video Generation without Text-Video Data. *ICLR*, 2023.
-52. Ho J., Chan W., Saharia C., et al. Imagen Video: High Definition Video Generation with Diffusion Models. arXiv:2210.02303, 2022.
-53. Villegas R., Babaeizadeh M., Kindermans P.-J., et al. Phenaki: Variable Length Video Generation from Open Domain Textual Descriptions. arXiv:2210.02399, 2022.
-54. Yu L., Lezama J., Gundavarapu N. B., et al. MAGVIT: Masked Generative Video Transformer. *CVPR*, 2023.
-55. Yu L., Lezama J., Gundavarapu N. B., et al. Language Model Beats Diffusion — Tokenizer Is Key to Visual Generation. *ICLR*, 2024.
-56. Bruce J., Dennis M., Edwards A., et al. Genie: Generative Interactive Environments. *ICML*, 2024.
-57. Hu A., Russell L., Yeo H., et al. GAIA-1: A Generative World Model for Autonomous Driving. arXiv:2309.17080, 2023.
-58. Ha D., Schmidhuber J. World Models. arXiv:1803.10122, 2018.
-59. Hafner D., Lillicrap T., Ba J., Norouzi M. Dream to Control: Learning Behaviors by Latent Imagination. *ICLR*, 2020.
-60. Hafner D., Pasukonis J., Ba J., Lillicrap T. Mastering Diverse Domains through World Models. arXiv:2301.04104, 2023.
-61. Micheli V., Alonso E., Fleuret F. Transformers Are Sample-Efficient World Models. *ICLR*, 2023.
-62. Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022.
-63. Dosovitskiy A., Beyer L., Kolesnikov A., et al. An Image is Worth 16×16 Words: Transformers for Image Recognition at Scale (ViT). *ICLR*, 2021.
-64. Arnab A., Dehghani M., Heigold G., et al. ViViT: A Video Vision Transformer. *ICCV*, 2021.
-65. Liu Z., Ning J., Cao Y., et al. Video Swin Transformer. *CVPR*, 2022.
-66. Pagnoni A., Pasunuru R., Rodriguez P., et al. Byte Latent Transformer: Patches Scale Better Than Tokens. arXiv:2412.09871, 2024.
-67. van den Oord A., Vinyals O., Kavukcuoglu K. Neural Discrete Representation Learning (VQ-VAE). *NeurIPS 30*, 2017.
-68. Yan W., Zhang Y., Abbeel P., Srinivas A. VideoGPT: Video Generation using VQ-VAE and Transformers. arXiv:2104.10157, 2021.
-69. Razavi A., van den Oord A., Vinyals O. Generating Diverse High-Fidelity Images with VQ-VAE-2. *NeurIPS 32*, 2019.
-70. Child R. Very Deep VAEs Generalize Autoregressive Models and Can Outperform Them on Images. *ICLR*, 2021.
-71. Vahdat A., Kautz J. NVAE: A Deep Hierarchical Variational Autoencoder. *NeurIPS 33*, 2020.
-72. Sønderby C. K., Raiko T., Maaløe L., Sønderby S. K., Winther O. Ladder Variational Autoencoders. *NeurIPS 29*, 2016.
-73. Peng Z., Ma J., Sun H., et al. Compression and Retrieval: Implicit Memory Retrieval for Video World Models. arXiv:2606.23105, 2026.
-74. Yu J., Gao J., Bai J., et al. MemLearner: Learning to Query Context Memory for Video World Models. arXiv:2606.31734; ECCV 2026.
-75. Wei Z., Guo X., Li X., et al. Geometry-Aware Implicit Memory for Video World Models. arXiv:2606.02436, 2026.
-76. Zhang S., Zhang Z., Huang S., et al. MBench: A Comprehensive Benchmark on Memory Capability for Video World Models. arXiv:2606.00793, 2026.
-77. Chen H., Zhou K., Hua H., et al. MemoBench: Benchmarking World Modeling in Dynamically Changing Environments. arXiv:2606.27537, 2026.
-78. LeCun Y., Chopra S., Hadsell R., Ranzato M., Huang F. A Tutorial on Energy-Based Learning. In *Predicting Structured Data*, MIT Press, 2006.
-79. Ackley D. H., Hinton G. E., Sejnowski T. J. A Learning Algorithm for Boltzmann Machines. *Cognitive Science* 9(1), 1985.
-80. Hyvärinen A. Estimation of Non-Normalized Statistical Models by Score Matching. *JMLR* 6, 2005.
-81. Song Y., Ermon S. Generative Modeling by Estimating Gradients of the Data Distribution. *NeurIPS 32*, 2019.
-82. Gladstone A., Nanduru G., Islam M. M., Han P., Ha H., Chadha A., Du Y., Ji H., Li J., Iqbal T. Energy-Based Transformers are Scalable Learners and Thinkers. arXiv:2507.02092, 2025.
-83. Du Y., Mordatch I. Implicit Generation and Modeling with Energy-Based Models. *NeurIPS 32*, 2019.
-84. Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019.
-85. Chen R. T. Q., Rubanova Y., Bettencourt J., Duvenaud D. Neural Ordinary Differential Equations. *NeurIPS 31*, 2018.
-86. Mangalam K., Fan H., Li Y., et al. Reversible Vision Transformers. *CVPR*, 2022.
-87. Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002.
-88. Heusel M., Ramsauer H., Unterthiner T., et al. GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium (FID). *NeurIPS 30*, 2017.
-89. Saharia C., Chan W., Chang H., et al. Palette: Image-to-Image Diffusion Models. *SIGGRAPH*, 2022.
-90. Ruiz N., Li Y., Jampani V., et al. DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation. *CVPR*, 2023.
-91. Hu E. J., Shen Y., Wallis P., et al. LoRA: Low-Rank Adaptation of Large Language Models. *ICLR*, 2022.
-92. Zhang L., Rao A., Agrawala M. Adding Conditional Control to Text-to-Image Diffusion Models (ControlNet). *ICCV*, 2023.
-93. Hertz A., Voynov A., Fruchter S., Cohen-Or D. Style Aligned Image Generation via Shared Attention. *CVPR*, 2024.
-94. Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982.
-95. Radford A., Kim J. W., Hallacy C., et al. Learning Transferable Visual Models From Natural Language Supervision (CLIP). *ICML*, 2021.
-96. Goodfellow I., Bengio Y., Courville A. *Deep Learning*. MIT Press, 2016.
-97. Shaw P., Uszkoreit J., Vaswani A. Self-Attention with Relative Position Representations. *NAACL*, 2018.
-98. Su J., Ahmed M., Lu Y., et al. RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing* 568, 2024 (arXiv:2104.09864, 2021).
-99. Rajbhandari S., Rasley J., Ruwase O., He Y. ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. *SC20*, 2020.
-100. Korthikanti V., Casper J., Lym S., McAfee L., Andersch M., Shoeybi M., Catanzaro B. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022.
-101. MacKay M., Vicol P., Ba J., Grosse R. B. Reversible Recurrent Neural Networks. *NeurIPS 31*, 2018.
-102. Behrmann J., Grathwohl W., Chen R. T. Q., Duvenaud D., Jacobsen J.-H. Invertible Residual Networks (i-ResNet). *ICML*, 2019.
-103. Behrmann J., Vicol P., Wang K.-C., Grosse R., Jacobsen J.-H. Understanding and Mitigating Exploding Inverses in Invertible Neural Networks. *AISTATS*, 2021.
-104. Maclaurin D., Duvenaud D., Adams R. P. Gradient-Based Hyperparameter Optimization Through Reversible Learning. *ICML*, 2015.
-105. Wallace B., Gokul A., Ermon S., Naik N. End-to-End Diffusion Latent Optimization Improves Classifier Guidance (DOODL). *ICCV*, 2023.
-106. Wallace B., Gokul A., Naik N. EDICT: Exact Diffusion Inversion via Coupled Transformations. *CVPR*, 2023.
-107. Zhuang J., Dvornek N. C., Tatikonda S., Duncan J. S. MALI: A Memory-Efficient and Reverse-Accurate Integrator for Neural ODEs. *ICLR*, 2021.
-108. Prabhudesai M., Goyal A., Pathak D., Fragkiadaki K. Aligning Text-to-Image Diffusion Models with Reward Backpropagation (AlignProp). arXiv:2310.03739, 2023.
-109. Clark K., Vicol P., Swersky K., Fleet D. J. Directly Fine-Tuning Diffusion Models on Differentiable Rewards (DRaFT). *ICLR*, 2024.
-110. Salimans T., Ho J. Progressive Distillation for Fast Sampling of Diffusion Models. *ICLR*, 2022.
-111. Efron B. Bootstrap Methods: Another Look at the Jackknife. *The Annals of Statistics* 7(1):1–26, 1979.
-112. Cameron A. C., Gelbach J. B., Miller D. L. Bootstrap-Based Improvements for Inference with Clustered Errors. *Review of Economics and Statistics* 90(3):414–427, 2008.
-113. Westfall P. H., Young S. S. *Resampling-Based Multiple Testing: Examples and Methods for p-Value Adjustment*. Wiley, 1993.
-114. Romano J. P., Wolf M. Exact and Approximate Stepdown Methods for Multiple Hypothesis Testing. *Econometrica* 73(4):1237–1282, 2005.
-115. Srivastava N., Mansimov E., Salakhutdinov R. Unsupervised Learning of Video Representations using LSTMs (Moving MNIST). *ICML*, 2015.
-116. Kuhn H. W. The Hungarian Method for the Assignment Problem. *Naval Research Logistics Quarterly* 2(1–2):83–97, 1955. DOI: 10.1002/nav.3800020109.
-117. Zhang J., Zheng Y., Qi D. Deep Spatio-Temporal Residual Networks for Citywide Crowd Flows Prediction (TaxiBJ). *AAAI*, 2017.
-118. Wang Z., Bovik A. C., Sheikh H. R., Simoncelli E. P. Image Quality Assessment: From Error Visibility to Structural Similarity. *IEEE Transactions on Image Processing* 13(4):600–612, 2004. DOI: 10.1109/TIP.2003.819861.
-119. Zhang R., Isola P., Efros A. A., Shechtman E., Wang O. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. *CVPR*, 2018.
-120. Unterthiner T., van Steenkiste S., Kurach K., et al. Towards Accurate Generative Models of Video: A New Metric and Challenges. arXiv:1812.01717, 2019.
-121. Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018.
-122. Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018.
-123. Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024.
+44. Kendall A., Gal Y. What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision? *NeurIPS 30*, 2017.
+45. Guo C., Pleiss G., Sun Y., Weinberger K. Q. On Calibration of Modern Neural Networks. *Proceedings of Machine Learning Research* 70:1321–1330, ICML, 2017.
+46. Bhadra S., Kelkar V. A., Brooks F. J., Anastasio M. A. On Hallucinations in Tomographic Image Reconstruction. *IEEE Transactions on Medical Imaging* 40(11):3249–3260, 2021. DOI: 10.1109/TMI.2021.3077857.
+47. Ebel P., Sainte Fare Garnot V., Schmitt M., Wegner J. D., Zhu X. X. UnCRtainTS: Uncertainty Quantification for Cloud Removal in Optical Satellite Time Series. *IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops*, pp. 2086–2096, 2023. DOI: 10.1109/CVPRW59228.2023.00202.
+48. Huot F., Hu R. L., Goyal N., Sankar T., Ihme M., Chen Y.-F. Next Day Wildfire Spread: A Machine Learning Data Set to Predict Wildfire Spreading From Remote-Sensing Data. *IEEE Transactions on Geoscience and Remote Sensing* 60:1–13, 2022. DOI: 10.1109/TGRS.2022.3192974.
+49. Shaddy B., Ray D., Farguell A., et al. Generative Algorithms for Fusion of Physics-Based Wildfire Spread Models with Satellite Data for Initializing Wildfire Forecasts. *Artificial Intelligence for the Earth Systems* 3(3):e230087, 2024. DOI: 10.1175/AIES-D-23-0087.1.
+50. Bond-Taylor S., Leach A., Long Y., Willcocks C. G. Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive Models. *IEEE TPAMI* 44(11), 2022.
+51. Ji Z., Lee N., Frieske R., et al. Survey of Hallucination in Natural Language Generation. *ACM Computing Surveys* 55(12), 2023.
+52. Song J., Meng C., Ermon S. Denoising Diffusion Implicit Models. *ICLR*, 2021.
+53. OpenAI (Brooks T., Peebles B., et al.). Video Generation Models as World Simulators (Sora technical report), 2024.
+54. Ho J., Salimans T., Gritsenko A., Chan W., Norouzi M., Fleet D. J. Video Diffusion Models. *NeurIPS 35*, 2022.
+55. Blattmann A., Rombach R., Ling H., Dockhorn T., Kim S. W., Fidler S., Kreis K. Align Your Latents: High-Resolution Video Synthesis with Latent Diffusion Models. *CVPR*, 2023.
+56. Blattmann A., Dockhorn T., Kulal S., et al. Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets. arXiv:2311.15127, 2023.
+57. Singer U., Polyak A., Hayes T., et al. Make-A-Video: Text-to-Video Generation without Text-Video Data. *ICLR*, 2023.
+58. Ho J., Chan W., Saharia C., et al. Imagen Video: High Definition Video Generation with Diffusion Models. arXiv:2210.02303, 2022.
+59. Villegas R., Babaeizadeh M., Kindermans P.-J., et al. Phenaki: Variable Length Video Generation from Open Domain Textual Descriptions. arXiv:2210.02399, 2022.
+60. Yu L., Lezama J., Gundavarapu N. B., et al. MAGVIT: Masked Generative Video Transformer. *CVPR*, 2023.
+61. Yu L., Lezama J., Gundavarapu N. B., et al. Language Model Beats Diffusion — Tokenizer Is Key to Visual Generation. *ICLR*, 2024.
+62. Bruce J., Dennis M., Edwards A., et al. Genie: Generative Interactive Environments. *ICML*, 2024.
+63. Hu A., Russell L., Yeo H., et al. GAIA-1: A Generative World Model for Autonomous Driving. arXiv:2309.17080, 2023.
+64. Ha D., Schmidhuber J. World Models. arXiv:1803.10122, 2018.
+65. Hafner D., Lillicrap T., Ba J., Norouzi M. Dream to Control: Learning Behaviors by Latent Imagination. *ICLR*, 2020.
+66. Hafner D., Pasukonis J., Ba J., Lillicrap T. Mastering Diverse Domains through World Models. arXiv:2301.04104, 2023.
+67. Micheli V., Alonso E., Fleuret F. Transformers Are Sample-Efficient World Models. *ICLR*, 2023.
+68. Pasukonis J., Lillicrap T., Hafner D. Evaluating Long-Term Memory in 3D Mazes (Memory Maze). arXiv:2210.13383, 2022.
+69. Dosovitskiy A., Beyer L., Kolesnikov A., et al. An Image is Worth 16×16 Words: Transformers for Image Recognition at Scale (ViT). *ICLR*, 2021.
+70. Arnab A., Dehghani M., Heigold G., et al. ViViT: A Video Vision Transformer. *ICCV*, 2021.
+71. Liu Z., Ning J., Cao Y., et al. Video Swin Transformer. *CVPR*, 2022.
+72. Pagnoni A., Pasunuru R., Rodriguez P., et al. Byte Latent Transformer: Patches Scale Better Than Tokens. arXiv:2412.09871, 2024.
+73. van den Oord A., Vinyals O., Kavukcuoglu K. Neural Discrete Representation Learning (VQ-VAE). *NeurIPS 30*, 2017.
+74. Yan W., Zhang Y., Abbeel P., Srinivas A. VideoGPT: Video Generation using VQ-VAE and Transformers. arXiv:2104.10157, 2021.
+75. Razavi A., van den Oord A., Vinyals O. Generating Diverse High-Fidelity Images with VQ-VAE-2. *NeurIPS 32*, 2019.
+76. Child R. Very Deep VAEs Generalize Autoregressive Models and Can Outperform Them on Images. *ICLR*, 2021.
+77. Vahdat A., Kautz J. NVAE: A Deep Hierarchical Variational Autoencoder. *NeurIPS 33*, 2020.
+78. Sønderby C. K., Raiko T., Maaløe L., Sønderby S. K., Winther O. Ladder Variational Autoencoders. *NeurIPS 29*, 2016.
+79. Peng Z., Ma J., Sun H., et al. Compression and Retrieval: Implicit Memory Retrieval for Video World Models. arXiv:2606.23105, 2026.
+80. Yu J., Gao J., Bai J., et al. MemLearner: Learning to Query Context Memory for Video World Models. arXiv:2606.31734; ECCV 2026.
+81. Wei Z., Guo X., Li X., et al. Geometry-Aware Implicit Memory for Video World Models. arXiv:2606.02436, 2026.
+82. Zhang S., Zhang Z., Huang S., et al. MBench: A Comprehensive Benchmark on Memory Capability for Video World Models. arXiv:2606.00793, 2026.
+83. Chen H., Zhou K., Hua H., et al. MemoBench: Benchmarking World Modeling in Dynamically Changing Environments. arXiv:2606.27537, 2026.
+84. LeCun Y., Chopra S., Hadsell R., Ranzato M., Huang F. A Tutorial on Energy-Based Learning. In *Predicting Structured Data*, MIT Press, 2006.
+85. Ackley D. H., Hinton G. E., Sejnowski T. J. A Learning Algorithm for Boltzmann Machines. *Cognitive Science* 9(1), 1985.
+86. Hyvärinen A. Estimation of Non-Normalized Statistical Models by Score Matching. *JMLR* 6, 2005.
+87. Song Y., Ermon S. Generative Modeling by Estimating Gradients of the Data Distribution. *NeurIPS 32*, 2019.
+88. Gladstone A., Nanduru G., Islam M. M., Han P., Ha H., Chadha A., Du Y., Ji H., Li J., Iqbal T. Energy-Based Transformers are Scalable Learners and Thinkers. arXiv:2507.02092, 2025.
+89. Du Y., Mordatch I. Implicit Generation and Modeling with Energy-Based Models. *NeurIPS 32*, 2019.
+90. Nijkamp E., Hill M., Zhu S.-C., Wu Y. N. On Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model. *NeurIPS 32*, 2019.
+91. Chen R. T. Q., Rubanova Y., Bettencourt J., Duvenaud D. Neural Ordinary Differential Equations. *NeurIPS 31*, 2018.
+92. Mangalam K., Fan H., Li Y., et al. Reversible Vision Transformers. *CVPR*, 2022.
+93. Khalil H. K. *Nonlinear Systems* (3rd ed.). Prentice Hall, 2002.
+94. Heusel M., Ramsauer H., Unterthiner T., et al. GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium (FID). *NeurIPS 30*, 2017.
+95. Saharia C., Chan W., Chang H., et al. Palette: Image-to-Image Diffusion Models. *SIGGRAPH*, 2022.
+96. Ruiz N., Li Y., Jampani V., et al. DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation. *CVPR*, 2023.
+97. Hu E. J., Shen Y., Wallis P., et al. LoRA: Low-Rank Adaptation of Large Language Models. *ICLR*, 2022.
+98. Zhang L., Rao A., Agrawala M. Adding Conditional Control to Text-to-Image Diffusion Models (ControlNet). *ICCV*, 2023.
+99. Hertz A., Voynov A., Fruchter S., Cohen-Or D. Style Aligned Image Generation via Shared Attention. *CVPR*, 2024.
+100. Marr D. *Vision: A Computational Investigation into the Human Representation and Processing of Visual Information*. W. H. Freeman, 1982.
+101. Radford A., Kim J. W., Hallacy C., et al. Learning Transferable Visual Models From Natural Language Supervision (CLIP). *ICML*, 2021.
+102. Hessel J., Holtzman A., Forbes M., Le Bras R., Choi Y. CLIPScore: A Reference-free Evaluation Metric for Image Captioning. *EMNLP*, pp. 7514–7528, 2021. DOI: 10.18653/v1/2021.emnlp-main.595.
+103. Otani M., Togashi R., Sawai Y., et al. Toward Verifiable and Reproducible Human Evaluation for Text-to-Image Generation. *CVPR*, pp. 14277–14286, 2023.
+104. Thrush T., Jiang R., Bartolo M., et al. Winoground: Probing Vision and Language Models for Visio-Linguistic Compositionality. *CVPR*, pp. 5238–5248, 2022.
+105. Goodfellow I., Bengio Y., Courville A. *Deep Learning*. MIT Press, 2016.
+106. Shaw P., Uszkoreit J., Vaswani A. Self-Attention with Relative Position Representations. *NAACL*, 2018.
+107. Su J., Ahmed M., Lu Y., et al. RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing* 568, 2024 (arXiv:2104.09864, 2021).
+108. Rajbhandari S., Rasley J., Ruwase O., He Y. ZeRO: Memory Optimizations Toward Training Trillion Parameter Models. *SC20*, 2020.
+109. Korthikanti V., Casper J., Lym S., McAfee L., Andersch M., Shoeybi M., Catanzaro B. Reducing Activation Recomputation in Large Transformer Models. arXiv:2205.05198, 2022.
+110. MacKay M., Vicol P., Ba J., Grosse R. B. Reversible Recurrent Neural Networks. *NeurIPS 31*, 2018.
+111. Behrmann J., Grathwohl W., Chen R. T. Q., Duvenaud D., Jacobsen J.-H. Invertible Residual Networks (i-ResNet). *ICML*, 2019.
+112. Behrmann J., Vicol P., Wang K.-C., Grosse R., Jacobsen J.-H. Understanding and Mitigating Exploding Inverses in Invertible Neural Networks. *AISTATS*, 2021.
+113. Maclaurin D., Duvenaud D., Adams R. P. Gradient-Based Hyperparameter Optimization Through Reversible Learning. *ICML*, 2015.
+114. Wallace B., Gokul A., Ermon S., Naik N. End-to-End Diffusion Latent Optimization Improves Classifier Guidance (DOODL). *ICCV*, 2023.
+115. Wallace B., Gokul A., Naik N. EDICT: Exact Diffusion Inversion via Coupled Transformations. *CVPR*, 2023.
+116. Zhuang J., Dvornek N. C., Tatikonda S., Duncan J. S. MALI: A Memory-Efficient and Reverse-Accurate Integrator for Neural ODEs. *ICLR*, 2021.
+117. Prabhudesai M., Goyal A., Pathak D., Fragkiadaki K. Aligning Text-to-Image Diffusion Models with Reward Backpropagation (AlignProp). arXiv:2310.03739, 2023.
+118. Clark K., Vicol P., Swersky K., Fleet D. J. Directly Fine-Tuning Diffusion Models on Differentiable Rewards (DRaFT). *ICLR*, 2024.
+119. Salimans T., Ho J. Progressive Distillation for Fast Sampling of Diffusion Models. *ICLR*, 2022.
+120. Efron B. Bootstrap Methods: Another Look at the Jackknife. *The Annals of Statistics* 7(1):1–26, 1979.
+121. Cameron A. C., Gelbach J. B., Miller D. L. Bootstrap-Based Improvements for Inference with Clustered Errors. *Review of Economics and Statistics* 90(3):414–427, 2008.
+122. Westfall P. H., Young S. S. *Resampling-Based Multiple Testing: Examples and Methods for p-Value Adjustment*. Wiley, 1993.
+123. Romano J. P., Wolf M. Exact and Approximate Stepdown Methods for Multiple Hypothesis Testing. *Econometrica* 73(4):1237–1282, 2005.
+124. Srivastava N., Mansimov E., Salakhutdinov R. Unsupervised Learning of Video Representations using LSTMs (Moving MNIST). *ICML*, 2015.
+125. Kuhn H. W. The Hungarian Method for the Assignment Problem. *Naval Research Logistics Quarterly* 2(1–2):83–97, 1955. DOI: 10.1002/nav.3800020109.
+126. Zhang J., Zheng Y., Qi D. Deep Spatio-Temporal Residual Networks for Citywide Crowd Flows Prediction (TaxiBJ). *AAAI*, 2017.
+127. Wang Z., Bovik A. C., Sheikh H. R., Simoncelli E. P. Image Quality Assessment: From Error Visibility to Structural Similarity. *IEEE Transactions on Image Processing* 13(4):600–612, 2004. DOI: 10.1109/TIP.2003.819861.
+128. Zhang R., Isola P., Efros A. A., Shechtman E., Wang O. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. *CVPR*, 2018.
+129. Unterthiner T., van Steenkiste S., Kurach K., et al. Towards Accurate Generative Models of Video: A New Metric and Challenges. arXiv:1812.01717, 2019.
+130. Denton E., Fergus R. Stochastic Video Generation with a Learned Prior (SVG). *ICML*, 2018.
+131. Lee A. X., Zhang R., Ebert F., et al. Stochastic Adversarial Video Prediction (SAVP). arXiv:1804.01523, 2018.
+132. Alonso E., Jelley A., Micheli V., et al. Diffusion for World Modeling: Visual Details Matter in Atari (DIAMOND). *NeurIPS 37*, 2024.
+
+<div style="page-break-after: always;"></div>
+
+# Supplementary Appendix — Chapter 4 Configuration and Evidence Registry
+
+## Purpose and reading rules
+
+This is the publication-facing appendix for Chapter 4. It replaces experiment chronology with a
+curated registry of completed configurations, inferential families, resource fields, and evidence
+bindings. It must be read with three rules:
+
+1. an arm-level score is descriptive unless a paired comparison and interval are shown;
+2. rows with different comparison licences are not cells of one causal factorial; and
+3. **NOT_EXECUTED / OUT_OF_SCOPE** means that the frozen programme closed without that cell. It is
+   not a pending result and cannot support a claim.
+
+Effects follow the convention printed above each table. Clip-cluster intervals condition on a
+trained model; training-seed summaries use training seeds as units. The primary evidence remains
+the immutable result artifacts identified at the end of this appendix.
+
+## A. Comparison licences
+
+| Licence | Permitted reading | Prohibited reading |
+|---|---|---|
+| **MATCHED** | effect of the registered package pair at the named matched budget and interface | universal architectural superiority |
+| **NEAR_MATCHED** | direction under the disclosed small budget difference | exact equal-budget causal effect |
+| **MATCHED_CAPACITY** | mechanism comparison with closely matched backbone capacity and shared context | identical objectives or inference work |
+| **WHOLE_CONFIGURATION** | performance of the complete executed configuration | effect of one co-changing component |
+| **DEVELOPMENT_FACTORIAL** | seed-resolved effect and interaction on the adaptively used pool | untouched confirmation |
+| **DEVELOPMENT_DIAGNOSTIC** | mechanism diagnosis with all stated confounds retained | claim-grade causal law |
+| **ROBUSTNESS_ONLY** | sensitivity of already selected contrasts to the named intervention | new model selection or broader generalization |
+| **REGISTERED_REPLICATION** | outcome-independent replication verdict for the frozen prediction | exploratory reinterpretation after failure |
+| **PRIVILEGED_REFERENCE** | diagnostic value of explicit addressing or additional information | token-matched model ranking |
+| **EXTERNAL_BOUNDARY** | scope behavior on a changed task and endpoint set | direct replication of LoopMom geometry |
+| **DESCRIPTIVE_BOUNDARY** | competence or failure outside the central mechanism | equivalence, superiority, or mechanism confirmation |
+
+## B. Complete observed LoopMom configuration grid
+
+All scores below are foreground MSE over the 152-frame autoregressive rollout after the 48-frame
+ground-truth warm-up; lower is better. Multi-seed entries show the mean and range over the executed
+files named by the seed-coverage column; the four E4b cells were recomputed from the frozen input
+artifacts so all five seeds are represented. They are descriptive receipts, not substitutes for the
+paired, seed-resolved effects in Sections D–G. Resolution depth counts spatial levels;
+`strided-flat` has one spatial level but two temporal rates. Except where stated, the regime is
+B16×30k, bf16, EMA 0.999.
+
+The **configuration row ID** is the stable one-to-one join key between Tables B.1 and B.2; repeated
+arm names under different execution regimes receive distinct row IDs.
+
+**Table B.1 — Package geometry and interface fields.**
+
+| ID | Arm and package | Head | Reach | Context | Total | Spatial / rate depth |
+|---|---|---|---:|---:|---:|---|
+| LM01 | `hier-short`: 6 coarse + 6 fine | diffusion | 6 | 480 | 800 | 2 / 1 |
+| LM02 | `flat-short`: 8 fine | diffusion | 8 | 512 | 832 | 1 / 1 |
+| LM03 | `flat-short-reg`: 8 fine | regression | 8 | 512 | 832 | 1 / 1 |
+| LM04 | `hier-s2-min`: 24 stride-2 coarse + 2 fine | diffusion | 48 | 512 | 800 | 2 / 2 |
+| LM05 | `hier-s2-min-reg` | regression | 48 | 512 | 800 | 2 / 2 |
+| LM06 | `spat18`: 18 coarse + 6 fine | diffusion | 18 | 672 | 992 | 2 / 1 |
+| LM07 | `spat18-reg` | regression | 18 | 672 | 992 | 2 / 1 |
+| LM08 | `flat-min`: 14 fine | diffusion | 14 | 896 | 1,216 | 1 / 1 |
+| LM09 | `hier-min`: 48 coarse + 2 fine | diffusion | 48 | 896 | 1,216 | 2 / 1 |
+| LM10 | `strided-flat`: 11 stride-4 fine anchors + 6 fine | diffusion | 48 | 1,088 | 1,408 | 1 / 2 |
+| LM11 | `strided-flat-reg` | regression | 48 | 1,088 | 1,408 | 1 / 2 |
+| LM12 | `flat-budget`: 18 fine | diffusion | 18 | 1,152 | 1,472 | 1 / 1 |
+| LM13 | `flat-budget` | diffusion | 18 | 1,152 | 1,472 | 1 / 1 |
+| LM14 | `reg-flat` | regression | 18 | 1,152 | 1,472 | 1 / 1 |
+| LM15 | `hier-long`: 48 coarse + 6 fine | diffusion | 48 | 1,152 | 1,472 | 2 / 1 |
+| LM16 | `hier-long` | diffusion | 48 | 1,152 | 1,472 | 2 / 1 |
+| LM17 | `reg-long` | regression | 48 | 1,152 | 1,472 | 2 / 1 |
+| LM18 | `hier3`: 48 top + 24 coarse + 9 fine | diffusion | 48 | 1,152 | 1,488 | 3 / 1 |
+| LM19 | `flat-c1`: 28 fine | diffusion | 28 | 1,792 | 2,112 | 1 / 1 |
+| LM20 | `hier-c1`: 48 coarse + 16 fine | diffusion | 48 | 1,792 | 2,112 | 2 / 1 |
+| LM21 | `flat-c2`: 38 fine | diffusion | 38 | 2,432 | 2,752 | 1 / 1 |
+| LM22 | `hier-c2`: 48 coarse + 26 fine | diffusion | 48 | 2,432 | 2,752 | 2 / 1 |
+| LM23 | `flat-c2` | diffusion | 38 | 2,432 | 2,752 | 1 / 1 |
+| LM24 | `hier-c2` | diffusion | 48 | 2,432 | 2,752 | 2 / 1 |
+| LM25 | `flat-long`: 48 fine | diffusion | 48 | 3,072 | 3,392 | 1 / 1 |
+| LM26 | `hier-rich`: 48 coarse + 36 fine | diffusion | 48 | 3,072 | 3,392 | 2 / 1 |
+
+**Table B.2 — Execution, outcome, and evidence fields.**
+
+| ID | Temporal / spatial factor | Executed seeds | Regime | Descriptive fg-MSE | Sharpness | Licence / role |
+|---|---|---|---|---:|---:|---|
+| LM01 | 1 / 2 | 0–1 | B16×30k | 0.2258 (0.2257–0.2260) | 0.0394 | near-matched lower reference |
+| LM02 | 1 / 1 | 0–1 | B16×30k | 0.2215 (0.2206–0.2224) | 0.0426 | lower/B1 comparator |
+| LM03 | 1 / 1 | 0 | B16×30k | 0.2205 | 0.0373 | B1 regression comparator |
+| LM04 | 2 / 2 | 0–1 | B16×30k | 0.1881 (0.1869–0.1893) | 0.0712 | whole configuration B1 |
+| LM05 | 2 / 2 | 0 | B16×30k | 0.1566 | 0.0831 | whole configuration B1 |
+| LM06 | 1 / 2 | 0 | B16×30k | 0.2120 | 0.0498 | fixed-span diagnostic |
+| LM07 | 1 / 2 | 0 | B16×30k | 0.2008 | 0.0480 | fixed-span diagnostic |
+| LM08 | 1 / 1 | 0–1 | B16×30k | 0.2104 (0.2102–0.2106) | 0.0515 | matched 896 comparator |
+| LM09 | 1 / 2 | 0–1 | B16×30k | 0.1725 (0.1706–0.1744) | 0.0848 | matched 896 candidate |
+| LM10 | 4 / 1 | 0–4 | B16×30k | 0.1638 (0.1622–0.1652) | 0.0944 | near-matched package factorial |
+| LM11 | 4 / 1 | 0–4 | B16×30k | 0.1657 (0.1574–0.1745) | 0.0823 | near-matched package factorial |
+| LM12 | 1 / 1 | 0–2 | B16×30k | 0.2042 (0.2038–0.2046) | 0.0582 | matched 1,152 comparator |
+| LM13 | 1 / 1 | 0 | B8×60k | 0.2032 | 0.0592 | optimizer-regime diagnostic |
+| LM14 | 1 / 1 | 0–1 | B16×30k | 0.2009 (0.2004–0.2015) | 0.0514 | deterministic flat reference |
+| LM15 | 1 / 2 | 0–4 | B16×30k | 0.1736 (0.1682–0.1848) | 0.0836 | matched 1,152 candidate |
+| LM16 | 1 / 2 | 0 | B8×60k | 0.1666 | 0.0899 | optimizer-regime diagnostic |
+| LM17 | 1 / 2 | 0–4 | B16×30k | 0.1632 (0.1503–0.1870) | 0.0777 | package factorial spatial arm |
+| LM18 | 1 / 2×2 | 0 | B16×30k | 0.2044 | 0.0564 | depth-plus-objective/allocation diagnostic |
+| LM19 | 1 / 1 | 0 | B16×30k | 0.1876 | 0.0737 | matched frontier comparator |
+| LM20 | 1 / 2 | 0 | B16×30k | 0.1799 | 0.0779 | matched frontier candidate |
+| LM21 | 1 / 1 | 0 | B16×30k | 0.1703 | 0.0893 | matched frontier comparator |
+| LM22 | 1 / 2 | 0 | B16×30k | 0.1820 | 0.0771 | matched frontier candidate |
+| LM23 | 1 / 1 | 0 | B8×60k | 0.1708 | 0.0889 | matched optimizer-regime comparator |
+| LM24 | 1 / 2 | 0 | B8×60k | 0.1785 | 0.0795 | matched optimizer-regime candidate |
+| LM25 | 1 / 1 | 0–1 | B8×60k | 0.1572 (0.1564–0.1580) | 0.0993 | matched equal-reach comparator |
+| LM26 | 1 / 2 | 0–1 | B8×60k | 0.1691 (0.1687–0.1695) | 0.0893 | matched equal-budget hierarchy |
+
+### Structurally absent cells
+
+| Proposed cell | Status | Consequence |
+|---|---|---|
+| `flat-320` | **NOT_EXECUTED / OUT_OF_SCOPE** | no 320-token frontier point is claimed |
+| `hier-s4-min` | **NOT_EXECUTED / OUT_OF_SCOPE** | no stride-4 coarse “edge law” is claimed |
+| `hier3-reg` | **NOT_EXECUTED / OUT_OF_SCOPE** | no cross-head third-level conclusion is claimed |
+| E5b/E5c localization | **NOT_AUTHORIZED after E5a** | the failed late-inversion replication is terminal |
+| E9 | **SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY** | no further GPU evidence is required for the present claims |
+| B1 fixed-target control | **NOT_EXECUTED / OUT_OF_SCOPE** | B1 remains permanently a whole-configuration result |
+
+## C. Resource and protocol accounting
+
+The standard rollout predictor has approximately 22.19 M trainable parameters. The third-level
+probe adds approximately 0.30 M level-specific I/O parameters; its frozen top-level autoencoder
+tap is a separately disclosed component. B16×30k and B8×60k both process approximately 480,000
+training examples, but they are not the same optimizer regime.
+
+Each spatial token contains 16 frozen-codec coefficients. The exact context-only array payload and
+the width-384 embedding materialization are:
+
+| Package | Tokens | Latent fp32 | Latent fp16/bf16 | Width-384 bf16 embeddings |
+|---|---:|---:|---:|---:|
+| 48 dense fine frames | 3,072 | 192 KiB | 96 KiB | 2.250 MiB |
+| 48 coarse + 6 fine | 1,152 | 72 KiB | 36 KiB | 0.844 MiB |
+| 48 coarse + 2 fine | 896 | 56 KiB | 28 KiB | 0.656 MiB |
+
+These are context-state payloads, not peak VRAM. They exclude targets, attention/MLP
+intermediates, allocator overhead, parameters, optimizer state and training activations; fp32
+embeddings double the bf16 values.
+
+| Regime / head | Batch | Updates | Approx. examples | EMA | NFE per rollout step | NFE per 38-step / 152-frame rollout | Interpretation |
+|---|---:|---:|---:|---:|---:|---:|---|
+| B16×30k diffusion | 16 | 30,000 | 480,000 | 0.999 | 16 default | 608 default | primary frontier regime |
+| B8×60k diffusion | 8 | 60,000 | 480,000 | 0.999 | 16 default | 608 default | matched-example optimizer-regime control |
+| B16×30k regression | 16 | 30,000 | 480,000 | 0.999 | 1 | 38 | deterministic rollout control |
+
+Measured step time and peak VRAM were not captured for every arm under one profiling protocol.
+Unmeasured fields are therefore reported as **NR**, not estimated.
+
+| Arm | Context / total tokens | Measured seconds per training step | Measured peak VRAM | Scope |
+|---|---:|---:|---:|---|
+| `hier-s2-min` | 512 / 800 | 0.19–0.23 | 3.8 GB | B16 bf16 chain logs |
+| `strided-flat` | 1,088 / 1,408 | 0.37–0.42 | 6.3 GB | B16 bf16 chain logs |
+| `hier3` | 1,152 / 1,488 | 0.41–0.48 | 6.5 GB | B16 bf16 chain logs |
+| `flat-c2` | 2,432 / 2,752 | 0.82–0.84 | 11.8 GB | B16 bf16 chain logs |
+| all other arms | as in Section B | NR | NR | no cross-arm estimate is substituted |
+
+Selected programme-level GPU charges that have independently recorded totals are E2 successful
+evaluations (4.2169 h, plus approximately 0.01 h conservatively charged for an aborted pre-metric
+attempt), E4a's two new regression cells (6.1228 h), E4b seeds 3–4 (24.9922 h), and E6's six
+training/evaluation cells (20.5127 h). These are programme accounting receipts, not comparable
+per-arm runtime benchmarks.
+
+## D. Untouched frontier family
+
+Effects are flat loss minus hierarchical loss, so positive values favor hierarchy. All intervals
+belong to one studentized max-statistic clip-cluster family (critical value 2.741).
+
+| Frozen contrast | Budget and regime | Seed | Effect | Simultaneous 95% CI | Decision |
+|---|---|---:|---:|---|---|
+| `hier-short` vs `flat-short` | 480 vs 512, B16×30k | 0 | −0.0038 | [−0.0081,+0.0005] | unresolved near-match |
+| `hier-short` vs `flat-short` | 480 vs 512, B16×30k | 1 | −0.0060 | [−0.0105,−0.0015] | flat favored; near-match |
+| `hier-min` vs `flat-min` | 896, B16×30k | 0 | +0.0474 | [+0.0305,+0.0642] | hierarchy confirmed |
+| `hier-min` vs `flat-min` | 896, B16×30k | 1 | +0.0436 | [+0.0280,+0.0592] | hierarchy confirmed |
+| `hier-long` vs `flat-budget` | 1,152, B16×30k | 0 | +0.0195 | [+0.0070,+0.0320] | hierarchy confirmed |
+| `hier-long` vs `flat-budget` | 1,152, B16×30k | 1 | +0.0389 | [+0.0228,+0.0549] | hierarchy confirmed |
+| `hier-long` vs `flat-budget` | 1,152, B16×30k | 2 | +0.0307 | [+0.0159,+0.0455] | hierarchy confirmed |
+| `hier-c1` vs `flat-c1` | 1,792, B16×30k | 0 | +0.0084 | [−0.0013,+0.0181] | unresolved |
+| `hier-c2` vs `flat-c2` | 2,432, B16×30k | 0 | −0.0150 | [−0.0260,−0.0039] | flat confirmed |
+| `hier-c2` vs `flat-c2` | 2,432, B8×60k | 0 | −0.0122 | [−0.0213,−0.0032] | flat confirmed; separate optimizer regime |
+| `hier-rich` vs `flat-long` | 3,072, B8×60k | 0 | −0.0129 | [−0.0217,−0.0041] | flat confirmed |
+| `hier-rich` vs `flat-long` | 3,072, B8×60k | 1 | −0.0134 | [−0.0215,−0.0053] | flat confirmed |
+
+The exact pair-derived reach effects for `hier-min` versus `flat-min` are +0.0980
+[+0.0788,+0.1179] and +0.0914 [+0.0736,+0.1098] at seeds 0/1. For B1 versus
+`flat-short`, the whole-configuration reach-band effects are +0.0692 [+0.0543,+0.0845] and
++0.0743 [+0.0588,+0.0899].
+
+## E. Five-seed head × package factorial
+
+Positive package effects favor `strided-flat` over `hier-long`. The two packages have the same
+nominal reach but 1,088 versus 1,152 context tokens; the deficit favors the temporal package.
+
+The absolute per-seed cells below are foreground MSE over the complete 152-frame rollout. They
+make the factorial auditable without forcing reconstruction from effects.
+
+| Seed | Diffusion temporal (`strided-flat`) | Diffusion spatial (`hier-long`) | Regression temporal (`strided-flat-reg`) | Regression spatial (`reg-long`) |
+|---:|---:|---:|---:|---:|
+| 0 | 0.1652 | 0.1848 | 0.1574 | 0.1682 |
+| 1 | 0.1644 | 0.1690 | 0.1606 | 0.1503 |
+| 2 | 0.1636 | 0.1747 | 0.1736 | 0.1528 |
+| 3 | 0.1638 | 0.1713 | 0.1622 | 0.1870 |
+| 4 | 0.1622 | 0.1682 | 0.1745 | 0.1579 |
+
+| Seed | Diffusion temporal effect | Regression temporal effect | Head × package interaction |
+|---:|---:|---:|---:|
+| 0 | +0.0197 [+0.0143,+0.0252] | +0.0107 [+0.0062,+0.0158] | −0.0089 [−0.0151,−0.0025] |
+| 1 | +0.0046 [+0.0007,+0.0084] | −0.0104 [−0.0146,−0.0062] | −0.0150 [−0.0199,−0.0104] |
+| 2 | +0.0111 [+0.0070,+0.0151] | −0.0208 [−0.0270,−0.0150] | −0.0319 [−0.0401,−0.0245] |
+| 3 | +0.0075 [+0.0037,+0.0114] | +0.0248 [+0.0181,+0.0323] | +0.0173 [+0.0106,+0.0245] |
+| 4 | +0.0060 [+0.0027,+0.0092] | −0.0166 [−0.0229,−0.0108] | −0.0226 [−0.0297,−0.0160] |
+
+| Estimand | Across-seed mean | SD | t95 interval | Terminal reading |
+|---|---:|---:|---|---|
+| diffusion package effect | +0.0098 | 0.0060 | [+0.0023,+0.0173] | temporal package stable across five tested seeds |
+| regression package effect | −0.0024 | 0.0195 | [−0.0266,+0.0217] | heterogeneous; not equivalence |
+| head × package interaction | −0.0122 | 0.0186 | [−0.0353,+0.0109] | sign-changing; no directional head law |
+
+## F. Diagnostic context-form cells
+
+| Diagnostic | Result | Licence and limitation |
+|---|---|---|
+| fixed 18-frame spatial abstraction, diffusion | `flat-budget` minus `spat18` = −0.0082 [−0.0115,−0.0050] | spatial coarsening saves 42% of context tokens but has a small diffusion cost |
+| fixed 18-frame spatial abstraction, regression | `reg-flat` minus `spat18-reg` = +0.0008 [−0.0013,+0.0029] | unresolved at one training seed; not equivalence |
+| depth-plus-objective/allocation | two-level `hier-long` error minus three-level `hier3` error = −0.0196 [−0.0248,−0.0146] | the three-level probe is worse, but target loss allocation, optimization load, stream allocation and top-level floor are inseparable; not “depth hurts” |
+| blind coarse stream | ALL fg-MSE rises to 0.2236; hard re-entry increase +0.073 versus +0.022 at h1–8 | zeroing is out of distribution; direction supports retrieval use but magnitude is not information accounting |
+| blind fine stream | h1–8 fg-MSE 0.2427; sharpness 0.0086 | renderer collapse plus OOD brittleness; no clean quantitative attribution |
+| blind `hier3` top stream | ALL increase +0.0035 | tested top stream contributes little under this allocation; not a general top-level null |
+
+## G. Sampler/NFE robustness family
+
+Positive effects use the registered direction for each contrast: hierarchy for 896/1,152,
+temporal packaging for 1,088-vs-1,152, and flat context for the 2,432 inversion.
+
+| Contrast | NFE/step | Sampler seed | NFE/clip | Effect | Simultaneous 95% CI |
+|---|---:|---:|---:|---:|---|
+| 896 reach | 8 | 0 | 304 | +0.0478 | [+0.0323,+0.0634] |
+| 896 reach | 16 | 0 | 608 | +0.0465 | [+0.0310,+0.0621] |
+| 896 reach | 32 | 0 | 1,216 | +0.0471 | [+0.0317,+0.0625] |
+| 896 reach | 16 | 1 | 608 | +0.0482 | [+0.0325,+0.0638] |
+| 896 reach | 16 | 2 | 608 | +0.0466 | [+0.0314,+0.0618] |
+| 1,152 interior | 8 | 0 | 304 | +0.0152 | [+0.0045,+0.0259] |
+| 1,152 interior | 16 | 0 | 608 | +0.0146 | [+0.0041,+0.0251] |
+| 1,152 interior | 32 | 0 | 1,216 | +0.0140 | [+0.0036,+0.0245] |
+| 1,152 interior | 16 | 1 | 608 | +0.0201 | [+0.0086,+0.0315] |
+| 1,152 interior | 16 | 2 | 608 | +0.0200 | [+0.0087,+0.0313] |
+| package shape | 8 | 0 | 304 | +0.0276 | [+0.0171,+0.0381] |
+| package shape | 16 | 0 | 608 | +0.0283 | [+0.0172,+0.0394] |
+| package shape | 32 | 0 | 1,216 | +0.0292 | [+0.0182,+0.0403] |
+| package shape | 16 | 1 | 608 | +0.0251 | [+0.0160,+0.0342] |
+| package shape | 16 | 2 | 608 | +0.0221 | [+0.0133,+0.0309] |
+| 2,432 inversion | 8 | 0 | 304 | +0.0115 | [+0.0016,+0.0214] |
+| 2,432 inversion | 16 | 0 | 608 | +0.0117 | [+0.0018,+0.0217] |
+| 2,432 inversion | 32 | 0 | 1,216 | +0.0122 | [+0.0022,+0.0221] |
+| 2,432 inversion | 16 | 1 | 608 | +0.0098 | [−0.0001,+0.0196] |
+| 2,432 inversion | 16 | 2 | 608 | +0.0077 | [−0.0013,+0.0167] |
+
+Terminal verdict: **DIRECTIONALLY_ROBUST**. This is checkpoint-only robustness conditional on
+training seed 0, not training-seed or dataset robustness.
+
+## H. Alternate-codec robustness family
+
+| Codec | Contrast | Effect | Simultaneous 95% CI |
+|---|---|---:|---|
+| original | 896 reach | +0.0494 | [+0.0339,+0.0649] |
+| original | 1,152 interior | +0.0283 | [+0.0169,+0.0397] |
+| original | package shape | +0.0253 | [+0.0163,+0.0343] |
+| original | 2,432 inversion | +0.0150 | [+0.0065,+0.0235] |
+| alternate | 896 reach | +0.0521 | [+0.0374,+0.0669] |
+| alternate | 1,152 interior | +0.0439 | [+0.0310,+0.0569] |
+| alternate | package shape | +0.0112 | [+0.0039,+0.0184] |
+| alternate | 2,432 inversion | +0.0079 | [−0.0006,+0.0165] |
+
+Terminal verdict: **CODEC_DIRECTIONALLY_ROBUST**. The alternate row changes codec weights,
+reconstruction, latent geometry and normalization together and remains conditional on predictor
+seed 0.
+
+## I. Registered negative, privileged reference, and external boundary
+
+### I.1 Self-fed reliability replication
+
+| Training seed | Early h1–24 | Late h61–256 |
+|---:|---:|---:|
+| 0 | +0.0204 [+0.0133,+0.0279] | −0.0064 [−0.0095,−0.0032] |
+| 1 | +0.0082 [+0.0035,+0.0133] | +0.0074 [+0.0038,+0.0112] |
+| 2 | +0.0230 [+0.0150,+0.0315] | +0.0087 [+0.0035,+0.0139] |
+
+Terminal verdict: **NOT_REPLICATED**. No stable late trust boundary is established.
+
+### I.2 Privileged pose-indexed raw-memory family
+
+| Effect | Estimate | Simultaneous 95% CI |
+|---|---:|---|
+| raw K14 minus raw K48 | +0.0723 | [+0.0548,+0.0898] |
+| raw K38 minus raw K48 | +0.0210 | [+0.0096,+0.0325] |
+| `hier-min` minus raw K48 | +0.1219 | [+0.1031,+0.1407] |
+| `hier-long` minus raw K48 | +0.1368 | [+0.1190,+0.1545] |
+| `strided-flat` minus raw K48 | +0.1134 | [+0.0944,+0.1324] |
+| `flat-c2` minus raw K48 | +0.1310 | [+0.1122,+0.1498] |
+
+Terminal verdict: **RAW_ACCESS_CEILING_CI_CLEAN**. Exact future poses and raw warm-up pixels make
+this a privileged reference rather than a neural baseline.
+
+### I.3 Persistent-object long Moving-MNIST
+
+For lower-is-better endpoints (foreground MSE, union MSE, trajectory error), effects are
+flat minus hierarchy. For higher-is-better endpoints (identity accuracy, coverage), effects are
+hierarchy minus flat. Positive therefore favors hierarchy for every column without changing any
+endpoint denominator.
+
+| Seed | Foreground MSE | Union MSE | Trajectory error | Identity accuracy | Coverage |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0.0036 [−0.0074,+0.0146] | +0.0102 [+0.0019,+0.0185] | +2.4786 [+0.2130,+4.7443] | −0.0762 [−0.1106,−0.0418] | +0.0304 [+0.0016,+0.0591] |
+| 1 | −0.0031 [−0.0127,+0.0065] | +0.0122 [+0.0052,+0.0192] | +1.4223 [−1.0646,+3.9092] | −0.0561 [−0.0934,−0.0188] | +0.0159 [−0.0163,+0.0482] |
+| 2 | −0.0024 [−0.0131,+0.0083] | +0.0169 [+0.0093,+0.0245] | +4.1325 [+1.5271,+6.7380] | −0.0647 [−0.0955,−0.0338] | +0.0498 [+0.0161,+0.0834] |
+
+Terminal verdict: **MIXED_BOUNDARY**. Positive favors hierarchy. Hierarchy better preserves
+support and continuity; flat context better preserves identity; foreground-only error is
+unresolved and neither system solves the task.
+
+## J. Evidence-to-artifact bindings
+
+| Study | Frozen result artifact | SHA-256 |
+|---|---|---|
+| E2 untouched confirmation | `artifacts/confirmation_e2/results.json` | `85d01085e9ac074cd099e7b611101b30b7b7112b1f0230ea9163d9825cf2166e` |
+| E4b head × package | `artifacts/e4b_head_package/results.json` | `eb917d948d852d022b872532b826bdb20fc1f17ecfddb55a76446f1821bc9e89` |
+| E5a replication | `artifacts/e5a_trust_replication/results.json` | `c38244c207c24c17d6081a2dc75004b6ae96c63c7814d1cfdfbd87bb8ab5414b` |
+| E7c sampler/NFE | `artifacts/e7c_sampler_nfe/results.json` | `93eef5069598b099f62013384e6d91978d7c9996f8fd4f67ab790486758054e6` |
+| E7a alternate codec | `artifacts/e7a_codec_robustness/results.json` | `3f113628babb58cd9adf5223f04a28cc7bb54b59a451b6f5f9aa4ac8d2dd7173` |
+| E8a pose mosaic | `artifacts/e8a_pose_mosaic/results.json` | `74b9357f950fbfa4e94160852c53205398f8efad8c2c453b1d8a726be22148be` |
+| E6 persistent objects | `artifacts/phasec_v2/results.json` | `75a628ca6f2fa87e74e67bbe7b95d4acee6e0f35969d28fe97e72b0b40e981c7` |
+| E6 completion validator | `artifacts/phasec_v2/completion_validation.json` | `091206aa6e2b1a9cf39f9cd4d921a2da8611216f8ecaf56e9bccb48d454915d8` |
+
+The hash in a release manifest is the authority if this appendix and a later public archive ever
+disagree. Dashboard records are mirrors; manuscript conclusions are regenerated from the frozen
+local artifacts.
+
+## K. Development mechanism and inference-allocation receipt
+
+The corrected mechanism receipt executes regression and diffusion only. Although the harness also
+prints the parameter count of an instantiated 7.28 M energy model, its mode list is
+`('reg','diff')`; no energy result from that harness is admissible. Regression (7.27 M parameters)
+was trained for 6,000 steps and diffusion (7.53 M) for 8,000 steps with the same six-frame,
+two-level context interface. The principal held-out table uses six batches of 48 records and eight
+candidates per record.
+
+| Executed head | Best-of-8 fg-MSE, all | Easy | Hard novel strip | Mean over 8 candidates | Best-of-8 fg-sharpness |
+|---|---:|---:|---:|---:|---:|
+| regression with MC dropout | 0.0664 | 0.0232 | 0.1808 | 0.0714 | 0.1591 |
+| diffusion, v-prediction + DDIM-16 | 0.0512 | 0.0120 | 0.1549 | 0.0640 | 0.1886 |
+| persistence reference | 0.2367 | — | — | — | 0.0515 |
+
+One regression candidate is one MC-dropout forward. One diffusion candidate is the declared number
+of DDIM network evaluations. Consequently, best-of-8 does **not** equalize total inference work:
+
+| Per-candidate NFE | Regression best-of-8 fg-MSE | Diffusion best-of-8 fg-MSE | Total regression / diffusion evaluations per record |
+|---:|---:|---:|---:|
+| 4 | 0.0680 | 0.0546 | 8 / 32 |
+| 8 | 0.0680 | 0.0514 | 8 / 64 |
+| 16 | 0.0680 | 0.0503 | 8 / 128 |
+
+This NFE sweep uses two batches of 48 records, so its 16-NFE value is not substituted for the
+six-batch main-table value. The licensed conclusion is matched-capacity/interface coverage plus
+diffusion inference-allocation sensitivity, not equal-total-work superiority.
+
+| Receipt | SHA-256 | Provenance class |
+|---|---|---|
+| `logs_rhcp/step1_mech_clean2.log` | `5333f8e8b74b38c6e9608b11f82e4f2494fa3425b31be75e1c6877cb622953e8` | hash-listed legacy log; not a content-addressed RunSpec result JSON/NPZ |
+
+## L. Energy-based capability receipts
+
+The energy-based evidence is a separate official-code adaptation, not a third matched-capacity
+cell in Section K. Both S1 and S2 use the paper's `xxs` shape (width 384, 6 layers, 6 heads, FFN
+multiplier 4), 16 context frames, 14.66 M parameters, effective fresh batch 128, 20,000 steps,
+5,000-step warm-up, fp32, and one RTX 4060 Ti 16 GB. Their purpose is to separate energy-landscape
+ordering from candidate-descent reachability.
+
+| Recipe | Landscape-ordering receipt | Optimization / scale receipt | Descent-output receipt | Terminal reading |
+|---|---|---|---|---|
+| S2, fixed $\alpha=15.97$ | batch mean has lower energy than target on 21/21 probes; post-warm-up gap approximately 0.6–1.2 | loss approximately 0.597 | cold $d_{\mathrm{tgt}}=1.264$–1.292; fg-sharpness 0.0081–0.0144 | persistently misordered and unstructured |
+| S1, learnable $\alpha:23.95\rightarrow33.27$ | target lowest on 15 consecutive probes from 6,000–20,000 steps; target-below-mean gap +0.22 to +3.09 | final loss 0.3614 | cold $d_{\mathrm{tgt}}=1.123$–1.166; cold fg-sharpness maximum 0.0345; paper-style best-of-4 $d_{\mathrm{tgt}}=1.186$–1.260 and sharpness 0.0102–0.0154 | ordering repaired; reachability still fails at tested scale |
+
+The structured-output threshold was approximately 0.08 and the AE round-trip sharpness reference
+was approximately 0.24. These values scope the observed collapse; they do not prove an impossibility
+result for larger models, longer training, or different initializations.
+
+| Receipt | SHA-256 | Provenance class |
+|---|---|---|
+| `logs_rhcp/ebt_scaled_s1.log` | `d1794167a4e9d6640cfd2c2ddd44965a7a7c71a572cdff4c823c45c2287e3365` | hash-listed legacy log; not a content-addressed RunSpec result JSON/NPZ |
+| `logs_rhcp/ebt_scaled_s2.log` | `763221c3fe6bffea9d82270a768c1f0ea9db770edbdd9b88db89fd4748bd0568` | hash-listed legacy log; not a content-addressed RunSpec result JSON/NPZ |
+
+## M. Chapter 2 reversible-memory and numerical-validation provenance
+
+The retained end-to-end training-loop frontier was measured on an RTX 4060 Ti 16 GB with encoder,
+core, decoder, and Adam active (batch 32, 64×64 resolution, three levels). The asterisk denotes
+WDDM shared-memory spill beyond physical VRAM, not a valid in-core GPU operating point.
+
+| Horizon $K$ | BPTT MB | Checkpoint MB | Reversible MB | BPTT ms | Checkpoint ms | Reversible ms |
+|---:|---:|---:|---:|---:|---:|---:|
+| 10 | 3,809 | 1,354 | 1,065 | 549 | 322 | 257 |
+| 20 | 6,592 | 1,391 | 1,078 | 399 | 544 | 479 |
+| 40 | 12,162 | 1,471 | 1,091 | 740 | 1,028 | 882 |
+| 80 | 23,305* | 1,637 | 1,125 | 43,797* | 3,131 | 2,556 |
+| 120 | OOM | 1,801 | 1,152 | — | 3,960 | 2,760 |
+| 160 | OOM | 1,967 | 1,176 | — | 4,066 | 3,362 |
+
+The defensible description is an approximately horizon-independent reversible peak
+activation-tape footprint over the tested range, with a modest measured edge over the implemented
+per-step checkpoint comparator—not a universal constant-memory or universal speed theorem.
+
+The separate energy-descent inner-loop panel shows why reversibility is not automatically useful
+everywhere. At $K=128$, checkpointing uses 5.296 GB and 7.85 s/step, whereas reversible replay uses
+5.282 GB and 15.37 s/step: only 14 MB (0.26%) is saved because other tensors dominate. The same
+receipt reports CPU-fp64 gradient cosine greater than 0.999999 between reversible and checkpointed
+variants. This is a numerical check for that implementation, not a general proof.
+
+| Receipt / source | SHA-256 | Provenance limitation |
+|---|---|---|
+| `logs_rhcp/panelA_memfrontier.md` | `1349487ab314faac443dfb296269d88fa26a8a1a92d75d4c48256e4155bde81c` | measured legacy receipt; not a content-addressed result artifact |
+| `logs_rhcp/mem_panel.md` | `8d863d8015770278d40767aac5ea994701e42e21accadce8b377723a93fe13c5` | measured legacy receipt; contains the inner-loop gradient-cosine statement |
+| `hvp_rev/theory.py` | `0928c9b42c6f719048cfb872251650cf3fe5510232f887cfffe4f654a30fa0bd` | executable numerical-check source only; no standalone frozen T1–T4 output artifact was found |
+
+The absence of a standalone frozen T1–T4 output file is a review-edition provenance limitation,
+not permission to reconstruct numerical results from prose. A future public release may add such a
+receipt after rerunning the fixed source, but the present dissertation must cite only the measured
+logs and source status above.
