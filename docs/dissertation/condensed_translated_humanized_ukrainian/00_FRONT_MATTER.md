@@ -1,0 +1,130 @@
+# Вступні матеріали
+
+## Відомості для титульного аркуша
+
+**Затверджена тема українською мовою:** «Системний аналіз та інтелектуальні технології консистентного моделювання процесів ієрархічної генерації відеоданих».
+
+**Назва англійською мовою:** *Systems Analysis and Intelligent Technologies for Consistent Modelling of Hierarchical Video-Data Generation Processes*.
+
+**Здобувач:** Леонід Русланович Кулик.
+
+**Галузь знань:** 12 Інформаційні технології.
+
+**Спеціальність:** 124 Системний аналіз.
+
+**Науковий керівник:** Олександр Борисович Мокін, доктор технічних наук, професор.
+
+**Установа:** Вінницький національний технічний університет, м. Вінниця, 2026.
+
+**УДК:** 004.054:[004.032.26+004.85] **[ДАНІ ВІД АВТОРА: перевірити класифікацію та всі поля титульного аркуша за затвердженими документами установи.]**
+
+## Українська анотація
+
+Кулик Л. Р. *Системний аналіз та інтелектуальні технології консистентного моделювання процесів ієрархічної генерації відеоданих*. Кваліфікаційна наукова праця на правах рукопису, подана на здобуття ступеня доктора філософії за спеціальністю 124 «Системний аналіз» галузі знань 12 «Інформаційні технології». Вінницький національний технічний університет, Вінниця, 2026.
+
+Дисертацію присвячено довгогоризонтному прогнозуванню відео як системній задачі з обмеженими ресурсами. Зі збільшенням горизонту модель повинна не лише формувати правдоподібні наступні кадри, а й зберігати інформацію про об'єкти, їхню ідентичність, траєкторії та ділянки сцени, які тимчасово зникають із поля спостереження. Водночас довгі часові ланцюжки збільшують пам'ять активацій під час навчання, а рівномірне просторове представлення витрачає однакову обчислювальну ємність на ділянки з різною інформаційною складністю. Ці обмеження часто позначають одним словом «пам'ять», хоча вони виникають у різних частинах системи й потребують окремих методів.
+
+**Мета дисертаційної роботи** полягає у підвищенні значущої для задачі консистентності та ресурсної ефективності довгогоризонтного ієрархічного прогнозування відео шляхом системного аналізу й окремої перевірки механізмів часового навчання, просторового представлення, збереженого контексту та оцінювання результатів.
+
+**Зміст роботи.** У вступі обґрунтовано актуальність теми, сформульовано мету й шість завдань дослідження, визначено об'єкт, предмет і методи, подано наукову новизну, практичне значення, відомості про достовірність результатів та особистий внесок здобувача. Довгогоризонтне прогнозування розглянуто як частково спостережуваний динамічний процес, у якому просторове представлення, контекст інференсу й пам'ять навчальних активацій утворюють різні ресурсні контури.
+
+У першому розділі виконано системний аналіз консистентного прогнозування відео. Критерії зовнішнього вигляду, ідентичності, геометрії, семантичного змісту, часової неперервності, правильності траєкторії та міжрівневої консистентності розглянуто як взаємопов'язані, але не взаємозамінні. Проаналізовано дифузійні, авторегресійні, енергетичні й трансформерні підходи, способи керування консистентністю та методи довготривалого доступу до історії. Сформульовано вимоги до причинно коректного порівняння пакетів контексту: явний облік бюджету, геометрії часових прив'язок, доступної інформації, експериментальної популяції та показника, який відповідає заявленому механізму.
+
+У другому розділі досліджено два незалежні допоміжні методи. Перший стосується реверсивного часового обчислення в TempVerseFormer. Точне відновлення заявляється для персистентного подвоєного стану трансформера, тоді як кодування, проєкції, злиття, декодування та функція втрат залишаються поза межею реверсивності. У задачі контрольованого обертання пам'ять часової моделі становить близько 0,89 ГБ для одного, чотирьох і шістнадцяти кроків; зіставлені нереверсивні варіанти на шістнадцяти кроках потребують близько 2,60–2,61 ГБ. Опублікований профіль для довших горизонтів залишається близьким до 1 ГБ до 1024 кроків, але реверсивне відтворення має обчислювальну ціну й не гарантує кращої якості прогнозу.
+
+Другий метод реалізовано у Vision Byte Latent Transformer. V-BLT виконує локально–глобально–локальну обробку байтів каналів растрових пікселів, використовує N-вимірне ротаційне позиційне кодування для збереження часових і просторових координат після лінеаризації та прогнозує категоріальний розподіл за 256 значеннями кожного байта. Перевірка концепції з фіксованими просторово-часовими блоками розміром 4 × 4 × 4 продемонструвала нижчу обчислювальну складність у GFLOPs, ніж наведені конфігурації ViViT і UNet-3D, а також сприятливі, хоча не завжди найкращі, показники на процедурних відео обертових двовимірних фігур і тривимірних полікубів. Прогнозна ентропія формує просторову карту складності. Динамічна зміна розміру ділянок або розподілу обчислень за цією картою в завершених експериментах не перевірялася.
+
+У третьому розділі розроблено дворівневу модель ієрархічного контексту для довгогоризонтного прогнозування відео. Заморожений латентний кодек утворює грубий і детальний просторові потоки, які обробляє один дифузійний предиктор зі спільною увагою. Пакет контексту формалізовано через рівень представлення, часовий крок, кількість кадрів і геометрію прив'язки. Окремо враховано токени контексту, цілі, корисного навантаження та повної послідовності. Для авторегресивного інференсу визначено оновлення грубого й детального кільцевих буферів. TempVerseFormer, V-BLT і RoPE-ND не інтегровано до цього предиктора; вони розв'язують інші ресурсні задачі в межах спільної системної методології.
+
+У четвертому розділі наведено експериментальну перевірку розроблених методів і меж їх застосовності. Процедурне середовище LoopMom забезпечує точне аналітичне визначення моментів, коли потрібна ділянка сцени була видимою та чи входить вона до досяжності конкретного пакета. Оцінювання охоплює показники кадру й переднього плану, пропущений і зайвий передній план, зіставлення персистентних об'єктів, ідентичність, покриття, неперервність траєкторії, парні ефекти на рівні кліпів і одночасні інтервали на основі максимум-статистики. Для статистичного виведення використано кластеризацію за кліпами; сіди навчання розглянуто як окремий рівень невизначеності. Дані розробки відокремлено від незайманих, заздалегідь призначених і захищених популяцій, а негативні результати включено до підсумкового доказового запису.
+
+У загальних висновках результати зіставлено із шістьма завданнями дослідження та сформульовано правило вибору методу за обмежувальним ресурсом. Ієрархічне пакування доцільне, коли бракує досяжності минулого; щільний детальний контекст потрібний, коли визначальною є точність відтворення; реверсивне відтворення або контрольні точки активацій застосовують, коли навчання обмежує пам'ять. Ці рішення є взаємодоповнювальними, але їхню користь перевірено окремо, а не як одну наскрізну архітектуру.
+
+**Основні наукові та практичні результати полягають у такому:**
+
+1. Запропоновано системну декомпозицію довгогоризонтного відеопредиктора за трьома ресурсами: просторовою ємністю представлення, доступним під час інференсу контекстом та пам'яттю активацій під час навчання. Для кожного ресурсу визначено окремий інтерфейс втручання й межу відповідного твердження.
+2. Уточнено критерії консистентності для самоподаваного прогнозування відео та пов'язано їх з окремими спостережуваними відмовами: втратою об'єкта, появою зайвого переднього плану, підміною ідентичності, помилкою траєкторії та суперечністю між рівнями представлення.
+3. Розроблено й перевірено реверсивний часовий блок із явним контрактом відновлюваного стану. Вимірювання підтвердили його доцільність у режимі, де пам'ять активацій є обмежувальним ресурсом, і водночас показали необхідність враховувати додаткові обчислення.
+4. Розроблено ієрархічне байтове представлення V-BLT з RoPE-ND та прогнозною ентропією як внутрішнім показником просторової складності. Експериментально підтверджено працездатність фіксованого пакетування; адаптивне керування регіонами залишено поза межами доведених результатів.
+5. Розроблено модель і протокол зіставлення ієрархічних і плоских пакетів контексту за явного токенного бюджету. У незайманій популяції різниці досяжності ієрархічний контекст покращив зареєстрований показник на 0,0980 і 0,0914 для двох сідів навчання, коли зіставлене плоске вікно не містило потрібної історії.
+6. На одночасно проаналізованому фронтирі перевагу ієрархії підтверджено за 896 і 1152 токенів контексту; результат за 1792 токенів залишився невирішеним; перевагу детального плоского контексту підтверджено за 2432 і 3072 токенів. Пакети з 48 грубих кадрів і шести або двох детальних кадрів забезпечують номінально ту саму 48-кадрову досяжність за 1152 або 896 токенів, що у 2,67 та 3,43 раза менше, ніж 48 детальних кадрів.
+7. Дослідження робастності зберегли основні напрями ефектів за альтернативного розподілу обчислень семплера й незалежно навченого кодека. Пізня інверсія із самоподаваного дослідження не відтворилася, тому її не включено до підтверджених висновків. На захищеному довгому Moving-MNIST ієрархія краще зберігала просторове покриття й неперервність, тоді як плоский детальний контекст краще зберігав ідентичність цифр.
+
+**Наукова новизна дисертаційної роботи полягає в такому:**
+
+1. Удосконалено системне подання консистентності прогнозованого відео шляхом переходу від одного агрегованого показника до сукупності критеріїв, що охоплюють часову неперервність, правильність траєкторії, повторну появу об'єкта, хибний передній план та міжрівневу відповідність.
+2. Набув подальшого розвитку метод реверсивного часового обчислення завдяки явному відокремленню відновлюваного стану від нереверсивних інтерфейсів та спільному аналізу алгебричного відновлення, пам'яті активацій і обчислювальної ціни.
+3. Удосконалено ієрархічне представлення візуальних даних на рівні байтів каналів растрових пікселів шляхом використання локально–глобально–локальної обробки, RoPE-ND і прогнозної ентропії для оцінювання просторової складності без окремої голови невизначеності.
+4. Вперше для розглянутих конфігурацій виконано контрольоване зіставлення ієрархічного та плоского відеоконтексту за бюджетом і досяжністю та встановлено умовний фронтир досяжність–точність відтворення з нижньою областю переваги ієрархії, невирішеною проміжною точкою і верхньою областю переваги детального плоского контексту.
+5. Удосконалено методику оцінювання пам'яттєзалежного прогнозування через точну геометричну спостережуваність, популяції різниці досяжності для кожної пари, повні показники переднього плану, зіставлення персистентних об'єктів і статистичне виведення з урахуванням кластеризації за кліпами.
+
+Новизна має методологічний та емпіричний характер. У роботі не заявляється пріоритет щодо ієрархічних відеомоделей, реверсивних мереж або адаптивної токенізації як широких класів архітектур.
+
+**Отримані результати є корисними для:** дослідників, які проєктують моделі прогнозування відео за обмеженого контексту або пам'яті; розробників експериментальних систем, яким потрібні відтворювані порівняння пакетів контексту; фахівців із процедурного синтезу даних для перевірки часової динаміки, просторової складності та пам'яті; навчальних курсів із системного аналізу, машинного навчання й генеративного моделювання; подальших робіт із довгими природними відео після окремої зовнішньої валідації. Застосування результатів у критичних для безпеки системах не перевірялося.
+
+**Практичне значення отриманих результатів** полягає у створенні комплексу програмних засобів для відтворюваного дослідження відеопрогнозування. До нього належать репозиторій TempVerseFormer для реверсивного часового навчання; репозиторій visionBLT з V-BLT і RoPE-ND; набір інструментів simple-shape-dataset-toolbox для процедурного генерування відео двовимірних фігур і тривимірних полікубів; генератори LoopMom і довгого Moving-MNIST з метаданими персистентних об'єктів; модулі підготовки конфігурацій, навчання, інференсу, оцінювання, зіставлення експериментів та побудови таблиць і рисунків із заморожених артефактів. Реалізовано перевірку сумісності конфігурацій, авторизацію експериментів із забороною за замовчуванням, контентно-адресовані специфікації запусків і повний набір кадрових та об'єктних показників. Сукупність цих засобів підтримує повторення експериментів, розроблення нових контрольованих наборів даних і навчальне використання.
+
+**Ключові слова:** системний аналіз; довгогоризонтне прогнозування відео; ієрархічний контекст; консистентність; фронтир досяжність–точність відтворення; реверсивні обчислення; пам'ять активацій; моделювання растрових байтів; прогнозна ентропія; латентна дифузія; точна спостережуваність; статистичне виведення з урахуванням кластеризації за кліпами.
+
+## Англійський реферат
+
+Kulyk L. R. *Systems Analysis and Intelligent Technologies for Consistent Modelling of Hierarchical Video-Data Generation Processes*. Qualifying scientific work submitted as a manuscript for the degree of Doctor of Philosophy in specialty 124 System Analysis, field 12 Information Technologies. Vinnytsia National Technical University, Vinnytsia, 2026.
+
+The dissertation treats long-horizon video prediction as a resource-constrained systems problem. A predictor must preserve task-relevant information when objects or scene regions leave the current observation, while training through long temporal chains increases activation storage and uniform spatial representations assign equal capacity to regions of unequal predictive complexity. These are distinct resource constraints rather than one undifferentiated form of memory.
+
+**Aim.** The dissertation aims to improve task-relevant consistency and resource efficiency in long-horizon hierarchical video prediction through systems analysis and separately validated interventions for temporal training, spatial representation, retained context, and evaluation.
+
+**Structure and content.** The Introduction justifies the topic, states the aim and six research tasks, and defines the object, subject, methods, novelty, practical significance, reliability, and applicant contribution. Chapter 1 models long-horizon prediction as a partially observed dynamic system. It separates appearance, identity, geometry, semantic content, temporal continuity, trajectory correctness, and cross-level agreement, and derives requirements for causal, resource-accounted comparison.
+
+Chapter 2 studies two independent enabling methods. TempVerseFormer applies reversible computation to a persistent doubled transformer state while keeping non-invertible encoding, projection, fusion, decoding, and loss interfaces outside the exact claim. On the reported controlled-rotation task, temporal-model memory remains about 0.89 GB at one, four, and sixteen steps, compared with about 2.60–2.61 GB for matched non-reversible variants at sixteen steps. Vision Byte Latent Transformer applies local–global–local processing to raster pixel-channel bytes, uses RoPE-ND to preserve temporal and spatial coordinates, and estimates spatial predictive complexity through categorical entropy. The evaluated method uses fixed 4 × 4 × 4 packages; dynamic entropy-driven allocation was not tested.
+
+Chapter 3 develops a two-level hierarchical retained-context model. A frozen latent codec supplies coarse and fine streams to one joint-attention diffusion predictor. Packages are defined by spatial level, temporal stride, frame count, and anchor geometry, with context, target, payload, and total-token costs accounted separately. TempVerseFormer, V-BLT, and RoPE-ND are not components of this final predictor; they address other resource interfaces within the same systems methodology.
+
+Chapter 4 validates the methods and their applicability boundaries. The purpose-built LoopMom environment provides exact geometric observability for memory-dependent events. Evaluation includes frame and foreground endpoints, missing and extra foreground, persistent-object assignment, identity, coverage, trajectory continuity, paired clip-level effects, and simultaneous maximum-statistic intervals. Statistical inference accounts for clustering by clips, while training seeds form a separate uncertainty level. Development, untouched, purpose-locked, and protected populations are kept distinct, and negative results remain in the final evidence record.
+
+The General Conclusions map the findings back to the six research tasks and state a binding-resource selection rule. Hierarchical packaging is appropriate when distant reach is missing; dense fine context is preferable when fidelity is limiting; and reversible replay or activation checkpointing is relevant when training memory is the bottleneck. These interventions are complementary, but their benefits were measured separately rather than as one end-to-end architecture.
+
+**Main scientific and practical results.** The dissertation establishes a three-resource decomposition of spatial capacity, inference context, and training activation memory; an explicit reversible-state contract; a raster-byte representation with RoPE-ND and entropy-based complexity estimation; and a matched-budget protocol for hierarchical versus flat context. On the untouched reach-differential population, hierarchy improves the registered endpoint by 0.0980 and 0.0914 for two training seeds when the matched flat window cannot include the needed past. Across the simultaneous frontier, hierarchy is confirmed at 896 and 1,152 context tokens, 1,792 tokens remain unresolved, and fine-resolution flat context is confirmed at 2,432 and 3,072 tokens. Forty-eight coarse frames with six or two fine frames use 1,152 or 896 tokens, respectively, which is 2.67 and 3.43 times fewer than 48 fine frames. Robustness tests preserve the main effect directions; the late self-fed inversion does not replicate. On protected long Moving-MNIST, hierarchy better preserves spatial support and continuity, whereas dense flat context better preserves digit identity.
+
+**Scientific novelty.** The work develops trajectory-level consistency criteria linked to observable failures; delimits reversible temporal computation by an explicit state boundary and a measured memory–computation frontier; develops a hierarchical raster-byte representation with multidimensional positional structure and entropy-based complexity estimation; establishes a matched-budget reach–fidelity frontier for the tested hierarchical and flat context packages; and combines exact observability, pair-specific reach populations, persistent-object endpoints, and clip-cluster-aware inference. The novelty is methodological and empirical. Priority over hierarchical video models, reversible networks, or adaptive tokenization as broad architectural classes is not claimed.
+
+**Potential use.** The results are useful for research on memory-limited video prediction, controlled evaluation of long-range dependence, procedural data generation, reproducible experiment management, and teaching in system analysis and machine learning. Application to safety-critical systems or unrestricted natural video requires separate external validation.
+
+**Practical significance.** The software outputs include the TempVerseFormer and visionBLT repositories; the simple-shape-dataset-toolbox for procedural 2-D shape and 3-D polycube video generation; LoopMom and persistent long Moving-MNIST generators with object metadata; and modules for configuration validation, training, inference, endpoint calculation, experiment comparison, and evidence-derived figure and table generation. Fail-closed authorization, content-addressed run specifications, immutable artifacts, and stable research interfaces support reproducibility. A direct design rule follows: compress retained state when distant reach is missing, preserve dense detail when fidelity is limiting, and reconstruct activations when the training activation tape is the dominant cost.
+
+**Keywords:** systems analysis; long-horizon video prediction; hierarchical context; consistency; reach–fidelity frontier; reversible computation; activation memory; raster-byte modelling; predictive entropy; latent diffusion; exact observability; clip-cluster-aware inference.
+
+## Публікації заявника
+
+- **[A1]** Кулик Л. Р., Мокін О. Б. «Масштабування прогнозування відео за допомогою просторово-часових фрагментів». *Вісник Вінницького політехнічного інституту*, 2025, № 5, с. 129–139. DOI: 10.31649/1997-9266-2025-182-5-129-139.
+- **[A2]** Кулик Л. «Часове моделювання за допомогою реверсивних трансформерів». *Neural Computing and Applications*, 2026, т. 38, стаття 30. DOI: 10.1007/s00521-025-11707-3. Одноосібний автор; видання індексується у Scopus.
+- **[A3]** Кулик Л. Р., Мокін О. Б. «Методи забезпечення консистентного генерування в дифузійних моделях». *Вісник Вінницького політехнічного інституту*, 2024, № 4, с. 75–85. DOI: 10.31649/1997-9266-2024-175-4-75-85.
+- **[A4]** Кулик Л. Р. «Коли ієрархічна відеопам'ять виправдовує себе? Фронтир досяжність–точність відтворення за фіксованих бюджетів контексту». **[ДАНІ ВІД АВТОРА: вказати остаточний склад авторів, цільовий журнал та статус публікації.]**
+- **Публікації у збірниках конференцій:** **[ВВЕСТИ АВТОРОМ: вказати шість перевірених бібліографічних записів та підтвердити, чи належить DSMSI-2023 до цього списку.]**
+
+## Зміст
+
+Після остаточної пагінації інституційна версія повинна містити автоматично сформований зміст. Наукова частина охоплює Вступ; Розділ 1 *Системний аналіз і вимоги до консистентності довгогоризонтного прогнозування відео*; Розділ 2 *Методи здійсненного часового навчання й адаптивного просторового представлення*; Розділ 3 *Ієрархічна контекстна модель довгогоризонтного прогнозування відео*; Розділ 4 *Експериментальна валідація та рішення щодо робочих областей*; Загальні висновки; Список використаних джерел; Додатки.
+
+## Символи та скорочення
+
+| Символ або скорочення | Значення |
+|---|---|
+| AR | авторегресійний |
+| BPTT | зворотне поширення через час |
+| CI | довірчий інтервал |
+| CRN | спільні випадкові числа |
+| DDIM | неявна дифузійна модель знешумлення |
+| DDPM | імовірнісна дифузійна модель знешумлення |
+| DiT | дифузійний трансформер |
+| EBM / EBT | енергетична модель / енергетичний трансформер |
+| EMA | експоненційне ковзаюче середнє |
+| FID / FVD | відстань Фреше / відстань Фреше для відео |
+| fg-MSE | середньоквадратична похибка переднього плану |
+| LPIPS | навчена перцептивна подібність фрагментів зображення |
+| MSE | середньоквадратична похибка |
+| NFE | кількість обчислень функції |
+| RoPE-ND | N-вимірне ротаційне позиційне вбудовування |
+| SSIM | індекс структурної подібності |
+| V-BLT | Vision Byte Latent Transformer |
+| VAE | варіаційний автоенкодер |

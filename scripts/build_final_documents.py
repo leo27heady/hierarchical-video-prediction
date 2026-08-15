@@ -339,6 +339,9 @@ def _omml_element(
     bold: bool = False,
 ) -> etree._Element:
     mathml = latex_to_mathml(_normalize_latex(source))
+    # Some aligned LaTeX environments are emitted with a literal alignment ampersand by
+    # latex2mathml. Escape only ampersands that are not already XML entities before parsing.
+    mathml = re.sub(r"&(?!#\d+;|#x[0-9A-Fa-f]+;|[A-Za-z]+;)", "&amp;", mathml)
     mathml_root = etree.fromstring(mathml.encode("utf-8"))
     omml = _mathml_to_omml_transform()(mathml_root).getroot()
     for math_run in omml.iter(f"{{{MATH_NS}}}r"):

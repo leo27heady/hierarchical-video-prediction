@@ -390,9 +390,10 @@ result for larger models, longer training, or different initializations.
 
 ## M. Chapter 2 reversible-memory and numerical-validation provenance
 
-The retained end-to-end training-loop frontier was measured on an RTX 4060 Ti 16 GB with encoder,
-core, decoder, and Adam active (batch 32, 64×64 resolution, three levels). The asterisk denotes
-WDDM shared-memory spill beyond physical VRAM, not a valid in-core GPU operating point.
+The retained end-to-end **deterministic** training-loop frontier was measured on an RTX 4060 Ti
+16 GB with encoder, three-level core, decoder, and Adam active (batch 32, 64×64 resolution,
+three levels). The asterisk denotes WDDM shared-memory spill beyond physical VRAM, not a valid
+in-core GPU operating point. No stochastic innovations are supplied by this frontier path.
 
 | Horizon $K$ | BPTT MB | Checkpoint MB | Reversible MB | BPTT ms | Checkpoint ms | Reversible ms |
 |---:|---:|---:|---:|---:|---:|---:|
@@ -403,9 +404,11 @@ WDDM shared-memory spill beyond physical VRAM, not a valid in-core GPU operating
 | 120 | OOM | 1,801 | 1,152 | — | 3,960 | 2,760 |
 | 160 | OOM | 1,967 | 1,176 | — | 4,066 | 3,362 |
 
-The defensible description is an approximately horizon-independent reversible peak
-activation-tape footprint over the tested range, with a modest measured edge over the implemented
-per-step checkpoint comparator—not a universal constant-memory or universal speed theorem.
+The defensible description is an approximately horizon-independent reversible **total peak
+allocation over the tested range**, with a modest measured edge over the implemented per-step
+checkpoint comparator—not a universal constant-memory or universal speed theorem. The replay
+routine uses spacing $\lfloor\sqrt K\rfloor$ and retains approximately $O(\sqrt K\,D_s)$ full-state
+anchors; only its transient local activation graph is constant in $K$ under the stated model.
 
 The separate energy-descent inner-loop panel shows why reversibility is not automatically useful
 everywhere. At $K=128$, checkpointing uses 5.296 GB and 7.85 s/step, whereas reversible replay uses
@@ -419,7 +422,17 @@ variants. This is a numerical check for that implementation, not a general proof
 | `logs_rhcp/mem_panel.md` | `8d863d8015770278d40767aac5ea994701e42e21accadce8b377723a93fe13c5` | measured legacy receipt; contains the inner-loop gradient-cosine statement |
 | `hvp_rev/theory.py` | `0928c9b42c6f719048cfb872251650cf3fe5510232f887cfffe4f654a30fa0bd` | executable numerical-check source only; no standalone frozen T1–T4 output artifact was found |
 
+The source contains four distinct checks. T1 tests deterministic reconstruction of one reversible
+convolutional stage at thresholds $10^{-9}$ (fp64) and $10^{-4}$ (Lipschitz-constrained fp32). T2
+tests 40-step store-the-noise reconstruction on one stage, requiring correct-noise drift below
+$10^{-8}$ and wrong-noise drift above $10^{-2}$. T3 is a seeded 100-step perturbation-growth
+diagnostic. T4 constructs a deterministic multi-level RHCP and requires reverse-replay/BPTT
+gradient cosine above $0.9999$; despite its historical heading, the executed T4 path passes no
+stochastic innovation. The memory table above is a separate deterministic training-loop
+experiment. These scopes must not be merged into a single stochastic hierarchical result.
+
 The absence of a standalone frozen T1–T4 output file is a review-edition provenance limitation,
-not permission to reconstruct numerical results from prose. A future public release may add such a
-receipt after rerunning the fixed source, but the present dissertation must cite only the measured
-logs and source status above.
+not permission to reconstruct numerical results from prose. T1 and T2 also do not set an explicit
+random seed. A future public release may add a seeded output receipt after rerunning the fixed
+source, but the present dissertation cites only the encoded thresholds, measured legacy logs, and
+source status above.
