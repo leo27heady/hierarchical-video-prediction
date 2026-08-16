@@ -1,14 +1,14 @@
 [
   {
     "schema_version": "1.0",
-    "figure_id": "1.21",
+    "figure_id": "1.25",
     "file": "docs/figures/restructured/ch1_fig1_18_systems_map.pdf",
     "asset_class": "author-generated-artifact-derived",
     "sha256": "f0495a75722f8a65a32e0cde53b6cf10d42b7b2fc6360e222fcc84bd9a09e4a6",
     "bytes": 27935,
     "source": "dissertation-native deterministic generator",
     "source_paper": null,
-    "original_figure": "1.21",
+    "original_figure": "1.25",
     "source_page": null,
     "extraction_method": null,
     "modification_status": "new dissertation-native figure",
@@ -19,7 +19,7 @@
     "data_source": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
     "data_or_concept_source": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
     "role": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
-    "caption_attribution": "Chapter 1 Figure 1.21; caption identifies the figure as author-generated, derived, or conceptual.",
+    "caption_attribution": "Chapter 1 Figure 1.25; caption identifies the figure as author-generated, derived, or conceptual.",
     "page_dimensions_points": [
       862.56,
       480.096
@@ -27,14 +27,14 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "1.21",
+    "figure_id": "1.25",
     "file": "docs/figures/restructured/ch1_fig1_18_systems_map.png",
     "asset_class": "author-generated-artifact-derived",
     "sha256": "9063b9c3e364ad586367461fff6d75e49a51266d741cbf54fb3e383a7fb45acf",
     "bytes": 263731,
     "source": "dissertation-native deterministic generator",
     "source_paper": null,
-    "original_figure": "1.21",
+    "original_figure": "1.25",
     "source_page": null,
     "extraction_method": null,
     "modification_status": "new dissertation-native figure",
@@ -45,7 +45,7 @@
     "data_source": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
     "data_or_concept_source": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
     "role": "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
-    "caption_attribution": "Chapter 1 Figure 1.21; caption identifies the figure as author-generated, derived, or conceptual.",
+    "caption_attribution": "Chapter 1 Figure 1.25; caption identifies the figure as author-generated, derived, or conceptual.",
     "pixel_dimensions": [
       2875,
       1600

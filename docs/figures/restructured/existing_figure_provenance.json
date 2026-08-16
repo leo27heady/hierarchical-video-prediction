@@ -38,7 +38,7 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "1.19",
+    "figure_id": "1.23",
     "file": "docs/figures/fig35_fixed_grid_tokenization.png",
     "generator": "scripts/make_dissertation_foundation_figures.py",
     "data_source": "fixed-grid spatial-allocation analysis in Chapter 1",
@@ -52,7 +52,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "1.19",
+    "original_figure": "1.23",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
@@ -70,12 +70,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 1 Figure 1.19; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 1 Figure 1.23; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "1.20",
+    "figure_id": "1.24",
     "file": "docs/figures/fig39_flat_long_context_barrier.png",
     "generator": "scripts/make_dissertation_foundation_figures.py",
     "data_source": "retained-context reach formulation in Chapters 1 and 3",
@@ -89,7 +89,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "1.20",
+    "original_figure": "1.24",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
@@ -107,7 +107,7 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 1 Figure 1.20; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 1 Figure 1.24; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
