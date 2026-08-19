@@ -63,6 +63,12 @@ NATIVE_METADATA = {
         "Systems memory decomposition in Chapter 1",
         "location map for retained context, activations, optimizer state and transient workspace",
     ),
+    "ch1_fig1_6b_video_prediction_example": (
+        "1.6b",
+        "author-generated-conceptual",
+        "Static-to-video transition in Chapter 1",
+        "conceptual observed-and-predicted sequence illustrating motion, disappearance and memory-dependent re-entry",
+    ),
     "ch1_fig1_6_consistency_taxonomy": (
         "1.7",
         "author-generated-conceptual",
@@ -288,6 +294,52 @@ def fig1_4_resource_locations():
     ax.text(0.5, 0.055, "Reversibility changes activation storage; hierarchy changes retained context. Neither operation implies the other.",
             ha="center", fontsize=9.5)
     save(fig, "ch1_fig1_4_resource_locations")
+
+
+def fig1_6b_video_prediction_example():
+    fig, ax = canvas(13, 5.4)
+    title(
+        ax,
+        "Video prediction adds continuity, trajectory and delayed recovery",
+        "Conceptual sequence only: panels are not selected model outputs",
+    )
+
+    frame_y, frame_h, frame_w = 0.29, 0.43, 0.125
+    xs = [0.035, 0.185, 0.335, 0.535, 0.685, 0.835]
+    labels = ["$t-2$", "$t-1$", "$t$", "$t+1$", "$t+2$", "$t+3$"]
+    object_x = [0.18, 0.43, 0.72, 0.91, None, 0.18]
+
+    for j, (x, label, ox) in enumerate(zip(xs, labels, object_x)):
+        ax.add_patch(Rectangle((x, frame_y), frame_w, frame_h, facecolor=PALE_GRAY,
+                               edgecolor=BLUE if j < 3 else ORANGE, linewidth=1.6))
+        ax.plot([x, x + frame_w], [frame_y + 0.10, frame_y + 0.10], color="#CBD5E1", lw=1.0)
+        ax.text(x + frame_w / 2, frame_y - 0.035, label, ha="center", va="top",
+                fontsize=10, weight="bold")
+        if ox is not None:
+            cx = x + frame_w * ox
+            cy = frame_y + 0.22
+            tri = Polygon(
+                [[cx, cy + 0.065], [cx - 0.04, cy - 0.045], [cx + 0.045, cy - 0.04]],
+                closed=True, facecolor=ORANGE, edgecolor=INK, linewidth=1.3,
+            )
+            ax.add_patch(tri)
+            ax.add_patch(Circle((cx + 0.002, cy + 0.008), 0.010, facecolor=GOLD,
+                                edgecolor=INK, linewidth=0.8))
+        else:
+            ax.text(x + frame_w / 2, frame_y + 0.23, "outside\nviewport", ha="center",
+                    va="center", fontsize=9, color=MUTED)
+
+    ax.plot([0.485, 0.485], [0.22, 0.79], color=MUTED, lw=1.2, linestyle="--")
+    ax.text(0.26, 0.80, "observed context", ha="center", fontsize=11, color=BLUE, weight="bold")
+    ax.text(0.73, 0.80, "predicted continuation", ha="center", fontsize=11, color=ORANGE, weight="bold")
+    arrow(ax, (0.10, 0.23), (0.90, 0.23), color=MUTED, lw=1.2)
+    ax.text(
+        0.50,
+        0.10,
+        "A locally plausible next frame is insufficient: the sequence must preserve motion and recover the same object after it leaves view.",
+        ha="center", va="center", fontsize=10.2, color=INK,
+    )
+    save(fig, "ch1_fig1_6b_video_prediction_example")
 
 
 def fig1_6_consistency_taxonomy():
@@ -667,6 +719,7 @@ def main():
     fig1_2_hidden_viewport()
     fig1_3_teacher_self_fed()
     fig1_4_resource_locations()
+    fig1_6b_video_prediction_example()
     fig1_6_consistency_taxonomy()
     fig1_7_static_to_video()
     fig1_8_failure_montage()

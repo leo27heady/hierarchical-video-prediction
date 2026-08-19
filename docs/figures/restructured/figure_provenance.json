@@ -910,5 +910,51 @@
       684,
       566
     ]
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.6b",
+    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.png",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "a2b213be270b87153d4fc1c838d7b6ac37b7266a448b3b04de81e05feb4afc1f",
+    "bytes": 123571,
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "generator_sha256": "b25e95934da2d25714bdfd7dfff601edc884d12cb6733cd96018356826a80d96",
+    "data_or_concept_source": "Dissertation-native conceptual example of observed frames, occlusion, and re-entry in video prediction",
+    "source_files": [
+      "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"
+    ],
+    "modification_status": "new dissertation-native deterministic rendering",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "role": "Panel b of Chapter 1 Figure 1.6; conceptual transition from single-image generation to temporally consistent video prediction",
+    "caption_attribution": "Chapter 1 Figure 1.6 explicitly identifies panel b as dissertation-created and explanatory rather than evidential.",
+    "pixel_dimensions": [
+      2260,
+      958
+    ]
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.6b",
+    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.pdf",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "71eaa48547e4cbe42e6d57a7f69d0c532f972483c4f1d48fcb9b18ad7da75827",
+    "bytes": 23485,
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "generator_sha256": "b25e95934da2d25714bdfd7dfff601edc884d12cb6733cd96018356826a80d96",
+    "data_or_concept_source": "Dissertation-native conceptual example of observed frames, occlusion, and re-entry in video prediction",
+    "source_files": [
+      "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"
+    ],
+    "modification_status": "new dissertation-native deterministic rendering",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "role": "Vector companion to panel b of Chapter 1 Figure 1.6",
+    "caption_attribution": "Chapter 1 Figure 1.6 explicitly identifies panel b as dissertation-created and explanatory rather than evidential.",
+    "page_dimensions_points": [
+      739.8,
+      313.776
+    ]
   }
 ]

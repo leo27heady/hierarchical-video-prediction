@@ -758,8 +758,8 @@
     "figure_id": "2.3",
     "file": "docs/figures/restructured/ch2_fig2_3_dataset_ladder.pdf",
     "asset_class": "author-generated-conceptual",
-    "sha256": "58c0edf4a86ec2013b204d6854fbebcab4445e688ce0adc5736b7cb01ca4c950",
-    "bytes": 28854,
+    "sha256": "b468720087d67f82b93069c7e3fd169bfa0bc1e1080c7920c4ad3115b96d5e09",
+    "bytes": 47547,
     "source": "dissertation-native deterministic generator",
     "source_paper": null,
     "original_figure": "2.3",
@@ -769,14 +769,14 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "generator": "scripts/make_restructured_ch2_ch4_figures.py",
-    "generator_sha256": "fa82a44f22603ad0502c25d487c07800c19c05c3e66e6f676a1b01bcbff779c7",
+    "generator_sha256": "f024fb284a68bf23a94fa16afa211ab4d98e9ed62dd22a7ed665732ab9ff5da6",
     "data_source": "Chapter 2 Table 2.1 and published experiment protocols",
     "data_or_concept_source": "Chapter 2 Table 2.1 and published experiment protocols",
     "role": "Chapter 2 Table 2.1 and published experiment protocols",
     "caption_attribution": "Chapter 2 Figure 2.3; caption identifies the figure as author-generated, derived, or conceptual.",
     "page_dimensions_points": [
-      821.041,
-      482.641
+      846.9,
+      483.552
     ]
   },
   {
@@ -784,8 +784,8 @@
     "figure_id": "2.3",
     "file": "docs/figures/restructured/ch2_fig2_3_dataset_ladder.png",
     "asset_class": "author-generated-conceptual",
-    "sha256": "1a3fd52dc6720dab0a1c0f57842c069f458883c336b25af84f1855f2feac26ab",
-    "bytes": 257569,
+    "sha256": "2e39ba86dd390a0551b71e1d73a8a3567d1177021914ad308252afa29ca6a854",
+    "bytes": 212552,
     "source": "dissertation-native deterministic generator",
     "source_paper": null,
     "original_figure": "2.3",
@@ -795,14 +795,14 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "generator": "scripts/make_restructured_ch2_ch4_figures.py",
-    "generator_sha256": "fa82a44f22603ad0502c25d487c07800c19c05c3e66e6f676a1b01bcbff779c7",
+    "generator_sha256": "f024fb284a68bf23a94fa16afa211ab4d98e9ed62dd22a7ed665732ab9ff5da6",
     "data_source": "Chapter 2 Table 2.1 and published experiment protocols",
     "data_or_concept_source": "Chapter 2 Table 2.1 and published experiment protocols",
     "role": "Chapter 2 Table 2.1 and published experiment protocols",
     "caption_attribution": "Chapter 2 Figure 2.3; caption identifies the figure as author-generated, derived, or conceptual.",
     "pixel_dimensions": [
-      2738,
-      1610
+      2823,
+      1611
     ]
   },
   {

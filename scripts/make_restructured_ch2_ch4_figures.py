@@ -416,56 +416,78 @@ def write_published_assets() -> None:
 def fig2_3_dataset_ladder() -> None:
     fig, ax = plt.subplots(figsize=(12.5, 7.2), facecolor="white")
     ax.set_facecolor("white")
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 10)
-    ax.set_xlabel("visual/domain complexity (conceptual)", fontsize=11)
-    ax.set_ylabel("explicit long-memory identifiability (conceptual)", fontsize=11)
-    ax.grid(color=GRID, linewidth=0.7, alpha=0.65)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.set_xticks([])
-    ax.set_yticks([])
-    fig.suptitle("Experimental instruments progress along two different axes", x=0.12, y=0.985, ha="left", fontsize=15, weight="bold")
-    fig.text(0.12, 0.935, "Solid borders name direct method-dataset evaluations; position is explanatory, not a measured score.", fontsize=9.5, color=MUTED)
-    fig.subplots_adjust(left=0.10, right=0.98, bottom=0.11, top=0.90)
-    items = [
-        ("2-D rotations", 1.2, 1.4, BLUE, "TempVerseFormer; V-BLT"),
-        ("3-D polycubes", 2.8, 1.6, BLUE, "V-BLT"),
-        ("Moving MNIST", 4.4, 2.8, TEAL, "TempVerseFormer; final stack"),
-        ("Moving MNIST-CIFAR", 5.8, 2.4, TEAL, "TempVerseFormer"),
-        ("TaxiBJ", 7.2, 3.0, TEAL, "TempVerseFormer; final stack"),
-        ("KTH Action", 8.5, 3.6, TEAL, "TempVerseFormer"),
-        ("LoopMom", 4.0, 8.1, ORANGE, "hierarchical-context study"),
-        ("persistent long\nMoving-MNIST", 6.7, 7.3, ORANGE, "hierarchical-context boundary"),
+    ax.set_xlim(-0.72, 3.0)
+    ax.set_ylim(-0.16, 2.45)
+    ax.axis("off")
+    fig.suptitle("Набори даних виконують різні доказові ролі", x=0.08, y=0.985, ha="left", fontsize=15, weight="bold")
+    fig.text(
+        0.08,
+        0.935,
+        "Розміщення є категоріальним: воно не задає числового рейтингу складності наборів.",
+        fontsize=9.5,
+        color=MUTED,
+    )
+    fig.subplots_adjust(left=0.06, right=0.985, bottom=0.08, top=0.89)
+
+    column_titles = [
+        "Перевірка окремого\nмеханізму",
+        "Стандартна прогностична\nкомпетентність",
+        "Ідентифікація\nдовготривалої пам’яті",
     ]
-    for label, x, y, color, method in items:
-        ax.scatter([x], [y], s=560, facecolor="white", edgecolor=color, linewidth=2.2, zorder=3)
-        ax.text(x, y + 0.03, label, ha="center", va="center", fontsize=9, weight="bold", zorder=4)
-        ax.text(x, y - 0.68, method, ha="center", va="top", fontsize=7.8, color=MUTED)
-    ax.annotate(
-        "standard competence\nbenchmarks",
-        xy=(6.7, 3.2),
-        xytext=(8.5, 5.3),
-        arrowprops={"arrowstyle": "-|>", "color": TEAL, "lw": 1.4},
-        color=TEAL,
-        fontsize=9,
-        ha="center",
-    )
-    ax.annotate(
-        "mechanism-identification\ninstruments",
-        xy=(5.25, 7.7),
-        xytext=(2.0, 6.2),
-        arrowprops={"arrowstyle": "-|>", "color": ORANGE, "lw": 1.4},
-        color=ORANGE,
-        fontsize=9,
-        ha="center",
-    )
+    row_titles = [
+        "Контрольовані\nпроцедурні сцени",
+        "Стандартні, складені\nабо реальні сцени",
+    ]
+    role_colors = [BLUE, TEAL, ORANGE]
+
+    for col in range(3):
+        ax.add_patch(
+            Rectangle(
+                (col, 0), 1, 2,
+                facecolor="#FAFBFD" if col != 2 else "#FFF9F1",
+                edgecolor=GRID,
+                linewidth=1.0,
+                zorder=0,
+            )
+        )
+        ax.text(col + 0.5, 2.17, column_titles[col], ha="center", va="center", fontsize=10.2, weight="bold", color=role_colors[col])
+    ax.plot([0, 3], [1, 1], color=GRID, lw=1.0)
+    for row, title in enumerate(row_titles):
+        ax.text(-0.10, 1.5 - row, title, ha="right", va="center", fontsize=9.5, weight="bold", color="#263238")
+
+    cards = [
+        (0.5, 1.62, "2-D обертання", "TempVerseFormer; V-BLT", BLUE),
+        (0.5, 1.28, "3-D полікуби", "V-BLT", BLUE),
+        (1.5, 1.50, "Moving MNIST", "стандартна синтетична задача", TEAL),
+        (2.5, 1.62, "LoopMom", "точно спостережуваний повторний вхід", ORANGE),
+        (2.5, 1.26, "Довготривалий Moving-MNIST", "ідентичність, покриття, траєкторія", ORANGE),
+        (1.5, 0.70, "Moving MNIST-CIFAR", "складена текстурована сцена", TEAL),
+        (1.5, 0.42, "KTH Action", "природний рух людини", TEAL),
+        (1.5, 0.14, "TaxiBJ", "сіткові міські потоки", TEAL),
+    ]
+    for x, y, title, subtitle, color in cards:
+        width = 0.84
+        height = 0.24
+        ax.add_patch(
+            FancyBboxPatch(
+                (x - width / 2, y - height / 2), width, height,
+                boxstyle="round,pad=0.018,rounding_size=0.025",
+                facecolor="white",
+                edgecolor=color,
+                linewidth=1.5,
+                zorder=2,
+            )
+        )
+        ax.text(x, y + 0.025, title, ha="center", va="center", fontsize=8.7, weight="bold", zorder=3)
+        ax.text(x, y - 0.075, subtitle, ha="center", va="center", fontsize=6.9, color=MUTED, zorder=3)
+
     ax.text(
-        9.85,
-        0.20,
-        "No point implies that every method\nwas tested on every dataset.",
-        ha="right",
-        va="bottom",
-        fontsize=8.8,
+        0.03,
+        -0.10,
+        "Порожня клітинка означає відсутність окремого набору з такою роллю в цій дисертації, а не неможливість відповідного експерименту.",
+        ha="left",
+        va="center",
+        fontsize=8.2,
         color=MUTED,
     )
     save_native(fig, "ch2_fig2_3_dataset_ladder", "2.3", "Chapter 2 Table 2.1 and published experiment protocols")

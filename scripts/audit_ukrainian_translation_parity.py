@@ -25,6 +25,13 @@ PAIRS = [
     ("08_APPENDICES.md", "08_APPENDICES.md"),
 ]
 
+# The Ukrainian Chapter 1 contains one dissertation-native video-prediction
+# panel added during the author's manual review. It supplements Figure 1.6 and
+# therefore has no counterpart in the earlier condensed English source.
+UA_ONLY_IMAGES = {
+    "02_CHAPTER_1.md": ["../../figures/restructured/ch1_fig1_6b_video_prediction_example.png"],
+}
+
 HEADING = re.compile(r"^(#{1,6})\s+", re.M)
 IMAGE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 TAG = re.compile(r"\\tag\{([^}]+)\}")
@@ -83,7 +90,13 @@ def main() -> int:
             errors.append(f"{ua_name}: heading-level counts {dict(ua_heads)} != EN {dict(en_heads)}")
 
         en_images, ua_images = IMAGE.findall(en), IMAGE.findall(ua)
-        if en_images != ua_images:
+        parity_ua_images = ua_images.copy()
+        for allowed in UA_ONLY_IMAGES.get(ua_name, []):
+            if allowed in parity_ua_images:
+                parity_ua_images.remove(allowed)
+            else:
+                errors.append(f"{ua_name}: missing approved Ukrainian-only image {allowed}")
+        if en_images != parity_ua_images:
             errors.append(f"{ua_name}: image path/order mismatch ({len(ua_images)} vs {len(en_images)})")
         for rel in ua_images:
             if not (ua_path.parent / rel).resolve().exists():
