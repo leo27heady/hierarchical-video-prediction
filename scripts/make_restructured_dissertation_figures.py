@@ -194,21 +194,21 @@ def fig1_1_system_boundary():
     fig, ax = canvas(13, 6.8)
     title(
         ax,
-        "Long-horizon prediction is a partially observed feedback problem",
-        "The world continues to evolve outside the predictor and outside the current viewport",
+        "Довгогоризонтне прогнозування є задачею зі зворотним зв’язком і частковим спостереженням",
+        "Стан світу змінюється поза предиктором і поточним полем огляду",
     )
 
-    box(ax, 0.05, 0.55, 0.17, 0.15, "latent world state\n$s_t$", fc=PALE_TEAL, ec=TEAL, weight="bold", fs=11)
-    box(ax, 0.31, 0.55, 0.17, 0.15, "observation / viewport\n$y_t = O(s_t)$", fc=PALE_BLUE, ec=BLUE, fs=10)
-    box(ax, 0.57, 0.55, 0.16, 0.15, "context builder\n$m_t=C_t(y_{\\leq t},u_{\\leq t})$", fc=PALE_BLUE, ec=BLUE, fs=9.5)
-    box(ax, 0.82, 0.55, 0.14, 0.15, "predictor\n$p_\\theta(y_{t+1:t+H}|m_t)$", fc=PALE_ORANGE, ec=ORANGE, fs=9.2)
+    box(ax, 0.05, 0.55, 0.17, 0.15, "прихований стан світу\n$s_t$", fc=PALE_TEAL, ec=TEAL, weight="bold", fs=10)
+    box(ax, 0.31, 0.55, 0.17, 0.15, "спостереження / поле огляду\n$y_t = O(s_t)$", fc=PALE_BLUE, ec=BLUE, fs=9.4)
+    box(ax, 0.57, 0.55, 0.16, 0.15, "формування контексту\n$m_t=C_t(y_{\\leq t},u_{\\leq t})$", fc=PALE_BLUE, ec=BLUE, fs=9.0)
+    box(ax, 0.82, 0.55, 0.14, 0.15, "предиктор\n$p_\\theta(y_{t+1:t+H}|m_t)$", fc=PALE_ORANGE, ec=ORANGE, fs=9.2)
     arrow(ax, (0.22, 0.625), (0.31, 0.625), color=TEAL)
     arrow(ax, (0.48, 0.625), (0.57, 0.625), color=BLUE)
     arrow(ax, (0.73, 0.625), (0.82, 0.625), color=BLUE)
 
-    box(ax, 0.08, 0.24, 0.19, 0.13, "world transition\n$s_{t+1}=F(s_t,u_t,\\xi_t)$", fc="white", ec=TEAL, fs=9.5)
-    box(ax, 0.39, 0.24, 0.18, 0.13, "optional control\n$u_t$", fc="white", ec=GOLD, fs=10)
-    box(ax, 0.71, 0.24, 0.19, 0.13, "generated feedback\n$\\hat y_{t+1}$", fc="white", ec=ORANGE, fs=10)
+    box(ax, 0.08, 0.24, 0.19, 0.13, "перехід стану світу\n$s_{t+1}=F(s_t,u_t,\\xi_t)$", fc="white", ec=TEAL, fs=9.1)
+    box(ax, 0.39, 0.24, 0.18, 0.13, "керувальний сигнал\n$u_t$", fc="white", ec=GOLD, fs=9.5)
+    box(ax, 0.71, 0.24, 0.19, 0.13, "згенерований зворотний зв’язок\n$\\hat y_{t+1}$", fc="white", ec=ORANGE, fs=8.7)
     arrow(ax, (0.145, 0.54), (0.16, 0.38), color=TEAL)
     arrow(ax, (0.18, 0.38), (0.18, 0.54), color=TEAL, curve=0.45)
     arrow(ax, (0.48, 0.38), (0.23, 0.30), color=GOLD, curve=0.08)
@@ -216,13 +216,13 @@ def fig1_1_system_boundary():
     arrow(ax, (0.89, 0.54), (0.81, 0.38), color=ORANGE)
     arrow(ax, (0.71, 0.305), (0.65, 0.54), color=ORANGE, curve=-0.18)
 
-    ax.text(0.17, 0.17, "outside the model", ha="center", color=TEAL, weight="bold")
-    ax.text(0.67, 0.17, "inside the retained-state and prediction interface", ha="center", color=BLUE, weight="bold")
+    ax.text(0.17, 0.17, "поза моделлю", ha="center", color=TEAL, weight="bold")
+    ax.text(0.67, 0.17, "інтерфейс збереженого стану та прогнозування", ha="center", color=BLUE, weight="bold")
     ax.plot([0.285, 0.285], [0.15, 0.77], color=MUTED, lw=1.2, linestyle="--")
     ax.text(
         0.50,
         0.075,
-        "During self-fed rollout, generated observations alter later context; they do not replace the latent world transition.",
+        "Під час самоподачі згенеровані спостереження змінюють подальший контекст, але не замінюють перехід прихованого стану світу.",
         ha="center",
         fontsize=9.5,
         color=MUTED,
@@ -275,23 +275,23 @@ def fig1_3_teacher_self_fed():
 
 def fig1_4_resource_locations():
     fig, ax = canvas(12, 6.5)
-    title(ax, "Resource terms occupy different paths through the system")
-    box(ax, 0.05, 0.55, 0.14, 0.13, "retained\ncontext/state", fc=PALE_TEAL, ec=TEAL, weight="bold")
-    box(ax, 0.25, 0.55, 0.15, 0.13, "encoder /\ncodec", fc=PALE_BLUE, ec=BLUE)
-    box(ax, 0.47, 0.55, 0.15, 0.13, "predictor\nparameters", fc=PALE_BLUE, ec=BLUE)
-    box(ax, 0.69, 0.55, 0.13, 0.13, "sampler /\nrollout", fc=PALE_ORANGE, ec=ORANGE)
-    box(ax, 0.86, 0.55, 0.10, 0.13, "output", fc=PALE_GRAY, ec=INK)
+    title(ax, "Ресурсні складники розміщені на різних шляхах системи")
+    box(ax, 0.05, 0.55, 0.14, 0.13, "збережений\nконтекст / стан", fc=PALE_TEAL, ec=TEAL, weight="bold", fs=9.2)
+    box(ax, 0.25, 0.55, 0.15, 0.13, "кодер /\nкодек", fc=PALE_BLUE, ec=BLUE)
+    box(ax, 0.47, 0.55, 0.15, 0.13, "параметри\nпредиктора", fc=PALE_BLUE, ec=BLUE)
+    box(ax, 0.69, 0.55, 0.13, 0.13, "вибірка /\nрозгортання", fc=PALE_ORANGE, ec=ORANGE)
+    box(ax, 0.86, 0.55, 0.10, 0.13, "вихід", fc=PALE_GRAY, ec=INK)
     for a, b in [((0.19, 0.615), (0.25, 0.615)), ((0.40, 0.615), (0.47, 0.615)),
                  ((0.62, 0.615), (0.69, 0.615)), ((0.82, 0.615), (0.86, 0.615))]:
         arrow(ax, a, b)
     arrow(ax, (0.91, 0.54), (0.12, 0.47), color=ORANGE, curve=-0.22)
-    ax.text(0.52, 0.40, "generated feedback updates context", ha="center", color=ORANGE, fontsize=9)
+    ax.text(0.52, 0.40, "згенерований зворотний зв’язок оновлює контекст", ha="center", color=ORANGE, fontsize=9)
     ax.plot([0.25, 0.82], [0.28, 0.28], color=BLUE, lw=3)
-    ax.text(0.535, 0.315, "differentiated training path", ha="center", color=BLUE, weight="bold")
-    for x, label, color in [(0.32, "activation\ntape", ORANGE), (0.53, "optimizer\nstate", TEAL), (0.74, "transient\nworkspace", MUTED)]:
+    ax.text(0.535, 0.315, "диференційований шлях навчання", ha="center", color=BLUE, weight="bold")
+    for x, label, color in [(0.32, "стрічка\nактивацій", ORANGE), (0.53, "стан\nоптимізатора", TEAL), (0.74, "тимчасова\nробоча пам’ять", MUTED)]:
         box(ax, x - 0.07, 0.13, 0.14, 0.11, label, fc="white", ec=color)
         arrow(ax, (x, 0.25), (x, 0.28), color=color)
-    ax.text(0.5, 0.055, "Reversibility changes activation storage; hierarchy changes retained context. Neither operation implies the other.",
+    ax.text(0.5, 0.055, "Реверсивність змінює зберігання активацій, а ієрархія – збережений контекст. Жодна операція не випливає з іншої.",
             ha="center", fontsize=9.5)
     save(fig, "ch1_fig1_4_resource_locations")
 

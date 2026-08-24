@@ -676,13 +676,13 @@ def fig2_26_vblt_point_estimates() -> None:
 
 def fig2_27_measured_vs_proposed() -> None:
     fig, ax = canvas(13.2, 7.0)
-    title(ax, "Measured representation and proposed allocation are different claims")
+    title(ax, "Виміряне представлення і запропонований розподіл є різними твердженнями")
     box(ax, 0.05, 0.18, 0.39, 0.62, "", fc=PALE_GREEN, ec=GREEN, lw=2.2)
     box(ax, 0.56, 0.18, 0.39, 0.62, "", fc="white", ec=ORANGE, lw=2.2, dashed=True)
-    ax.text(0.245, 0.74, "IMPLEMENTED / EVALUATED", ha="center", color=GREEN, weight="bold", fontsize=11)
-    ax.text(0.755, 0.74, "PROPOSED FUTURE EXTENSION", ha="center", color=ORANGE, weight="bold", fontsize=11)
-    left = ["fixed 4 x 4 x 4 support", "local / global / local model", "RoPE-ND coordinates", "256-way byte objective", "predictive entropy maps"]
-    right = ["calibrated allocation signal", "variable-region controller", "budget-constrained routing", "allocation-overhead accounting", "end-to-end compute-quality test"]
+    ax.text(0.245, 0.74, "РЕАЛІЗОВАНО / ОЦІНЕНО", ha="center", color=GREEN, weight="bold", fontsize=11)
+    ax.text(0.755, 0.74, "ЗАПРОПОНОВАНЕ РОЗШИРЕННЯ", ha="center", color=ORANGE, weight="bold", fontsize=11)
+    left = ["фіксована область 4 × 4 × 4", "локальна / глобальна / локальна модель", "координати RoPE-ND", "категоріальна ціль для 256 байтів", "карти прогностичної ентропії"]
+    right = ["калібрований сигнал розподілу", "контролер змінних областей", "маршрутизація за бюджетом", "облік накладних витрат", "наскрізна перевірка ціни та якості"]
     for i, text in enumerate(left):
         y = 0.64 - i * 0.095
         ax.text(0.10, y, "●", color=GREEN, fontsize=10, va="center")
@@ -692,11 +692,11 @@ def fig2_27_measured_vs_proposed() -> None:
         ax.text(0.61, y, "○", color=ORANGE, fontsize=11, va="center")
         ax.text(0.64, y, text, fontsize=9.5, va="center")
     arrow(ax, (0.445, 0.49), (0.555, 0.49), color=ORANGE, dashed=True, lw=2.0)
-    ax.text(0.50, 0.54, "motivates", ha="center", color=ORANGE, fontsize=9)
+    ax.text(0.50, 0.54, "мотивує", ha="center", color=ORANGE, fontsize=9)
     ax.text(
         0.5,
         0.075,
-        "Entropy structure justifies a testable policy hypothesis; it is not evidence that dynamic allocation already improves efficiency.",
+        "Структура ентропії обґрунтовує перевірну гіпотезу, але не доводить, що динамічний розподіл уже підвищує ефективність.",
         ha="center",
         fontsize=9.5,
     )
@@ -795,34 +795,34 @@ def fig3_4_codec_dimensions() -> None:
 def fig3_6_joint_attention() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(14, 6.3), facecolor="white")
     fig.subplots_adjust(left=0.035, right=0.985, top=0.84, bottom=0.18, wspace=0.24)
-    fig.suptitle("Joint attention is full inside a block; causality is structural across rollout blocks", fontsize=14.5, weight="bold")
+    fig.suptitle("Спільна увага є повною всередині блока, а причинність задається порядком блоків розгортання", fontsize=14.5, weight="bold")
     ax = axes[0]
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
-    ax.set_title("(a) one WindowDiT prediction block", loc="left", fontsize=11)
-    groups = [("coarse\ncontext", BLUE), ("fine\ncontext", ORANGE), ("noisy coarse\ntarget", TEAL), ("noisy fine\ntarget", PURPLE)]
+    ax.set_title("(а) один блок прогнозування WindowDiT", loc="left", fontsize=11)
+    groups = [("грубий\nконтекст", BLUE), ("детальний\nконтекст", ORANGE), ("зашумлена груба\nціль", TEAL), ("зашумлена детальна\nціль", PURPLE)]
     for i, (label, color) in enumerate(groups):
         y = 0.78 - i * 0.18
         box(ax, 0.05, y, 0.25, 0.105, label, fc="white", ec=color, fs=9)
         arrow(ax, (0.30, y + 0.052), (0.43, 0.52), color=color)
-    box(ax, 0.43, 0.37, 0.38, 0.30, "single all-to-all\nattention matrix\n\nfull attention within block\n(no triangular intra-block mask)", fc=PALE_BLUE, ec=BLUE, weight="bold")
+    box(ax, 0.43, 0.37, 0.38, 0.30, "одна матриця\nповної уваги\n\nповна увага всередині блока\n(без трикутної маски)", fc=PALE_BLUE, ec=BLUE, weight="bold")
     arrow(ax, (0.81, 0.52), (0.94, 0.52), color=INK)
-    ax.text(0.94, 0.45, "coarse + fine\noutputs", ha="center", fontsize=9)
+    ax.text(0.94, 0.45, "грубий + детальний\nвиходи", ha="center", fontsize=9)
     ax = axes[1]
-    ax.set_title("(b) rollout-block availability", loc="left", fontsize=11)
+    ax.set_title("(б) доступність блоків розгортання", loc="left", fontsize=11)
     matrix = np.full((5, 5), np.nan)
     for i in range(5):
         for j in range(5):
             matrix[i, j] = 1 if j <= i else 0
     from matplotlib.colors import ListedColormap
     ax.imshow(matrix, cmap=ListedColormap(["#F4D6D6", PALE_TEAL]), vmin=0, vmax=1)
-    ax.set_xticks(range(5), [f"source {i}" for i in range(5)], rotation=35, ha="right", fontsize=8)
-    ax.set_yticks(range(5), [f"current {i}" for i in range(5)], fontsize=8)
+    ax.set_xticks(range(5), [f"джерело {i}" for i in range(5)], rotation=35, ha="right", fontsize=8)
+    ax.set_yticks(range(5), [f"поточний {i}" for i in range(5)], fontsize=8)
     for i in range(5):
         for j in range(5):
-            ax.text(j, i, "available" if j <= i else "future", ha="center", va="center", fontsize=7.5, color=GREEN if j <= i else RED)
-    ax.set_xlabel("completed blocks may supply context; future blocks do not exist yet", fontsize=9)
-    ax.set_ylabel("prediction block")
-    fig.text(0.5, 0.025, "Panel (b) describes rollout construction, not a layer-level attention mask.", ha="center", fontsize=9.3, color=MUTED)
+            ax.text(j, i, "доступно" if j <= i else "майбутнє", ha="center", va="center", fontsize=7.5, color=GREEN if j <= i else RED)
+    ax.set_xlabel("завершені блоки доступні як контекст; майбутні – ні", fontsize=9)
+    ax.set_ylabel("блок прогнозування")
+    fig.text(0.5, 0.025, "Панель (б) описує побудову розгортання, а не маску уваги всередині шару.", ha="center", fontsize=9.3, color=MUTED)
     save_native(fig, "ch3_fig3_6_joint_attention", "3.6", "Implemented WindowDiT forward path and rollout recurrence")
 
 
@@ -900,14 +900,14 @@ def fig3_12_anchor_geometry() -> None:
     ax.set_xlim(-50, 5)
     ax.set_ylim(-0.7, 5.8)
     ax.axvline(0, color=INK, linewidth=1.8)
-    ax.text(0.3, 5.45, "first target t", fontsize=9.5, weight="bold")
+    ax.text(0.3, 5.45, "перша ціль t", fontsize=9.5, weight="bold")
     ax.grid(axis="x", color=GRID, linewidth=0.6)
     ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.set_yticks([5, 4, 3, 2, 1, 0], ["coarse dense", "recent fine", "flat-18", "sparse old fine", "sparse recent fine", "targets / actions"])
-    ax.set_xlabel("frame offset relative to first target t")
-    ax.set_title("Exact anchors, not a nominal reach label, define package semantics", loc="left", pad=14)
-    ax.scatter(np.arange(-48, 0), np.full(48, 5), s=24, color=BLUE, label="coarse token frame")
-    ax.scatter(np.arange(-6, 0), np.full(6, 4), s=45, marker="s", color=ORANGE, label="fine token frame")
+    ax.set_yticks([5, 4, 3, 2, 1, 0], ["щільні грубі", "недавні детальні", "плоскі-18", "давні розріджені детальні", "недавні розріджені детальні", "цілі / дії"])
+    ax.set_xlabel("зміщення кадру відносно першої цілі t")
+    ax.set_title("Семантику пакета визначають точні прив’язки, а не номінальна досяжність", loc="left", pad=14)
+    ax.scatter(np.arange(-48, 0), np.full(48, 5), s=24, color=BLUE, label="кадр грубого токена")
+    ax.scatter(np.arange(-6, 0), np.full(6, 4), s=45, marker="s", color=ORANGE, label="кадр детального токена")
     ax.scatter(np.arange(-18, 0), np.full(18, 3), s=42, marker="s", color=ORANGE)
     sparse_old = np.array([-47, -43, -39, -35, -31, -27, -23, -19, -15, -11, -7])
     ax.scatter(sparse_old, np.full(len(sparse_old), 2), s=48, marker="D", color=TEAL)
@@ -916,13 +916,13 @@ def fig3_12_anchor_geometry() -> None:
     ax.scatter(targets, np.full(4, 0), s=70, marker="s", facecolor=PALE_PURPLE, edgecolor=PURPLE, linewidth=1.5)
     for j in targets:
         ax.text(j, 0.22, "t" if j == 0 else f"t+{j}", ha="center", fontsize=7.2, color=PURPLE)
-    ax.text(1.5, -0.34, "actions u_t ... u_(t+3)", ha="center", fontsize=8.2, color=PURPLE)
+    ax.text(1.5, -0.34, "дії u_t ... u_(t+3)", ha="center", fontsize=8.2, color=PURPLE)
     ax.text(-24, 5.30, "t-48 ... t-1", ha="center", color=BLUE, fontsize=8.5)
     ax.text(-3.5, 4.30, "t-6 ... t-1", ha="center", color=ORANGE, fontsize=8.5)
     ax.text(-9.5, 3.30, "t-18 ... t-1", ha="center", color=ORANGE, fontsize=8.5)
     ax.text(-26.5, 2.30, "t-47, t-43, ..., t-7", ha="center", color=TEAL, fontsize=8.5)
     ax.text(-3.5, 1.30, "t-6 ... t-1", ha="center", color=ORANGE, fontsize=8.5)
-    ax.text(-49.5, -0.52, "Registered nominal reach never substitutes for this anchor list.", fontsize=9, color=MUTED)
+    ax.text(-49.5, -0.52, "Зареєстрована номінальна досяжність не замінює цього списку прив’язок.", fontsize=9, color=MUTED)
     save_native(fig, "ch3_fig3_12_anchor_geometry", "3.12", "Implemented WindowDiT._ctx_tokens anchor formula; strided-flat anchors verified as lags 47,43,...,7 plus 6,...,1")
 
 
@@ -1314,11 +1314,11 @@ def fig4_16_two_resource_axes() -> None:
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15.0, 6.2), facecolor="white")
     fig.subplots_adjust(left=0.065, right=0.985, bottom=0.20, top=0.80, wspace=0.25)
-    fig.suptitle("Two measured resource axes", fontsize=15, weight="bold", y=0.955)
+    fig.suptitle("Дві окремо виміряні ресурсні осі", fontsize=15, weight="bold", y=0.955)
     fig.text(
         0.5,
         0.895,
-        "Context-state packaging and activation replay were evaluated in separate studies and are not combined into a multiplicative saving claim",
+        "Пакування стану контексту й відтворення активацій оцінено окремо; їхню економію не подано як мультиплікативну",
         ha="center",
         fontsize=9.5,
         color=MUTED,
@@ -1344,19 +1344,19 @@ def fig4_16_two_resource_axes() -> None:
         )
     ax1.axhline(0, color=INK, linewidth=1.0)
     ax1.axvline(48 * 8 * 8, color=GRID, linestyle="--", linewidth=1.4)
-    ax1.text(48 * 8 * 8 - 22, 0.052, "dense 48-frame\nfine history", ha="right", va="top", fontsize=8, color=MUTED)
+    ax1.text(48 * 8 * 8 - 22, 0.052, "щільна детальна історія\nз 48 кадрів", ha="right", va="top", fontsize=8, color=MUTED)
     ax1.set_xticks([896, 1152, 1792, 2432, 3072])
-    ax1.set_xlabel("context tokens")
-    ax1.set_ylabel("flat error - hierarchy error")
-    ax1.set_title("a  Context/state axis: simultaneous frontier", loc="left", fontsize=11.5)
+    ax1.set_xlabel("токени контексту")
+    ax1.set_ylabel("похибка плоского − похибка ієрархічного")
+    ax1.set_title("а  Вісь контексту/стану: одночасна межа", loc="left", fontsize=11.5)
     ax1.grid(axis="y", color=GRID, linewidth=0.7, alpha=0.75)
     ax1.spines[["top", "right"]].set_visible(False)
-    ax1.text(900, 0.058, "hierarchy lower error", color=BLUE, fontsize=8.2, weight="bold")
-    ax1.text(2300, -0.022, "flat lower error", color=ORANGE, fontsize=8.2, weight="bold")
+    ax1.text(900, 0.058, "нижча похибка ієрархії", color=BLUE, fontsize=8.2, weight="bold")
+    ax1.text(2300, -0.022, "нижча похибка плоского пакета", color=ORANGE, fontsize=8.2, weight="bold")
     marker_legend = [
-        Line2D([0], [0], marker="o", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="seed 0"),
-        Line2D([0], [0], marker="s", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="seed 1"),
-        Line2D([0], [0], marker="^", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="seed 2"),
+        Line2D([0], [0], marker="o", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="ініц. 0"),
+        Line2D([0], [0], marker="s", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="ініц. 1"),
+        Line2D([0], [0], marker="^", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="ініц. 2"),
         Line2D([0], [0], marker="D", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=6, label="30k"),
         Line2D([0], [0], marker="P", color="none", markerfacecolor=MUTED, markeredgecolor="white", markersize=7, label="60k"),
     ]
@@ -1373,27 +1373,27 @@ def fig4_16_two_resource_axes() -> None:
     for label, (values, color, marker) in memory.items():
         ax2.plot(positions, values, marker=marker, markersize=6.5, linewidth=2.0, color=color, label=label)
     ax2.set_xticks(positions, horizons)
-    ax2.set_xlabel("prediction horizon (frames)")
-    ax2.set_ylabel("temporal-model memory (GB)")
+    ax2.set_xlabel("горизонт прогнозування (кадри)")
+    ax2.set_ylabel("пам’ять часової моделі (ГБ)")
     ax2.set_ylim(0.65, 2.85)
-    ax2.set_title("b  Activation axis: published temporal-core memory", loc="left", fontsize=11.5)
+    ax2.set_title("б  Вісь активацій: опублікована пам’ять часового ядра", loc="left", fontsize=11.5)
     ax2.grid(axis="y", color=GRID, linewidth=0.7, alpha=0.75)
     ax2.spines[["top", "right"]].set_visible(False)
     ax2.legend(loc="upper left", frameon=False, fontsize=8.2)
     ax2.annotate(
-        "0.89 GB at horizon 16",
+        "0,89 ГБ за горизонту 16",
         xy=(2, 0.89),
         xytext=(1.15, 0.70),
         arrowprops={"arrowstyle": "->", "color": PURPLE, "linewidth": 1.2},
         fontsize=8.2,
         color=PURPLE,
     )
-    ax2.text(0.02, 0.02, "Batch size 32; exact published table values", transform=ax2.transAxes, fontsize=8, color=MUTED)
+    ax2.text(0.02, 0.02, "Розмір батча 32; точні опубліковані значення", transform=ax2.transAxes, fontsize=8, color=MUTED)
 
     fig.text(
         0.5,
         0.055,
-        "Left: frozen clip-cluster max-statistic intervals. Right: published temporal-core measurements. No joint factorial experiment was run.",
+        "Ліворуч: заморожені кластерні за кліпами max-статистичні інтервали. Праворуч: опубліковані вимірювання часового ядра. Спільного факторного експерименту не виконували.",
         ha="center",
         fontsize=9,
         color=MUTED,
@@ -1408,49 +1408,49 @@ def fig4_16_two_resource_axes() -> None:
 
 def fig4_17_decision_flow() -> None:
     fig, ax = canvas(15.5, 9.2)
-    title(ax, "Choose an intervention by diagnosing the binding constraint", "Outputs occupy different interfaces; they do not form one tested architecture")
-    box(ax, 0.34, 0.79, 0.32, 0.09, "Which consistency criterion matters?", fc=PALE_BLUE, ec=BLUE, weight="bold", fs=10.5)
+    title(ax, "Втручання обирають за обмеженням, яке визначає результат", "Причинні ефекти виміряно окремо; сумісність перевірено в обмеженому прототипі")
+    box(ax, 0.34, 0.79, 0.32, 0.09, "Який критерій консистентності є визначальним?", fc=PALE_BLUE, ec=BLUE, weight="bold", fs=10.0)
     arrow(ax, (0.50, 0.79), (0.50, 0.75), color=INK)
-    box(ax, 0.34, 0.66, 0.32, 0.09, "Is relevant history outside\nthe affordable flat window?", fc="white", ec=INK, weight="bold", fs=9.1)
+    box(ax, 0.34, 0.66, 0.32, 0.09, "Чи лежить релевантна історія поза\nдоступним плоским вікном?", fc="white", ec=INK, weight="bold", fs=9.1)
     # Context branch: yes -> choose history form; no -> fidelity question.
     arrow(ax, (0.34, 0.705), (0.22, 0.705), color=GREEN)
-    ax.text(0.28, 0.725, "yes", fontsize=8.5, color=GREEN)
-    box(ax, 0.035, 0.65, 0.18, 0.13, "Does hidden state change\nbetween sparse anchors?", fc=PALE_TEAL, ec=TEAL, fs=8.6)
+    ax.text(0.28, 0.725, "так", fontsize=8.5, color=GREEN)
+    box(ax, 0.035, 0.65, 0.18, 0.13, "Чи змінюється прихований стан\nміж розрідженими прив’язками?", fc=PALE_TEAL, ec=TEAL, fs=8.2)
     arrow(ax, (0.125, 0.65), (0.125, 0.58), color=TEAL)
-    box(ax, 0.015, 0.48, 0.15, 0.10, "spatial hierarchy\n(dense coarse history)", fc=PALE_BLUE, ec=BLUE, fs=8.4)
-    box(ax, 0.18, 0.48, 0.15, 0.10, "temporal anchors\n+ recent fine tail", fc=PALE_TEAL, ec=TEAL, fs=8.4)
+    box(ax, 0.015, 0.48, 0.15, 0.10, "просторова ієрархія\n(щільна груба історія)", fc=PALE_BLUE, ec=BLUE, fs=8.0)
+    box(ax, 0.18, 0.48, 0.15, 0.10, "часові прив’язки\n+ недавній детальний хвіст", fc=PALE_TEAL, ec=TEAL, fs=7.8)
     arrow(ax, (0.10, 0.58), (0.09, 0.58), color=TEAL)
     arrow(ax, (0.15, 0.58), (0.255, 0.58), color=TEAL)
-    ax.text(0.06, 0.595, "yes", fontsize=7.8, color=TEAL)
-    ax.text(0.25, 0.595, "no / slow", fontsize=7.8, color=TEAL)
+    ax.text(0.06, 0.595, "так", fontsize=7.8, color=TEAL)
+    ax.text(0.25, 0.595, "ні / повільно", fontsize=7.8, color=TEAL)
 
     arrow(ax, (0.66, 0.705), (0.75, 0.705), color=ORANGE)
-    ax.text(0.69, 0.725, "no", fontsize=8.5, color=ORANGE)
-    box(ax, 0.75, 0.67, 0.22, 0.09, "Is fine identity or detail limiting?", fc="white", ec=ORANGE, weight="bold", fs=9)
+    ax.text(0.69, 0.725, "ні", fontsize=8.5, color=ORANGE)
+    box(ax, 0.75, 0.67, 0.22, 0.09, "Чи обмежують результат\nідентичність або деталі?", fc="white", ec=ORANGE, weight="bold", fs=8.6)
     arrow(ax, (0.86, 0.67), (0.86, 0.58), color=ORANGE)
-    box(ax, 0.76, 0.48, 0.20, 0.10, "dense or richer\nflat fine context", fc=PALE_ORANGE, ec=ORANGE, weight="bold", fs=8.8)
-    ax.text(0.87, 0.60, "yes", fontsize=8, color=ORANGE)
-    arrow(ax, (0.78, 0.67), (0.70, 0.615), color=MUTED)
-    ax.text(0.745, 0.65, "no", fontsize=8, color=MUTED)
-    box(ax, 0.56, 0.54, 0.17, 0.07, "retain least-cost context\nmeeting the criterion", fc=PALE_GRAY, ec=MUTED, fs=7.7)
+    box(ax, 0.76, 0.48, 0.20, 0.10, "щільний або багатший\nплоский детальний контекст", fc=PALE_ORANGE, ec=ORANGE, weight="bold", fs=8.2)
+    ax.text(0.87, 0.60, "так", fontsize=8, color=ORANGE)
+    arrow(ax, (0.75, 0.695), (0.645, 0.615), color=MUTED, curve=0.12)
+    ax.text(0.70, 0.66, "ні", fontsize=8, color=MUTED)
+    box(ax, 0.54, 0.54, 0.18, 0.07, "залишити найдешевший контекст,\nщо задовольняє критерій", fc=PALE_GRAY, ec=MUTED, fs=7.4)
 
     # Independent activation-memory lane.
     ax.plot([0.04, 0.96], [0.425, 0.425], color=GRID, linewidth=1.2)
-    ax.text(0.04, 0.445, "independent training-memory check", fontsize=9, weight="bold", color=PURPLE)
-    box(ax, 0.34, 0.32, 0.32, 0.085, "Does activation storage block\nthe required training horizon?", fc="white", ec=PURPLE, weight="bold", fs=8.7)
+    ax.text(0.04, 0.445, "окрема перевірка пам’яті навчання", fontsize=9, weight="bold", color=PURPLE)
+    box(ax, 0.34, 0.32, 0.32, 0.085, "Чи заважає зберігання активацій\nпотрібному горизонту навчання?", fc="white", ec=PURPLE, weight="bold", fs=8.5)
     arrow(ax, (0.34, 0.362), (0.25, 0.362), color=PURPLE)
-    box(ax, 0.05, 0.28, 0.19, 0.085, "checkpointing", fc=PALE_PURPLE, ec=PURPLE, weight="bold")
+    box(ax, 0.05, 0.28, 0.19, 0.085, "збереження контрольних точок", fc=PALE_PURPLE, ec=PURPLE, weight="bold", fs=8.0)
     arrow(ax, (0.66, 0.362), (0.75, 0.362), color=PURPLE)
-    box(ax, 0.76, 0.28, 0.19, 0.085, "reversible replay\nwhen state boundary permits", fc=PALE_PURPLE, ec=PURPLE, weight="bold", fs=8.7)
-    ax.text(0.285, 0.38, "broad blocks", fontsize=7.8, color=PURPLE)
-    ax.text(0.69, 0.38, "invertible path", fontsize=7.8, color=PURPLE)
+    box(ax, 0.76, 0.28, 0.19, 0.085, "реверсивне відтворення,\nякщо межа стану це дозволяє", fc=PALE_PURPLE, ec=PURPLE, weight="bold", fs=8.0)
+    ax.text(0.285, 0.38, "довільні блоки", fontsize=7.8, color=PURPLE)
+    ax.text(0.69, 0.38, "оборотний шлях", fontsize=7.8, color=PURPLE)
 
     # Prospective spatial lane.
     ax.plot([0.04, 0.96], [0.235, 0.235], color=GRID, linewidth=1.2)
-    ax.text(0.04, 0.252, "spatial-allocation check", fontsize=9, weight="bold", color=GOLD)
-    box(ax, 0.34, 0.14, 0.32, 0.08, "Is spatial information demand\nstrongly non-uniform?", fc="white", ec=GOLD, weight="bold", fs=8.7)
+    ax.text(0.04, 0.252, "перевірка просторового розподілу", fontsize=9, weight="bold", color=GOLD)
+    box(ax, 0.34, 0.14, 0.32, 0.08, "Чи є потреба у просторовій інформації\nрізко неоднорідною?", fc="white", ec=GOLD, weight="bold", fs=8.5)
     arrow(ax, (0.34, 0.18), (0.25, 0.18), color=GREEN)
-    box(ax, 0.05, 0.10, 0.19, 0.08, "fixed spatial allocation", fc=PALE_GREEN, ec=GREEN, fs=8.8)
+    box(ax, 0.05, 0.10, 0.19, 0.08, "фіксований просторовий розподіл", fc=PALE_GREEN, ec=GREEN, fs=8.0)
     arrow(ax, (0.66, 0.18), (0.75, 0.18), color=ORANGE, dashed=True, lw=2)
     box(
         ax,
@@ -1458,15 +1458,15 @@ def fig4_17_decision_flow() -> None:
         0.075,
         0.22,
         0.13,
-        "candidate entropy-informed\nadaptive policy\nend-to-end dynamic benefit\nnot yet measured",
+        "кандидатна адаптивна політика\nза ентропією\nнаскрізний динамічний виграш\nще не виміряно",
         fc="white",
         ec=ORANGE,
         dashed=True,
         fs=8.1,
     )
-    ax.text(0.285, 0.195, "no", fontsize=7.8, color=GREEN)
-    ax.text(0.69, 0.195, "yes / proposed", fontsize=7.8, color=ORANGE)
-    ax.text(0.5, 0.025, "Solid arrows: executed evidence or established comparator. Dashed orange arrow: proposed policy requiring a new end-to-end test.", ha="center", fontsize=9, color=MUTED)
+    ax.text(0.285, 0.195, "ні", fontsize=7.8, color=GREEN)
+    ax.text(0.69, 0.195, "так / запропоновано", fontsize=7.8, color=ORANGE)
+    ax.text(0.5, 0.025, "Суцільні стрілки: виконані досліди або усталені альтернативи. Пунктир: запропонована політика, що потребує наскрізної перевірки.", ha="center", fontsize=9, color=MUTED)
     save_native(fig, "ch4_fig4_17_decision_flow", "4.17", "Chapter 4 operating-region evidence and Chapter 2 scope boundaries")
 
 

@@ -122,8 +122,8 @@ def make_confirmed_frontier() -> None:
     fig, axes = plt.subplots(
         1,
         2,
-        figsize=(12.2, 4.8),
-        gridspec_kw={"width_ratios": [1.65, 1.0]},
+        figsize=(14.2, 5.2),
+        gridspec_kw={"width_ratios": [1.55, 1.15]},
         constrained_layout=True,
     )
     ax = axes[0]
@@ -147,31 +147,31 @@ def make_confirmed_frontier() -> None:
     ax.axhline(0, color=INK, linewidth=0.9)
     ax.set_xscale("log", base=2)
     ax.set_xticks([896, 1152, 1792, 2432, 3072])
-    ax.set_xticklabels(["896", "1,152", "1,792", "2,432", "3,072"])
+    ax.set_xticklabels(["896", "1 152", "1 792", "2 432", "3 072"])
     ax.grid(axis="y", color=GRID, linewidth=0.7)
-    ax.set_xlabel("Context-token budget")
-    ax.set_ylabel("Flat error - hierarchy error")
-    ax.set_title("A  Untouched simultaneous frontier", loc="left", fontweight="bold")
+    ax.set_xlabel("Бюджет токенів контексту")
+    ax.set_ylabel("Похибка плоского − похибка ієрархічного")
+    ax.set_title("А  Одночасна межа на відкладених даних", loc="left", fontweight="bold")
     ax.text(
         0.98,
         0.97,
-        "blue: hierarchy confirmed\n"
-        "grey: unresolved\n"
-        "red: flat confirmed",
+        "синій: підтверджено ієрархію\n"
+        "сірий: невирішено\n"
+        "червоний: підтверджено плоский пакет",
         transform=ax.transAxes,
         ha="right",
         va="top",
         fontsize=8.5,
     )
-    ax.legend(frameon=False, ncol=5, loc="lower left", fontsize=8, title="training/regime")
+    ax.legend(frameon=False, ncol=5, loc="lower left", fontsize=8, title="навчання / режим")
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
 
     ax = axes[1]
     packages = [
-        ("48 fine", 3072, FLAT),
-        ("48 coarse + 6 fine", 1152, HIER),
-        ("48 coarse + 2 fine", 896, HIER),
+        ("48 детальних", 3072, FLAT),
+        ("48 грубих + 6 детальних", 1152, HIER),
+        ("48 грубих + 2 детальні", 896, HIER),
     ]
     y = np.arange(len(packages))
     values = [value for _, value, _ in packages]
@@ -186,13 +186,13 @@ def make_confirmed_frontier() -> None:
     ax.set_yticklabels([label for label, _, _ in packages])
     ax.invert_yaxis()
     ax.set_xlim(0, 3400)
-    ax.set_xlabel("Context tokens for nominal 48-frame reach")
-    ax.set_title("B  Exact memory arithmetic", loc="left", fontweight="bold")
+    ax.set_xlabel("Токени контексту за номінальної досяжності 48 кадрів")
+    ax.set_title("Б  Точна арифметика контексту", loc="left", fontweight="bold")
     ax.grid(axis="x", color=GRID, linewidth=0.7)
-    bar_notes = ["reference", "2.67x fewer", "3.43x fewer"]
+    bar_notes = ["еталон", "у 2,67 раза\nменше", "у 3,43 раза\nменше"]
     for bar, value, note in zip(bars, values, bar_notes):
         yc = bar.get_y() + bar.get_height() / 2
-        ax.text(value + 45, yc, f"{value:,}", va="center")
+        ax.text(value + 45, yc, f"{value:,}".replace(",", " "), va="center")
         # Put the efficiency statement inside its own bar instead of over the
         # neighbouring dense-context bar.  White text remains readable in
         # greyscale and the exact value stays outside the bar.
@@ -203,22 +203,22 @@ def make_confirmed_frontier() -> None:
             ha="center",
             va="center",
             color="white",
-            fontsize=8.2,
+            fontsize=7.7,
             fontweight="bold",
         )
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
 
     fig.suptitle(
-        "Hierarchy buys reach; flat context buys fidelity",
+        "Ієрархія збільшує досяжність, а плоский контекст зберігає точність відтворення",
         fontsize=12,
         fontweight="bold",
     )
     fig.text(
         0.5,
         -0.01,
-        "Intervals in panel A are one studentized max-statistic clip-cluster family; "
-        "no interpolation or unique crossover is inferred.",
+        "Інтервали на панелі А утворюють одну студентовану max-статистичну родину з кластеризацією за кліпами; "
+        "інтерполяцію та єдину точку переходу не виводили.",
         ha="center",
         va="top",
         color=MUTED,

@@ -536,18 +536,18 @@
     "data_source": "artifacts/confirmation_e2/results.json",
     "role": "artifact-derived untouched simultaneous frontier",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "0c4688d50b6a9ba2c9ba22fdeb61c1204d890500f46f82a3f0eb6b3687067638",
-    "bytes": 238242,
+    "sha256": "99674e610188137b69a3d6fc459c6085ad855fae5674b0dc9e9954c4bc2ebaa2",
+    "bytes": 64819,
     "pixel_dimensions": [
-      3694,
-      1535
+      1420,
+      520
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.7",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/confirmation_e2/results.json",
     "source_files": [
       {
@@ -557,7 +557,7 @@
     ],
     "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
-    "modification_status": "pre-existing PNG reused without pixel modification",
+    "modification_status": "regenerated from frozen artifacts; localized into Ukrainian and panel-B title corrected from memory to context-token arithmetic",
     "embedded_third_party_pixels": false,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
@@ -649,7 +649,7 @@
     "original_figure": "4.10",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/e4b_head_package/results.json",
     "source_files": [
       {
@@ -686,7 +686,7 @@
     "original_figure": "4.11",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/e7c_sampler_nfe/results.json",
     "source_files": [
       {
@@ -723,7 +723,7 @@
     "original_figure": "4.12",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/e7a_codec_robustness/results.json",
     "source_files": [
       {
@@ -760,7 +760,7 @@
     "original_figure": "4.13",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/e5a_trust_replication/results.json",
     "source_files": [
       {
@@ -797,7 +797,7 @@
     "original_figure": "4.14",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/e8a_pose_mosaic/results.json",
     "source_files": [
       {
@@ -834,7 +834,7 @@
     "original_figure": "4.15",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "483ccae53d557b3623125d4ef6f44a2ac29e7a205b3a1beae48570d03ed4c321",
+    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
     "data_or_concept_source": "artifacts/phasec_v2/results.json",
     "source_files": [
       {
