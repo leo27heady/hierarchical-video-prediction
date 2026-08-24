@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#29445f"/>
+    </marker>
+    <style>
+      .title{font:700 28px Arial,sans-serif;fill:#17324d}.label{font:600 19px Arial,sans-serif;fill:#17324d}
+      .small{font:16px Arial,sans-serif;fill:#29445f}.box{stroke:#29445f;stroke-width:2.5;rx:16;ry:16}
+      .arrow{stroke:#29445f;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#7b8794;stroke-width:2;stroke-dasharray:8 7;fill:none}
+    </style>
+  </defs>
+  <rect width="1200" height="650" fill="white"/>
+  <text x="600" y="45" text-anchor="middle" class="title">Інтегрований прототип: компактний стан і реверсивне розгортання</text>
+  <rect x="45" y="155" width="170" height="105" fill="#e8f1fb" class="box"/>
+  <text x="130" y="195" text-anchor="middle" class="label">Відеовікно</text><text x="130" y="225" text-anchor="middle" class="small">кадри 64×64</text>
+  <rect x="280" y="125" width="205" height="165" fill="#eaf7ef" class="box"/>
+  <text x="382" y="165" text-anchor="middle" class="label">Пакування</text><text x="382" y="198" text-anchor="middle" class="small">16 грубих токенів</text><text x="382" y="226" text-anchor="middle" class="small">8 сталих областей</text><text x="382" y="254" text-anchor="middle" class="small">384 значення/кадр</text>
+  <rect x="550" y="125" width="240" height="165" fill="#fff4dd" class="box"/>
+  <text x="670" y="165" text-anchor="middle" class="label">Регресійний перехід</text><text x="670" y="198" text-anchor="middle" class="small">SimVP-сумісний</text><text x="670" y="226" text-anchor="middle" class="small">стан → прогноз → стан</text><text x="670" y="254" text-anchor="middle" class="small">стала ширина</text>
+  <rect x="855" y="125" width="255" height="165" fill="#f0ecfb" class="box"/>
+  <text x="982" y="165" text-anchor="middle" class="label">Реверсивне розгортання</text><text x="982" y="198" text-anchor="middle" class="small">P′ = Q</text><text x="982" y="226" text-anchor="middle" class="small">Q′ = P + F(Q)</text><text x="982" y="254" text-anchor="middle" class="small">локальне відтворення графа</text>
+  <path d="M215 207 H275" class="arrow"/><path d="M485 207 H545" class="arrow"/><path d="M790 207 H850" class="arrow"/>
+  <path d="M982 290 V350 H670 V295" class="arrow"/>
+  <rect x="405" y="405" width="390" height="115" fill="#f7f9fb" class="box"/>
+  <text x="600" y="445" text-anchor="middle" class="label">Піксельне зчитування та функція втрат</text>
+  <text x="600" y="478" text-anchor="middle" class="small">звичайна диференційовна межа</text>
+  <path d="M670 290 V400" class="arrow"/>
+  <rect x="60" y="565" width="1080" height="55" fill="none" class="dash"/>
+  <text x="600" y="599" text-anchor="middle" class="small">Реверсивною є повторювана часова композиція; кодування, пакування, розпакування, зчитування й втрата лежать поза її межею.</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Пікова додаткова пам’ять інтегрованої моделі</title>
+  <desc id="desc">Лінійний графік порівнює реверсивний режим і звичайне зворотне поширення крізь час для 10, 20 і 40 прогнозованих кадрів.</desc>
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <style>
+    text { font-family: "Arial", "DejaVu Sans", sans-serif; fill: #172033; }
+    .grid { stroke: #d7dde8; stroke-width: 1; }
+    .axis { stroke: #26324a; stroke-width: 2; }
+    .tick { font-size: 20px; }
+    .label { font-size: 22px; font-weight: 600; }
+    .title { font-size: 28px; font-weight: 700; }
+    .note { font-size: 18px; fill: #4b5870; }
+    .rev { fill: none; stroke: #167f78; stroke-width: 5; }
+    .bptt { fill: none; stroke: #c44e52; stroke-width: 5; }
+    .rev-dot { fill: #167f78; stroke: #ffffff; stroke-width: 3; }
+    .bptt-dot { fill: #c44e52; stroke: #ffffff; stroke-width: 3; }
+    .value { font-size: 18px; font-weight: 600; }
+  </style>
+
+  <text x="600" y="48" text-anchor="middle" class="title">Пам’ять навчання зі збільшенням горизонту прогнозу</text>
+  <text x="600" y="78" text-anchor="middle" class="note">батч 1, RTX 4060 Ti, без градієнтних контрольних точок</text>
+
+  <line x1="150" y1="580" x2="1050" y2="580" class="grid"/>
+  <line x1="150" y1="433.3" x2="1050" y2="433.3" class="grid"/>
+  <line x1="150" y1="286.7" x2="1050" y2="286.7" class="grid"/>
+  <line x1="150" y1="140" x2="1050" y2="140" class="grid"/>
+
+  <line x1="150" y1="110" x2="150" y2="580" class="axis"/>
+  <line x1="150" y1="580" x2="1050" y2="580" class="axis"/>
+
+  <text x="130" y="587" text-anchor="end" class="tick">0</text>
+  <text x="130" y="440" text-anchor="end" class="tick">500</text>
+  <text x="130" y="294" text-anchor="end" class="tick">1000</text>
+  <text x="130" y="147" text-anchor="end" class="tick">1500</text>
+
+  <text x="200" y="615" text-anchor="middle" class="tick">10</text>
+  <text x="520" y="615" text-anchor="middle" class="tick">20</text>
+  <text x="980" y="615" text-anchor="middle" class="tick">40</text>
+  <text x="600" y="660" text-anchor="middle" class="label">Кількість прогнозованих кадрів</text>
+  <text x="42" y="350" text-anchor="middle" transform="rotate(-90 42 350)" class="label">Додаткова пікова пам’ять, МБ</text>
+
+  <polyline points="200,476.7 520,418.7 980,418.4" class="rev"/>
+  <polyline points="200,476.4 520,372.1 980,163.8" class="bptt"/>
+
+  <circle cx="200" cy="476.7" r="8" class="rev-dot"/>
+  <circle cx="520" cy="418.7" r="8" class="rev-dot"/>
+  <circle cx="980" cy="418.4" r="8" class="rev-dot"/>
+  <circle cx="200" cy="476.4" r="8" class="bptt-dot"/>
+  <circle cx="520" cy="372.1" r="8" class="bptt-dot"/>
+  <circle cx="980" cy="163.8" r="8" class="bptt-dot"/>
+
+  <text x="185" y="510" text-anchor="end" class="value" fill="#167f78">352,15</text>
+  <text x="530" y="449" class="value" fill="#167f78">549,73</text>
+  <text x="990" y="449" class="value" fill="#167f78">550,86</text>
+  <text x="214" y="466" class="value" fill="#c44e52">353,06</text>
+  <text x="530" y="360" class="value" fill="#c44e52">708,74</text>
+  <text x="990" y="153" class="value" fill="#c44e52">1418,79</text>
+
+  <line x1="690" y1="105" x2="742" y2="105" class="rev"/>
+  <text x="755" y="112" class="tick">реверсивний режим</text>
+  <line x1="690" y1="136" x2="742" y2="136" class="bptt"/>
+  <text x="755" y="143" class="tick">звичайний BPTT</text>
+</svg>

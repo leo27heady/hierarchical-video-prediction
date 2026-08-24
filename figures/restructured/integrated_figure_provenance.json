@@ -1,0 +1,44 @@
+[
+  {
+    "schema_version": "1.0",
+    "figure_id": "3.18",
+    "file": "figures/restructured/ch3_fig3_18_integrated_architecture.svg",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "efadeba17d0253875da278897cd28ee9d6d1a6e982a5d923a841b5e2b78843b2",
+    "bytes": 3405,
+    "source": "dissertation-native SVG",
+    "modification_status": "new dissertation-native figure",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "data_or_concept_source": "integrated fixed-region and reversible-rollout interface specified in Chapter 3",
+    "caption_attribution": "Chapter 3 Figure 3.18; author-generated architecture diagram"
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "3.19",
+    "file": "figures/restructured/ch3_fig3_19_fixed_regions.svg",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "de5f6a26e8f078bc41e80af0848a4e56cfe81a81982f11033ff59f5b221779f5",
+    "bytes": 2383,
+    "source": "dissertation-native SVG",
+    "modification_status": "new dissertation-native figure",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "data_or_concept_source": "fixed-region packing geometry specified in Chapter 3",
+    "caption_attribution": "Chapter 3 Figure 3.19; author-generated packing diagram"
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "4.16",
+    "file": "figures/restructured/ch4_fig4_16_integrated_memory.svg",
+    "asset_class": "author-generated-artifact-derived",
+    "sha256": "bca5e2f26ce46fcd59607dc22583a09f2c19c814e9cdbec0a0811a4d1b12f87a",
+    "bytes": 3792,
+    "source": "dissertation-native SVG generated from a frozen numeric receipt",
+    "modification_status": "new dissertation-native figure",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "data_or_concept_source": "integrated_reversible_openstl_memory.json",
+    "caption_attribution": "Chapter 4 Figure 4.16; author-generated from the integrated memory profile"
+  }
+]

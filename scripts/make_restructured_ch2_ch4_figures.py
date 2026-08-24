@@ -1199,95 +1199,98 @@ def fig4_8_equal_reach() -> None:
 
 
 def fig1_18_systems_map() -> None:
-    """Map the three resource bottlenecks without implying one tested pipeline."""
+    """Map one long-horizon problem, three constraints, and bounded integration evidence."""
 
     fig, ax = canvas(15.2, 8.4)
     title(
         ax,
-        "Consistency under finite video-model resources",
-        "Three bottlenecks were studied at separate interfaces; the outputs are complementary evidence, not one integrated executable model",
+        "Консистентність за обмежених ресурсів відеомоделі",
+        "Одна довгогоризонтна проблема, центральне ієрархічне рішення та два засоби усунення обмежень масштабування",
     )
     box(
         ax,
-        0.25,
+        0.22,
         0.78,
-        0.50,
+        0.56,
         0.075,
-        "Task-relevant consistency over longer temporal processes",
+        "Збереження релевантного стану й траєкторії на довгому горизонті",
         fc=PALE_BLUE,
         ec=BLUE,
         weight="bold",
-        fs=11,
+        fs=10.5,
     )
 
     lanes = [
         {
             "x": 0.035,
+            "w": 0.265,
             "color": PURPLE,
             "pale": PALE_PURPLE,
-            "bottleneck": "Activation tape grows\nwith training horizon",
-            "method": "TempVerseFormer\nreversible temporal replay",
-            "evidence": "Published memory--runtime\noperating boundary",
+            "bottleneck": "Стрічка активацій зростає\nз горизонтом навчання",
+            "method": "TempVerseFormer:\nреверсивне часове відтворення",
+            "evidence": "Опублікована межа\nпам'ять–час виконання",
         },
         {
-            "x": 0.365,
-            "color": GOLD,
-            "pale": PALE_GOLD,
-            "bottleneck": "Uniform spatial allocation\nignores local complexity",
-            "method": "Fixed-patch V-BLT + RoPE-ND\nand entropy diagnostic",
-            "evidence": "Published fixed-patch quality/cost\nand measured entropy maps",
-        },
-        {
-            "x": 0.695,
+            "x": 0.34,
+            "w": 0.32,
             "color": BLUE,
             "pale": PALE_BLUE,
-            "bottleneck": "Retained-context reach is bounded\nby the token budget",
-            "method": "Hierarchical-context\nwindow predictor",
-            "evidence": "Reach--fidelity frontier\nand tested boundary conditions",
+            "bottleneck": "Досяжність збереженого контексту\nобмежена токенним бюджетом",
+            "method": "Ієрархічний контекстний\nвіконний предиктор",
+            "evidence": "Підтверджена межа\nдосяжності й точності відтворення",
+        },
+        {
+            "x": 0.70,
+            "w": 0.265,
+            "color": GOLD,
+            "pale": PALE_GOLD,
+            "bottleneck": "Рівномірний просторовий розподіл\nне враховує локальну складність",
+            "method": "V-BLT + RoPE-ND:\nфіксовані блоки й ентропія",
+            "evidence": "Опубліковані оцінки якості й вартості;\nвиміряні карти ентропії",
         },
     ]
 
     for lane in lanes:
         x = lane["x"]
-        center = x + 0.135
+        width = lane["w"]
+        center = x + width / 2
         arrow(ax, (0.50, 0.78), (center, 0.735), color=MUTED, lw=1.4)
-        box(ax, x, 0.635, 0.27, 0.10, lane["bottleneck"], fc="white", ec=lane["color"], weight="bold", fs=9.3)
+        box(ax, x, 0.635, width, 0.10, lane["bottleneck"], fc="white", ec=lane["color"], weight="bold", fs=8.9)
         arrow(ax, (center, 0.635), (center, 0.555), color=lane["color"], lw=1.8)
-        box(ax, x, 0.455, 0.27, 0.10, lane["method"], fc=lane["pale"], ec=lane["color"], weight="bold", fs=9.2)
+        box(ax, x, 0.455, width, 0.10, lane["method"], fc=lane["pale"], ec=lane["color"], weight="bold", fs=8.9)
         arrow(ax, (center, 0.455), (center, 0.345), color=lane["color"], lw=1.8)
-        box(ax, x, 0.235, 0.27, 0.105, lane["evidence"], fc="white", ec=lane["color"], fs=8.9)
+        box(ax, x, 0.235, width, 0.105, lane["evidence"], fc="white", ec=lane["color"], fs=8.4)
 
-    # Only the spatial-allocation lane has an unexecuted adaptive extension.
+    # A bounded dissertation-only composition was executed after the causal studies.
+    for center in (0.1675, 0.50, 0.8325):
+        arrow(ax, (center, 0.235), (0.50 if center == 0.50 else 0.27 if center < 0.5 else 0.73, 0.175), color=TEAL, lw=1.5)
     box(
         ax,
-        0.405,
-        0.115,
-        0.19,
-        0.068,
-        "dynamic entropy allocation\nproposed, not evaluated",
-        fc="white",
-        ec=ORANGE,
-        dashed=True,
-        fs=8.1,
+        0.20,
+        0.075,
+        0.60,
+        0.10,
+        "Обмежена інтеграційна перевірка технічної здійсненності\nсталий грубо-детальний стан + регресійний перехід + реверсивне розгортання",
+        fc=PALE_TEAL,
+        ec=TEAL,
+        fs=8.8,
         weight="bold",
     )
-    arrow(ax, (0.50, 0.235), (0.50, 0.185), color=ORANGE, dashed=True, lw=1.8)
 
-    ax.plot([0.035, 0.965], [0.085, 0.085], color=GRID, linewidth=1.2)
     ax.text(
         0.5,
-        0.045,
-        "Solid vertical paths denote executed studies. The dashed orange extension is a future policy; no end-to-end combination was evaluated.",
+        0.025,
+        "Причинні твердження трьох гілок оцінено окремо; нижній прототип доводить сумісність інтерфейсів, але не спільний причинний ефект.",
         ha="center",
         va="center",
-        fontsize=9.0,
+        fontsize=8.5,
         color=MUTED,
     )
     save_native(
         fig,
         "ch1_fig1_18_systems_map",
-        "1.21",
-        "Dissertation scope ledger: published TempVerseFormer and V-BLT studies plus frozen hierarchical-context evidence",
+        "1.25",
+        "Dissertation scope ledger: published component studies, frozen hierarchical-context evidence, and bounded integration feasibility",
     )
 
 

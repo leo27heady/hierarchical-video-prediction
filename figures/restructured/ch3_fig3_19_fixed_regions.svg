@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620">
+  <defs><marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#29445f"/></marker>
+  <style>.t{font:700 27px Arial,sans-serif;fill:#17324d}.h{font:600 19px Arial,sans-serif;fill:#17324d}.s{font:16px Arial,sans-serif;fill:#29445f}.a{stroke:#29445f;stroke-width:3;fill:none;marker-end:url(#a)}</style></defs>
+  <rect width="1100" height="620" fill="white"/><text x="550" y="42" text-anchor="middle" class="t">Сталий грубий/детальний стан одного кадру</text>
+  <text x="225" y="92" text-anchor="middle" class="h">16 грубих комірок (4×4)</text>
+  <g transform="translate(85,115)" stroke="#29445f" stroke-width="2" fill="#dfeefa">
+    <rect width="280" height="280"/><path d="M70 0V280M140 0V280M210 0V280M0 70H280M0 140H280M0 210H280"/>
+  </g>
+  <text x="720" y="92" text-anchor="middle" class="h">8 сталих детальних областей (2×4)</text>
+  <g transform="translate(490,115)" stroke="#29445f" stroke-width="2">
+    <rect width="400" height="280" fill="#f8fbfd"/>
+    <rect width="100" height="140" fill="#eaf7ef"/><rect x="100" width="100" height="140" fill="#fff2d6"/><rect x="200" width="100" height="140" fill="#f0ecfb"/><rect x="300" width="100" height="140" fill="#fde8e8"/>
+    <rect y="140" width="100" height="140" fill="#dff5f3"/><rect x="100" y="140" width="100" height="140" fill="#e8f1fb"/><rect x="200" y="140" width="100" height="140" fill="#f7ebd9"/><rect x="300" y="140" width="100" height="140" fill="#eeeaf5"/>
+    <path d="M50 0V280M100 0V280M150 0V280M200 0V280M250 0V280M300 0V280M350 0V280M0 35H400M0 70H400M0 105H400M0 140H400M0 175H400M0 210H400M0 245H400" fill="none" opacity=".45"/>
+  </g>
+  <path d="M380 255 H470" class="a"/>
+  <rect x="205" y="455" width="690" height="105" rx="15" fill="#f7f9fb" stroke="#29445f" stroke-width="2.5"/>
+  <text x="550" y="495" text-anchor="middle" class="h">24 токени × 16 значень = 384 значення на кадр</text>
+  <text x="550" y="528" text-anchor="middle" class="s">Дисперсія змінює ваги; геометрія ділянок і довжина стану залишаються сталими.</text>
+  <path d="M225 395 V450M720 395 V450" class="a"/>
+</svg>

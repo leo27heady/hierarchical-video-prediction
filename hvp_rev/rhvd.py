@@ -196,13 +196,28 @@ def log(*a):
 # ================================================================================================
 class WindowDiT(nn.Module):
     def __init__(self, n_ctx_c=48, n_ctx_f=6, win=WIN, d=384, depth=8, heads=6, lat=LAT,
-                 mode="diff", stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1):
+                 mode="diff", stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1,
+                 fine_cells_per_frame=None, fine_token_budget=None):
         super().__init__()
         self.n_ctx_c, self.n_ctx_f, self.win, self.lat, self.d = n_ctx_c, n_ctx_f, win, lat, d
         self.mode, self.stride_c, self.n_hist_f = mode, stride_c, n_hist_f
         # [hier3] optional TOP (2x2 = 4 tok/frame) context stream + targets; n_ctx_t=0 (default)
         # keeps the module IDENTICAL to the 2-level version (same state dict, same seq).
         self.n_ctx_t, self.stride_t = n_ctx_t, stride_t
+        self.fine_cells_per_frame = fine_cells_per_frame
+        self.fine_token_budget = fine_token_budget
+        if fine_cells_per_frame is not None and fine_token_budget is not None:
+            raise ValueError("choose per-frame or global selected fine tokens, not both")
+        if fine_cells_per_frame is not None:
+            if n_ctx_f <= 0 or n_hist_f != 0:
+                raise ValueError("selected fine cells require n_ctx_f>0 and n_hist_f=0")
+            if not 1 <= int(fine_cells_per_frame) <= 64:
+                raise ValueError("fine_cells_per_frame must lie in [1,64]")
+        if fine_token_budget is not None:
+            if n_ctx_f <= 0 or n_hist_f != 0:
+                raise ValueError("global selected fine tokens require n_ctx_f>0 and n_hist_f=0")
+            if not 1 <= int(fine_token_budget) <= n_ctx_f * 64:
+                raise ValueError("fine_token_budget exceeds the available fine context")
         # strided coarse: WIN//stride target slots per window (anchors at block ends inside the
         # window) so the slot buffer keeps phase for ANY stride dividing WIN. stride 4 -> 1 slot
         # (bit-identical to the legacy d1 rule); stride 2 -> 2 slots (hier-s2-min); stride 1 ->
@@ -239,10 +254,16 @@ class WindowDiT(nn.Module):
             nn.init.constant_(ada[-1].weight, 0); nn.init.constant_(ada[-1].bias, 0)
         for head in heads_:
             nn.init.constant_(head.weight, 0); nn.init.constant_(head.bias, 0)
-        self.expected_seq = (n_ctx_t * 4 + n_ctx_c * 16 + (n_hist_f + n_ctx_f) * 64
+        if fine_token_budget is not None:
+            fine_ctx_tokens = int(fine_token_budget)
+        else:
+            fine_ctx_tokens = ((n_hist_f + n_ctx_f) * 64 if fine_cells_per_frame is None
+                               else n_ctx_f * int(fine_cells_per_frame))
+        self.expected_seq = (n_ctx_t * 4 + n_ctx_c * 16 + fine_ctx_tokens
                              + self.n_tgt_t * 4 + self.n_tgt_c * 16 + win * 64)
 
-    def _ctx_tokens(self, ctx_c, ctx_f, ctx_t=None):
+    def _ctx_tokens(self, ctx_c, ctx_f, ctx_t=None, ctx_f_ids=None,
+                    ctx_f_frame_ids=None):
         """Context token list + (level,role,frame) ids, all in TRUE frame units (base = tj).
         Top slots first (level 2, stride_t anchors at block ends), then coarse, then fine.
         Coarse slots (stride s): anchors at frame ids s-1, 2s-1, ..., base-1 (block ends).
@@ -268,13 +289,37 @@ class WindowDiT(nn.Module):
             x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, k], level=1, role=0, frame_idx=fid)
             xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
         f0_fine = self.base - self.n_ctx_f
+        if self.fine_token_budget is not None:
+            expected = (ctx_f.shape[0], self.fine_token_budget)
+            if ctx_f_ids is None or ctx_f_frame_ids is None:
+                raise ValueError("global selected fine context needs cell and frame ids")
+            if tuple(ctx_f_ids.shape) != expected or tuple(ctx_f_frame_ids.shape) != expected:
+                raise ValueError(f"global fine ids must both have shape {expected}")
+            absolute_frames = ctx_f_frame_ids + f0_fine
+            x, lv, rl, fm = self.tok.tokenize_selected_sequence(
+                ctx_f, absolute_frames, ctx_f_ids, level=1, role=0
+            )
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+            return xs, lvs, rls, fms
         for j in range(self.n_ctx_f):
-            x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, self.n_hist_f + j], level=1, role=0,
-                                                    frame_idx=f0_fine + j)
+            if self.fine_cells_per_frame is None:
+                x, lv, rl, fm = self.tok.tokenize_level(
+                    ctx_f[:, self.n_hist_f + j], level=1, role=0, frame_idx=f0_fine + j
+                )
+            else:
+                if ctx_f_ids is None:
+                    raise ValueError("ctx_f_ids are required for selected fine-cell context")
+                expected = (ctx_f.shape[0], self.n_ctx_f, self.fine_cells_per_frame)
+                if tuple(ctx_f_ids.shape) != expected:
+                    raise ValueError(f"ctx_f_ids must have shape {expected}, got {tuple(ctx_f_ids.shape)}")
+                x, lv, rl, fm = self.tok.tokenize_selected_level(
+                    ctx_f[:, j], ctx_f_ids[:, j], level=1, role=0, frame_idx=f0_fine + j
+                )
             xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
         return xs, lvs, rls, fms
 
-    def forward(self, yc, yf, ctx_c, ctx_f, t, actions, yt=None, ctx_t=None):
+    def forward(self, yc, yf, ctx_c, ctx_f, t, actions, yt=None, ctx_t=None, ctx_f_ids=None,
+                ctx_f_frame_ids=None):
         """yc:(B,n_tgt_c,LAT,4,4) yf:(B,win,LAT,8,8) noisy targets (or dummies for reg);
         ctx_c:(B,n_ctx_c,...) ctx_f:(B,n_hist_f+n_ctx_f,...); t:(B,); actions:(B,win) one per
         target frame. [hier3] yt:(B,n_tgt_t,LAT,2,2) / ctx_t:(B,n_ctx_t,LAT,2,2) only when
@@ -283,7 +328,9 @@ class WindowDiT(nn.Module):
         Strided coarse/top (n_tgt=1): the single slot is conditioned on the SUM of the window's
         action embeddings (multiset of actions = sufficient statistic for the displacement)."""
         B = yf.shape[0]
-        xs, lvs, rls, fms = self._ctx_tokens(ctx_c, ctx_f, ctx_t)
+        xs, lvs, rls, fms = self._ctx_tokens(
+            ctx_c, ctx_f, ctx_t, ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids
+        )
         n_ctx_tok = sum(x.shape[1] for x in xs)
         groups = []                                       # (kind, j, n_tok) in token order
         if 0 < self.n_tgt_t < self.win:                   # strided top slots (block-end anchors)
@@ -382,7 +429,8 @@ class WindowDiffusion:
         self.Ttr = n_train_steps
         self.abar = cosine_alphas(n_train_steps)
 
-    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None):
+    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
+             ctx_f_ids=None, ctx_f_frame_ids=None):
         B, dev = tgt_f.shape[0], tgt_f.device
         ti = torch.randint(1, self.Ttr + 1, (B,), device=dev)
         ab = self.abar.to(dev)[ti].view(B, 1, 1, 1, 1)
@@ -391,18 +439,21 @@ class WindowDiffusion:
         yc, yf = sa * tgt_c + sb * nc, sa * tgt_f + sb * nf
         vc_t, vf_t = sa * nc - sb * tgt_c, sa * nf - sb * tgt_f
         if tgt_t is None:
-            vc, vf = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions)
+            vc, vf = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
+                              ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids)
             return F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
         nt = torch.randn_like(tgt_t)
         yt = sa * tgt_t + sb * nt
         vt_t = sa * nt - sb * tgt_t
         vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
-                              yt=yt, ctx_t=ctx_t)
+                              yt=yt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
+                              ctx_f_frame_ids=ctx_f_frame_ids)
         return (F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
                 + F.mse_loss(vt.float(), vt_t))
 
     @torch.no_grad()
-    def sample(self, ctx_c, ctx_f, actions, n_steps=16, ctx_t=None):
+    def sample(self, ctx_c, ctx_f, actions, n_steps=16, ctx_t=None, ctx_f_ids=None,
+               ctx_f_frame_ids=None):
         """Returns (yc, yf) for 2-level nets (unchanged) or (yc, yf, yt) when the net has a top
         stream -- callers of 3-level arms must unpack 3."""
         B, dev = ctx_f.shape[0], ctx_f.device
@@ -418,10 +469,13 @@ class WindowDiffusion:
             sa, sb = ab.sqrt(), (1 - ab).sqrt()
             t = torch.full((B,), ti.item() / self.Ttr, device=dev)
             if top:
-                vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, t, actions, yt=yt, ctx_t=ctx_t)
+                vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, t, actions, yt=yt, ctx_t=ctx_t,
+                                      ctx_f_ids=ctx_f_ids,
+                                      ctx_f_frame_ids=ctx_f_frame_ids)
                 vt = vt.float()
             else:
-                vc, vf = self.net(yc, yf, ctx_c, ctx_f, t, actions)
+                vc, vf = self.net(yc, yf, ctx_c, ctx_f, t, actions,
+                                  ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids)
             vc, vf = vc.float(), vf.float()
             x0c, x0f = sa * yc - sb * vc, sa * yf - sb * vf
             epc, epf = sb * yc + sa * vc, sb * yf + sa * vf
@@ -446,28 +500,34 @@ class WindowRegression:
     def __init__(self, net: WindowDiT):
         self.net = net
 
-    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None):
+    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
+             ctx_f_ids=None, ctx_f_frame_ids=None):
         B, dev = tgt_f.shape[0], tgt_f.device
         zc = torch.zeros_like(tgt_c); zf = torch.zeros_like(tgt_f)
         if tgt_t is None:
-            pc, pf = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions)
+            pc, pf = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                              ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids)
             return F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
         zt = torch.zeros_like(tgt_t)
         pc, pf, pt = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
-                              yt=zt, ctx_t=ctx_t)
+                              yt=zt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
+                              ctx_f_frame_ids=ctx_f_frame_ids)
         return (F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
                 + F.smooth_l1_loss(pt.float(), tgt_t))
 
     @torch.no_grad()
-    def sample(self, ctx_c, ctx_f, actions, n_steps=0, ctx_t=None):
+    def sample(self, ctx_c, ctx_f, actions, n_steps=0, ctx_t=None, ctx_f_ids=None,
+               ctx_f_frame_ids=None):
         B, dev = ctx_f.shape[0], ctx_f.device
         zc = torch.zeros(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
         zf = torch.zeros(B, WIN, LAT, 8, 8, device=dev)
         if self.net.n_tgt_t == 0:
-            return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions)
+            return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                            ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids)
         zt = torch.zeros(B, self.net.n_tgt_t, LAT, 2, 2, device=dev)
         return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
-                        yt=zt, ctx_t=ctx_t)
+                        yt=zt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
+                        ctx_f_frame_ids=ctx_f_frame_ids)
 
 
 # ================================================================================================
@@ -634,6 +694,8 @@ def training_update(wrap, net, ema, opt, batch, step, *, lr=3e-4, warmup=2000):
     loss = wrap.loss(
         batch["ctx_c"], batch["ctx_f"], batch["tgt_c"], batch["tgt_f"], batch["actions"],
         ctx_t=batch.get("ctx_t"), tgt_t=batch.get("tgt_t"),
+        ctx_f_ids=batch.get("ctx_f_ids"),
+        ctx_f_frame_ids=batch.get("ctx_f_frame_ids"),
     )
     opt.zero_grad(set_to_none=True)
     loss.backward()

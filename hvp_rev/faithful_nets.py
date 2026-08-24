@@ -262,6 +262,77 @@ class LatentTokenizer(nn.Module):
         frame_id = torch.full((B, N), frame_idx, dtype=torch.long, device=dev)
         return tok, level_id, role_id, frame_id
 
+    def tokenize_selected_level(self, z, cell_ids, level, role, frame_idx):
+        """Tokenize a fixed number of spatial cells while retaining their true coordinates.
+
+        ``cell_ids`` has shape ``(B, K)`` and indexes the row-major spatial grid of ``z``.
+        The method is parameter-compatible with :meth:`tokenize_level`: it gathers the existing
+        spatial embeddings rather than introducing a second positional interface.  A fixed K is
+        deliberate because the reversible feasibility study requires a fixed-width token state.
+        """
+        if cell_ids.ndim != 2 or cell_ids.shape[0] != z.shape[0]:
+            raise ValueError(
+                f"cell_ids must have shape (B,K) with B={z.shape[0]}, got {tuple(cell_ids.shape)}"
+            )
+        B, _, H, W = z.shape
+        if level == 0:
+            pos = self.coarse_pos
+        elif level == 1:
+            pos = self.fine_pos
+        elif hasattr(self, "top_pos"):
+            pos = self.top_pos
+        else:
+            raise ValueError("top-level selection requires a three-level tokenizer")
+        expected_cells = H * W
+        if pos.shape[0] != expected_cells:
+            raise ValueError(
+                f"level {level} has {pos.shape[0]} position embeddings but z has {expected_cells} cells"
+            )
+        ids = cell_ids.to(device=z.device, dtype=torch.long)
+        if ids.numel() == 0 or int(ids.min()) < 0 or int(ids.max()) >= expected_cells:
+            raise ValueError(f"cell ids must lie in [0,{expected_cells - 1}]")
+        cells = self._cells(z)
+        gathered = torch.gather(
+            cells, 1, ids[..., None].expand(B, ids.shape[1], cells.shape[-1])
+        )
+        tok = self.patchify(gathered) + pos[ids]
+        K = ids.shape[1]
+        level_id = torch.full((B, K), level, dtype=torch.long, device=z.device)
+        role_id = torch.full((B, K), role, dtype=torch.long, device=z.device)
+        frame_id = torch.full((B, K), frame_idx, dtype=torch.long, device=z.device)
+        return tok, level_id, role_id, frame_id
+
+    def tokenize_selected_sequence(self, z, frame_ids, cell_ids, level=1, role=0):
+        """Tokenize a fixed-budget set of cells drawn from multiple context frames.
+
+        ``z`` is ``(B,T,C,H,W)`` and both id tensors are ``(B,K)``.  Packing is external and
+        deterministic; this method gathers the existing frame/cell coordinates so variable
+        per-frame allocation does not require a new positional parameterization.
+        """
+        if z.ndim != 5:
+            raise ValueError(f"z must have shape (B,T,C,H,W), got {tuple(z.shape)}")
+        if frame_ids.shape != cell_ids.shape or frame_ids.ndim != 2:
+            raise ValueError("frame_ids and cell_ids must have the same (B,K) shape")
+        B, T, C, H, W = z.shape
+        if frame_ids.shape[0] != B:
+            raise ValueError(f"id batch {frame_ids.shape[0]} does not match z batch {B}")
+        frames = frame_ids.to(device=z.device, dtype=torch.long)
+        cells = cell_ids.to(device=z.device, dtype=torch.long)
+        if int(frames.min()) < 0 or int(frames.max()) >= T:
+            raise ValueError(f"frame ids must lie in [0,{T - 1}]")
+        if int(cells.min()) < 0 or int(cells.max()) >= H * W:
+            raise ValueError(f"cell ids must lie in [0,{H * W - 1}]")
+        flattened = z.permute(0, 1, 3, 4, 2).reshape(B, T * H * W, C)
+        flat_ids = frames * (H * W) + cells
+        gathered = torch.gather(
+            flattened, 1, flat_ids[..., None].expand(B, flat_ids.shape[1], C)
+        )
+        pos = self.fine_pos if level == 1 else self.coarse_pos
+        tok = self.patchify(gathered) + pos[cells]
+        level_id = torch.full_like(cells, level)
+        role_id = torch.full_like(cells, role)
+        return tok, level_id, role_id, frames
+
     def action_code(self, actions):
         # actions:(B,k) int in {-1,0,1} -> summed embedding (B,d)
         return self.action_embedding(actions + 1).sum(dim=1)
