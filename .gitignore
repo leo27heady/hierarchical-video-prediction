@@ -22,5 +22,6 @@ hvp.egg-info/
 /artifacts/phasec_v2/
 /artifacts/e4_head_package/gpu_hours.jsonl
 /artifacts/confirmation_e2/access.jsonl
+/hierarchical-video-prediction-storage/
 *.pt
 *.npy

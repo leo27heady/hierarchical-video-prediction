@@ -181,49 +181,34 @@ def make_token_layout() -> None:
 
 
 def make_rollout_buffer() -> None:
-    fig, ax = plt.subplots(figsize=(12.2, 5.8), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(12.2, 5.4), constrained_layout=True)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
-    ax.set_title(
-        "Autoregressive rollout updates both levels of a fixed-size context state",
-        loc="left",
-        fontweight="bold",
-    )
-    box(ax, (0.04, 0.68), 0.25, 0.12, "coarse context buffer\n48 frames × 16 tokens", COARSE)
-    box(ax, (0.04, 0.43), 0.25, 0.12, "recent fine buffer\n6 frames × 64 tokens", FINE)
-    box(ax, (0.37, 0.54), 0.17, 0.17, "joint predictor\n4 future actions\n+ DDIM (16 NFE)", "#efe6f5")
-    box(ax, (0.63, 0.54), 0.18, 0.17, "4 generated pairs\n$(z^c,z^f)_{t:t+3}$", TARGET)
-    box(ax, (0.84, 0.70), 0.12, 0.11, "append coarse\n+ evict 4", "#e7ecef")
-    box(ax, (0.84, 0.40), 0.12, 0.11, "append fine\n+ evict 4", "#e7ecef")
-    arrow(ax, (0.29, 0.74), (0.37, 0.65), color=COARSE)
-    arrow(ax, (0.29, 0.49), (0.37, 0.59), color=FINE)
-    arrow(ax, (0.54, 0.625), (0.63, 0.625), color=TARGET)
-    arrow(ax, (0.81, 0.65), (0.84, 0.755), color=COARSE)
-    arrow(ax, (0.81, 0.58), (0.84, 0.455), color=FINE)
-    arrow(ax, (0.90, 0.81), (0.24, 0.82), color=COARSE)
-    arrow(ax, (0.24, 0.82), (0.18, 0.80), color=COARSE)
-    arrow(ax, (0.90, 0.40), (0.24, 0.36), color=FINE)
-    arrow(ax, (0.24, 0.36), (0.18, 0.43), color=FINE)
-    ax.text(
-        0.50,
-        0.28,
-        "advance by four frames; both buffers retain the same fixed geometry at every step",
-        ha="center",
-        fontweight="bold",
-    )
-    ax.text(
-        0.50,
-        0.20,
-        "context state = 48×256 + 6×1,024 = 18,432 latent numbers, independent of rollout length",
-        ha="center",
-        color=MUTED,
-    )
-    ax.add_patch(Rectangle((0.05, 0.06), 0.25, 0.07, facecolor="#dbe7f3", edgecolor=INK))
-    ax.add_patch(Rectangle((0.30, 0.06), 0.65, 0.07, facecolor="#f2f2f2", edgecolor=INK))
-    ax.text(0.175, 0.095, "48 ground-truth warm-up frames", ha="center", va="center", fontsize=8.5)
-    ax.text(0.625, 0.095, "152 self-fed frames, generated four at a time", ha="center", va="center", fontsize=8.5)
-    ax.text(0.50, 0.015, "The layout matches training, but self-fed values need not follow the clean-context training distribution.", ha="center", color=BAD, fontsize=8.2)
+    ax.set_title("Оновлення двох буферів після прогнозу чотирьох кадрів", loc="left", fontweight="bold")
+
+    def lane(y, label, old_count, color):
+        ax.text(0.025, y + 0.035, label, ha="left", va="center", fontsize=9.3, fontweight="bold", color=color)
+        x0, width, height = 0.18, 0.72, 0.09
+        slot = width / 12
+        for i in range(12):
+            face = "#e7ecef" if i < 2 else color if i >= 10 else "white"
+            ax.add_patch(Rectangle((x0 + i * slot, y), slot, height, facecolor=face, edgecolor=INK, linewidth=0.8))
+        ax.text(x0 + slot, y + height / 2, "−4", ha="center", va="center", fontsize=8.5, color=MUTED, fontweight="bold")
+        ax.text(x0 + 6 * slot, y + height / 2, f"збережено {old_count - 4}", ha="center", va="center", fontsize=8.5)
+        ax.text(x0 + 11 * slot, y + height / 2, "+4", ha="center", va="center", fontsize=8.5, color="white", fontweight="bold")
+        ax.text(0.92, y + height / 2, f"разом {old_count}", ha="left", va="center", fontsize=8.7)
+
+    ax.text(0.18, 0.81, "стан до оновлення", fontsize=8.7, color=MUTED)
+    ax.text(0.78, 0.81, "нові прогнози", fontsize=8.7, color=MUTED)
+    lane(0.64, "Грубий рівень", 48, COARSE)
+    lane(0.43, "Детальний рівень", 6, FINE)
+    ax.text(0.50, 0.27, "Оператор tail відкидає чотири найстаріші позиції та додає чотири нові; ширина стану не змінюється.", ha="center", color=MUTED, fontsize=9.2)
+    ax.add_patch(Rectangle((0.08, 0.08), 0.24, 0.07, facecolor="#dbe7f3", edgecolor=INK))
+    ax.add_patch(Rectangle((0.32, 0.08), 0.60, 0.07, facecolor="#f2f2f2", edgecolor=INK))
+    ax.text(0.20, 0.115, "48 кадрів розігріву", ha="center", va="center", fontsize=8.5)
+    ax.text(0.62, 0.115, "152 кадри самоподачі, блоками по 4", ha="center", va="center", fontsize=8.5)
+    ax.text(0.50, 0.025, "Схема показує структуру буфера, а не збереження якості його вмісту на довгому горизонті.", ha="center", color=BAD, fontsize=8.5)
     save(fig, "fig23_rollout_ring_buffer")
 
 
@@ -439,22 +424,50 @@ def make_memory_gate() -> None:
 
 
 def make_mechanism_samples() -> None:
-    regression = plt.imread(LOGS / "step1_mech_clean_reg.png")
-    diffusion = plt.imread(LOGS / "step1_mech_clean_diff.png")
+    regression_path = LOGS / "step1_mech_clean_reg.png"
+    diffusion_path = LOGS / "step1_mech_clean_diff.png"
+    if not regression_path.is_file() or not diffusion_path.is_file():
+        frozen_montage = OUT / "fig29_mechanism_single_step_samples.png"
+        if not frozen_montage.is_file():
+            raise FileNotFoundError(
+                "The source panels and the frozen full montage are both unavailable."
+            )
+        from make_dissertation_compact_galleries import mechanism_gallery
+
+        mechanism_gallery()
+        print("preserved frozen fig29 montage; rebuilt its fixed compact view")
+        return
+    regression = plt.imread(regression_path)
+    diffusion = plt.imread(diffusion_path)
     fig, axes = plt.subplots(1, 2, figsize=(7.3, 7.8), constrained_layout=True)
     for ax, image, title, color in [
-        (axes[0], regression, "A  Direct regression", REG),
-        (axes[1], diffusion, "B  Denoising diffusion", DIFF),
+        (axes[0], regression, "А  Пряма регресія", REG),
+        (axes[1], diffusion, "Б  Дифузійне знешумлення", DIFF),
     ]:
         ax.imshow(image, cmap="gray", vmin=0, vmax=1)
         ax.set_title(title, loc="left", fontweight="bold", color=color)
         ax.axis("off")
     fig.suptitle(
-        "Identical single-step inputs: last context | prediction | ground truth",
+        "Однакові однокрокові входи: останній контекст | прогноз | еталон",
         fontsize=12,
         fontweight="bold",
     )
     save(fig, "fig29_mechanism_single_step_samples")
+
+    # The main text uses a fixed compact crop; the complete montage remains an appendix asset.
+    rows = 3
+    compact_regression = regression[: regression.shape[0] * rows // 8]
+    compact_diffusion = diffusion[: diffusion.shape[0] * rows // 8]
+    fig, axes = plt.subplots(1, 2, figsize=(7.3, 3.6), constrained_layout=True)
+    for ax, image, heading, color in [
+        (axes[0], compact_regression, "А  Пряма регресія", REG),
+        (axes[1], compact_diffusion, "Б  Дифузійне знешумлення", DIFF),
+    ]:
+        ax.imshow(image, cmap="gray", vmin=0, vmax=1)
+        ax.set_title(heading, loc="left", fontweight="bold", color=color)
+        ax.axis("off")
+    fig.suptitle("Три перші зафіксовані записи: контекст | прогноз | еталон", fontsize=11.5, fontweight="bold")
+    save(fig, "fig29_mechanism_single_step_samples_compact")
 
 
 def main() -> None:
@@ -463,8 +476,21 @@ def main() -> None:
     make_rollout_buffer()
     make_generation_objectives()
     make_ebt_loop()
-    make_ebt_results()
-    make_memory_gate()
+    ebt_logs = [LOGS / "ebt_scaled_s1.log", LOGS / "ebt_scaled_s2.log"]
+    if all(path.is_file() for path in ebt_logs):
+        make_ebt_results()
+    else:
+        print("preserved frozen EBT result figures; legacy probe logs are unavailable")
+    memory_logs = [
+        LOGS / "mem_gate_full_s0.log",
+        LOGS / "mem_gate_full_s1.log",
+        LOGS / "mem_gate_full_s0_t20k.log",
+        LOGS / "mem_gate_full_s1_t20k.log",
+    ]
+    if all(path.is_file() for path in memory_logs):
+        make_memory_gate()
+    else:
+        print("preserved frozen memory-gate figure; legacy training logs are unavailable")
     make_mechanism_samples()
     print("DISSERTATION_MISSING_FIGURES_DONE")
 

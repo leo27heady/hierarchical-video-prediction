@@ -83,8 +83,8 @@
     "modification_status": "official published appearance retained unchanged; lossless container conversion only; no crop or redraw",
     "rights_status": "Author-created artwork and locally generated examples, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright; underlying methods remain attributed in the caption",
     "permission_status": "cleared: author-owned artwork reused under the article's CC BY 4.0 licence",
-    "role": "historical reverse-diffusion illustration",
-    "caption_attribution": "Chapter 1 Figure 1.14; caption cites Kulyk and Mokin [133], original Fig. 3.",
+    "role": "reverse-diffusion illustration",
+    "caption_attribution": "Chapter 1 Figure 1.14; caption cites Kulyk and Mokin [133], original Fig. 3, and identifies the underlying ControlNet/StyleAligned source.",
     "data_or_concept_source": "official published illustration reused only as literature-review context",
     "licence": "CC BY 4.0",
     "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
@@ -148,7 +148,7 @@
     "rights_status": "Author-created artwork and locally generated examples, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright; underlying methods remain attributed in the caption",
     "permission_status": "cleared: author-owned artwork reused under the article's CC BY 4.0 licence",
     "role": "geometry-conditioning interface",
-    "caption_attribution": "Chapter 1 Figure 1.17; caption cites Kulyk and Mokin [133], original Fig. 7, and identifies the underlying ControlNet source.",
+    "caption_attribution": "Chapter 1 Figure 1.17; caption cites Kulyk and Mokin [133], original Fig. 7, and identifies the underlying ControlNet/StyleAligned source.",
     "data_or_concept_source": "official published illustration reused only as literature-review context",
     "licence": "CC BY 4.0",
     "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
@@ -180,7 +180,7 @@
     "rights_status": "Author-created artwork and locally generated examples, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright; underlying methods remain attributed in the caption",
     "permission_status": "cleared: author-owned artwork reused under the article's CC BY 4.0 licence",
     "role": "shared-attention style examples",
-    "caption_attribution": "Chapter 1 Figure 1.19; caption cites Kulyk and Mokin [133], original Fig. 9, and identifies the underlying StyleAligned source.",
+    "caption_attribution": "Chapter 1 Figure 1.19; caption cites Kulyk and Mokin [133], original Fig. 9, and identifies the underlying ControlNet/StyleAligned source.",
     "data_or_concept_source": "official published illustration reused only as literature-review context",
     "licence": "CC BY 4.0",
     "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
@@ -199,7 +199,7 @@
     "sha256": "a1995cbd11d587de75f73c91cf8f544c0c75f7328aad107159e402b76ac55fc6",
     "bytes": 191942,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Partially observed controlled-process formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -225,7 +225,7 @@
     "sha256": "4cf56ef7910fd245fc1da7520f790c17f253e1de5db25d6697972ee9317bbb99",
     "bytes": 41082,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Partially observed controlled-process formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -251,7 +251,7 @@
     "sha256": "8896b98da785af0c6ea6cb9e54de411a30757a5c8a813e9d221e88aa661cd552",
     "bytes": 99867,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Hidden-state and viewport argument in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -277,7 +277,7 @@
     "sha256": "25fd4f4aaf4f8abbbb77da3cf6696d06d01a4103b34b55cd11da7850c832fec2",
     "bytes": 20591,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Hidden-state and viewport argument in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -303,7 +303,7 @@
     "sha256": "b5c0bee7170bf19208a51d08c2dd5463a9d15a0cdf25c85a40a4eaf30c9efc06",
     "bytes": 107188,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Teacher-conditioning and self-fed rollout equations in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -329,7 +329,7 @@
     "sha256": "acbd85116a0708421162298a948e2336958b22a367c5511bf3adef212f5ce609",
     "bytes": 24707,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Teacher-conditioning and self-fed rollout equations in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -355,12 +355,12 @@
     "sha256": "0a60a39d2646ea8e21f085fd8748b2c9540662c0ff046810e39fcf00367df128",
     "bytes": 143414,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Systems memory decomposition in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
     ],
-    "modification_status": "dissertation-native deterministic rendering localized into Ukrainian",
+    "modification_status": "new dissertation-native deterministic rendering",
     "rights_status": "author-generated dissertation artwork",
     "permission_status": "no external artwork permission required",
     "role": "location map for retained context, activations, optimizer state and transient workspace",
@@ -381,12 +381,12 @@
     "sha256": "9504d875eec10299cbd5112dbf86aab980a9d022168ad7b134d1e1974d81419b",
     "bytes": 30632,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Systems memory decomposition in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
     ],
-    "modification_status": "dissertation-native deterministic rendering localized into Ukrainian",
+    "modification_status": "new dissertation-native deterministic rendering",
     "rights_status": "author-generated dissertation artwork",
     "permission_status": "no external artwork permission required",
     "role": "location map for retained context, activations, optimizer state and transient workspace",
@@ -401,13 +401,65 @@
   },
   {
     "schema_version": "1.0",
+    "figure_id": "1.6b",
+    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.png",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "a2b213be270b87153d4fc1c838d7b6ac37b7266a448b3b04de81e05feb4afc1f",
+    "bytes": 123571,
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "data_or_concept_source": "Static-to-video transition in Chapter 1",
+    "source_files": [
+      "docs/dissertation/restructured_english/02_CHAPTER_1.md"
+    ],
+    "modification_status": "new dissertation-native deterministic rendering",
+    "rights_status": "author-generated dissertation artwork",
+    "permission_status": "no external artwork permission required",
+    "role": "conceptual observed-and-predicted sequence illustrating motion, disappearance and memory-dependent re-entry",
+    "caption_attribution": "Chapter 1 Figure 1.6b; caption identifies it as dissertation-native.",
+    "original_figure": "1.6b",
+    "source_page": null,
+    "extraction_method": null,
+    "pixel_dimensions": [
+      2260,
+      958
+    ]
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.6b",
+    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.pdf",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "71eaa48547e4cbe42e6d57a7f69d0c532f972483c4f1d48fcb9b18ad7da75827",
+    "bytes": 23485,
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "data_or_concept_source": "Static-to-video transition in Chapter 1",
+    "source_files": [
+      "docs/dissertation/restructured_english/02_CHAPTER_1.md"
+    ],
+    "modification_status": "new dissertation-native deterministic rendering",
+    "rights_status": "author-generated dissertation artwork",
+    "permission_status": "no external artwork permission required",
+    "role": "conceptual observed-and-predicted sequence illustrating motion, disappearance and memory-dependent re-entry",
+    "caption_attribution": "Chapter 1 Figure 1.6b; caption identifies it as dissertation-native.",
+    "original_figure": "1.6b",
+    "source_page": null,
+    "extraction_method": null,
+    "page_dimensions_points": [
+      739.8,
+      313.776
+    ]
+  },
+  {
+    "schema_version": "1.0",
     "figure_id": "1.7",
     "file": "docs/figures/restructured/ch1_fig1_6_consistency_taxonomy.png",
     "asset_class": "author-generated-conceptual",
     "sha256": "5d66c6b6dedb1436fd953047afb0d73504a8c4ec77c0672f2ebcc538fb542bed",
     "bytes": 194112,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Consistency taxonomy synthesized from the Chapter 1 literature review",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -433,7 +485,7 @@
     "sha256": "cb5ca124e72f867f921fff73c819d8ade24ee2ccd8b7a58e4b28f63038bd9ed5",
     "bytes": 20171,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Consistency taxonomy synthesized from the Chapter 1 literature review",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -459,7 +511,7 @@
     "sha256": "2b97ec9c1705942ed55cff46abdb33f1c3549812453b3ee0b8b830fe13641ec3",
     "bytes": 148421,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Static-to-video consistency synthesis in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -485,7 +537,7 @@
     "sha256": "ef420da76b79f2b20272e76a49a04e21486729e54ef1adde0839a4e03b91750d",
     "bytes": 20273,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Static-to-video consistency synthesis in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -511,7 +563,7 @@
     "sha256": "49fd3925cc2f47a23cf587e9a5588e2a3a41825df9d5ca784a7e2c474ba5ef33",
     "bytes": 102900,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Failure taxonomy in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -537,7 +589,7 @@
     "sha256": "cd7ab13077efee72adfac27890d25a6fa782815068ef2dcbe55691abf6767dfe",
     "bytes": 18833,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Failure taxonomy in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -563,7 +615,7 @@
     "sha256": "205423bb1b5ec14d7e32e7540c1a1c47bb54ca0b091b16bec270522a7c207e14",
     "bytes": 145035,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Temporal smoothness, trajectory and re-entry criteria in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -589,7 +641,7 @@
     "sha256": "60c5ff98c56c075f33c7e6d040c3e2c5a9294daafb33094991eb93bcfc977f59",
     "bytes": 22761,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Temporal smoothness, trajectory and re-entry criteria in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -615,7 +667,7 @@
     "sha256": "0bc0c73e386d9a7f7c5b59f2b82353524ed50e49b476715ceb4cd5354e28f45a",
     "bytes": 122940,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Cross-level consistency formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -641,7 +693,7 @@
     "sha256": "a1d8013f82e1c5b3dc30344369a5e166df4e4dd91f2762623c6003f4895c5f06",
     "bytes": 20754,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Cross-level consistency formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -667,7 +719,7 @@
     "sha256": "72131aa36b900b5dcd24b0abde01ea21fb706610e4e58e36ab332640e0c82b74",
     "bytes": 151615,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Consistency-control interface synthesis in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -693,7 +745,7 @@
     "sha256": "33a61e951cf20702ddb9528fe28d786ff5b771633ebf4657b8fe850da1bb5bdb",
     "bytes": 20934,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Consistency-control interface synthesis in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -719,7 +771,7 @@
     "sha256": "208e141b3a9e6eda2f38401e907cf09227e881e359a17f9865e3d9150bc91e14",
     "bytes": 103709,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Support-versus-identity boundary in Chapters 1 and 4",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -745,7 +797,7 @@
     "sha256": "9718343705c5f79950e705ac74b85c1e4263cb6377e85b2770841a296ff1d10c",
     "bytes": 18531,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Support-versus-identity boundary in Chapters 1 and 4",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -771,7 +823,7 @@
     "sha256": "48e653bace4df6ea88c70185567797b69c6836e40ff21209c1fce1dbf2ce6d42",
     "bytes": 83488,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Ordinary temporal backpropagation formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -797,7 +849,7 @@
     "sha256": "8df2808dbf572b805eea490e171b4ce660085c8fddfe7aba177ccbb9148f19d4",
     "bytes": 19878,
     "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
     "data_or_concept_source": "Ordinary temporal backpropagation formulation in Chapter 1",
     "source_files": [
       "docs/dissertation/restructured_english/02_CHAPTER_1.md"
@@ -813,148 +865,6 @@
     "page_dimensions_points": [
       684.0,
       358.128
-    ]
-  },
-  {
-    "schema_version": "1.0",
-    "asset_class": "published-reused-unchanged",
-    "source_paper": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models, Visnyk of Vinnytsia Politechnical Institute 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
-    "source_asset": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction\\docs\\figures\\restructured\\sources\\Kulyk_Mokin_2024_official.pdf",
-    "source_pdf_sha256": "68abd2a23a9fb17eb1e2c3166da9832be51674977b7d77e6f4a3a6bb176e592e",
-    "extraction_method": "lossless official-PDF XObject plus soft-mask reconstruction to PNG",
-    "modification_status": "official published appearance retained unchanged; lossless container conversion only; no crop or redraw",
-    "rights_status": "Author-created artwork, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright",
-    "permission_status": "cleared: author-owned artwork reused under the article CC BY 4.0 licence",
-    "data_or_concept_source": "official published illustration reused only as literature-review context",
-    "licence": "CC BY 4.0",
-    "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
-    "doi": "10.31649/1997-9266-2024-175-4-75-85",
-    "author_declaration": "Artwork manually created or assembled by L. Kulyk.",
-    "figure_id": "1.15",
-    "file": "docs/figures/restructured/published_2024_fig4_diffusion_pipeline.png",
-    "sha256": "a7f8a85cbf946c17b56496944b6b7a9a2a2a6fe06ea94e87c3711ab36cf94d54",
-    "bytes": 80016,
-    "original_figure": "Fig. 4",
-    "source_page": 3,
-    "source_xref": 13,
-    "source_smask_xref": 12,
-    "source_base_stream_sha256": null,
-    "source_mask_stream_sha256": null,
-    "role": "generic latent diffusion generation pipeline",
-    "caption_attribution": "Chapter 1 Figure 1.15; caption cites Kulyk and Mokin [133], original Fig. 4.",
-    "pixel_dimensions": [
-      670,
-      353
-    ]
-  },
-  {
-    "schema_version": "1.0",
-    "asset_class": "published-reused-unchanged",
-    "source_paper": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models, Visnyk of Vinnytsia Politechnical Institute 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
-    "source_asset": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction\\docs\\figures\\restructured\\sources\\Kulyk_Mokin_2024_official.pdf",
-    "source_pdf_sha256": "68abd2a23a9fb17eb1e2c3166da9832be51674977b7d77e6f4a3a6bb176e592e",
-    "extraction_method": "lossless official-PDF XObject plus soft-mask reconstruction to PNG",
-    "modification_status": "official published appearance retained unchanged; lossless container conversion only; no crop or redraw",
-    "rights_status": "Author-created artwork, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright",
-    "permission_status": "cleared: author-owned artwork reused under the article CC BY 4.0 licence",
-    "data_or_concept_source": "official published illustration reused only as literature-review context",
-    "licence": "CC BY 4.0",
-    "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
-    "doi": "10.31649/1997-9266-2024-175-4-75-85",
-    "author_declaration": "Artwork manually created or assembled by L. Kulyk.",
-    "figure_id": "1.16",
-    "file": "docs/figures/restructured/published_2024_fig6_img2img.png",
-    "sha256": "b88a1af499cea51ba4d2ae890a851300445f1d50a46573dece363d5e3a11f1a2",
-    "bytes": 184178,
-    "original_figure": "Fig. 6",
-    "source_page": 5,
-    "source_xref": 21,
-    "source_smask_xref": 20,
-    "source_base_stream_sha256": null,
-    "source_mask_stream_sha256": null,
-    "role": "image-to-image conditioning interface",
-    "caption_attribution": "Chapter 1 Figure 1.16; caption cites Kulyk and Mokin [133], original Fig. 6.",
-    "pixel_dimensions": [
-      1103,
-      586
-    ]
-  },
-  {
-    "schema_version": "1.0",
-    "asset_class": "published-reused-unchanged",
-    "source_paper": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models, Visnyk of Vinnytsia Politechnical Institute 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
-    "source_asset": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction\\docs\\figures\\restructured\\sources\\Kulyk_Mokin_2024_official.pdf",
-    "source_pdf_sha256": "68abd2a23a9fb17eb1e2c3166da9832be51674977b7d77e6f4a3a6bb176e592e",
-    "extraction_method": "lossless official-PDF XObject plus soft-mask reconstruction to PNG",
-    "modification_status": "official published appearance retained unchanged; lossless container conversion only; no crop or redraw",
-    "rights_status": "Author-created artwork, as declared by L. Kulyk; published under CC BY 4.0 in Visnyk of Vinnytsia Politechnical Institute, where authors retain copyright",
-    "permission_status": "cleared: author-owned artwork reused under the article CC BY 4.0 licence",
-    "data_or_concept_source": "official published illustration reused only as literature-review context",
-    "licence": "CC BY 4.0",
-    "official_article_url": "https://visnyk.vntu.edu.ua/index.php/visnyk/article/view/3070",
-    "doi": "10.31649/1997-9266-2024-175-4-75-85",
-    "author_declaration": "Artwork manually created or assembled by L. Kulyk.",
-    "figure_id": "1.18",
-    "file": "docs/figures/restructured/published_2024_fig8_inversion.png",
-    "sha256": "1a5d005eab918388daa7ef6b11d3dd238d784362a538409121d41b274c306916",
-    "bytes": 133345,
-    "original_figure": "Fig. 8",
-    "source_page": 8,
-    "source_xref": 31,
-    "source_smask_xref": 30,
-    "source_base_stream_sha256": null,
-    "source_mask_stream_sha256": null,
-    "role": "inversion-based editing interface",
-    "caption_attribution": "Chapter 1 Figure 1.18; caption cites Kulyk and Mokin [133], original Fig. 8.",
-    "pixel_dimensions": [
-      684,
-      566
-    ]
-  },
-  {
-    "schema_version": "1.0",
-    "figure_id": "1.6b",
-    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.png",
-    "asset_class": "author-generated-conceptual",
-    "sha256": "a2b213be270b87153d4fc1c838d7b6ac37b7266a448b3b04de81e05feb4afc1f",
-    "bytes": 123571,
-    "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
-    "data_or_concept_source": "Dissertation-native conceptual example of observed frames, occlusion, and re-entry in video prediction",
-    "source_files": [
-      "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"
-    ],
-    "modification_status": "dissertation-native deterministic rendering localized into Ukrainian",
-    "rights_status": "author-generated",
-    "permission_status": "no external artwork permission required",
-    "role": "Panel b of Chapter 1 Figure 1.6; conceptual transition from single-image generation to temporally consistent video prediction",
-    "caption_attribution": "Chapter 1 Figure 1.6 explicitly identifies panel b as dissertation-created and explanatory rather than evidential.",
-    "pixel_dimensions": [
-      2260,
-      958
-    ]
-  },
-  {
-    "schema_version": "1.0",
-    "figure_id": "1.6b",
-    "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.pdf",
-    "asset_class": "author-generated-conceptual",
-    "sha256": "71eaa48547e4cbe42e6d57a7f69d0c532f972483c4f1d48fcb9b18ad7da75827",
-    "bytes": 23485,
-    "generator": "scripts/make_restructured_dissertation_figures.py",
-    "generator_sha256": "c558ecd89ad262e305e3f6f7aa2a5c23779b7329ee6b76ffbfe21fc92c28b667",
-    "data_or_concept_source": "Dissertation-native conceptual example of observed frames, occlusion, and re-entry in video prediction",
-    "source_files": [
-      "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"
-    ],
-    "modification_status": "dissertation-native deterministic rendering localized into Ukrainian",
-    "rights_status": "author-generated",
-    "permission_status": "no external artwork permission required",
-    "role": "Vector companion to panel b of Chapter 1 Figure 1.6",
-    "caption_attribution": "Chapter 1 Figure 1.6 explicitly identifies panel b as dissertation-created and explanatory rather than evidential.",
-    "page_dimensions_points": [
-      739.8,
-      313.776
     ]
   }
 ]

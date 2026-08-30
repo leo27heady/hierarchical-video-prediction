@@ -100,19 +100,19 @@ NATIVE_METADATA = {
         "contrast between compatible and contradictory coarse/fine predictions",
     ),
     "ch1_fig1_11_control_interfaces": (
-        "1.16",
+        "1.20",
         "author-generated-conceptual",
         "Consistency-control interface synthesis in Chapter 1",
         "five interfaces through which consistency information enters a generator",
     ),
     "ch1_fig1_12_support_identity_bridge": (
-        "1.17",
+        "1.21",
         "author-generated-conceptual",
         "Support-versus-identity boundary in Chapters 1 and 4",
         "independent support and identity outcomes",
     ),
     "ch1_fig1_15_activation_tape": (
-        "1.18",
+        "1.22",
         "author-generated-conceptual",
         "Ordinary temporal backpropagation formulation in Chapter 1",
         "activation-tape growth over a differentiated temporal unroll",
@@ -634,10 +634,10 @@ def extract_published_2024():
     selected = [
         (4, 3, "published_2024_fig1_sdxl", "1.6", "Fig. 1", 2, "illustrative SDXL outputs"),
         (6, 5, "published_2024_fig2_forward_diffusion", "1.13", "Fig. 2", 2, "forward-diffusion mechanism"),
-        (11, 10, "published_2024_fig3_reverse_diffusion", "H.1", "Fig. 3", 3, "historical reverse-diffusion illustration"),
+        (11, 10, "published_2024_fig3_reverse_diffusion", "1.14", "Fig. 3", 3, "reverse-diffusion illustration"),
         (17, 16, "published_2024_fig5_visual_perception", "1.8", "Fig. 5", 4, "local-view and integrated-scene analogy"),
-        (27, 26, "published_2024_fig7_controlnet", "1.14", "Fig. 7", 7, "geometry-conditioning interface"),
-        (34, None, "published_2024_fig9_stylealigned", "1.15", "Fig. 9", 9, "shared-attention style examples"),
+        (27, 26, "published_2024_fig7_controlnet", "1.17", "Fig. 7", 7, "geometry-conditioning interface"),
+        (34, None, "published_2024_fig9_stylealigned", "1.19", "Fig. 9", 9, "shared-attention style examples"),
     ]
     records = []
     for xref, smask_xref, stem, figure_id, original_figure, page, role in selected:

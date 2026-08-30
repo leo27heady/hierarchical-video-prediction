@@ -313,10 +313,10 @@ def make_trust_replication() -> None:
 def make_sampler_robustness() -> None:
     result = _read("artifacts/e7c_sampler_nfe/results.json")
     contrasts = [
-        ("b896-reach", "896 reach"),
-        ("b1152-interior", "1,152 interior"),
-        ("b1152-package-shape", "1,088 vs 1,152\npackage shape"),
-        ("b2432-inversion", "2,432 inversion"),
+        ("b896-reach", "896: досяжність"),
+        ("b1152-interior", "1 152: внутрішня точка"),
+        ("b1152-package-shape", "1 088 проти 1 152\nформа пакета"),
+        ("b2432-inversion", "2 432: інверсія"),
     ]
     variants = [
         ("nfe8-ss0", "NFE 8, s0"),
@@ -358,17 +358,17 @@ def make_codec_robustness() -> None:
         return
     result = json.loads(path.read_text(encoding="utf-8"))
     contrasts = [
-        ("b896-reach", "896 reach"),
-        ("b1152-interior", "1,152 interior"),
-        ("b1152-package-shape", "1,088 vs 1,152\npackage shape"),
-        ("b2432-inversion", "2,432 inversion"),
+        ("b896-reach", "896: досяжність"),
+        ("b1152-interior", "1 152: внутрішня точка"),
+        ("b1152-package-shape", "1 088 проти 1 152\nформа пакета"),
+        ("b2432-inversion", "2 432: інверсія"),
     ]
     lookup = {
         (row["codec"], row["contrast"]): row
         for row in result["primary"]
     }
     fig, axes = plt.subplots(
-        1, 4, figsize=(12.4, 4.0), sharey=True, constrained_layout=True
+        1, 4, figsize=(12.4, 4.0), sharex=True, sharey=True, constrained_layout=True
     )
     y = np.asarray([0.0, 1.0])
     for index, (ax, (contrast, label)) in enumerate(zip(axes, contrasts)):
@@ -385,14 +385,14 @@ def make_codec_robustness() -> None:
         ax.axvline(0, color=INK, linewidth=0.9)
         ax.grid(axis="x", color=GRID, linewidth=0.7)
         ax.set_title(f"{chr(65 + index)}  {label}", loc="left", fontweight="bold")
-        ax.set_xlabel("Registered effect")
+        ax.set_xlabel("Зареєстрований ефект")
         ax.set_yticks(y)
-        ax.set_yticklabels(["original", "alternate"])
+        ax.set_yticklabels(["оригінальний", "альтернативний"])
         ax.invert_yaxis()
         for side in ("top", "right"):
             ax.spines[side].set_visible(False)
     fig.suptitle(
-        "Central directions under an independently trained latent codec",
+        "Основні напрями після незалежного навчання кодека прихованого простору",
         fontsize=12,
         fontweight="bold",
     )

@@ -23,10 +23,11 @@
     "source_files": [
       {
         "file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
+        "available": true,
         "bytes": 88635
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -59,11 +60,12 @@
     "data_or_concept_source": "fixed-grid spatial-allocation analysis in Chapter 1",
     "source_files": [
       {
-        "file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
-        "bytes": 88635
+        "file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
+        "available": true,
+        "bytes": 122562
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -96,11 +98,12 @@
     "data_or_concept_source": "retained-context reach formulation in Chapters 1 and 3",
     "source_files": [
       {
-        "file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
-        "bytes": 88635
+        "file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
+        "available": true,
+        "bytes": 122562
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -133,11 +136,12 @@
     "data_or_concept_source": "verified RoPE-ND mathematical contract and implementation configuration",
     "source_files": [
       {
-        "file": "docs/dissertation/restructured_english/03_CHAPTER_2.md",
-        "bytes": 109801
+        "file": "docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md",
+        "available": true,
+        "bytes": 126245
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/03_CHAPTER_2.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -145,6 +149,123 @@
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
     "caption_attribution": "Chapter 2 Figure 2.15; caption includes an explicit author/source classification.",
+    "layout_note": null
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.15",
+    "file": "docs/figures/restructured/published_2024_fig4_diffusion_pipeline.png",
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "data_source": "official 2024 article PDF, original Figure 4",
+    "role": "published-reused-unchanged literature-review illustration",
+    "published": true,
+    "asset_class": "published-reused-unchanged",
+    "sha256": "a7f8a85cbf946c17b56496944b6b7a9a2a2a6fe06ea94e87c3711ab36cf94d54",
+    "bytes": 80016,
+    "pixel_dimensions": [
+      670,
+      353
+    ],
+    "source": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models (2024)",
+    "source_paper": "Kulyk and Mokin, Visnyk VNTU 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
+    "original_figure": "1.15",
+    "source_page": null,
+    "extraction_method": null,
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "data_or_concept_source": "official 2024 article PDF, original Figure 4",
+    "source_files": [
+      {
+        "file": "docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf",
+        "available": true,
+        "bytes": 1226348
+      }
+    ],
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
+    "live_manuscript_link_count": 1,
+    "modification_status": "published appearance reused unchanged",
+    "embedded_third_party_pixels": false,
+    "publication_reuse_status": "published author-owned artwork reused under CC BY 4.0",
+    "rights_status": "Author-created artwork reused from Kulyk and Mokin (2024), published under CC BY 4.0; authors retain copyright.",
+    "permission_status": "cleared under the article's CC BY 4.0 licence",
+    "caption_attribution": "Chapter 1 Figure 1.15; caption includes an explicit author/source classification.",
+    "layout_note": null
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.16",
+    "file": "docs/figures/restructured/published_2024_fig6_img2img.png",
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "data_source": "official 2024 article PDF, original Figure 6",
+    "role": "published-reused-unchanged literature-review illustration",
+    "published": true,
+    "asset_class": "published-reused-unchanged",
+    "sha256": "b88a1af499cea51ba4d2ae890a851300445f1d50a46573dece363d5e3a11f1a2",
+    "bytes": 184178,
+    "pixel_dimensions": [
+      1103,
+      586
+    ],
+    "source": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models (2024)",
+    "source_paper": "Kulyk and Mokin, Visnyk VNTU 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
+    "original_figure": "1.16",
+    "source_page": null,
+    "extraction_method": null,
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "data_or_concept_source": "official 2024 article PDF, original Figure 6",
+    "source_files": [
+      {
+        "file": "docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf",
+        "available": true,
+        "bytes": 1226348
+      }
+    ],
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
+    "live_manuscript_link_count": 1,
+    "modification_status": "published appearance reused unchanged",
+    "embedded_third_party_pixels": false,
+    "publication_reuse_status": "published author-owned artwork reused under CC BY 4.0",
+    "rights_status": "Author-created artwork reused from Kulyk and Mokin (2024), published under CC BY 4.0; authors retain copyright.",
+    "permission_status": "cleared under the article's CC BY 4.0 licence",
+    "caption_attribution": "Chapter 1 Figure 1.16; caption includes an explicit author/source classification.",
+    "layout_note": null
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "1.18",
+    "file": "docs/figures/restructured/published_2024_fig8_inversion.png",
+    "generator": "scripts/make_restructured_dissertation_figures.py",
+    "data_source": "official 2024 article PDF, original Figure 8",
+    "role": "published-reused-unchanged literature-review illustration",
+    "published": true,
+    "asset_class": "published-reused-unchanged",
+    "sha256": "1a5d005eab918388daa7ef6b11d3dd238d784362a538409121d41b274c306916",
+    "bytes": 133345,
+    "pixel_dimensions": [
+      684,
+      566
+    ],
+    "source": "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models (2024)",
+    "source_paper": "Kulyk and Mokin, Visnyk VNTU 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85",
+    "original_figure": "1.18",
+    "source_page": null,
+    "extraction_method": null,
+    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "data_or_concept_source": "official 2024 article PDF, original Figure 8",
+    "source_files": [
+      {
+        "file": "docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf",
+        "available": true,
+        "bytes": 1226348
+      }
+    ],
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
+    "live_manuscript_link_count": 1,
+    "modification_status": "published appearance reused unchanged",
+    "embedded_third_party_pixels": false,
+    "publication_reuse_status": "published author-owned artwork reused under CC BY 4.0",
+    "rights_status": "Author-created artwork reused from Kulyk and Mokin (2024), published under CC BY 4.0; authors retain copyright.",
+    "permission_status": "cleared under the article's CC BY 4.0 licence",
+    "caption_attribution": "Chapter 1 Figure 1.18; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
@@ -171,14 +292,16 @@
     "source_files": [
       {
         "file": "experiments/configs/e2_untouched_confirmation.json",
+        "available": true,
         "bytes": 8461
       },
       {
         "file": "hvp_rev/rhvd.py",
-        "bytes": 79414
+        "available": true,
+        "bytes": 83242
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/04_CHAPTER_3.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/04_CHAPTER_3.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -196,8 +319,8 @@
     "data_source": "implemented tokenization path and frozen principal package configuration",
     "role": "dissertation-native implementation schematic",
     "asset_class": "author-generated-implementation-informed",
-    "sha256": "0452a4b0c8830987e191479bbafa0042e5ffd67ff838f1b7ca2e1dc8286e0809",
-    "bytes": 194016,
+    "sha256": "dfd9ca45894b758af34f8ec3d58847bc2d8483498ecd8e273ded4e4058fd6564",
+    "bytes": 208024,
     "pixel_dimensions": [
       3694,
       1564
@@ -207,19 +330,21 @@
     "original_figure": "3.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "e6bcc9094c8dac02734d82c1bf71c9688e9309b04d50b305ee89d88fe1c6c325",
+    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
     "data_or_concept_source": "implemented tokenization path and frozen principal package configuration",
     "source_files": [
       {
         "file": "experiments/configs/e2_untouched_confirmation.json",
+        "available": true,
         "bytes": 8461
       },
       {
         "file": "hvp_rev/rhvd.py",
-        "bytes": 79414
+        "available": true,
+        "bytes": 83242
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/04_CHAPTER_3.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/04_CHAPTER_3.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -253,14 +378,16 @@
     "source_files": [
       {
         "file": "experiments/configs/e2_untouched_confirmation.json",
+        "available": true,
         "bytes": 8461
       },
       {
         "file": "hvp_rev/rhvd.py",
-        "bytes": 79414
+        "available": true,
+        "bytes": 83242
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/04_CHAPTER_3.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/04_CHAPTER_3.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -278,30 +405,32 @@
     "data_source": "implemented rollout recurrence and frozen 48-coarse/6-fine package",
     "role": "dissertation-native implementation schematic",
     "asset_class": "author-generated-implementation-informed",
-    "sha256": "24731a52eb1a852a0a4b7f6afc8c8014631b60f7d44d5508f7fd87f6e30965ac",
-    "bytes": 291094,
+    "sha256": "9e4c2e71da8c395f1e9f794bf46de32bb6fc03b2819f481756408befc28015a5",
+    "bytes": 158995,
     "pixel_dimensions": [
       3694,
-      1774
+      1654
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "3.11",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "e6bcc9094c8dac02734d82c1bf71c9688e9309b04d50b305ee89d88fe1c6c325",
+    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
     "data_or_concept_source": "implemented rollout recurrence and frozen 48-coarse/6-fine package",
     "source_files": [
       {
         "file": "experiments/configs/e2_untouched_confirmation.json",
+        "available": true,
         "bytes": 8461
       },
       {
         "file": "hvp_rev/rhvd.py",
-        "bytes": 79414
+        "available": true,
+        "bytes": 83242
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/04_CHAPTER_3.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/04_CHAPTER_3.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -335,14 +464,16 @@
     "source_files": [
       {
         "file": "experiments/configs/e2_untouched_confirmation.json",
+        "available": true,
         "bytes": 8461
       },
       {
         "file": "docs/DATA_CARD_LOOPMOM.md",
+        "available": true,
         "bytes": 1769
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/04_CHAPTER_3.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/04_CHAPTER_3.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -376,14 +507,16 @@
     "source_files": [
       {
         "file": "docs/dissertation/rewrite/appendices/APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md",
+        "available": true,
         "bytes": 29963
       },
       {
         "file": "docs/FINAL_PROGRAMME_REPORT_2026-07-18.md",
+        "available": true,
         "bytes": 9825
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -401,8 +534,8 @@
     "data_source": "implemented regression, diffusion, and energy-head interfaces",
     "role": "dissertation-native mechanism-comparison schematic",
     "asset_class": "author-generated-conceptual",
-    "sha256": "9475cdb700e30412ad105ca86f665ee76a1ed5bbd2d71499b7e0d2eb7b617ac7",
-    "bytes": 163247,
+    "sha256": "5ca9008ac68a5a7a4daa7b4f34a8f4125beeb47ad23804b230ded53aa67002b4",
+    "bytes": 186978,
     "pixel_dimensions": [
       3694,
       1354
@@ -412,23 +545,26 @@
     "original_figure": "4.2",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "e6bcc9094c8dac02734d82c1bf71c9688e9309b04d50b305ee89d88fe1c6c325",
+    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
     "data_or_concept_source": "implemented regression, diffusion, and energy-head interfaces",
     "source_files": [
       {
         "file": "hvp_rev/rhvd.py",
-        "bytes": 79414
+        "available": true,
+        "bytes": 83242
       },
       {
         "file": "hvp_rev/step1_mech.py",
+        "available": true,
         "bytes": 53032
       },
       {
         "file": "hvp_rev/ebt_reference_control.py",
+        "available": true,
         "bytes": 24039
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -441,37 +577,34 @@
   {
     "schema_version": "1.0",
     "figure_id": "4.3",
-    "file": "docs/figures/fig29_mechanism_single_step_samples.png",
-    "generator": "scripts/make_dissertation_missing_figures.py",
-    "data_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
-    "role": "artifact-derived qualitative comparison",
+    "file": "docs/figures/fig29_mechanism_single_step_samples_compact.png",
+    "generator": "scripts/make_dissertation_compact_galleries.py",
+    "data_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
+    "role": "artifact-derived fixed-index qualitative comparison",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "adc87be84b344f0f8e0a120db940916d676691bb107b4abb392e2117cfbeca69",
-    "bytes": 197699,
+    "sha256": "87819f0fb246d318d4cdde0e25104c6873aaf2baa73341548b8c43cdf4e125bc",
+    "bytes": 179089,
     "pixel_dimensions": [
-      1967,
-      2374
+      1716,
+      839
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.3",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "e6bcc9094c8dac02734d82c1bf71c9688e9309b04d50b305ee89d88fe1c6c325",
-    "data_or_concept_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
+    "generator_sha256": "7868e929d46e80893b1c9a4b9b0dc217522c553936944ae37cf861c9e97c1a80",
+    "data_or_concept_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
     "source_files": [
       {
-        "file": "logs_rhcp/step1_mech_clean_reg.png",
-        "bytes": 29507
-      },
-      {
-        "file": "logs_rhcp/step1_mech_clean_diff.png",
-        "bytes": 29883
+        "file": "docs/figures/fig29_mechanism_single_step_samples.png",
+        "available": true,
+        "bytes": 197699
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
-    "modification_status": "pre-existing PNG reused without pixel modification",
+    "modification_status": "deterministic fixed crop from a frozen full montage",
     "embedded_third_party_pixels": true,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
@@ -498,27 +631,31 @@
     "original_figure": "4.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "e6bcc9094c8dac02734d82c1bf71c9688e9309b04d50b305ee89d88fe1c6c325",
+    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
     "data_or_concept_source": "logs_rhcp/mem_gate_full_s0.log, logs_rhcp/mem_gate_full_s1.log, logs_rhcp/mem_gate_full_s0_t20k.log, and logs_rhcp/mem_gate_full_s1_t20k.log",
     "source_files": [
       {
         "file": "logs_rhcp/mem_gate_full_s0.log",
-        "bytes": 3233
+        "available": false,
+        "bytes": null
       },
       {
         "file": "logs_rhcp/mem_gate_full_s1.log",
-        "bytes": 3233
+        "available": false,
+        "bytes": null
       },
       {
         "file": "logs_rhcp/mem_gate_full_s0_t20k.log",
-        "bytes": 5131
+        "available": false,
+        "bytes": null
       },
       {
         "file": "logs_rhcp/mem_gate_full_s1_t20k.log",
-        "bytes": 5131
+        "available": false,
+        "bytes": null
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -536,28 +673,29 @@
     "data_source": "artifacts/confirmation_e2/results.json",
     "role": "artifact-derived untouched simultaneous frontier",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "99674e610188137b69a3d6fc459c6085ad855fae5674b0dc9e9954c4bc2ebaa2",
-    "bytes": 64819,
+    "sha256": "dfe73bb266b43fc04f90533aa74a7eface0b7ac971c940edc4bfd849befba14b",
+    "bytes": 247031,
     "pixel_dimensions": [
-      1420,
-      520
+      4294,
+      1658
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.7",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
     "data_or_concept_source": "artifacts/confirmation_e2/results.json",
     "source_files": [
       {
         "file": "artifacts/confirmation_e2/results.json",
+        "available": true,
         "bytes": 17780
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
-    "modification_status": "regenerated from frozen artifacts; localized into Ukrainian and panel-B title corrected from memory to context-token arithmetic",
+    "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
@@ -567,97 +705,109 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.9",
-    "file": "docs/figures/fig7_samples_claim1.png",
-    "generator": "scripts/make_samples.py",
-    "data_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizon indices 1, 24, 60, 100, and 148",
-    "role": "artifact-derived fixed-index descriptive gallery",
+    "figure_id": "4.8",
+    "file": "docs/figures/fig7_samples_claim1_compact.png",
+    "generator": "scripts/make_dissertation_compact_galleries.py",
+    "data_source": "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons 1, 24, 60, 100, and 148",
+    "role": "artifact-derived fixed-index compact descriptive gallery",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "2b6d1cd4e34d1c6a25d92f47c4809f3af83c8199584cf6816ee564a9023cb4bb",
-    "bytes": 638210,
+    "sha256": "93d787b0970d63e17101520c934eb9eb5ae2ec6dbffacf4c3d5aa4ab5bfe96f5",
+    "bytes": 383712,
     "pixel_dimensions": [
-      1400,
-      2339
+      1946,
+      1180
+    ],
+    "source": "author-generated repository figure",
+    "source_paper": null,
+    "original_figure": "4.8",
+    "source_page": null,
+    "extraction_method": null,
+    "generator_sha256": "7868e929d46e80893b1c9a4b9b0dc217522c553936944ae37cf861c9e97c1a80",
+    "data_or_concept_source": "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons 1, 24, 60, 100, and 148",
+    "source_files": [
+      {
+        "file": "docs/figures/fig7_samples_claim1.png",
+        "available": true,
+        "bytes": 638210
+      }
+    ],
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
+    "live_manuscript_link_count": 1,
+    "modification_status": "deterministic fixed crop from a frozen full montage",
+    "embedded_third_party_pixels": true,
+    "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
+    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
+    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
+    "caption_attribution": "Chapter 4 Figure 4.8; caption includes an explicit author/source classification.",
+    "layout_note": null
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "4.9",
+    "file": "docs/figures/fig17_head_package_seed_heterogeneity.png",
+    "generator": "scripts/make_rft_result_figures.py",
+    "data_source": "artifacts/e4b_head_package/results.json",
+    "role": "artifact-derived five-seed factorial result",
+    "asset_class": "author-generated-artifact-derived",
+    "sha256": "4aad0879bd7a3e644d7ea512421ace30c16cb634658d1c17d2d81f71156cf53d",
+    "bytes": 186740,
+    "pixel_dimensions": [
+      3514,
+      1538
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.9",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "ce64f7d664c9d1b0afd6f2506fe25612a90ca5f194725bfff8eb04aaab343e04",
-    "data_or_concept_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizon indices 1, 24, 60, 100, and 148",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/e4b_head_package/results.json",
     "source_files": [
       {
-        "file": "docs/DATA_CARD_LOOPMOM.md",
-        "bytes": 1769
-      },
-      {
-        "file": "data/loopmom_train_3000x100.npy",
-        "bytes": 1228800128
-      },
-      {
-        "file": "data/loopmom_train_3000x100_actions.npy",
-        "bytes": 300128
-      },
-      {
-        "file": "data/loopmom_test_500x200.npy",
-        "bytes": 409600128
-      },
-      {
-        "file": "data/loopmom_test_500x200_actions.npy",
-        "bytes": 100128
-      },
-      {
-        "file": "logs_rhcp/hier_ae_mom.pt",
-        "bytes": 7415603
-      },
-      {
-        "file": "logs_rhcp/rhvd_hier-long_s1_t30000.pt",
-        "bytes": 355248703
-      },
-      {
-        "file": "logs_rhcp/rhvd_flat-budget_s1_t30000.pt",
-        "bytes": 355065555
+        "file": "artifacts/e4b_head_package/results.json",
+        "available": true,
+        "bytes": 10892
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
-    "embedded_third_party_pixels": true,
+    "embedded_third_party_pixels": false,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
-    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
-    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
+    "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
+    "permission_status": "no external artwork permission required",
     "caption_attribution": "Chapter 4 Figure 4.9; caption includes an explicit author/source classification.",
-    "layout_note": "Tall fixed-index gallery: reserve a dedicated portrait page and do not reduce it below full printable height; review labels in the final typeset proof."
+    "layout_note": null
   },
   {
     "schema_version": "1.0",
     "figure_id": "4.10",
-    "file": "docs/figures/fig17_head_package_seed_heterogeneity.png",
+    "file": "docs/figures/fig19_sampler_nfe_robustness.png",
     "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/e4b_head_package/results.json",
-    "role": "artifact-derived five-seed factorial result",
+    "data_source": "artifacts/e7c_sampler_nfe/results.json",
+    "role": "artifact-derived sampler and NFE robustness result",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "8c30a5f79da5fa6aa1621c058a0e7e7eefac31c9a4c8e780d49de9bd4ceeb381",
-    "bytes": 195235,
+    "sha256": "72777b2ccabb3380d900f8d48f6b38ff15508f63389391c67fb86521222eddce",
+    "bytes": 161890,
     "pixel_dimensions": [
-      3514,
-      1537
+      3754,
+      1444
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.10",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/e4b_head_package/results.json",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/e7c_sampler_nfe/results.json",
     "source_files": [
       {
-        "file": "artifacts/e4b_head_package/results.json",
-        "bytes": 10892
+        "file": "artifacts/e7c_sampler_nfe/results.json",
+        "available": true,
+        "bytes": 66223
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -670,31 +820,32 @@
   {
     "schema_version": "1.0",
     "figure_id": "4.11",
-    "file": "docs/figures/fig19_sampler_nfe_robustness.png",
+    "file": "docs/figures/fig20_alternate_codec_robustness.png",
     "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/e7c_sampler_nfe/results.json",
-    "role": "artifact-derived sampler and NFE robustness result",
+    "data_source": "artifacts/e7a_codec_robustness/results.json",
+    "role": "artifact-derived independently trained codec robustness result",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "913753cfdb6cc7599054a3a6f5bf0be6da0705fbd18cdbefdf3edb5b31100191",
-    "bytes": 139513,
+    "sha256": "1eccb86c3e92477e2c289b1e0252dfe8fb75aebb8d324496d8bb25b6badb0cfd",
+    "bytes": 133390,
     "pixel_dimensions": [
       3754,
-      1444
+      1234
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.11",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/e7c_sampler_nfe/results.json",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/e7a_codec_robustness/results.json",
     "source_files": [
       {
-        "file": "artifacts/e7c_sampler_nfe/results.json",
-        "bytes": 66223
+        "file": "artifacts/e7a_codec_robustness/results.json",
+        "available": true,
+        "bytes": 25232
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -707,31 +858,32 @@
   {
     "schema_version": "1.0",
     "figure_id": "4.12",
-    "file": "docs/figures/fig20_alternate_codec_robustness.png",
+    "file": "docs/figures/fig18_trust_negative_replication.png",
     "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/e7a_codec_robustness/results.json",
-    "role": "artifact-derived independently trained codec robustness result",
+    "data_source": "artifacts/e5a_trust_replication/results.json",
+    "role": "artifact-derived registered negative replication",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "9a60f882727ac4765094cb3ffdd2519a4b8271bc651bb62ba7b10deeb1770ad8",
-    "bytes": 103985,
+    "sha256": "577dbea47b8b9efd67cbe9d81eae95e1743c4582dd24225e998515fe1b0b5723",
+    "bytes": 99197,
     "pixel_dimensions": [
-      3754,
-      1234
+      2597,
+      1474
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.12",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/e7a_codec_robustness/results.json",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/e5a_trust_replication/results.json",
     "source_files": [
       {
-        "file": "artifacts/e7a_codec_robustness/results.json",
-        "bytes": 25232
+        "file": "artifacts/e5a_trust_replication/results.json",
+        "available": true,
+        "bytes": 32986
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -744,31 +896,32 @@
   {
     "schema_version": "1.0",
     "figure_id": "4.13",
-    "file": "docs/figures/fig18_trust_negative_replication.png",
+    "file": "docs/figures/fig21_pose_indexed_raw_memory.png",
     "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/e5a_trust_replication/results.json",
-    "role": "artifact-derived registered negative replication",
+    "data_source": "artifacts/e8a_pose_mosaic/results.json",
+    "role": "artifact-derived privileged explicit-access reference",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "97178a6958ea05d09ebd3f5f4fa031d2d72a3fe2e4218a38f753ea96197f130d",
-    "bytes": 114261,
+    "sha256": "b448bb8fed595586339acca74d1f45f5d55767f7ab5f922f5d05df5ed597f17c",
+    "bytes": 296062,
     "pixel_dimensions": [
-      2589,
-      1474
+      3574,
+      1507
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.13",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/e5a_trust_replication/results.json",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/e8a_pose_mosaic/results.json",
     "source_files": [
       {
-        "file": "artifacts/e5a_trust_replication/results.json",
-        "bytes": 32986
+        "file": "artifacts/e8a_pose_mosaic/results.json",
+        "available": true,
+        "bytes": 29422
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -781,31 +934,32 @@
   {
     "schema_version": "1.0",
     "figure_id": "4.14",
-    "file": "docs/figures/fig21_pose_indexed_raw_memory.png",
+    "file": "docs/figures/fig22_phasec_v2_boundary.png",
     "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/e8a_pose_mosaic/results.json",
-    "role": "artifact-derived privileged explicit-access reference",
+    "data_source": "artifacts/phasec_v2/results.json",
+    "role": "artifact-derived persistent-object support/identity boundary",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "90b7589bf6e16e90f42baeca7496aebc96de777f4a18ac78add7e19e4721e9b5",
-    "bytes": 313756,
+    "sha256": "ed4fabcd9e5388ba037bfb7eb457785010cd35896d418187a8d3bc6ebfb04249",
+    "bytes": 188960,
     "pixel_dimensions": [
-      3574,
-      1505
+      3694,
+      1719
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "4.14",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/e8a_pose_mosaic/results.json",
+    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "data_or_concept_source": "artifacts/phasec_v2/results.json",
     "source_files": [
       {
-        "file": "artifacts/e8a_pose_mosaic/results.json",
-        "bytes": 29422
+        "file": "artifacts/phasec_v2/results.json",
+        "available": true,
+        "bytes": 15535
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
@@ -817,39 +971,118 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.15",
-    "file": "docs/figures/fig22_phasec_v2_boundary.png",
-    "generator": "scripts/make_rft_result_figures.py",
-    "data_source": "artifacts/phasec_v2/results.json",
-    "role": "artifact-derived persistent-object support/identity boundary",
+    "figure_id": "E.1",
+    "file": "docs/figures/fig29_mechanism_single_step_samples.png",
+    "generator": "scripts/make_dissertation_missing_figures.py",
+    "data_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
+    "role": "artifact-derived full qualitative comparison",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "59296ade199c254ff5c4acbd1a8cd31ca8eef56bf33f4064127847df65736a09",
-    "bytes": 205056,
+    "sha256": "adc87be84b344f0f8e0a120db940916d676691bb107b4abb392e2117cfbeca69",
+    "bytes": 197699,
     "pixel_dimensions": [
-      3694,
-      1718
+      1967,
+      2374
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.15",
+    "original_figure": "E.1",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "f069c79eb94686bd50de5ec2bf3d48bcf05be58518e207d0d47e720e92d6ed64",
-    "data_or_concept_source": "artifacts/phasec_v2/results.json",
+    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "data_or_concept_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
     "source_files": [
       {
-        "file": "artifacts/phasec_v2/results.json",
-        "bytes": 15535
+        "file": "logs_rhcp/step1_mech_clean_reg.png",
+        "available": false,
+        "bytes": null
+      },
+      {
+        "file": "logs_rhcp/step1_mech_clean_diff.png",
+        "available": false,
+        "bytes": null
       }
     ],
-    "live_manuscript_file": "docs/dissertation/restructured_english/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/08_APPENDICES.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
-    "embedded_third_party_pixels": false,
+    "embedded_third_party_pixels": true,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
-    "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
-    "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.15; caption includes an explicit author/source classification.",
+    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
+    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
+    "caption_attribution": "Appendix E Figure E.1; caption includes an explicit author/source classification.",
     "layout_note": null
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "E.2",
+    "file": "docs/figures/fig7_samples_claim1.png",
+    "generator": "scripts/make_samples.py",
+    "data_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizons 1, 24, 60, 100, and 148",
+    "role": "artifact-derived fixed-index full descriptive gallery",
+    "asset_class": "author-generated-artifact-derived",
+    "sha256": "2b6d1cd4e34d1c6a25d92f47c4809f3af83c8199584cf6816ee564a9023cb4bb",
+    "bytes": 638210,
+    "pixel_dimensions": [
+      1400,
+      2339
+    ],
+    "source": "author-generated repository figure",
+    "source_paper": null,
+    "original_figure": "E.2",
+    "source_page": null,
+    "extraction_method": null,
+    "generator_sha256": "5d95db58a8dc3a0d2ba9fcca329b320751272777e59b1f60f1c0c73b6c89cadf",
+    "data_or_concept_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizons 1, 24, 60, 100, and 148",
+    "source_files": [
+      {
+        "file": "docs/DATA_CARD_LOOPMOM.md",
+        "available": true,
+        "bytes": 1769
+      },
+      {
+        "file": "data/loopmom_train_3000x100.npy",
+        "available": true,
+        "bytes": 1228800128
+      },
+      {
+        "file": "data/loopmom_train_3000x100_actions.npy",
+        "available": true,
+        "bytes": 300128
+      },
+      {
+        "file": "data/loopmom_test_500x200.npy",
+        "available": true,
+        "bytes": 409600128
+      },
+      {
+        "file": "data/loopmom_test_500x200_actions.npy",
+        "available": true,
+        "bytes": 100128
+      },
+      {
+        "file": "logs_rhcp/hier_ae_mom.pt",
+        "available": false,
+        "bytes": null
+      },
+      {
+        "file": "logs_rhcp/rhvd_hier-long_s1_t30000.pt",
+        "available": false,
+        "bytes": null
+      },
+      {
+        "file": "logs_rhcp/rhvd_flat-budget_s1_t30000.pt",
+        "available": false,
+        "bytes": null
+      }
+    ],
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/08_APPENDICES.md",
+    "live_manuscript_link_count": 1,
+    "modification_status": "pre-existing PNG reused without pixel modification",
+    "embedded_third_party_pixels": true,
+    "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
+    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
+    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
+    "caption_attribution": "Appendix E Figure E.2; caption includes an explicit author/source classification.",
+    "layout_note": "Tall fixed-index gallery: reserve a dedicated portrait page and do not reduce it below full printable height; review labels in the final typeset proof."
   }
 ]

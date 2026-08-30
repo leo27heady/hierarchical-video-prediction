@@ -28,25 +28,49 @@ FIGURES = [
         "role": "dissertation-native conceptual landscape",
     },
     {
-        "figure_id": "1.19",
+        "figure_id": "1.23",
         "file": "docs/figures/fig35_fixed_grid_tokenization.png",
         "generator": "scripts/make_dissertation_foundation_figures.py",
         "data_source": "fixed-grid spatial-allocation analysis in Chapter 1",
         "role": "dissertation-native conceptual tokenization schematic",
     },
     {
-        "figure_id": "1.20",
+        "figure_id": "1.24",
         "file": "docs/figures/fig39_flat_long_context_barrier.png",
         "generator": "scripts/make_dissertation_foundation_figures.py",
         "data_source": "retained-context reach formulation in Chapters 1 and 3",
         "role": "dissertation-native conceptual reach schematic",
     },
     {
-        "figure_id": "2.23",
+        "figure_id": "2.15",
         "file": "docs/figures/fig47_rope_nd.png",
         "generator": "scripts/make_dissertation_foundation_figures.py",
         "data_source": "verified RoPE-ND mathematical contract and implementation configuration",
         "role": "dissertation-native implementation-informed schematic",
+    },
+    {
+        "figure_id": "1.15",
+        "file": "docs/figures/restructured/published_2024_fig4_diffusion_pipeline.png",
+        "generator": "scripts/make_restructured_dissertation_figures.py",
+        "data_source": "official 2024 article PDF, original Figure 4",
+        "role": "published-reused-unchanged literature-review illustration",
+        "published": True,
+    },
+    {
+        "figure_id": "1.16",
+        "file": "docs/figures/restructured/published_2024_fig6_img2img.png",
+        "generator": "scripts/make_restructured_dissertation_figures.py",
+        "data_source": "official 2024 article PDF, original Figure 6",
+        "role": "published-reused-unchanged literature-review illustration",
+        "published": True,
+    },
+    {
+        "figure_id": "1.18",
+        "file": "docs/figures/restructured/published_2024_fig8_inversion.png",
+        "generator": "scripts/make_restructured_dissertation_figures.py",
+        "data_source": "official 2024 article PDF, original Figure 8",
+        "role": "published-reused-unchanged literature-review illustration",
+        "published": True,
     },
     {
         "figure_id": "3.2",
@@ -99,10 +123,10 @@ FIGURES = [
     },
     {
         "figure_id": "4.3",
-        "file": "docs/figures/fig29_mechanism_single_step_samples.png",
-        "generator": "scripts/make_dissertation_missing_figures.py",
-        "data_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
-        "role": "artifact-derived qualitative comparison",
+        "file": "docs/figures/fig29_mechanism_single_step_samples_compact.png",
+        "generator": "scripts/make_dissertation_compact_galleries.py",
+        "data_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
+        "role": "artifact-derived fixed-index qualitative comparison",
     },
     {
         "figure_id": "4.5",
@@ -122,57 +146,74 @@ FIGURES = [
         "role": "artifact-derived untouched simultaneous frontier",
     },
     {
-        "figure_id": "4.9",
-        "file": "docs/figures/fig7_samples_claim1.png",
-        "generator": "scripts/make_samples.py",
+        "figure_id": "4.8",
+        "file": "docs/figures/fig7_samples_claim1_compact.png",
+        "generator": "scripts/make_dissertation_compact_galleries.py",
         "data_source": (
-            "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget "
-            "30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizon indices "
+            "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons "
             "1, 24, 60, 100, and 148"
         ),
-        "role": "artifact-derived fixed-index descriptive gallery",
+        "role": "artifact-derived fixed-index compact descriptive gallery",
     },
     {
-        "figure_id": "4.10",
+        "figure_id": "4.9",
         "file": "docs/figures/fig17_head_package_seed_heterogeneity.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e4b_head_package/results.json",
         "role": "artifact-derived five-seed factorial result",
     },
     {
-        "figure_id": "4.11",
+        "figure_id": "4.10",
         "file": "docs/figures/fig19_sampler_nfe_robustness.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e7c_sampler_nfe/results.json",
         "role": "artifact-derived sampler and NFE robustness result",
     },
     {
-        "figure_id": "4.12",
+        "figure_id": "4.11",
         "file": "docs/figures/fig20_alternate_codec_robustness.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e7a_codec_robustness/results.json",
         "role": "artifact-derived independently trained codec robustness result",
     },
     {
-        "figure_id": "4.13",
+        "figure_id": "4.12",
         "file": "docs/figures/fig18_trust_negative_replication.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e5a_trust_replication/results.json",
         "role": "artifact-derived registered negative replication",
     },
     {
-        "figure_id": "4.14",
+        "figure_id": "4.13",
         "file": "docs/figures/fig21_pose_indexed_raw_memory.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e8a_pose_mosaic/results.json",
         "role": "artifact-derived privileged explicit-access reference",
     },
     {
-        "figure_id": "4.15",
+        "figure_id": "4.14",
         "file": "docs/figures/fig22_phasec_v2_boundary.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/phasec_v2/results.json",
         "role": "artifact-derived persistent-object support/identity boundary",
+    },
+    {
+        "figure_id": "E.1",
+        "file": "docs/figures/fig29_mechanism_single_step_samples.png",
+        "generator": "scripts/make_dissertation_missing_figures.py",
+        "data_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
+        "role": "artifact-derived full qualitative comparison",
+    },
+    {
+        "figure_id": "E.2",
+        "file": "docs/figures/fig7_samples_claim1.png",
+        "generator": "scripts/make_samples.py",
+        "data_source": (
+            "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget "
+            "30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizons "
+            "1, 24, 60, 100, and 148"
+        ),
+        "role": "artifact-derived fixed-index full descriptive gallery",
     },
 ]
 
@@ -183,9 +224,12 @@ FIGURES = [
 # from ``data_source`` so their existence can be checked mechanically.
 SOURCE_FILES = {
     "1.5": ["docs/dissertation/restructured_english/02_CHAPTER_1.md"],
-    "1.19": ["docs/dissertation/restructured_english/02_CHAPTER_1.md"],
-    "1.20": ["docs/dissertation/restructured_english/02_CHAPTER_1.md"],
-    "2.23": ["docs/dissertation/restructured_english/03_CHAPTER_2.md"],
+    "1.23": ["docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"],
+    "1.24": ["docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"],
+    "2.15": ["docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md"],
+    "1.15": ["docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf"],
+    "1.16": ["docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf"],
+    "1.18": ["docs/figures/restructured/sources/Kulyk_Mokin_2024_official.pdf"],
     "3.2": ["experiments/configs/e2_untouched_confirmation.json", "hvp_rev/rhvd.py"],
     "3.5": ["experiments/configs/e2_untouched_confirmation.json", "hvp_rev/rhvd.py"],
     "3.9": ["experiments/configs/e2_untouched_confirmation.json", "hvp_rev/rhvd.py"],
@@ -199,7 +243,7 @@ SOURCE_FILES = {
         "docs/FINAL_PROGRAMME_REPORT_2026-07-18.md",
     ],
     "4.2": ["hvp_rev/rhvd.py", "hvp_rev/step1_mech.py", "hvp_rev/ebt_reference_control.py"],
-    "4.3": ["logs_rhcp/step1_mech_clean_reg.png", "logs_rhcp/step1_mech_clean_diff.png"],
+    "4.3": ["docs/figures/fig29_mechanism_single_step_samples.png"],
     "4.5": [
         "logs_rhcp/mem_gate_full_s0.log",
         "logs_rhcp/mem_gate_full_s1.log",
@@ -207,7 +251,15 @@ SOURCE_FILES = {
         "logs_rhcp/mem_gate_full_s1_t20k.log",
     ],
     "4.7": ["artifacts/confirmation_e2/results.json"],
-    "4.9": [
+    "4.8": ["docs/figures/fig7_samples_claim1.png"],
+    "4.9": ["artifacts/e4b_head_package/results.json"],
+    "4.10": ["artifacts/e7c_sampler_nfe/results.json"],
+    "4.11": ["artifacts/e7a_codec_robustness/results.json"],
+    "4.12": ["artifacts/e5a_trust_replication/results.json"],
+    "4.13": ["artifacts/e8a_pose_mosaic/results.json"],
+    "4.14": ["artifacts/phasec_v2/results.json"],
+    "E.1": ["logs_rhcp/step1_mech_clean_reg.png", "logs_rhcp/step1_mech_clean_diff.png"],
+    "E.2": [
         "docs/DATA_CARD_LOOPMOM.md",
         "data/loopmom_train_3000x100.npy",
         "data/loopmom_train_3000x100_actions.npy",
@@ -217,23 +269,17 @@ SOURCE_FILES = {
         "logs_rhcp/rhvd_hier-long_s1_t30000.pt",
         "logs_rhcp/rhvd_flat-budget_s1_t30000.pt",
     ],
-    "4.10": ["artifacts/e4b_head_package/results.json"],
-    "4.11": ["artifacts/e7c_sampler_nfe/results.json"],
-    "4.12": ["artifacts/e7a_codec_robustness/results.json"],
-    "4.13": ["artifacts/e5a_trust_replication/results.json"],
-    "4.14": ["artifacts/e8a_pose_mosaic/results.json"],
-    "4.15": ["artifacts/phasec_v2/results.json"],
 }
 
 
-QUALITATIVE_LOOPMOM_FIGURES = {"4.3", "4.9"}
+QUALITATIVE_LOOPMOM_FIGURES = {"4.3", "4.8", "E.1", "E.2"}
 LAYOUT_NOTES = {
     "4.1": (
         "Wide nine-column matrix: place on a landscape or dedicated full-width page. "
         "At ordinary portrait text width its 7.3-pt source labels fall below the blueprint's "
         "8.5-pt preferred minimum. Table 4.2 remains the authoritative readable registry."
     ),
-    "4.9": (
+    "E.2": (
         "Tall fixed-index gallery: reserve a dedicated portrait page and do not reduce it "
         "below full printable height; review labels in the final typeset proof."
     ),
@@ -241,10 +287,11 @@ LAYOUT_NOTES = {
 
 
 CHAPTER_FILES = {
-    "1": ROOT / "docs" / "dissertation" / "restructured_english" / "02_CHAPTER_1.md",
-    "2": ROOT / "docs" / "dissertation" / "restructured_english" / "03_CHAPTER_2.md",
-    "3": ROOT / "docs" / "dissertation" / "restructured_english" / "04_CHAPTER_3.md",
-    "4": ROOT / "docs" / "dissertation" / "restructured_english" / "05_CHAPTER_4.md",
+    "1": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "02_CHAPTER_1.md",
+    "2": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "03_CHAPTER_2.md",
+    "3": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "04_CHAPTER_3.md",
+    "4": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "05_CHAPTER_4.md",
+    "E": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "08_APPENDICES.md",
 }
 
 
@@ -268,12 +315,12 @@ def main() -> None:
         source_inventory = []
         for source_file in SOURCE_FILES[specification["figure_id"]]:
             source_path = ROOT / source_file
-            if not source_path.is_file():
-                raise FileNotFoundError(source_path)
+            available = source_path.is_file()
             source_inventory.append(
                 {
                     "file": source_file,
-                    "bytes": source_path.stat().st_size,
+                    "available": available,
+                    "bytes": source_path.stat().st_size if available else None,
                 }
             )
 
@@ -288,7 +335,14 @@ def main() -> None:
             )
 
         width, height = png_dimensions(path)
-        if specification["figure_id"] in QUALITATIVE_LOOPMOM_FIGURES:
+        if specification.get("published"):
+            rights_status = (
+                "Author-created artwork reused from Kulyk and Mokin (2024), published under "
+                "CC BY 4.0; authors retain copyright."
+            )
+            embedded_third_party_pixels = False
+            permission_status = "cleared under the article's CC BY 4.0 licence"
+        elif specification["figure_id"] in QUALITATIVE_LOOPMOM_FIGURES:
             rights_status = (
                 "Author-generated composite from project-produced predictions and ground-truth "
                 "frames; no publisher artwork was copied. The author-created composite uses "
@@ -305,7 +359,9 @@ def main() -> None:
             )
             embedded_third_party_pixels = False
             permission_status = "no external artwork permission required"
-        if specification["role"].startswith("artifact-derived"):
+        if specification.get("published"):
+            asset_class = "published-reused-unchanged"
+        elif specification["role"].startswith("artifact-derived"):
             asset_class = "author-generated-artifact-derived"
         elif "implementation" in specification["role"] or "configuration" in specification["role"]:
             asset_class = "author-generated-implementation-informed"
@@ -321,8 +377,16 @@ def main() -> None:
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "bytes": path.stat().st_size,
                 "pixel_dimensions": [width, height],
-                "source": "author-generated repository figure",
-                "source_paper": None,
+                "source": (
+                    "Kulyk and Mokin, Methods for Ensuring Consistent Generation in Diffusion Models (2024)"
+                    if specification.get("published")
+                    else "author-generated repository figure"
+                ),
+                "source_paper": (
+                    "Kulyk and Mokin, Visnyk VNTU 175(4), 2024, DOI 10.31649/1997-9266-2024-175-4-75-85"
+                    if specification.get("published")
+                    else None
+                ),
                 "original_figure": specification["figure_id"],
                 "source_page": None,
                 "extraction_method": None,
@@ -331,15 +395,24 @@ def main() -> None:
                 "source_files": source_inventory,
                 "live_manuscript_file": chapter.relative_to(ROOT).as_posix(),
                 "live_manuscript_link_count": link_count,
-                "modification_status": "pre-existing PNG reused without pixel modification",
+                "modification_status": (
+                    "published appearance reused unchanged"
+                    if specification.get("published")
+                    else "deterministic fixed crop from a frozen full montage"
+                    if specification["generator"].endswith("make_dissertation_compact_galleries.py")
+                    else "pre-existing PNG reused without pixel modification"
+                ),
                 "embedded_third_party_pixels": embedded_third_party_pixels,
                 "publication_reuse_status": (
-                    "author-created composite or repository artwork; no published figure pixels copied"
+                    "published author-owned artwork reused under CC BY 4.0"
+                    if specification.get("published")
+                    else "author-created composite or repository artwork; no published figure pixels copied"
                 ),
                 "rights_status": rights_status,
                 "permission_status": permission_status,
                 "caption_attribution": (
-                    f"Chapter {specification['figure_id'].split('.', 1)[0]} Figure "
+                    f"{'Appendix' if specification['figure_id'].startswith('E.') else 'Chapter'} "
+                    f"{specification['figure_id'].split('.', 1)[0]} Figure "
                     f"{specification['figure_id']}; caption includes an explicit author/source classification."
                 ),
                 "layout_note": LAYOUT_NOTES.get(specification["figure_id"]),

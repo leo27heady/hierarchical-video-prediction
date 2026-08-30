@@ -270,6 +270,24 @@ def save_native(fig, stem: str, figure_id: str, data_source: str | None = None) 
         )
 
 
+def record_preserved_native(stem: str, figure_id: str, data_source: str) -> None:
+    """Record an already frozen PNG/PDF pair when its raw legacy input is absent."""
+    for suffix in (".png", ".pdf"):
+        path = OUT / f"{stem}{suffix}"
+        if not path.is_file():
+            raise FileNotFoundError(path)
+        record(
+            path,
+            figure_id=figure_id,
+            source="preserved dissertation-native frozen figure",
+            original_figure=figure_id,
+            source_page=None,
+            modification_status="preserved frozen dissertation-native figure; raw legacy receipt unavailable locally",
+            rights_status="author-generated",
+            data_source=data_source,
+        )
+
+
 def copy_published(
     source: Path,
     stem: str,
@@ -365,9 +383,9 @@ def write_published_assets() -> None:
         (27, 85, "ch2_fig2_13_tempverse_decelerated_published", "2.13", "Fig. 10", 28),
         (28, 88, "ch2_fig2_14_tempverse_oscillating_published", "2.14", "Fig. 11", 29),
         (29, 91, "ch2_fig2_15_tempverse_interrupted_published", "2.15", "Fig. 12", 30),
-        (30, 94, "ch2_fig2_16_tempverse_combined_fid_published", "2.16", "Fig. 13", 31),
-        (31, 98, "ch2_fig2_18_tempverse_memory_published", "2.18", "Fig. 14", 32),
-        (32, 102, "ch2_fig2_19_tempverse_time_published", "2.19", "Fig. 15", 33),
+        (30, 94, "ch2_fig2_16_tempverse_combined_fid_published", "2.9", "Fig. 13", 31),
+        (31, 98, "ch2_fig2_18_tempverse_memory_published", "2.10", "Fig. 14", 32),
+        (32, 102, "ch2_fig2_19_tempverse_time_published", "2.11", "Fig. 15", 33),
         (33, 106, "ch2_fig2_17a_tempverse_mmnist_published", "2.17a", "Fig. 16", 34),
         (34, 110, "ch2_fig2_17b_tempverse_mmnist_cifar_published", "2.17b", "Fig. 17", 35),
         (35, 113, "ch2_fig2_17c_tempverse_kth_published", "2.17c", "Fig. 18", 36),
@@ -387,12 +405,12 @@ def write_published_assets() -> None:
         )
 
     vb_images = [
-        (3, 48, "ch2_fig2_21_vblt_architecture_published", "2.21", "Fig. 3", 4),
-        (5, 113, "ch2_fig2_22_vblt_causal_mask_published", "2.22", "Fig. 4", 6),
+        (3, 48, "ch2_fig2_21_vblt_architecture_published", "2.13", "Fig. 3", 4),
+        (5, 113, "ch2_fig2_22_vblt_causal_mask_published", "2.14", "Fig. 4", 6),
         (6, 118, "ch2_fig2_1_vblt_2d_sequence_published", "2.1", "Fig. 5", 7),
         (7, 127, "ch2_fig2_2_vblt_3d_sequence_published", "2.2", "Fig. 6", 8),
-        (8, 130, "ch2_fig2_25a_vblt_2d_entropy_published", "2.25a", "Fig. 7", 9),
-        (9, 133, "ch2_fig2_25b_vblt_3d_entropy_published", "2.25b", "Fig. 8", 10),
+        (8, 130, "ch2_fig2_25a_vblt_2d_entropy_published", "2.17a", "Fig. 7", 9),
+        (9, 133, "ch2_fig2_25b_vblt_3d_entropy_published", "2.17b", "Fig. 8", 10),
     ]
     for page_index, xref, stem, fid, original, page in vb_images:
         extract_pdf_image(
@@ -578,7 +596,7 @@ def fig2_20_fixed_patch_flow() -> None:
     ax.text(0.91, 0.36, "categorical\nbyte logits", ha="center", fontsize=8.8, color=ORANGE)
     arrow(ax, (0.89, 0.48), (0.91, 0.40), color=ORANGE)
     ax.text(0.5, 0.055, "Local-global-local processing is hierarchical; the measured patch geometry remains static.", ha="center", fontsize=9.5)
-    save_native(fig, "ch2_fig2_20_fixed_patch_flow", "2.20", "Published V-BLT fixed 4 x 4 x 4 specification and audited implementation boundary")
+    save_native(fig, "ch2_fig2_20_fixed_patch_flow", "2.12", "Published V-BLT fixed 4 x 4 x 4 specification and audited implementation boundary")
 
 
 def fig2_24_entropy_pipeline() -> None:
@@ -612,7 +630,7 @@ def fig2_24_entropy_pipeline() -> None:
         ec=MUTED,
         fs=9.2,
     )
-    save_native(fig, "ch2_fig2_24_entropy_pipeline", "2.24", "Audited V-BLT categorical-output and entropy-visualization path")
+    save_native(fig, "ch2_fig2_24_entropy_pipeline", "2.16", "Audited V-BLT categorical-output and entropy-visualization path")
 
 
 def fig2_26_vblt_point_estimates() -> None:
@@ -671,7 +689,7 @@ def fig2_26_vblt_point_estimates() -> None:
         fontsize=9.4,
         color=MUTED,
     )
-    save_native(fig, "ch2_fig2_26_vblt_point_estimates", "2.26", "V-BLT published Tables 1-2; Chapter 2 Table 2.9")
+    save_native(fig, "ch2_fig2_26_vblt_point_estimates", "2.18", "V-BLT published Tables 1-2; Chapter 2 Table 2.9")
 
 
 def fig2_27_measured_vs_proposed() -> None:
@@ -700,7 +718,7 @@ def fig2_27_measured_vs_proposed() -> None:
         ha="center",
         fontsize=9.5,
     )
-    save_native(fig, "ch2_fig2_27_measured_vs_proposed", "2.27", "Published V-BLT evidence and implementation audit")
+    save_native(fig, "ch2_fig2_27_measured_vs_proposed", "2.19", "Published V-BLT evidence and implementation audit")
 
 
 # ==============================================================================================
@@ -827,26 +845,29 @@ def fig3_6_joint_attention() -> None:
 
 
 def fig3_7_gradient_paths() -> None:
-    fig, ax = canvas(14, 7)
-    title(ax, "Training updates the predictor but not the codec or previous rollout windows")
-    box(ax, 0.035, 0.58, 0.13, 0.14, "frozen\nencoder", fc=PALE_GRAY, ec=MUTED, weight="bold")
-    box(ax, 0.21, 0.58, 0.16, 0.14, "detached standardized\ncontext tokens", fc=PALE_BLUE, ec=BLUE, weight="bold")
-    box(ax, 0.43, 0.58, 0.13, 0.14, "trainable token\nprojection", fc=PALE_PURPLE, ec=PURPLE)
-    box(ax, 0.62, 0.58, 0.15, 0.14, "8 trainable\ntransformer blocks", fc=PALE_PURPLE, ec=PURPLE, weight="bold")
-    box(ax, 0.83, 0.58, 0.12, 0.14, "trainable\noutput heads", fc=PALE_PURPLE, ec=PURPLE)
-    for a, b, color in [(0.165, 0.21, MUTED), (0.37, 0.43, BLUE), (0.56, 0.62, PURPLE), (0.77, 0.83, PURPLE)]:
-        arrow(ax, (a, 0.65), (b, 0.65), color=color)
-    box(ax, 0.80, 0.28, 0.16, 0.13, "coarse/fine\ntarget loss", fc=PALE_ORANGE, ec=ORANGE, weight="bold")
-    arrow(ax, (0.89, 0.58), (0.88, 0.41), color=ORANGE)
-    arrow(ax, (0.80, 0.345), (0.50, 0.50), color=PURPLE, curve=-0.12)
-    box(ax, 0.07, 0.25, 0.22, 0.13, "previous-window output\nin rollout buffer", fc="white", ec=ORANGE, dashed=True)
-    arrow(ax, (0.29, 0.315), (0.44, 0.57), color=ORANGE, dashed=True)
-    ax.text(0.34, 0.44, "stop gradient", color=RED, fontsize=8.8, weight="bold")
-    ax.text(0.18, 0.52, "STOP", color=RED, fontsize=10, weight="bold")
-    ax.text(0.83, 0.15, "frozen fine decoder\nused for evaluation", ha="center", fontsize=9, color=MUTED)
-    box(ax, 0.07, 0.055, 0.18, 0.08, "trainable", fc=PALE_PURPLE, ec=PURPLE, fs=8.5)
-    box(ax, 0.29, 0.055, 0.18, 0.08, "frozen", fc=PALE_GRAY, ec=MUTED, fs=8.5)
-    box(ax, 0.51, 0.055, 0.18, 0.08, "detached value", fc=PALE_BLUE, ec=BLUE, fs=8.5)
+    fig, ax = canvas(13.2, 5.8)
+    title(ax, "Межі градієнта під час навчання одного вікна")
+    y = 0.60
+    nodes = [
+        (0.03, 0.14, "Заморожений\nкодувальник", PALE_GRAY, MUTED),
+        (0.21, 0.17, "Відокремлені\nконтекстні токени", PALE_BLUE, BLUE),
+        (0.43, 0.13, "Проєкція\nтокенів", PALE_PURPLE, PURPLE),
+        (0.61, 0.15, "8 блоків\nWindowDiT", PALE_PURPLE, PURPLE),
+        (0.81, 0.15, "Вихідні\nмодулі", PALE_PURPLE, PURPLE),
+    ]
+    for x, width, label, face, edge in nodes:
+        box(ax, x, y, width, 0.15, label, fc=face, ec=edge, weight="bold")
+    for start, end, color in [(0.17, 0.21, MUTED), (0.38, 0.43, BLUE), (0.56, 0.61, PURPLE), (0.76, 0.81, PURPLE)]:
+        arrow(ax, (start, y + 0.075), (end, y + 0.075), color=color)
+
+    box(ax, 0.79, 0.28, 0.19, 0.14, "Втрата для грубих\nі детальних цілей", fc=PALE_ORANGE, ec=ORANGE, weight="bold")
+    arrow(ax, (0.885, y), (0.885, 0.42), color=ORANGE)
+    arrow(ax, (0.79, 0.35), (0.54, 0.56), color=PURPLE, curve=-0.10)
+
+    box(ax, 0.08, 0.27, 0.24, 0.14, "Вихід попереднього вікна\nу буфері розгортання", fc="white", ec=ORANGE, dashed=True)
+    arrow(ax, (0.32, 0.34), (0.43, 0.58), color=ORANGE, dashed=True)
+    ax.text(0.345, 0.47, "sg: градієнт\nзупинено", color=RED, fontsize=9, weight="bold", ha="center")
+    ax.text(0.50, 0.12, "Градієнт оновлює лише фіолетові блоки поточного вікна; кодек і попередні вікна не оновлюються.", ha="center", fontsize=9.5, color=MUTED)
     save_native(fig, "ch3_fig3_7_gradient_paths", "3.7", "Implemented optimization graph and frozen-codec boundary")
 
 
@@ -1072,8 +1093,17 @@ def parse_ebt(path: Path) -> list[dict]:
 
 
 def fig4_4_ebt_composite() -> None:
-    s1 = parse_ebt(LOGS / "ebt_scaled_s1.log")
-    s2 = parse_ebt(LOGS / "ebt_scaled_s2.log")
+    s1_path = LOGS / "ebt_scaled_s1.log"
+    s2_path = LOGS / "ebt_scaled_s2.log"
+    if not s1_path.is_file() or not s2_path.is_file():
+        record_preserved_native(
+            "ch4_fig4_4_ebt_composite",
+            "4.4",
+            "frozen EBT composite; logs_rhcp/ebt_scaled_s1.log and ebt_scaled_s2.log are unavailable in this checkout",
+        )
+        return
+    s1 = parse_ebt(s1_path)
+    s2 = parse_ebt(s2_path)
     fig = plt.figure(figsize=(16, 6.5), facecolor="white")
     gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.45, 1.15], left=0.025, right=0.99, bottom=0.14, top=0.84, wspace=0.16)
     ax = fig.add_subplot(gs[0])

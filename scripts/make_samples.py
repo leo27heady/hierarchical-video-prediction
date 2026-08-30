@@ -88,6 +88,25 @@ def main():
     plt.close(fig)
     print("fig7 samples ->", f"{OUT}/fig7_samples_claim1.png")
 
+    # Compact main-text view: the first predeclared clip, with the same five horizons.
+    fig, ax = plt.subplots(3, nh, figsize=(nh * 1.55, 4.7), squeeze=False)
+    for r, (src, label) in enumerate([(gt, "Еталон"), (hier, "Ієрархічний пакет"), (flat, "Плоский пакет")]):
+        for j, h in enumerate(HS):
+            panel = ax[r, j]
+            panel.imshow(src[h][0], cmap="gray", vmin=0, vmax=1)
+            panel.set_xticks([])
+            panel.set_yticks([])
+            if r == 0:
+                panel.set_title(f"горизонт {h}", fontsize=9)
+            if j == 0:
+                panel.set_ylabel(label, fontsize=8.5)
+    fig.suptitle("Фіксований кліп 0, ініціалізація навчання 1", fontsize=11)
+    fig.tight_layout()
+    compact_path = f"{OUT}/fig7_samples_claim1_compact.png"
+    fig.savefig(compact_path, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    print("fig7 compact samples ->", compact_path)
+
 
 if __name__ == "__main__":
     main()
