@@ -135,9 +135,9 @@ Use one repository with a clean worktree rather than a disconnected new reposito
 Proposed new namespaces:
 
 ```text
-configs/v2/article4/
-configs/v2/article5/
-hvp_v2/
+experiments/v2/configs/article4/
+experiments/v2/configs/article5/
+hvp_hca/
 scripts/v2/
 artifacts/v2/manifests/
 docs/dissertation/v2_english/
@@ -145,6 +145,8 @@ docs/experiments/v2/
 ```
 
 Each run manifest records experiment ID, git commit, config hash, seed, dataset/split hash, checkpoint-selection split, GPU model, software versions, start/end time, status, output paths, and memory-profiling mode.
+
+The inspected local host has one NVIDIA GeForce RTX 4060 Ti with 16 GB VRAM. The one-week schedules therefore distinguish a one-GPU decision sprint from the later publication-completion queue. Parallel two-GPU estimates in the article plans are optional acceleration, not the assumed local capacity.
 
 ## 8. Dissertation migration
 

@@ -23,6 +23,22 @@ Ratios such as 3--4x hierarchy or 2--3x reversibility are stretch targets, not a
 
 Yes, with architectural constraints.
 
+### 3.0 Verdict on the current prototype
+
+The current code proves partial compatibility, but it is not the final integrated architecture:
+
+| Current implementation | Verified behavior | Consequence for Article 5 |
+|---|---|---|
+| `FixedRegionLayout` in `hvp_rev/fixed_region_revformer.py` | always 16 coarse plus 8 immutable region tokens per frame | stable fixed-width prototype, not dynamic allocation |
+| `information_density_summary` | variance softmax weights cells inside each immutable region | density-weighted pooling, not token/byte reduction |
+| `FixedRegionTokenizer` positions | learned temporal, coarse-slot, and region-slot embeddings | safe only because current regions never move; unsuitable for dynamic routes |
+| `ReversibleTemporalCore` | reversible blocks inside a fixed token core | promising basis for same-forward internal reversibility |
+| `ReversibleSecondOrderRollout` | wraps the predictor as a second-order additive recurrence | changes multi-step dynamics; not a memory-only substitute for ordinary rollout |
+| `train_fixed_region_adapter.py` | repeatedly evaluates and selects on canonical Moving-MNIST test data | reported quality is development evidence only |
+| `profile_integrated_reversible_openstl.py` | uses zero targets to profile reversible execution | memory/reconstruction diagnostic, not long-horizon forecast quality |
+
+Thus the answer is: **the components are structurally combinable, but the current assembled prototype is not yet semantically correct for the proposed Article 5 claim.** The v2 design must retain the fixed-width idea and internal reversible blocks, replace static route identity with physical coordinate metadata, move routing outside the reversible boundary, and rebuild the evaluation split.
+
 ### 3.1 What can compose cleanly
 
 - The hierarchy defines what representation is retained across space and time.
@@ -224,6 +240,37 @@ Estimate for final confirmation beyond the sprint: 48--120 GPU-hours for matched
 | 7 | locked evaluations, profiling repetitions, atomic plots/tables, go/no-go review | all claims trace to configs and manifests |
 
 On one GPU, do not attempt all routing quotas and all external baselines. Prioritize A5-COR, A5-PE, A5-REV, B0--B5 on Moving MNIST, and B0/B5 plus SimVP on TaxiBJ. KTH and four-seed confirmation become follow-up work.
+
+### 7.1 Executable queue on the local one-GPU host
+
+The inspected machine has one RTX 4060 Ti with 16 GB VRAM. Because Days 1--3 include substantial implementation and debugging, the one-week plan reserves only about 55--80 usable GPU-hours.
+
+| Queue | Unique work | GPU-hours |
+|---|---:|---:|
+| A5-COR | unit tests, tiny overfits, parity and meter calibration | 2--5 |
+| A5-PE | three encodings, two short conditions | 3--8 |
+| A5-REV | 3 horizons x 3 depths x ordinary/reversible profiles plus selected short fits | 6--15 |
+| A5-ROUTE screen | four quotas x static/deterministic/learned on Moving MNIST, successively halved | 10--20 |
+| A5-ABL | B0--B5, two Moving-MNIST seeds | 12--24 |
+| A5-OSL gate | B0, B5, and SimVP on TaxiBJ, one seed; second seed only if time remains | 8--18 |
+| **Total** | correctness plus approximately 30--45 model/profile jobs | **41--90** |
+
+KTH is not in the mandatory one-week queue. It begins only if the full model passes Moving-MNIST and TaxiBJ gates early enough; otherwise a KTH smoke run would consume time without resolving the integration semantics.
+
+### 7.2 Completion queue after the one-week sprint
+
+A concluded Article 5 requires more than the feasibility week:
+
+- freeze one coordinate positional encoding and one routing-stability mechanism;
+- complete B0--B5 on Moving MNIST and TaxiBJ with four seeds for the primary B0/B1/B2/B4/B5 contrasts;
+- run KTH for flat, hierarchy-only, reversible-only where meaningful, and full variants, with four seeds for the primary flat/full comparison;
+- rerun at least SimVP, TAU, and ConvLSTM where feasible under the same OpenSTL data/evaluation contract;
+- repeat memory profiles on an idle GPU and report allocated, reserved, retained-state, throughput, and wall time separately;
+- lock test evaluation and generate seed-level statistics, atomic result figures, manifests, and claim ledger.
+
+Expected additional compute after a successful week: approximately 220--700 GPU-hours. On the local GPU this is roughly 2--6 weeks of elapsed unattended training, plus 2--4 researcher weeks for architecture iteration, analysis, and paper/manuscript writing. A second comparable GPU approximately halves training wall time but not engineering or analysis time.
+
+The one-week result is therefore a reliable architecture decision, not a guarantee of OpenSTL comparability. The only defensible way to become sure is to pass the matched B0/B5 and external-baseline gates; no architectural argument can substitute for those measurements.
 
 ## 8. Expected memory behavior
 

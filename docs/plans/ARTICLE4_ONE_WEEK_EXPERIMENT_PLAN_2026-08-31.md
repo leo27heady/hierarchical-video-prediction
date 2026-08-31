@@ -179,6 +179,37 @@ Estimate: 0.5 day analysis; little or no retraining.
 
 This schedule assumes roughly 1-hour screening and 1--1.5-hour confirmation runs and at least two comparable GPUs, or aggressive successive-halving on one GPU. On one GPU, prioritize A4-COR, A4-FRT, A4-STS, and four-seed confirmation of 6--9 primary configurations; defer secondary confirmations.
 
+### 6.1 Executable queue on the local one-GPU host
+
+The inspected machine has one RTX 4060 Ti with 16 GB VRAM. The week has 168 theoretical GPU-hours, but 105--125 usable training/profile hours is a safer planning capacity after debugging, evaluation, analysis, and failed jobs.
+
+The mandatory one-week queue is therefore:
+
+| Queue | Unique work | Time assumption | GPU-hours |
+|---|---:|---:|---:|
+| A4-COR | correctness/oracle checks and tiny overfits | bounded | 2--4 |
+| A4-FRT screen | 10 budgets x 4 policies x seed 0 | 30--60 min | 20--40 |
+| targeted mechanism screen | 6 coarse-expansion, 3 level-count, 3 overlap, 8 spatial--temporal cells | 30--60 min | 10--20 |
+| primary confirmation | 6 locked configurations x 4 seeds | 1--2 h | 24--48 |
+| repeated memory profiles | locked configurations, 5 repeats | short | 3--6 |
+| **Total** | **60 screening + 24 confirmation fits** | | **59--118** |
+
+The six locked configurations should cover three comparisons with maximum reuse: low/middle/high flat versus the best predeclared hierarchy policy. One hierarchy point is also chosen to serve the overlap/level or spatial--temporal contrast where possible. The other mechanism curves remain exploratory during the week.
+
+If the first five representative runs exceed two hours, immediately reduce the screen to six budget points while retaining the low, previous 896/1,152 region, 1,792 region, and high-budget endpoint. Do not reduce the four confirmation seeds. If median confirmation runtime exceeds two hours, the one-week deliverable becomes a gate report rather than a completed Article 4 result package.
+
+### 6.2 Completion queue after the one-week sprint
+
+To conclude every planned Article 4 claim rather than only the primary frontier:
+
+- confirm the full selected 8--12-arm design with four seeds;
+- complete two-budget A4-ALC, A4-LVL, and A4-OVR confirmations;
+- complete the two-budget 4 x 3 A4-STS surface and confirm its three representative points;
+- run the bounded alternate codec and predictor-head robustness;
+- regenerate final test-set tables and figures only after configuration lock.
+
+Expected additional work after a successful sprint: 90--250 GPU-hours, 3--7 calendar days of unattended local training plus 3--5 researcher days for analysis and writing. The broader 200--450 GPU-hour estimate remains appropriate if screening runs must use the full training schedule or if more than 12 arms survive.
+
 ## 7. Minimum publishable package
 
 The minimum Article 4 result set is:
@@ -192,6 +223,8 @@ The minimum Article 4 result set is:
 - a single unambiguous primary metric plus clearly labeled secondary diagnostics.
 
 If a full 10-point four-seed frontier is required, expect approximately 160 model fits for four policies and 120--240 GPU-hours at the assumed durations. It is not the recommended use of a one-week window; screen all points and confirm the knees/endpoints.
+
+At the end of the one-week local sprint, the work can support a strong go/no-go decision and a seed-confirmed primary frontier if runtimes match the pilot. It should not yet be called the final Article 4 package unless the completion queue is also finished.
 
 ## 8. Article and dissertation figures
 

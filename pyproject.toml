@@ -27,10 +27,11 @@ documents = ["python-docx>=1.2", "lxml>=5", "latex2mathml>=3.78,<4", "pillow>=10
 hvp = "hvp.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["hvp*", "hvp_blt*", "hvp_dlh*", "hvp_rev*"]
+include = ["hvp*", "hvp_blt*", "hvp_dlh*", "hvp_rev*", "hvp_hca*"]
 
 [tool.setuptools.package-data]
 hvp = ["py.typed"]
+hvp_hca = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

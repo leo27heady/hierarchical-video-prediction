@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "experiment_id": "A4_FRT_B1152_L1_FLAT_EXCL_S00",
+  "article": 4,
+  "phase": "screen",
+  "family": "frontier",
+  "dataset": "trb_v2",
+  "seed": 0,
+  "split_manifest": "manifest:trb-v2-pending",
+  "checkpoint_selection_split": "validation",
+  "evaluation_split": "validation",
+  "budget_tokens": 1152,
+  "levels": [
+    {"name": "fine", "tokens_per_slot": 64, "slots": 18, "temporal_stride": 1}
+  ],
+  "overlap": "exclusive",
+  "allocation_policy": "flat_recent",
+  "target_horizon": 4,
+  "target_stride": 1,
+  "target_tokens_per_step": 64,
+  "positional_encoding": "coordinate_fourier",
+  "routing": "none",
+  "detail_quota": null,
+  "reversible_mode": "none",
+  "memory_endpoint": "retained_state",
+  "launch_authorized": false
+}
