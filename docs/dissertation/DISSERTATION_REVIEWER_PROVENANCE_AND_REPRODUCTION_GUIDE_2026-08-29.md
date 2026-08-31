@@ -190,7 +190,7 @@
 | Підрозділ | Основна заява | Первинне джерело |
 |---|---|---|
 | 4.1 | програми мають різні класи доказів і ліцензії порівняння | `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`, authorization ledger |
-| 4.2.1 | diffusion краща в однокроковому best-of-8 тесті, regression дешевша й іноді краща self-fed | заморожені механізм-досліди; таблиця 4.2 та додаток Е |
+| 4.2.1 | diffusion краща в однокроковому best-of-8 тесті, regression дешевша й іноді краща self-fed | заморожені механізм-досліди; таблиця 4.1 та додаток Е |
 | 4.2.2 | EBT ранжує кандидатів, але перевірений спуск не досягає достатньої різкості | `logs_rhcp/ebt_scaled_s1.log`, `logs_rhcp/ebt_scaled_s2.log`; рисунок 4.4 |
 | 4.3 | у парно визначеній смузі reach hierarchy має +0,0980/+0,0914, а повний набір метрик підтримує механізм | `artifacts/confirmation_e2/results.json` |
 | 4.4 | підтверджено hierarchy при 896/1 152, 1 792 невизначено, flat при 2 432/3 072; 2,67–3,43× стосується токенів | той самий E2 артефакт + прямий розрахунок токенів |
@@ -281,7 +281,7 @@
 |---|---|---|---|
 | 3.1 | контекстний пакет як множина потоків `(level, stride, slots, newest lag)` | `DEF` | `ArmSpec`/контекстні конфігурації основної моделі |
 | 3.2 | лаги та фактичні часові прив’язки потоку | `DEF` | явна anchor geometry |
-| 3.3 | кількість контекстних токенів | `DER/DEF` | package validation і таблиця 3.3 |
+| 3.3 | кількість контекстних токенів | `DER/DEF` | package validation і таблиця В.8 |
 | 3.4 | кількість цільових токенів; повну довжину послідовності визначено в тексті | `DER/DEF` | WindowDiT input sequence |
 | 3.5 | номінальна reach пакета | `DER/DEF` | anchor geometry; не retrieval success |
 | 3.6 | концептуальна декомпозиція risk на недосяжність і втрату fidelity | `SYN/DEF` | пояснює гіпотезу, не fitted probability model |
@@ -290,14 +290,14 @@
 | 3.9 | stochastic branch loss кодека | `DEF/code` | навчання codec, не predictor loss |
 | 3.10 | channel-wise нормування latent maps | `DEF/code` | frozen codec statistics |
 | 3.11 | проєкція однієї latent cell у Transformer token | `DEF/code` | WindowDiT input embedding |
-| 3.12 | конкатенація context і target streams | `DEF/code` | exact token sequence |
+| 3.12 | конкатенація позначених послідовностей контексту $\mathcal C_t$ і цілі $\mathcal T_t$ | `DEF/code` | exact token sequence; розгортання обох підпослідовностей наведено в тексті, а не всередині одного перевантаженого виразу |
 | 3.13 | level/role/frame embeddings | `DEF/code` | WindowDiT token metadata |
 | 3.14 | diffusion-step/action conditioning | `DEF/code` | target conditioning; context має zero diffusion step |
 | 3.15 | RMS-normalized joint self-attention | `LIT/DEF` | Transformer implementation |
 | 3.16 | stop-gradient до старих predictions при truncated rollout training | `DEF/code` | межа gradient graph |
 | 3.17 | conditional joint distribution coarse/fine target window | `DEF` | основна diffusion model |
 | 3.18 | forward noising equation | `LIT/code` | latent diffusion |
-| 3.19 | cosine noise schedule | `LIT/code` | diffusion schedule з `s=0.008` |
+| 3.19 | нормований cosine noise schedule з implementation clip | `LIT/code` | cosine form із [149], `s=0.008`; межі $10^{-4}$ і $0.9999$ є запобіжником реалізації |
 | 3.20 | `v`-prediction target | `LIT/code` | **binding executed objective** |
 | 3.21 | coarse+fine MSE у `v`-space | `DEF/code` | diffusion training loss |
 | 3.22 | adaptive LayerNorm modulation | `LIT/code` | DiT/AdaLN-Zero |
@@ -309,7 +309,7 @@
 | 3.28 | SmoothL1 coarse+fine regression loss | `DEF/code` | regression control head |
 | 3.29 | coarse/fine ring-buffer update | `DEF/code` | self-fed rollout, `(Nc,Nf)=(48,6)` у main arm |
 | 3.30 | exact anchor index and lag | `DEF/code` | context geometry validator |
-| 3.31 | latent payload bytes | `DER` | не peak VRAM; таблиця 3.3 |
+| 3.31 | latent payload bytes | `DER` | не peak VRAM; таблиця В.8 |
 | 3.32 | quadratic attention approximation | `LIT/DER` | theoretical sequence-cost comparison, not profiler result |
 | 3.33 | LoopMom toroidal viewport motion | `DEF/code` | LoopMom generator |
 | 3.34 | world columns covered by last `m` frames | `DEF/code` | analytic observability |
@@ -342,11 +342,11 @@
 | 4.2 | кількість network evaluations для regression і diffusion | `DER` | виконані heads; regression 1 NFE, diffusion `K` NFE |
 | 4.3 | gradient descent за EBT energy | `LIT/DEF` | EBT diagnostic implementation |
 | 4.4 | weighted reach-band paired effect | `DEF/code` | `artifacts/confirmation_e2/results.json` і `analyze_e2_confirmation.py` |
-| 4.5 | context-token gain relative to 48 fine frames | `DER` | таблиця 4.5; arithmetic only |
+| 4.5 | context-token gain relative to 48 fine frames | `DER` | таблиця 4.3; arithmetic only |
 
 ## 8. Повний реєстр таблиць
 
-У поточній редакції 42 нумеровані таблиці. Більшість таблиць набрано вручну в Markdown з названого джерела. Скрипт аналізу створює JSON або проміжну Markdown-таблицю, але остаточне розміщення й українські підписи редагувалися вручну. Якщо окремого генератора немає, це прямо зазначено; у такому разі числа потрібно звіряти з первинним PDF/JSON, а не з іншою копією таблиці в рукописі.
+У поточній редакції 40 нумерованих таблиць. Більшість таблиць набрано вручну в Markdown з названого джерела. Скрипт аналізу створює JSON або проміжну Markdown-таблицю, але остаточне розміщення й українські підписи редагувалися вручну. Якщо окремого генератора немає, це прямо зазначено; у такому разі числа потрібно звіряти з первинним PDF/JSON, а не з іншою копією таблиці в рукописі.
 
 ### 8.1 Таблиці розділів 1–2
 
@@ -354,7 +354,6 @@
 |---|---|---|---|
 | 1.1 | терміни ресурсів та інтерфейси керування | системний синтез | авторська таблиця; формули 1.5, 2.6, 3.3–3.5; окремого генератора немає |
 | 1.2 | критерії консистентності, помилки й сліпі зони метрик | огляд + endpoint taxonomy | [94, 127–129, 133] та метрики LoopMom/E6; авторська синтезована таблиця |
-| 1.3 | література за контрольованим ресурсом/конструктом | systematic narrative map | `07_REFERENCES.md`; ручна таблиця, кожен рядок перевіряти за цитатами |
 | 2.1 | ролі наборів даних | усі гілки | авторська evidence-role таблиця; звірити з §2.1 і 3.5 |
 | 2.2 | межа реверсивності TempVerseFormer | TempVerseFormer | аудит статті та публічного коду; ручна таблиця, не експериментальний результат |
 | 2.3 | FID/MSE/SSIM для режимів обертання | TempVerseFormer, TempFormer, Transformer, LSTM | опублікована стаття TempVerseFormer; точкові оцінки без нових CI; окремого локального table generator немає |
@@ -372,24 +371,19 @@
 |---|---|---|---|
 | 3.1 | поля контекстного пакета | основний context model | формули 3.1–3.5, конфігурації/`ArmSpec`; ручний словник інтерфейсу |
 | 3.2 | frozen latent interface | дворівневий codec | реалізація codec у `hvp_rev/rhvd.py` та executed configs; ручна специфікація |
-| 3.3 | точний облік пакетів, context/target/total tokens і payload | всі LoopMom arms, B1 | конфігураційний реєстр + формули 3.3–3.5, 3.31–3.32; перераховувати незалежно; рисунок 3.13 генерує `make_restructured_ch2_ch4_figures.py` |
-| 3.4 | метрики, популяції та чутливість до помилок | LoopMom/E6 evaluators | код метрик у `hvp_rev`, data card, формули 3.39–3.45 |
-| 3.5 | набори даних і evidence role | усі експерименти | авторська карта; не ранжування difficulty |
-| 3.6 | компоненти інтегрованого prototype й claim boundary | fixed-region + SimVP + reversible rollout | код/тести у таблиці Ж.2 і D:-артефакти; ручний evidence contract |
+| 3.3 | набори даних і evidence role | усі експерименти | авторська карта; не ранжування difficulty |
 
 ### 8.3 Таблиці розділу 4
 
 | № | Зміст | Первинний результат | Скрипт / перевірка |
 |---|---|---|---|
-| 4.1 | experiment codes, questions, evidence classes | authorization/evidence registry | `experiments/authorization.json`, `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`; ручне зведення |
-| 4.2 | regression vs diffusion mechanism selection | frozen one-step mechanism study | числа з terminal mechanism receipts; expanded table E.1; figure 4.3 via `scripts/make_dissertation_missing_figures.py` |
-| 4.3 | full E2 reach-band endpoint suite | `artifacts/confirmation_e2/results.json` | `scripts/analyze_e2_confirmation.py`; кінцеві числа перевіряє claim/text QA |
-| 4.4 | discrete tested frontier with simultaneous intervals | E2 | `analyze_e2_confirmation.py`; `scripts/make_rft_final_tables.py`; не інтерполювати |
-| 4.5 | 48-frame token/payload arithmetic | definitions, not model scores | direct calculation from 16/64 tokens and 16 coefficients; no result analyzer required |
-| 4.6 | five-seed head × package factorial | E4/E4b | `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
-| 4.7 | E6 relative and absolute endpoints | `artifacts/phasec_v2/results.json` | `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
-| 4.8 | integrated quality vs OpenSTL | `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json` | `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
-| 4.9 | integrated peak incremental memory by horizon | `integrated_reversible_openstl_memory.json` | `scripts/profile_integrated_reversible_openstl.py`; same-model BPTT/reversible comparison |
+| 4.1 | regression vs diffusion mechanism selection | frozen one-step mechanism study | числа з terminal mechanism receipts; expanded table Е.1; рисунок 4.1 задає інтерфейси, а повний монтаж Е.1 лишається якісною ілюстрацією |
+| 4.2 | full E2 reach-band endpoint suite | `artifacts/confirmation_e2/results.json` | `scripts/analyze_e2_confirmation.py`; кінцеві числа перевіряє claim/text QA |
+| 4.3 | 48-frame token/payload arithmetic | definitions, not model scores | direct calculation from 16/64 tokens and 16 coefficients; no result analyzer required |
+| 4.4 | five-seed head × package factorial | E4/E4b | `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
+| 4.5 | E6 relative and absolute endpoints | `artifacts/phasec_v2/results.json` | `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
+| 4.6 | integrated quality vs OpenSTL | `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json` | `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
+| 4.7 | integrated peak incremental memory by horizon | `integrated_reversible_openstl_memory.json` | `scripts/profile_integrated_reversible_openstl.py`; same-model BPTT/reversible comparison |
 
 ### 8.4 Таблиці додатків
 
@@ -403,8 +397,12 @@
 | В.4 | component/configuration matrix | experiments + artifacts | ручний join; не трактувати як full factorial |
 | В.5 | evidence map for context shape | E2/E4/B1 diagnostics | comparison licence є частиною результату |
 | В.6 | applicability matrix | synthesis of chapters 2–4 | не додавати universal recommendations without evidence |
+| В.7 | experiment codes, questions, evidence classes | authorization/evidence registry | `experiments/authorization.json`, `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`; перенесено з головного тексту як довідковий індекс |
+| В.8 | exact package/context/target/total-token and payload accounting | усі LoopMom arms та B1 | конфігураційний реєстр + формули 3.3–3.5, 3.31–3.32; повний довідковий контракт, перенесений із §3.4.3 |
 | Г.1 | human-readable ↔ machine-readable evidence index | artifact paths and hashes | primary navigation table; update when filenames/hashes change |
 | Д.1 | full simultaneous intervals for sampler/codec | E7c/E7a | analysis scripts in §5.3; positive sign follows registered candidate, including flat at 2 432 |
+| Д.2 | повний реєстр метрик, популяцій і порожніх випадків | LoopMom/E6 evaluators | код метрик у `hvp_rev`, data card, формули 3.39–3.45; довідковий контракт реалізації |
+| Д.3 | exact discrete frontier results with simultaneous intervals | E2 | `analyze_e2_confirmation.py`; `scripts/make_rft_final_tables.py`; не інтерполювати між перевіреними бюджетами |
 | Е.1 | expanded mechanism-selection results | frozen mechanism study | supporting material; NFE sensitivity uses smaller frozen pool and cannot be pooled with main evaluation |
 | Ж.1 | public repositories | GitHub repos [171–173] | record exact commit/environment for any new reproduction |
 | Ж.2 | integrated software components/tests | current worktree | `fixed_region_revformer.py`, `packed_simvp.py`, `reversible_rollout.py`; tests named in table |
@@ -412,12 +410,12 @@
 
 ## 9. Повний реєстр рисунків
 
-У головному тексті рівно 80 нумерованих рисунків: 25 у розділі 1, 19 у розділі 2, 19 у розділі 3 і 17 у розділі 4. Два повні монтажі в додатку Е мають номери Е.1 та Е.2, отже весь рукопис містить 82 підписи рисунків. Композитні рисунки 1.6 і 2.17 містять по два файли, але мають один номер. Точні SHA-256, розміри, спосіб вилучення та права зберігаються у:
+У головному тексті рівно 77 нумерованих рисунків: 25 у розділі 1, 19 у розділі 2, 19 у розділі 3 і 14 у розділі 4. Додатки містять ще чотири рисунки: довідкові В.1–В.2 та повні монтажі Е.1–Е.2. Отже, весь рукопис містить 81 підпис рисунка. Композитні рисунки 1.6 і 2.17 містять по два файли, але мають один номер. Точні SHA-256, розміри, спосіб вилучення та права зберігаються у:
 
 - `docs/figures/restructured/figure_provenance.json` – розділ 1;
 - `docs/figures/restructured/ch2_ch4_figure_provenance.json` – нові й опубліковані активи розділів 2–4;
 - `docs/figures/restructured/existing_figure_provenance.json` – раніше наявні активи репозитарію;
-- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18, 3.19 і поточний 4.15.
+- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18, 3.19 і 4.12.
 
 Не змінювати опубліковані рисунки TempVerseFormer і V-BLT під виглядом косметичної правки. Для них дозволено змінити масштаб, зовнішні поля та підпис у дисертації, але не внутрішній зміст. Власні концептуальні схеми можна регенерувати, якщо збережено їхню семантику й оновлено provenance.
 
@@ -429,7 +427,7 @@
 | 1.2 | `.../ch1_fig1_2_hidden_viewport.png` | прихований світ, viewport і occlusion | той самий скрипт; концепт LoopMom/POMDP |
 | 1.3 | `.../ch1_fig1_3_teacher_self_fed.png` | teacher-forced vs self-fed recurrence | той самий скрипт; пояснення формули 1.4 |
 | 1.4 | `.../ch1_fig1_4_resource_locations.png` | parameters/optimizer/activations/context/transient | той самий скрипт; схема розкладу 1.5 |
-| 1.5 | `docs/figures/fig31_consistency_landscape.png` | вкладені області багатокритеріальної консистентності | `scripts/make_dissertation_foundation_figures.py`; умовні осі, не fitted landscape |
+| 1.5 | `docs/figures/fig31_consistency_landscape.png` | паралельна перевірка прогнозів за незалежними критеріями консистентності | `scripts/make_dissertation_foundation_figures.py`; умовна матриця, не траєкторія оптимізації і не емпірична шкала |
 | 1.6 | `.../published_2024_fig1_sdxl.png` + `.../ch1_fig1_6b_video_prediction_example.png` | складений рисунок: опубліковані авторські SDXL-приклади та умовний рух/зникнення/повторна поява | першу панель вилучено `make_restructured_dissertation_figures.py` з official PDF, CC BY 4.0; другу створено тим самим скриптом; обидві `ILL` |
 | 1.7 | `.../ch1_fig1_6_consistency_taxonomy.png` | overlapping consistency criteria | той самий скрипт; синтез дисертації й [133] |
 | 1.8 | `.../published_2024_fig5_visual_perception.png` | local visual input vs integrated scene understanding | вилучено з [133]; author-created, концептуально за [174], CC BY 4.0 |
@@ -481,7 +479,7 @@
 |---|---|---|---|
 | 3.1 | `docs/figures/restructured/ch3_fig3_1_reentry_memory.png` | object leaves recent fine context and re-enters | `scripts/make_restructured_ch2_ch4_figures.py`; conceptual bridge to LoopMom |
 | 3.2 | `docs/figures/fig40_context_package_comparison.png` | dense flat, spatial hierarchy, temporal subsampling | `scripts/make_dissertation_foundation_figures.py`; package definitions, not result |
-| 3.3 | `.../ch3_fig3_3_reach_fidelity_axes.png` | conceptual reach–fidelity working regions | `make_restructured_ch2_ch4_figures.py`; **не емпірична безперервна крива** |
+| 3.3 | `.../ch3_fig3_3_reach_fidelity_axes.png` | три способи розподілу однакового бюджету між давньою історією та недавньою деталлю | `make_restructured_ch2_ch4_figures.py`; структурне порівняння пакетів, **не емпірична безперервна крива** |
 | 3.4 | `.../ch3_fig3_4_codec_dimensions.png` | exact 4×4/8×8 latent shapes and token counts | той самий скрипт; based on frozen codec interface |
 | 3.5 | `docs/figures/fig22_token_sequence_layout.png` | exact context/target token ordering | `scripts/make_dissertation_missing_figures.py`; `build_existing_figure_provenance.py` records hash |
 | 3.6 | `.../ch3_fig3_6_joint_attention.png` | joint attention in one window vs rollout causality | `make_restructured_ch2_ch4_figures.py`; model structure |
@@ -503,29 +501,31 @@
 
 | № | Файл | Дані / модель | Створення / допустиме читання |
 |---|---|---|---|
-| 4.1 | `docs/figures/fig63_executed_configuration_matrix.png` | executed registry and explicit gaps | `scripts/make_dissertation_foundation_figures.py`; coverage map, not effect size |
-| 4.2 | `docs/figures/fig24_generation_objectives.png` | regression/diffusion/EBT interfaces | `scripts/make_dissertation_missing_figures.py`; protocol schematic |
-| 4.3 | `docs/figures/fig29_mechanism_single_step_samples_compact.png` | first three frozen one-step mechanism records | `scripts/make_dissertation_compact_galleries.py`; fixed crop, qualitative illustration; full montage is E.1 and table 4.2 determines choice |
-| 4.4 | `.../ch4_fig4_4_ebt_composite.png` | EBT ranking and cold-descent diagnostics | `scripts/make_restructured_ch2_ch4_figures.py` from `logs_rhcp/ebt_scaled_s1.log` and `ebt_scaled_s2.log`; diagnostic only |
-| 4.5 | `docs/figures/fig28_memory_gate_optimization.png` | four development training logs, 6k vs 20k updates | `scripts/make_dissertation_missing_figures.py`; optimization gate, not untouched evidence |
-| 4.6 | `.../ch4_fig4_6_reach_effects.png` | E2 full-population vs pair-specific reach effects | `make_restructured_ch2_ch4_figures.py` from frozen E2 values; validate numbers against `artifacts/confirmation_e2/results.json` |
-| 4.7 | `docs/figures/article_confirmed_frontier.png` | discrete simultaneous E2 frontier + token arithmetic | `scripts/make_rft_result_figures.py`; E2 artifact; no lines/interpolation implying a fitted crossover |
-| 4.8 | `docs/figures/fig7_samples_claim1_compact.png` | clip 0, seed 1 fixed-index E2 rollout | `scripts/make_dissertation_compact_galleries.py`; fixed crop from the full `make_samples.py` montage; aggregate evidence remains primary |
-| 4.9 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | E4b five-seed factorial | `scripts/make_rft_result_figures.py` from `artifacts/e4b_head_package/results.json` |
-| 4.10 | `docs/figures/fig19_sampler_nfe_robustness.png` | E7c 20 effects | той самий скрипт from `artifacts/e7c_sampler_nfe/results.json`; two upper intervals unresolved |
-| 4.11 | `docs/figures/fig20_alternate_codec_robustness.png` | original vs independently trained codec | той самий скрипт from `artifacts/e7a_codec_robustness/results.json`; conditional on predictor seed 0 |
-| 4.12 | `docs/figures/fig18_trust_negative_replication.png` | E5a early/late effects | той самий скрипт from `artifacts/e5a_trust_replication/results.json`; late boundary failed |
-| 4.13 | `docs/figures/fig21_pose_indexed_raw_memory.png` | E8a raw K6/K14/K38/K48 reference | той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
-| 4.14 | `docs/figures/fig22_phasec_v2_boundary.png` | E6 support/trajectory/coverage/identity | той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
-| 4.15 | `figures/restructured/ch4_fig4_15_integrated_memory.svg` | same-model reversible vs BPTT horizon profile | dissertation-native manual SVG from `integrated_reversible_openstl_memory.json` |
-| 4.16 | `docs/figures/restructured/ch4_fig4_16_two_resource_axes.png` | context token arithmetic + activation-memory results | `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |
-| 4.17 | `.../ch4_fig4_17_decision_flow.png` | decision flow by limiting resource | той самий скрипт; design rule, not trained classifier or fitted policy |
+| 4.1 | `docs/figures/fig24_generation_objectives.png` | regression/diffusion/EBT interfaces | `scripts/make_dissertation_missing_figures.py`; protocol schematic |
+| 4.2 | `.../ch4_fig4_2_ebt_composite.png` | EBT ranking and cold-descent diagnostics | `scripts/make_restructured_ch2_ch4_figures.py` from `logs_rhcp/ebt_scaled_s1.log` and `ebt_scaled_s2.log`; diagnostic only |
+| 4.3 | `docs/figures/fig28_memory_gate_optimization.png` | four development training logs, 6k vs 20k updates | `scripts/make_dissertation_missing_figures.py`; optimization gate, not untouched evidence |
+| 4.4 | `.../ch4_fig4_4_reach_effects.png` | E2 full-population vs pair-specific reach effects | `make_restructured_ch2_ch4_figures.py` from frozen E2 values; validate numbers against `artifacts/confirmation_e2/results.json` |
+| 4.5 | `docs/figures/article_confirmed_frontier.png` | discrete simultaneous E2 frontier + token arithmetic | `scripts/make_rft_result_figures.py`; E2 artifact; no lines/interpolation implying a fitted crossover |
+| 4.6 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | E4b five-seed factorial | `scripts/make_rft_result_figures.py` from `artifacts/e4b_head_package/results.json` |
+| 4.7 | `docs/figures/fig19_sampler_nfe_robustness.png` | E7c 20 effects | той самий скрипт from `artifacts/e7c_sampler_nfe/results.json`; two upper intervals unresolved |
+| 4.8 | `docs/figures/fig20_alternate_codec_robustness.png` | original vs independently trained codec | той самий скрипт from `artifacts/e7a_codec_robustness/results.json`; conditional on predictor seed 0 |
+| 4.9 | `docs/figures/fig18_trust_negative_replication.png` | E5a early/late effects | той самий скрипт from `artifacts/e5a_trust_replication/results.json`; late boundary failed |
+| 4.10 | `docs/figures/fig21_pose_indexed_raw_memory.png` | E8a raw K6/K14/K38/K48 reference | той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
+| 4.11 | `docs/figures/fig22_phasec_v2_boundary.png` | E6 support/trajectory/coverage/identity | той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
+| 4.12 | `figures/restructured/ch4_fig4_12_integrated_memory.svg` | same-model reversible vs BPTT horizon profile | dissertation-native manual SVG from `integrated_reversible_openstl_memory.json` |
+| 4.13 | `docs/figures/restructured/ch4_fig4_13_two_resource_axes.png` | context token arithmetic + activation-memory results | `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |
+| 4.14 | `.../ch4_fig4_14_decision_flow.png` | decision flow by limiting resource | той самий скрипт; design rule, not trained classifier or fitted policy |
 
-### 9.5 Узгодження нумерації активів
+### 9.5 Рисунки додатків і узгодження нумерації активів
 
-Колишню невідповідність між рисунком 4.15 і basename `ch4_fig4_16_integrated_memory.svg` усунуто: актив, Markdown і provenance тепер використовують `ch4_fig4_15_integrated_memory.svg`. Рисунок 4.16 і надалі зберігається як `ch4_fig4_16_two_resource_axes.png`.
+| № | Файл | Призначення | Створення / статус |
+|---|---|---|---|
+| В.1 | `docs/figures/fig63_executed_configuration_matrix.png` | виконане покриття й структурно відсутні комірки | `scripts/make_dissertation_foundation_figures.py`; довідковий індекс, не effect size |
+| В.2 | `docs/figures/restructured/appv_figv_2_equal_reach.png` | точна вартість трьох пакетів за досяжності 48 кадрів | `scripts/make_restructured_ch2_ch4_figures.py`; арифметика токенів і fp16 payload, не VRAM profile |
+| Е.1 | `docs/figures/fig29_mechanism_single_step_samples.png` | повний fixed-index монтаж regression/diffusion | `scripts/make_dissertation_missing_figures.py`; якісна ілюстрація, таблиця 4.1 визначає вибір |
+| Е.2 | `docs/figures/fig7_samples_claim1.png` | повний fixed-index монтаж чотирьох E2 rollout clips | `scripts/make_samples.py`; якісна ілюстрація, таблиця Д.3 містить агрегований доказ |
 
-Повні монтажі, скорочені в основному тексті, збережено як рисунки Е.1 (`docs/figures/fig29_mechanism_single_step_samples.png`) та Е.2 (`docs/figures/fig7_samples_claim1.png`). Їхні компактні версії відтворює `scripts/make_dissertation_compact_galleries.py` за фіксованими геометричними межами, без відбору за якістю.
+Актив, Markdown і provenance інтеграційного профілю тепер узгоджено під номером 4.12 і basename `ch4_fig4_12_integrated_memory.svg`. Дві компактні галереї вилучено з головного тексту; повні монтажі Е.1–Е.2 збережено лише в додатках із поясненням рядків і стовпців.
 
 ## 10. Артефакти, скрипти й команди відтворення
 
@@ -557,8 +557,8 @@
 | `scripts/make_dissertation_foundation_figures.py` | foundation figures `fig31`, `fig35`, `fig39`, `fig40`, `fig47`, `fig63` |
 | `scripts/make_dissertation_missing_figures.py` | token layout, ring buffer, generation objectives, mechanism samples, memory-gate figure |
 | `scripts/make_rft_core_schematics.py` | основна context architecture і LoopMom observability schematic |
-| `scripts/make_rft_result_figures.py` | artifact-derived result figures 4.7, 4.9–4.14 |
-| `scripts/make_samples.py` | fixed-index qualitative E2 rollouts (рисунок 4.8) |
+| `scripts/make_rft_result_figures.py` | artifact-derived result figures 4.5–4.11 |
+| `scripts/make_samples.py` | fixed-index qualitative E2 rollouts (рисунок Е.2) |
 | `scripts/build_existing_figure_provenance.py` | hashes/provenance for figures that predate restructured generators |
 
 Базова команда виконується з кореня репозитарію, наприклад:
@@ -578,7 +578,7 @@ python scripts/build_existing_figure_provenance.py
 |---|---|---|---|
 | `fixed_region_adapter_blended_mmnist_s0_metrics.json` | `AC9BF2BAA404A023C060434A4C17B99B47F14C9CD7270655DF4062E1A0A3A294` | `scripts/train_fixed_region_adapter.py` | gate просторового reconstructor |
 | `simvp_packed_pixel_finetune_s0_metrics.json` | `1C36D65632FA46AF0202F080D72CB486D1C0384B426BE0A845E683F6F44E8E8C` | `scripts/finetune_simvp_on_packed_context.py` | MSE 28,72 / MAE 80,27 на 10 000 clips |
-| `openstl_baseline_comparison.json` | `96E3E6672E9D85A1657DB844175D6426D16EE419CE5F3BA85AD6677DE6C8AB9A` | зведено з local profiles і OpenSTL table | таблиця 4.8 і Ж.3; external rows descriptive |
+| `openstl_baseline_comparison.json` | `96E3E6672E9D85A1657DB844175D6426D16EE419CE5F3BA85AD6677DE6C8AB9A` | зведено з local profiles і OpenSTL table | таблиця 4.6 і Ж.3; external rows descriptive |
 | `integrated_reversible_openstl_memory.json` | `FEDD7547A4C79BAC61C2E009EE742E27C5CE5A81A698508AC20042C4061B0AC9` | `scripts/profile_integrated_reversible_openstl.py` | batch-1 horizon profile, loss/gradient/reconstruction checks |
 | `integrated_reversible_openstl_memory_b2.json` | `F8D6095A4DD70F59B18EC96982BC290030A721C6E4DFBF03C9B34CC7BB7A9997` | той самий profiler | matched batch-2 20-frame point |
 | `integrated_feasibility_manifest_20260823.json` | `32098422B4383F499A8E9101FFD42872CCAAC44DAFF6227FC2FAFBAAAF0B3CDC` | manifest build during feasibility closure | stable index selected receipts/checkpoints |
@@ -594,7 +594,7 @@ python scripts/build_existing_figure_provenance.py
 - `scripts/profile_integrated_reversible_openstl.py` – same-model horizon profile;
 - `tests/test_fixed_region_revformer.py`, `tests/test_packed_simvp.py`, `tests/test_reversible_rollout.py` – unit/contract tests.
 
-Рисунок 4.15 створено з `integrated_reversible_openstl_memory.json`. Таблиця 4.9 використовує ті самі значення. Якщо D:-диск недоступний іншому агенту, hashes і числа в рукописі можна перевірити за таблицею Г.1, але повне незалежне відтворення потребує передачі архіву або публічного downloader.
+Рисунок 4.12 створено з `integrated_reversible_openstl_memory.json`. Таблиця 4.7 використовує ті самі значення. Якщо D:-диск недоступний іншому агенту, hashes і числа в рукописі можна перевірити за таблицею Г.1, але повне незалежне відтворення потребує передачі архіву або публічного downloader.
 
 ### 10.4 Опубліковані TempVerseFormer і V-BLT матеріали
 
@@ -687,7 +687,7 @@ Fixed patches, RoPE-ND, byte classification і entropy maps реалізован
 
 Наукові центральні claims мають заморожені докази. Для інституційно фінальної версії все ще потрібні:
 
-- точна УДК і затверджене формулювання титульного аркуша;
+- точна УДК і затверджене формулювання титульного аркуша, включно з вибором між записом 124/галузь 12 та новішим F4 за документами конкретної освітньо-наукової програми й року вступу;
 - офіційні назви, номери, строки й роль здобувача у двох держбюджетних темах;
 - повний список шести conference publications;
 - фінальний bibliographic status, venue, authorship і contribution statement статті [A4];
@@ -726,8 +726,8 @@ Fixed patches, RoPE-ND, byte classification і entropy maps реалізован
 
 ### Етап D – таблиці й рисунки
 
-1. Перевірити всі 42 таблиці за §8.
-2. Перевірити всі 80 номерів рисунків за §9 і provenance hashes.
+1. Перевірити всі 40 таблиць за §8.
+2. Перевірити всі 77 номерів рисунків головного тексту та чотири рисунки додатків за §9 і provenance hashes.
 3. Для result figures звірити plotted values з JSON.
 4. Для published figures перевірити source/attribution; не оцінювати їх як нові dissertation experiments.
 5. Для conceptual figures перевірити логіку стрілок, але не вимагати statistical source.
@@ -751,10 +751,10 @@ foreach ($f in $files) {
   [regex]::Matches($raw, '\\tag\{([^}]+)\}').Count
 }
 
-# Нумеровані рисунки: очікується 25, 19, 19, 17.
+# Нумеровані рисунки головного тексту: очікується 25, 19, 19, 14.
 rg -n '^\*\*Рисунок ' docs/dissertation/condensed_translated_humanized_ukrainian
 
-# Нумеровані таблиці: очікується 42 разом із додатками.
+# Нумеровані таблиці: очікується 40 разом із додатками.
 rg -n '^\*\*Таблиця ' docs/dissertation/condensed_translated_humanized_ukrainian
 
 # Image targets, placeholders і manuscript inputs.
@@ -775,7 +775,7 @@ python scripts/check_manuscript_finalization.py
 | hierarchy supports where; flat preserves what | E6 artifact plus absolute metrics |
 | reversible temporal state reduces activation storage | TempVerseFormer paper/code + table 2.5; supporting local profile 2.6 |
 | V-BLT supplies fixed hierarchical processing and entropy diagnostic | V-BLT paper/code, tables 2.8–2.10, figures 2.13–2.18 |
-| integrated principles are technically compatible | D:-integration receipts, tests, tables 4.8–4.9, figure 4.15 |
+| integrated principles are technically compatible | D:-integration receipts, tests, tables 4.6–4.7, figure 4.12 |
 
 Цей файл має оновлюватися разом із будь-якою зміною нумерації, артефактного шляху, формули або headline claim. Він навмисно містить і сильні результати, і межі: новому рецензенту потрібна карта не лише того, що можна захищати, а й того, що текст не має права стверджувати.
 
@@ -818,7 +818,7 @@ python scripts/check_manuscript_finalization.py
 | 1 | protocol positioning relative to related work | literature synthesis; ручна таблиця з citations |
 | 2 | exact central interface accounting | package configs/formulas 3.1–3.5; direct arithmetic |
 | 3 | executed architecture/training/evaluation settings | frozen configs і experiment registry |
-| 4 | context payload/materialized embeddings | direct arithmetic, як таблиця 4.5 дисертації |
+| 4 | context payload/materialized embeddings | direct arithmetic, як таблиця 4.3 дисертації |
 | 5 | publication-facing study map | authorization/evidence registry |
 | 6 | endpoint and assignment rules | metric implementations, формули 3.39–3.45 |
 | S1a | common rollout regimes | experiment registry |

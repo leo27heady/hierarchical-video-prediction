@@ -29,8 +29,8 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.15",
-    "file": "figures/restructured/ch4_fig4_15_integrated_memory.svg",
+    "figure_id": "4.12",
+    "file": "figures/restructured/ch4_fig4_12_integrated_memory.svg",
     "asset_class": "author-generated-artifact-derived",
     "sha256": "bca5e2f26ce46fcd59607dc22583a09f2c19c814e9cdbec0a0811a4d1b12f87a",
     "bytes": 3792,
@@ -39,6 +39,6 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "data_or_concept_source": "integrated_reversible_openstl_memory.json",
-    "caption_attribution": "Chapter 4 Figure 4.16; author-generated from the integrated memory profile"
+    "caption_attribution": "Chapter 4 Figure 4.12; author-generated from the integrated memory profile"
   }
 ]

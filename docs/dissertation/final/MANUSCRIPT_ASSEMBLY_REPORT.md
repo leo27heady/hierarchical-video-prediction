@@ -1,6 +1,6 @@
 # Final Manuscript Assembly Report
 
-- Dissertation words: 47,539
+- Dissertation words: 47,687
 - Article words: 9,862
 - Dissertation figure captions: 45
 - Dissertation table captions: 23

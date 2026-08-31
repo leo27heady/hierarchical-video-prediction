@@ -160,32 +160,58 @@ def make_control_system() -> None:
 
 
 def make_consistency_landscape() -> None:
-    fig, ax = plt.subplots(figsize=(9.2, 5.2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(11.8, 6.1), constrained_layout=True)
     clean(ax)
-    title(ax, "Conceptual refinement toward a coherent trajectory region")
+    title(ax, "Консистентність перевіряється за кількома критеріями одночасно")
 
-    center = np.asarray([0.73, 0.48])
-    for width, height, alpha in [(0.48, 0.58, 0.10), (0.34, 0.40, 0.16), (0.20, 0.23, 0.25)]:
-        ax.add_patch(
-            mpl.patches.Ellipse(
-                center,
-                width,
-                height,
-                facecolor=BLUE,
-                edgecolor=BLUE,
-                linewidth=1.2,
-                alpha=alpha,
-            )
-        )
-    path = [(0.13, 0.78), (0.25, 0.66), (0.38, 0.64), (0.49, 0.53), (0.61, 0.50), (0.70, 0.48)]
-    for a, b in zip(path[:-1], path[1:]):
-        arrow(ax, a, b, color=RED, width=1.8)
-    ax.scatter(*zip(*path), s=28, color=RED, edgecolor=WHITE, linewidth=0.6, zorder=4)
-    ax.text(0.10, 0.84, "inconsistent candidate", color=RED, ha="left", fontweight="bold")
-    ax.text(0.73, 0.48, "coherent\nregion", color=INK, ha="center", va="center", fontweight="bold")
-    ax.text(0.47, 0.72, "iterative update", color=RED, ha="center")
-    ax.text(0.50, 0.13, "$J$ denotes a family of consistency criteria, not one measured scalar surface.", ha="center")
-    ax.text(0.50, 0.06, "Illustrative geometry only; axes and path are not empirical measurements.", ha="center", color=MUTED)
+    rows = [
+        ("кадрова якість", "піксельна або перцептивна відповідність"),
+        ("просторове покриття", "потрібний об’єкт присутній у правильній області"),
+        ("ідентичність", "збережено той самий клас або екземпляр"),
+        ("траєкторія", "рух і положення узгоджені в часі"),
+    ]
+    columns = [
+        ("Кандидат A", "добра середня\nкадрова оцінка"),
+        ("Кандидат Б", "об’єкт збережено,\nале змінено ідентичність"),
+        ("Кандидат В", "виконує вибрані\nвимоги задачі"),
+    ]
+    status = [
+        [True, True, True],
+        [False, True, True],
+        [False, False, True],
+        [False, True, True],
+    ]
+
+    left, right = 0.05, 0.95
+    label_w = 0.36
+    top, bottom = 0.77, 0.20
+    col_w = (right - left - label_w) / 3
+    row_h = (top - bottom) / 4
+
+    ax.add_patch(Rectangle((left, top), label_w, 0.12, facecolor=INK, edgecolor=WHITE, linewidth=1.0))
+    ax.text(left + 0.018, top + 0.06, "Незалежний критерій", color=WHITE, va="center", fontweight="bold")
+    for j, (name, note) in enumerate(columns):
+        x = left + label_w + j * col_w
+        ax.add_patch(Rectangle((x, top), col_w, 0.12, facecolor=INK, edgecolor=WHITE, linewidth=1.0))
+        ax.text(x + col_w / 2, top + 0.078, name, color=WHITE, ha="center", va="center", fontweight="bold")
+        ax.text(x + col_w / 2, top + 0.028, note, color="#e5e7eb", ha="center", va="center", fontsize=7.1)
+
+    for i, ((name, note), row_status) in enumerate(zip(rows, status)):
+        y = top - (i + 1) * row_h
+        fill = WHITE if i % 2 == 0 else PALE
+        ax.add_patch(Rectangle((left, y), label_w, row_h, facecolor=fill, edgecolor=GRID, linewidth=0.9))
+        ax.text(left + 0.018, y + 0.62 * row_h, name, va="center", fontweight="bold")
+        ax.text(left + 0.018, y + 0.28 * row_h, note, va="center", fontsize=7.2, color=MUTED)
+        for j, ok in enumerate(row_status):
+            x = left + label_w + j * col_w
+            ax.add_patch(Rectangle((x, y), col_w, row_h, facecolor=fill, edgecolor=GRID, linewidth=0.9))
+            color = GREEN if ok else RED
+            ax.add_patch(Circle((x + col_w / 2, y + row_h / 2), 0.026, facecolor=color, edgecolor=WHITE, linewidth=1.2))
+            ax.text(x + col_w / 2, y + row_h / 2, "✓" if ok else "×", ha="center", va="center", color=WHITE, fontsize=12, fontweight="bold")
+
+    ax.add_patch(FancyBboxPatch((0.18, 0.065), 0.64, 0.075, boxstyle="round,pad=0.012,rounding_size=0.012", facecolor="#e8f1f8", edgecolor=BLUE, linewidth=1.2))
+    ax.text(0.50, 0.102, "Прийнятність означає одночасне виконання потрібних критеріїв, а не рух уздовж однієї шкали.", ha="center", va="center", color=INK, fontsize=8.7, fontweight="bold")
+    ax.text(0.50, 0.025, "Умовні приклади; стовпці не є кроками оптимізації, а позначки не є емпіричними вимірюваннями.", ha="center", color=MUTED, fontsize=8.0)
     save(fig, "fig31_consistency_landscape")
 
 

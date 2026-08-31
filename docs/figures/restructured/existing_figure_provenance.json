@@ -4,27 +4,27 @@
     "figure_id": "1.5",
     "file": "docs/figures/fig31_consistency_landscape.png",
     "generator": "scripts/make_dissertation_foundation_figures.py",
-    "data_source": "conceptual consistency criteria synthesized in Chapter 1",
-    "role": "dissertation-native conceptual landscape",
+    "data_source": "parallel consistency criteria synthesized in Chapter 1",
+    "role": "dissertation-native conceptual criteria matrix",
     "asset_class": "author-generated-conceptual",
-    "sha256": "f010c59e7608f94edef4e898e185b73984d42171fe58e65f60a8c09c65f0dc5a",
-    "bytes": 201438,
+    "sha256": "52bc32d56918a62f688b9a6bc8610688c41b2acb6181937c086ca054546cd4e2",
+    "bytes": 245015,
     "pixel_dimensions": [
-      2794,
-      1594
+      3574,
+      1864
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
     "original_figure": "1.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
-    "data_or_concept_source": "conceptual consistency criteria synthesized in Chapter 1",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "data_or_concept_source": "parallel consistency criteria synthesized in Chapter 1",
     "source_files": [
       {
-        "file": "docs/dissertation/restructured_english/02_CHAPTER_1.md",
+        "file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
         "available": true,
-        "bytes": 88635
+        "bytes": 124838
       }
     ],
     "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
@@ -56,13 +56,13 @@
     "original_figure": "1.23",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
     "data_or_concept_source": "fixed-grid spatial-allocation analysis in Chapter 1",
     "source_files": [
       {
         "file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
         "available": true,
-        "bytes": 122562
+        "bytes": 124838
       }
     ],
     "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
@@ -94,13 +94,13 @@
     "original_figure": "1.24",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
     "data_or_concept_source": "retained-context reach formulation in Chapters 1 and 3",
     "source_files": [
       {
         "file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
         "available": true,
-        "bytes": 122562
+        "bytes": 124838
       }
     ],
     "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md",
@@ -132,13 +132,13 @@
     "original_figure": "2.15",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
     "data_or_concept_source": "verified RoPE-ND mathematical contract and implementation configuration",
     "source_files": [
       {
         "file": "docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md",
         "available": true,
-        "bytes": 126245
+        "bytes": 127956
       }
     ],
     "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md",
@@ -287,7 +287,7 @@
     "original_figure": "3.2",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
     "data_or_concept_source": "frozen package registry and exact context-token arithmetic",
     "source_files": [
       {
@@ -485,7 +485,7 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.1",
+    "figure_id": "B.1",
     "file": "docs/figures/fig63_executed_configuration_matrix.png",
     "generator": "scripts/make_dissertation_foundation_figures.py",
     "data_source": "complete configuration/evidence registry and terminal experiment reports",
@@ -499,10 +499,10 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.1",
+    "original_figure": "B.1",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "3b2e2893498f221977aaf6f8ba263aabba4ca6249991eeda495546250aa9a67f",
+    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
     "data_or_concept_source": "complete configuration/evidence registry and terminal experiment reports",
     "source_files": [
       {
@@ -516,19 +516,19 @@
         "bytes": 9825
       }
     ],
-    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
+    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/08_APPENDICES.md",
     "live_manuscript_link_count": 1,
     "modification_status": "pre-existing PNG reused without pixel modification",
     "embedded_third_party_pixels": false,
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.1; caption includes an explicit author/source classification.",
-    "layout_note": "Wide nine-column matrix: place on a landscape or dedicated full-width page. At ordinary portrait text width its 7.3-pt source labels fall below the blueprint's 8.5-pt preferred minimum. Table 4.2 remains the authoritative readable registry."
+    "caption_attribution": "Appendix B Figure B.1; caption includes an explicit author/source classification.",
+    "layout_note": "Wide nine-column matrix: place on a landscape or dedicated full-width page. At ordinary portrait text width its 7.3-pt source labels fall below the blueprint's 8.5-pt preferred minimum. Appendix Table B.4 remains the authoritative readable registry."
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.2",
+    "figure_id": "4.1",
     "file": "docs/figures/fig24_generation_objectives.png",
     "generator": "scripts/make_dissertation_missing_figures.py",
     "data_source": "implemented regression, diffusion, and energy-head interfaces",
@@ -542,7 +542,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.2",
+    "original_figure": "4.1",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
@@ -571,50 +571,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.2; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.1; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
     "figure_id": "4.3",
-    "file": "docs/figures/fig29_mechanism_single_step_samples_compact.png",
-    "generator": "scripts/make_dissertation_compact_galleries.py",
-    "data_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
-    "role": "artifact-derived fixed-index qualitative comparison",
-    "asset_class": "author-generated-artifact-derived",
-    "sha256": "87819f0fb246d318d4cdde0e25104c6873aaf2baa73341548b8c43cdf4e125bc",
-    "bytes": 179089,
-    "pixel_dimensions": [
-      1716,
-      839
-    ],
-    "source": "author-generated repository figure",
-    "source_paper": null,
-    "original_figure": "4.3",
-    "source_page": null,
-    "extraction_method": null,
-    "generator_sha256": "7868e929d46e80893b1c9a4b9b0dc217522c553936944ae37cf861c9e97c1a80",
-    "data_or_concept_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
-    "source_files": [
-      {
-        "file": "docs/figures/fig29_mechanism_single_step_samples.png",
-        "available": true,
-        "bytes": 197699
-      }
-    ],
-    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
-    "live_manuscript_link_count": 1,
-    "modification_status": "deterministic fixed crop from a frozen full montage",
-    "embedded_third_party_pixels": true,
-    "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
-    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
-    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
-    "caption_attribution": "Chapter 4 Figure 4.3; caption includes an explicit author/source classification.",
-    "layout_note": null
-  },
-  {
-    "schema_version": "1.0",
-    "figure_id": "4.5",
     "file": "docs/figures/fig28_memory_gate_optimization.png",
     "generator": "scripts/make_dissertation_missing_figures.py",
     "data_source": "logs_rhcp/mem_gate_full_s0.log, logs_rhcp/mem_gate_full_s1.log, logs_rhcp/mem_gate_full_s0_t20k.log, and logs_rhcp/mem_gate_full_s1_t20k.log",
@@ -628,7 +590,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.5",
+    "original_figure": "4.3",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
@@ -662,12 +624,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.5; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.3; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.7",
+    "figure_id": "4.5",
     "file": "docs/figures/article_confirmed_frontier.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/confirmation_e2/results.json",
@@ -681,7 +643,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.7",
+    "original_figure": "4.5",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -700,50 +662,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.7; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.5; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.8",
-    "file": "docs/figures/fig7_samples_claim1_compact.png",
-    "generator": "scripts/make_dissertation_compact_galleries.py",
-    "data_source": "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons 1, 24, 60, 100, and 148",
-    "role": "artifact-derived fixed-index compact descriptive gallery",
-    "asset_class": "author-generated-artifact-derived",
-    "sha256": "93d787b0970d63e17101520c934eb9eb5ae2ec6dbffacf4c3d5aa4ab5bfe96f5",
-    "bytes": 383712,
-    "pixel_dimensions": [
-      1946,
-      1180
-    ],
-    "source": "author-generated repository figure",
-    "source_paper": null,
-    "original_figure": "4.8",
-    "source_page": null,
-    "extraction_method": null,
-    "generator_sha256": "7868e929d46e80893b1c9a4b9b0dc217522c553936944ae37cf861c9e97c1a80",
-    "data_or_concept_source": "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons 1, 24, 60, 100, and 148",
-    "source_files": [
-      {
-        "file": "docs/figures/fig7_samples_claim1.png",
-        "available": true,
-        "bytes": 638210
-      }
-    ],
-    "live_manuscript_file": "docs/dissertation/condensed_translated_humanized_ukrainian/05_CHAPTER_4.md",
-    "live_manuscript_link_count": 1,
-    "modification_status": "deterministic fixed crop from a frozen full montage",
-    "embedded_third_party_pixels": true,
-    "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
-    "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
-    "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
-    "caption_attribution": "Chapter 4 Figure 4.8; caption includes an explicit author/source classification.",
-    "layout_note": null
-  },
-  {
-    "schema_version": "1.0",
-    "figure_id": "4.9",
+    "figure_id": "4.6",
     "file": "docs/figures/fig17_head_package_seed_heterogeneity.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/e4b_head_package/results.json",
@@ -757,7 +681,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.9",
+    "original_figure": "4.6",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -776,12 +700,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.9; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.6; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.10",
+    "figure_id": "4.7",
     "file": "docs/figures/fig19_sampler_nfe_robustness.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/e7c_sampler_nfe/results.json",
@@ -795,7 +719,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.10",
+    "original_figure": "4.7",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -814,12 +738,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.10; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.7; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.11",
+    "figure_id": "4.8",
     "file": "docs/figures/fig20_alternate_codec_robustness.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/e7a_codec_robustness/results.json",
@@ -833,7 +757,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.11",
+    "original_figure": "4.8",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -852,12 +776,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.11; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.8; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.12",
+    "figure_id": "4.9",
     "file": "docs/figures/fig18_trust_negative_replication.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/e5a_trust_replication/results.json",
@@ -871,7 +795,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.12",
+    "original_figure": "4.9",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -890,12 +814,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.12; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.9; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.13",
+    "figure_id": "4.10",
     "file": "docs/figures/fig21_pose_indexed_raw_memory.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/e8a_pose_mosaic/results.json",
@@ -909,7 +833,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.13",
+    "original_figure": "4.10",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -928,12 +852,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.13; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.10; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.14",
+    "figure_id": "4.11",
     "file": "docs/figures/fig22_phasec_v2_boundary.png",
     "generator": "scripts/make_rft_result_figures.py",
     "data_source": "artifacts/phasec_v2/results.json",
@@ -947,7 +871,7 @@
     ],
     "source": "author-generated repository figure",
     "source_paper": null,
-    "original_figure": "4.14",
+    "original_figure": "4.11",
     "source_page": null,
     "extraction_method": null,
     "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
@@ -966,7 +890,7 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.14; caption includes an explicit author/source classification.",
+    "caption_attribution": "Chapter 4 Figure 4.11; caption includes an explicit author/source classification.",
     "layout_note": null
   },
   {

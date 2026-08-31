@@ -759,30 +759,78 @@ def fig3_1_reentry_memory() -> None:
 
 
 def fig3_3_reach_fidelity_axes() -> None:
-    fig, ax = plt.subplots(figsize=(10.5, 6.8), facecolor="white")
-    ax.set_facecolor("white")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.set_xlabel("addressable historical reach", fontsize=11)
-    ax.set_ylabel("retained task-relevant fidelity", fontsize=11)
-    ax.set_xticks([])
-    ax.set_yticks([])
-    ax.grid(color=GRID, linewidth=0.7)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.set_title("Reach and fidelity are separate package properties", loc="left", pad=14)
-    threshold = 0.56
-    ax.axvline(threshold, color=INK, linestyle="--", linewidth=1.5)
-    ax.text(threshold + 0.018, 0.94, "task event: relevant past becomes included", rotation=90, va="top", fontsize=8.8, color=MUTED)
-    points = [
-        (0.30, 0.86, "dense short\nflat", ORANGE, "full detail; event absent"),
-        (0.79, 0.50, "long coarse\n+ recent fine", BLUE, "event present; old detail compressed"),
-        (0.78, 0.78, "sparse fine anchors\n+ recent tail", TEAL, "fine anchors; gaps between them"),
+    fig, ax = canvas(14.2, 7.2)
+    title(
+        ax,
+        "Однаковий бюджет можна розподілити між досяжністю та деталізацією",
+        "Схема показує структуру пакетів, а не емпіричну криву чи неперервну межу",
+    )
+
+    rows = [
+        {
+            "y": 0.69,
+            "name": "Щільний короткий\nплоский пакет",
+            "color": ORANGE,
+            "fill": PALE_ORANGE,
+            "kind": "short",
+            "summary": "повні деталі\nподія поза досяжністю",
+        },
+        {
+            "y": 0.43,
+            "name": "Розріджені детальні\nприв’язки + хвіст",
+            "color": TEAL,
+            "fill": PALE_TEAL,
+            "kind": "anchors",
+            "summary": "деталі у прив’язках\nпроміжки не збережено",
+        },
+        {
+            "y": 0.17,
+            "name": "Довга груба історія\n+ детальний хвіст",
+            "color": BLUE,
+            "fill": PALE_BLUE,
+            "kind": "hier",
+            "summary": "щільна довга підтримка\nдавні деталі стиснено",
+        },
     ]
-    for x, y, label, color, note in points:
-        ax.scatter([x], [y], s=240, facecolor="white", edgecolor=color, linewidth=2.3, zorder=3)
-        ax.text(x, y, label, ha="center", va="center", fontsize=9, weight="bold")
-        ax.text(x, y - 0.11, note, ha="center", va="top", fontsize=8.2, color=MUTED)
-    ax.text(0.5, 0.035, "Conceptual positions only: no fitted curve, result frontier, or interpolated crossing.", ha="center", fontsize=9.2, color=MUTED)
+
+    x0, x1 = 0.29, 0.72
+    n = 16
+    cell_w = (x1 - x0) / n
+    event_index = 3
+    ax.text(x0, 0.835, "давнє минуле", fontsize=8.2, color=MUTED, ha="left")
+    ax.text(x1, 0.835, "поточний момент", fontsize=8.2, color=MUTED, ha="right")
+    event_x = x0 + (event_index + 0.5) * cell_w
+    ax.plot([event_x, event_x], [0.10, 0.81], color=RED, linestyle="--", linewidth=1.2, alpha=0.8)
+    ax.text(event_x, 0.82, "релевантна подія", ha="center", va="bottom", fontsize=8.3, color=RED, weight="bold")
+
+    for row in rows:
+        y = row["y"]
+        box(ax, 0.035, y - 0.065, 0.20, 0.13, row["name"], fc=row["fill"], ec=row["color"], weight="bold", fs=9.2)
+        ax.add_patch(Rectangle((x0 - 0.006, y - 0.072), x1 - x0 + 0.012, 0.144, facecolor="white", edgecolor=GRID, linewidth=1.1))
+        if row["kind"] == "short":
+            for i in range(n - 5, n):
+                ax.add_patch(Rectangle((x0 + i * cell_w + 0.001, y - 0.047), cell_w - 0.002, 0.094, facecolor=ORANGE, edgecolor="white", linewidth=0.4))
+            ax.text(event_x, y, "×", ha="center", va="center", color=RED, fontsize=17, weight="bold")
+        elif row["kind"] == "anchors":
+            for i in [1, 5, 9, 13]:
+                ax.add_patch(Rectangle((x0 + i * cell_w + 0.003, y - 0.047), cell_w - 0.006, 0.094, facecolor=TEAL, edgecolor="white", linewidth=0.4))
+            for i in range(n - 3, n):
+                ax.add_patch(Rectangle((x0 + i * cell_w + 0.001, y - 0.047), cell_w - 0.002, 0.094, facecolor=ORANGE, edgecolor="white", linewidth=0.4))
+            ax.text(event_x, y - 0.073, "подія між прив’язками", ha="center", va="top", color=RED, fontsize=7.4)
+        else:
+            for i in range(n):
+                ax.add_patch(Rectangle((x0 + i * cell_w + 0.001, y - 0.047), cell_w - 0.002, 0.055, facecolor=BLUE, edgecolor="white", linewidth=0.35))
+            for i in range(n - 3, n):
+                ax.add_patch(Rectangle((x0 + i * cell_w + 0.001, y + 0.012), cell_w - 0.002, 0.035, facecolor=ORANGE, edgecolor="white", linewidth=0.35))
+            ax.add_patch(Circle((event_x, y - 0.020), 0.009, facecolor="white", edgecolor=RED, linewidth=1.6))
+        box(ax, 0.77, y - 0.065, 0.19, 0.13, row["summary"], fc="white", ec=row["color"], fs=8.5)
+
+    ax.add_patch(Rectangle((0.31, 0.045), 0.022, 0.022, facecolor=BLUE, edgecolor="none"))
+    ax.text(0.338, 0.056, "грубе представлення", va="center", fontsize=8, color=MUTED)
+    ax.add_patch(Rectangle((0.47, 0.045), 0.022, 0.022, facecolor=ORANGE, edgecolor="none"))
+    ax.text(0.498, 0.056, "детальне представлення", va="center", fontsize=8, color=MUTED)
+    ax.add_patch(Rectangle((0.66, 0.045), 0.022, 0.022, facecolor=TEAL, edgecolor="none"))
+    ax.text(0.688, 0.056, "детальна прив’язка", va="center", fontsize=8, color=MUTED)
     save_native(fig, "ch3_fig3_3_reach_fidelity_axes", "3.3", "Conceptual package hypothesis; no empirical values")
 
 
@@ -1092,13 +1140,13 @@ def parse_ebt(path: Path) -> list[dict]:
     return rows
 
 
-def fig4_4_ebt_composite() -> None:
+def fig4_2_ebt_composite() -> None:
     s1_path = LOGS / "ebt_scaled_s1.log"
     s2_path = LOGS / "ebt_scaled_s2.log"
     if not s1_path.is_file() or not s2_path.is_file():
         record_preserved_native(
-            "ch4_fig4_4_ebt_composite",
-            "4.4",
+            "ch4_fig4_2_ebt_composite",
+            "4.2",
             "frozen EBT composite; logs_rhcp/ebt_scaled_s1.log and ebt_scaled_s2.log are unavailable in this checkout",
         )
         return
@@ -1151,10 +1199,10 @@ def fig4_4_ebt_composite() -> None:
     ax.legend(frameon=False, fontsize=7.8, loc="upper left")
     fig.suptitle("Energy ordering can improve while candidate descent remains unreachable", fontsize=14.5, weight="bold")
     fig.text(0.5, 0.025, "Exact logged probes; no smoothing, interpolation, or uncertainty added.", ha="center", fontsize=9.2, color=MUTED)
-    save_native(fig, "ch4_fig4_4_ebt_composite", "4.4", "logs_rhcp/ebt_scaled_s1.log and ebt_scaled_s2.log; hash-listed legacy receipts")
+    save_native(fig, "ch4_fig4_2_ebt_composite", "4.2", "logs_rhcp/ebt_scaled_s1.log and ebt_scaled_s2.log; hash-listed legacy receipts")
 
 
-def fig4_6_reach_effects() -> None:
+def fig4_4_reach_effects() -> None:
     data = json.loads(E2_JSON.read_text(encoding="utf-8"))
     rows = [r for r in data["primary"] if r["pair"] == "reach-48-vs-14" and r["metric"] in {"legacy_fg", "fg"}]
     lookup = {(r["seed"], r["metric"]): r for r in rows}
@@ -1193,16 +1241,16 @@ def fig4_6_reach_effects() -> None:
     ax.legend(frameon=False, loc="upper left", fontsize=8.8)
     fig.subplots_adjust(left=0.18, right=0.98, top=0.86, bottom=0.20)
     fig.text(0.5, 0.035, "Clip-cluster intervals shown here are estimand-specific; they are not the simultaneous frontier family.", ha="center", fontsize=8.8, color=MUTED)
-    save_native(fig, "ch4_fig4_6_reach_effects", "4.6", "artifacts/confirmation_e2/results.json and docs/confirmation/E2_RESULTS.md")
+    save_native(fig, "ch4_fig4_4_reach_effects", "4.4", "artifacts/confirmation_e2/results.json and docs/confirmation/E2_RESULTS.md")
 
 
-def fig4_8_equal_reach() -> None:
+def figv_2_equal_reach() -> None:
     fig = plt.figure(figsize=(14, 7.4), facecolor="white", constrained_layout=True)
     gs = fig.add_gridspec(3, 2, width_ratios=[2.2, 1.0])
     packages = [
-        ("48 dense fine", ORANGE, 3072, 96, 0),
-        ("48 coarse + 6 recent fine", BLUE, 1152, 36, 6),
-        ("48 coarse + 2 recent fine", TEAL, 896, 28, 2),
+        ("48 щільних детальних", ORANGE, 3072, 96, 0),
+        ("48 грубих + 6 недавніх детальних", BLUE, 1152, 36, 6),
+        ("48 грубих + 2 недавні детальні", TEAL, 896, 28, 2),
     ]
     max_tokens = 3072
     for row, (name, color, tokens, kib, fine_tail) in enumerate(packages):
@@ -1217,15 +1265,15 @@ def fig4_8_equal_reach() -> None:
                 ax.add_patch(Rectangle((i + 0.05, 0.33), 0.90, 0.18, facecolor=color, edgecolor="white", linewidth=0.25))
             for i in range(48 - fine_tail, 48):
                 ax.add_patch(Rectangle((i + 0.05, 0.54), 0.90, 0.16, facecolor=ORANGE, edgecolor="white", linewidth=0.25))
-        ax.text(0, 0.12, "oldest", fontsize=7.8, color=MUTED)
-        ax.text(48, 0.12, "recent", ha="right", fontsize=7.8, color=MUTED)
+        ax.text(0, 0.12, "найдавніше", fontsize=7.8, color=MUTED)
+        ax.text(48, 0.12, "найновіше", ha="right", fontsize=7.8, color=MUTED)
         ax = fig.add_subplot(gs[row, 1])
         ax.set_xlim(0, max_tokens * 1.18); ax.set_ylim(0, 1); ax.axis("off")
         ax.add_patch(Rectangle((0, 0.35), tokens, 0.30, facecolor=color, edgecolor="none"))
-        ax.text(tokens + 45, 0.50, f"{tokens:,} tokens\n{kib} KiB fp16", va="center", fontsize=9.5, weight="bold", color=color)
-    fig.suptitle("Equal nominal 48-frame reach does not require equal context-state cost", fontsize=14.5, weight="bold")
-    fig.text(0.5, 0.005, "Orange tail cells are recent fine maps; blue/teal base cells are coarse maps. Ratios exclude targets, activations, runtime and model parameters.", ha="center", fontsize=9.2, color=MUTED)
-    save_native(fig, "ch4_fig4_8_equal_reach", "4.8", "Chapter 4 Table 4.5 exact token and fp16 payload arithmetic")
+        ax.text(tokens + 45, 0.50, f"{tokens:,} токенів\n{kib} КіБ fp16", va="center", fontsize=9.5, weight="bold", color=color)
+    fig.suptitle("Однакова номінальна досяжність 48 кадрів не означає однакової вартості контексту", fontsize=14.5, weight="bold")
+    fig.text(0.5, 0.005, "Помаранчеві комірки — недавні детальні карти; сині й бірюзові — грубі. Розрахунок не охоплює цілі, активації, час виконання та параметри моделі.", ha="center", fontsize=9.2, color=MUTED)
+    save_native(fig, "appv_figv_2_equal_reach", "B.2", "Chapter 4 Table 4.3 exact token and fp16 payload arithmetic")
 
 
 def fig1_18_systems_map() -> None:
@@ -1324,7 +1372,7 @@ def fig1_18_systems_map() -> None:
     )
 
 
-def fig4_16_two_resource_axes() -> None:
+def fig4_13_two_resource_axes() -> None:
     """Place context-state and activation-memory evidence side by side only."""
 
     data = json.loads(E2_JSON.read_text(encoding="utf-8"))
@@ -1430,13 +1478,13 @@ def fig4_16_two_resource_axes() -> None:
     )
     save_native(
         fig,
-        "ch4_fig4_16_two_resource_axes",
-        "4.16",
+        "ch4_fig4_13_two_resource_axes",
+        "4.13",
         "artifacts/confirmation_e2/results.json and published TempVerseFormer table values at batch size 32",
     )
 
 
-def fig4_17_decision_flow() -> None:
+def fig4_14_decision_flow() -> None:
     fig, ax = canvas(15.5, 9.2)
     title(ax, "Втручання обирають за обмеженням, яке визначає результат", "Причинні ефекти виміряно окремо; сумісність перевірено в обмеженому прототипі")
     box(ax, 0.34, 0.79, 0.32, 0.09, "Який критерій консистентності є визначальним?", fc=PALE_BLUE, ec=BLUE, weight="bold", fs=10.0)
@@ -1497,7 +1545,7 @@ def fig4_17_decision_flow() -> None:
     ax.text(0.285, 0.195, "ні", fontsize=7.8, color=GREEN)
     ax.text(0.69, 0.195, "так / запропоновано", fontsize=7.8, color=ORANGE)
     ax.text(0.5, 0.025, "Суцільні стрілки: виконані досліди або усталені альтернативи. Пунктир: запропонована політика, що потребує наскрізної перевірки.", ha="center", fontsize=9, color=MUTED)
-    save_native(fig, "ch4_fig4_17_decision_flow", "4.17", "Chapter 4 operating-region evidence and Chapter 2 scope boundaries")
+    save_native(fig, "ch4_fig4_14_decision_flow", "4.14", "Chapter 4 operating-region evidence and Chapter 2 scope boundaries")
 
 
 NATIVE_STEMS = [
@@ -1520,11 +1568,11 @@ NATIVE_STEMS = [
     "ch3_fig3_15_reentry_storyboard",
     "ch3_fig3_16_reach_population",
     "ch3_fig3_17_persistent_assignment",
-    "ch4_fig4_4_ebt_composite",
-    "ch4_fig4_6_reach_effects",
-    "ch4_fig4_8_equal_reach",
-    "ch4_fig4_16_two_resource_axes",
-    "ch4_fig4_17_decision_flow",
+    "ch4_fig4_2_ebt_composite",
+    "ch4_fig4_4_reach_effects",
+    "appv_figv_2_equal_reach",
+    "ch4_fig4_13_two_resource_axes",
+    "ch4_fig4_14_decision_flow",
 ]
 
 
@@ -1572,11 +1620,11 @@ def main() -> None:
     fig3_15_reentry_storyboard()
     fig3_16_reach_population()
     fig3_17_persistent_assignment()
-    fig4_4_ebt_composite()
-    fig4_6_reach_effects()
-    fig4_8_equal_reach()
-    fig4_16_two_resource_axes()
-    fig4_17_decision_flow()
+    fig4_2_ebt_composite()
+    fig4_4_reach_effects()
+    figv_2_equal_reach()
+    fig4_13_two_resource_axes()
+    fig4_14_decision_flow()
     validate_native_pairs()
     ledger = OUT / "ch2_ch4_figure_provenance.json"
     ledger.write_text(json.dumps(sorted(PROVENANCE, key=lambda row: (row["figure_id"], row["file"])), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

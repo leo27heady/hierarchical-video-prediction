@@ -29,11 +29,11 @@ FILES = [
 ]
 CHAPTER_FILES = {chapter: FILES[chapter + 1] for chapter in range(1, 5)}
 EXPECTED_EQUATIONS = {1: 14, 2: 42, 3: 53, 4: 5}
-EXPECTED_FIGURES = {1: 25, 2: 19, 3: 19, 4: 17}
-EXPECTED_TABLES = {1: 3, 2: 10, 3: 6, 4: 9}
+EXPECTED_FIGURES = {1: 25, 2: 19, 3: 19, 4: 14}
+EXPECTED_TABLES = {1: 2, 2: 10, 3: 3, 4: 7}
 EXPECTED_APPENDIX_TABLES = [
-    "А.1", "Б.1", "В.1", "В.2", "В.3", "В.4", "В.5", "В.6",
-    "Г.1", "Д.1", "Е.1", "Ж.1", "Ж.2", "Ж.3",
+    "А.1", "Б.1", "В.1", "В.2", "В.3", "В.4", "В.5", "В.6", "В.7", "В.8",
+    "Г.1", "Д.1", "Д.2", "Д.3", "Е.1", "Ж.1", "Ж.2", "Ж.3",
 ]
 EXPECTED_TABLE_IDS = [
     *(f"{chapter}.{index}" for chapter, count in EXPECTED_TABLES.items() for index in range(1, count + 1)),
@@ -51,6 +51,10 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def normalize_figure_id(value: str) -> str:
+    return value.replace("В.", "B.").replace("Е.", "E.")
+
+
 def caption_pairs(text: str) -> list[tuple[str, list[str]]]:
     pairs: list[tuple[str, list[str]]] = []
     pending: list[str] = []
@@ -58,9 +62,9 @@ def caption_pairs(text: str) -> list[tuple[str, list[str]]]:
         match = re.search(r"!\[[^]]*\]\(([^)]+)\)", line)
         if match:
             pending.append(match.group(1))
-        caption = re.match(r"^\*\*Рисунок\s+([1-4ЕE]\.\d+)\s+[–-]", line)
+        caption = re.match(r"^\*\*Рисунок\s+([1-4ВBЕE]\.\d+)\s+[–-]", line)
         if caption:
-            pairs.append((caption.group(1).replace("E.", "Е."), list(pending)))
+            pairs.append((normalize_figure_id(caption.group(1)), list(pending)))
             pending.clear()
     return pairs
 
@@ -109,9 +113,9 @@ def main() -> int:
     appendix_tables = re.findall(r"(?m)^\*\*Таблиця\s+([А-ЯІЇЄ]\.\d+)\s+[–-]", appendix_text)
     if appendix_tables != EXPECTED_APPENDIX_TABLES:
         errors.append("08_APPENDICES.md: appendix table sequence/count differs from registry")
-    appendix_figures = re.findall(r"(?m)^\*\*Рисунок\s+([ЕE]\.\d+)\s+[–-]", appendix_text)
-    if [item.replace("E.", "Е.") for item in appendix_figures] != ["Е.1", "Е.2"]:
-        errors.append("08_APPENDICES.md: appendix figure sequence/count differs from Е.1–Е.2")
+    appendix_figures = re.findall(r"(?m)^\*\*Рисунок\s+([ВBЕE]\.\d+)\s+[–-]", appendix_text)
+    if [normalize_figure_id(item) for item in appendix_figures] != ["B.1", "B.2", "E.1", "E.2"]:
+        errors.append("08_APPENDICES.md: appendix figure sequence/count differs from В.1, В.2, Е.1, Е.2")
 
     if not GUIDE.is_file():
         errors.append(f"missing reviewer guide: {GUIDE.relative_to(ROOT)}")
@@ -147,7 +151,7 @@ def main() -> int:
             continue
         for row in json.loads(ledger.read_text(encoding="utf-8")):
             file_name = row.get("file")
-            figure_id = str(row.get("figure_id", ""))
+            figure_id = normalize_figure_id(str(row.get("figure_id", "")))
             if not file_name:
                 continue
             provenance.setdefault(Path(file_name).as_posix(), set()).add(figure_id)
@@ -184,8 +188,7 @@ def main() -> int:
                     errors.append(f"{path.name}: image outside repository {link}")
                     continue
                 ledger_ids = provenance.get(relative, set())
-                normalized = caption_id.replace("Е.", "E.")
-                if not any(item == normalized or item.startswith(normalized) for item in ledger_ids):
+                if not any(item == caption_id or item.startswith(caption_id) for item in ledger_ids):
                     errors.append(
                         f"{path.name}: caption {caption_id} has no matching provenance id for {relative}"
                     )

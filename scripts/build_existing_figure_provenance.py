@@ -24,8 +24,8 @@ FIGURES = [
         "figure_id": "1.5",
         "file": "docs/figures/fig31_consistency_landscape.png",
         "generator": "scripts/make_dissertation_foundation_figures.py",
-        "data_source": "conceptual consistency criteria synthesized in Chapter 1",
-        "role": "dissertation-native conceptual landscape",
+        "data_source": "parallel consistency criteria synthesized in Chapter 1",
+        "role": "dissertation-native conceptual criteria matrix",
     },
     {
         "figure_id": "1.23",
@@ -108,14 +108,14 @@ FIGURES = [
         "role": "dissertation-native mechanism-identification schematic",
     },
     {
-        "figure_id": "4.1",
+        "figure_id": "B.1",
         "file": "docs/figures/fig63_executed_configuration_matrix.png",
         "generator": "scripts/make_dissertation_foundation_figures.py",
         "data_source": "complete configuration/evidence registry and terminal experiment reports",
         "role": "dissertation-native evidence-coverage matrix",
     },
     {
-        "figure_id": "4.2",
+        "figure_id": "4.1",
         "file": "docs/figures/fig24_generation_objectives.png",
         "generator": "scripts/make_dissertation_missing_figures.py",
         "data_source": "implemented regression, diffusion, and energy-head interfaces",
@@ -123,13 +123,6 @@ FIGURES = [
     },
     {
         "figure_id": "4.3",
-        "file": "docs/figures/fig29_mechanism_single_step_samples_compact.png",
-        "generator": "scripts/make_dissertation_compact_galleries.py",
-        "data_source": "fixed first-three-record crop of docs/figures/fig29_mechanism_single_step_samples.png",
-        "role": "artifact-derived fixed-index qualitative comparison",
-    },
-    {
-        "figure_id": "4.5",
         "file": "docs/figures/fig28_memory_gate_optimization.png",
         "generator": "scripts/make_dissertation_missing_figures.py",
         "data_source": (
@@ -139,59 +132,49 @@ FIGURES = [
         "role": "artifact-derived development diagnostic",
     },
     {
-        "figure_id": "4.7",
+        "figure_id": "4.5",
         "file": "docs/figures/article_confirmed_frontier.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/confirmation_e2/results.json",
         "role": "artifact-derived untouched simultaneous frontier",
     },
     {
-        "figure_id": "4.8",
-        "file": "docs/figures/fig7_samples_claim1_compact.png",
-        "generator": "scripts/make_dissertation_compact_galleries.py",
-        "data_source": (
-            "fixed clip-0 crop of docs/figures/fig7_samples_claim1.png; seed 1 and horizons "
-            "1, 24, 60, 100, and 148"
-        ),
-        "role": "artifact-derived fixed-index compact descriptive gallery",
-    },
-    {
-        "figure_id": "4.9",
+        "figure_id": "4.6",
         "file": "docs/figures/fig17_head_package_seed_heterogeneity.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e4b_head_package/results.json",
         "role": "artifact-derived five-seed factorial result",
     },
     {
-        "figure_id": "4.10",
+        "figure_id": "4.7",
         "file": "docs/figures/fig19_sampler_nfe_robustness.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e7c_sampler_nfe/results.json",
         "role": "artifact-derived sampler and NFE robustness result",
     },
     {
-        "figure_id": "4.11",
+        "figure_id": "4.8",
         "file": "docs/figures/fig20_alternate_codec_robustness.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e7a_codec_robustness/results.json",
         "role": "artifact-derived independently trained codec robustness result",
     },
     {
-        "figure_id": "4.12",
+        "figure_id": "4.9",
         "file": "docs/figures/fig18_trust_negative_replication.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e5a_trust_replication/results.json",
         "role": "artifact-derived registered negative replication",
     },
     {
-        "figure_id": "4.13",
+        "figure_id": "4.10",
         "file": "docs/figures/fig21_pose_indexed_raw_memory.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/e8a_pose_mosaic/results.json",
         "role": "artifact-derived privileged explicit-access reference",
     },
     {
-        "figure_id": "4.14",
+        "figure_id": "4.11",
         "file": "docs/figures/fig22_phasec_v2_boundary.png",
         "generator": "scripts/make_rft_result_figures.py",
         "data_source": "artifacts/phasec_v2/results.json",
@@ -223,7 +206,7 @@ FIGURES = [
 # plots point to their frozen result files.  The lists are deliberately separate
 # from ``data_source`` so their existence can be checked mechanically.
 SOURCE_FILES = {
-    "1.5": ["docs/dissertation/restructured_english/02_CHAPTER_1.md"],
+    "1.5": ["docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"],
     "1.23": ["docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"],
     "1.24": ["docs/dissertation/condensed_translated_humanized_ukrainian/02_CHAPTER_1.md"],
     "2.15": ["docs/dissertation/condensed_translated_humanized_ukrainian/03_CHAPTER_2.md"],
@@ -238,26 +221,24 @@ SOURCE_FILES = {
         "experiments/configs/e2_untouched_confirmation.json",
         "docs/DATA_CARD_LOOPMOM.md",
     ],
-    "4.1": [
+    "B.1": [
         "docs/dissertation/rewrite/appendices/APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md",
         "docs/FINAL_PROGRAMME_REPORT_2026-07-18.md",
     ],
-    "4.2": ["hvp_rev/rhvd.py", "hvp_rev/step1_mech.py", "hvp_rev/ebt_reference_control.py"],
-    "4.3": ["docs/figures/fig29_mechanism_single_step_samples.png"],
-    "4.5": [
+    "4.1": ["hvp_rev/rhvd.py", "hvp_rev/step1_mech.py", "hvp_rev/ebt_reference_control.py"],
+    "4.3": [
         "logs_rhcp/mem_gate_full_s0.log",
         "logs_rhcp/mem_gate_full_s1.log",
         "logs_rhcp/mem_gate_full_s0_t20k.log",
         "logs_rhcp/mem_gate_full_s1_t20k.log",
     ],
-    "4.7": ["artifacts/confirmation_e2/results.json"],
-    "4.8": ["docs/figures/fig7_samples_claim1.png"],
-    "4.9": ["artifacts/e4b_head_package/results.json"],
-    "4.10": ["artifacts/e7c_sampler_nfe/results.json"],
-    "4.11": ["artifacts/e7a_codec_robustness/results.json"],
-    "4.12": ["artifacts/e5a_trust_replication/results.json"],
-    "4.13": ["artifacts/e8a_pose_mosaic/results.json"],
-    "4.14": ["artifacts/phasec_v2/results.json"],
+    "4.5": ["artifacts/confirmation_e2/results.json"],
+    "4.6": ["artifacts/e4b_head_package/results.json"],
+    "4.7": ["artifacts/e7c_sampler_nfe/results.json"],
+    "4.8": ["artifacts/e7a_codec_robustness/results.json"],
+    "4.9": ["artifacts/e5a_trust_replication/results.json"],
+    "4.10": ["artifacts/e8a_pose_mosaic/results.json"],
+    "4.11": ["artifacts/phasec_v2/results.json"],
     "E.1": ["logs_rhcp/step1_mech_clean_reg.png", "logs_rhcp/step1_mech_clean_diff.png"],
     "E.2": [
         "docs/DATA_CARD_LOOPMOM.md",
@@ -272,12 +253,12 @@ SOURCE_FILES = {
 }
 
 
-QUALITATIVE_LOOPMOM_FIGURES = {"4.3", "4.8", "E.1", "E.2"}
+QUALITATIVE_LOOPMOM_FIGURES = {"E.1", "E.2"}
 LAYOUT_NOTES = {
-    "4.1": (
+    "B.1": (
         "Wide nine-column matrix: place on a landscape or dedicated full-width page. "
         "At ordinary portrait text width its 7.3-pt source labels fall below the blueprint's "
-        "8.5-pt preferred minimum. Table 4.2 remains the authoritative readable registry."
+        "8.5-pt preferred minimum. Appendix Table B.4 remains the authoritative readable registry."
     ),
     "E.2": (
         "Tall fixed-index gallery: reserve a dedicated portrait page and do not reduce it "
@@ -291,6 +272,7 @@ CHAPTER_FILES = {
     "2": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "03_CHAPTER_2.md",
     "3": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "04_CHAPTER_3.md",
     "4": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "05_CHAPTER_4.md",
+    "B": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "08_APPENDICES.md",
     "E": ROOT / "docs" / "dissertation" / "condensed_translated_humanized_ukrainian" / "08_APPENDICES.md",
 }
 
@@ -411,7 +393,7 @@ def main() -> None:
                 "rights_status": rights_status,
                 "permission_status": permission_status,
                 "caption_attribution": (
-                    f"{'Appendix' if specification['figure_id'].startswith('E.') else 'Chapter'} "
+                    f"{'Appendix' if specification['figure_id'][0].isalpha() else 'Chapter'} "
                     f"{specification['figure_id'].split('.', 1)[0]} Figure "
                     f"{specification['figure_id']}; caption includes an explicit author/source classification."
                 ),
