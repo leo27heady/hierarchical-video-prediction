@@ -175,9 +175,10 @@ The current manuscript remains readable throughout migration. A chapter is promo
 
 This file is the durable continuation point if agent context is compacted. Before resuming execution, read:
 
-1. this master plan;
-2. `docs/reviews/DISSERTATION_CODE_EXPERIMENT_AND_RESTRUCTURE_REVIEW_2026-08-31.md`;
-3. the two article experiment plans in `docs/plans/`;
-4. `docs/dissertation/DISSERTATION_REVIEWER_PROVENANCE_AND_REPRODUCTION_GUIDE_2026-08-29.md`.
+1. `docs/plans/PATH_B_DECISION_REGISTER_2026-09-01.md`;
+2. this master plan and every other file in `docs/plans/`;
+3. `C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\reviews\DISSERTATION_CODE_EXPERIMENT_AND_RESTRUCTURE_REVIEW_2026-08-31.md`;
+4. `docs/dissertation/DISSERTATION_REVIEWER_PROVENANCE_AND_REPRODUCTION_GUIDE_2026-08-29.md`;
+5. the run registry and A4-COR status before starting or resuming GPU work.
 
 Do not assume that a completed pilot is a publishable confirmed experiment. Check the run registry and gate status first.

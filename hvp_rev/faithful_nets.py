@@ -259,7 +259,12 @@ class LatentTokenizer(nn.Module):
         dev = z.device
         level_id = torch.full((B, N), level, dtype=torch.long, device=dev)
         role_id = torch.full((B, N), role, dtype=torch.long, device=dev)
-        frame_id = torch.full((B, N), frame_idx, dtype=torch.long, device=dev)
+        if isinstance(frame_idx, torch.Tensor):
+            if frame_idx.shape != (B,):
+                raise ValueError(f"per-sample frame_idx must have shape ({B},)")
+            frame_id = frame_idx.to(device=dev, dtype=torch.long)[:, None].expand(B, N)
+        else:
+            frame_id = torch.full((B, N), frame_idx, dtype=torch.long, device=dev)
         return tok, level_id, role_id, frame_id
 
     def tokenize_selected_level(self, z, cell_ids, level, role, frame_idx):

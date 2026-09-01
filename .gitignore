@@ -17,6 +17,9 @@ hvp.egg-info/
 /artifacts/runs/
 /artifacts/training/
 /artifacts/v2/manifests/
+/artifacts/v2/runs/
+/artifacts/v2/registry/
+/artifacts/v2/smoke/
 /artifacts/autoencoders/
 /artifacts/e7a_codec_robustness/
 /artifacts/e8a_pose_mosaic/

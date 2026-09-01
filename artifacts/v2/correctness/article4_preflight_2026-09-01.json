@@ -1,0 +1,86 @@
+{
+  "action_alignment": {
+    "action_vocabulary": [
+      -1,
+      0,
+      1
+    ],
+    "checked_overlap_pixels": 15844864,
+    "mismatched_overlap_pixels": 0,
+    "sampled_transitions": 4096
+  },
+  "autoencoder_sha256": "3769200d6f9346a2c7cbfa6cff42113da883a052dfa216d3b60f78d8e3684245",
+  "device": "cuda",
+  "manifest_sha256": "2a2e375b82d7431a0d8a42b9b40ca269b21a0305b3df0287f523dc2240a7c1ac",
+  "passed": true,
+  "schema_version": 1,
+  "split": {
+    "overlap": 0,
+    "train_clips": 2700,
+    "validation_clips": 300
+  },
+  "tiny_overfit": [
+    {
+      "curve": [
+        {
+          "mean_fixed_noise_loss": 2.065130442380905,
+          "step": 0
+        },
+        {
+          "mean_fixed_noise_loss": 1.7283414006233215,
+          "step": 50
+        },
+        {
+          "mean_fixed_noise_loss": 1.4944050908088684,
+          "step": 100
+        },
+        {
+          "mean_fixed_noise_loss": 1.3550049662590027,
+          "step": 150
+        },
+        {
+          "mean_fixed_noise_loss": 1.265361338853836,
+          "step": 200
+        }
+      ],
+      "deterministic_replay_loss": 2.075401782989502,
+      "expected_attention_sequence": 2112,
+      "final_to_initial_loss_ratio": 0.6127270766465439,
+      "parameters": 201824,
+      "passed": true,
+      "policy": "flat_recent",
+      "updates": 200
+    },
+    {
+      "curve": [
+        {
+          "mean_fixed_noise_loss": 2.065130442380905,
+          "step": 0
+        },
+        {
+          "mean_fixed_noise_loss": 1.71975776553154,
+          "step": 50
+        },
+        {
+          "mean_fixed_noise_loss": 1.4945210814476013,
+          "step": 100
+        },
+        {
+          "mean_fixed_noise_loss": 1.3533663749694824,
+          "step": 150
+        },
+        {
+          "mean_fixed_noise_loss": 1.2718201279640198,
+          "step": 200
+        }
+      ],
+      "deterministic_replay_loss": 2.075401782989502,
+      "expected_attention_sequence": 2112,
+      "final_to_initial_loss_ratio": 0.6158546219955618,
+      "parameters": 201824,
+      "passed": true,
+      "policy": "balanced_recent",
+      "updates": 200
+    }
+  ]
+}

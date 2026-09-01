@@ -69,7 +69,7 @@ preserved in its manifest; exact clip/action SHA-256 hashes now identify the dat
 - A third seed is a post-week robustness option for 6--8 locked primary configurations, not part
   of the approved one-week matrix.
 
-### 3.3 Proposed controlled instrument
+### 3.3 Proposed controlled instrument and fixed prediction head
 
 The current 384-wide, eight-block historical model is too slow for the full matrix on one local
 GPU. Use the following smaller common instrument if A4-COR establishes convergence and ranking
@@ -80,12 +80,18 @@ stability:
 | predictor width | 256 |
 | blocks | 6 |
 | attention heads | 8 |
-| parameters | approximately 7.54 M, depending slightly on temporal embeddings |
+| parameters | approximately 7.56 M; exactly matched across one- and two-level allocation arms |
+| temporal embedding | one shared learned table of 100 TRB frame positions for every arm |
 | precision | bf16 autocast with fp32 optimizer/master weights |
 | batch size | 16 at all six budgets |
 | prediction target | four future fine frames; invariant across context arms |
+| target-time sampling | common first-target anchor 96; target frames 96--99 in every arm |
 | candidate schedules | 8k or 12k updates, selected by A4-COR before launch |
 | checkpoint selection | validation only, shared evaluation cadence |
+
+The primary predictor head is latent diffusion with v-prediction and a deterministic DDIM sampler,
+matching the current Article 4 architecture. Direct regression is a bounded robustness/control
+head only; it is not selected separately per allocation.
 
 This is an experimental instrument, not a silent replacement claim for the historical 22 M
 parameter predictor. After the matrix, repeat 4--6 decisive configurations with the historical
@@ -159,17 +165,23 @@ Required checks:
 - **TARGET:** context stride/allocation cannot change target horizon, target stride, or target
   token count;
 - **TOK:** analytic budget equals packed tensor count and serialized state bytes;
-- **CAUS:** perturbing future inputs cannot affect an earlier prediction;
+- **CAUS:** causal-boundary invariance -- every context index is earlier than the first target,
+  context and target sources are disjoint, and no target latent is supplied as context. The selected
+  diffusion head jointly denoises the four target frames, so attention among noisy target tokens is
+  intentional and is not tested as an autoregressive mask;
 - **OVERFIT:** flat and hierarchical tiny-sample overfits;
 - **DET:** same configuration and seed reproduce within the predeclared deterministic tolerance;
 - **PERF:** profile all six budgets, verify fused SDPA use, bf16 path, memory headroom, and batch
   assembly fraction;
-- **CVG:** train representative low/middle/high configurations to 12k with validation snapshots at
-  2k intervals. Freeze 8k only if loss/quality and policy ranking are stable from 8k through 12k;
-  otherwise freeze 12k. If ranking is still moving at 12k, the full one-week matrix is not
-  launched under a false convergence claim.
+- **CVG:** train the 1,792-token Flat recent and Balanced recent arms at seed 0 through 30k, with
+  immutable fixed-validation snapshots every 2k. Compare 8k, 12k, 16k, 20k, 24k, and 30k. Freeze
+  the earliest candidate within 2% relative of its best later primary metric, with an unchanged
+  flat--hierarchy direction at all later candidates and no sustained later improvement or
+  overfitting. If neither 8k nor 12k passes, select the evidence-supported later schedule and
+  revise the one-week matrix rather than forcing the original estimate.
 
-Estimate: 4--6 researcher-hours and 3--6 GPU-hours. Exit criterion: every oracle passes and one
+Estimate: 4--6 researcher-hours and approximately 5--7 GPU-hours for the two 30k calibrations plus
+validation. Exit criterion: every oracle passes and one
 training schedule is frozen.
 
 ### A4-FRT -- six-point budget frontier
@@ -277,7 +289,7 @@ Estimate: 3--5 researcher-hours and 1--2 GPU-hours for evaluation.
 
 | Work | Unique configs | Run instances | 8k GPU-h | 12k GPU-h |
 |---|---:|---:|---:|---:|
-| A4-COR pilots/oracles | 3 representative fits + tests | 3--5 | 3--5 | 4--6 |
+| A4-COR pilots/oracles | 2 paired 30k calibrations + executable tests | 2 + tests | 5--7 | 5--7 |
 | A4-FRT | 24 | 48 | 28--31 | 42--46 |
 | A4-ALC additions | 3 | 6 | 3.8 | 5.7 |
 | A4-CEX | 6 | 12 | 3.0 | 4.5 |

@@ -146,6 +146,34 @@ def test_global_fine_selection_separates_gather_and_context_frame_ids() -> None:
     torch.testing.assert_close(packed_frames[-1], local_frames + 4)
 
 
+def test_explicit_coarse_frame_ids_support_exclusive_gapped_history() -> None:
+    model = WindowDiT(
+        n_ctx_c=3,
+        n_ctx_f=8,
+        fine_token_budget=4,
+        d=32,
+        depth=1,
+        heads=4,
+    )
+    batch = 2
+    coarse = torch.randn(batch, 3, 16, 4, 4)
+    fine_placeholder = torch.empty(batch, 0, 16, 8, 8)
+    coarse_frames = torch.tensor([[0, 2, 4], [0, 2, 4]])
+    fine_frames = torch.tensor([[5, 6, 7, 7], [5, 6, 7, 7]])
+    fine_cells = torch.tensor([[0, 1, 2, 3], [4, 5, 6, 7]])
+    packed = torch.randn(batch, 4, 16)
+    _, _, _, frame_ids = model._ctx_tokens(
+        coarse,
+        fine_placeholder,
+        ctx_c_frame_ids=coarse_frames,
+        ctx_f_ids=fine_cells,
+        ctx_f_frame_ids=fine_frames,
+        ctx_f_packed=packed,
+    )
+    for token_frames, expected in zip(frame_ids[:3], (0, 2, 4)):
+        torch.testing.assert_close(token_frames, torch.full_like(token_frames, expected))
+
+
 def test_mixed_precision_rmsnorm_preserves_fp32_outputs_and_gradients() -> None:
     torch.manual_seed(4)
     reference = torch.nn.RMSNorm(8)
@@ -156,6 +184,24 @@ def test_mixed_precision_rmsnorm_preserves_fp32_outputs_and_gradients() -> None:
     optimized(second).sum().backward()
     torch.testing.assert_close(optimized(second), reference(first.detach()))
     torch.testing.assert_close(second.grad, first.grad)
+
+
+def test_shared_temporal_embedding_capacity_keeps_reach_parameter_neutral() -> None:
+    flat = WindowDiT(
+        n_ctx_c=0, n_ctx_f=28, fine_token_budget=1792, d=32, depth=1, heads=4,
+        temporal_embedding_positions=100,
+        temporal_context_span=96,
+    )
+    hierarchy = WindowDiT(
+        n_ctx_c=56, n_ctx_f=56, fine_token_budget=896, d=32, depth=1, heads=4,
+        temporal_embedding_positions=100,
+        temporal_context_span=96,
+    )
+    assert flat.tok.frame_embedding.num_embeddings == 100
+    assert hierarchy.tok.frame_embedding.num_embeddings == 100
+    assert sum(parameter.numel() for parameter in flat.parameters()) == sum(
+        parameter.numel() for parameter in hierarchy.parameters()
+    )
 
 
 def test_mixed_precision_rmsnorm_replaces_only_attention_norms() -> None:
