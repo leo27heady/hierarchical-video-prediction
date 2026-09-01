@@ -302,7 +302,10 @@ def main() -> int:
 
     start_step = 1
     if rolling_path.exists() and not args.smoke:
-        saved = torch.load(rolling_path, map_location=legacy.DEV, weights_only=False)
+        # RNG states are CPU ByteTensors even for a CUDA run. Loading the whole payload directly
+        # onto CUDA makes torch.random.set_rng_state reject its state; model/optimizer loaders move
+        # their tensors to the parameter device themselves.
+        saved = torch.load(rolling_path, map_location="cpu", weights_only=False)
         if saved["config_hash"] != spec.content_hash:
             raise ValueError("rolling checkpoint belongs to a different config")
         net.load_state_dict(saved["model"])
