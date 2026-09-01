@@ -2,8 +2,12 @@
 
 **Revision:** 2026-09-01
 
-**Status:** paired convergence gate complete; 30k recommended, awaiting user confirmation and
-revised timing/scope decision
+**Status:** historical planning baseline. The matrix was reduced on 2026-09-01 to 43
+configurations / 86 runs; the 16k-versus-30k decision is awaiting user confirmation.
+
+**Superseding matrix:**
+`docs/plans/ARTICLE4_COMPLETE_EXPERIMENT_MATRIX_2026-09-01.md`. Its strategy list, counts, and
+GPU-hour estimates are authoritative wherever they conflict with this earlier one-week plan.
 
 **Dataset:** Toroidal Re-entry Benchmark (TRB) only
 **Training seeds:** `0, 1`

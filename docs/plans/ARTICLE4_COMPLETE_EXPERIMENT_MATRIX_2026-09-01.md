@@ -56,7 +56,7 @@ Calibration run stems:
 - `A4_COR_B1792_L1_FLAT_RECENT_EXCL_S00_T30K`
 - `A4_COR_B1792_L2_BAL_RECENT_NEST_S00_T30K`
 
-They are not counted in the 120 final training runs and are not automatically promoted to
+They are not counted in the 86 final training runs and are not automatically promoted to
 two-seed results.
 
 ## 3. A4-FRT: six-point quality--memory frontier
@@ -66,19 +66,20 @@ policies dominate or extend the flat recent-context frontier?
 
 At budget `B`, Flat retains `B/64` complete fine time positions. Every hierarchical arm spends half
 the budget on a contiguous coarse base (`B/32` positions at 16 tokens each) and half on fine cells
-(`B/2` selected cells). Balanced, linear, and geometric policies differ only in the temporal
-placement of those fine cells. Geometric decay is fixed at 0.94.
+(`B/2` selected cells). Linear and geometric policies differ only in the temporal placement of
+those fine cells. Geometric decay is fixed at 0.94. Balanced recent is intentionally excluded from
+the six-budget frontier and remains only in the equal-budget A4-ALC comparison.
 
 | Budget | Flat fine times | Hierarchy coarse times | Hierarchy fine cells | Policies (each at seeds 0,1) |
 |---:|---:|---:|---:|---|
-| 320 | 5 | 10 | 160 | Flat recent; Balanced recent; Linear age; Geometric age |
-| 768 | 12 | 24 | 384 | Flat recent; Balanced recent; Linear age; Geometric age |
-| 1,152 | 18 | 36 | 576 | Flat recent; Balanced recent; Linear age; Geometric age |
-| 1,792 | 28 | 56 | 896 | Flat recent; Balanced recent; Linear age; Geometric age |
-| 2,432 | 38 | 76 | 1,216 | Flat recent; Balanced recent; Linear age; Geometric age |
-| 3,072 | 48 | 96 | 1,536 | Flat recent; Balanced recent; Linear age; Geometric age |
+| 320 | 5 | 10 | 160 | Flat recent; Linear age; Geometric age |
+| 768 | 12 | 24 | 384 | Flat recent; Linear age; Geometric age |
+| 1,152 | 18 | 36 | 576 | Flat recent; Linear age; Geometric age |
+| 1,792 | 28 | 56 | 896 | Flat recent; Linear age; Geometric age |
+| 2,432 | 38 | 76 | 1,216 | Flat recent; Linear age; Geometric age |
+| 3,072 | 48 | 96 | 1,536 | Flat recent; Linear age; Geometric age |
 
-Matrix expansion: `6 budgets x 4 policies = 24 configurations x 2 seeds = 48 runs`.
+Matrix expansion: `6 budgets x 3 policies = 18 configurations x 2 seeds = 36 runs`.
 
 Primary output: quality versus measured retained state, with all seed points shown. Secondary
 output: temporal reach versus state. This family alone does not prove why a policy works.
@@ -92,14 +93,14 @@ is most effective?
 |---|---:|---|---:|---|
 | `F` Flat recent | 1 | 28 complete fine times | 28 | reuse A4-FRT |
 | `H-F` Fine-heavy | 2 | 28 coarse times + 21 complete recent fine times | 28 | new |
-| `H-B` Balanced | 2 | 56 coarse times + 896 newest-first fine cells | 56 | reuse A4-FRT |
+| `H-B` Balanced | 2 | 56 coarse times + 896 newest-first fine cells | 56 | new; no longer in A4-FRT |
 | `H-C` Coarse-heavy | 2 | 84 coarse times + 7 complete recent fine times | 84 | new |
 | `H-L` Linear age | 2 | 56 coarse times + 896 linearly age-weighted fine cells | 56 | reuse A4-FRT |
 | `H-G` Geometric age | 2 | 56 coarse times + 896 geometrically age-weighted fine cells | 56 | reuse A4-FRT |
 | `H-R` Reach-oriented | 2 | 96 coarse times + 4 complete recent fine times | 96 | new |
 
 All rows contain exactly 1,792 context tokens. Matrix expansion: seven displayed configurations,
-of which four are reused and three are new; `3 x 2 seeds = 6 new runs`.
+of which three are reused and four are new; `4 x 2 seeds = 8 new runs`.
 
 Primary output: equal-budget quality comparison, accompanied by exact reach and measured retained
 bytes. The winner is selected by the predeclared validation rule across both seeds and becomes an
@@ -180,16 +181,12 @@ because of integer token costs, disclose the one-slot difference.
 **Question:** if a fixed fine-token payload is spread over more time positions, how does reduced
 spatial detail per time trade against denser temporal coverage?
 
-At both budgets exactly 256 tokens are reserved for fine cells. The rest buys a complete coarse
-base: 56 times at budget 1,152 and 96 times at budget 1,792. Fine quota `K` is the number of spatial
-cells retained at each selected time, so the same 256 fine tokens cover 4, 8, 16, or 32 times.
+At budget 1,792 exactly 256 tokens are reserved for fine cells. The remaining 1,536 tokens buy a
+complete 96-position coarse base. Fine quota `K` is the number of spatial cells retained at each
+selected time, so the same 256 fine tokens cover 4, 8, 16, or 32 times.
 
 | Budget | Coarse base | Quota K | Detailed times | Temporal placements (each at seeds 0,1) |
 |---:|---:|---:|---:|---|
-| 1,152 | 56 times / 896 tokens | 64 | 4 | Recent; Uniform; Geometric |
-| 1,152 | 56 times / 896 tokens | 32 | 8 | Recent; Uniform; Geometric |
-| 1,152 | 56 times / 896 tokens | 16 | 16 | Recent; Uniform; Geometric |
-| 1,152 | 56 times / 896 tokens | 8 | 32 | Recent; Uniform; Geometric |
 | 1,792 | 96 times / 1,536 tokens | 64 | 4 | Recent; Uniform; Geometric |
 | 1,792 | 96 times / 1,536 tokens | 32 | 8 | Recent; Uniform; Geometric |
 | 1,792 | 96 times / 1,536 tokens | 16 | 16 | Recent; Uniform; Geometric |
@@ -203,7 +200,7 @@ Placement definitions:
 - At each selected time, cells come from a deterministic nested, phase-cycled spatial lattice;
   there is no content-dependent selection in Article 4.
 
-Matrix expansion: `2 budgets x 4 quotas x 3 placements = 24 configurations x 2 seeds = 48 runs`.
+Matrix expansion: `1 budget x 4 quotas x 3 placements = 12 configurations x 2 seeds = 24 runs`.
 
 The authoritative allocation generator currently uses **nested** coarse/fine support. An older
 seed-0 scaffold filename/config says `EXCL`; it must be regenerated and must not be launched.
@@ -231,21 +228,32 @@ training runs. The diagnostics explain results; they do not independently prove 
 
 | Family | Displayed configs | New unique configs after reuse | New training runs (2 seeds) |
 |---|---:|---:|---:|
-| A4-FRT | 24 | 24 | 48 |
-| A4-ALC | 7 | 3 | 6 |
+| A4-FRT | 18 | 18 | 36 |
+| A4-ALC | 7 | 4 | 8 |
 | A4-CEX | 6 | 6 | 12 |
 | A4-LVL | 3 | 1 | 2 |
 | A4-OVR | 3 | 2 | 4 |
-| A4-STS | 24 | 24 | 48 |
-| **Primary matrix** | **67 displayed family cells** | **60 unique trained configs** | **120 runs** |
+| A4-STS | 12 | 12 | 24 |
+| **Primary matrix** | **49 displayed family cells** | **43 unique trained configs** | **86 runs** |
 | A4-MEC | 3 selected checkpoints | 0 | 0 (six evaluations) |
-| A4-COR calibration | 2 | separate completed calibration | separate; not in final 120 |
+| A4-COR calibration | 2 | separate completed calibration | separate; not in final 86 |
 
-The target total of 60/120 assumes the dependency-based reuse described above. If a downstream
+The target total of 43/86 assumes the dependency-based reuse described above. If a downstream
 definition is changed so it is no longer byte-identical to its source cell, it becomes a new
 configuration and the campaign manifest must update the count rather than silently reuse it.
 
-## 11. Optional work outside the core 120 runs
+### Outstanding execution waves
+
+- **Wave 1, immediately specifiable:** A4-FRT 36 runs + A4-ALC additions 8 + A4-CEX 12 + A4-STS
+  24 = **80 training runs**.
+- **Wave 2, dependent on A4-ALC and pre-launch implementation locks:** A4-LVL 2 + A4-OVR 4 =
+  **6 training runs**.
+- **After training:** A4-MEC performs six checkpoint evaluations. Fresh TRB confirmation evaluates
+  only the subsequently locked shortlist; its exact evaluation count is intentionally not selected
+  before validation results exist.
+- A4-COR is complete and therefore contributes **zero outstanding training runs**.
+
+## 11. Optional work outside the core 86 runs
 
 - Historical-capacity robustness: repeat 4--6 decisive configurations with the 384x8 instrument
   (`8--12` additional training runs). This is optional and never mixed into the primary matrix.
@@ -255,20 +263,29 @@ configuration and the campaign manifest must update the count rather than silent
 - Fresh TRB confirmation: generate only after configs, code, selection rules, and hashes are locked;
   evaluate selected checkpoints only, with no test-driven reselection.
 
-## 12. Time implication of a 16k choice
+## 12. Updated 16k and 30k GPU-hour estimates
 
 The paired 30k calibration measured 2.25 h for Flat and 2.39 h for Balanced at budget 1,792. Runtime
-also changes with token budget, so a single per-run multiplication is insufficient. Scaling the
-budget-aware campaign estimate gives approximately **141--157 GPU-hours of training at 16k**, plus
-roughly **6--10 GPU-hours** for validation, profiling, mechanism diagnostics, and confirmation.
+also changes substantially with token budget, so the estimate is budget-weighted rather than an
+86-run multiplication by one average.
 
-That is about **6.1--7.0 days of perfectly uninterrupted GPU occupancy** and realistically about
-**8--11 calendar days** on the local machine once process transitions, W&B/image logging,
-evaluation, recovery margin, and active use are included. Therefore 16k is much closer to the
-one-week goal than 30k, but the full matrix still has essentially no one-week slack.
+| Work | 16k GPU-h | 30k GPU-h |
+|---|---:|---:|
+| A4-FRT: 18 configs / 36 runs | 42--46 | 79--86 |
+| A4-ALC: four additions / 8 runs | about 10 | about 19 |
+| A4-CEX: 6 configs / 12 runs | about 6 | about 11 |
+| A4-LVL: one addition / 2 runs | about 3 | about 5 |
+| A4-OVR: two additions / 4 runs | 5--8 | 10--14 |
+| A4-STS at 1,792: 12 configs / 24 runs | 29--31 | 55--58 |
+| **Training subtotal** | **95--104** | **179--193** |
+| Validation, profiling, A4-MEC, final confirmation | 6--10 | 8--12 |
+| **Expected direct GPU workload** | **101--114** | **187--205** |
+| **Recommended reserved campaign budget, including 10--15% recovery/operational margin** | **111--130** | **205--234** |
 
-At 30k, the current estimate remains approximately **265--295 GPU-hours before final evaluation**,
-or 11--12.3 uninterrupted GPU-days and roughly 2--3 calendar weeks locally.
+The direct 16k workload is about 4.2--4.8 days of uninterrupted GPU occupancy; the recommended
+reserve is about 4.6--5.4 continuous days. The direct 30k workload is about 7.8--8.5 uninterrupted
+days; the recommended reserve is about 8.5--9.8 continuous days. Calendar duration can be longer
+when the machine is used interactively or a run needs recovery.
 
 If 16k is selected, the scientifically honest staged rule is:
 

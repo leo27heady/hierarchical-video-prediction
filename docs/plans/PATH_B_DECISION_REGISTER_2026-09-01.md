@@ -90,16 +90,16 @@ The fully expanded, deduplicated matrix and description of every family is autho
 
 1. **A4-COR:** data, split, indexing, target invariance, token accounting, causal-boundary leakage, tiny overfit,
    deterministic replay, performance, convergence, and ranking-stability gates.
-2. **A4-FRT:** budgets `320, 768, 1152, 1792, 2432, 3072`; policies Flat recent, Balanced recent,
-   Linear age, and Geometric age.
+2. **A4-FRT:** budgets `320, 768, 1152, 1792, 2432, 3072`; policies Flat recent, Linear age, and
+   Geometric age. Balanced recent remains in A4-ALC but is excluded from A4-FRT.
 3. **A4-ALC:** budget 1,792 only; seven policies Flat recent, Fine-heavy, Balanced recent,
    Coarse-heavy, Linear age, Geometric age, and Reach-oriented.
 4. **A4-CEX:** six complete recent fine positions held fixed; coarse positions
    `0, 4, 8, 16, 32, 64`; exclusive older coarse support.
 5. **A4-LVL:** one, two, and three levels at 1,792 tokens; adapt the two-seed A4-ALC winner.
 6. **A4-OVR:** nested, exclusive, and residual support at 1,792 tokens.
-7. **A4-STS:** budgets 1,152 and 1,792; fine quotas `64, 32, 16, 8`; recent, uniform, and geometric
-   temporal placement. Reserve exactly 256 fine tokens; coarse bases contain 56 and 96 positions.
+7. **A4-STS:** budget 1,792 only; fine quotas `64, 32, 16, 8`; recent, uniform, and geometric
+   temporal placement. Reserve exactly 256 fine tokens; the coarse base contains 96 positions.
 8. **A4-MEC:** mechanism diagnostics only on locked best flat, best hierarchy, and one failure; no
    new training.
 9. Exact deterministic schedules are implemented in `hvp_hca.allocation`; Article 4 selection is
@@ -107,9 +107,9 @@ The fully expanded, deduplicated matrix and description of every family is autho
 10. Machine IDs use `A4_<family>_B<budget>_L<levels>_<policy>_<overlap>_S<seed>`. Dissertation prose
     uses `F`, `H-B`, `H-L`, `H-G`, `H-F`, `H-C`, and `H-R`, with exact IDs in captions/method tables.
 
-11. The deduplicated primary target is 60 unique configurations and 120 two-seed training runs:
-    24 A4-FRT, three A4-ALC additions, six A4-CEX, one A4-LVL addition, two A4-OVR additions, and
-    24 A4-STS. A4-COR calibrations and A4-MEC evaluations are tracked separately.
+11. The deduplicated primary target is 43 unique configurations and 86 two-seed training runs:
+    18 A4-FRT, four A4-ALC additions, six A4-CEX, one A4-LVL addition, two A4-OVR additions, and
+    12 A4-STS. A4-COR calibrations and A4-MEC evaluations are tracked separately.
 12. Before campaign generation, confirm the dependency rule when Flat wins A4-ALC, implement and
     test the exact adaptive three-level A4-LVL schedule, and give A4-OVR
     nested/exclusive/residual modes distinct scientific semantics. The current
@@ -123,12 +123,12 @@ The fully expanded, deduplicated matrix and description of every family is autho
    parameters, bf16 autocast with fp32 master/optimizer weights, batch 16, four-frame target.
 2. Use fused scaled-dot-product attention and the tested mixed-precision RMSNorm adapter.
 3. The historical 384x8 instrument is retained for 4--6 bounded capacity-robustness repeats after
-   the primary matrix, not for all 120+ one-week runs.
+   the primary matrix, not for all 86 primary runs.
 4. The packed builder gathers selected fine latent cells on CPU and transfers only `(B,K,C)` plus
    physical cell/time identities. It does not stage the complete dense historical fine tensor on
    CUDA.
 5. Keep one rolling full optimizer checkpoint for an active run and compact immutable EMA/model
-   checkpoints for selected milestones. Do not retain 120 large optimizer checkpoints.
+   checkpoints for selected milestones. Do not retain 86 large optimizer checkpoints.
 6. Record analytic tokens, serialized state including metadata, allocated/reserved CUDA peaks,
    inclusions/exclusions, update time, total runtime, parameters, and evaluation time separately.
 7. All Article 4 arms use one learned temporal-embedding table with 100 positions, covering the
@@ -170,9 +170,10 @@ The fully expanded, deduplicated matrix and description of every family is autho
 9. The paired calibration completed on 1 September 2026. Every recorded metric rejects 8k--24k
    under the registered 2%/ranking rule and recommends 30k. This is an evidence-backed recommendation,
    not a frozen schedule: Leonid's explicit confirmation remains required.
-10. The result invalidates the original one-GPU/one-week full-matrix estimate. At 30k, all agreed
-    two-seed cells require roughly 265--295 GPU-hours before evaluation. The campaign scope/timing
-    choice must be confirmed together with the step count.
+10. The result invalidated the original one-GPU/one-week full-matrix estimate. After removing
+    Balanced from A4-FRT and the 1,152-token A4-STS surface, the 86-run matrix is estimated at
+    179--193 training GPU-hours at 30k, or 95--104 training GPU-hours at 16k. Including evaluation
+    and a recovery margin, reserve 205--234 GPU-hours at 30k or 111--130 at 16k.
 11. “Ranking reversal” denotes the observed seed-0 validation ordering crossing between 12k and
     16k (hierarchy better early, Flat better from 16k onward). It is not a code operation or model
     feature. At 16k the later ordering is stable, but neither arm satisfies the registered 2%
