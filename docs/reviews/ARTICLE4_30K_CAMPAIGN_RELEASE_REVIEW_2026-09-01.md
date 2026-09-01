@@ -6,6 +6,9 @@ interpretation
 **Verdict:** **GO for controlled execution after the final clean-commit/W&B preflight; no result
 claim is pre-approved**
 
+The clean online W&B/GPU/data preflight passed and created project
+`leo27heady/hierarchical-video-prediction-article4-v2`; the scientific queue has not been started.
+
 ## Executive assessment
 
 The redesigned campaign is materially stronger than the previous Chapter 4 experiment collection.
@@ -123,4 +126,3 @@ pass.
 
 The operational companion is
 `docs/plans/ARTICLE4_30K_CAMPAIGN_IMPLEMENTATION_AND_OPERATIONS_2026-09-01.md`.
-

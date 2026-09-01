@@ -281,7 +281,19 @@ The release verification covers:
 - full Python compile and test-suite execution;
 - online W&B connectivity/project-creation gate from the final clean source commit.
 
-The exact final commit, test count, preflight path, and W&B gate URL are appended to this section at
-release. The 86 scientific training runs are intentionally not started by code preparation; the
-explicit `run --execute` command remains the launch boundary.
+Release evidence:
 
+- verified implementation commit: `f43b0c51fe5a3d0115a3ea0a1f132b62ab6ef38c` (including the
+  slow-network W&B initialization fix);
+- full suite: **201 passed**; Python compilation passed;
+- representative CUDA campaign smoke: five configurations passed, including 320- and 3,072-token
+  extremes; dependent CUDA checker: level 3, exclusive, and residual paths passed;
+- resume exercise: step 2 restored and continued to step 4 with exact nonduplicated step ledgers;
+- clean online preflight: PASS on RTX 4060 Ti 16 GB with the 3,000/2,700/300 TRB schema and hashes;
+- W&B project and connectivity run:
+  `https://wandb.ai/leo27heady/hierarchical-video-prediction-article4-v2/runs/article4-30k-preflight-f2be4544227f`;
+- machine-readable final launch commit/environment is recorded in
+  `artifacts/v2/article4_primary_30k/campaign/preflight.json` each time preflight is run.
+
+The 86 scientific training runs were intentionally not started by code preparation; the explicit
+`run --execute` command remains the launch boundary.
