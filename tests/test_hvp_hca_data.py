@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import torch
 
-from hvp_hca.allocation import frontier_plan
+from hvp_hca.allocation import frontier_plan, overlap_1792_plan
 from hvp_hca.article4_run import load_article4_run_spec, validate_authorization
 from hvp_hca.data import PackedWindowBatcher
 
@@ -99,3 +99,42 @@ def test_article4_calibration_specs_are_hash_authorized_and_exact() -> None:
         assert spec.plan.token_count == 1792
     assert {spec.policy for spec in loaded} == {"flat_recent", "balanced_recent"}
     assert len({spec.content_hash for spec in loaded}) == 2
+
+
+def test_residual_batch_gathers_same_time_coarse_parent_reference() -> None:
+    data = DummyTRB()
+    plan = overlap_1792_plan("balanced_recent", "residual")
+    batcher = PackedWindowBatcher(
+        data, plan, batch_size=2, seed=0, device="cpu", context_anchor=76
+    )
+    batch = batcher.sample(split="train", seed=91)
+    reference = batch["ctx_f_reference_packed"]
+    assert reference is not None and reference.shape == batch["ctx_f_packed"].shape
+    for row, (clip, start) in enumerate(zip(batch["sampled_clips"], batch["sampled_starts"])):
+        for column, (age, cell) in enumerate(plan.fine_age_cells):
+            parent_row = (cell // 8) // 2
+            parent_column = (cell % 8) // 2
+            expected = data.zc[clip, start - age, :, parent_row, parent_column]
+            torch.testing.assert_close(reference[row, column], expected)
+
+
+def test_explicit_confirmation_windows_are_exact_and_split_checked() -> None:
+    data = DummyTRB()
+    batcher = PackedWindowBatcher(
+        data, frontier_plan(320, "flat_recent"), batch_size=2, seed=0, device="cpu",
+        context_anchor=76,
+    )
+    batch = batcher.sample(
+        split="validation",
+        clip_indices=np.asarray([3, 4]),
+        starts=np.asarray([76, 76]),
+    )
+    np.testing.assert_array_equal(batch["sampled_clips"], [3, 4])
+    np.testing.assert_array_equal(batch["sampled_starts"], [76, 76])
+    np.testing.assert_array_equal(batch["target_frames"], [[76, 77, 78, 79]] * 2)
+    with pytest.raises(ValueError, match="outside the requested split"):
+        batcher.sample(
+            split="validation",
+            clip_indices=np.asarray([0, 4]),
+            starts=np.asarray([76, 76]),
+        )

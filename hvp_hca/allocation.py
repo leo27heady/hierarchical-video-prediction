@@ -22,10 +22,22 @@ class AllocationPlan:
     fine_age_cells: tuple[tuple[int, int], ...]
     policy: str
     overlap: str = "nested"
+    top_ages: tuple[int, ...] = ()
+    fine_representation: str = "absolute"
 
     def __post_init__(self) -> None:
         if self.overlap not in {"nested", "exclusive", "residual"}:
             raise ValueError(f"unknown overlap: {self.overlap}")
+        if self.fine_representation not in {"absolute", "coarse_embedding_residual"}:
+            raise ValueError(f"unknown fine representation: {self.fine_representation}")
+        if self.overlap == "residual" and self.fine_representation != "coarse_embedding_residual":
+            raise ValueError("residual overlap requires coarse_embedding_residual fine tokens")
+        if self.overlap != "residual" and self.fine_representation != "absolute":
+            raise ValueError("only residual overlap may use residual fine tokens")
+        if any(age <= 0 for age in self.top_ages):
+            raise ValueError("top ages must be positive")
+        if len(self.top_ages) != len(set(self.top_ages)):
+            raise ValueError("top ages must be unique")
         if any(age <= 0 for age in self.coarse_ages):
             raise ValueError("coarse ages must be positive")
         if len(self.coarse_ages) != len(set(self.coarse_ages)):
@@ -38,11 +50,19 @@ class AllocationPlan:
 
     @property
     def token_count(self) -> int:
-        return len(self.coarse_ages) * COARSE_TOKENS_PER_TIME + len(self.fine_age_cells)
+        return (
+            len(self.top_ages) * 4
+            + len(self.coarse_ages) * COARSE_TOKENS_PER_TIME
+            + len(self.fine_age_cells)
+        )
 
     @property
     def reach(self) -> int:
-        ages = list(self.coarse_ages) + [age for age, _ in self.fine_age_cells]
+        ages = (
+            list(self.top_ages)
+            + list(self.coarse_ages)
+            + [age for age, _ in self.fine_age_cells]
+        )
         return max(ages, default=0)
 
     @property
@@ -193,6 +213,105 @@ def allocation_1792_plan(policy: str, *, geometric_decay: float = 0.94) -> Alloc
     )
     if plan.token_count != 1792:
         raise AssertionError("ALC plan violated exact budget")
+    return plan
+
+
+def three_level_1792_plan(
+    base_policy: str, *, geometric_decay: float = 0.94
+) -> AllocationPlan:
+    """Extend a selected two-level allocation to a fixed 2x2/4x4/8x8 pyramid.
+
+    The top level spans all 96 available context positions (384 tokens). The remaining
+    1,408 tokens preserve the selected two-level policy's coarse:fine payload ratio, with
+    coarse payload rounded deterministically to the nearest 16-token slot. Fine cells are
+    then placed using the selected policy's temporal rule inside the resulting coarse base.
+    """
+
+    if base_policy == "flat_recent":
+        raise ValueError("three-level adaptation requires a non-flat hierarchy policy")
+    base = allocation_1792_plan(base_policy, geometric_decay=geometric_decay)
+    remaining = 1792 - 96 * 4
+    base_coarse_payload = len(base.coarse_ages) * COARSE_TOKENS_PER_TIME
+    coarse_payload = round(
+        remaining * base_coarse_payload / (base_coarse_payload + base.fine_tokens) / 16
+    ) * 16
+    coarse_payload = min(max(coarse_payload, 16), remaining - 1)
+    coarse_times = coarse_payload // COARSE_TOKENS_PER_TIME
+    fine_total = remaining - coarse_payload
+    if fine_total > coarse_times * FINE_CELLS_PER_TIME:
+        raise ValueError("selected hierarchy ratio cannot be represented inside its coarse base")
+    if base_policy == "linear_age":
+        fine = _fine_from_counts(
+            _weighted_counts(fine_total, range(coarse_times, 0, -1))
+        )
+    elif base_policy == "geometric_age":
+        fine = _fine_from_counts(
+            _weighted_counts(
+                fine_total,
+                (geometric_decay ** index for index in range(coarse_times)),
+            )
+        )
+    else:
+        fine = _recent_fine(fine_total, coarse_times)
+    plan = AllocationPlan(
+        coarse_ages=tuple(range(1, coarse_times + 1)),
+        fine_age_cells=fine,
+        policy=f"three_level_from_{base_policy}",
+        overlap="nested",
+        top_ages=tuple(range(1, 97)),
+    )
+    if plan.token_count != 1792 or plan.reach != 96:
+        raise AssertionError("three-level plan violated the 1,792-token/96-position contract")
+    return plan
+
+
+def overlap_1792_plan(
+    base_policy: str, mode: str, *, geometric_decay: float = 0.94
+) -> AllocationPlan:
+    """Apply a scientifically distinct overlap representation to one A4-ALC payload.
+
+    Exclusive support preserves the base coarse/fine token counts and fine identities, then
+    places the same number of coarse time slots at the newest ages not represented by fine
+    tokens. It is feasible only when those disjoint supports fit inside the 96-frame TRB limit.
+    Residual support keeps the nested token identities but represents fine content as the
+    projected fine token minus its same-time coarse-parent projection.
+    """
+
+    if base_policy == "flat_recent":
+        raise ValueError("overlap comparison requires a non-flat hierarchy policy")
+    if mode not in {"nested", "exclusive", "residual"}:
+        raise ValueError(f"unknown overlap mode: {mode}")
+    base = allocation_1792_plan(base_policy, geometric_decay=geometric_decay)
+    if mode == "nested":
+        return AllocationPlan(
+            base.coarse_ages, base.fine_age_cells, base.policy, overlap="nested"
+        )
+    if mode == "residual":
+        fine_ages = {age for age, _ in base.fine_age_cells}
+        if not fine_ages.issubset(base.coarse_ages):
+            raise ValueError("residual fine tokens require a same-time coarse parent")
+        return AllocationPlan(
+            base.coarse_ages,
+            base.fine_age_cells,
+            base.policy,
+            overlap="residual",
+            fine_representation="coarse_embedding_residual",
+        )
+    fine_ages = {age for age, _ in base.fine_age_cells}
+    available = tuple(age for age in range(1, 97) if age not in fine_ages)
+    if len(available) < len(base.coarse_ages):
+        raise ValueError(
+            f"{base_policy} needs {len(base.coarse_ages)} coarse plus "
+            f"{len(fine_ages)} fine-supported ages, exceeding the 96-frame exclusive limit"
+        )
+    plan = AllocationPlan(
+        coarse_ages=available[: len(base.coarse_ages)],
+        fine_age_cells=base.fine_age_cells,
+        policy=base.policy,
+        overlap="exclusive",
+    )
+    if plan.token_count != 1792:
+        raise AssertionError("exclusive overlap plan violated exact budget")
     return plan
 
 

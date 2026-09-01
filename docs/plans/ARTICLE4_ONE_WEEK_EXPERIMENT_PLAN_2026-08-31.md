@@ -3,7 +3,7 @@
 **Revision:** 2026-09-01
 
 **Status:** historical planning baseline. The matrix was reduced on 2026-09-01 to 43
-configurations / 86 runs; the 16k-versus-30k decision is awaiting user confirmation.
+configurations / 86 runs, and Leonid selected 30,000 updates for every primary run.
 
 **Superseding matrix:**
 `docs/plans/ARTICLE4_COMPLETE_EXPERIMENT_MATRIX_2026-09-01.md`. Its strategy list, counts, and
@@ -91,7 +91,7 @@ stability:
 | batch size | 16 at all six budgets |
 | prediction target | four future fine frames; invariant across context arms |
 | target-time sampling | common first-target anchor 96; target frames 96--99 in every arm |
-| schedule evidence | 8k--24k rejected; 30k recommended by A4-COR, awaiting confirmation |
+| schedule evidence | 8k--24k rejected; 30k confirmed by Leonid on 2026-09-01 |
 | checkpoint selection | validation only, shared evaluation cadence |
 
 The primary predictor head is latent diffusion with v-prediction and a deterministic DDIM sampler,
@@ -294,7 +294,8 @@ Estimate: 3--5 researcher-hours and 1--2 GPU-hours for evaluation.
 
 **Calibration correction:** the table below is retained as the original planning estimate. A4-COR
 rejected 8k and 12k. Scaling the agreed matrix to the recommended 30k requires approximately
-265--295 GPU-hours before evaluation, so it does not fit one week on the local GPU. Do not use the
+179--193 training GPU-hours and 187--205 direct GPU-hours including evaluation, so it does not fit
+one week on the local GPU. Do not use the
 old 8k/12k totals for launch planning.
 
 | Work | Unique configs | Run instances | 8k GPU-h | 12k GPU-h |

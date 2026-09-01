@@ -1,7 +1,7 @@
 # Article 4 complete experiment matrix
 
 **Revision:** 2026-09-01  
-**Status:** experiment content agreed; final update count awaiting Leonid's decision  
+**Status:** 30,000 updates confirmed by Leonid; implementation and campaign ledger prepared
 **Dataset:** Toroidal Re-entry Benchmark (TRB) development split only until locked confirmation  
 **Training seeds:** `0` and `1` for every primary cell
 
@@ -27,13 +27,10 @@ not freeze 16k or 30k updates.
   training and inference CUDA allocated/reserved peaks, parameters, optimizer, activations,
   workspace, update time, and evaluation time are separate endpoints.
 
-The pending schedule choice has two different meanings:
-
-- **16k:** a common fixed-compute endpoint. Claims must say “after 16,000 equal updates.” It is not
-  a convergence claim under the registered 2% rule.
-- **30k:** the first registered checkpoint that passed the paired calibration rule. It supports a
-  late-training/convergence interpretation, but the complete matrix no longer fits one calendar
-  week on the local GPU.
+The schedule is locked at **30,000 updates for all 86 primary runs**. This is the first registered
+checkpoint that passed the paired calibration rule. Intermediate 2k validation points are
+learning-curve diagnostics; models are not given different stopping points. The previously
+considered 16k fixed-compute alternative is superseded.
 
 ## 2. A4-COR: correctness and schedule calibration
 
@@ -104,9 +101,9 @@ of which three are reused and four are new; `4 x 2 seeds = 8 new runs`.
 
 Primary output: equal-budget quality comparison, accompanied by exact reach and measured retained
 bytes. The winner is selected by the predeclared validation rule across both seeds and becomes an
-input to A4-LVL and A4-OVR. **Proposed dependency rule, still to lock before launch:** if Flat wins,
-it remains the scientific winner, while the downstream hierarchy-only mechanism tests use the best
-**non-flat hierarchical** allocation so that “levels” and “overlap” remain defined.
+input to A4-LVL and A4-OVR. If Flat wins, it remains the scientific winner, while the downstream
+hierarchy-only mechanism tests use the best **non-flat hierarchical** allocation so that “levels”
+and “overlap” remain defined.
 
 ## 5. A4-CEX: fixed detail with expanding older coarse context
 
@@ -143,11 +140,13 @@ allocation, or does it merely add abstraction loss?
 
 Matrix expansion after reuse: one new configuration and two new runs.
 
-**Pre-launch lock still required:** the code supports level metadata but does not yet implement the
-exact adaptive three-level allocation. Before launching A4-LVL, freeze and test a deterministic
-mapping from the selected two-level payload to top/coarse/fine token counts (costs 4/16/64 per full
-time position), including exact budget, reach, time identities, and parameter-count parity. This
-must be a predeclared transformation, not a schedule chosen after seeing the three-level result.
+The three-level rule is executable and predeclared. A complete 96-position 2x2 top base costs 384
+tokens. The remaining 1,408 tokens preserve the selected two-level policy's coarse:fine payload
+ratio, with coarse payload rounded deterministically to 16-token slots; the selected policy places
+the remaining fine cells inside that coarse base. The top stream is context-only, so the four-frame
+coarse/fine prediction target and loss remain unchanged. The three-level tokenizer adds 1,280
+parameters (7,557,792 versus 7,556,512); disclose this small difference and do not describe A4-LVL
+as a perfectly parameter-identical allocation contrast.
 
 Primary output: one three-point comparison. Any unavoidable capacity or representation change is
 reported explicitly rather than called a pure allocation effect.
@@ -167,11 +166,13 @@ The base payload is the best non-flat hierarchical A4-ALC allocation at 1,792 to
 
 Target matrix: three displayed configurations, one reused and two new, hence four new runs.
 
-**Pre-launch lock still required:** `overlap` is presently metadata on `AllocationPlan`; the packed
-builder does not yet give all three modes distinct scientific semantics. In particular, “nested”
-and “residual” would currently select the same token identities. A4-OVR is not launch-ready until
-exclusive reallocation and the fine-residual transform are implemented and unit-tested. This is a
-code/design gap, not an experimental result.
+All three overlap modes have executable, tested semantics. Exclusive keeps the selected fine
+identities and coarse slot count but moves coarse support to the newest ages not represented by
+fine tokens. Because this must fit within 96 ages, the resolver selects the best two-seed policy
+among the overlap-feasible Fine-heavy, Balanced, and Coarse-heavy allocations. Residual retains
+nested identities and encodes each fine token as its projected fine content minus the projected
+same-time 4x4 coarse-parent content. It therefore changes the information representation without
+changing token count or model parameters.
 
 Primary output: a direct three-category equal-budget plot. If equal nominal reach is impossible
 because of integer token costs, disclose the one-slot difference.
@@ -287,15 +288,14 @@ reserve is about 4.6--5.4 continuous days. The direct 30k workload is about 7.8-
 days; the recommended reserve is about 8.5--9.8 continuous days. Calendar duration can be longer
 when the machine is used interactively or a run needs recovery.
 
-If 16k is selected, the scientifically honest staged rule is:
+The following was the rejected 16k contingency and is retained for provenance only:
 
 1. train every primary cell to exactly 16k and interpret the matrix as equal-compute screening;
 2. lock the decisive/Pareto configurations using validation only;
 3. resume only those selected checkpoints to 30k to test whether their ranking persists;
 4. reserve “converged” or “best achievable quality” language for the resumed comparison.
 
-This preserves the broad matrix without pretending the A4-COR convergence criterion passed at
-16k.
+Leonid selected 30k, so this contingency is not used for the primary campaign.
 
 ## 13. What “ranking reversal” means
 

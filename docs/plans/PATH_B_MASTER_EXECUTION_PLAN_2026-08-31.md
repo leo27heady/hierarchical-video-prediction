@@ -166,9 +166,11 @@ The current manuscript remains readable throughout migration. A chapter is promo
 - [x] Add versioned config schema and run registry scaffold.
 - [x] Purpose-lock a new TRB development split and exclude the previously used legacy test file.
 - [x] Finish the config-driven Article 4 packer/runner and paired 30k convergence calibration.
-- [ ] Obtain Leonid's confirmation of the recommended 30k schedule and revised campaign timing.
+- [x] Obtain Leonid's confirmation of the recommended 30k schedule and revised campaign timing.
+- [x] Prepare and verify the complete resumable 43-configuration / 86-run Article 4 campaign.
+- [x] Lock development-only post-training selection and fresh TRB confirmation rules.
 - [ ] Add the integrated state-contract and positional-encoding tests.
-- [ ] Execute Article 4 Week 1 gates.
+- [ ] Execute the Article 4 30k campaign (estimated 187--205 direct GPU-hours on one RTX 4060 Ti).
 - [ ] Execute Article 5 Week 2 gates.
 - [ ] Start the English manuscript with the approved structure and transfer ledger.
 
@@ -181,5 +183,8 @@ This file is the durable continuation point if agent context is compacted. Befor
 3. `C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\reviews\DISSERTATION_CODE_EXPERIMENT_AND_RESTRUCTURE_REVIEW_2026-08-31.md`;
 4. `docs/dissertation/DISSERTATION_REVIEWER_PROVENANCE_AND_REPRODUCTION_GUIDE_2026-08-29.md`;
 5. the run registry and A4-COR status before starting or resuming GPU work.
+
+The complete Article 4 launch and recovery guide is
+`docs/plans/ARTICLE4_30K_CAMPAIGN_IMPLEMENTATION_AND_OPERATIONS_2026-09-01.md`.
 
 Do not assume that a completed pilot is a publishable confirmed experiment. Check the run registry and gate status first.

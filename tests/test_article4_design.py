@@ -19,10 +19,18 @@ DESIGN = ROOT / "experiments" / "v2" / "designs" / "article4_matrix_2026-09-01.j
 def test_approved_article4_design_resolves_to_exact_allocation_contracts() -> None:
     design = json.loads(DESIGN.read_text(encoding="utf-8"))
     assert design["training_seeds"] == [0, 1]
-    assert not design["launch_authorized"]
+    assert design["launch_authorized"]
+    assert design["instrument_candidate"]["confirmed_update_count"] == 30000
+    assert design["deduplicated_counts"] == {
+        "unique_configurations": 43,
+        "training_runs": 86,
+        "immediate_wave_runs": 80,
+        "dependent_wave_runs": 6,
+    }
     decay = design["allocation"]["geometric_decay"]
 
     frontier = design["series"]["A4-FRT"]
+    assert frontier["policies"] == ["flat_recent", "linear_age", "geometric_age"]
     for budget in frontier["budgets"]:
         for policy in frontier["policies"]:
             assert frontier_plan(budget, policy, geometric_decay=decay).token_count == budget
@@ -37,6 +45,7 @@ def test_approved_article4_design_resolves_to_exact_allocation_contracts() -> No
         assert plan.token_count == 384 + 16 * coarse_times
 
     surface = design["series"]["A4-STS"]
+    assert surface["budgets"] == [1792]
     for budget in surface["budgets"]:
         for quota in surface["spatial_quotas"]:
             for policy in surface["temporal_policies"]:

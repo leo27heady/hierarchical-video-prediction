@@ -110,10 +110,10 @@ The fully expanded, deduplicated matrix and description of every family is autho
 11. The deduplicated primary target is 43 unique configurations and 86 two-seed training runs:
     18 A4-FRT, four A4-ALC additions, six A4-CEX, one A4-LVL addition, two A4-OVR additions, and
     12 A4-STS. A4-COR calibrations and A4-MEC evaluations are tracked separately.
-12. Before campaign generation, confirm the dependency rule when Flat wins A4-ALC, implement and
-    test the exact adaptive three-level A4-LVL schedule, and give A4-OVR
-    nested/exclusive/residual modes distinct scientific semantics. The current
-    `AllocationPlan.overlap` field alone does not implement those semantics.
+12. The dependency rule is locked: Flat remains the scientific winner if it wins A4-ALC, while
+    A4-LVL uses the best non-flat hierarchy. A4-OVR uses the best overlap-feasible hierarchy among
+    Fine-heavy, Balanced, and Coarse-heavy. Exact three-level and overlap semantics are implemented
+    and tested in `hvp_hca.allocation` and the packed model/data path.
 13. A4-STS uses nested coarse/fine support in the authoritative generator. The older `EXCL`
     seed-0 scaffold is non-authoritative and must be regenerated before launch.
 
@@ -168,8 +168,8 @@ The fully expanded, deduplicated matrix and description of every family is autho
    seeds and are not reused as seed-confirmed final cells unless the final config/protocol is
    byte-identical and reuse was predeclared.
 9. The paired calibration completed on 1 September 2026. Every recorded metric rejects 8k--24k
-   under the registered 2%/ranking rule and recommends 30k. This is an evidence-backed recommendation,
-   not a frozen schedule: Leonid's explicit confirmation remains required.
+   under the registered 2%/ranking rule and recommends 30k. Leonid confirmed 30,000 updates for
+   every primary Article 4 run on 1 September 2026.
 10. The result invalidated the original one-GPU/one-week full-matrix estimate. After removing
     Balanced from A4-FRT and the 1,152-token A4-STS surface, the 86-run matrix is estimated at
     179--193 training GPU-hours at 30k, or 95--104 training GPU-hours at 16k. Including evaluation
@@ -178,9 +178,9 @@ The fully expanded, deduplicated matrix and description of every family is autho
     16k (hierarchy better early, Flat better from 16k onward). It is not a code operation or model
     feature. At 16k the later ordering is stable, but neither arm satisfies the registered 2%
     convergence rule.
-12. If Leonid selects 16k, treat it as an equal-update fixed-compute matrix and resume only locked
-    decisive/Pareto cells to 30k for a late-training ranking check. Do not describe all 16k cells as
-    converged.
+12. The 16k contingency is superseded. Every primary cell trains to 30k, and the final 30k
+    checkpoint is the primary endpoint. Intermediate validation points are diagnostics, not
+    per-arm early-stopping choices.
 
 ## 8. Article 5 architecture and evidence decisions
 
@@ -251,7 +251,7 @@ seeds, split purpose, checkpoint selection, and gate status first.
 
 ## 12. Full-campaign execution requirements requested on 1 September 2026
 
-These requirements become implementation-authorized only after Leonid confirms the schedule:
+Leonid confirmed the schedule. The following requirements are implementation-authorized:
 
 1. Provide one command/script that consumes an immutable ordered list of every agreed Article 4
    experiment and runs it to completion.
@@ -273,4 +273,25 @@ These requirements become implementation-authorized only after Leonid confirms t
 7. Supply an English architecture/data-flow/configuration description, operating guide, exact
    launch/resume/status commands, and troubleshooting/recovery instructions.
 8. Do not generate configs, create the W&B project, or launch post-calibration experiments before
-   Leonid explicitly confirms the update count and execution path.
+   Leonid explicitly confirms the update count and execution path. This condition was satisfied on
+   1 September 2026; the 80 concrete wave-1 specs and the six-run dependency resolver are prepared.
+9. Authoritative campaign ledger:
+   `experiments/v2/campaigns/article4_primary_30k_2026-09-01.json`; single controller:
+   `scripts/v2/run_article4_campaign.py`; worker: `scripts/v2/train_article4_campaign.py`.
+10. W&B project: `hierarchical-video-prediction-article4-v2`; group:
+    `article4-30k-primary-2026-09-01`. Local evidence is canonical and can be replayed after an
+    outage with `scripts/v2/sync_article4_wandb.py`.
+11. The single controller continues beyond the 86 training runs. It aggregates final 30k
+    development metrics, writes a hash-locked selection ledger, generates and audits a fresh TRB
+    confirmation set, evaluates the locked shortlist, and records bounded A4-MEC attention and
+    re-entry diagnostics through `scripts/v2/finalize_article4_campaign.py`.
+12. The post-training selection roles are fixed before launch: best Flat at 1,792; best non-flat
+    A4-ALC hierarchy at 1,792; the worst A4-ALC hierarchy as the mechanism failure case; and the
+    smallest hierarchical state within 5% of matched Flat quality as the memory-Pareto candidate.
+    All values are two-seed arithmetic means from final 30k development validation only.
+13. Fresh TRB confirmation is fixed at 500 clips x 200 frames, seed `26090141`, world 192,
+    viewport 64, three digits, speed 4, `p_cont=0.9`, and `p_hold=0.1`. The finalizer writes the
+    selection ledger before generating or reading the holdout, then checks hashes, action/position
+    consistency, uniqueness, and exact collision absence against development data.
+14. The complete implementation/operations record is
+    `docs/plans/ARTICLE4_30K_CAMPAIGN_IMPLEMENTATION_AND_OPERATIONS_2026-09-01.md`.

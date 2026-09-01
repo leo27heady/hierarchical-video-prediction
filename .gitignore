@@ -20,6 +20,7 @@ hvp.egg-info/
 /artifacts/v2/runs/
 /artifacts/v2/registry/
 /artifacts/v2/smoke/
+/artifacts/v2/article4_primary_30k/
 /artifacts/autoencoders/
 /artifacts/e7a_codec_robustness/
 /artifacts/e8a_pose_mosaic/

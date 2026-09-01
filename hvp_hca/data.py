@@ -39,6 +39,20 @@ def load_manifest(path: str | Path) -> tuple[dict[str, Any], str]:
     return manifest, hashlib.sha256(raw).hexdigest()
 
 
+def load_confirmation_manifest(path: str | Path) -> tuple[dict[str, Any], str]:
+    """Load a sealed TRB holdout manifest without weakening the development loader."""
+
+    manifest_path = Path(path)
+    raw = manifest_path.read_bytes()
+    manifest = json.loads(raw)
+    if manifest.get("purpose") != "confirmation_holdout":
+        raise ValueError("Article 4 confirmation loader requires purpose=confirmation_holdout")
+    policy = manifest.get("access_policy", {})
+    if policy.get("training") != "forbidden":
+        raise ValueError("confirmation manifest must explicitly forbid training")
+    return manifest, hashlib.sha256(raw).hexdigest()
+
+
 def _channel_stats(tensor: Tensor, indices: np.ndarray, chunk_size: int = 64) -> tuple[Tensor, Tensor]:
     total = 0
     sums = torch.zeros(tensor.shape[2], dtype=torch.float64)
@@ -120,6 +134,51 @@ def load_trb_development(
     )
 
 
+def load_trb_confirmation(
+    ae: torch.nn.Module,
+    manifest_path: str | Path,
+    *,
+    train_stats: tuple[Tensor, Tensor, Tensor, Tensor],
+    top_stats: tuple[Tensor, Tensor] | None = None,
+    verify_source_hashes: bool = True,
+) -> LoadedTRB:
+    """Encode a sealed holdout with development-train standardization constants only."""
+
+    manifest, manifest_hash = load_confirmation_manifest(manifest_path)
+    artifacts = manifest["artifacts"]
+    if verify_source_hashes:
+        for name, artifact in artifacts.items():
+            if sha256_file(artifact["path"]) != artifact["sha256"]:
+                raise ValueError(f"confirmation {name} SHA-256 mismatch")
+    configuration = manifest["configuration"]
+    data = ActionHierData(
+        ae,
+        artifacts["clips"]["path"],
+        artifacts["actions"]["path"],
+        n_ctx=6,
+        k=TARGET_HORIZON,
+        W=int(configuration["world"]),
+        speed=int(configuration["speed"]),
+        standardize=True,
+        stats=train_stats,
+    )
+    # A confirmation set is evaluation-only. An empty train pool makes accidental training fail
+    # closed, while the validation alias exposes every clip to the locked evaluator.
+    all_indices = np.arange(data.N, dtype=np.int64)
+    data.train_idx = np.asarray([], dtype=np.int64)
+    data.val_idx = all_indices
+    if top_stats is not None:
+        from hvp_rev import hier3
+
+        hier3.attach_top(data, ae, stats=top_stats)
+    return LoadedTRB(
+        data=data,
+        manifest=manifest,
+        manifest_path=Path(manifest_path).resolve(),
+        manifest_sha256=manifest_hash,
+    )
+
+
 class PackedWindowBatcher:
     """Sample invariant four-frame targets and transfer only the selected fine state."""
 
@@ -150,11 +209,13 @@ class PackedWindowBatcher:
         self.device = torch.device(device)
         self.rng = np.random.default_rng(seed)
         # WindowDiT consumes coarse slots oldest to newest.
+        self.top_ages = torch.tensor(sorted(plan.top_ages, reverse=True), dtype=torch.long)
         self.coarse_ages = torch.tensor(sorted(plan.coarse_ages, reverse=True), dtype=torch.long)
         self.fine_ages = torch.tensor([age for age, _ in plan.fine_age_cells], dtype=torch.long)
         self.fine_cells = torch.tensor([cell for _, cell in plan.fine_age_cells], dtype=torch.long)
         self.fine_rows = self.fine_cells // 8
         self.fine_columns = self.fine_cells % 8
+        self.top_frame_ids = self.context_anchor - self.top_ages
         self.coarse_frame_ids = self.context_anchor - self.coarse_ages
         self.fine_frame_ids = plan.reach - self.fine_ages
 
@@ -164,23 +225,48 @@ class PackedWindowBatcher:
         split: str,
         seed: int | None = None,
         include_frames: bool = False,
+        clip_indices: np.ndarray | None = None,
+        starts: np.ndarray | None = None,
     ) -> dict[str, Tensor | np.ndarray]:
         if split not in {"train", "validation"}:
             raise ValueError("split must be train or validation")
-        rng = np.random.default_rng(seed) if seed is not None else self.rng
         pool = self.data.train_idx if split == "train" else self.data.val_idx
-        clips_np = rng.choice(pool, size=self.batch_size, replace=True).astype(np.int64)
-        # numpy integers uses an exclusive upper bound; +1 admits the last valid start.
-        starts_np = rng.integers(
-            self.context_anchor,
-            self.data.T - TARGET_HORIZON + 1,
-            size=self.batch_size,
-            dtype=np.int64,
-        )
+        if (clip_indices is None) != (starts is None):
+            raise ValueError("clip_indices and starts must be supplied together")
+        if clip_indices is None:
+            rng = np.random.default_rng(seed) if seed is not None else self.rng
+            clips_np = rng.choice(pool, size=self.batch_size, replace=True).astype(np.int64)
+            # numpy integers uses an exclusive upper bound; +1 admits the last valid start.
+            starts_np = rng.integers(
+                self.context_anchor,
+                self.data.T - TARGET_HORIZON + 1,
+                size=self.batch_size,
+                dtype=np.int64,
+            )
+        else:
+            clips_np = np.asarray(clip_indices, dtype=np.int64)
+            starts_np = np.asarray(starts, dtype=np.int64)
+            if clips_np.shape != (self.batch_size,) or starts_np.shape != (self.batch_size,):
+                raise ValueError("explicit clip_indices and starts must match batch_size")
+            if not set(clips_np.tolist()).issubset(set(np.asarray(pool).tolist())):
+                raise ValueError("explicit clip index is outside the requested split")
+            if np.any(starts_np < self.context_anchor) or np.any(
+                starts_np > self.data.T - TARGET_HORIZON
+            ):
+                raise ValueError("explicit start cannot support the common context and target")
         clips = torch.from_numpy(clips_np)
         starts = torch.from_numpy(starts_np)
         target_offsets = torch.arange(TARGET_HORIZON, dtype=torch.long)
         target_frames = starts[:, None] + target_offsets[None, :]
+
+        if self.top_ages.numel():
+            if not hasattr(self.data, "zt"):
+                raise ValueError("three-level allocation requires data.zt top latents")
+            top_frames = starts[:, None] - self.top_ages[None, :]
+            ctx_t = self.data.zt[clips[:, None], top_frames]
+        else:
+            top_frames = torch.empty(self.batch_size, 0, dtype=torch.long)
+            ctx_t = None
 
         if self.coarse_ages.numel():
             coarse_frames = starts[:, None] - self.coarse_ages[None, :]
@@ -202,16 +288,35 @@ class PackedWindowBatcher:
         ]
         if packed_fine.shape != (self.batch_size, self.plan.fine_tokens, LAT):
             raise AssertionError(f"unexpected packed fine shape: {tuple(packed_fine.shape)}")
+        packed_reference = None
+        if self.plan.fine_representation == "coarse_embedding_residual":
+            parent_rows = self.fine_rows // 2
+            parent_columns = self.fine_columns // 2
+            packed_reference = self.data.zc[
+                clips[:, None],
+                fine_frames,
+                :,
+                parent_rows[None, :],
+                parent_columns[None, :],
+            ]
+            if packed_reference.shape != packed_fine.shape:
+                raise AssertionError(
+                    f"unexpected packed residual reference shape: {tuple(packed_reference.shape)}"
+                )
         tgt_c = self.data.zc[clips[:, None], target_frames]
         tgt_f = self.data.zf[clips[:, None], target_frames]
         actions_np = self.data.acts[clips_np[:, None], target_frames.numpy()]
         actions = torch.from_numpy(np.asarray(actions_np, dtype=np.int64))
 
         output: dict[str, Tensor | np.ndarray] = {
+            "ctx_t": None if ctx_t is None else ctx_t.to(self.device),
             "ctx_c": ctx_c.to(self.device),
             "ctx_f": torch.empty(self.batch_size, 0, LAT, 8, 8, device=self.device),
             "ctx_c_frame_ids": coarse_ids.to(self.device),
             "ctx_f_packed": packed_fine.to(self.device),
+            "ctx_f_reference_packed": (
+                None if packed_reference is None else packed_reference.to(self.device)
+            ),
             "ctx_f_ids": self.fine_cells[None, :].expand(self.batch_size, -1).to(self.device),
             "ctx_f_frame_ids": self.fine_frame_ids[None, :].expand(self.batch_size, -1).to(self.device),
             "tgt_c": tgt_c.to(self.device),
@@ -219,6 +324,7 @@ class PackedWindowBatcher:
             "actions": actions.to(self.device),
             "sampled_clips": clips_np,
             "sampled_starts": starts_np,
+            "context_top_frames": top_frames.numpy(),
             "context_coarse_frames": (
                 starts_np[:, None] - self.coarse_ages.numpy()[None, :]
             ),
@@ -232,15 +338,24 @@ class PackedWindowBatcher:
             output["gt_frames_01"] = torch.from_numpy(
                 np.asarray(frames, dtype=np.float32) / 255.0
             ).unsqueeze(2).to(self.device)
+            last = self.data.clips_u8[clips_np, starts_np - 1]
+            output["last_context_frame_01"] = torch.from_numpy(
+                np.asarray(last, dtype=np.float32) / 255.0
+            ).unsqueeze(1).to(self.device)
         return output
 
     def state_bytes_per_sample(self, *, latent_dtype: torch.dtype = torch.bfloat16) -> dict[str, int]:
         latent_bytes = torch.empty((), dtype=latent_dtype).element_size()
         index_bytes = torch.empty((), dtype=torch.int64).element_size()
+        top_values = len(self.plan.top_ages) * 4 * LAT
         coarse_values = len(self.plan.coarse_ages) * 16 * LAT
         fine_values = self.plan.fine_tokens * LAT
-        payload = (coarse_values + fine_values) * latent_bytes
-        metadata = (len(self.plan.coarse_ages) + 2 * self.plan.fine_tokens) * index_bytes
+        payload = (top_values + coarse_values + fine_values) * latent_bytes
+        metadata = (
+            len(self.plan.top_ages)
+            + len(self.plan.coarse_ages)
+            + 2 * self.plan.fine_tokens
+        ) * index_bytes
         return {
             "latent_payload": payload,
             "frame_and_cell_metadata": metadata,

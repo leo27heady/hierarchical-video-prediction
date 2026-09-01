@@ -8,7 +8,9 @@ from hvp_hca.allocation import (
     cell_order_for_age,
     coarse_expansion_plan,
     frontier_plan,
+    overlap_1792_plan,
     spatial_temporal_plan,
+    three_level_1792_plan,
 )
 
 
@@ -71,3 +73,40 @@ def test_spatial_cell_order_is_a_nested_permutation_for_each_age() -> None:
         assert set(order) == set(range(64))
         assert set(order[:8]).issubset(order[:16])
         assert set(order[:16]).issubset(order[:32])
+
+
+@pytest.mark.parametrize(
+    "policy",
+    [
+        "fine_heavy",
+        "balanced_recent",
+        "coarse_heavy",
+        "linear_age",
+        "geometric_age",
+        "reach_optimized",
+    ],
+)
+def test_three_level_adaptation_is_exact_and_reaches_full_history(policy: str) -> None:
+    plan = three_level_1792_plan(policy)
+    assert plan.token_count == 1792
+    assert plan.reach == 96
+    assert plan.top_ages == tuple(range(1, 97))
+    assert plan.fine_representation == "absolute"
+
+
+@pytest.mark.parametrize("policy", ["fine_heavy", "balanced_recent", "coarse_heavy"])
+def test_overlap_modes_are_exact_and_scientifically_distinct(policy: str) -> None:
+    nested = overlap_1792_plan(policy, "nested")
+    exclusive = overlap_1792_plan(policy, "exclusive")
+    residual = overlap_1792_plan(policy, "residual")
+    assert {nested.token_count, exclusive.token_count, residual.token_count} == {1792}
+    assert set(exclusive.coarse_ages).isdisjoint(age for age, _ in exclusive.fine_age_cells)
+    assert set(age for age, _ in residual.fine_age_cells).issubset(residual.coarse_ages)
+    assert residual.fine_representation == "coarse_embedding_residual"
+    assert exclusive.coarse_ages != nested.coarse_ages
+
+
+@pytest.mark.parametrize("policy", ["linear_age", "geometric_age", "reach_optimized"])
+def test_infeasible_exclusive_overlap_fails_closed(policy: str) -> None:
+    with pytest.raises(ValueError, match="96-frame exclusive limit"):
+        overlap_1792_plan(policy, "exclusive")

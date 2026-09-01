@@ -198,13 +198,17 @@ class WindowDiT(nn.Module):
     def __init__(self, n_ctx_c=48, n_ctx_f=6, win=WIN, d=384, depth=8, heads=6, lat=LAT,
                  mode="diff", stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1,
                  fine_cells_per_frame=None, fine_token_budget=None,
-                 temporal_embedding_positions=None, temporal_context_span=None):
+                 temporal_embedding_positions=None, temporal_context_span=None,
+                 top_context_only=False):
         super().__init__()
         self.n_ctx_c, self.n_ctx_f, self.win, self.lat, self.d = n_ctx_c, n_ctx_f, win, lat, d
         self.mode, self.stride_c, self.n_hist_f = mode, stride_c, n_hist_f
         # [hier3] optional TOP (2x2 = 4 tok/frame) context stream + targets; n_ctx_t=0 (default)
         # keeps the module IDENTICAL to the 2-level version (same state dict, same seq).
         self.n_ctx_t, self.stride_t = n_ctx_t, stride_t
+        self.top_context_only = bool(top_context_only)
+        if self.top_context_only and n_ctx_t <= 0:
+            raise ValueError("top_context_only requires a non-empty top context")
         self.fine_cells_per_frame = fine_cells_per_frame
         self.fine_token_budget = fine_token_budget
         if fine_cells_per_frame is not None and fine_token_budget is not None:
@@ -228,7 +232,11 @@ class WindowDiT(nn.Module):
         if stride_t > 1 and n_ctx_t > 0:
             assert win % stride_t == 0, "top stride must divide the prediction window"
         self.n_tgt_c = win // stride_c if (stride_c > 1 and n_ctx_c > 0) else win
-        self.n_tgt_t = 0 if n_ctx_t == 0 else (win // stride_t if stride_t > 1 else win)
+        self.n_tgt_t = (
+            0
+            if n_ctx_t == 0 or self.top_context_only
+            else (win // stride_t if stride_t > 1 else win)
+        )
         span_c = n_ctx_c * stride_c
         span_t = n_ctx_t * stride_t
         hist_reach = (n_ctx_f + 1 + 4 * (n_hist_f - 1) + 1) if n_hist_f > 0 else 0
@@ -258,7 +266,7 @@ class WindowDiT(nn.Module):
         self.head_c = nn.Linear(d, lat)
         self.head_f = nn.Linear(d, lat)
         adas, heads_ = [self.final_c_ada, self.final_f_ada], [self.head_c, self.head_f]
-        if n_ctx_t > 0:
+        if self.n_tgt_t > 0:
             self.norm_t = nn.LayerNorm(d, elementwise_affine=False, eps=1e-6)
             self.final_t_ada = nn.Sequential(nn.SiLU(), nn.Linear(d, 2 * d))
             self.head_t = nn.Linear(d, lat)
@@ -276,7 +284,8 @@ class WindowDiT(nn.Module):
                              + self.n_tgt_t * 4 + self.n_tgt_c * 16 + win * 64)
 
     def _ctx_tokens(self, ctx_c, ctx_f, ctx_t=None, ctx_c_frame_ids=None, ctx_f_ids=None,
-                    ctx_f_frame_ids=None, ctx_f_packed=None):
+                    ctx_f_frame_ids=None, ctx_f_packed=None,
+                    ctx_f_reference_packed=None):
         """Context token list + (level,role,frame) ids, all in TRUE frame units (base = tj).
         Top slots first (level 2, stride_t anchors at block ends), then coarse, then fine.
         Coarse slots (stride s): anchors at frame ids s-1, 2s-1, ..., base-1 (block ends).
@@ -288,6 +297,8 @@ class WindowDiT(nn.Module):
         # (f+1)*stride-1, which assumed the stream is the DEEPEST one (span == base) -- true for
         # every 2-level arm (bit-identical there), wrong for hier3 where top outreaches coarse.
         f0_top = self.base - self.n_ctx_t * self.stride_t
+        if self.n_ctx_t > 0 and ctx_t is None:
+            raise ValueError("top context latents are required when n_ctx_t is non-zero")
         for f in range(self.n_ctx_t):
             x, lv, rl, fm = self.tok.tokenize_level(ctx_t[:, f], level=2, role=0,
                                                     frame_idx=f0_top + (f + 1) * self.stride_t - 1)
@@ -338,7 +349,12 @@ class WindowDiT(nn.Module):
                         f"got {tuple(ctx_f_packed.shape)}"
                     )
                 x, lv, rl, fm = self.tok.tokenize_packed_sequence(
-                    ctx_f_packed, absolute_frames, ctx_f_ids, level=1, role=0
+                    ctx_f_packed,
+                    absolute_frames,
+                    ctx_f_ids,
+                    level=1,
+                    role=0,
+                    reference=ctx_f_reference_packed,
                 )
             xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
             return xs, lvs, rls, fms
@@ -361,7 +377,7 @@ class WindowDiT(nn.Module):
 
     def forward(self, yc, yf, ctx_c, ctx_f, t, actions, yt=None, ctx_t=None,
                 ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
-                ctx_f_packed=None):
+                ctx_f_packed=None, ctx_f_reference_packed=None):
         """yc:(B,n_tgt_c,LAT,4,4) yf:(B,win,LAT,8,8) noisy targets (or dummies for reg);
         ctx_c:(B,n_ctx_c,...) ctx_f:(B,n_hist_f+n_ctx_f,...); t:(B,); actions:(B,win) one per
         target frame. [hier3] yt:(B,n_tgt_t,LAT,2,2) / ctx_t:(B,n_ctx_t,LAT,2,2) only when
@@ -374,6 +390,7 @@ class WindowDiT(nn.Module):
             ctx_c, ctx_f, ctx_t, ctx_c_frame_ids=ctx_c_frame_ids,
             ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
             ctx_f_packed=ctx_f_packed,
+            ctx_f_reference_packed=ctx_f_reference_packed,
         )
         n_ctx_tok = sum(x.shape[1] for x in xs)
         groups = []                                       # (kind, j, n_tok) in token order
@@ -475,7 +492,7 @@ class WindowDiffusion:
 
     def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
              ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
-             ctx_f_packed=None):
+             ctx_f_packed=None, ctx_f_reference_packed=None):
         B, dev = tgt_f.shape[0], tgt_f.device
         ti = torch.randint(1, self.Ttr + 1, (B,), device=dev)
         ab = self.abar.to(dev)[ti].view(B, 1, 1, 1, 1)
@@ -485,9 +502,11 @@ class WindowDiffusion:
         vc_t, vf_t = sa * nc - sb * tgt_c, sa * nf - sb * tgt_f
         if tgt_t is None:
             vc, vf = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
+                              ctx_t=ctx_t,
                               ctx_c_frame_ids=ctx_c_frame_ids,
                               ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
-                              ctx_f_packed=ctx_f_packed)
+                              ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
             return F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
         nt = torch.randn_like(tgt_t)
         yt = sa * tgt_t + sb * nt
@@ -495,14 +514,15 @@ class WindowDiffusion:
         vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
                               yt=yt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
                               ctx_c_frame_ids=ctx_c_frame_ids,
-                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed)
+                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
         return (F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
                 + F.mse_loss(vt.float(), vt_t))
 
     @torch.no_grad()
     def sample(self, ctx_c, ctx_f, actions, n_steps=16, ctx_t=None,
                ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
-               ctx_f_packed=None):
+               ctx_f_packed=None, ctx_f_reference_packed=None):
         """Returns (yc, yf) for 2-level nets (unchanged) or (yc, yf, yt) when the net has a top
         stream -- callers of 3-level arms must unpack 3."""
         B, dev = ctx_f.shape[0], ctx_f.device
@@ -522,13 +542,16 @@ class WindowDiffusion:
                                       ctx_f_ids=ctx_f_ids,
                                       ctx_c_frame_ids=ctx_c_frame_ids,
                                       ctx_f_frame_ids=ctx_f_frame_ids,
-                                      ctx_f_packed=ctx_f_packed)
+                                      ctx_f_packed=ctx_f_packed,
+                                      ctx_f_reference_packed=ctx_f_reference_packed)
                 vt = vt.float()
             else:
                 vc, vf = self.net(yc, yf, ctx_c, ctx_f, t, actions,
+                                  ctx_t=ctx_t,
                                   ctx_c_frame_ids=ctx_c_frame_ids,
                                   ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
-                                  ctx_f_packed=ctx_f_packed)
+                                  ctx_f_packed=ctx_f_packed,
+                                  ctx_f_reference_packed=ctx_f_reference_packed)
             vc, vf = vc.float(), vf.float()
             x0c, x0f = sa * yc - sb * vc, sa * yf - sb * vf
             epc, epf = sb * yc + sa * vc, sb * yf + sa * vf
@@ -555,40 +578,46 @@ class WindowRegression:
 
     def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
              ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
-             ctx_f_packed=None):
+             ctx_f_packed=None, ctx_f_reference_packed=None):
         B, dev = tgt_f.shape[0], tgt_f.device
         zc = torch.zeros_like(tgt_c); zf = torch.zeros_like(tgt_f)
         if tgt_t is None:
             pc, pf = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                              ctx_t=ctx_t,
                               ctx_c_frame_ids=ctx_c_frame_ids,
                               ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
-                              ctx_f_packed=ctx_f_packed)
+                              ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
             return F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
         zt = torch.zeros_like(tgt_t)
         pc, pf, pt = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
                               yt=zt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
                               ctx_c_frame_ids=ctx_c_frame_ids,
-                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed)
+                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
         return (F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
                 + F.smooth_l1_loss(pt.float(), tgt_t))
 
     @torch.no_grad()
     def sample(self, ctx_c, ctx_f, actions, n_steps=0, ctx_t=None,
                ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
-               ctx_f_packed=None):
+               ctx_f_packed=None, ctx_f_reference_packed=None):
         B, dev = ctx_f.shape[0], ctx_f.device
         zc = torch.zeros(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
         zf = torch.zeros(B, WIN, LAT, 8, 8, device=dev)
         if self.net.n_tgt_t == 0:
             return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                            ctx_t=ctx_t,
                             ctx_c_frame_ids=ctx_c_frame_ids,
                             ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
-                            ctx_f_packed=ctx_f_packed)
+                            ctx_f_packed=ctx_f_packed,
+                            ctx_f_reference_packed=ctx_f_reference_packed)
         zt = torch.zeros(B, self.net.n_tgt_t, LAT, 2, 2, device=dev)
         return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
                         yt=zt, ctx_t=ctx_t, ctx_c_frame_ids=ctx_c_frame_ids,
                         ctx_f_ids=ctx_f_ids,
-                        ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed)
+                        ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                        ctx_f_reference_packed=ctx_f_reference_packed)
 
 
 # ================================================================================================
@@ -759,6 +788,7 @@ def training_update(wrap, net, ema, opt, batch, step, *, lr=3e-4, warmup=2000):
         ctx_f_ids=batch.get("ctx_f_ids"),
         ctx_f_frame_ids=batch.get("ctx_f_frame_ids"),
         ctx_f_packed=batch.get("ctx_f_packed"),
+        ctx_f_reference_packed=batch.get("ctx_f_reference_packed"),
     )
     opt.zero_grad(set_to_none=True)
     loss.backward()

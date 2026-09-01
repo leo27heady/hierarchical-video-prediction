@@ -1,7 +1,7 @@
 # A4-COR execution status
 
-**Status:** all preflight gates and both 30k schedule calibrations completed; 30,000 updates are
-recommended, but the schedule is not frozen until Leonid confirms it.
+**Status:** all preflight gates and both 30k schedule calibrations completed; Leonid confirmed
+30,000 updates for the complete primary campaign on 2026-09-01.
 
 ## Locked paired calibration
 
@@ -50,13 +50,14 @@ late window is 1.07%.
 The reproducible analysis is `docs/experiments/v2/A4_SCHEDULE_CALIBRATION_2026-09-01.md`; its
 machine-readable result is `artifacts/v2/analysis/article4_schedule_calibration_2026-09-01.json`.
 
-## Pending confirmation
+## Confirmation and resulting action
 
-1. Leonid must confirm or reject the recommended 30,000-update final schedule.
-2. Leonid must choose between the full 30k matrix (about 265--295 GPU-hours on this host), a staged
-   one-week screen with only selected configurations extended to 30k, or added comparable GPUs.
-3. Only after confirmation may the full config set, campaign launcher, and new W&B project be
-   created or any further experiment be launched.
+1. Leonid selected the complete 30k matrix rather than the 16k contingency.
+2. The reduced 43-configuration / 86-run matrix is now estimated at 179--193 training GPU-hours,
+   187--205 direct GPU-hours including evaluation, and 205--234 GPU-hours with recovery reserve.
+3. The full config set, dependency resolver, resumable campaign launcher, post-training finalizer,
+   and W&B project contract have been prepared and verified. The scientific campaign still
+   requires the explicit `run --execute` launch boundary.
 
 These calibrations are schedule evidence only. They remain seed-0 development runs, do not establish
 a hierarchy advantage, and did not access a test split.

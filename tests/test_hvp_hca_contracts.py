@@ -228,3 +228,54 @@ def test_legacy_second_order_wrapper_is_not_ordinary_multistep_rollout() -> None
     torch.testing.assert_close(ordinary, torch.tensor([4.0]))
     torch.testing.assert_close(second_order, torch.tensor([5.0]))
     assert not torch.equal(ordinary, second_order)
+
+
+def test_top_context_only_keeps_the_two_level_prediction_target() -> None:
+    model = WindowDiT(
+        n_ctx_t=3,
+        n_ctx_c=2,
+        n_ctx_f=2,
+        fine_token_budget=4,
+        d=32,
+        depth=1,
+        heads=4,
+        temporal_embedding_positions=20,
+        temporal_context_span=16,
+        top_context_only=True,
+    )
+    batch = 2
+    result = model(
+        torch.randn(batch, 4, 16, 4, 4),
+        torch.randn(batch, 4, 16, 8, 8),
+        torch.randn(batch, 2, 16, 4, 4),
+        torch.empty(batch, 0, 16, 8, 8),
+        torch.zeros(batch),
+        torch.zeros(batch, 4, dtype=torch.long),
+        ctx_t=torch.randn(batch, 3, 16, 2, 2),
+        ctx_f_ids=torch.tensor([[0, 1, 2, 3], [4, 5, 6, 7]]),
+        ctx_f_frame_ids=torch.tensor([[0, 0, 1, 1], [0, 0, 1, 1]]),
+        ctx_f_packed=torch.randn(batch, 4, 16),
+    )
+    assert isinstance(result, tuple) and len(result) == 2
+    assert result[0].shape == (batch, 4, 16, 4, 4)
+    assert result[1].shape == (batch, 4, 16, 8, 8)
+
+
+def test_packed_residual_subtracts_the_projected_coarse_reference() -> None:
+    model = WindowDiT(
+        n_ctx_c=1,
+        n_ctx_f=1,
+        fine_token_budget=2,
+        d=32,
+        depth=1,
+        heads=4,
+    )
+    packed = torch.randn(2, 2, 16)
+    reference = torch.randn_like(packed)
+    frames = torch.zeros(2, 2, dtype=torch.long)
+    cells = torch.tensor([[0, 1], [2, 3]])
+    absolute, *_ = model.tok.tokenize_packed_sequence(packed, frames, cells)
+    residual, *_ = model.tok.tokenize_packed_sequence(
+        packed, frames, cells, reference=reference
+    )
+    torch.testing.assert_close(absolute - residual, model.tok.patchify(reference))

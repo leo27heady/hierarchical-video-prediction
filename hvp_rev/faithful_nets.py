@@ -355,7 +355,9 @@ class LatentTokenizer(nn.Module):
                 raise ValueError("conditioning frame ids must be non-negative")
         return tok, level_id, role_id, conditioning_frames
 
-    def tokenize_packed_sequence(self, z, frame_ids, cell_ids, level=1, role=0):
+    def tokenize_packed_sequence(
+        self, z, frame_ids, cell_ids, level=1, role=0, reference=None
+    ):
         """Tokenize already gathered latent cells without staging the dense fine history.
 
         ``z`` is ``(B,K,C)``. Both identity tensors are ``(B,K)`` and carry physical temporal
@@ -374,7 +376,15 @@ class LatentTokenizer(nn.Module):
         pos = self.fine_pos if level == 1 else self.coarse_pos
         if int(cells.min()) < 0 or int(cells.max()) >= pos.shape[0]:
             raise ValueError(f"packed cell ids must lie in [0,{pos.shape[0] - 1}]")
-        tok = self.patchify(z) + pos[cells]
+        content = self.patchify(z)
+        if reference is not None:
+            if tuple(reference.shape) != tuple(z.shape):
+                raise ValueError("packed residual reference must match packed z shape")
+            # Subtract after projection so the Linear bias cancels exactly. Together with the
+            # retained same-time coarse parent this is an explicit embedding-space residual,
+            # not merely a metadata label on an otherwise identical token stream.
+            content = content - self.patchify(reference)
+        tok = content + pos[cells]
         level_id = torch.full_like(cells, level)
         role_id = torch.full_like(cells, role)
         return tok, level_id, role_id, frames

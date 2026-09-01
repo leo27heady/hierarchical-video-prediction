@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "a4_cor_complete_recommendation_awaiting_user_confirmation",
+  "status": "authorized_30k_campaign_preparation",
   "article": 4,
   "dataset": {
     "name": "Toroidal Re-entry Benchmark",
@@ -24,8 +24,10 @@
     "target_stride": 1,
     "candidate_update_counts": [8000, 12000, 16000, 20000, 24000, 30000],
     "recommended_update_count": 30000,
-    "confirmed_update_count": null,
-    "update_count_selection": "A4-COR convergence and ranking-stability gate; user confirmation required"
+    "confirmed_update_count": 30000,
+    "update_count_selection": "A4-COR convergence and ranking-stability gate; confirmed by Leonid on 2026-09-01",
+    "primary_checkpoint": 30000,
+    "validation_curve_role": "diagnostic only; no per-arm early stopping"
   },
   "allocation": {
     "implementation": "hvp_hca.allocation",
@@ -38,7 +40,7 @@
   "series": {
     "A4-FRT": {
       "budgets": [320, 768, 1152, 1792, 2432, 3072],
-      "policies": ["flat_recent", "balanced_recent", "linear_age", "geometric_age"]
+      "policies": ["flat_recent", "linear_age", "geometric_age"]
     },
     "A4-ALC": {
       "budget": 1792,
@@ -68,7 +70,7 @@
       "allocation": "best two-seed mean validation policy from A4-ALC"
     },
     "A4-STS": {
-      "budgets": [1152, 1792],
+      "budgets": [1792],
       "fine_token_reserve": 256,
       "spatial_quotas": [64, 32, 16, 8],
       "temporal_policies": ["recent_detail", "uniform_time", "geometric_time"]
@@ -86,5 +88,17 @@
       "reach_optimized": "H-R"
     }
   },
-  "launch_authorized": false
+  "deduplicated_counts": {
+    "unique_configurations": 43,
+    "training_runs": 86,
+    "immediate_wave_runs": 80,
+    "dependent_wave_runs": 6
+  },
+  "tracking": {
+    "local_artifacts_authoritative": true,
+    "wandb_project": "hierarchical-video-prediction-article4-v2",
+    "wandb_group": "article4-30k-primary-2026-09-01",
+    "wandb_failure_is_fatal_after_launch": false
+  },
+  "launch_authorized": true
 }
