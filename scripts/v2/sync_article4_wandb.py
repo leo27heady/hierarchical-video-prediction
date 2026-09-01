@@ -54,7 +54,7 @@ def sync(spec: object, *, force: bool) -> str:
         job_type="article4-primary-training",
         tags=["article4", spec.family.lower(), spec.policy, spec.overlap, f"seed-{spec.seed}", "local-replay"],
         config={**spec.canonical_dict(), "config_hash": spec.content_hash, "replayed_from_local": True},
-        settings=wandb.Settings(init_timeout=60),
+        settings=wandb.Settings(init_timeout=180),
     )
     if run is None:
         raise RuntimeError(f"W&B initialization failed for {spec.experiment_id}")

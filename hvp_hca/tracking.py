@@ -51,7 +51,7 @@ class WandbMirror:
                 dir=str(run_dir),
                 # Keep W&B system monitoring enabled: GPU utilization/temperature, host CPU,
                 # memory, and network traces complement the explicit PyTorch memory metrics.
-                settings=wandb.Settings(init_timeout=60),
+                settings=wandb.Settings(init_timeout=180),
             )
             if self.run is None:
                 raise RuntimeError("wandb.init returned no run")

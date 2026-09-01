@@ -92,7 +92,7 @@ def wandb_gate(campaign: dict[str, Any], campaign_hash: str) -> str:
         job_type="connectivity-gate",
         tags=["article4", "preflight", "cpu-gate"],
         config={"campaign_sha256": campaign_hash, "gate": "online-write"},
-        settings=wandb.Settings(init_timeout=60, _disable_stats=True),
+        settings=wandb.Settings(init_timeout=180, _disable_stats=True),
     )
     if run is None or not run.url:
         raise RuntimeError("W&B online run creation unavailable")
