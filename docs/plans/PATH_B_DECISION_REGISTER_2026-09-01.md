@@ -84,6 +84,10 @@ record the superseded rule; do not silently rely on chat history.
 
 ## 5. Article 4 approved experiment matrix
 
+The fully expanded, deduplicated matrix and description of every family is authoritative in
+`docs/plans/ARTICLE4_COMPLETE_EXPERIMENT_MATRIX_2026-09-01.md`. It also records the pending
+16k-versus-30k interpretation and the pre-launch A4-LVL/A4-OVR definition gaps.
+
 1. **A4-COR:** data, split, indexing, target invariance, token accounting, causal-boundary leakage, tiny overfit,
    deterministic replay, performance, convergence, and ranking-stability gates.
 2. **A4-FRT:** budgets `320, 768, 1152, 1792, 2432, 3072`; policies Flat recent, Balanced recent,
@@ -102,6 +106,16 @@ record the superseded rule; do not silently rely on chat history.
    pixel-independent. Learned/content-dependent routing belongs to Article 5.
 10. Machine IDs use `A4_<family>_B<budget>_L<levels>_<policy>_<overlap>_S<seed>`. Dissertation prose
     uses `F`, `H-B`, `H-L`, `H-G`, `H-F`, `H-C`, and `H-R`, with exact IDs in captions/method tables.
+
+11. The deduplicated primary target is 60 unique configurations and 120 two-seed training runs:
+    24 A4-FRT, three A4-ALC additions, six A4-CEX, one A4-LVL addition, two A4-OVR additions, and
+    24 A4-STS. A4-COR calibrations and A4-MEC evaluations are tracked separately.
+12. Before campaign generation, confirm the dependency rule when Flat wins A4-ALC, implement and
+    test the exact adaptive three-level A4-LVL schedule, and give A4-OVR
+    nested/exclusive/residual modes distinct scientific semantics. The current
+    `AllocationPlan.overlap` field alone does not implement those semantics.
+13. A4-STS uses nested coarse/fine support in the authoritative generator. The older `EXCL`
+    seed-0 scaffold is non-authoritative and must be regenerated before launch.
 
 ## 6. Article 4 model and runtime protocol
 
@@ -159,6 +173,13 @@ record the superseded rule; do not silently rely on chat history.
 10. The result invalidates the original one-GPU/one-week full-matrix estimate. At 30k, all agreed
     two-seed cells require roughly 265--295 GPU-hours before evaluation. The campaign scope/timing
     choice must be confirmed together with the step count.
+11. “Ranking reversal” denotes the observed seed-0 validation ordering crossing between 12k and
+    16k (hierarchy better early, Flat better from 16k onward). It is not a code operation or model
+    feature. At 16k the later ordering is stable, but neither arm satisfies the registered 2%
+    convergence rule.
+12. If Leonid selects 16k, treat it as an equal-update fixed-compute matrix and resume only locked
+    decisive/Pareto cells to 30k for a late-training ranking check. Do not describe all 16k cells as
+    converged.
 
 ## 8. Article 5 architecture and evidence decisions
 
