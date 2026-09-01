@@ -25,7 +25,7 @@ The dissertation should not promise a predetermined 3--4x or 2--3x gain. Those v
 
 ### Rebuilt
 
-- Article 4 experiments, with named configurations, fixed targets, explicit budgets, four-seed confirmation, and one-role figures/tables.
+- Article 4 experiments, with named configurations, fixed targets, explicit budgets, two-seed replication, and one-role figures/tables.
 - The integrated Article 5 architecture around an explicit token-state contract.
 - Dynamic spatial allocation so that it changes retained state, rather than merely reweighting fixed regions.
 - The reversible predictor so that reversibility is internal to a predictor block and does not silently change the intended temporal recurrence.
@@ -152,6 +152,8 @@ The inspected local host has one NVIDIA GeForce RTX 4060 Ti with 16 GB VRAM. The
 
 The new English manuscript is drafted in a new tree. Published material from Articles 1--3 is transferred through a ledger that records source, allowed reuse, adaptation, destination, and figure provenance. Text is rewritten into one dissertation voice; results and images retain their original attribution.
 
+Migration is now evidence-triggered rather than an immediate chapter reorder. Preserve the current semantic order of Chapters 1 and 2, rebuild Chapter 3 around the redesigned Article 4 architecture and experiments, and choose Chapter 4 only after Article 5 gates. A successful two-dataset integrated result produces a distinct integrated-model Chapter 4; a mixed or negative result produces a synthesis/limitations chapter with bounded feasibility evidence. The complete branch definitions are in `docs/plans/CONDITIONAL_DISSERTATION_MIGRATION_PLAN_2026-09-01.md`.
+
 The current manuscript remains readable throughout migration. A chapter is promoted to the new manuscript only when its claim ledger, figure provenance, equation necessity review, and experiment references pass.
 
 ## 9. Immediate execution checklist
@@ -159,10 +161,11 @@ The current manuscript remains readable throughout migration. A chapter is promo
 - [x] Critical code/manuscript audit completed.
 - [x] Current Ukrainian and compact manuscript structural audits pass.
 - [x] Compatibility figure names restored without deleting the normalized names.
-- [ ] Freeze current branch in a baseline commit.
-- [ ] Create and verify the clean Path B worktree.
-- [ ] Add versioned config schema and run registry.
-- [ ] Correct validation/test separation before any new training.
+- [x] Freeze current branch in a baseline commit.
+- [x] Create and verify the clean Path B worktree.
+- [x] Add versioned config schema and run registry scaffold.
+- [x] Purpose-lock a new TRB development split and exclude the previously used legacy test file.
+- [ ] Finish the config-driven Article 4 packer/runner and convergence gate before training.
 - [ ] Add the integrated state-contract and positional-encoding tests.
 - [ ] Execute Article 4 Week 1 gates.
 - [ ] Execute Article 5 Week 2 gates.

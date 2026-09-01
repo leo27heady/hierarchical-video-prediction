@@ -7,7 +7,9 @@ import pytest
 import torch
 
 from hvp_hca.config import experiment_config_from_mapping, load_experiment_config
+from hvp_hca.performance import MixedPrecisionRMSNorm, enable_mixed_precision_rmsnorm
 from hvp_hca.state import CoordinateFourierEncoding, TokenMetadata, pack_fixed_quota
+from hvp_rev.rhvd import WindowDiT
 from hvp_rev.reversible_rollout import ReversibleSecondOrderRollout
 
 
@@ -40,6 +42,15 @@ def test_config_rejects_test_based_checkpoint_selection() -> None:
     data = json.loads(path.read_text(encoding="utf-8"))
     data["checkpoint_selection_split"] = "test"
     with pytest.raises(ValueError, match="checkpoint selection"):
+        experiment_config_from_mapping(data)
+
+
+def test_article4_confirmation_rejects_unregistered_third_seed() -> None:
+    path = ROOT / "experiments" / "v2" / "configs" / "article4" / "A4_FRT_B1152_L1_FLAT_EXCL_S00.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["phase"] = "confirmation"
+    data["seed"] = 2
+    with pytest.raises(ValueError, match="seeds are registered as 0 and 1"):
         experiment_config_from_mapping(data)
 
 
@@ -90,6 +101,71 @@ def test_coordinate_encoding_is_equivariant_to_packed_slot_permutation() -> None
     moved = encoding(permuted)
     gather_index = order.unsqueeze(-1).expand(-1, -1, original.shape[-1])
     torch.testing.assert_close(moved, original.gather(1, gather_index))
+
+
+def test_global_fine_selection_separates_gather_and_context_frame_ids() -> None:
+    """Selected fine frames remain gatherable inside a longer coarse context."""
+
+    batch = 2
+    model = WindowDiT(
+        n_ctx_c=8,
+        n_ctx_f=4,
+        fine_token_budget=6,
+        d=32,
+        depth=1,
+        heads=4,
+    )
+    coarse = torch.randn(batch, 8, 16, 4, 4)
+    fine = torch.randn(batch, 4, 16, 8, 8)
+    local_frames = torch.tensor([[0, 0, 1, 2, 3, 3], [0, 1, 1, 2, 2, 3]])
+    cells = torch.tensor([[0, 7, 9, 17, 32, 63], [1, 8, 10, 18, 33, 62]])
+
+    tokens, _, _, frame_ids = model._ctx_tokens(
+        coarse,
+        fine,
+        ctx_f_ids=cells,
+        ctx_f_frame_ids=local_frames,
+    )
+    assert tokens[-1].shape == (batch, 6, 32)
+    # Fine context occupies absolute frames 4..7 because the coarse reach is eight.
+    torch.testing.assert_close(frame_ids[-1], local_frames + 4)
+
+    flattened = fine.permute(0, 1, 3, 4, 2).reshape(batch, 4 * 64, 16)
+    packed_indices = local_frames * 64 + cells
+    packed = flattened.gather(1, packed_indices.unsqueeze(-1).expand(-1, -1, 16))
+    packed_tokens, packed_levels, packed_roles, packed_frames = model._ctx_tokens(
+        coarse,
+        fine,
+        ctx_f_ids=cells,
+        ctx_f_frame_ids=local_frames,
+        ctx_f_packed=packed,
+    )
+    torch.testing.assert_close(packed_tokens[-1], tokens[-1])
+    torch.testing.assert_close(packed_levels[-1], torch.ones_like(cells))
+    torch.testing.assert_close(packed_roles[-1], torch.zeros_like(cells))
+    torch.testing.assert_close(packed_frames[-1], local_frames + 4)
+
+
+def test_mixed_precision_rmsnorm_preserves_fp32_outputs_and_gradients() -> None:
+    torch.manual_seed(4)
+    reference = torch.nn.RMSNorm(8)
+    optimized = MixedPrecisionRMSNorm.from_module(reference)
+    first = torch.randn(3, 5, 8, requires_grad=True)
+    second = first.detach().clone().requires_grad_(True)
+    reference(first).sum().backward()
+    optimized(second).sum().backward()
+    torch.testing.assert_close(optimized(second), reference(first.detach()))
+    torch.testing.assert_close(second.grad, first.grad)
+
+
+def test_mixed_precision_rmsnorm_replaces_only_attention_norms() -> None:
+    model = WindowDiT(n_ctx_c=2, n_ctx_f=2, d=32, depth=2, heads=4)
+    assert enable_mixed_precision_rmsnorm(model) == 4
+    assert all(
+        isinstance(block.attn.q_norm, MixedPrecisionRMSNorm)
+        and isinstance(block.attn.k_norm, MixedPrecisionRMSNorm)
+        for block in model.blocks
+    )
 
 
 def test_legacy_second_order_wrapper_is_not_ordinary_multistep_rollout() -> None:

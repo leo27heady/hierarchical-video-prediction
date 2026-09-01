@@ -1,252 +1,403 @@
-# Article 4: one-week hierarchy experiment plan
+# Article 4: revised one-week hierarchy experiment plan
 
-## 1. Objective
+**Revision:** 2026-09-01
 
-Establish a clean, reproducible account of how spatial and temporal hierarchy allocate a fixed memory budget, compared with flat context, and how the allocation changes quality, temporal reach, and measured inference state.
+**Status:** approved design with convergence gate; training launch remains fail-closed
 
-The controlled benchmark should be named **Toroidal Re-entry Benchmark (TRB)** in prose. Existing `LoopMom` paths remain as legacy artifact identifiers. TRB is a synthetic, action-conditioned controlled benchmark; it must not be presented as evidence of general natural-video superiority.
+**Dataset:** Toroidal Re-entry Benchmark (TRB) only
+**Training seeds:** `0, 1`
+
+## 1. Objective and claim boundary
+
+Establish a controlled account of how a fixed context-token budget can be allocated across
+spatial detail, temporal reach, and hierarchy levels. The comparison is against a flat recent
+fine-token context under an invariant target and training protocol.
+
+TRB is a synthetic, action-conditioned mechanism benchmark. It supports causal statements about
+this controlled hierarchy design; it does not establish natural-video or general OpenSTL
+superiority. Long Moving MNIST is removed from Article 4.
+
+The principal outputs are:
+
+1. quality versus retained-state memory across six budgets;
+2. equal-budget allocation effects at 1,792 tokens;
+3. the marginal value of expanding coarse history at fixed recent detail;
+4. level-count and overlap effects at 1,792 tokens;
+5. a two-budget spatial-detail/temporal-coverage surface.
+
+No memory ratio is promised in advance. A 3--4x retained-state reduction is a stretch hypothesis
+for equal-reach coarse-versus-flat packages, not an acceptance assumption.
 
 ## 2. Primary questions
 
-1. At equal token budget, which allocation across hierarchy levels gives the best quality?
-2. At equal temporal reach and target protocol, how much retained state does hierarchy save versus a flat fine-token context?
-3. With a fixed fine-detail quota, how valuable is expansion of the coarse temporal history?
-4. Does nested temporal overlap help, or are redundant coarse tokens wasteful when fine tokens cover the same time point?
-5. How do spatial detail quota and temporal retention trade against one another under one global budget?
-6. Are conclusions stable over training seeds rather than only clip resampling?
+1. At equal token budget, which hierarchy allocation gives the best predictive quality?
+2. At equal temporal reach, how much retained state does hierarchy save relative to flat fine
+   context?
+3. With recent fine detail fixed, when does adding coarse history stop helping?
+4. Does a third level add value after total tokens and the allocation rule are held fixed?
+5. Is redundant nested overlap useful, or should fine tokens replace coarse tokens at the same
+   time point?
+6. When the fine spatial quota decreases, can the saved payload provide useful temporal detail
+   coverage?
+7. Are the direction and practical size of the effects reproduced by both training seeds?
 
-## 3. Non-negotiable protocol
+## 3. Frozen protocol
 
-- One immutable train/validation/test split manifest.
-- Validation only for checkpoint selection, early stopping, and configuration selection.
-- Test evaluated once for locked confirmation configurations.
-- Four training seeds for primary claims: `0, 1, 2, 3`.
-- Seed `0` may be used for screening, but screening results are labeled exploratory.
-- Fixed prediction target, target stride, loss, optimizer, schedule, batch protocol, embedding width, and parameter-matching rule within each comparison family.
-- Every run has an experiment ID and full config dump.
-- Report mean, standard deviation, and preferably a seed-level interval. Clip bootstrap intervals are allowed only as conditional within-model diagnostics.
-- Memory metrics include analytic token count, serialized retained-state bytes, CUDA allocated peak, CUDA reserved peak, and end-to-end wall time. State clearly whether parameters, optimizer state, gradients, decoder, and dataloader are included.
+### 3.1 Data and split policy
 
-## 4. Naming convention
+- Use only `loopmom_train_3000x100.npy` and its aligned actions as the TRB development corpus.
+- Use the hash-pinned seeded clip split in
+  `experiments/v2/manifests/trb_v2_development.manifest.json`: 2,700 train and 300 validation clips.
+- The legacy file named `loopmom_test_500x200.npy` is excluded from Path B selection and claims
+  because it has already been used during model development.
+- Generate a fresh 200-frame TRB confirmation set, including actions, positions, object metadata,
+  generator revision, and seed, only after all configurations and selection rules are locked.
+- Validation chooses checkpoints and configurations. The new test set is read once for locked
+  configurations.
 
-```text
-A4_<family>_<budget>_<levels>_<allocation>_<overlap>_<seed>
-```
+The development artifact's original generator seed was not recorded. This limitation is
+preserved in its manifest; exact clip/action SHA-256 hashes now identify the data actually used.
 
-Examples:
+### 3.2 Replication and inference
 
-- `A4_FRT_B1152_L1_FLAT_EXCL_S00`
-- `A4_FRT_B1152_L2_GEOM_NEST_S03`
-- `A4_STS_B1792_L2_K16R64_EXCL_S01`
+- Every final matrix cell is trained with seeds `0` and `1`; there is no one-seed result promoted
+  as a primary result.
+- With only two training seeds, report both points, their mean, and the paired seed-wise effect.
+  Do not report a seed-level 95% confidence interval or imply a precise population variance.
+- Clip bootstrap intervals may be reported only as within-model/within-seed conditional
+  uncertainty. They do not replace training-seed replication.
+- A third seed is a post-week robustness option for 6--8 locked primary configurations, not part
+  of the approved one-week matrix.
 
-`FRT` means frontier, `ALC` allocation, `CEX` coarse expansion, `LVL` level count, `OVR` overlap, and `STS` spatial--temporal surface.
+### 3.3 Proposed controlled instrument
+
+The current 384-wide, eight-block historical model is too slow for the full matrix on one local
+GPU. Use the following smaller common instrument if A4-COR establishes convergence and ranking
+stability:
+
+| Field | Proposed value |
+|---|---:|
+| predictor width | 256 |
+| blocks | 6 |
+| attention heads | 8 |
+| parameters | approximately 7.54 M, depending slightly on temporal embeddings |
+| precision | bf16 autocast with fp32 optimizer/master weights |
+| batch size | 16 at all six budgets |
+| prediction target | four future fine frames; invariant across context arms |
+| candidate schedules | 8k or 12k updates, selected by A4-COR before launch |
+| checkpoint selection | validation only, shared evaluation cadence |
+
+This is an experimental instrument, not a silent replacement claim for the historical 22 M
+parameter predictor. After the matrix, repeat 4--6 decisive configurations with the historical
+384x8 instrument as a bounded capacity-robustness check if time permits.
+
+### 3.4 Memory endpoints
+
+For every locked configuration record separately:
+
+- analytic context-token payload;
+- serialized retained-state bytes, including token metadata;
+- inference peak allocated and reserved CUDA memory;
+- training peak allocated and reserved CUDA memory;
+- parameters, gradients, optimizer state, activations, decoder, and dataloader inclusion flags;
+- update time, end-to-end runtime, and evaluation runtime.
+
+Ratios with different denominators are never multiplied.
+
+## 4. Allocation definitions
+
+### 4.1 Common representation
+
+- A coarse TRB latent time position costs 16 tokens.
+- A complete fine latent time position costs 64 tokens.
+- A partial fine package contains selected physical cells from the 8x8 fine grid. Cell identity
+  and absolute temporal position are carried separately from packed tensor slot.
+- Fine-cell selection in Article 4 is deterministic and pixel-independent. It uses registered,
+  nested, phase-cycled spatial lattices for quotas 8, 16, 32, and 64. Learned/content-dependent
+  routing belongs to Article 5.
+
+### 4.2 Four frontier policies
+
+At budget `B`, the flat arm retains `B/64` complete recent fine positions. Each hierarchical
+frontier arm assigns exactly half the payload to a contiguous coarse base and half to fine cells:
+`N_c = B/32` coarse positions and `K_f = B/2` fine cells. The three policies differ only in where
+the fine cells occur within the coarse temporal support:
+
+- **Balanced recent:** fill the newest times first, using all 64 cells before moving older.
+- **Linear age:** fine-cell quota decreases linearly with age; deterministic integer rounding
+  preserves exactly `K_f` cells.
+- **Geometric age:** fine-cell quota follows a predeclared geometric decay with age; deterministic
+  largest-remainder rounding preserves exactly `K_f` cells.
+
+The decay parameter is frozen by A4-COR, not fitted separately at each budget.
+
+### 4.3 Seven 1,792-token allocation policies
+
+| Paper label | Exact payload definition |
+|---|---|
+| Flat recent | 28 complete recent fine positions |
+| Fine-heavy | 28 coarse positions + 21 complete recent fine positions |
+| Balanced recent | 56 coarse positions + 896 newest-first fine cells |
+| Coarse-heavy | 84 coarse positions + 7 complete recent fine positions |
+| Linear age | 56 coarse positions + 896 linearly age-weighted fine cells |
+| Geometric age | 56 coarse positions + 896 geometrically age-weighted fine cells |
+| Reach-oriented | 96 coarse positions + 4 complete recent fine positions |
+
+All seven total exactly 1,792 context tokens. ALC uses nested support; A4-OVR later changes only
+the overlap rule.
 
 ## 5. Experiment series
 
-### A4-COR: correctness and protocol oracles
+### A4-COR -- correctness, convergence, and throughput oracles
 
-Purpose: ensure data generation, causal masks, token accounting, target alignment, checkpoint selection, and memory meters are valid.
+Required checks:
 
-Runs/tests:
+- **DATA:** shapes/dtypes, action vocabulary, train/validation disjointness, source hashes, exact
+  action-to-pixel shift on sampled transitions, and deterministic generator replay on fixtures;
+- **INDEX:** local fine-frame gather indices are distinct from absolute temporal conditioning
+  indices inside a longer coarse history;
+- **TARGET:** context stride/allocation cannot change target horizon, target stride, or target
+  token count;
+- **TOK:** analytic budget equals packed tensor count and serialized state bytes;
+- **CAUS:** perturbing future inputs cannot affect an earlier prediction;
+- **OVERFIT:** flat and hierarchical tiny-sample overfits;
+- **DET:** same configuration and seed reproduce within the predeclared deterministic tolerance;
+- **PERF:** profile all six budgets, verify fused SDPA use, bf16 path, memory headroom, and batch
+  assembly fraction;
+- **CVG:** train representative low/middle/high configurations to 12k with validation snapshots at
+  2k intervals. Freeze 8k only if loss/quality and policy ranking are stable from 8k through 12k;
+  otherwise freeze 12k. If ranking is still moving at 12k, the full one-week matrix is not
+  launched under a false convergence claim.
 
-- Verify TRB toroidal re-entry, action labels, deterministic seed replay, temporal indexing, and no split overlap.
-- Verify that changing context stride cannot change target stride or target token count.
-- Compare analytic token count with serialized state shape and measured state bytes.
-- Overfit a tiny sample with flat and hierarchical configurations.
-- Confirm causal invariance by perturbing future inputs.
-- Run identical config twice with the same seed and quantify deterministic tolerance.
+Estimate: 4--6 researcher-hours and 3--6 GPU-hours. Exit criterion: every oracle passes and one
+training schedule is frozen.
 
-Estimate: 0.5 day engineering; 2--4 GPU-hours. Passing A4-COR is required for all other series.
+### A4-FRT -- six-point budget frontier
 
-### A4-FRT: ten-point budget frontier
+Budgets: `320, 768, 1152, 1792, 2432, 3072` context tokens.
 
-Purpose: answer the user's requested low-to-high context study.
+Policies at every budget: Flat recent, Balanced recent, Linear age, and Geometric age.
 
-Budgets: ten predeclared points spanning the feasible range, provisionally `512, 640, 768, 896, 1152, 1408, 1792, 2176, 2432, 3072` tokens. The exact endpoints may be adjusted once by the profiling pilot, then frozen.
+- Unique configurations: 24.
+- Final run instances: 48 (24 x two seeds).
+- Main output: one quality-versus-retained-state frontier and one temporal-reach-versus-state
+  curve. Seed points remain visible.
 
-Policies at every budget:
+Estimated compact-instrument training time: 28--31 GPU-hours at 8k, or 42--46 GPU-hours at 12k.
 
-- flat fine-token context;
-- two-level balanced allocation;
-- two-level linear-by-age allocation;
-- two-level geometric/exponential-by-age allocation.
+### A4-ALC -- allocation at 1,792 tokens
 
-Stage 1: all 40 cells at seed 0, short common training budget.
-Stage 2: select five informative budgets and the flat plus two best hierarchy policies. Confirm 15 cells with seeds 0--3; seed 0 may reuse the qualifying screening run only if its protocol is identical.
+Run the seven exact policies in Section 4.3. Flat recent, Balanced recent, Linear age, and
+Geometric age reuse immutable A4-FRT runs. Only Fine-heavy, Coarse-heavy, and Reach-oriented add
+training.
 
-Primary outputs:
+- New unique configurations: 3.
+- New run instances: 6.
+- Main output: one direct policy plot at fixed budget; a compact table gives token allocation,
+  reach, retained bytes, and both seed results.
 
-- quality versus retained-state bytes, one panel per metric;
-- reachable history versus retained-state bytes;
-- policy allocation diagram, conceptual only;
-- one compact result table containing the seed-confirmed primary frontier points.
+Estimated additional time: 3.8 GPU-hours at 8k or 5.7 GPU-hours at 12k.
 
-Estimate: 40 screening runs x 0.5--1.0 hour plus 45 additional confirmation runs x 0.75--1.5 hours = 54--108 GPU-hours. With one GPU, some confirmation cells may continue beyond the calendar week; with two GPUs this series fits comfortably.
+### A4-CEX -- fixed detail with expanding coarse history
 
-### A4-ALC: same budget, different level distribution
+Fix six complete recent fine positions (384 tokens). Add exclusive older coarse positions in
+`0, 4, 8, 16, 32, 64` steps. Total context budgets are therefore
+`384, 448, 512, 640, 896, 1408`; all other settings remain fixed.
 
-Purpose: isolate allocation from budget.
+- Unique configurations: 6.
+- Run instances: 12.
+- Main output: validation quality and marginal gain per added retained-state kilobyte versus
+  coarse positions.
 
-At budgets `1152` and `1792`, compare at least:
+Estimated time: 3.0 GPU-hours at 8k or 4.5 GPU-hours at 12k.
 
-- flat;
-- fine-heavy (`75/25` fine/coarse payload);
-- balanced (`50/50`);
-- coarse-heavy (`25/75`);
-- linear-by-age;
-- geometric-by-age;
-- reach-optimized allocation.
+### A4-LVL -- one, two, and three levels at 1,792 tokens
 
-Use seed 0 screening for all cells. Confirm the two strongest hierarchy allocations and flat with four seeds at each budget. If these configurations are already present in A4-FRT, reference the same immutable runs rather than retraining.
+Compare levels `1, 2, 3` at exactly 1,792 tokens. The two-level allocation is the predeclared
+winner selected from A4-ALC by mean validation performance across both seeds. The three-level arm
+extends the same allocation principle to the top/coarse/fine pyramid with explicit 4/16/64 token
+costs and exact integer accounting. The one-level arm is the existing flat comparator.
 
-Estimate: 14 screening cells plus at most 18 confirmation cells, 14--42 GPU-hours before deduplication.
+Where the one- and two-level cells exactly match existing A4-FRT/A4-ALC runs, reuse them.
 
-### A4-CEX: fixed detail, expanding coarse context
+- New unique configurations after expected reuse: 1.
+- New run instances: 2.
+- Main output: one three-point level-count comparison, with the selection dependency disclosed.
 
-Purpose: test whether coarse history adds useful reach when recent detail capacity is held constant.
+Estimated additional time: 1.3 GPU-hours at 8k or 1.9 GPU-hours at 12k.
 
-Keep the fine window and fine tokens fixed; add coarse slots in monotonic steps, for example `0, 4, 8, 16, 32, 64` coarse time positions. Match all other settings. Report both quality and marginal gain per added kilobyte.
+### A4-OVR -- temporal support overlap at 1,792 tokens
 
-Estimate: 6 seed-0 screens; confirm baseline plus two knees with four seeds = 9 additional runs; 10--24 GPU-hours.
+Apply the A4-ALC winning two-level payload to:
 
-### A4-LVL: number of hierarchy levels
+- **Nested:** coarse and fine may represent the same time point;
+- **Exclusive:** a fine package replaces coarse tokens for that time point;
+- **Residual:** the coarse base and its fine residual are both deliberately retained.
 
-Purpose: distinguish the effect of hierarchy depth from token budget.
+Total tokens and target remain exactly equal. Match nominal reach wherever the integer schedule
+allows it and disclose any one-slot difference.
 
-Compare one, two, and three levels at budgets `1152` and `1792`, with equal total tokens and matched effective reach where possible. A three-level system is accepted only if its actual allocation and decoding semantics are fully specified.
+- Unique configurations: 3, with one likely reused from A4-ALC.
+- New run instances: 4--6.
+- Main output: one direct three-category comparison, not a compound panel.
 
-Estimate: 6 screens plus 12 confirmation runs for selected contrasts; 10--27 GPU-hours.
+Estimated additional time: 2.5--3.8 GPU-hours at 8k or 3.8--5.7 GPU-hours at 12k.
 
-### A4-OVR: overlapping versus exclusive time support
+### A4-STS -- spatial-detail/temporal-coverage surface
 
-Purpose: test whether retaining a coarse token for a time point already represented at the fine level is useful.
-
-- `nested`: recent times appear at coarse and fine levels;
-- `exclusive`: fine representation replaces the corresponding coarse token;
-- optional `residual`: coarse base plus fine residual, both retained deliberately.
-
-Compare at equal total token budget, equal target, and as close as possible to equal reach. Confirm at one medium and one high budget if the seed-0 effect is material.
-
-Estimate: 6 screens plus up to 12 confirmation runs; 8--24 GPU-hours.
-
-### A4-STS: spatial-detail versus temporal-reach surface
-
-Purpose: explicitly test the dissertation's central allocation interpretation.
-
-Use spatial detail quotas such as `K = 64, 32, 16, 8` fine cells per represented time point. Spend saved tokens on longer coarse or mixed-resolution temporal history while keeping the global token budget fixed. At minimum, test two global budgets and four spatial quotas, with three temporal policies:
+Use budgets `1152` and `1792`, spatial quotas `K = 64, 32, 16, 8`, and three temporal placement
+policies:
 
 - recent-detail priority;
 - uniform temporal coverage;
-- geometric age allocation.
+- geometric-age coverage.
 
-This is an allocation experiment, not learned routing. The selected spatial cells may be determined by a fixed oracle/variance rule only if that rule is applied consistently and its oracle status is explicit.
+Reserve 256 tokens for fine detail at both budgets. The remaining tokens buy a complete coarse
+base: 56 coarse positions at 1,152 tokens and 96 at 1,792 tokens. Thus `K` controls whether the
+256 fine cells cover 4, 8, 16, or 32 time positions, while the placement policy controls their
+ages. This cleanly separates spatial resolution per selected time from temporal detail coverage.
 
-Stage 1: 24 seed-0 cells.
-Stage 2: confirm flat/full-detail, the best memory-efficient point, and one balanced knee with four seeds at one primary budget.
+- Unique configurations: 24.
+- Run instances: 48.
+- Main output: one heat map or small-multiple surface whose only role is quality across quota and
+  temporal placement; a companion accounting plot maps the fixed 256 fine tokens to 4/8/16/32
+  detailed time positions.
 
-Outputs:
+Estimated time: 24--26 GPU-hours at 8k or 36--39 GPU-hours at 12k.
 
-- a heat map or small-multiple frontier with exactly one role: quality across spatial quota and temporal reach;
-- a table of the three locked confirmation points;
-- a decomposition of saved spatial tokens into purchased temporal reach.
+### A4-MEC -- bounded mechanism diagnostics
 
-Estimate: 24 screens plus 9 additional confirmation runs; 20--45 GPU-hours.
+On the locked Flat recent, best hierarchy, and one failure configuration only, measure temporal
+coverage, per-level utilization, attention entropy, and re-entry population performance. These
+are explanations, not separate superiority claims. No new training is permitted for A4-MEC.
 
-### A4-MEC: mechanism diagnostics
+Estimate: 3--5 researcher-hours and 1--2 GPU-hours for evaluation.
 
-Purpose: retain useful diagnostics without overloading primary result figures.
+## 6. Deduplicated matrix and one-week estimate
 
-- head entropy and temporal coverage;
-- identity/coverage under re-entry;
-- per-level utilization;
-- attention or selection maps for a small fixed qualitative set.
+| Work | Unique configs | Run instances | 8k GPU-h | 12k GPU-h |
+|---|---:|---:|---:|---:|
+| A4-COR pilots/oracles | 3 representative fits + tests | 3--5 | 3--5 | 4--6 |
+| A4-FRT | 24 | 48 | 28--31 | 42--46 |
+| A4-ALC additions | 3 | 6 | 3.8 | 5.7 |
+| A4-CEX | 6 | 12 | 3.0 | 4.5 |
+| A4-LVL addition | 1 | 2 | 1.3 | 1.9 |
+| A4-OVR additions | 2--3 | 4--6 | 2.5--3.8 | 3.8--5.7 |
+| A4-STS | 24 | 48 | 24--26 | 36--39 |
+| evaluation/profiling reserve | -- | -- | 6--8 | 8--10 |
+| **Total** | **60--61 final configs** | **120--122 final runs** | **72--87** | **106--118** |
 
-These are explanatory diagnostics, not separate superiority claims. Run only on the locked flat, best hierarchy, and one failure case.
+The local RTX 4060 Ti provides 168 theoretical hours per week, but 105--125 usable GPU-hours is
+the realistic ceiling after debugging, evaluation, and restarts. Therefore:
 
-Estimate: 0.5 day analysis; little or no retraining.
+- an 8k schedule fits with useful slack if A4-COR proves it converged;
+- a 12k schedule is feasible but tight and requires an uninterrupted overnight queue;
+- the historical 384x8, 30k protocol does not fit. Its full matrix is roughly 250--350 GPU-hours
+  before evaluation.
 
-## 6. One-week calendar
+These are measured planning estimates, not generic assumptions. On this host, the compact 256x6
+flat instrument required approximately 0.22, 0.43, 0.67, 0.95, 1.62, and 2.16 hours for 12k
+updates at the six budgets before applying the measured RMSNorm speed adjustment to all points.
+The 1,792-token optimized probe ran at 0.286 s/update with 3.76 GiB peak allocated memory.
 
-| Day | Work | Exit criterion |
+## 7. Calendar and dependency order
+
+| Day | Queue | Exit criterion |
 |---|---|---|
-| 1 | A4-COR; freeze splits, budgets, config schema, and meters | all correctness oracles pass |
-| 2 | A4-FRT screening; begin A4-ALC deduplicated screen | 10-point curves available for seed 0 |
-| 3 | A4-CEX, A4-LVL, A4-OVR screening | primary contrasts and failure cases identified |
-| 4 | A4-STS screening | spatial--temporal allocation surface available |
-| 5 | launch four-seed primary confirmation | no protocol change after launch |
-| 6 | continue confirmation; run A4-MEC on locked models | seed table and mechanism diagnostics complete |
-| 7 | test-set evaluation for locked configs; generate atomic figures/tables | gate decision and reproducibility bundle complete |
+| 1 | finish v2 packer/runner; A4-COR DATA/INDEX/TARGET/TOK/CAUS/PERF; launch CVG traces | schedule and implementation frozen |
+| 2 | A4-FRT low and middle budgets, both seeds | first four budget points complete |
+| 3 | finish A4-FRT high budgets; run A4-ALC additions | 1,792-token allocation winner locked |
+| 4 | A4-CEX then A4-LVL and A4-OVR | all sequential mechanism questions complete |
+| 5 | A4-STS at 1,152 tokens | first surface complete |
+| 6 | A4-STS at 1,792 tokens; memory repeats | full final matrix complete |
+| 7 | validation selection, locked test generation/evaluation, A4-MEC, atomic figures/tables | reproducibility bundle and gate verdict complete |
 
-This schedule assumes roughly 1-hour screening and 1--1.5-hour confirmation runs and at least two comparable GPUs, or aggressive successive-halving on one GPU. On one GPU, prioritize A4-COR, A4-FRT, A4-STS, and four-seed confirmation of 6--9 primary configurations; defer secondary confirmations.
+If A4-COR selects 12k, Days 6--7 may extend by 12--18 hours. Test generation happens only after
+the configuration hashes and selection rules are frozen; it is not available for queue decisions.
 
-### 6.1 Executable queue on the local one-GPU host
+## 8. Runtime and storage engineering findings
 
-The inspected machine has one RTX 4060 Ti with 16 GB VRAM. The week has 168 theoretical GPU-hours, but 105--125 usable training/profile hours is a safer planning capacity after debugging, evaluation, analysis, and failed jobs.
+### 8.1 Measured bottlenecks
 
-The mandatory one-week queue is therefore:
+- Encoding the full 3,000-clip development corpus takes about 14--16 seconds.
+- Assembling and transferring a 1,792-token batch takes about 1.06 ms, compared with 286 ms for a
+  complete optimized training update. The Python batch loop is under 0.5% of update time and is
+  not the priority bottleneck.
+- Full self-attention is the dominant, expected cost. PyTorch fused scaled-dot-product attention
+  is already enabled.
+- The legacy q/k RMSNorm path used bf16 activations with fp32 affine weights, forcing a CUDA
+  fallback. The Path B mixed-precision RMSNorm keeps fp32 master weights but presents bf16 kernel
+  operands. At 1,792 tokens this reduced measured update time from 0.336 to 0.286 s (about 15%)
+  and peak allocation from 4.55 to 3.76 GiB (about 17%). Output/gradient parity is tested in fp32.
+- A prepared global selected-fine-token path conflated local gather indices with absolute temporal
+  positions. The Path B fix separates them and has a regression test for a short fine window
+  inside longer coarse history.
 
-| Queue | Unique work | Time assumption | GPU-hours |
-|---|---:|---:|---:|
-| A4-COR | correctness/oracle checks and tiny overfits | bounded | 2--4 |
-| A4-FRT screen | 10 budgets x 4 policies x seed 0 | 30--60 min | 20--40 |
-| targeted mechanism screen | 6 coarse-expansion, 3 level-count, 3 overlap, 8 spatial--temporal cells | 30--60 min | 10--20 |
-| primary confirmation | 6 locked configurations x 4 seeds | 1--2 h | 24--48 |
-| repeated memory profiles | locked configurations, 5 repeats | short | 3--6 |
-| **Total** | **60 screening + 24 confirmation fits** | | **59--118** |
+### 8.2 Safe operating decisions
 
-The six locked configurations should cover three comparisons with maximum reuse: low/middle/high flat versus the best predeclared hierarchy policy. One hierarchy point is also chosen to serve the overlap/level or spatial--temporal contrast where possible. The other mechanism curves remain exploratory during the week.
+- Keep batch 16 across all six compact-model budgets; the 3,072-token probe fits at approximately
+  7.2 GiB before the RMSNorm optimization.
+- Do not adopt `torch.compile` or a new sparse-attention kernel after training begins. Either is a
+  separate pre-lock benchmark because compilation and kernel changes can alter determinism and
+  failure behavior.
+- Optional latent caching saves only about 30--35 minutes over 120 separate processes. It may be
+  added for operational convenience, but it is not required for the one-week budget.
+- Store one rolling full training checkpoint per active run and a compact selected EMA/model state
+  per completed run. Keeping optimizer-bearing checkpoints for all 120 runs would unnecessarily
+  consume well over 10 GB.
 
-If the first five representative runs exceed two hours, immediately reduce the screen to six budget points while retaining the low, previous 896/1,152 region, 1,792 region, and high-budget endpoint. Do not reduce the four confirmation seeds. If median confirmation runtime exceeds two hours, the one-week deliverable becomes a gate report rather than a completed Article 4 result package.
+## 9. Naming in artifacts and dissertation
 
-### 6.2 Completion queue after the one-week sprint
+Full machine IDs remain mandatory in configs, logs, appendices, and the reproducibility bundle:
 
-To conclude every planned Article 4 claim rather than only the primary frontier:
+```text
+A4_<family>_B<budget>_L<levels>_<policy>_<overlap>_S<seed>
+```
 
-- confirm the full selected 8--12-arm design with four seeds;
-- complete two-budget A4-ALC, A4-LVL, and A4-OVR confirmations;
-- complete the two-budget 4 x 3 A4-STS surface and confirm its three representative points;
-- run the bounded alternate codec and predictor-head robustness;
-- regenerate final test-set tables and figures only after configuration lock.
+They do not need to burden dissertation prose. Use human labels in figures and text:
 
-Expected additional work after a successful sprint: 90--250 GPU-hours, 3--7 calendar days of unattended local training plus 3--5 researcher days for analysis and writing. The broader 200--450 GPU-hour estimate remains appropriate if screening runs must use the full training schedule or if more than 12 arms survive.
+| Machine policy | Dissertation/figure label |
+|---|---|
+| `FLAT_RECENT` | Flat recent (`F`) |
+| `BAL_RECENT` | Balanced hierarchy (`H-B`) |
+| `LINEAR_AGE` | Linear-age hierarchy (`H-L`) |
+| `GEOM_AGE` | Geometric-age hierarchy (`H-G`) |
+| `FINE_HEAVY` | Fine-heavy (`H-F`) |
+| `COARSE_HEAVY` | Coarse-heavy (`H-C`) |
+| `REACH_OPT` | Reach-oriented (`H-R`) |
 
-## 7. Minimum publishable package
+The caption or method table maps each short label to its exact immutable run ID. Raw run IDs
+should not appear in narrative sentences.
 
-The minimum Article 4 result set is:
+## 10. Figures and tables
 
-- four-seed flat versus hierarchical comparisons at five budgets or at least three budgets plus two equal-reach controls;
-- an equal-reach retained-state comparison;
-- a fixed-detail coarse-expansion curve;
-- nested versus exclusive overlap at one or two budgets;
-- a spatial-detail versus temporal-reach surface;
-- a seed-level table and fully specified configurations;
-- a single unambiguous primary metric plus clearly labeled secondary diagnostics.
+Main figures, each with one role:
 
-If a full 10-point four-seed frontier is required, expect approximately 160 model fits for four policies and 120--240 GPU-hours at the assumed durations. It is not the recommended use of a one-week window; screen all points and confirm the knees/endpoints.
+1. architecture and token-allocation schema;
+2. six-point quality--retained-state frontier;
+3. allocation policy at 1,792 tokens;
+4. fixed-detail coarse-expansion curve;
+5. level count or overlap, whichever gives the stronger mechanistic result;
+6. spatial-detail/temporal-coverage surface.
 
-At the end of the one-week local sprint, the work can support a strong go/no-go decision and a seed-confirmed primary frontier if runtimes match the pilot. It should not yet be called the final Article 4 package unless the completion queue is also finished.
+Main tables:
 
-## 8. Article and dissertation figures
+1. exact data, model, schedule, hardware, and memory protocol;
+2. exact allocation definitions and token accounting;
+3. both-seed locked primary results.
 
-Recommended main figures:
+Configuration registries, all secondary metrics, checkpoint traces, and per-run memory records go
+to supplementary material or the dissertation appendix. Do not use 95% training-seed intervals
+with `n=2`.
 
-1. Architecture and allocation schema: levels, token budgets, and temporal support.
-2. Ten-point quality--memory frontier.
-3. Equal-reach memory comparison.
-4. Spatial-detail/temporal-reach allocation surface.
-5. Overlap comparison or coarse-expansion curve, whichever answers the stronger mechanistic question.
+## 11. Stop and fallback rules
 
-Recommended main tables:
-
-1. Dataset, split, training, and hardware protocol.
-2. Exact named configurations and token accounting.
-3. Four-seed locked results.
-
-All other diagnostics belong in supplementary material or the dissertation appendix.
-
-## 9. Stop rules
-
-- Stop and repair if validation/test separation fails.
-- Stop a policy after the shared screening budget if it is dominated at every point and exhibits no mechanistic value.
-- Do not promote a one-seed result to a primary claim.
-- If hierarchy has no quality--memory advantage, publish the negative allocation result honestly and do not build Article 5 around an unsupported hierarchy configuration.
+- Stop and repair if any split, target, causal, token-accounting, or index oracle fails.
+- Stop the full matrix if representative rankings are still changing materially at 12k updates.
+- If a policy is numerically unstable, retain the failed run and diagnose it; do not silently
+  replace its definition.
+- If hierarchy has no quality--memory advantage, report the negative allocation result and do not
+  choose a hierarchy configuration for Article 5 merely because it was expected to win.
+- If the one-week queue overruns, preserve A4-FRT, A4-ALC, A4-CEX, and one complete A4-STS budget
+  first. The second STS budget and the third-level comparison are the first deferrals; seed count
+  is not reduced.

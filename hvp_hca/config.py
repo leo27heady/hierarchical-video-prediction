@@ -99,8 +99,8 @@ class ExperimentConfig:
             )
         if self.seed < 0:
             raise ValueError("seed must be non-negative")
-        if self.phase == "confirmation" and self.seed not in {0, 1, 2, 3}:
-            raise ValueError("confirmation seeds are registered as 0, 1, 2, 3")
+        if self.article == 4 and self.phase == "confirmation" and self.seed not in {0, 1}:
+            raise ValueError("Article 4 confirmation seeds are registered as 0 and 1")
         if not self.experiment_id or not self.family or not self.dataset:
             raise ValueError("experiment_id, family, and dataset are required")
         if not self.split_manifest:

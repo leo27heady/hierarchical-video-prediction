@@ -1,0 +1,19 @@
+{
+  "batch": 16,
+  "bf16": true,
+  "context_tokens": 2432,
+  "depth": 6,
+  "device": "cuda",
+  "encode_seconds": 13.838928300014231,
+  "estimated_hours_12000_updates": 1.6226519444446441,
+  "estimated_hours_30000_updates": 4.0566298611116105,
+  "heads": 8,
+  "n_ctx_coarse": 0,
+  "n_ctx_fine": 38,
+  "parameter_count": 7541664,
+  "peak_allocated_gib": 5.884089946746826,
+  "profile_steps": 30,
+  "seconds_per_update": 0.48679558333339323,
+  "stride_coarse": 1,
+  "width": 256
+}

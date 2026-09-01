@@ -6,7 +6,7 @@
   "family": "spatial_temporal_surface",
   "dataset": "trb_v2",
   "seed": 0,
-  "split_manifest": "manifest:trb-v2-pending",
+  "split_manifest": "experiments/v2/manifests/trb_v2_development.manifest.json#sha256=2a2e375b82d7431a0d8a42b9b40ca269b21a0305b3df0287f523dc2240a7c1ac",
   "checkpoint_selection_split": "validation",
   "evaluation_split": "validation",
   "budget_tokens": 1152,

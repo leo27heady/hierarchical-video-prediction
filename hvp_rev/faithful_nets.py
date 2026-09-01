@@ -302,12 +302,21 @@ class LatentTokenizer(nn.Module):
         frame_id = torch.full((B, K), frame_idx, dtype=torch.long, device=z.device)
         return tok, level_id, role_id, frame_id
 
-    def tokenize_selected_sequence(self, z, frame_ids, cell_ids, level=1, role=0):
+    def tokenize_selected_sequence(
+        self,
+        z,
+        frame_ids,
+        cell_ids,
+        level=1,
+        role=0,
+        conditioning_frame_ids=None,
+    ):
         """Tokenize a fixed-budget set of cells drawn from multiple context frames.
 
-        ``z`` is ``(B,T,C,H,W)`` and both id tensors are ``(B,K)``.  Packing is external and
-        deterministic; this method gathers the existing frame/cell coordinates so variable
-        per-frame allocation does not require a new positional parameterization.
+        ``z`` is ``(B,T,C,H,W)`` and both id tensors are ``(B,K)``.  ``frame_ids`` are local
+        indices used to gather from ``z``.  ``conditioning_frame_ids`` may separately carry
+        absolute context-frame positions.  Keeping these identities separate is essential when
+        a short fine window is embedded inside a longer coarse history.
         """
         if z.ndim != 5:
             raise ValueError(f"z must have shape (B,T,C,H,W), got {tuple(z.shape)}")
@@ -329,6 +338,38 @@ class LatentTokenizer(nn.Module):
         )
         pos = self.fine_pos if level == 1 else self.coarse_pos
         tok = self.patchify(gathered) + pos[cells]
+        level_id = torch.full_like(cells, level)
+        role_id = torch.full_like(cells, role)
+        if conditioning_frame_ids is None:
+            conditioning_frames = frames
+        else:
+            if conditioning_frame_ids.shape != frame_ids.shape:
+                raise ValueError("conditioning_frame_ids must match frame_ids shape")
+            conditioning_frames = conditioning_frame_ids.to(device=z.device, dtype=torch.long)
+            if int(conditioning_frames.min()) < 0:
+                raise ValueError("conditioning frame ids must be non-negative")
+        return tok, level_id, role_id, conditioning_frames
+
+    def tokenize_packed_sequence(self, z, frame_ids, cell_ids, level=1, role=0):
+        """Tokenize already gathered latent cells without staging the dense fine history.
+
+        ``z`` is ``(B,K,C)``. Both identity tensors are ``(B,K)`` and carry physical temporal
+        and spatial positions. This is the preferred Article 4 path once a deterministic
+        allocation has been constructed on CPU.
+        """
+        if z.ndim != 3:
+            raise ValueError(f"packed z must have shape (B,K,C), got {tuple(z.shape)}")
+        B, K, _ = z.shape
+        if frame_ids.shape != (B, K) or cell_ids.shape != (B, K):
+            raise ValueError("packed frame_ids and cell_ids must both have shape (B,K)")
+        frames = frame_ids.to(device=z.device, dtype=torch.long)
+        cells = cell_ids.to(device=z.device, dtype=torch.long)
+        if int(frames.min()) < 0:
+            raise ValueError("packed frame ids must be non-negative")
+        pos = self.fine_pos if level == 1 else self.coarse_pos
+        if int(cells.min()) < 0 or int(cells.max()) >= pos.shape[0]:
+            raise ValueError(f"packed cell ids must lie in [0,{pos.shape[0] - 1}]")
+        tok = self.patchify(z) + pos[cells]
         level_id = torch.full_like(cells, level)
         role_id = torch.full_like(cells, role)
         return tok, level_id, role_id, frames

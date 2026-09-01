@@ -1,4 +1,10 @@
-# Path B dissertation outline and asset plan
+# Path B dissertation outline and asset plan (archived reorder alternative)
+
+**Status:** superseded as the active drafting structure on 2026-09-01. The conservative,
+evidence-triggered structure is defined in
+`docs/plans/CONDITIONAL_DISSERTATION_MIGRATION_PLAN_2026-09-01.md`. Keep this document only as the
+previous full-reorder alternative; do not renumber or migrate chapters from it before the Article
+5 promotion gate.
 
 ## Narrative
 
