@@ -2,7 +2,8 @@
 
 **Revision:** 2026-09-01
 
-**Status:** approved design with convergence gate; training launch remains fail-closed
+**Status:** paired convergence gate complete; 30k recommended, awaiting user confirmation and
+revised timing/scope decision
 
 **Dataset:** Toroidal Re-entry Benchmark (TRB) only
 **Training seeds:** `0, 1`
@@ -86,7 +87,7 @@ stability:
 | batch size | 16 at all six budgets |
 | prediction target | four future fine frames; invariant across context arms |
 | target-time sampling | common first-target anchor 96; target frames 96--99 in every arm |
-| candidate schedules | 8k or 12k updates, selected by A4-COR before launch |
+| schedule evidence | 8k--24k rejected; 30k recommended by A4-COR, awaiting confirmation |
 | checkpoint selection | validation only, shared evaluation cadence |
 
 The primary predictor head is latent diffusion with v-prediction and a deterministic DDIM sampler,
@@ -286,6 +287,11 @@ are explanations, not separate superiority claims. No new training is permitted 
 Estimate: 3--5 researcher-hours and 1--2 GPU-hours for evaluation.
 
 ## 6. Deduplicated matrix and one-week estimate
+
+**Calibration correction:** the table below is retained as the original planning estimate. A4-COR
+rejected 8k and 12k. Scaling the agreed matrix to the recommended 30k requires approximately
+265--295 GPU-hours before evaluation, so it does not fit one week on the local GPU. Do not use the
+old 8k/12k totals for launch planning.
 
 | Work | Unique configs | Run instances | 8k GPU-h | 12k GPU-h |
 |---|---:|---:|---:|---:|

@@ -165,7 +165,8 @@ The current manuscript remains readable throughout migration. A chapter is promo
 - [x] Create and verify the clean Path B worktree.
 - [x] Add versioned config schema and run registry scaffold.
 - [x] Purpose-lock a new TRB development split and exclude the previously used legacy test file.
-- [ ] Finish the config-driven Article 4 packer/runner and convergence gate before training.
+- [x] Finish the config-driven Article 4 packer/runner and paired 30k convergence calibration.
+- [ ] Obtain Leonid's confirmation of the recommended 30k schedule and revised campaign timing.
 - [ ] Add the integrated state-contract and positional-encoding tests.
 - [ ] Execute Article 4 Week 1 gates.
 - [ ] Execute Article 5 Week 2 gates.

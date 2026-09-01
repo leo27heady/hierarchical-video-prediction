@@ -1,7 +1,7 @@
 # A4-COR execution status
 
-**Status:** deterministic/data/packing/trainability preflight passed; two 30k schedule calibrations
-authorized but not yet counted as complete.
+**Status:** all preflight gates and both 30k schedule calibrations completed; 30,000 updates are
+recommended, but the schedule is not frozen until Leonid confirms it.
 
 ## Locked paired calibration
 
@@ -34,16 +34,29 @@ The only intended difference is context allocation.
 The machine-readable preflight is
 `artifacts/v2/correctness/article4_preflight_2026-09-01.json`.
 
-## Pending gates
+## Calibration result
 
-1. Run both authorized calibrations through 30,000 updates.
-2. Validate every 2,000 updates and compare 8k, 12k, 16k, 20k, 24k, and 30k.
-3. Apply the predeclared 2% plateau and ranking-stability rule. Do not force an 8k or 12k result.
-4. Freeze the selected final-matrix update count and revise the one-week timing table from measured
-   runtime.
+Both runs completed with all 15 validation milestones and checkpoint hashes verified. The flat arm
+ran for 2.25 hours and the balanced-hierarchy arm for 2.39 hours; each used about 3.79 GiB peak
+allocated CUDA memory.
 
-Measured optimized throughput before the shared-anchor correction was 0.286 s/update at the same
-2,112-token attention sequence. The anchor changes only temporal IDs, not sequence length or tensor
-shapes. Expected wall time is therefore approximately 2.4 GPU-hours of updates plus validation and
-checkpoint overhead per arm, or about 5--6 GPU-hours total. Treat this as planning evidence until
-the run manifests report actual runtime.
+The original 8k and 12k choices fail. On horizon-4 foreground MSE, the hierarchy-to-flat ordering
+changes between 12k and 16k, and at 24k the balanced arm remains 6.80% above its best later value.
+Only 30k satisfies the paired 2% and ranking-stability rule. Because the original protocol did not
+unambiguously name one primary metric, the analysis also applies the rule independently to all six
+recorded validation metrics; every metric selects 30k. The worst final-to-best gap in the 24k--30k
+late window is 1.07%.
+
+The reproducible analysis is `docs/experiments/v2/A4_SCHEDULE_CALIBRATION_2026-09-01.md`; its
+machine-readable result is `artifacts/v2/analysis/article4_schedule_calibration_2026-09-01.json`.
+
+## Pending confirmation
+
+1. Leonid must confirm or reject the recommended 30,000-update final schedule.
+2. Leonid must choose between the full 30k matrix (about 265--295 GPU-hours on this host), a staged
+   one-week screen with only selected configurations extended to 30k, or added comparable GPUs.
+3. Only after confirmation may the full config set, campaign launcher, and new W&B project be
+   created or any further experiment be launched.
+
+These calibrations are schedule evidence only. They remain seed-0 development runs, do not establish
+a hierarchy advantage, and did not access a test split.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "approved_design_launch_blocked_by_a4_cor",
+  "status": "a4_cor_complete_recommendation_awaiting_user_confirmation",
   "article": 4,
   "dataset": {
     "name": "Toroidal Re-entry Benchmark",
@@ -18,10 +18,14 @@
     "batch_size": 16,
     "precision": "bf16_autocast_fp32_master",
     "mixed_precision_rmsnorm": true,
+    "temporal_embedding_positions": 100,
+    "common_first_target_anchor": 96,
     "target_horizon": 4,
     "target_stride": 1,
-    "candidate_update_counts": [8000, 12000],
-    "update_count_selection": "A4-COR convergence and ranking-stability gate"
+    "candidate_update_counts": [8000, 12000, 16000, 20000, 24000, 30000],
+    "recommended_update_count": 30000,
+    "confirmed_update_count": null,
+    "update_count_selection": "A4-COR convergence and ranking-stability gate; user confirmation required"
   },
   "allocation": {
     "implementation": "hvp_hca.allocation",

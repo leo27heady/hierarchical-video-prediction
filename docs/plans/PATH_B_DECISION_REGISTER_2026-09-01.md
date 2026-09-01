@@ -153,6 +153,12 @@ record the superseded rule; do not silently rely on chat history.
    should be described in the dissertation protocol section. They are not primary hierarchy-result
    seeds and are not reused as seed-confirmed final cells unless the final config/protocol is
    byte-identical and reuse was predeclared.
+9. The paired calibration completed on 1 September 2026. Every recorded metric rejects 8k--24k
+   under the registered 2%/ranking rule and recommends 30k. This is an evidence-backed recommendation,
+   not a frozen schedule: Leonid's explicit confirmation remains required.
+10. The result invalidates the original one-GPU/one-week full-matrix estimate. At 30k, all agreed
+    two-seed cells require roughly 265--295 GPU-hours before evaluation. The campaign scope/timing
+    choice must be confirmed together with the step count.
 
 ## 8. Article 5 architecture and evidence decisions
 
@@ -220,3 +226,29 @@ seeds, split purpose, checkpoint selection, and gate status first.
    semantics and is therefore not an A4-COR requirement. A4-COR instead tests disjoint source
    indices, exact positional identities, fixed target horizons, and the absence of validation/test
    examples from training.
+
+## 12. Full-campaign execution requirements requested on 1 September 2026
+
+These requirements become implementation-authorized only after Leonid confirms the schedule:
+
+1. Provide one command/script that consumes an immutable ordered list of every agreed Article 4
+   experiment and runs it to completion.
+2. The campaign is idempotent and resumable: completed config hashes are skipped, interrupted runs
+   resume from their latest rolling checkpoint, duplicate active runs are rejected, and campaign
+   state is durable across process/host restarts.
+3. Local structured artifacts remain authoritative: run/campaign manifests, JSONL train and
+   validation metrics, status transitions, stdout/stderr, checkpoints, hashes, Git/environment/data
+   provenance, timing, throughput, CUDA peaks, retained-state accounting, and failure traces.
+4. Create a new W&B project after confirmation (proposed name
+   `hierarchical-video-prediction-article4-v2`). Use deterministic run IDs and resume the same W&B
+   run after interruption. Verify authentication/connectivity before campaign launch.
+5. Mirror comprehensive train/validation metrics, optimizer state summaries, memory/timing metrics,
+   allocation metadata, fixed validation prediction panels, ground truth, error maps, and useful
+   tables/artifacts to W&B. A transient W&B failure must not destroy a scientific run; unsynced
+   local evidence remains recoverable and explicitly marked.
+6. Supply a dry-run/preflight command that validates config uniqueness, hashes, split isolation,
+   target invariants, token accounting, disk/GPU capacity, W&B access, and estimated queue duration.
+7. Supply an English architecture/data-flow/configuration description, operating guide, exact
+   launch/resume/status commands, and troubleshooting/recovery instructions.
+8. Do not generate configs, create the W&B project, or launch post-calibration experiments before
+   Leonid explicitly confirms the update count and execution path.
