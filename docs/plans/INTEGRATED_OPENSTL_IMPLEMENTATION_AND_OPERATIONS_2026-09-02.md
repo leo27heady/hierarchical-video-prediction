@@ -106,7 +106,7 @@ Set-Location 'C:\Users\leoni\Documents\projects\hierarchical-video-prediction-in
 
 Verified on 2 September:
 
-- 19 OpenSTL model/data tests passed in 7.38 seconds;
+- 20 OpenSTL model/data/CLI tests passed in 16.05 seconds;
 - five controller/worker tests passed in 8.02 seconds, including the complete restart path;
 - no CUDA device was visible;
 - reversible/vanilla output, input-gradient, and parameter-gradient parity passes in fp32 and CPU

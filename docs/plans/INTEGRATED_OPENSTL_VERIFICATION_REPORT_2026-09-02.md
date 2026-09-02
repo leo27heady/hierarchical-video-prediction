@@ -29,7 +29,7 @@ end-to-end memory advantage.
 
 | Responsibility | Worktree | Branch | Verified revision |
 |---|---|---|---|
-| OpenSTL model, method, configs, loaders, preparation tool, contract tests | `C:\Users\leoni\Documents\projects\OpenSTL-integrated` | `codex/hvp-integrated-v2` | `55a023d6d34344430ecc1add39a9422b6b86c319` (model/evaluation implementation `325c268dc2b3200ebeb0447224ee7ee924b0499b`) |
+| OpenSTL model, method, configs, loaders, preparation tool, contract tests | `C:\Users\leoni\Documents\projects\OpenSTL-integrated` | `codex/hvp-integrated-v2` | `ca335ba206ef6f51515a4f8eefcad1eed8c36c10` (model/evaluation implementation `325c268dc2b3200ebeb0447224ee7ee924b0499b`) |
 | plans, final manifest, worker, controller, profiler, resume tests | `C:\Users\leoni\Documents\projects\hierarchical-video-prediction-integration` | `codex/integrated-openstl-v2` | implementation baseline `9c49f5a3d7f1342586eedc135842d71f9cc6ecc2`; later verification hardening is in the commit containing this report |
 
 The original OpenSTL checkout with Leonid's TempVerseFormer changes and the live Article 4
@@ -86,7 +86,7 @@ be smaller than its isolated-core ratio.
 
 ## Verification performed without GPU interference
 
-- 19 OpenSTL model/data tests pass with CUDA hidden.
+- 20 OpenSTL model/data/CLI tests pass with CUDA hidden.
 - Five HVP controller/worker tests pass with CUDA hidden.
 - Both dataset shapes complete forward/backward and checkpoint round trips.
 - Real fixed quota, unique indices, temporal minimums, spatial/temporal router response, mixed-mode
