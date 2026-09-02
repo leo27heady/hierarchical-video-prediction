@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "campaign_id": "integrated-openstl-confirmation-2026-09",
+  "stage": "prelock_confirmation",
+  "launch_authorized": false,
+  "description": "Four long full-model confirmations after bounded architecture and memory gates.",
+  "wandb_project": "hierarchical-video-prediction-integrated-v2",
+  "wandb_group": "integrated-openstl-confirmation-2026-09",
+  "hvp_root": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-integration",
+  "openstl_root": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated",
+  "openstl_reference_data_root": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL\\data",
+  "python": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL\\venv\\Scripts\\python.exe",
+  "output_root": "D:\\hierarchical-video-prediction-storage\\integrated_openstl_v2",
+  "minimum_free_gib_after_projection": 15,
+  "runs": [
+    {
+      "run_id": "INT_MM_S00",
+      "dataset": "mmnist",
+      "seed": 0,
+      "config": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\configs\\mmnist\\HVPIntegrated.py"
+    },
+    {
+      "run_id": "INT_MM_S01",
+      "dataset": "mmnist",
+      "seed": 1,
+      "config": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\configs\\mmnist\\HVPIntegrated.py"
+    },
+    {
+      "run_id": "INT_TB_S00",
+      "dataset": "taxibj",
+      "seed": 0,
+      "config": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\configs\\taxibj\\HVPIntegrated.py"
+    },
+    {
+      "run_id": "INT_TB_S01",
+      "dataset": "taxibj",
+      "seed": 1,
+      "config": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\configs\\taxibj\\HVPIntegrated.py"
+    }
+  ]
+}

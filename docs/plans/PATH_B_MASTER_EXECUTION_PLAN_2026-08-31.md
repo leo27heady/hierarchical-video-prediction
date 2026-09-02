@@ -113,14 +113,17 @@ The decoder produces a coarse full-frame base and coordinate-scattered fine resi
 
 Recommended initial competitiveness tolerances: no more than 5% relative degradation in the primary validation metric for a memory-focused comparison, and no more than 2% for a claim of quality parity. These thresholds must be declared before confirmation runs.
 
-## 6. Two-week execution boundary
+## 6. Execution boundary
 
 The two one-week windows are feasibility and evidence-consolidation sprints. They cannot guarantee a finished two-paper experimental package on unknown hardware. They can produce a go/no-go answer, a defensible primary frontier, and a validated integrated prototype.
 
 - **Week 1 -- Article 4:** clean controlled hierarchy experiments, seed-confirmed primary contrasts, and the spatial--temporal allocation surface.
-- **Week 2 -- Article 5:** integration contract implementation, parity/memory gates, dynamic routing feasibility, and limited OpenSTL comparisons.
+- **Integration block of the same new article:** contract implementation, parity/memory gates,
+  dynamic routing feasibility, and limited OpenSTL comparisons on Moving MNIST and TaxiBJ.
 
-If both weeks pass their gates, budget an additional 1--3 GPU-weeks for four-seed confirmation on all selected OpenSTL datasets, final long-horizon runs, and camera-ready ablations. The exact duration scales approximately inversely with the number of comparable GPUs.
+The earlier two-new-article assumption is superseded by the 2 September decision to prepare one
+article with two evidence blocks. Final integrated confirmation is two datasets by two seeds (four
+full-model runs). Its GPU duration is measured after bounded gates rather than promised in advance.
 
 ## 7. Repository strategy
 
@@ -169,10 +172,12 @@ The current manuscript remains readable throughout migration. A chapter is promo
 - [x] Obtain Leonid's confirmation of the recommended 30k schedule and revised campaign timing.
 - [x] Prepare and verify the complete resumable 43-configuration / 86-run Article 4 campaign.
 - [x] Lock development-only post-training selection and fresh TRB confirmation rules.
-- [ ] Add the integrated state-contract and positional-encoding tests.
+- [x] Add the initial integrated state-contract and positional-encoding tests.
 - [ ] Execute the Article 4 30k campaign (estimated 187--205 direct GPU-hours on one RTX 4060 Ti).
-- [ ] Execute Article 5 Week 2 gates.
-- [ ] Start the English manuscript with the approved structure and transfer ledger.
+- [ ] Implement and CPU-verify the OpenSTL-native integrated model in the isolated worktrees.
+- [ ] Execute the integrated-model gates, then four locked full-model runs.
+- [ ] Refactor the existing Ukrainian manuscript in place; write new passages in English and use
+      the Articles 1--3 transfer ledger.
 
 ## 10. Continuation record
 

@@ -1,5 +1,12 @@
 # Article 5: integrated architecture feasibility and experiment plan
 
+> Superseded publication framing (2 September 2026): this is no longer planned as a separate
+> fifth article. Its valid architecture and gate material is now the integrated evidence block of
+> one new article, together with the `A4_*` TRB hierarchy study. Current implementation and final
+> two-dataset/two-seed decisions are authoritative in
+> `INTEGRATED_OPENSTL_MODEL_AND_SINGLE_ARTICLE_PLAN_2026-09-02.md`. Legacy `A5_*` IDs are preserved
+> only for provenance.
+
 ## 1. Objective
 
 Determine whether a hierarchical predictor, reversible internal computation, and information-density-aware spatial routing can be combined correctly and whether the combination produces a meaningful end-to-end memory advantage without unacceptable predictive degradation on OpenSTL datasets.

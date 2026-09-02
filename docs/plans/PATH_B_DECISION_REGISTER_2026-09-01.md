@@ -295,3 +295,56 @@ Leonid confirmed the schedule. The following requirements are implementation-aut
     consistency, uniqueness, and exact collision absence against development data.
 14. The complete implementation/operations record is
     `docs/plans/ARTICLE4_30K_CAMPAIGN_IMPLEMENTATION_AND_OPERATIONS_2026-09-01.md`.
+
+## 13. Single-article and integrated-model decisions confirmed on 2 September 2026
+
+These decisions supersede the earlier assumption that the redesigned hierarchy study and the
+integrated model require two additional articles.
+
+1. Prepare one new article. Its first evidence block is the controlled TRB hierarchy/allocation
+   campaign formerly labelled Article 4; its second evidence block is the integrated OpenSTL model
+   formerly labelled Article 5. Legacy `A4_*` and `A5_*` identifiers remain stable provenance IDs,
+   not promises of separate publications.
+2. The dissertation remains in the existing Ukrainian manuscript tree. Preserve the present
+   structure and most existing prose, especially Chapters 1 and 2. New or materially rewritten
+   passages are drafted in English. Chapters 3 and 4 retain their current semantic roles unless
+   the final evidence makes a bounded reorganization necessary.
+3. Do not start manuscript rewriting while the integrated architecture is unresolved. Later edits
+   add the spatial--temporal allocation framing to Chapter 1, replace obsolete Chapter 3/4
+   experiments with the registered studies, remove redundant formulae and composite figures, and
+   transfer useful Articles 1--3 material through the provenance ledger.
+4. Final integrated quality confirmation uses only OpenSTL Moving MNIST and TaxiBJ, with seeds 0
+   and 1: four long full-model runs in total. Moving MNIST is the synthetic benchmark; TaxiBJ is
+   the real-data benchmark. Long Moving MNIST is excluded.
+5. Four full-model runs do not replace component evidence. Component memory effects are measured
+   with paired, same-checkpoint profiles and bounded development ablations. Article 4 already
+   supplies the broad hierarchy quality--memory study; the OpenSTL block tests whether the selected
+   mechanisms compose.
+6. A separate HVP worktree `hierarchical-video-prediction-integration` on branch
+   `codex/integrated-openstl-v2` holds scientific contracts, manifests, profilers, and plans. A
+   clean OpenSTL worktree `OpenSTL-integrated` on branch `codex/hvp-integrated-v2` holds the native
+   OpenSTL method. The live Article 4 worktree and Leonid's modified OpenSTL checkout are read-only.
+7. The legacy fixed-region/packed-SimVP/second-order prototype is feasibility evidence only. It is
+   not the final integrated architecture because fixed learned region slots cannot identify moving
+   routes and second-order rollout changes multistep forward dynamics.
+8. The final reversible mechanism is confined to deterministic internal transformer blocks. The
+   ordinary and reversible modes execute the exact same forward equations; numerical output,
+   input-gradient, and parameter-gradient parity is a release gate.
+9. Routing is a non-reversible boundary before the core. Dynamic detail tokens are positioned by
+   normalized physical `(x,y,time,scale,level)` metadata. Packed tensor slot is never treated as
+   spatial identity.
+10. The final hierarchy keeps coarse coverage for every observed time and selects a real fixed
+    quota from fine candidates across both space and time. The selection tensor is gathered before
+    the transformer; dense candidates are not padded into the retained state.
+11. Dynamic routing at the same quota is a quality/allocation mechanism at equal retained memory,
+    not an independent memory multiplier. It may demonstrate a memory win only by matching quality
+    at a smaller measured quota. Hierarchy reduces retained/attention state; reversibility reduces
+    training activation storage. Ratios are never multiplied into a claimed end-to-end ratio.
+12. A model trained only with static membership is not assumed to support dynamic routing at
+    inference. Inference switching is admissible only after route-aware or mixed-route training and
+    explicit static/dynamic switch, stability, and quality tests.
+13. During the live Article 4 GPU campaign, integrated-model work is limited to static inspection,
+    lightweight CPU tests, documentation, and configuration generation. It must not allocate CUDA,
+    duplicate datasets/checkpoints, or dirty the pinned Article 4 worktree.
+14. The detailed architecture, gates, experiment matrix, and operating sequence are recorded in
+    `docs/plans/INTEGRATED_OPENSTL_MODEL_AND_SINGLE_ARTICLE_PLAN_2026-09-02.md`.

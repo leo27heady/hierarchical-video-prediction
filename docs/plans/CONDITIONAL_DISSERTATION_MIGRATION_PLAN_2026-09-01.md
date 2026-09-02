@@ -1,5 +1,10 @@
 # Conditional dissertation migration plan
 
+> Update (2 September 2026): the two-new-article assumption is superseded. Preserve the existing
+> Ukrainian manuscript tree and Chapters 1--2, draft new insertions in English, and treat the TRB
+> hierarchy campaign plus integrated OpenSTL model as two evidence blocks of one article. Chapter
+> 3/4 changes remain evidence-triggered; do not rebuild the dissertation from scratch.
+
 **Decision:** preserve the current Chapter 1 and Chapter 2 order while Articles 4 and 5 are being
 tested. Reorganize only as far as the new evidence justifies.
 
