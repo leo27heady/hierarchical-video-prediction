@@ -347,4 +347,34 @@ integrated model require two additional articles.
     lightweight CPU tests, documentation, and configuration generation. It must not allocate CUDA,
     duplicate datasets/checkpoints, or dirty the pinned Article 4 worktree.
 14. The detailed architecture, gates, experiment matrix, and operating sequence are recorded in
-    `docs/plans/INTEGRATED_OPENSTL_MODEL_AND_SINGLE_ARTICLE_PLAN_2026-09-02.md`.
+   `docs/plans/INTEGRATED_OPENSTL_MODEL_AND_SINGLE_ARTICLE_PLAN_2026-09-02.md`.
+
+## 14. Dissertation refactoring decisions confirmed for planning on 2 September 2026
+
+1. Refactor the current Ukrainian dissertation as the foundation; do not create a replacement
+   manuscript from zero. Preserve the current four-chapter semantic order and most Chapters 1--2
+   prose. New or materially rewritten passages are drafted in English as complete blocks.
+2. Do not edit the live Path B worktree while the Article 4 controller owns it. Planning is stored
+   on the isolated integration branch; manuscript editing begins from a clean post-campaign
+   worktree and a hash-preserved fallback.
+3. Chapters 3 and 4 retain their method/results roles. Chapter 3 receives the complete registered
+   FRT/ALC/CEX/LVL/OVR/STS design and the new OpenSTL-native integrated architecture. Chapter 4
+   makes the new hierarchy campaign primary and replaces the old fixed-region integration headline
+   with measured component and dataset results.
+4. Every main figure has one question. Both seed values are displayed for two-seed results; a
+   training-seed confidence interval is not inferred from two points. Clip-level intervals are
+   explicitly conditional on a trained model.
+5. Main-text numbered tables contain empirical results. Configuration registries, tensor shapes,
+   symbol dictionaries, hashes, and detailed uncertainty tables move to appendices.
+6. Number only original/reused model definitions, implemented interfaces, primary estimands, and
+   repeatedly referenced decision rules. Standard/tutorial derivations move inline or to the
+   appendix. The target main-text range is roughly 46--60 numbered equations, not a fixed quota.
+7. The E6 coverage--identity boundary and E5a non-replication remain visible. EBT, E8a, full legacy
+   robustness, and the old integrated prototype become secondary/appendix evidence unless final
+   results establish a specific need.
+8. Unfinished results use traceable placeholders and conditional positive/neutral/negative prose.
+   No invented numeric result, memory multiplier, or Pareto claim is permitted.
+9. Articles 1--3 material removed from the main narrative is preserved in a publication-support
+   appendix and provenance ledger rather than discarded.
+10. The authoritative detailed plan is
+    `docs/plans/DISSERTATION_DETAILED_REFACTORING_PLAN_2026-09-02.md`.
