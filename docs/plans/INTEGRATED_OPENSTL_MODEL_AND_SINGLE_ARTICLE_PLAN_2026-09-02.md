@@ -84,6 +84,11 @@ local temporal change, and an optional learned correction. It supports:
 - `hybrid`: density prior plus a learned score; and
 - `mixed`: route-aware training that samples static and hybrid membership.
 
+`Static`, `density`, and `hybrid` are inference membership policies. `Mixed` is a training-exposure
+regime, not a fourth inference routing policy. A same-checkpoint static/density/hybrid switch is a
+distribution-shift diagnostic; a static-trained versus mixed-trained comparison is a separately
+trained development ablation and is not guaranteed by the four final full-model runs.
+
 Selection is global over the observed space--time volume, with a configurable minimum per input
 frame to prevent temporal collapse. The chosen features and their physical metadata are gathered
 into `(B,K,D)` before transformer execution. `K` is a real fixed quota for a run, not a padded
@@ -182,6 +187,7 @@ profiles using the same trained checkpoint wherever mathematically possible:
 |---|---|---|---|
 | flat vs hierarchical | retained fine grid versus coarse plus packed detail | separate bounded training is needed | retained bytes, inference peak, training peak |
 | vanilla vs reversible | execution mode only; identical weights and outputs | exact parity required | incremental core and end-to-end training peak |
+| vanilla vs checkpointed vs reversible | activation-storage strategy only; identical model and loss | exact/declared numerical agreement required | allocated/reserved peak, throughput, recomputation |
 | static vs dynamic | membership policy at identical quota | route-aware checkpoint plus paired validation | equal retained bytes; compare quality/stability |
 | large vs smaller dynamic quota | packed `K` | smaller quota must remain within tolerance | actual retained and peak frontier |
 
@@ -189,6 +195,17 @@ The profiler records allocated and reserved CUDA peaks, batch/precision, paramet
 bytes, retained payload including metadata, tokens, wall time, throughput, recomputation cost, and
 the measurement baseline. At least five warm iterations and twenty measured iterations are used
 after the final batch size is selected.
+
+Activation checkpointing is the practical comparator for the reversible core. If it cannot be
+profiled under the same model, checkpoint, batch, precision, horizon, and loss, the final claim is
+restricted to a comparison with ordinary autograd storage and does not assert the best available
+memory--compute trade-off.
+
+Every intended result is classified before writing as a CPU correctness gate, same-checkpoint
+profile, separately trained development ablation, long full-model confirmation, matched local
+baseline, or published contextual reference. Missing component/baseline cells contract the
+corresponding dissertation/article claim; four long full-model runs do not imply that a six-cell
+component-training matrix was completed.
 
 ### 6.3 Four final full-model confirmation runs
 

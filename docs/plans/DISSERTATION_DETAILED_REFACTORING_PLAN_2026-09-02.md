@@ -2,7 +2,7 @@
 
 **Date:** 2 September 2026
 
-**Status:** approved-direction planning document; manuscript text has not yet been changed
+**Status:** revised after independent blind audit; manuscript text has not yet been changed
 
 **Working manuscript:**
 `C:\Users\leoni\Documents\projects\hierarchical-video-prediction-path-b\docs\dissertation\condensed_translated_humanized_ukrainian`
@@ -37,6 +37,25 @@ This plan does not authorize invented measurements. Where an experiment is unfin
 manuscript receives a traceable placeholder, a generation contract, and conditional interpretation
 language. Optimistic expected behavior may guide layout, but no provisional number is printed as
 an empirical result.
+
+The new TRB matrix is a **long-context/distant-evidence allocation study with a four-frame
+prediction endpoint**. It is not, by itself, a test of long autoregressive forecast stability.
+“Long retained reach” and “long forecast horizon” are different axes throughout the manuscript.
+Legacy E5/E6 and other valid self-fed rollout evidence remain substantive because they test the
+second axis. A new rollout of selected v2 checkpoints, if authorized, is a separate post-campaign
+evaluation rather than a reinterpretation or relaunch of the 86 training runs.
+
+Evidence status uses five exact labels:
+
+- **registered development estimate** for the complete 30k matrix;
+- **direction reproduced across two training seeds** only when both seed contrasts agree;
+- **sealed-holdout confirmation** only for the exact selected roles and registered populations
+  opened on the fresh holdout;
+- **mechanism diagnostic** for A4-MEC and similar probes; and
+- **historical/transfer boundary** for legacy E2--E8 evidence.
+
+The complete development frontier must never be called a confirmed frontier unless the complete
+family is evaluated under a separately authorized confirmation contract.
 
 ## 2. What the author's concerns mean in editorial and scientific terms
 
@@ -243,9 +262,12 @@ sizes and their uncertainty are preferable to significance-only decoration
 
 ### 4.3 Table rule
 
-The author's rule is adopted: **main-text numbered tables are for empirical results**. Method
-configuration, symbol dictionaries, dataset roles, experiment registries, tensor shapes, hashes,
-and arithmetic checks move to appendices or concise prose/figures.
+The author's preference is adopted as the default: **main-text numbered tables are for empirical
+results**. Method configuration, symbol dictionaries, dataset roles, experiment registries, tensor
+shapes, hashes, and arithmetic checks normally move to appendices or concise prose/figures. One
+compact, single-purpose method table is allowed when exact budget/reach/level/overlap differences
+would otherwise require an overloaded figure or repeated appendix lookup. It must be labelled as a
+method contract and must not mix configuration with outcomes.
 
 Each result table has:
 
@@ -298,6 +320,24 @@ beats flat prediction.
 
 ## 6. Detailed section-by-section refactoring
 
+### 6.0 Front matter
+
+Treat `00_FRONT_MATTER.md` as a first-class result-bearing manuscript component. Audit and update
+both Ukrainian and English abstracts, keywords, novelty statements, contribution bullets,
+publication list, software claims, manuscript counts, and every occurrence of the old
+fixed-region/second-order prototype numbers.
+
+Each abstract or novelty sentence that depends on unfinished evidence receives a claim placeholder
+linked to the same claim-to-artifact ledger used by Chapter 4. Abstract and conclusion claims are
+filled from that ledger after result lock rather than edited independently. Preserve institutional
+wording and author-contribution statements unless the author or institution supplies an approved
+replacement.
+
+**Visuals/equations/tables:** none.
+
+**Gate:** front matter may be finalized only after Chapter 4, general conclusions, publication
+status, and final figure/formula/table counts are frozen.
+
 ### 6.1 Introduction
 
 Preserve the current headings and most text. Make the following surgical edits:
@@ -305,9 +345,11 @@ Preserve the current headings and most text. Make the following surgical edits:
 - In the relevance section, introduce the four memory terms before naming individual models.
 - State explicitly that spatial compression can free state budget for temporal reach, but this is
   an allocation opportunity rather than a guaranteed quality improvement.
-- Replace the old experiment-oriented task list with questions covering: fixed-budget allocation,
-  budget frontier, purchased coarse reach, number of levels, temporal overlap, space--time detail
-  placement, and composition with reversibility/routing.
+- Preserve dissertation-level tasks for: system analysis and task-specific consistency;
+  reversible temporal computation; V-BLT/RoPE-ND and spatial-complexity diagnosis; hierarchical
+  retained-context design; observability/evaluation/statistics; and the empirical operating region
+  plus integrated composition. Nest the FRT/ALC/CEX/LVL/OVR/STS and integration questions under
+  the last three tasks instead of replacing the contribution logic of Articles 1--3.
 - Update the novelty list so that old feasibility results are not presented as the final integrated
   contribution.
 - Map Articles 1--3 to their actual supporting chapters and call the new combined work “manuscript
@@ -343,8 +385,10 @@ that action-conditioned TRB is an instrument, not the definition of video predic
 
 Keep appearance, object, trajectory, temporal, and cross-level consistency, but stop illustrating
 every static-control mechanism separately. Present one taxonomy, one failure montage, and one
-object/trajectory example. The current Articles 1 material remains available in an appendix or
-literature-support gallery so it is transferred, not discarded.
+object/trajectory example. Preserve Article 3/[A3]'s conceptual synthesis of appearance/style,
+identity, geometry/shape, and concept consistency, together with the comparison of input-, weight-,
+structure-, inversion-, and attention-based control interfaces. Move tutorial redundancy and
+secondary illustrations, not the scientific synthesis, to an appendix.
 
 **Add:** a paragraph explaining that hierarchy must be evaluated at the level whose information it
 is expected to preserve: coarse coverage/trajectory and fine identity/texture need different
@@ -381,7 +425,7 @@ memory, checkpointing, and reversible blocks by **intervention point**. Do not a
 table; use one literature-positioning diagram or prose.
 
 Delete or move the extended diffusion/ControlNet/StyleAligned/inversion tutorial sequence. It can
-remain in a provenance-preserving appendix if required to demonstrate Article 1 continuity, but it
+remain in a provenance-preserving appendix if required to demonstrate Article 3/[A3] continuity, but it
 must not dominate the dissertation problem statement.
 
 **Target:** no numbered equations; 1 figure; no tables.
@@ -390,8 +434,8 @@ must not dominate the dissertation problem statement.
 
 Keep the requirements structure and replace the hypotheses with aligned, falsifiable statements:
 
-- H1: at low retained-token budgets, a hierarchy can improve long-horizon primary error by buying
-  relevant reach;
+- H1: at low retained-token budgets, a hierarchy can reduce horizon-4 foreground error when useful
+  distant observed context would otherwise be excluded;
 - H2: the optimal cross-level allocation depends on total budget and cannot be inferred from one
   hand-selected package;
 - H3: more levels and nested overlap help only if their extra representation justifies displaced
@@ -403,6 +447,11 @@ Keep the requirements structure and replace the hypotheses with aligned, falsifi
   only if a smaller quota preserves quality;
 - H7: the full integrated model is useful only if it is competitive on matched OpenSTL protocols
   and improves the measured quality--memory frontier.
+
+Add a separate rollout hypothesis only where supported: selected models that use retained context
+may or may not remain stable when their own predictions update that context across many windows.
+This is evaluated by legacy E5/E6 or an explicitly registered selected-checkpoint rollout; it is not
+inferred from H1.
 
 End with a claim-to-evidence map in prose or one simple diagram. No result is stated here.
 
@@ -462,6 +511,12 @@ resource constraints but do not by themselves answer the central retained-contex
 question. End with a three-column conceptual map in prose: mechanism, changed resource, unchanged
 resource. Do not use a numbered table in the main text.
 
+Maintain a content-transfer ledger for Articles 1--3 at the paragraph/claim/figure/table level. For
+Articles 1 and 2, the executed method boundary, published numerical evidence, and author
+contribution remain in the main narrative. For Article 3, the compact conceptual taxonomy remains
+in Chapter 1. Appendices hold derivations, exhaustive assets, and provenance rather than the full
+scientific substance.
+
 ### 6.4 Chapter 3 — retain the architecture/method role, replace the experiment design layer
 
 The Chapter 3 title and the 3.1--3.8 progression remain. The chapter becomes the complete method
@@ -482,8 +537,9 @@ empirical frontier before data establish it.
 
 Keep the frozen two-level codec, stream definitions, metadata, joint attention, gradient boundary,
 and asymmetric outputs. Consolidate codec/tensor-shape Tables 3.1--3.2 into appendix configuration
-tables. In the main text, one architecture figure must display every tensor shape and trainable/frozen
-boundary.
+tables. The main architecture figure shows the conceptual data flow and trainable/frozen boundary;
+an adjacent contract box or compact method table carries exhaustive tensor shapes. Do not force
+every dimension into the schematic.
 
 Add exact definitions for the allocation strategies actually implemented by the new campaign:
 Flat, Linear-age, Geometric-age, and the seven fixed-budget allocation policies. Define nested,
@@ -526,6 +582,15 @@ The main statistical contract is:
 - with two training seeds, report both dots, their arithmetic mean, and the direction agreement;
   do not manufacture a meaningful t interval from two points.
 
+Add a terminology box distinguishing:
+
+- **context age/reach:** how far before the target an observed state is retained;
+- **prediction endpoint:** the four jointly predicted frames used by the v2 allocation matrix; and
+- **autoregressive rollout horizon:** the number of predicted frames subsequently fed back into
+  future model calls.
+
+Only the third supports claims about self-fed accumulation or long-rollout stability.
+
 #### 3.6 Registered hierarchy experiment programme
 
 Retain the current hypotheses heading but replace its five broad hypotheses with the exact design
@@ -553,18 +618,24 @@ retrained.
 ##### 3.6.4 Coarse-context expansion (`A4-CEX`)
 
 Hold six recent fine positions fixed and add `0, 4, 8, 16, 32, 64` coarse time positions, two
-seeds: 12 runs. Question: what is gained specifically by purchasing older coarse coverage?
+seeds: 12 runs. Question: what is the response to adding exclusive older coarse slots while total
+budget, sequence length, attention work, and reach increase together? This is not a fixed-memory
+causal estimate of reach alone.
 
 ##### 3.6.5 Hierarchy depth (`A4-LVL`)
 
 One, two, and three levels at budget 1,792 using the best ALC strategy, two seeds. Reuse the one- and
 two-level cells; train only the genuinely new three-level pair. Question: does additional depth help
-after total budget and chosen allocation policy are fixed?
+for the registered one-/two-/three-level construction at fixed total payload? The three-level arm
+adds a top stream, reallocates remaining coarse:fine payload, rounds slot counts, and changes
+parameter count; it is not a pure scalar “number of levels” intervention.
 
 ##### 3.6.6 Temporal overlap (`A4-OVR`)
 
 Nested, exclusive, and residual ownership at budget 1,792, two seeds. Question: is it useful to
-represent the same time point at multiple levels, or should saved duplicate capacity be reassigned?
+use the registered ownership/representation packages? Exclusive support relocates coarse ages and
+residual fine tokens change representation semantics, so the result is not attributed to overlap
+alone.
 
 ##### 3.6.7 Space--time detail allocation (`A4-STS`)
 
@@ -580,7 +651,23 @@ ledger is written. `A4-MEC` explains model use of context but does not create an
 quality claim.
 
 Across families there are 43 unique configurations and 86 two-seed training runs. The main text
-uses human names; Appendix G contains the complete identifier/config/hash matrix.
+uses human names; the configuration and interpretation registry (current Додаток В) contains the
+complete identifier/config/hash matrix.
+
+##### 3.6.9 Selected-checkpoint autoregressive rollout (optional additional evidence)
+
+This is not part of the current 86-run training campaign. If authorized before its evaluation data
+are opened, register a separate inference-only study using the selected Flat and hierarchical
+checkpoints for both training seeds. Warm every model from the same ground-truth history, then
+iterate four-frame predictions through the identical causal buffer-update path on a newly generated,
+hash-locked long TRB set. Predeclare rollout lengths, NFE, common random numbers, clip count,
+primary horizon bands, re-entry population, failure handling, and whether the selected smaller
+Pareto hierarchy is included.
+
+This add-on answers whether the selected v2 context policies remain useful and stable when predicted
+states re-enter memory. It requires no retraining and must not reselect configurations. If it is not
+run, Chapter 4 relies on legacy E5/E6 for long-rollout behavior and describes the new matrix only as
+long-context allocation evidence.
 
 #### 3.7 Integrated OpenSTL architecture — replace the old prototype
 
@@ -603,17 +690,30 @@ Describe stride-4 fine candidates, stride-8 coarse coverage, global fixed-quota 
 Transformer, exact retained tensor shapes, and why padding dense candidates would not count as a
 memory saving.
 
-##### 3.7.3 Static, density, hybrid, and mixed routing
+##### 3.7.3 Routing policies and route-aware training
 
 Define content, fine--coarse residual, temporal-change, and learned score components; minimum
 per-frame coverage; deterministic ordering; and route stability endpoints. Make clear that a
 static-only model cannot safely switch to dynamic inference without route-aware training.
+
+Separate two factors. `static`, `density`, and `hybrid` are inference membership policies that can
+be applied to a route-aware checkpoint as a switch/distribution-shift diagnostic. `mixed` is a
+training exposure regime, not a fourth inference router; comparing static-trained with mixed-trained
+models is a separately trained development ablation. Record top-k non-differentiability, the
+selected-score gradient path, route collapse/margin, and membership stability as limitations.
 
 ##### 3.7.4 Physical position and hierarchy metadata
 
 Define normalized spatial centre, signed time, scale, and level encoding. State the packed-slot
 permutation invariance requirement. This subsection directly resolves the concern that positional
 encoding designed for static slots cannot support changing membership.
+
+The reproducibility contract specifies coordinate origin, cell-centre convention, denominator and
+range for x/y, past/zero/future time signs, scale normalization, hierarchy-level indexing,
+dataset-resolution handling, and behavior when input/output horizons change. Normalization is fixed
+by the physical grid and protocol, never recomputed from selected tokens. Include future decoder
+queries in the same contract and record permutation-test tolerances for fp32 and the deployed mixed
+precision dtype.
 
 ##### 3.7.5 Identical-forward reversible core and future decoder
 
@@ -650,6 +750,11 @@ Move the full program matrix to an appendix. Keep one compact sign convention on
 real ambiguity. Every comparison says exactly what is matched: retained tokens, forward function,
 quota, training schedule, or dataset protocol.
 
+Every heading, caption, result table, abstract sentence, and conclusion uses the evidence-status
+vocabulary defined in Section 1. Add a claim-to-artifact matrix containing the final sentence-level
+claim, population, exact configurations, training-seed unit, selection role, source artifact, and
+whether the sealed holdout was exposed.
+
 #### 4.2 Training endpoint and bounded mechanism controls
 
 Rename the section to **Training endpoint and predictor-mechanism controls**.
@@ -667,9 +772,10 @@ interpretation become prose or appendix fields.
 
 #### 4.3 Context budget and purchased temporal reach
 
-Replace the old E2 headline with the complete `A4-FRT` and `A4-CEX` evidence. The older E2 result is
-introduced as motivating evidence and retained in the appendix/provenance chain, not silently
-discarded.
+Make the complete `A4-FRT` and `A4-CEX` development evidence the primary budget-allocation study.
+Retain sound E2 rollout evidence in a bounded but substantive main-text role because it tests
+self-fed behavior that the four-frame v2 endpoint does not. It is not silently discarded or treated
+as interchangeable with the new matrix.
 
 Suggested subsubsections:
 
@@ -682,12 +788,17 @@ discrete interventions.
 
 #### 4.4 Allocation, hierarchy depth, overlap, and space--time placement
 
-Replace the present token-arithmetic/frontier mixture with four direct questions:
+Replace the present token-arithmetic/frontier mixture with four direct registered-package
+questions:
 
 - **4.4.1 Allocation policy at 1,792 tokens (`A4-ALC`)**;
 - **4.4.2 One, two, or three levels (`A4-LVL`)**;
 - **4.4.3 Nested, exclusive, or residual overlap (`A4-OVR`)**;
 - **4.4.4 Fine quota and temporal placement (`A4-STS`)**.
+
+Use exact compound estimands: CEX varies older coarse slots together with budget/compute/reach; LVL
+compares the registered multi-level constructions; OVR compares ownership/representation packages.
+Captions must not label these as isolated effects of reach, level count, or overlap.
 
 The analytic token arithmetic remains as a short methods check or appendix. Any 2.67x or 3.43x
 ratio is labelled retained-token/state arithmetic, not measured end-to-end VRAM or equal-quality
@@ -710,6 +821,11 @@ endpoint. Retain sampler/NFE and alternate-codec evidence only as bounded robust
 legacy mechanism. Place their full simultaneous intervals in the appendix. One main robustness
 figure is enough if it answers whether direction persists; otherwise describe them briefly and
 remove both figures from the main text.
+
+The full matrix is a registered development estimate. “Direction reproduced across two seeds” is
+used only for contrasts with aligned directions. Sealed-holdout language is restricted to selected
+roles actually evaluated by the finalizer; it does not promote ALC/LVL/OVR/STS families wholesale
+to confirmation status.
 
 #### 4.7 Negative and boundary evidence
 
@@ -743,12 +859,20 @@ under paired host/batch/precision/protocol conditions. Report retained bytes, in
 training peak, activation increment, throughput, and recomputation overhead. Do not use a waterfall
 unless components are truly additive under one baseline; a paired dot/slope plot is safer.
 
+Add activation checkpointing as the practical same-model comparator to ordinary autograd and
+reversible execution. Match model, checkpoint, batch, precision, and horizon; report allocated and
+reserved peaks, throughput, and recomputation. If this comparator is not executed, restrict the
+claim to “lower than ordinary autograd storage” and do not claim the best available
+memory--compute trade-off.
+
 ##### 4.8.3 Routing quality, quota frontier, and stability
 
-At equal quota, compare static, density, hybrid, and mixed-route behavior. Report quality,
-coverage, entropy, churn/Jaccard, route margin, and flicker/seam diagnostics. Then vary quota to test
-whether dynamic routing preserves quality at a smaller real retained tensor. Equal-quota routing is
-an allocation result, not a memory saving.
+First compare static, density, and hybrid inference membership on a route-aware checkpoint as a
+switch diagnostic. Separately compare static-only training with mixed/route-aware training when
+both checkpoints exist. Report quality, coverage, entropy, churn/Jaccard, route margin, and
+flicker/seam diagnostics. Then vary quota to test whether dynamic routing preserves quality at a
+smaller real retained tensor. Equal-quota routing is an allocation result, not a memory saving, and
+gains from mixed training are not attributed solely to the routing score.
 
 ##### 4.8.4 Moving MNIST
 
@@ -767,6 +891,12 @@ model may be described as competitive if it satisfies the declared quality toler
 Pareto-improving only if no comparator is both more accurate and lower-memory under the matched
 protocol. Report dataset-specific results even if only one dataset passes.
 
+Every intended cell is labelled as one of: CPU correctness gate, same-checkpoint execution/profile,
+separately trained development ablation, long full-model confirmation, matched local baseline, or
+published contextual reference. The size of Sections 4.8.2--4.8.6 contracts automatically when the
+corresponding scheduled evidence is absent. Unmatched published numbers never establish a Pareto
+claim.
+
 #### 4.9 System-level selection rule
 
 Keep and redraw the useful two-resource/decision-flow synthesis, expanded to four questions:
@@ -784,7 +914,8 @@ starting point” with the measured conclusion from the new packed router.
 Update package/test counts, branches, configs, and commands only from generated manifests. Separate
 the released public package from later research branches. Add the single-command Article 4 and
 integrated campaign controllers, resume semantics, local-authoritative logging, W&B mirroring, and
-artifact hashes to Appendix G rather than filling the narrative with paths.
+artifact hashes to the software and reproduction appendix (current Додаток Ж) rather than filling
+the narrative with paths.
 
 #### 4.11 Validity and chapter conclusions
 
@@ -801,8 +932,29 @@ after final results so they match the new design:
 - same-host profiles are necessary for memory comparisons;
 - measured total memory, retained state, and core activation memory are separate endpoints.
 
-End with claims ordered by evidence strength: confirmed hierarchy frontier, allocation mechanisms,
-negative boundary, component memory effects, full-model OpenSTL position.
+End with claims ordered by evidence strength: registered development frontier with sealed
+confirmation of selected contrasts; allocation mechanisms at their exact evidence status; legacy
+long-rollout and negative boundaries; component memory effects; and full-model OpenSTL position.
+
+### 6.6 General conclusions and references
+
+Rewrite `06_CONCLUSIONS.md` only after the Chapter 4 claim ledger is locked. Preserve one conclusion
+for each dissertation-level task, in the same order as the Introduction, and attach every numerical
+or comparative sentence to its evidence-status/artifact row. Distinguish clearly among long-context
+allocation, long autoregressive rollout, activation-memory reduction, spatial routing, and the
+full-model OpenSTL result. A negative or absent integrated result changes the conclusion rather than
+being omitted.
+
+Audit `07_REFERENCES.md` after content migration. Remove a citation only when no retained main-text
+or appendix claim depends on it; add sources for new routing, checkpointing, visualization, and
+OpenSTL statements; preserve the publication records required by the contribution map; and verify
+that every bibliography entry is cited and every citation resolves. Record moved Article 1--3
+claims in the content-transfer ledger so appendix relocation does not orphan their sources.
+
+**Visuals/equations/tables:** none added to general conclusions or references.
+
+**Gates:** task-to-conclusion alignment, claim-to-artifact completeness, citation round trip, and
+front-matter/conclusion agreement.
 
 ## 7. Experiment-to-evidence design
 
@@ -813,12 +965,13 @@ negative boundary, component memory effects, full-model OpenSTL position.
 | 30k calibration | 2 calibration arms | Why is 30k the common endpoint? | learning curve of primary metric at every 2k, both arms | none | convergence-rule ledger and all metrics |
 | A4-FRT | 36 | How do three allocation strategies respond over a tenfold budget range? | horizon-4 foreground MSE versus numeric token budget, both seed dots and mean line | concise six-budget means with seed values | other horizons, pixel MSE, SSIM, PSNR, train curves |
 | A4-ALC | 14 logical results, 8 new runs | Which of seven policies is best at 1,792? | horizontal dot plot ordered by two-seed mean | selected contrasts only | complete seven-policy table |
-| A4-CEX | 12 | What does adding older coarse coverage buy with recent fine detail fixed? | response curve versus coarse time positions | optional if exact selected contrasts are central | all component metrics and token arithmetic |
-| A4-LVL | 6 logical results, 2 new runs | Does a third level help at the same budget and selected policy? | paired one/two/three-level dots | none unless selected as primary claim | exact configs/tensor shapes |
-| A4-OVR | 6 logical results, 4 new runs | Does duplicated temporal representation justify its cost? | nested/exclusive/residual paired dots | none | overlap sets and token audit |
+| A4-CEX | 12 | What is the response to adding exclusive older coarse slots while budget, compute, and reach increase? | response curve versus coarse time positions | optional if exact selected contrasts are central | all component metrics and token arithmetic |
+| A4-LVL | 6 logical results, 2 new runs | How do the registered one-/two-/three-level constructions compare at fixed payload? | paired one/two/three-level dots | none unless selected as primary claim | exact configs/tensor shapes/parameter change |
+| A4-OVR | 6 logical results, 4 new runs | How do the registered ownership/representation packages compare? | nested/exclusive/residual paired dots | none | overlap sets, residual semantics, token audit |
 | A4-STS | 24 | How do fine quota and time placement interact? | 4x3 heat map of two-seed mean primary metric | best/worst/registered contrasts | both seed heat maps, all secondary metrics |
 | A4-MEC | no new training | Does the selected model actually use older/re-entry context? | one attention/re-entry diagnostic | none | per-head/layer diagnostics |
 | Confirmation | selected arms only | Does locked development selection reproduce on fresh TRB? | effect-size plot on registered population | final confirmation results | selection ledger and clip-level arrays |
+| Optional selected-checkpoint rollout | no retraining; selected checkpoints only | Do selected policies remain useful/stable when predictions update memory over many windows? | error/effect versus rollout horizon | selected horizon-band results | full per-frame arrays and fixed qualitative strips |
 
 With two seeds, uncertainty graphics show the two independent points. Clip-level confidence
 intervals may be displayed only for the locked confirmation estimand and must be labelled
@@ -829,17 +982,16 @@ confirmation set.
 ### 7.2 Current partial campaign evidence and expected shape
 
 At the read-only status check on 2 September 2026, Wave 1 had 21 complete runs, one running, 58
-pending, and no failures. The completed two-seed primary horizon-4 foreground MSE means were:
+pending, and no failures. The transient aggregation read each completed run's final-step
+`validation_metrics.jsonl` under
+`artifacts/v2/article4_primary_30k/runs/` and used the manifest-declared
+`horizon4_foreground_mse`. Because that live directory changes as the controller advances and no
+immutable snapshot artifact was created, the provisional numeric table has been removed from this
+enduring plan rather than allowed to become an uncited quasi-result.
 
-| Budget | Flat | Linear-age | Geometric-age | Status |
-|---:|---:|---:|---:|---|
-| 320 | 0.05012 | **0.04464** | 0.04917 | two seeds complete |
-| 768 | 0.03307 | 0.02815 | **0.02786** | two seeds complete |
-| 1,152 | **0.02441** | 0.02595 | 0.02551 | two seeds complete |
-| 1,792 | 0.02154 | 0.02027 | pending | Linear-age has only seed 0; no comparison conclusion |
-
-These are **development, incomplete-campaign observations**, not dissertation-final results. They
-support three layout decisions only:
+The observed snapshot suggested that strategy order can change with budget, but it is a
+**development, incomplete-campaign observation**, not a dissertation-final result. It supports
+three layout decisions only:
 
 1. strategy order can cross as budget changes, so one winner bar chart would be misleading;
 2. the primary metric must remain visually separate from SSIM/PSNR, whose order can differ; and
@@ -850,6 +1002,10 @@ most valuable under severe budget pressure and Flat recovers as detailed context
 affordable. If remaining results disagree, retain the same figures and change the interpretation;
 the structure is outcome-independent.
 
+Any later numeric progress snapshot must be generated as a dated JSON/CSV artifact with source
+checkpoint step, run/config hashes, aggregation code commit, and file SHA-256. Final dissertation
+numbers come only from the post-training aggregate and selection/confirmation ledgers.
+
 ### 7.3 Integrated-model evidence
 
 | Evidence block | Required comparisons | Main figure | Main table | Decision criterion |
@@ -857,7 +1013,8 @@ the structure is outcome-independent.
 | correctness | vanilla/reversible; token permutations; route switches | architecture with tested boundaries | appendix gate matrix | all release gates pass |
 | hierarchy memory | Flat-Dense vs Hier-Static at matched core/decoder | retained and measured memory versus quota/horizon | paired profile results | actual retained reduction and measured peak change |
 | reversibility | same checkpoint/config, vanilla vs reversible | peak training memory versus horizon or batch | parity/memory results | same forward; gradients within tolerance; lower core/end-to-end peak |
-| dynamic routing | static/density/hybrid/mixed at fixed quota | quality and route-stability plots | route metrics | equal-quota quality/stability improvement |
+| inference routing switch | static/density/hybrid at fixed quota on a route-aware checkpoint | quality and route-stability plots | route metrics | equal-quota switch behavior and stability |
+| routing training regime | static-trained versus mixed/route-aware-trained checkpoints | seed-level quality/stability comparison | training-regime results | benefit, if any, of route-aware exposure rather than a router-score-only claim |
 | quota frontier | large versus smaller dynamic `K` | measured quality--memory Pareto curve | selected quotas | smaller real tensor within declared quality tolerance |
 | final MM | full seeds 0/1 plus matched baselines | seed-level quality--memory plot and one fixed prediction strip | MSE/MAE/SSIM/PSNR, memory, throughput | competitive quality and memory position |
 | final TaxiBJ | same | same visual grammar | same | same, reported independently |
@@ -866,6 +1023,50 @@ The primary component matrix is Flat-Dense, Hier-Static, Flat-Reversible,
 Hier-Static-Reversible, Hier-Dynamic, and Full. Component ratios are never multiplied. A routing
 gain at fixed quota and a hierarchy state reduction are reported separately from a reversible core
 activation reduction.
+
+Before drafting Section 4.8 as a result section, maintain this evidence-cell ledger:
+
+| Intended evidence | Current commitment | Training need | Claim if absent |
+|---|---|---|---|
+| CPU architecture/parity gates | implemented and verified | none | method correctness only |
+| vanilla vs reversible same-checkpoint profile | planned | none beyond usable checkpoint | no reversible memory result until measured |
+| activation checkpointing comparator | newly required | none beyond usable checkpoint | restrict comparison to ordinary autograd if absent |
+| Flat-Dense vs Hier-Static quality | bounded development ablation, not one shared checkpoint | separate short/adequate training | retained-size arithmetic and feasibility only |
+| static/density/hybrid switch | planned diagnostic on route-aware checkpoint | no extra training | distribution-shift diagnostic only |
+| static-trained vs mixed-trained | not guaranteed by the four final runs | separate development training | no claim about training-regime benefit |
+| dynamic quota frontier | planned but conditional after routing gate | additional bounded quota evaluations/training as required | equal-quota allocation result only |
+| final full model on MM/TaxiBJ | four long runs planned, conditional on gates and explicit authorization | two datasets x seeds 0/1 | no full-model result until authorized and completed |
+| matched local SimVP/TAU/other baseline | conditional on exact compatible checkpoints or reruns | possibly substantial baseline training | published numbers are context only; no matched Pareto claim |
+
+This ledger prevents the four full-model runs from being mistaken for six component-training cells
+or a complete baseline campaign. Runtime/storage estimates are updated after the 200-step GPU
+measurement and after the exact matched-baseline set is resolved.
+
+### 7.4 Experiment impact of the independent review
+
+The review does **not** invalidate or change any of the 86 running Article 4 training cells. Do not
+stop, restart, or relaunch them. Their target, data split, 30k endpoint, seed pair, and post-training
+selection remain unchanged.
+
+Three types of follow-up are distinguished:
+
+1. **Text/evidence-status correction, required and training-free.** Rename the new study as
+   long-context allocation with a four-frame endpoint; retain legacy E5/E6 for self-fed stability;
+   restrict sealed-confirmation language to selected roles.
+2. **Selected-checkpoint long-rollout evaluation, recommended but separately authorized.** Adapt
+   and test a causal packed-buffer evaluator, generate a new sealed long TRB set, and evaluate the
+   selected Flat/hierarchical checkpoints for seeds 0/1. This adds inference/evaluation GPU time and
+   no training. Run a small timing preflight before estimating the total; it should be measured in
+   hours rather than assumed to require another multi-day 86-run campaign.
+3. **Integrated evidence additions, conditional on desired claims.** Activation checkpointing is an
+   extra same-checkpoint profile with no training. Flat-versus-hierarchy quality, static-trained
+   versus mixed-trained routing, and unmatched local baselines may require additional bounded or
+   full training. If they are not run, narrow the component/Pareto claims and keep the four final
+   full-model runs unchanged.
+
+No new experiment is launched or inserted into the live campaign manifest merely because it appears
+in this editorial plan. Each additional evaluation/training cell receives its own authorization,
+immutable manifest, preflight, runtime estimate, and evidence status.
 
 ## 8. Asset-by-asset disposition
 
@@ -876,7 +1077,7 @@ activation reduction.
 - **1.3 teacher-forced/self-fed:** keep.
 - **1.4 resource locations:** keep and expand to the four-resource decomposition.
 - **1.5 consistency matrix:** keep; merge taxonomy content from 1.7.
-- **1.6 combined SDXL/video example:** move to Article 1 support appendix.
+- **1.6 combined SDXL/video example:** move to Article 3/[A3] support appendix.
 - **1.7 taxonomy:** merge into 1.5.
 - **1.8 published visual-perception example:** move to appendix.
 - **1.9 failure montage:** keep.
@@ -935,8 +1136,9 @@ activation reduction.
 - **4.1 generation objectives:** keep only if required to understand the bounded head control.
 - **4.2 EBT composite:** appendix.
 - **4.3 old 6k/20k optimization:** replace with the two-arm 30k calibration curve.
-- **4.4 old E2 effects and 4.5 old frontier:** replace as headline evidence with new FRT/CEX plots;
-  retain old results in appendix/provenance.
+- **4.4 old E2 effects and 4.5 old frontier:** supersede them as the primary allocation evidence
+  with new FRT/CEX plots, while retaining sound old self-fed rollout evidence in a bounded main-text
+  figure or subsection and preserving the complete results in provenance.
 - **4.6 head/package interaction:** retain one simplified seed-level plot.
 - **4.7 sampler and 4.8 codec robustness:** move one or both to appendix unless needed for a distinct
   main claim.
@@ -996,6 +1198,13 @@ Pareto. Some may move to the article supplement if Chapter 4 becomes too dense.
 The resulting target is approximately 46--60 numbered equations in the main text. Final numbers are
 assigned only after text, appendices, and figure/table callouts stabilize.
 
+Before moving or unnumbering any formula, add it to a scientific-dependency ledger with columns:
+current number, scientific role, implementation location, downstream prose references, dependent
+figures/tables, result estimand, destination, and replacement callout. Bespoke re-entry populations,
+primary endpoints, package construction, routing, and compound object metrics remain traceable in
+the main text even when their derivations move. Standard MSE, softmax, DDIM, elementary inverse, and
+bootstrap algorithm steps can be compressed safely only after the dependency check passes.
+
 ## 10. Placeholder and result-insertion protocol
 
 Every unfinished result is represented by a visible token, for example:
@@ -1012,14 +1221,31 @@ Use stable keys:
 - `{{A4_OVR_PRIMARY_FIG}}`
 - `{{A4_STS_PRIMARY_FIG}}`
 - `{{A4_CONFIRMATION_TABLE}}`
+- `{{A4_MEC_DIAGNOSTIC_FIG}}`
+- `{{A4_SELECTED_ROLLOUT_FIG}}`
+- `{{INT_GATE_SUMMARY}}`
+- `{{INT_COMPONENT_ABLATION_TABLE}}`
+- `{{INT_CHECKPOINTING_PROFILE}}`
+- `{{INT_MATCHED_BASELINE_TABLE}}`
 - `{{INT_COMPONENT_MEMORY_FIG}}`
-- `{{INT_ROUTING_QUOTA_FIG}}`
+- `{{INT_ROUTING_SWITCH_FIG}}`
+- `{{INT_ROUTING_TRAINING_REGIME_FIG}}`
+- `{{INT_ROUTING_STABILITY_FIG}}`
+- `{{INT_QUOTA_FRONTIER_FIG}}`
 - `{{INT_MM_RESULTS_TABLE}}`
 - `{{INT_TAXIBJ_RESULTS_TABLE}}`
-- `{{INT_PARETO_FIG}}`
+- `{{INT_MM_PARETO_FIG}}`
+- `{{INT_TAXIBJ_PARETO_FIG}}`
+- `{{INT_CROSS_DATASET_SYNTHESIS}}`
 
 Each placeholder receives a registry row containing source artifact, config hashes, generator,
 metric, population, expected file path, completion check, and allowed claim language.
+
+The registry applies to result-bearing sentences as well as figures and tables. Each row also
+records evidence status, exact configuration IDs, data split, selection role, training seeds,
+uncertainty unit, metric implementation/version, generator commit, failure/absence behavior, and
+the positive/neutral/negative text block that is allowed. Dataset-specific Pareto placeholders stay
+separate; a cross-dataset synthesis is filled only when its estimand is explicitly defined.
 
 Planned generated asset names are stable descriptive names before final dissertation numbering:
 
@@ -1033,7 +1259,9 @@ Planned generated asset names are stable descriptive names before final disserta
 - `figures/dissertation_v2/a4_confirmation_effect.svg`;
 - `figures/dissertation_v2/integrated_architecture.svg`;
 - `figures/dissertation_v2/integrated_component_memory.svg`;
-- `figures/dissertation_v2/integrated_routing_quota.svg`;
+- `figures/dissertation_v2/integrated_routing_switch.svg`;
+- `figures/dissertation_v2/integrated_routing_stability.svg`;
+- `figures/dissertation_v2/integrated_quota_frontier.svg`;
 - `figures/dissertation_v2/integrated_moving_mnist_pareto.svg`;
 - `figures/dissertation_v2/integrated_taxibj_pareto.svg`.
 
@@ -1053,27 +1281,40 @@ it. It may not contain invented ratios such as 3--4x hierarchy or 2--3x routing.
 token ratios, same-forward reversible activation ratios, and total GPU peak ratios are separate
 fields.
 
-## 11. New appendix structure
+## 11. Appendix migration and expansion
 
-Use appendices as the reproducibility layer rather than forcing every detail into the narrative:
+Do not replace the present appendices by title alone. Preserve the institution's existing Ukrainian
+letter sequence and create an old-to-new migration ledger for every subsection, table, figure,
+administrative record, and permission entry. The default mapping is:
 
-- **Appendix A — Symbols and tensor interfaces:** definitions removed from Chapters 1--3.
-- **Appendix B — Dataset generation and split manifests:** procedural datasets, TRB, Moving MNIST,
-  TaxiBJ, hashes, licenses, and access rules.
-- **Appendix C — Formula derivations:** stochastic replay, RoPE elementary derivation, diffusion,
-  DDIM, metrics, assignment, and inference algorithms.
-- **Appendix D — Complete hierarchy experiment registry:** all 43 configurations/86 runs, seeds,
-  reused cells, budgets, policy parameters, hashes, checkpoints, and statuses.
-- **Appendix E — Complete hierarchy results and robustness:** all metrics/horizons, seed rows,
-  clip-level intervals, EBT, sampler, alternate codec, raw-memory diagnostic, and historical E2--E8
-  evidence.
-- **Appendix F — Integrated architecture and component registry:** OpenSTL configs, routing modes,
-  quota profiles, parity gates, baseline matching, memory measurement contracts, and final four
-  runs.
-- **Appendix G — Software, commands, and provenance:** branches/commits, single-command runners,
-  resume procedure, W&B project/run IDs, artifact hashes, figure/table generators, and QA commands.
-- **Appendix H — Preserved publication figures:** useful Articles 1--3 assets removed from the main
-  narrative, with original citation/provenance and an explicit reason for secondary placement.
+- **Додаток А — Publications, dissertation results, and personal contribution:** retain the current
+  publication/result/contribution map; add the one-article mapping only when its status is accurate.
+- **Додаток Б — Administrative records and implementation acts:** preserve signed wording, dates,
+  scans, and institutional records unchanged unless an authorized replacement is supplied.
+- **Додаток В — Configuration and interpretation registry:** expand with symbols/tensor interfaces,
+  method-contract tables, comparison licences, evidence-status vocabulary, and the complete 43-cell/
+  86-run hierarchy identifier/config/hash matrix.
+- **Додаток Г — Evidence and provenance index:** add claim-to-artifact rows, datasets/split manifests,
+  source/config/checkpoint hashes, publication content-transfer records, and protected-set access
+  status.
+- **Додаток Д — Statistical reporting contract:** retain primary estimands, nonstandard re-entry
+  populations, seed units, clip-clustered inference, assignment/object metrics, selection rules, and
+  formula-dependency records. Standard derivations may be placed here without removing bespoke
+  endpoint definitions from the main text.
+- **Додаток Е — Additional methods and negative results:** retain EBT, sampler/codec robustness,
+  raw-memory E8a, old E2--E8 detail, old fixed-region integration evidence, stochastic replay/RoPE/
+  DDIM derivations, and selected publication-support figures whose main-text role was removed.
+- **Додаток Ж — Software and reproduction map:** add Article 4 and integrated campaign controllers,
+  resume/W&B procedures, integrated configs and evidence-cell status, parity/checkpointing/routing
+  profiles, final four runs, generator commits, artifact hashes, and QA commands.
+- **Додаток И — Figure provenance and permissions:** preserve every current source/licence/permission
+  record and add new figure/table generator inputs and output hashes.
+
+The migration ledger has columns `old location`, `asset/claim`, `new location`, `reason`, `source`,
+`permission/administrative constraint`, and `verification status`. No old appendix item is deleted
+until it has a destination and its institutional/provenance role has been checked. Any change to the
+appendix-letter convention requires explicit institutional approval rather than an editorial
+assumption.
 
 ## 12. Implementation sequence
 
@@ -1092,6 +1333,15 @@ Use appendices as the reproducibility layer rather than forcing every detail int
 2. Add the revised English subsection headings and placeholder blocks.
 3. Move obsolete/tutorial material to appendices without deleting provenance.
 4. Do not renumber formulas/figures/tables yet.
+
+### Phase 1b — front matter and migration ledgers (1--2 days)
+
+1. Inventory both abstracts, novelty/contribution claims, publication records, and obsolete
+   prototype numbers.
+2. Build task-to-chapter-to-conclusion-to-publication, content-transfer, appendix-migration,
+   formula-dependency, and claim-to-artifact ledgers.
+3. Preserve administrative acts, personal-contribution records, licences, and permissions without
+   paraphrasing institutional text.
 
 ### Phase 2 — Chapters 1 and 2 surgical refactor (4--6 days)
 
@@ -1133,29 +1383,52 @@ Use appendices as the reproducibility layer rather than forcing every detail int
    mixed-language transitions.
 6. Record hashes for the final manuscript, generators, data tables, and evidence bundles.
 
-Expected editorial effort is about **19--31 focused working days**, excluding GPU time and article
-submission. A narrower dissertation-only pass can be completed sooner, but the figures and
-provenance layer should not be rushed after the experiments finish.
+### Phase 7 — bilingual and institutional submission cleanup (3--6 days plus external response time)
+
+1. Harmonize English insertions with the final required manuscript language without changing
+   scientific meaning.
+2. Update both abstracts, keywords, publication/contribution records, implementation acts, and
+   appendix lettering.
+3. Confirm figure permissions and institutional formatting requirements.
+4. Obtain author/institution input for wording that cannot be inferred from the repository.
+5. Re-run the full claim, provenance, cross-reference, and rendered-document audit.
+
+Expected technical and editorial effort is about **23--39 focused working days**, excluding GPU
+time, article submission, and waiting for institutional responses. A narrower dissertation-only
+pass can be completed sooner, but the bilingual, administrative, figure-permission, and provenance
+layers are submission dependencies rather than optional polish.
 
 ## 13. Acceptance checklist
 
 The refactoring is complete only when:
 
 - the current Ukrainian manuscript remains recoverable unchanged from a frozen commit;
+- both abstracts, novelty/contribution claims, publication records, and general conclusions resolve
+  through the same claim-to-artifact ledger as Chapter 4;
 - every new English insertion is a coherent complete paragraph/subsection;
 - Chapter 1 distinguishes spatial, temporal, activation, and routing interventions;
+- long retained context/reach is never used as a synonym for long autoregressive forecast horizon;
 - Chapters 1 and 2 preserve the scientifically useful Articles 1--3 material;
+- dissertation-level tasks remain mapped to chapters, conclusions, and publications;
 - Chapter 3 exactly matches implemented allocation policies and the released integrated
   architecture;
-- Chapter 4's primary hierarchy evidence comes from the 30k two-seed campaign and locked
-  confirmation;
+- Chapter 4 labels the 30k matrix as registered development evidence and restricts sealed-holdout
+  confirmation to the selected contrasts actually evaluated;
+- legacy E5/E6 or a separately registered selected-checkpoint evaluation carries any long-rollout
+  stability claim;
 - the old fixed-region/second-order prototype is not described as the final integrated model;
-- every main figure has one question and every main table contains empirical results;
+- every main figure has one question and every main table contains empirical results, except a
+  deliberately retained single-purpose method-contract table;
 - both training-seed points are visible and uncertainty units are explicit;
 - no placeholder remains in a release candidate;
 - no incomplete development result is described as confirmatory;
 - retained-token, activation-memory, and total-VRAM ratios remain separate;
 - no component ratios are multiplied;
+- integrated component/baseline/checkpointing claims contract when their scheduled evidence cells
+  are absent;
+- routing inference policies are not conflated with mixed route-aware training;
+- CEX, LVL, and OVR are described as their registered compound interventions;
+- every current appendix and administrative/permission item has a verified migration destination;
 - every figure/table is generated from an identified machine-readable artifact;
 - formula/figure/table counts and callouts are regenerated, not edited manually in multiple places;
 - the final build, link audit, provenance audit, and consistency gates pass.
@@ -1169,10 +1442,39 @@ Unless the author changes them, proceed with these defaults when manuscript edit
 3. Keep E6 and the non-replicated E5a result in Chapter 4 because they sharpen the claim boundary.
 4. Move EBT, raw-memory E8a, full sampler/codec robustness, and the old integration prototype to
    appendices or brief secondary paragraphs.
-5. Use the new FRT/ALC/CEX/LVL/OVR/STS campaign as Chapter 4's primary hierarchy evidence.
+5. Use the new FRT/ALC/CEX/LVL/OVR/STS campaign as Chapter 4's primary registered development
+   hierarchy evidence, with sealed confirmation restricted to selected contrasts.
 6. Give the integrated model a full 4.8 section only after it passes correctness, matched-memory,
    and at least bounded quality gates; otherwise retain it as an explicitly negative composition
    study.
-7. Keep publication assets from Articles 1--3 through Appendix H and the provenance ledger rather
-   than deleting them.
+7. Keep publication assets from Articles 1--3 through the publication-content transfer ledger,
+   additional-methods appendix, and figure-provenance appendix rather than deleting them.
 8. Never prewrite successful numeric outcomes. Prewrite structure and conditional interpretation.
+9. Preserve legacy E5/E6 as the current evidence for autoregressive stability. Add a v2
+   selected-checkpoint rollout only as a separately registered inference evaluation; do not restart
+   the 86-run training campaign.
+10. Include activation checkpointing in the integrated profile if feasible; otherwise narrow the
+    reversible comparison explicitly.
+
+## 15. Independent-review incorporation matrix
+
+| Blind-review finding | Incorporated correction | Plan location |
+|---|---|---|
+| P0-1 long context was conflated with long rollout | global terminology gate, revised H1, retained E5/E6, optional inference-only selected-checkpoint rollout | Sections 1, 6.2, 6.4, 7.1, 13--14 |
+| P0-2 full frontier was called confirmed | five evidence-status labels and claim-to-artifact matrix; sealed confirmation limited to selected roles | Sections 1, 6.5, 13--14 |
+| P1-1 front matter omitted | dedicated front-matter audit and linked claim placeholders | Sections 6.0, 12--13 |
+| P1-2 dissertation tasks risked displacement | preserve six top-level tasks and nest experiment questions | Sections 6.1 and 13 |
+| P1-3 Article 3 reduced to figures | retain its conceptual taxonomy and add claim-level content-transfer ledger | Sections 6.2--6.3 and 8.1 |
+| P1-4 appendix/administrative material at risk | retain current Ukrainian appendix sequence and add old-to-new migration ledger | Section 11 |
+| P1-5 integrated evidence not fully scheduled | evidence-cell ledger and automatic contraction of claims/section size | Sections 6.5 and 7.3 |
+| P1-6 checkpointing missing | add same-model activation-checkpointing comparator or narrow claim | Sections 6.5, 7.3, 13--14 |
+| P1-7 routing policy/training regime conflated | separate static/density/hybrid inference switches from mixed route-aware training | Sections 6.4--6.5 and 13 |
+| P1-8 CEX/LVL/OVR estimands too broad | describe exact registered compound interventions | Sections 6.4--6.5, 7.1, and 13 |
+| P1-9 placeholder registry incomplete | add MEC, rollout, gates, baselines, checkpointing, ablations, routing, and dataset-specific keys | Section 10 |
+| P2-1 article attribution wrong | correct static-control material to Article 3/[A3] | Sections 6.2 and 8.1 |
+| P2-2 architecture figure overloaded | conceptual figure plus adjacent contract box/optional method table | Section 6.4 |
+| P2-3 zero-method-table rule too rigid | allow one single-purpose method-contract table | Sections 4.3 and 13 |
+| P2-4 position normalization incomplete | add exact origin/range/time/scale/resolution/horizon/dtype contract | Section 6.4 |
+| P2-5 provisional numbers lacked immutable provenance | remove transient numeric table; require dated hash-addressed snapshot for future values | Section 7.2 |
+| P2-6 formula moves lacked dependency audit | add formula-to-code/result/reference dependency ledger | Section 9 |
+| P2-7 schedule omitted bilingual/institutional work | add front-matter/migration and bilingual/institutional phases; revise estimate | Section 12 |

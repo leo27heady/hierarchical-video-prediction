@@ -1,6 +1,6 @@
 # Path B decision register
 
-**Purpose:** authoritative compact record of decisions made through 1 September 2026. Read this
+**Purpose:** authoritative compact record of decisions made through 2 September 2026. Read this
 file, all other files in `docs/plans/`, and the original critical review before continuing after
 context compaction. If a later signed decision conflicts with this register, update this file and
 record the superseded rule; do not silently rely on chat history.
@@ -22,8 +22,10 @@ record the superseded rule; do not silently rely on chat history.
 
 ## 2. Dissertation language, narrative, and migration
 
-1. The new manuscript is written directly in English. The current Ukrainian manuscript remains
-   the fallback and content/provenance source.
+1. **Superseded on 2 September 2026 by §§13--15.** The original Path B decision was to write a new
+   English manuscript and retain Ukrainian only as fallback. The current decision is to refactor
+   the Ukrainian manuscript as the foundation while drafting new/materially revised blocks in
+   English.
 2. Central question: how spatial and temporal hierarchy allocate limited memory in transformer
    video prediction, and how allocation, reversible computation, and information-density-aware
    routing affect quality and practical memory.
@@ -35,12 +37,14 @@ record the superseded rule; do not silently rely on chat history.
 5. A 3--4x hierarchy gain and 2--3x reversibility gain are stretch hypotheses, not promised results.
 6. Preserve the current semantic order of Chapters 1 and 2 during experiments. Chapter 1 receives
    surgical hierarchy/memory framing. Chapter 2 retains the published TempVerseFormer and V-BLT
-   material from Articles 2 and 3.
-7. Rebuild Chapter 3 around Article 4: allocation design, architecture, TRB protocol, experiments,
-   results, operating region, and limitations.
-8. Article 5 becomes a distinct integrated-model Chapter 4 only if correctness, real-state routing,
-   reversible parity/memory, component ablations, and two-dataset OpenSTL competitiveness gates
-   pass. Otherwise Chapter 4 is synthesis, limits, and bounded integration feasibility.
+   material from Articles 2 and 1 respectively; Article 3's static consistency synthesis remains in
+   Chapter 1.
+7. **Superseded on 2 September 2026 by §§13--15.** Chapter 3 is not rebuilt as a standalone Article
+   4 chapter. It retains its current architecture/method role while receiving the registered
+   allocation programme and the new integrated architecture.
+8. **Superseded on 2 September 2026 by §§13--15.** There is no distinct promised Article 5.
+   Hierarchy and integrated OpenSTL evidence form one new article across the retained Chapter 3
+   method and Chapter 4 results roles; integration claims remain conditional on completed gates.
 9. Transfer useful text, figures, and tables from Articles 1--3 through the content-transfer ledger.
    Preserve published pixels and attribution where appropriate; rewrite prose into one dissertation
    voice.
@@ -378,3 +382,32 @@ integrated model require two additional articles.
    appendix and provenance ledger rather than discarded.
 10. The authoritative detailed plan is
     `docs/plans/DISSERTATION_DETAILED_REFACTORING_PLAN_2026-09-02.md`.
+
+## 15. Independent-review corrections accepted on 2 September 2026
+
+1. The v2 Article 4 matrix is a long-context/distant-evidence allocation study with a jointly
+   predicted four-frame endpoint. It does not establish long autoregressive rollout stability.
+2. The current 86-run campaign remains valid and is not restarted. Legacy E5/E6 remain substantive
+   long-rollout evidence. A v2 selected-checkpoint rollout, if authorized, is a separately
+   registered inference-only evaluation using existing trained checkpoints and a new sealed long
+   TRB set; it does not retrain the matrix or reselect models.
+3. The complete 30k matrix is registered development evidence. Sealed-holdout confirmation applies
+   only to the exact selected roles/populations opened by the finalizer. Use “registered development
+   frontier with sealed confirmation of selected contrasts,” not “confirmed frontier.”
+4. Front matter, both abstracts, dissertation-level tasks, conclusions, current appendices,
+   administrative acts, contribution records, licences, and permissions are explicit migration and
+   claim-audit targets.
+5. Preserve the conceptual substance of Articles 1--3. Static diffusion-consistency/control content
+   belongs to Article 3/[A3], not Article 1.
+6. Integrated evidence is claim-gated by actual cells. Four final full-model runs do not imply a
+   completed six-arm component study or matched baseline campaign. Unmatched published values do
+   not support Pareto claims.
+7. Activation checkpointing is added as the practical same-model reversible comparator when
+   feasible; otherwise the reversible claim is narrowed to ordinary autograd storage.
+8. Static/density/hybrid are inference routing policies; mixed is a route-aware training regime.
+   Same-checkpoint switching and separately trained regime comparisons answer different questions.
+9. CEX, LVL, and OVR are described as registered compound interventions rather than pure isolated
+   effects of reach, level count, or overlap.
+10. Positional normalization, formula dependencies, result-bearing claim placeholders, provisional
+    snapshot provenance, appendix migration, and bilingual/institutional cleanup are mandatory
+    parts of the revised plan.
