@@ -183,7 +183,10 @@ def preflight(manifest_path: Path, *, require_prepared_data: bool, require_idle_
         check("gpu_idle", idle, gpu)
 
     if check_wandb:
-        command = [manifest["python"], "-c", "import wandb; print(wandb.Api(timeout=10).viewer)"]
+        command = [
+            manifest["python"], "-c",
+            "import wandb; assert wandb.login(verify=True, timeout=20); print('authenticated')",
+        ]
         probe = subprocess.run(command, text=True, capture_output=True, timeout=20)
         check("wandb_authenticated", probe.returncode == 0, {
             "stdout": probe.stdout.strip(), "stderr": probe.stderr.strip(),

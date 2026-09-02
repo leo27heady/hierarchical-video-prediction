@@ -106,8 +106,8 @@ Set-Location 'C:\Users\leoni\Documents\projects\hierarchical-video-prediction-in
 
 Verified on 2 September:
 
-- 18 OpenSTL model/data tests passed in 7.01 seconds;
-- five controller/worker tests passed in 9.82 seconds, including the complete restart path;
+- 19 OpenSTL model/data tests passed in 7.38 seconds;
+- five controller/worker tests passed in 8.02 seconds, including the complete restart path;
 - no CUDA device was visible;
 - reversible/vanilla output, input-gradient, and parameter-gradient parity passes in fp32 and CPU
   bf16 autocast tolerance;
@@ -187,6 +187,18 @@ updates, rather than only epoch count, enforce schedule completion after restart
 
 Project: `hierarchical-video-prediction-integrated-v2`  
 Group: `integrated-openstl-confirmation-2026-09`
+
+The project was initialized on 2 September with W&B 0.27.2:
+`https://wandb.ai/leo27heady/hierarchical-video-prediction-integrated-v2`.
+The environment dependency is registered in
+`C:\Users\leoni\Documents\projects\OpenSTL-integrated\requirements\hvp_integrated.txt` and can be
+restored with:
+
+```powershell
+& 'C:\Users\leoni\Documents\projects\OpenSTL\venv\Scripts\python.exe' `
+  -m pip install -r `
+  'C:\Users\leoni\Documents\projects\OpenSTL-integrated\requirements\hvp_integrated.txt'
+```
 
 The project is created by the first authorized online run. Local evidence is canonical: resolved
 config; provenance; stdout/stderr; JSONL; status/failure/result; train/validation loss, frame MSE,

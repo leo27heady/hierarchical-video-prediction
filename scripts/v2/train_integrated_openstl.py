@@ -297,9 +297,11 @@ def main(arguments: argparse.Namespace) -> int:
     class EvidenceCallback(Callback):
         def __init__(self):
             self.last_step_time = None
+            self.last_logged_step = None
 
         def on_train_start(self, trainer, pl_module):
             self.last_step_time = time.perf_counter()
+            self.last_logged_step = int(trainer.global_step)
             evidence.write({"event": "train_start", **cuda_metrics()})
 
         def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
@@ -308,7 +310,9 @@ def main(arguments: argparse.Namespace) -> int:
                 return
             now = time.perf_counter()
             duration = now - self.last_step_time if self.last_step_time is not None else float("nan")
+            step_delta = step - self.last_logged_step if self.last_logged_step is not None else arguments.log_every
             self.last_step_time = now
+            self.last_logged_step = step
             values = scalar_metrics(trainer.callback_metrics)
             values.update(cuda_metrics())
             values.update({
@@ -317,6 +321,10 @@ def main(arguments: argparse.Namespace) -> int:
                 "epoch": int(trainer.current_epoch),
                 "batch": int(batch_idx),
                 "seconds_per_log_interval": duration,
+                "updates_per_second": step_delta / duration if duration > 0 else float("nan"),
+                "samples_per_second": (
+                    step_delta * int(config["batch_size"]) / duration if duration > 0 else float("nan")
+                ),
                 "learning_rate": float(trainer.optimizers[0].param_groups[0]["lr"]),
             })
             evidence.write(values)
