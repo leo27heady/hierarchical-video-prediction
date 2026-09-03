@@ -1,0 +1,25 @@
+{
+  "kind": "conceptual_not_empirical",
+  "rows": [
+    [
+      "Retained context/state",
+      "Spatial/temporal allocation; quota changes. Routing at equal K changes membership, not count.",
+      "#2675ad"
+    ],
+    [
+      "Internal activations",
+      "Ordinary autograd, checkpointing or same-forward reversible core execution.",
+      "#5b326f"
+    ],
+    [
+      "Parameters / optimizer",
+      "Weights, gradients and optimizer state. Not removed by context packing or replay.",
+      "#444b55"
+    ],
+    [
+      "Workspace / boundaries",
+      "Dense encoder candidates, decoder state, temporary kernels and allocator reserve.",
+      "#c66a13"
+    ]
+  ]
+}

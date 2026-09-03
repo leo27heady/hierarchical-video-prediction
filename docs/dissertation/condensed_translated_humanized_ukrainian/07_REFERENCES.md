@@ -177,3 +177,9 @@
 172. Kulyk L. *TempVerseFormer: Temporal Modeling with Reversible Transformers*. Software repository, MIT License, 2026. Available at: https://github.com/leo27heady/TempVerseFormer.
 173. Kulyk L. *visionBLT: Vision Byte Latent Transformer Implementation*. Software repository, 2026. Available at: https://github.com/leo27heady/visionBLT.
 174. Hertzmann A. Toward a Theory of Perspective Perception in Pictures. *Journal of Vision* 24(4):23, 2024. DOI: 10.1167/jov.24.4.23.
+
+
+175. PyTorch contributors. torch.utils.checkpoint: Activation checkpointing. Official documentation. https://docs.pytorch.org/docs/stable/checkpoint.html (accessed 3 September 2026).
+176. Rao Y., Zhao W., Liu B., Lu J., Zhou J., Hsieh C.-J. DynamicViT: Efficient Vision Transformers with Dynamic Token Sparsification. NeurIPS, 2021. https://arxiv.org/abs/2106.02034.
+177. Rougier N. P., Droettboom M., Bourne P. E. Ten Simple Rules for Better Figures. PLOS Computational Biology 10(9):e1003833, 2014. https://doi.org/10.1371/journal.pcbi.1003833.
+178. OpenSTL contributors. OpenSTL official implementation and benchmark protocols. https://github.com/chengtan9907/OpenSTL (accessed 3 September 2026; local implementation revision recorded in Appendix Ж).

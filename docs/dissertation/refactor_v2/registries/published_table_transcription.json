@@ -1,0 +1,952 @@
+[
+  {
+    "source_table": "2.3",
+    "population": "Постійний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Постійний",
+      "TempFormer",
+      "103",
+      "0,023",
+      "0,84"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Постійний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Постійний",
+      "TempVerseFormer",
+      "75",
+      "0,018",
+      "0,88"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Постійний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Постійний",
+      "Стандартний Transformer",
+      "87",
+      "0,030",
+      "0,86"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Постійний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Постійний",
+      "LSTM",
+      "157",
+      "0,080",
+      "0,76"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Прискорений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Прискорений",
+      "TempFormer",
+      "90",
+      "0,021",
+      "0,857"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Прискорений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Прискорений",
+      "TempVerseFormer",
+      "87",
+      "0,028",
+      "0,853"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Прискорений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Прискорений",
+      "Стандартний Transformer",
+      "95",
+      "0,030",
+      "0,851"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Прискорений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Прискорений",
+      "LSTM",
+      "86",
+      "0,048",
+      "0,821"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Уповільнений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Уповільнений",
+      "TempFormer",
+      "90",
+      "0,025",
+      "0,86"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Уповільнений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Уповільнений",
+      "TempVerseFormer",
+      "87",
+      "0,036",
+      "0,84"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Уповільнений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Уповільнений",
+      "Стандартний Transformer",
+      "86",
+      "0,036",
+      "0,85"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Уповільнений",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Уповільнений",
+      "LSTM",
+      "85",
+      "0,039",
+      "0,84"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Коливальний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Коливальний",
+      "TempFormer",
+      "130",
+      "0,024",
+      "0,82"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Коливальний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Коливальний",
+      "TempVerseFormer",
+      "112",
+      "0,021",
+      "0,84"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Коливальний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Коливальний",
+      "Стандартний Transformer",
+      "119",
+      "0,068",
+      "0,78"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Коливальний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Коливальний",
+      "LSTM",
+      "108",
+      "0,081",
+      "0,77"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Перерваний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Перерваний",
+      "TempFormer",
+      "98",
+      "0,034",
+      "0,83"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Перерваний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Перерваний",
+      "TempVerseFormer",
+      "91",
+      "0,032",
+      "0,84"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Перерваний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Перерваний",
+      "Стандартний Transformer",
+      "99",
+      "0,056",
+      "0,80"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Перерваний",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Перерваний",
+      "LSTM",
+      "107",
+      "0,060",
+      "0,79"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Комбінований",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Комбінований",
+      "TempFormer",
+      "119",
+      "0,060",
+      "0,79"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Комбінований",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Комбінований",
+      "TempVerseFormer",
+      "123",
+      "0,059",
+      "0,78"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Комбінований",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Комбінований",
+      "Стандартний трансформер",
+      "127",
+      "0,086",
+      "0,77"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.3",
+    "population": "Комбінований",
+    "header": [
+      "Режим",
+      "Модель",
+      "FID $\\downarrow$",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$"
+    ],
+    "values": [
+      "Комбінований",
+      "LSTM",
+      "156",
+      "0,089",
+      "0,74"
+    ],
+    "source_sha256": "774e4bee34d2b04974ae751f3672ba6b8e9350bbe7f1d2d76391c527e24dd777"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST",
+      "ConvLSTM",
+      "0,929",
+      "29,80",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST",
+      "PredRNN++",
+      "0,951",
+      "22,06",
+      "SSIM та MSE"
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST",
+      "TempVerseFormer",
+      "0,932",
+      "26,08",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST",
+      "ViT",
+      "0,914",
+      "35,15",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST",
+      "Uniformer",
+      "0,931",
+      "30,38",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST-CIFAR",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST-CIFAR",
+      "ConvLSTM",
+      "0,920",
+      "73,31",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST-CIFAR",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST-CIFAR",
+      "PredRNN++",
+      "0,957",
+      "44,19",
+      "SSIM та MSE"
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST-CIFAR",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST-CIFAR",
+      "TempVerseFormer",
+      "0,950",
+      "50,37",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST-CIFAR",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST-CIFAR",
+      "ViT",
+      "0,936",
+      "64,94",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "Moving MNIST-CIFAR",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "Moving MNIST-CIFAR",
+      "Uniformer",
+      "0,944",
+      "56,96",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "KTH Action",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "KTH Action",
+      "ConvLSTM",
+      "0,898",
+      "47,65",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "KTH Action",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "KTH Action",
+      "PredRNN++",
+      "0,912",
+      "39,84",
+      "SSIM та MSE"
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "KTH Action",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "KTH Action",
+      "TempVerseFormer",
+      "0,898",
+      "48,97",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "KTH Action",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "KTH Action",
+      "ViT",
+      "0,895",
+      "56,57",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "KTH Action",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "KTH Action",
+      "Uniformer",
+      "0,906",
+      "44,71",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "TaxiBJ",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "TaxiBJ",
+      "ConvLSTM",
+      "0,9836",
+      "0,34",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "TaxiBJ",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "TaxiBJ",
+      "PredRNN++",
+      "0,9834",
+      "0,33",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "TaxiBJ",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "TaxiBJ",
+      "TempVerseFormer",
+      "0,9835",
+      "0,31",
+      "MSE"
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "TaxiBJ",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "TaxiBJ",
+      "ViT",
+      "0,9841",
+      "0,32",
+      ""
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.4",
+    "population": "TaxiBJ",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "SSIM $\\uparrow$",
+      "MSE $\\downarrow$",
+      "Найкращий результат у цьому порівнянні"
+    ],
+    "values": [
+      "TaxiBJ",
+      "Uniformer",
+      "0,9844",
+      "0,34",
+      "SSIM"
+    ],
+    "source_sha256": "909275935c2c94dfa77396b0f18bf914a9c0ca3d393938c8d84395f6b1effbdf"
+  },
+  {
+    "source_table": "2.10",
+    "population": "2-D фігури",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "2-D фігури",
+      "V-BLT",
+      "0,039",
+      "0,98",
+      "32,3"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  },
+  {
+    "source_table": "2.10",
+    "population": "2-D фігури",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "2-D фігури",
+      "ViViT",
+      "0,181",
+      "0,87",
+      "20,7"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  },
+  {
+    "source_table": "2.10",
+    "population": "2-D фігури",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "2-D фігури",
+      "UNet-3D",
+      "0,125",
+      "0,88",
+      "21,8"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  },
+  {
+    "source_table": "2.10",
+    "population": "3-D полікуби",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "3-D полікуби",
+      "V-BLT",
+      "0,11",
+      "0,91",
+      "23,4"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  },
+  {
+    "source_table": "2.10",
+    "population": "3-D полікуби",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "3-D полікуби",
+      "ViViT",
+      "0,19",
+      "0,83",
+      "24,8"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  },
+  {
+    "source_table": "2.10",
+    "population": "3-D полікуби",
+    "header": [
+      "Набір даних",
+      "Модель",
+      "MSE $\\downarrow$",
+      "SSIM $\\uparrow$",
+      "PSNR, дБ $\\uparrow$"
+    ],
+    "values": [
+      "3-D полікуби",
+      "UNet-3D",
+      "0,20",
+      "0,75",
+      "20,3"
+    ],
+    "source_sha256": "c037506a553037f9153aca58cede2995c97da8a0092bad128c8c01d48c401346"
+  }
+]

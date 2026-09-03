@@ -1,0 +1,22 @@
+{
+  "kind": "conceptual_not_empirical",
+  "question": "What is reconstructed during reverse differentiation?",
+  "boxes": [
+    [
+      "Recover state",
+      "Retain the terminal paired state. Invert one coupling block from its output.",
+      "#2675ad"
+    ],
+    [
+      "Replay local graph",
+      "Recompute the deterministic local transition and its adjoint/parameter derivatives.",
+      "#5b326f"
+    ],
+    [
+      "Accumulate / release",
+      "Add gradients, release local intermediates, continue backward. Keep ordinary boundaries.",
+      "#444b55"
+    ]
+  ],
+  "limitation": "A storage schedule, not a prediction-quality claim. Recomputing has a runtime cost."
+}

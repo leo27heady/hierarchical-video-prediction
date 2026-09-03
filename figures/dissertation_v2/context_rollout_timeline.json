@@ -1,0 +1,22 @@
+{
+  "kind": "conceptual_not_empirical",
+  "question": "When does a four-frame endpoint become a self-fed rollout?",
+  "boxes": [
+    [
+      "Observed history",
+      "Warm from ground truth. Every retained age precedes the prediction origin.",
+      "#444b55"
+    ],
+    [
+      "Four-frame output",
+      "The v2 endpoint stops here. Evaluate the fourth-frame error separately from context age.",
+      "#2675ad"
+    ],
+    [
+      "Optional next call",
+      "Only in a rollout: update causal memory with predictions, advance by four, predict again.",
+      "#c66a13"
+    ]
+  ],
+  "limitation": "Legacy or separately authorized rollout path. No backpropagation through the full forecast in the v2 endpoint."
+}

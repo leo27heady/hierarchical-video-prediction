@@ -1,0 +1,22 @@
+{
+  "kind": "conceptual_not_empirical",
+  "question": "Why does changing packed order not change physical identity?",
+  "boxes": [
+    [
+      "Physical identity",
+      "Cell-centre x/y, signed time, cell scale, and level. Normalize by grid and protocol.",
+      "#2675ad"
+    ],
+    [
+      "Gather together",
+      "Feature and metadata follow the same selected index. Packed slot is not a coordinate.",
+      "#c66a13"
+    ],
+    [
+      "Position + attention",
+      "Fourier features and level embedding. Future queries use the same physical convention.",
+      "#5b326f"
+    ]
+  ],
+  "limitation": "CPU fp32 permutation check is bounded evidence; deployed mixed-precision verification remains a separate gate."
+}

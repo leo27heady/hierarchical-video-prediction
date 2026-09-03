@@ -2,12 +2,12 @@
 
 **Date:** 2 September 2026
 
-**Status:** revised after independent blind audit; manuscript text has not yet been changed
+**Status (3 September 2026):** English evidence-gated implementation completed in a separate dissertation worktree; finalized experimental results and submission release remain gated. See the implementation report and Section 16 below.
 
 **Working manuscript:**
-`C:\Users\leoni\Documents\projects\hierarchical-video-prediction-path-b\docs\dissertation\condensed_translated_humanized_ukrainian`
+`C:\Users\leoni\Documents\projects\hierarchical-video-prediction-dissertation\docs\dissertation\condensed_translated_humanized_ukrainian`
 
-**Safe planning branch:** `codex/integrated-openstl-v2`
+**Editing branch:** `codex/dissertation-refactor-v2`; preserved source baseline `cf3f661aa6e809dd30ca92f91e2d17ec257ac4b8`. The active Path B manuscript/experiment checkout remains untouched.
 
 **Related review:**
 `C:\Users\leoni\Documents\projects\hierarchical-video-prediction\docs\reviews\DISSERTATION_CODE_EXPERIMENT_AND_RESTRUCTURE_REVIEW_2026-08-31.md`
@@ -1478,3 +1478,22 @@ Unless the author changes them, proceed with these defaults when manuscript edit
 | P2-5 provisional numbers lacked immutable provenance | remove transient numeric table; require dated hash-addressed snapshot for future values | Section 7.2 |
 | P2-6 formula moves lacked dependency audit | add formula-to-code/result/reference dependency ledger | Section 9 |
 | P2-7 schedule omitted bilingual/institutional work | add front-matter/migration and bilingual/institutional phases; revise estimate | Section 12 |
+
+## 16. Implementation status and continuation contract — 3 September 2026
+
+Read `docs/reviews/DISSERTATION_REFACTOR_IMPLEMENTATION_REPORT_2026-09-03.md`, `docs/dissertation/refactor_v2/README.md`, and the separate `docs/reviews/BLIND_REVIEW_DISSERTATION_IMPLEMENTATION_2026-09-03.md` before continuing after a context reset. The original plan remains the requirements baseline; this addendum records actual execution and its evidence limits.
+
+The nine manuscript files have been assembled with coherent English changes, preserving the four-chapter structure, source-era published results and Ukrainian administrative records. The full reading draft typesets mathematics as MathML. This is not yet a submission release: 25 unique result/summary keys remain pending, and final conclusions, language harmonization, numbering, institutional Word/PDF pagination and author/permission fields wait for their declared inputs. No experiment was launched, stopped, reconfigured or relaunched by this editorial pass.
+
+The implementation safely began before the live campaign ended by creating a separate worktree from an identical frozen manuscript snapshot. This is a deliberate operational deviation from Phase 0's original timing, not a change to the scientific campaign.
+
+The implementation audit refined several method contracts beyond this plan's earlier shorthand:
+
+- Historical E2's package-specific visibility population differs from v2 confirmation's common 96-frame/28-frame sprite-visibility frame flag. The latter reports per-frame normalized foreground MSE across all four horizons or flagged re-entry frames, not the development horizon-four statistic.
+- The development statistic uses target intensity greater than 0.5, foreground-pixel weighting within each fixed validation batch, then batch-size weighting across four batches of 16. The executed diffusion loss sums coarse/fine per-stream MSE means; the top stream is context-only.
+- MEC is a single fixed clip / direct-denoiser attention probe at diffusion time 0.5, not an old-context ablation or a sampled rollout.
+- Logical family registries include reused comparisons (ALC 14, LVL 6, OVR 6), without increasing the 86 unique training runs. Prelock integrated run/config/source identities are recorded now, independently of absent trained results.
+- Accepted-result adapters reject stale nested specifications, wrong endpoints and incomplete families; tables and shared claims have separate insertion paths. Measured Pareto coordinates are paired by configuration identity, not by requiring equal memory values across seeds.
+- Source-paragraph preservation is separate from publication-claim attribution. The original scientific material and permissions are retained; no heuristic chapter-wide attribution is certified as an article-level audit.
+
+The independent reviewer produced a separate initial report and subsequent concrete closure findings. Its final re-check was interrupted by a usage limit. The implementation report therefore distinguishes reviewer-confirmed corrections from fixes verified locally after that interruption; it does not claim an unconditional independent final sign-off.

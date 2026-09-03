@@ -1,0 +1,596 @@
+[
+  {
+    "tag": "1.S1",
+    "location": "02_CHAPTER_1.md:13",
+    "section": "### 1.1.1 System boundary, state, observation, and control",
+    "left_hand_side_and_semantics": "System boundaries and hierarchy follow the systems-analysis viewpoint [5–8, 41]; retained model state is distinguished from the physical process [10, 11]. Let $x_t$ denote the physical/semantic world state, $y_t$ the observed frame, $u_t$ a known action when the protocol supplies one, and $w_t,v_t$ process/observation uncertainty. The predictor retains $m_t$, not the entire world. A compact system contract is",
+    "immediate_explanation": "This notation distinguishes physical state, available observation, retained model context, and conditional prediction; it is a system definition rather than a fitted dynamical law. Action-conditioned TRB is a controlled instrument, not the definition of all video prediction. In protocols without supplied actions, the corresponding condition is absent. The resource-constrained objective is specified in Section 1.1.3; the expanded source notation is retained in Appendix Д.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "conceptual state/observation/conditional-future notation; not an implemented POMDP solver",
+    "source_binding": null,
+    "result_or_downstream_use": "Chapter 1.1; no empirical endpoint",
+    "equation_sha256": "e4b6ffab9758f678d56b3ed7b644040945cad56ac460d71167b424b5bc637735",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "1.4",
+    "location": "02_CHAPTER_1.md:32",
+    "section": "### 1.1.2 Проблематика зростання невизначеності при авторегресивній генерації",
+    "left_hand_side_and_semantics": "Під час навчання модель часто отримує еталонну послідовність, тоді як під час авторегресивного застосування її власний прогноз повертається на вхід. Після кожного кроку контекстне вікно зсувається: найдавніші елементи вилучаються, а новий прогноз займає їхнє місце [25–29]. Отже, починаючи з другого прогнозованого кадру, вхід уже залежить від попередніх виходів самої моделі. Цю самоподачу можна записати як рекурсію:",
+    "immediate_explanation": "У цьому процесі потрібно розділяти рішення, які впливають на різні ланки причинного ланцюга:",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "реалізований принцип rollout основної моделі",
+    "source_binding": {
+      "source_number": "1.4",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "6590c19758c844d06c8eb15969cdad5ec8a5ec10ce5a1a1852e031adbd379aa5"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: self-fed авторегресивний розподіл",
+    "equation_sha256": "6590c19758c844d06c8eb15969cdad5ec8a5ec10ce5a1a1852e031adbd379aa5",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "1.5",
+    "location": "02_CHAPTER_1.md:62",
+    "section": "### 1.1.3 Формулювання передбачення як багатокритеріальної задачі з обмеженими ресурсами",
+    "left_hand_side_and_semantics": "Модель машинного навчання працює за скінченних обчислювальних і апаратних ресурсів. Обчислювальний бюджет визначає тривалість навчання й застосування, тоді як доступна пам’ять додатково обмежує розмір моделі, пакет паралельного навчання, довжину диференційованого графа та обсяг історії, доступної моделі прогнозування. Ці обмеження взаємодіють, але не є взаємозамінними. Для подальшого аналізу загальне використання пам’яті розкладається на п’ять складників:",
+    "immediate_explanation": "Пам’ять параметрів і станів оптимізатора визначається переважно розміром моделі, точністю обчислень та алгоритмом навчання. Пам’ять активацій зберігає або відтворює проміжні значення, потрібні для градієнтів. Контекстна пам’ять чи пам’ять стану утримує історичну інформацію для прогнозування, а тимчасова пам’ять охоплює робочі області уваги, буфери алгоритму вибірки, декодовані кандидати та резервування фреймворку. Сума цих складників показує, чи достатньо апаратного ресурсу, але вони не є однією змінною проєктування [108].",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "компоненти обліковуються окремо; продовжено у 2.6 і 3.31–3.32",
+    "source_binding": {
+      "source_number": "1.5",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "8cb5fc28396a4104bd643d18d459cf50c7711a1969c52f89480a3376ff0ff028"
+    },
+    "result_or_downstream_use": "розклад повної пам’яті системи",
+    "equation_sha256": "8cb5fc28396a4104bd643d18d459cf50c7711a1969c52f89480a3376ff0ff028",
+    "outgoing_callouts": [
+      "D1-resources"
+    ]
+  },
+  {
+    "tag": "1.7",
+    "location": "02_CHAPTER_1.md:86",
+    "section": "### 1.1.3 Формулювання передбачення як багатокритеріальної задачі з обмеженими ресурсами",
+    "left_hand_side_and_semantics": "Компоненти $\\ell_{\\mathrm{frame}}$, $\\ell_{\\mathrm{support}}$, $\\ell_{\\mathrm{identity}}$, $\\ell_{\\mathrm{trajectory}}$, $\\ell_{\\mathrm{extra}}$ та $\\ell_{\\mathrm{cross}}$ відповідають відповідно за кадрову якість, просторове покриття, ідентичність, траєкторію, зайвий передній план і міжрівневу відповідність. Вектор ваг $\\boldsymbol\\alpha$ задає важливість цих критеріїв для конкретної задачі. Позначимо через $\\mathcal F(B_{\\mathrm{ctx}},B_{\\mathrm{act}},B_{\\mathrm{work}})$ множину конфігурацій $(\\theta,C,a)$, які не перевищують заданих бюджетів контекстної пам’яті, пам’яті активацій та обчислювальної роботи. Тоді спільна задача оптимізації має вигляд",
+    "immediate_explanation": "In equation (1.7), $\\theta$ denotes model parameters, $C$ the context-allocation policy, and $a$ the execution/storage schedule. The feasible set contains only configurations satisfying the declared context-state, activation and computational-work budgets. Chapters 2–4 distinguish these interventions before considering composition. Sections 3.7 and 4.8 now specify the new integrated architecture and its pending evidence cells: they do not report a completed composition-performance test. Historical feasibility results refer to the superseded prototype archived in Appendix Е and do not transfer to the new model.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "концептуальна оптимізація, не виконаний scalarized experiment",
+    "source_binding": {
+      "source_number": "1.7",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "1a341b0b12844ef5b8ca54d6d939135a25d518ab295a5c2c308189e470ed46f7"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: багатокритеріальна ціль за ресурсних обмежень",
+    "equation_sha256": "1a341b0b12844ef5b8ca54d6d939135a25d518ab295a5c2c308189e470ed46f7",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "1.12",
+    "location": "02_CHAPTER_1.md:213",
+    "section": "### 1.3.1 Зростання памʼяті під час навчання часових моделей",
+    "left_hand_side_and_semantics": "Зворотне поширення в часі (BPTT, *backpropagation through time*) розгортає рекурентний процес у спрямований ациклічний граф [28, 29, 105]. Нехай один часовий крок створює набір активацій обсягом $A$, потрібний для локального обчислення градієнта, а $K$ позначає кількість диференційованих кроків. Якщо всі такі набори зберігаються до зворотного проходу, їхня пам’ять зростає у першому наближенні як:",
+    "immediate_explanation": "Формула (1.12) описує лише часову стрічку активацій: параметри, градієнти, стан оптимізатора та робочі буфери залишаються окремими складниками. Рисунок 1.22 показує, як кожен новий крок додає до стрічки ще один набір проміжних значень, якщо їх не відтворювати повторно.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "асимптотика; виміряні дані TempVerseFormer наведено окремо",
+    "source_binding": {
+      "source_number": "1.12",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "b64562882ff4d7a17ec636af7f4d27d09ba0ef457fe6d6551a45c73d6534263f"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: `Θ(KA)` для стрічки BPTT",
+    "equation_sha256": "b64562882ff4d7a17ec636af7f4d27d09ba0ef457fe6d6551a45c73d6534263f",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "1.13",
+    "location": "02_CHAPTER_1.md:233",
+    "section": "### 1.3.2 Просторовий розподіл токенів у кадрі",
+    "left_hand_side_and_semantics": "Більшість візуальних трансформерів перетворює кадр на регулярну сітку прямокутних, часто квадратних, фрагментів. Вони можуть не перекриватися або частково перекриватися; у відео до просторових розмірів іноді додається часовий розмір. Фіксована сітка проста, придатна до паралельної обробки й забезпечує передбачувану довжину послідовності [69–71]. Для $T$ кадрів розміру $H\\times W$ і неперекривних просторових патчів $p_h\\times p_w$ кількість токенів становить:",
+    "immediate_explanation": "Округлення вгору враховує крайові області, розмір яких не кратний розміру патча. Формула (1.13) також показує обмеження фіксованої сітки: кількість токенів визначається геометрією кадру, а не інформаційною складністю окремих областей.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "геометрична арифметика патчів V-BLT",
+    "source_binding": {
+      "source_number": "1.13",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "e0dbb3e7d1d0ca0269b98cc4daba4c68ff136a636a4c76eb9e4ef1ecda362402"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: кількість токенів фіксованої просторово-часової сітки",
+    "equation_sha256": "e0dbb3e7d1d0ca0269b98cc4daba4c68ff136a636a4c76eb9e4ef1ecda362402",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "1.14",
+    "location": "02_CHAPTER_1.md:257",
+    "section": "### 1.3.3 Обмежена досяжність збереженого контексту",
+    "left_hand_side_and_semantics": "Просторова ієрархія визначає, скільки деталей обробляється всередині кадру. Для довгогоризонтного прогнозування постає інше питання: наскільки давню подію взагалі може адресувати збережений контекст. Нехай у момент прогнозування $t$ пакет $C_t$ містить кадри або рівні, прив’язані до множини початкових моментів $\\mathcal A_t$. Номінальна досяжність пакета визначається віком найдавнішої з цих прив’язок:",
+    "immediate_explanation": "Формула (1.14) описує геометричну можливість доступу, а не якість збережених даних. Якщо подія відбулася раніше за $t-R(C_t)$, пакет не містить прямої прив’язки до неї. Якщо вона входить у цей інтервал, модель усе одно може втратити потрібні деталі під час стискання або не використати доступне свідчення. Рисунок 1.24 показує перший, найпростіший випадок: релевантний кадр уже залишив коротке щільне вікно.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "спрощений вступ до точного пакета 3.1–3.5",
+    "source_binding": {
+      "source_number": "1.14",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "abe238f402ca18ec8c433391837b6dedab47ae9cbff23237e2db8f77c21dead4"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: номінальна досяжність найдавнішої прив’язки",
+    "equation_sha256": "abe238f402ca18ec8c433391837b6dedab47ae9cbff23237e2db8f77c21dead4",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.2",
+    "location": "03_CHAPTER_2.md:19",
+    "section": "### 2.1.2 Обертання двовимірних фігур",
+    "left_hand_side_and_semantics": "Спільним процедурним прикладом у дослідженнях часової динаміки та байтового представлення є двовимірна фігура, що обертається у кадрі. Кожна послідовність починається з випадково згенерованої геометрії об’єкта та початкової орієнтації. Об’єкт залишається в центрі, камера нерухома, а орієнтація змінюється у дискретні моменти часу. Нехай $\\theta_t$ позначає кут повороту на кроці $t$, а $\\omega$ – сталий кутовий приріст за один кадр. Тоді для режиму з постійною швидкістю",
+    "immediate_explanation": "Знак $\\omega$ визначає напрямок обертання. В експериментах із часовим моделюванням його модуль $\\lvert\\omega\\rvert$ випадково обирався в діапазоні від $5^\\circ$ до $20^\\circ$ за крок. Додаткові режими змінювали величину або знак $\\omega_t$: фігура прискорювалася, уповільнювалася, коливалася між напрямками, тимчасово зупинялася або поєднувала ці зміни. Кадри мали формат RGB і розмір $64\\times64$; контекст містив 12 кадрів, навчальний горизонт поступово зростав від одного до п’яти кроків, а оцінювання охоплювало 12 прогнозованих кадрів [135]. Публічний набір інструментів для простих фігур містить дво- та тривимірні процедурні генератори, метадані й команди для відтворення цієї родини наборів даних [171]. Рисунок 2.1 показує один із двовимірних прикладів.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "процедурний набір 2-D фігур",
+    "source_binding": {
+      "source_number": "2.2",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "bd6758b1a6e30fd0f3582050c9f294055f769744e2dba07d01be97919903803d"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: рівномірне 2-D обертання",
+    "equation_sha256": "bd6758b1a6e30fd0f3582050c9f294055f769744e2dba07d01be97919903803d",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.3",
+    "location": "03_CHAPTER_2.md:34",
+    "section": "### 2.1.3 Обертові тривимірні полікуби",
+    "left_hand_side_and_semantics": "Тривимірна тестова модель збільшує структурну варіативність, не відмовляючись від процедурного контролю.\nПолікуб складається з $n\\in\\{2,\\ldots,6\\}$ з’єднаних гранями одиничних кубів, обраних із канонічних форм. Об’єкт центрується у сцені з фіксованою камерою та отримує випадкові початкові обертання навколо всіх трьох осей. Орієнтацію позначено вектором $\\boldsymbol\\theta_t=(\\theta^x_t,\\theta^y_t,\\theta^z_t)$, а випадково вибрану кутову швидкість — $\\boldsymbol\\omega$. Її оновлення має вигляд",
+    "immediate_explanation": "На відміну від плоского силуету, полікуб під час обертання почергово відкриває та приховує частини поверхні. Для правильного прогнозу модель має зберігати інформацію про взаємне розташування кубів, одночасно враховуючи самоперекриття, проєкцію та зміни затінення. Тому послідовність є складнішим тестом локально-глобального візуального представлення, хоча фон і закон руху залишаються простими.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "процедурні 3-D полікуби",
+    "source_binding": {
+      "source_number": "2.3",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "c38f27b9aed98fa7ec3821c57cb40939fe46cfb7b395b8a68dd6c47b237fa0e7"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: тривимірний кутовий перехід",
+    "equation_sha256": "c38f27b9aed98fa7ec3821c57cb40939fe46cfb7b395b8a68dd6c47b237fa0e7",
+    "outgoing_callouts": [
+      "2.2"
+    ]
+  },
+  {
+    "tag": "2.4",
+    "location": "03_CHAPTER_2.md:67",
+    "section": "### 2.2.1 Активаційна пам’ять у довгих часових ланцюгах",
+    "left_hand_side_and_semantics": "Нехай процес розгорнуто на $T$ часових кроків і він містить $L$ шарів. Через $A_l$ позначимо обсяг активацій шару $l$, які необхідно зберегти для його зворотного проходу. Тоді домінантну часову складову пам’яті стандартного BPTT та відповідний обсяг обчислень можна наближено записати як",
+    "immediate_explanation": "Відповідну обчислювальну роботу $C_{\\mathrm{BPTT}}(T)$ визначимо через вартість прямого й зворотного обчислення одного переходу:",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "TempVerseFormer baseline",
+    "source_binding": {
+      "source_number": "2.4",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "12f58c438683be1edebe0d6a273aa2cd5ede0dd331f53167ebfd8911363f9c4d"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: наближене лінійне зростання активацій BPTT",
+    "equation_sha256": "12f58c438683be1edebe0d6a273aa2cd5ede0dd331f53167ebfd8911363f9c4d",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.R1",
+    "location": "03_CHAPTER_2.md:94",
+    "section": "### 2.2.2 Reversible transformation and its exact boundary",
+    "left_hand_side_and_semantics": "TempVerseFormer's additive-coupling block reconstructs its complete two-stream internal input, not an arbitrary image or a compressed projection. For fixed conditions and deterministic modules, forward and inverse relations form one scientific object:",
+    "immediate_explanation": "The left-hand quantities are the paired block states; $F$ and $G$ themselves need not be invertible. The inverse is exact in real arithmetic, with finite-precision error checked separately. The VAE encoder/decoder, projections, normalization/merge boundaries, and loss are not made bijective by this construction. They retain ordinary differentiation or separately stored boundary information. The published architecture in the next subsection is the main diagram; the redundant block schematic and detailed state-boundary table are in Appendix Е/В.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "RevFormer; published additive-coupling forward/inverse summary, exact algebra but finite-precision replay",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\TempVerseFormer\\tempverse\\temp_models\\rev_transformer\\model.py",
+      "sha256": "726a1bc97d2d18fe50bc77db24f0956ad607d0534b11b53bed833905c29ca227"
+    },
+    "result_or_downstream_use": "2.2 quality/memory/runtime remain published configuration-level evidence",
+    "equation_sha256": "7d4917712cfb937259936a9077d5ef8b3e07d1ea6294f192b1b530329a25fda0",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.12",
+    "location": "03_CHAPTER_2.md:118",
+    "section": "### 2.2.3 Часове ланцюгове з’єднання",
+    "left_hand_side_and_semantics": "Позначимо кодер і декодер через $e_\\phi$ та $d_\\psi$, вхідну й вихідну проєкції через $P_{\\mathrm{in}}$ і $P_{\\mathrm{out}}$, а один перехід реверсивного ядра через $R_\\theta$. Початкове представлення дорівнює $z^{(0)}=e_\\phi(x)$, а початковий стан ядра — $q^{(0)}=P_{\\mathrm{in}}(z^{(0)})$. Для $r=0,\\ldots,T-1$ стан після наступного часового зсуву оновлюється як",
+    "immediate_explanation": "Після $T$ переходів декодований прогноз $\\widehat x^{(T)}$ формується вихідною проєкцією та декодером:",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "часовий ланцюг TempVerseFormer",
+    "source_binding": {
+      "source_number": "2.12",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "d7f1686993f5f17611d714c35b0fcfce8893c7d658c64cb6af9beb3d12cf50d4"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: повторне застосування reversible transition",
+    "equation_sha256": "d7f1686993f5f17611d714c35b0fcfce8893c7d658c64cb6af9beb3d12cf50d4",
+    "outgoing_callouts": [
+      "2.7"
+    ]
+  },
+  {
+    "tag": "2.13",
+    "location": "03_CHAPTER_2.md:125",
+    "section": "### 2.2.3 Часове ланцюгове з’єднання",
+    "left_hand_side_and_semantics": "Після $T$ переходів декодований прогноз $\\widehat x^{(T)}$ формується вихідною проєкцією та декодером:",
+    "immediate_explanation": "Розмірність стану не змінюється зі збільшенням зсуву. Отже, часова глибина означає повторне застосування одного віконного оператора, а не дедалі довшу послідовність токенів. Параметри спільні між усіма застосуваннями. Водночас градієнти від кінцевого декодованого вікна мають пройти через кожен повторний перехід. Саме тому стандартне автоматичне диференціювання накопичує довшу історію активацій, хоча кількість навчених часових параметрів залишається сталою. Цей процес схематично показано на рисунку 2.7 (source; Appendix Е).",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "нереверсивна межа повного тракту",
+    "source_binding": {
+      "source_number": "2.13",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "ec81db6eadc8e313b8d1ddd9d253393a8378dd6156d69db243b7520b2cd59e8d"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: вихідна проєкція й VAE decoder",
+    "equation_sha256": "ec81db6eadc8e313b8d1ddd9d253393a8378dd6156d69db243b7520b2cd59e8d",
+    "outgoing_callouts": [
+      "2.7"
+    ]
+  },
+  {
+    "tag": "2.15",
+    "location": "03_CHAPTER_2.md:142",
+    "section": "### 2.2.3 Часове ланцюгове з’єднання",
+    "left_hand_side_and_semantics": "Аудит реалізації дає окрему ціль $\\mathcal L_{\\mathrm{code}}$, у якій явно наявна реконструкційна похибка входу VAE:",
+    "immediate_explanation": "Рівняння ([source 2.14](08_APPENDICES.md#eq-source-2-14)) відтворює формулу, наведену в публікації. Рівняння (2.15) фіксує фактичний склад перевіреної реалізації, де додатково присутня похибка реконструкції входу VAE, а коефіцієнт KL відрізняється від описаного в статті. Це розходження не змінює алгебру реверсивного ядра, але має значення для точного відтворення навчання. Тому опис публікації та аудит коду подано окремо.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "репозитарій TempVerseFormer; окремо від 2.14 через різницю paper/code",
+    "source_binding": {
+      "source_number": "2.15",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "d8f93d5f16d132d07c06adb3b19fce3db16e1bd238f9580218e6a04c1924b236"
+    },
+    "result_or_downstream_use": "loss, реалізована в коді",
+    "equation_sha256": "d8f93d5f16d132d07c06adb3b19fce3db16e1bd238f9580218e6a04c1924b236",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.R2",
+    "location": "03_CHAPTER_2.md:157",
+    "section": "### 2.2.4 Reverse replay and gradient accumulation",
+    "left_hand_side_and_semantics": "Reverse replay reconstructs the preceding complete state, rebuilds one local differentiable transition, accumulates its parameter gradient and state adjoint, and releases that local graph. The final state, required boundary conditions, and any deterministic replay information remain available. The standard chain-rule expansion is preserved in Appendix Е with the original formulas and implementation references.",
+    "immediate_explanation": "The quantities are the state adjoint and accumulated parameter gradient for the executed temporal objective. The relation is exact differentiation for the specified replayed function; its practical validity depends on reconstruction and gradient parity within the tested tolerance. A compact replay timeline replaces separate forward-chain and backward-storage diagrams. The published quality, memory, and runtime evidence remains three distinct objects because the same horizon can improve one endpoint and worsen another.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "RevFormer and reversible autograd components; reverse-mode chain rule summary",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\TempVerseFormer\\tempverse\\temp_models\\rev_transformer\\model.py",
+      "sha256": "726a1bc97d2d18fe50bc77db24f0956ad607d0534b11b53bed833905c29ca227"
+    },
+    "result_or_downstream_use": "2.2 activation-storage versus recomputation, not new measured quality",
+    "equation_sha256": "f5ec6441ec009d0194e1d66e2041adca210417ede12f0591a8931da581308f7c",
+    "outgoing_callouts": [
+      "D2-replay"
+    ]
+  },
+  {
+    "tag": "2.28",
+    "location": "03_CHAPTER_2.md:320",
+    "section": "### 2.3.1 Проблема розподілу фіксованих патчів",
+    "left_hand_side_and_semantics": "Диференційованість довшого часового ланцюга розв’язує лише проблему пам’яті під час навчання довгострокового прогнозування. Наступне вузьке місце є просторовим: воно визначається тим, як візуальна модель розподіляє ємність представлення. Типовий механізм попередньої обробки у відеотрансформерах розбиває кліп на регулярну сітку просторово-часових патчів, вбудовує кожну комірку як вектор і обробляє отриману послідовність [70, 71]. Повторювані патчі можна об’єднувати в регіональні пакети, де кожному токену відповідає чітко визначена геометрична область. Проте вартість визначається кількістю патчів, а не обсягом непередбачуваного вмісту всередині них. Для кліпу з $T$ кадрів висоти $H$ і ширини $W$, поділеного на блоки розміром $\\tau\\times p_h\\times p_w$, кількість областей дорівнює",
+    "immediate_explanation": "Статична чорна область і рухомий контур отримують однакову кількість токенів. Це не означає автоматичної неефективності: регулярність може бути корисною, а навчений кодер здатний пригнічувати надлишковий вміст. Сумнів виникає тоді, коли глобальна модель є найдорожчим компонентом архітектури, а щільність локальної інформації різко неоднорідна. За таких умов значна частина обчислень припадає на області, малорелевантні для конкретного завдання прогнозування руху об’єкта.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "V-BLT",
+    "source_binding": {
+      "source_number": "2.28",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "81a3554ab6bc18bdf10edbd7b3af959e9f310c61f1253799ea74040fe02cf089"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: число фіксованих spatiotemporal patches",
+    "equation_sha256": "81a3554ab6bc18bdf10edbd7b3af959e9f310c61f1253799ea74040fe02cf089",
+    "outgoing_callouts": [
+      "2.12"
+    ]
+  },
+  {
+    "tag": "2.31",
+    "location": "03_CHAPTER_2.md:348",
+    "section": "### 2.3.2 Архітектура V-BLT",
+    "left_hand_side_and_semantics": "Локальний декодер повертає для кожної растрової позиції вектор логітів $\\ell_{t,c,y,x}\\in\\mathbb R^{256}$:",
+    "immediate_explanation": "де $u_m$ є представленням блока, $g_m$ – його глобально контекстуалізованою ознакою, $r_{t,c,y,x}$ – локальною ознакою декодера, а $\\pi(t,y,x)$ відображає растрову координату на відповідну глобальну область.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "V-BLT local decoder",
+    "source_binding": {
+      "source_number": "2.31",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "0052f91f4ccb89b44f6a299f582a3f9795fff51bc9cefa4a7aeb93d34da97dff"
+    },
+    "result_or_downstream_use": "not a standalone result estimand: локальні 256-класові byte logits",
+    "equation_sha256": "0052f91f4ccb89b44f6a299f582a3f9795fff51bc9cefa4a7aeb93d34da97dff",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.34",
+    "location": "03_CHAPTER_2.md:387",
+    "section": "### 2.3.3 Причинна увага та категоріальна байтова ціль",
+    "left_hand_side_and_semantics": "Використовуючи цей розподіл, байтова втрата $\\mathcal L_{\\mathrm{byte}}(\\Theta)$ усереднює від’ємну логарифмічну правдоподібність за множиною цільових позицій $\\mathcal I$:",
+    "immediate_explanation": "де $\\mathcal I$ містить цільові позиції байтів, а $x_i^{\\star}$ – еталонне ціле значення. На відміну від скалярного регресивного виходу, який повертає одне значення, категоріальний інтерфейс може представляти кілька правдоподібних значень байта в одній позиції та безпосередньо надає розподіл для обчислення прогностичної ентропії. Це корисно для виявлення локально неоднозначних ділянок. Водночас сам розподіл не гарантує каліброваності ймовірностей і не усуває залежність між сусідніми байтами, якщо вихідний модуль прогнозує їх факторизовано.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "навчальна ціль V-BLT",
+    "source_binding": {
+      "source_number": "2.34",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "15ab83d6a74aac58150a03ea937e792eea3150b192060f7cd14b0c5ca201b855"
+    },
+    "result_or_downstream_use": "byte cross-entropy",
+    "equation_sha256": "15ab83d6a74aac58150a03ea937e792eea3150b192060f7cd14b0c5ca201b855",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.R3",
+    "location": "03_CHAPTER_2.md:401",
+    "section": "### 2.3.4 RoPE-ND and physical axes",
+    "left_hand_side_and_semantics": "V-BLT's raster-byte sequence preserves time, row, and column identities through multi-axis rotary position encoding rather than treating linear sequence rank as the only coordinate. With channel pairs allocated to physical axes, the rotation can be written compactly as",
+    "immediate_explanation": "The relation describes the relative-phase property for the declared axis decomposition, not a measured isolated gain of RoPE-ND. Elementary sine/cosine derivations and the original coordinate examples remain in Appendix Е. The V-BLT result compares complete configurations; it does not disentangle positional encoding from the byte interface and hierarchy.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "RotaryEmbeddingNd.forward, precompute_freqs_cis_nd; grouped physical-axis RoPE identity",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\visionBLT\\modules\\model\\basic_components\\rope.py",
+      "sha256": "29444701f4b7217bfc4fc5c8d38568e3335535dc4186fbac529d6172921aac4e"
+    },
+    "result_or_downstream_use": "2.3 fixed-patch V-BLT; not integrated Fourier position",
+    "equation_sha256": "d7d8bace26dcf998815cacadf2f8c4304d487722d481e3e2c4d3e950b84c1754",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "2.40",
+    "location": "03_CHAPTER_2.md:418",
+    "section": "### 2.3.5 Прогностична ентропія як сигнал просторової складності",
+    "left_hand_side_and_semantics": "Категоріальний байтовий вихід задає повний розподіл, а не лише точковий прогноз. Його локальну невизначеність можна узагальнити ентропією Шеннона [9], виміряною в бітах:",
+    "immediate_explanation": "Для категоріального розподілу за 256 значеннями виконується $0\\le H_i^{(2)}\\le8$: точкова маса відповідає нижній межі, тоді як рівномірний розподіл досягає верхньої.",
+    "origin": "preserved source equation; detailed source-era attribution in dependency ledger",
+    "implementation_contract": "256-класовий byte distribution",
+    "source_binding": {
+      "source_number": "2.40",
+      "ledger": "formula_dependencies.json",
+      "source_sha256": "ec3784745e58c7d8c99116e06c8b71be98308ac3d2e71494be8105f81b55e219"
+    },
+    "result_or_downstream_use": "Shannon entropy у бітах",
+    "equation_sha256": "ec3784745e58c7d8c99116e06c8b71be98308ac3d2e71494be8105f81b55e219",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P1",
+    "location": "04_CHAPTER_3.md:20",
+    "section": "### 3.1.2 Context package, payload, and reach",
+    "left_hand_side_and_semantics": "A context package is an explicit set of physical identities rather than a dense tensor with entries set to zero. For a target beginning at frame index $s$, age $a=1$ denotes frame $s-1$. An identity contains a representation level, positive age, and spatial cell:",
+    "immediate_explanation": "This exact identity contract is implemented by `AllocationPlan` and `PackedWindowBatcher`. The experiment fixes the package before seeing target pixels. Cell identities remain physical grid coordinates after gathering.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "AllocationPlan; exact context age/cell identity",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_hca\\allocation.py",
+      "sha256": "99884cf4ff216c6f12c0cfd4154b3d7b8bdf65e5011eb33e4c904879e5db6f06"
+    },
+    "result_or_downstream_use": "3.6 FRT/ALC/CEX/LVL/OVR/STS method contract",
+    "equation_sha256": "c0be6d766bdffdeac83c57105ee9bcc91f227c8f1f421fbf2fafebc00710ccc3",
+    "outgoing_callouts": [
+      "D3-design"
+    ]
+  },
+  {
+    "tag": "3.P2",
+    "location": "04_CHAPTER_3.md:27",
+    "section": "### 3.1.2 Context package, payload, and reach",
+    "left_hand_side_and_semantics": "This exact identity contract is implemented by `AllocationPlan` and `PackedWindowBatcher`. The experiment fixes the package before seeing target pixels. Cell identities remain physical grid coordinates after gathering.",
+    "immediate_explanation": "Here $A_f$ is a set of age–cell pairs, while $A_c$ and $A_{\\mathrm{top}}$ contain complete coarse and top-level time positions. This is exact token accounting for the registered 2×2/4×4/8×8 grids, not a fitted memory law. Nominal reach $R$ says that some representation of an old frame is available; it does not imply full fine coverage of that frame.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "AllocationPlan.token_count and reach; geometric state arithmetic",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_hca\\allocation.py",
+      "sha256": "99884cf4ff216c6f12c0cfd4154b3d7b8bdf65e5011eb33e4c904879e5db6f06"
+    },
+    "result_or_downstream_use": "4.3/4.4 payload and oldest age, not measured VRAM",
+    "equation_sha256": "3dbb1e6c980bdcb0c43b90bf4e893c3abe62abc5dab93aec4e2ca458851c9037",
+    "outgoing_callouts": [
+      "D3-design"
+    ]
+  },
+  {
+    "tag": "3.P3",
+    "location": "04_CHAPTER_3.md:49",
+    "section": "### 3.2.1 Frozen codec and trainable predictor",
+    "left_hand_side_and_semantics": "The controlled study uses the frozen two-level convolutional codec and its hash-locked latent normalization. For 64×64 TRB frames it produces a 4×4 coarse grid and an 8×8 fine grid. The optional third-level construction adds a 2×2 stream. Codec reconstruction is a boundary condition shared across the paired predictor comparisons, not a learned response to each allocation policy.",
+    "immediate_explanation": "The first relation defines cached latent observations; the second defines a trainable stream projection plus metadata embedding. Channel normalization is fitted on the training split, not recomputed on selected tokens or on holdout data. Exact channel counts, normalization hashes, stream shapes, and the source checkpoint are preserved in Appendix В's generated configuration registry.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "PackedWindowBatcher and latent normalization; frozen two-level codec interface",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_hca\\data.py",
+      "sha256": "8e7ca2391913af7f9ab434873a53ecc17657563f205371ae65de69f90fbf2db6"
+    },
+    "result_or_downstream_use": "3.2 frozen observation boundary",
+    "equation_sha256": "974b693fd2cea90c0eb95b46a4249be1a306dc0538fb125373708150ea2e6bb6",
+    "outgoing_callouts": [
+      "D3-windowdit"
+    ]
+  },
+  {
+    "tag": "3.P4",
+    "location": "04_CHAPTER_3.md:73",
+    "section": "### 3.2.3 Joint attention and causal information flow",
+    "left_hand_side_and_semantics": "The predictor concatenates context and noisy target streams for joint attention. Target tokens may attend to other target tokens because the output is one jointly denoised future window, not a sequence of four causally generated frames. Context frames all precede the first target, and clean target latents are used only in the training objective. Actions supplied for TRB belong to its declared camera-motion conditioning contract; this extra information is not available in every video benchmark.",
+    "immediate_explanation": "This conditional predictor is implemented by the campaign's WindowDiT forward call. It defines the available inputs, not an assertion that attention weights establish causal use of distant evidence. Context-use interventions belong to the separate mechanism diagnostic.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "WindowDiT.forward: joint packed context/target sequence with physical metadata",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_rev\\rhvd.py",
+      "sha256": "9d6294547415c171d5d695e36bb2cdc3c83eedeb79ff9499539679362ea0e92b"
+    },
+    "result_or_downstream_use": "3.2/3.3 four jointly denoised target frames",
+    "equation_sha256": "96782fb92a79123050700fc0908a588aff862e9ed9859c496dd1777da6456d39",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P5",
+    "location": "04_CHAPTER_3.md:90",
+    "section": "### 3.3.1 Executed latent diffusion objective",
+    "left_hand_side_and_semantics": "For the v-prediction parameterization, a clean target $z_0$ and independent noise $\\epsilon$ define the noisy target and velocity target:",
+    "immediate_explanation": "Here $\\widehat v_\\theta=F_\\theta(U_{\\mathcal P},z_\\tau,\\tau,a)$. The loss sums coarse and fine per-stream MSE means, rather than using one unnormalized norm of concatenated targets; the optional top stream is context only. This is the implemented diffusion training target, not the primary model-selection metric. Selection uses decoded horizon-4 foreground MSE. Standard diffusion and Transformer construction are covered by [2–4, 12]; the earlier expanded derivation is retained in Appendix Е.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "WindowDiffusion.loss: sum of coarse/fine per-stream MSE means",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_rev\\rhvd.py",
+      "sha256": "9d6294547415c171d5d695e36bb2cdc3c83eedeb79ff9499539679362ea0e92b"
+    },
+    "result_or_downstream_use": "3.3 executed optimization objective; top stream context-only",
+    "equation_sha256": "d2621091f2ad8c931b09027d7b3f977d1835c1e31ac8da4982256cf28759fbcb",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P6",
+    "location": "04_CHAPTER_3.md:113",
+    "section": "### 3.4.1 Four-frame update and ring buffers",
+    "left_hand_side_and_semantics": "In a self-fed evaluation, a model predicts a four-frame block, re-encodes or retains its predicted representation according to the evaluator, advances the origin by four, and selects the next package from the updated causal history:",
+    "immediate_explanation": "This is the legacy/optional rollout interface. It is **not executed repeatedly by the 86-run v2 allocation endpoint**. The v2 development clips have length 100 and target start 96; their only target window is frames 96–99. Fresh confirmation clips have length 200 and target frames 196–199. All earlier context for those endpoint evaluations is observed, not generated.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "causal autoregressive buffer-update contract for legacy/optional rollout; not current v2 endpoint training",
+    "source_binding": null,
+    "result_or_downstream_use": "3.4 and optional 4.3 rollout slot; does not certify unimplemented v2 evaluator",
+    "equation_sha256": "d86860e73b572673b9c54d66e20d75358f18d66479d674ed83339e9647d604ef",
+    "outgoing_callouts": [
+      "D3-rollout"
+    ]
+  },
+  {
+    "tag": "3.P7",
+    "location": "04_CHAPTER_3.md:130",
+    "section": "### 3.4.2 Anchors, causality, and retained cost",
+    "left_hand_side_and_semantics": "Ring-buffer storage order must never substitute for absolute/relative time identity. On every update the evaluator checks that all selected ages precede the new origin, that every requested age exists, and that target content is not copied into context before it has been predicted. Gradients are stopped between calls in the bounded rollout evaluation; this is not end-to-end BPTT across the full horizon.",
+    "immediate_explanation": "These exact counts cover the specified tensors only. Metadata, dense output grids, temporary encoder candidates, and allocator overhead must be included separately when measuring end-to-end memory. Attention work can change even when one named context component is fixed.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "packed tensor payload accounting; byte arithmetic excludes encoder/decoder/workspace",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_hca\\state.py",
+      "sha256": "39615c9a3ea45130dbff978fb2df6f13c4fcd07a8c3d9e6c912ea5dece2bf44c"
+    },
+    "result_or_downstream_use": "3.4 retained-state boundary",
+    "equation_sha256": "7644563fa0cb134c4d182789537576be5539bd43d7b003f3459d166b5c186f2e",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P8",
+    "location": "04_CHAPTER_3.md:149",
+    "section": "### 3.5.1 Toroidal Re-entry Benchmark and observability",
+    "left_hand_side_and_semantics": "For a world point $q$ and camera pose $p_t$, the observation is a viewport rendering of the periodic world. Visibility and package support are computed from geometry rather than from a model's prediction:",
+    "immediate_explanation": "This relation defines potential access, not retained identity accuracy. The exact wrap-around convention, occlusion cases, data hashes, and visibility implementation remain in the dataset/evaluation registry and the archived original definitions.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "schematic world/viewport potential visibility; historical observability definition",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_rev\\evaluation\\reach.py",
+      "sha256": "500780b27837c160f14a41f57fb2974d8788094760c1cb0933df77c50d92259a"
+    },
+    "result_or_downstream_use": "3.5 historical E2 access, not v2 confirmation mask",
+    "equation_sha256": "954e21e2a8f581441c2d4761bc5ef3037bbd4003879cdcd6d8ca551f6688fc0b",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P9",
+    "location": "04_CHAPTER_3.md:161",
+    "section": "### 3.5.2 Historical pair-specific populations and the v2 confirmation frame mask",
+    "left_hand_side_and_semantics": "In historical E2, the reach-difference population is defined for a declared pair before inspecting their errors:",
+    "immediate_explanation": "Changing a package can change this historical population. Pair-specific effects therefore cannot be pooled as if every comparison evaluated identical pixels. The historical visibility figure below explains that distinction; it does not describe the v2 finalizer's mask.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "historical pair-specific reach-difference support; conceptual set form",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_rev\\evaluation\\reach.py",
+      "sha256": "500780b27837c160f14a41f57fb2974d8788094760c1cb0933df77c50d92259a"
+    },
+    "result_or_downstream_use": "4.3 historical E2 population only",
+    "equation_sha256": "34465a71c58255618e119f6350316b737876a25d1e6099a42369ea7bc2e5e0d7",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P11",
+    "location": "04_CHAPTER_3.md:179",
+    "section": "### 3.5.3 Endpoints and object identity",
+    "left_hand_side_and_semantics": "The primary development statistic is the trainer's `horizon4_foreground_mse`: decoded error at the fourth predicted frame where the target intensity exceeds 0.5. Within each fixed validation batch it is foreground-pixel weighted; those batch values are then weighted by batch size. With four batches of 16 samples, this is the mean of four batch-level masked errors, not the mean of 64 independently normalized clip errors:",
+    "immediate_explanation": "Here $e$ is squared decoded pixel error, $n_b$ is batch size, and only horizon four enters the development criterion. The confirmation finalizer instead computes a masked mean separately for each clip/frame and then averages those per-frame errors over all four horizons or the flagged re-entry frames. Its weights and horizon population therefore differ. Pixel MSE, other horizons, SSIM, PSNR, diffusion loss, and latent loss remain secondary and cannot silently replace the development criterion. A foreground-conditioned error is not an object-identity score.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "validation: horizon4_foreground_mse; target >0.5, batch foreground-pixel reduction then batch-size mean",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\scripts\\v2\\train_article4_campaign.py",
+      "sha256": "1362bef96d6674b38e7b1d87a563dac0865d00d11104072a9b3e569741a35669"
+    },
+    "result_or_downstream_use": "4.2 calibration and development family selection; not confirmation four-horizon mean",
+    "equation_sha256": "fc83342c062d744c94d1ef5505ea379984f13471a416e6c6e4f7c45fe6093853",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.P10",
+    "location": "04_CHAPTER_3.md:193",
+    "section": "### 3.5.4 Seeds, uncertainty, and selection",
+    "left_hand_side_and_semantics": "For each declared contrast let $d_s=m_{F,s}-m_{H,s}$ when lower metric values are better. The two-seed summary is:",
+    "immediate_explanation": "The mean is descriptive. Two training seeds do not characterize a broad seed distribution and do not justify a training-seed t interval. “Direction reproduced across two training seeds” is allowed only if both signs agree. Clip-clustered resampling preserves within-clip dependence; its interval is conditional on the trained checkpoint and is never relabelled as uncertainty over training runs. Historical multi-comparison intervals retain their original family and cannot be pooled with v2 results.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "pair_results: arithmetic mean of independent training-seed endpoints",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-dissertation\\hvp_hca\\postcampaign.py",
+      "sha256": "85fd80868de32f21ba020629e0ee5d8a6406707274a3acac0d9a8c3af32b90df"
+    },
+    "result_or_downstream_use": "4.3/4.4 descriptive two-seed effects; no n=2 t interval",
+    "equation_sha256": "b52a72ce7a03f40ddea4bd3e9fd1ffc20538c2d6fed87d13d8e739d9904aa3b1",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.I1",
+    "location": "04_CHAPTER_3.md:252",
+    "section": "### 3.7.2 Shared pyramid and genuinely packed state",
+    "left_hand_side_and_semantics": "A convolutional encoder generates stride-four fine candidates and stride-eight coarse coverage for every observed frame. For Moving MNIST these grids contain 256 and 64 cells per frame; for TaxiBJ, 64 and 16. The hierarchy gathers a global quota $K$ of fine tokens across the observed space–time volume before the Transformer:",
+    "immediate_explanation": "The exact retained core input has shape $(B,N_{\\mathrm{packed}},D)$. This is a real gather, not a dense padded tensor masked inside attention. Dense encoder candidates still exist transiently and may contribute to the training graph. The decoder also keeps coarse-grid information. Consequently the compact payload counter is not the complete live model state or total GPU peak.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "encode_packed / SpaceTimeRouter: gather K fine tokens with coarse coverage",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\openstl\\models\\hvp_integrated_model.py",
+      "sha256": "e4decf8faf8ddcb74656cd6569dc2fa1acd95d4fc3c93edb9c75527631157662"
+    },
+    "result_or_downstream_use": "4.8 quota/core payload; no total-VRAM ratio from this equation",
+    "equation_sha256": "e8f1770b480397f332426ad4ffd4e74db20f47c91038a6d1e0318a46f493d694",
+    "outgoing_callouts": [
+      "D3-integrated"
+    ]
+  },
+  {
+    "tag": "3.I2",
+    "location": "04_CHAPTER_3.md:268",
+    "section": "### 3.7.3 Routing policies and route-aware training",
+    "left_hand_side_and_semantics": "The implemented density score standardizes fine–upsampled-coarse squared residual and adjacent-frame absolute change within each sample. The hybrid score adds a standardized learned scalar correction:",
+    "immediate_explanation": "Standardization uses population standard deviation with a numerical floor of $10^{-6}$. Change is zero for the first observed frame. There is no separate predictive-entropy input or V-BLT module in this score. The word “content” refers to the features from which these scores are computed.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "SpaceTimeRouter: normalized residual, temporal change, learned scalar; discrete membership",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\openstl\\models\\hvp_integrated_model.py",
+      "sha256": "e4decf8faf8ddcb74656cd6569dc2fa1acd95d4fc3c93edb9c75527631157662"
+    },
+    "result_or_downstream_use": "4.8 route switch/regime/quota/stability, separate estimands",
+    "equation_sha256": "64ea3c94713b1a27184b3c5f66f9d8cc0591746fb22fb1a7fa0853527b4bde7e",
+    "outgoing_callouts": []
+  },
+  {
+    "tag": "3.I3",
+    "location": "04_CHAPTER_3.md:287",
+    "section": "### 3.7.4 Physical position and hierarchy metadata",
+    "left_hand_side_and_semantics": "Packed slot number has no geometric meaning. For a cell at row $r$, column $c$ in a grid of height $h$ and width $w$, the top-left-origin convention uses $x=(c+1/2)/w$ and $y=(r+1/2)/h$, both strictly inside $(0,1)$. Scale is $(1/w,1/h)$, not the rank of a selected region. The last observed frame has time zero; older frames have negative time and future decoder queries have positive time, all divided by $\\max(T_{in},T_{out},1)$. Level indices are coarse 0, fine 1, and future-query 2.",
+    "immediate_explanation": "This is the implemented continuous Fourier encoding, **not RoPE-ND**. Normalization is determined by the physical grid and configured protocol, never recomputed from selected tokens. Changing resolution preserves normalized cell centres but changes scale. Changing horizons changes the time denominator and is therefore a protocol/distribution shift, not automatically validated extrapolation. The public forward method enforces the configured input shape; a different protocol needs a matching configuration and verification.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "PhysicalTokenMetadata, _grid_metadata, Fourier position and level embedding",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\openstl\\models\\hvp_integrated_model.py",
+      "sha256": "e4decf8faf8ddcb74656cd6569dc2fa1acd95d4fc3c93edb9c75527631157662"
+    },
+    "result_or_downstream_use": "4.8 permutation/position correctness; not RoPE",
+    "equation_sha256": "90603b78637655affe16679d8aa37a3364cce9478a88e6406fb0a771866932bb",
+    "outgoing_callouts": [
+      "D3-position"
+    ]
+  },
+  {
+    "tag": "3.I4",
+    "location": "04_CHAPTER_3.md:303",
+    "section": "### 3.7.5 Identical-forward reversible core and future decoder",
+    "left_hand_side_and_semantics": "Each core block splits feature channels and applies additive coupling:",
+    "immediate_explanation": "$F$ is normalized self-attention and $G$ is a normalized feed-forward module. The inverse is exact in real arithmetic; numerical reconstruction error is measured. Dropout is disabled in the reversible core. Ordinary autograd and reverse-reconstruction execution evaluate this same forward function. Routing, encoder, decoder, optimizer state, and dense target loss stay outside the reversible boundary.",
+    "origin": "English refactor definition or grouped implementation relation",
+    "implementation_contract": "ReversibleTransformerCore additive coupling; ordinary boundaries excluded",
+    "source_binding": {
+      "path": "C:\\Users\\leoni\\Documents\\projects\\OpenSTL-integrated\\openstl\\models\\hvp_integrated_model.py",
+      "sha256": "e4decf8faf8ddcb74656cd6569dc2fa1acd95d4fc3c93edb9c75527631157662"
+    },
+    "result_or_downstream_use": "4.8 identical-forward profile; parameter/gradient parity gates",
+    "equation_sha256": "a6fd3901751aba143ebcbd13fe43c38c5e62c8baab00a851e4059a8baa45ea0c",
+    "outgoing_callouts": []
+  }
+]

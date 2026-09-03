@@ -1,0 +1,22 @@
+{
+  "kind": "conceptual_not_empirical",
+  "question": "What changes when a context package changes?",
+  "boxes": [
+    [
+      "Payload",
+      "Count retained tokens and bytes explicitly. Keep target cost separate.",
+      "#444b55"
+    ],
+    [
+      "Age / reach",
+      "Identify the oldest available observation. Nominal access is not successful retrieval.",
+      "#2675ad"
+    ],
+    [
+      "Spatial detail",
+      "Record cells at each age and level. Coarse coverage can lose fine identity.",
+      "#c66a13"
+    ]
+  ],
+  "limitation": "Design coordinates, not a measured frontier. Longer retained history is not a longer forecast."
+}

@@ -1,0 +1,130 @@
+[
+  {
+    "old_location": "01_INTRODUCTION.md:Мета та дослідницькі завдання",
+    "new_location": "01_INTRODUCTION.md:tasks",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "01_INTRODUCTION.md:Наукова новизна",
+    "new_location": "01_INTRODUCTION.md:novelty",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "01_INTRODUCTION.md:Практичне значення",
+    "new_location": "01_INTRODUCTION.md:practical",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "01_INTRODUCTION.md:Надійність та валідність результатів",
+    "new_location": "01_INTRODUCTION.md:validity",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "01_INTRODUCTION.md:Структура та обсяг дисертації",
+    "new_location": "01_INTRODUCTION.md:intro_structure",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "02_CHAPTER_1.md:1.1.1",
+    "new_location": "02_CHAPTER_1.md:state_notation",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "02_CHAPTER_1.md:1.2.5",
+    "new_location": "02_CHAPTER_1.md:static_bridge",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "02_CHAPTER_1.md:1.3.4",
+    "new_location": "02_CHAPTER_1.md:system_map",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "02_CHAPTER_1.md:1.5.2",
+    "new_location": "02_CHAPTER_1.md:hypotheses",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.1.1",
+    "new_location": "03_CHAPTER_2.md:procedural",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.2.2",
+    "new_location": "03_CHAPTER_2.md:reversible_block",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.2.4",
+    "new_location": "03_CHAPTER_2.md:replay",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.2.8",
+    "new_location": "03_CHAPTER_2.md:stochastic",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.3.4",
+    "new_location": "03_CHAPTER_2.md:rope",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.3.7",
+    "new_location": "03_CHAPTER_2.md:measured_router",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  },
+  {
+    "old_location": "03_CHAPTER_2.md:2.4",
+    "new_location": "03_CHAPTER_2.md:synthesis",
+    "reason": "English refactor; full prior block archived",
+    "source": "cf3f661",
+    "permission_administrative_constraint": "preserve existing attribution",
+    "verification_status": "source block retained"
+  }
+]
