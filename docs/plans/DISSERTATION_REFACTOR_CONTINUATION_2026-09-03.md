@@ -2,6 +2,8 @@
 
 This file records the current implementation, not a new experiment authorization.
 
+Final verified implementation commit: `36d91d741d7f5dc38fbe528c5804c2c1ae1eaee6`. See `docs/dissertation/refactor_v2/registries/implementation_verification.json` for the final check receipt: eight tests, 54 unchanged generated-file hashes after rebuild, all 26 asset and nine manuscript byte hashes valid, and 80/80 original appendix blocks preserved. The later handoff commit changes documentation only.
+
 Read in order:
 
 1. `docs/plans/DISSERTATION_DETAILED_REFACTORING_PLAN_2026-09-02.md`, including implementation Section 16.

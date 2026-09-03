@@ -14,6 +14,8 @@ Working location:
 
 Branch: `codex/dissertation-refactor-v2`.
 
+Verified implementation commit: `36d91d741d7f5dc38fbe528c5804c2c1ae1eaee6` (the following handoff commit adds only this receipt/report pointer). The machine-readable [verification receipt](../dissertation/refactor_v2/registries/implementation_verification.json) records artifact hashes, passing checks and remaining gates.
+
 Manuscript: `docs/dissertation/condensed_translated_humanized_ukrainian/`.
 
 Read [the complete typeset draft](../dissertation/refactor_v2/preview/dissertation_reading_draft.html), [editing/reproduction instructions](../dissertation/refactor_v2/README.md), and [the independent blind review](BLIND_REVIEW_DISSERTATION_IMPLEMENTATION_2026-09-03.md).

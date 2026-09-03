@@ -1,0 +1,95 @@
+{
+  "schema": "dissertation-editorial-verification-v1",
+  "date": "2026-09-03",
+  "verified_implementation_commit": "36d91d741d7f5dc38fbe528c5804c2c1ae1eaee6",
+  "baseline_commit": "cf3f661aa6e809dd30ca92f91e2d17ec257ac4b8",
+  "branch": "codex/dissertation-refactor-v2",
+  "scope": "English-on-Ukrainian evidence-gated draft, editorial tooling and current-source HTML reading preview; no scientific campaign execution",
+  "draft_status": "PASS",
+  "submission_release_status": "BLOCKED",
+  "build": {
+    "command": "python scripts/build_dissertation_v2.py --preview --browser-check",
+    "exit_code": 0,
+    "regression_tests_passed": 8,
+    "git_diff_check": "PASS",
+    "second_build_hash_check": {
+      "files": 54,
+      "changed": 0,
+      "scope": "Nine manuscript files, pre-existing registry files, and dissertation_v2 figure/data files; excludes this later verification receipt"
+    },
+    "generated_asset_byte_hashes_verified": 26,
+    "manuscript_byte_hashes_verified": 9,
+    "original_appendix_blocks_preserved": 80,
+    "original_appendix_blocks_total": 80,
+    "lf_serialization_regression": "PASS"
+  },
+  "render": {
+    "sections": 9,
+    "math_expressions": 1506,
+    "math_parse_errors": 0,
+    "broken_images": 0,
+    "unresolved_local_anchors": 0,
+    "document_overflow": false,
+    "overflowing_math_expressions": 0,
+    "scrollable_archival_tables": 1,
+    "new_svg_assets_visually_inspected": 12,
+    "representative_reading_views_visually_inspected": 6,
+    "institutional_word_pdf_certified": false
+  },
+  "artifacts": [
+    {
+      "path": "docs/dissertation/refactor_v2/preview/dissertation_reading_draft.html",
+      "sha256": "7287dc3808ec46632fdad9bfdf80c7b85adf15b04a08fb036a51e93ba08052a4"
+    },
+    {
+      "path": "docs/dissertation/refactor_v2/registries/qa_report.json",
+      "sha256": "5fa8c0530735d5526ac68eb3c75e010b4f4f8ddf3948121dae9ded993fcb16e6"
+    },
+    {
+      "path": "docs/dissertation/refactor_v2/registries/browser_qa.json",
+      "sha256": "e397e3851a8734f53ca78aaff7aee7ab16d6f6a265b55c8feae2d81640675f65"
+    },
+    {
+      "path": "docs/dissertation/refactor_v2/registries/generated_assets.json",
+      "sha256": "ac192539e168f756fa0aed75ee8e7fcbbf38ae55abd19a852e18957e792db2e3"
+    },
+    {
+      "path": "docs/dissertation/refactor_v2/registries/placeholders.json",
+      "sha256": "20e6bb29d74c7b7ae72af9e8bcad10663c6da7620afc13dd284e8bf9f94f00a2"
+    }
+  ],
+  "independent_review": {
+    "report": "docs/reviews/BLIND_REVIEW_DISSERTATION_IMPLEMENTATION_2026-09-03.md",
+    "initial_report_received": true,
+    "reported_implementable_findings_remediated": true,
+    "remediation_record": "docs/reviews/DISSERTATION_REFACTOR_IMPLEMENTATION_REPORT_2026-09-03.md, Section 6",
+    "final_independent_signoff": false,
+    "reason": "Final reviewer closure was interrupted by an account usage limit; later corrections were verified locally, not independently signed off"
+  },
+  "protected_worktrees": [
+    {
+      "name": "hierarchical-video-prediction-path-b",
+      "head": "7a5979615f5354564a793083b673cf1ed9ec77be",
+      "status_at_verification": "clean",
+      "changed_by_editorial_work": false
+    },
+    {
+      "name": "OpenSTL-integrated",
+      "head": "ca335ba206ef6f51515a4f8eefcad1eed8c36c10",
+      "status_at_verification": "clean",
+      "changed_by_editorial_work": false
+    }
+  ],
+  "integration_plan_pointer_commit": "344f7a7",
+  "pending_result_summary_keys": 25,
+  "release_check_exit_code": 1,
+  "release_check_failure_expected": true,
+  "remaining_gates": [
+    "Accepted finalized experimental artifacts and dependent configuration resolution",
+    "Author decisions on optional v2 rollout and integrated comparators, quality tolerances and extra experiment budget",
+    "Final result-dependent conclusions and synchronized abstracts",
+    "Final language, numbering and pagination",
+    "Institutional records, contribution/publication wording and figure permissions",
+    "Current-source institutional Word/PDF rendering and final independent review"
+  ]
+}
