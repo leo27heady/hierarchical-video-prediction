@@ -7,8 +7,8 @@
 
 This is the authoritative, deduplicated matrix behind the Article 4 campaign. It expands the
 compact list in the decision register, states what every family tests, identifies reused cells,
-and separates implemented definitions from definitions that must still be locked in code. It does
-not freeze 16k or 30k updates.
+and separates implemented definitions from definitions that must still be locked in code. It
+freezes 30k updates for every primary run; the 16k alternative is retained for provenance only.
 
 ## 1. Common protocol for every training cell
 

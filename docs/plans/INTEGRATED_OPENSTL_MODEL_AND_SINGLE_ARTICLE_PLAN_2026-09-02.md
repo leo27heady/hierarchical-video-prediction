@@ -22,7 +22,9 @@ execution would damage provenance. They mean evidence block, not publication cou
 
 The dissertation will continue from
 `docs/dissertation/condensed/_translated/_humanized/_ukrainian`. Chapters 1 and 2 retain their
-structure and most text. New insertions are written in English. Chapter 1 will later distinguish:
+structure and most text. This language instruction is superseded by the author-approved plan of
+2026-09-04: new dissertation passages are written in formal Ukrainian; only the mandatory English
+abstract is translated from the final Ukrainian abstract. Chapter 1 will later distinguish:
 
 - spatial hierarchy, which trades fine spatial coverage for a smaller retained state;
 - temporal hierarchy, which preserves long reach at coarser resolution;

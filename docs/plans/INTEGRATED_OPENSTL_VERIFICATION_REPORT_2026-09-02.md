@@ -17,7 +17,9 @@ end-to-end memory advantage.
 - One new article combines the controlled TRB hierarchy study and integrated OpenSTL evidence.
 - Final integrated confirmation uses Moving MNIST and TaxiBJ only, seeds 0 and 1: four long runs.
 - The dissertation remains based on the current Ukrainian manuscript. Chapters 1 and 2 retain
-  their structure and most content; new passages are English. Chapters 3 and 4 are changed only as
+  their structure and most content. The author-approved plan of 2026-09-04 supersedes the earlier
+  language instruction: new dissertation passages are formal Ukrainian; only the mandatory English
+  abstract is translated from the final Ukrainian abstract. Chapters 3 and 4 are changed only as
   the new evidence warrants. Manuscript editing remains deferred until experimental evidence is
   locked.
 - Long integrated runs are not started automatically. Capacity, quota, precision, batch size,
