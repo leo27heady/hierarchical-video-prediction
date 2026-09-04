@@ -630,7 +630,7 @@ V-BLT figures 2.1–2.2, 2.13–2.14 і 2.17 походять із:
 ### 10.5 Перевірка тексту, посилань і збірки
 
 ```powershell
-python scripts/audit_ukrainian_translation_parity.py
+python scripts/audit_ukrainian_dissertation.py
 python scripts/audit_compact_dissertation.py
 python scripts/check_text_consistency.py --gate
 python scripts/check_rft_consistency.py
@@ -639,7 +639,9 @@ python scripts/validate_scientific_configs.py
 python scripts/release_check.py
 ```
 
-- `audit_ukrainian_translation_parity.py` порівнює структуру українського й англійського стислих наборів, але не замінює semantic review;
+- `audit_ukrainian_dissertation.py` є обов’язковим структурним аудитом поточної української редакції;
+- `audit_ukrainian_translation_parity.py` є лише історичним контролем проти дорефакторингової `condensed_english`: після схваленого розширення українського рукопису він очікувано повертає код 1 і не входить до чинного release gate;
+- `audit_compact_dissertation.py` перевіряє окрему англомовну редакцію, а не відповідність поточному українському рукопису;
 - `check_text_consistency.py --gate` шукає stale claims/statuses;
 - `check_rft_consistency.py` перевіряє четверту статтю та headline values;
 - `check_manuscript_finalization.py` перевіряє рисунки, placeholders і assembly inputs;
@@ -850,12 +852,12 @@ python scripts/check_manuscript_finalization.py
 |---|---|---|---|
 | 1 | `docs/figures/fig15_loopmom_observability_schematic.png` | 3.14 | `make_rft_core_schematics.py`; conceptual instrument |
 | 2 | `docs/figures/fig16_context_packaging_architecture.png` | 3.9 | `make_rft_core_schematics.py`; model schematic |
-| 3 | `docs/figures/article_confirmed_frontier.png` | 4.7 | `make_rft_result_figures.py`; E2 |
-| 4 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | 4.9 | той самий; E4b |
-| 5 | `docs/figures/fig18_trust_negative_replication.png` | 4.12 | той самий; E5a |
-| 6 | `docs/figures/fig19_sampler_nfe_robustness.png` | 4.10 | той самий; E7c |
-| 7 | `docs/figures/fig20_alternate_codec_robustness.png` | 4.11 | той самий; E7a |
-| 8 | `docs/figures/fig21_pose_indexed_raw_memory.png` | 4.13 | той самий; E8a |
-| 9 | `docs/figures/fig22_phasec_v2_boundary.png` | 4.14 | той самий; E6 |
+| 3 | `docs/figures/article_confirmed_frontier.png` | 4.5 | `make_rft_result_figures.py`; E2 |
+| 4 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | 4.6 | той самий; E4b |
+| 5 | `docs/figures/fig18_trust_negative_replication.png` | 4.9 | той самий; E5a |
+| 6 | `docs/figures/fig19_sampler_nfe_robustness.png` | 4.7 | той самий; E7c |
+| 7 | `docs/figures/fig20_alternate_codec_robustness.png` | 4.8 | той самий; E7a |
+| 8 | `docs/figures/fig21_pose_indexed_raw_memory.png` | 4.10 | той самий; E8a |
+| 9 | `docs/figures/fig22_phasec_v2_boundary.png` | 4.11 | той самий; E6 |
 
 Стаття й дисертація повинні посилатися на одні й ті самі image files та immutable artifacts. Розходження чисел між ними є помилкою, а не допустимою редакційною варіацією.

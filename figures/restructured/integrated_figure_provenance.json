@@ -48,8 +48,8 @@
     "figure_id": "4.3b",
     "file": "figures/restructured/ch4_fig4_3b_schedule_calibration.svg",
     "asset_class": "author-generated-artifact-derived",
-    "sha256": "b9e2fc0917c47a0f94c133f296736783e4b701af7f07176bf235c55b69588ae7",
-    "bytes": 98786,
+    "sha256": "dabdc67590e388f7f60ce11a8baf58cf87c3cd9a0deb05f4e593624318339e9c",
+    "bytes": 94112,
     "source": "sealed A4-COR validation JSONL and paired schedule analysis copied into artifacts/dissertation/a4_cor",
     "modification_status": "new dissertation-native result figure",
     "rights_status": "author-generated",
@@ -61,7 +61,7 @@
       "balanced_recent_seed0_validation_metrics.jsonl": "116de2a709650ea33da0adf4e5750ba665efe0531a0b5093a1092f0c92911a43"
     },
     "generator": "scripts/generate_ch4_schedule_calibration.py",
-    "generator_sha256": "5abecd8962b763b5639807d766706dc2d74999f58234046a955f4da490bd1c0b",
+    "generator_sha256": "f75d290d2001e1216563302e33fa49bed64995b0b9c1de20067440843085d2fa",
     "caption_attribution": "Chapter 4 Figure 4.3 lower panel; author-generated from sealed A4-COR logs"
   },
   {

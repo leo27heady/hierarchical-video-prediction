@@ -140,6 +140,10 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(OUTPUT, format="svg", metadata={"Date": None})
     plt.close(figure)
+    normalized_svg = "\n".join(
+        line.rstrip() for line in OUTPUT.read_text(encoding="utf-8").splitlines()
+    ) + "\n"
+    OUTPUT.write_bytes(normalized_svg.encode("utf-8"))
     print(OUTPUT)
 
 

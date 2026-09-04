@@ -359,7 +359,7 @@
 | навчання та профілювання попереднього прототипу | `scripts/train_fixed_region_adapter.py`, `scripts/run_fixed_region_revformer.py`, `scripts/profile_fixed_region_memory.py` | короткі перевірки та повний CPU-набір попередньої робочої гілки |
 | фізична піраміда, пакувальник, розподільник, координати, реверсивне ядро й декодер остаточної моделі | `OpenSTL-integrated/openstl/models/hvp_integrated_model.py` | `OpenSTL-integrated/tests/test_models/test_hvp_integrated.py` |
 | контракти даних і конфігурації остаточної моделі | `OpenSTL-integrated/configs/mmnist/HVPIntegrated.py`, `OpenSTL-integrated/configs/taxibj/HVPIntegrated.py` | `OpenSTL-integrated/tests/test_hvp_data_contracts.py` |
-| контролер і виконавець інтегрованої кампанії | `hierarchical-video-prediction-integration/scripts/v2/run_integrated_openstl_campaign.py` | `hierarchical-video-prediction-integration/tests/test_integrated_openstl_worker.py` |
+| контролер і виконавець інтегрованої кампанії | `hierarchical-video-prediction-integration/scripts/v2/run_integrated_openstl_campaign.py`, `hierarchical-video-prediction-integration/scripts/v2/train_integrated_openstl.py` | `hierarchical-video-prediction-integration/tests/test_integrated_openstl_worker.py`, `hierarchical-video-prediction-integration/tests/test_integrated_campaign_controller.py` |
 
 Зовнішній профіль пам’яті попереднього прототипу подано окремо в таблиці Ж.3, оскільки горизонти моделей не всюди збігаються. Він надає масштаб витрат. Перші два рядки мають спільні компоненти й початковий стан, однак після першого кроку застосовують різну зовнішню динаміку, тому навіть їх дозволено тлумачити лише як інженерне, а не причинне порівняння.
 
