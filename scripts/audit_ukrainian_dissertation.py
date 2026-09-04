@@ -28,9 +28,9 @@ FILES = [
     )
 ]
 CHAPTER_FILES = {chapter: FILES[chapter + 1] for chapter in range(1, 5)}
-EXPECTED_EQUATIONS = {1: 14, 2: 42, 3: 53, 4: 5}
-EXPECTED_FIGURES = {1: 25, 2: 19, 3: 19, 4: 14}
-EXPECTED_TABLES = {1: 2, 2: 10, 3: 3, 4: 7}
+EXPECTED_EQUATIONS = {1: 14, 2: 42, 3: 58, 4: 5}
+EXPECTED_FIGURES = {1: 25, 2: 19, 3: 20, 4: 14}
+EXPECTED_TABLES = {1: 2, 2: 10, 3: 4, 4: 7}
 EXPECTED_APPENDIX_TABLES = [
     "А.1", "Б.1", "В.1", "В.2", "В.3", "В.4", "В.5", "В.6", "В.7", "В.8",
     "Г.1", "Д.1", "Д.2", "Д.3", "Е.1", "Ж.1", "Ж.2", "Ж.3",

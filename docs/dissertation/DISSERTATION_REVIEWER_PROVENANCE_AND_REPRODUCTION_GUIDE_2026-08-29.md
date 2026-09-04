@@ -179,11 +179,13 @@
 | 3.2 | заморожений двохрівневий кодек формує 16 coarse і 64 fine токени на кадр; один Transformer спільно обробляє контекст і ціль | `hvp_rev/rhvd.py`, конфігурації експериментів, формули 3.7–3.18 |
 | 3.3 | основна голова є latent diffusion з `v`-prediction і DDIM; регресія є контрольним вихідним модулем | код моделі й навчання, формули 3.17–3.28 | не повертати застарілий опис epsilon-prediction |
 | 3.4 | self-fed rollout оновлює кільцеві coarse/fine буфери; токени, payload і total sequence length обліковуються окремо | код rollout/context, формули 3.29–3.32 |
-| 3.5.1–3.5.3 | LoopMom створює точну подію виходу/повторного входу; популяція reach difference залежить від конкретної пари пакетів | генератор LoopMom, `DATA_CARD_LOOPMOM.md`, формули 3.33–3.38 |
+| 3.5.1–3.5.3 | TRB створює точну подію виходу/повторного входу; популяція reach difference залежить від конкретної пари пакетів | генератор TRB (внутрішня назва `LoopMom`), `DATA_CARD_LOOPMOM.md`, формули 3.33–3.38 |
 | 3.5.4–3.5.5 | повні маскові й persistent-object метрики розділяють пропуски, зайві компоненти, ID і траєкторію | реалізації метрик у `hvp_rev`, формули 3.39–3.40 |
 | 3.5.6 | bootstrap повторно відбирає цілі кліпи; max-statistic дає одночасні інтервали | статистична реалізація й аналізатори, формули 3.41–3.45 |
-| 3.6 | гіпотези визначають очікувані напрями до перегляду відкладених результатів | протоколи й `experiments/authorization.json` |
-| 3.7 | фіксований 24-токенний стан, SimVP і реверсивне розгортання утворюють feasibility prototype | нові модулі інтеграції, формули 3.46–3.53 | не підмінює головну модель і не доводить dynamic entropy routing |
+| 3.6.1 | гіпотези визначають очікувані напрями до перегляду відкладених результатів | протоколи й `experiments/authorization.json` |
+| 3.6.2–3.6.9 | A4 фіксує 30 000 кроків, 43 унікальні конфігурації/86 двоініціалізаційних запусків TRB та окрему MEC-діагностику | manifest/configuration registry Path B; це план виконання, а не результат |
+| 3.7.2 | фіксований 24-токенний стан, SimVP і реверсивне розгортання утворюють попередній прототип здійсненності | `hvp_rev/fixed_region_revformer.py`, `packed_simvp.py`, `reversible_rollout.py`, формули 3.46–3.53 | не підмінює остаточну модель і не доводить динамічну маршрутизацію |
+| 3.7.3–3.7.7 | остаточна інтегрована модель фізично збирає coarse/fine стан, маршрутизує сталу квоту, кодує фізичні координати та застосовує реверсивність лише всередині Transformer-ядра | `OpenSTL-integrated/openstl/models/hvp_integrated_model.py`, тести `test_hvp_integrated.py`, формули 3.54–3.58 | CPU-перевірки є доказом коректності інтерфейсу; CUDA-паритет, пам’ять і якість потребують окремих вимірювань |
 
 ### 6.5 Розділ 4
 
@@ -332,6 +334,11 @@
 | 3.51 | друге пряме рівняння additive reversible rollout | `DEF/code` | `reversible_rollout.py` |
 | 3.52 | відновлення другого попереднього компонента | `DER/code` | exact algebraic inverse |
 | 3.53 | відновлення першого попереднього компонента | `DER/code` | same module; numerical drift measured separately |
+| 3.54 | трикомпонентний скор маршрутизації деталей | `DEF/code` | стандартизовані residual/change/learned terms у `OpenSTL-integrated/openstl/models/hvp_integrated_model.py` |
+| 3.55 | обмежений вибір сталої глобальної квоти з мінімальним покриттям кадру | `DEF/code` | per-frame minimum + global top-k; індекси top-k недиференційовні |
+| 3.56 | неперервні Fourier-ознаки фізичних координат і масштабу з окремим level embedding | `DEF/code` | координатний контракт інтегрованої моделі; не позиція слота в упакованій послідовності |
+| 3.57 | пряме та обернене адитивне зв’язування реверсивного Transformer-ядра | `LIT/DEF/code` | same-forward reversible core; маршрутизатор і декодер поза реверсивною межею |
+| 3.58 | майбутні запити, cross-attention і залишкове декодування кадру | `DEF/code` | OpenSTL-сумісний future decoder інтегрованої моделі |
 
 
 ### 7.4 Формули розділу 4
@@ -346,7 +353,7 @@
 
 ## 8. Повний реєстр таблиць
 
-У поточній редакції 40 нумерованих таблиць. Більшість таблиць набрано вручну в Markdown з названого джерела. Скрипт аналізу створює JSON або проміжну Markdown-таблицю, але остаточне розміщення й українські підписи редагувалися вручну. Якщо окремого генератора немає, це прямо зазначено; у такому разі числа потрібно звіряти з первинним PDF/JSON, а не з іншою копією таблиці в рукописі.
+У поточній редакції 41 нумерована таблиця. Більшість таблиць набрано вручну в Markdown з названого джерела. Скрипт аналізу створює JSON або проміжну Markdown-таблицю, але остаточне розміщення й українські підписи редагувалися вручну. Якщо окремого генератора немає, це прямо зазначено; у такому разі числа потрібно звіряти з первинним PDF/JSON, а не з іншою копією таблиці в рукописі.
 
 ### 8.1 Таблиці розділів 1–2
 
@@ -372,6 +379,7 @@
 | 3.1 | поля контекстного пакета | основний context model | формули 3.1–3.5, конфігурації/`ArmSpec`; ручний словник інтерфейсу |
 | 3.2 | frozen latent interface | дворівневий codec | реалізація codec у `hvp_rev/rhvd.py` та executed configs; ручна специфікація |
 | 3.3 | набори даних і evidence role | усі експерименти | авторська карта; не ранжування difficulty |
+| 3.4 | тензорний контракт інтегрованої архітектури | Moving MNIST і TaxiBJ | реалізація `HVPIntegratedModel` та конфігурації OpenSTL; арифметика токенів, не профіль VRAM |
 
 ### 8.3 Таблиці розділу 4
 
@@ -410,12 +418,12 @@
 
 ## 9. Повний реєстр рисунків
 
-У головному тексті рівно 77 нумерованих рисунків: 25 у розділі 1, 19 у розділі 2, 19 у розділі 3 і 14 у розділі 4. Додатки містять ще чотири рисунки: довідкові В.1–В.2 та повні монтажі Е.1–Е.2. Отже, весь рукопис містить 81 підпис рисунка. Композитні рисунки 1.6 і 2.17 містять по два файли, але мають один номер. Точні SHA-256, розміри, спосіб вилучення та права зберігаються у:
+У головному тексті рівно 78 нумерованих рисунків: 25 у розділі 1, 19 у розділі 2, 20 у розділі 3 і 14 у розділі 4. Додатки містять ще чотири рисунки: довідкові В.1–В.2 та повні монтажі Е.1–Е.2. Отже, весь рукопис містить 82 підписи рисунків. Композитні рисунки 1.6 і 2.17 містять по два файли, але мають один номер. Точні SHA-256, розміри, спосіб вилучення та права зберігаються у:
 
 - `docs/figures/restructured/figure_provenance.json` – розділ 1;
 - `docs/figures/restructured/ch2_ch4_figure_provenance.json` – нові й опубліковані активи розділів 2–4;
 - `docs/figures/restructured/existing_figure_provenance.json` – раніше наявні активи репозитарію;
-- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18, 3.19 і 4.12.
+- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18–3.20 і 4.12.
 
 Не змінювати опубліковані рисунки TempVerseFormer і V-BLT під виглядом косметичної правки. Для них дозволено змінити масштаб, зовнішні поля та підпис у дисертації, але не внутрішній зміст. Власні концептуальні схеми можна регенерувати, якщо збережено їхню семантику й оновлено provenance.
 
@@ -496,6 +504,7 @@
 | 3.17 | `.../ch3_fig3_17_persistent_assignment.png` | Hungarian matching and persistent ID tracking | той самий скрипт; E6 metric protocol |
 | 3.18 | `figures/restructured/ch3_fig3_18_integrated_architecture.svg` | fixed-width packed state, SimVP transition, reversible chain | dissertation-native manual deterministic SVG; no standalone generator found; provenance hash in `integrated_figure_provenance.json` |
 | 3.19 | `figures/restructured/ch3_fig3_19_fixed_regions.svg` | 16 coarse cells + 8 fixed fine regions | dissertation-native manual deterministic SVG; based on formulas 3.46–3.48, not dynamic routing |
+| 3.20 | `figures/restructured/ch3_fig3_20_packed_integrated_architecture.svg` | фізичне coarse/fine пакування, стала квота, реверсивне ядро та майбутні запити | `scripts/generate_ch3_packed_integrated_architecture.py`; схема реалізованої архітектури, не результат якості чи пам’яті |
 
 ### 9.4 Рисунки розділу 4
 
@@ -720,14 +729,14 @@ Fixed patches, RoPE-ND, byte classification і entropy maps реалізован
 
 ### Етап C – математика
 
-1. Перевірити всі 114 позначок за §7.
+1. Перевірити всі 119 позначок за §7.
 2. Звірити dimensions, units і sign conventions.
 3. Окремо перевірити `v`-prediction, anchor geometry, payload-vs-VRAM і clip-cluster bootstrap.
 
 ### Етап D – таблиці й рисунки
 
-1. Перевірити всі 40 таблиць за §8.
-2. Перевірити всі 77 номерів рисунків головного тексту та чотири рисунки додатків за §9 і provenance hashes.
+1. Перевірити всі 41 таблицю за §8.
+2. Перевірити всі 78 номерів рисунків головного тексту та чотири рисунки додатків за §9 і provenance hashes.
 3. Для result figures звірити plotted values з JSON.
 4. Для published figures перевірити source/attribution; не оцінювати їх як нові dissertation experiments.
 5. Для conceptual figures перевірити логіку стрілок, але не вимагати statistical source.
@@ -744,17 +753,17 @@ Fixed patches, RoPE-ND, byte classification і entropy maps реалізован
 З кореня репозитарію:
 
 ```powershell
-# Формули: очікується 14 + 42 + 53 + 5 = 114.
+# Формули: очікується 14 + 42 + 58 + 5 = 119.
 $files = '02_CHAPTER_1.md','03_CHAPTER_2.md','04_CHAPTER_3.md','05_CHAPTER_4.md'
 foreach ($f in $files) {
   $raw = Get-Content "docs/dissertation/condensed_translated_humanized_ukrainian/$f" -Raw
   [regex]::Matches($raw, '\\tag\{([^}]+)\}').Count
 }
 
-# Нумеровані рисунки головного тексту: очікується 25, 19, 19, 14.
+# Нумеровані рисунки головного тексту: очікується 25, 19, 20, 14.
 rg -n '^\*\*Рисунок ' docs/dissertation/condensed_translated_humanized_ukrainian
 
-# Нумеровані таблиці: очікується 40 разом із додатками.
+# Нумеровані таблиці: очікується 41 разом із додатками.
 rg -n '^\*\*Таблиця ' docs/dissertation/condensed_translated_humanized_ukrainian
 
 # Image targets, placeholders і manuscript inputs.

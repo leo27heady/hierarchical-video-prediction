@@ -18,7 +18,7 @@
     "original_figure": "1.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "parallel consistency criteria synthesized in Chapter 1",
     "source_files": [
       {
@@ -56,7 +56,7 @@
     "original_figure": "1.23",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "fixed-grid spatial-allocation analysis in Chapter 1",
     "source_files": [
       {
@@ -94,7 +94,7 @@
     "original_figure": "1.24",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "retained-context reach formulation in Chapters 1 and 3",
     "source_files": [
       {
@@ -132,7 +132,7 @@
     "original_figure": "2.15",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "verified RoPE-ND mathematical contract and implementation configuration",
     "source_files": [
       {
@@ -171,7 +171,7 @@
     "original_figure": "1.15",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "generator_sha256": "36b4815387227c5db5a947c6b167c05d4dbc73b1e98974e7681717758cd5a089",
     "data_or_concept_source": "official 2024 article PDF, original Figure 4",
     "source_files": [
       {
@@ -210,7 +210,7 @@
     "original_figure": "1.16",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "generator_sha256": "36b4815387227c5db5a947c6b167c05d4dbc73b1e98974e7681717758cd5a089",
     "data_or_concept_source": "official 2024 article PDF, original Figure 6",
     "source_files": [
       {
@@ -249,7 +249,7 @@
     "original_figure": "1.18",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "501a89b2f9ebe44ce8be88c49d775fa74e90013420e6d0e3a42fbb85a2c8f7ee",
+    "generator_sha256": "36b4815387227c5db5a947c6b167c05d4dbc73b1e98974e7681717758cd5a089",
     "data_or_concept_source": "official 2024 article PDF, original Figure 8",
     "source_files": [
       {
@@ -287,7 +287,7 @@
     "original_figure": "3.2",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "frozen package registry and exact context-token arithmetic",
     "source_files": [
       {
@@ -330,7 +330,7 @@
     "original_figure": "3.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "generator_sha256": "3db86b1a10d8dd48ee0cb78e402343d98ef1f9dde168b449b8c8c76181e9aabd",
     "data_or_concept_source": "implemented tokenization path and frozen principal package configuration",
     "source_files": [
       {
@@ -373,7 +373,7 @@
     "original_figure": "3.9",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "c0ef2e9fcedb6959819e17ac9a3aeebd8bd31da71ec1e19f8ed32d91c657c3d1",
+    "generator_sha256": "e87fb909f26ae69d4716b87c5a1757894fc445d7908cc1ee9a29205835f6a95a",
     "data_or_concept_source": "experiments/configs/e2_untouched_confirmation.json and implemented predictor interface",
     "source_files": [
       {
@@ -416,7 +416,7 @@
     "original_figure": "3.11",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "generator_sha256": "3db86b1a10d8dd48ee0cb78e402343d98ef1f9dde168b449b8c8c76181e9aabd",
     "data_or_concept_source": "implemented rollout recurrence and frozen 48-coarse/6-fine package",
     "source_files": [
       {
@@ -459,7 +459,7 @@
     "original_figure": "3.14",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "c0ef2e9fcedb6959819e17ac9a3aeebd8bd31da71ec1e19f8ed32d91c657c3d1",
+    "generator_sha256": "e87fb909f26ae69d4716b87c5a1757894fc445d7908cc1ee9a29205835f6a95a",
     "data_or_concept_source": "experiments/configs/e2_untouched_confirmation.json and LoopMom generator geometry",
     "source_files": [
       {
@@ -502,7 +502,7 @@
     "original_figure": "B.1",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "a157c0bc7e237e53b07489a9f707f3fe4eeb91eb4dbf79a833b1096c93859757",
+    "generator_sha256": "d0ec296e977eacb91e46be0d6ba2609a5b3db272a35483fbc7cf970a09512a5a",
     "data_or_concept_source": "complete configuration/evidence registry and terminal experiment reports",
     "source_files": [
       {
@@ -545,7 +545,7 @@
     "original_figure": "4.1",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "generator_sha256": "3db86b1a10d8dd48ee0cb78e402343d98ef1f9dde168b449b8c8c76181e9aabd",
     "data_or_concept_source": "implemented regression, diffusion, and energy-head interfaces",
     "source_files": [
       {
@@ -593,7 +593,7 @@
     "original_figure": "4.3",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "generator_sha256": "3db86b1a10d8dd48ee0cb78e402343d98ef1f9dde168b449b8c8c76181e9aabd",
     "data_or_concept_source": "logs_rhcp/mem_gate_full_s0.log, logs_rhcp/mem_gate_full_s1.log, logs_rhcp/mem_gate_full_s0_t20k.log, and logs_rhcp/mem_gate_full_s1_t20k.log",
     "source_files": [
       {
@@ -646,7 +646,7 @@
     "original_figure": "4.5",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/confirmation_e2/results.json",
     "source_files": [
       {
@@ -684,7 +684,7 @@
     "original_figure": "4.6",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/e4b_head_package/results.json",
     "source_files": [
       {
@@ -722,7 +722,7 @@
     "original_figure": "4.7",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/e7c_sampler_nfe/results.json",
     "source_files": [
       {
@@ -760,7 +760,7 @@
     "original_figure": "4.8",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/e7a_codec_robustness/results.json",
     "source_files": [
       {
@@ -798,7 +798,7 @@
     "original_figure": "4.9",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/e5a_trust_replication/results.json",
     "source_files": [
       {
@@ -836,7 +836,7 @@
     "original_figure": "4.10",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/e8a_pose_mosaic/results.json",
     "source_files": [
       {
@@ -874,7 +874,7 @@
     "original_figure": "4.11",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "22d5d6917e3a7d8bf315dfb58c0a40ff8ec2b1cee4df545b1ed47576ae0e67b5",
+    "generator_sha256": "b2bfa4c2ccc39fc18b60e8f94e89aa4f4e7318ad7762fd7ba4bce42e275fe775",
     "data_or_concept_source": "artifacts/phasec_v2/results.json",
     "source_files": [
       {
@@ -912,7 +912,7 @@
     "original_figure": "E.1",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "783bf8be5c3aeaa9ec19cac6fb4901776f94e31ec26936aa06038540aa836f4d",
+    "generator_sha256": "3db86b1a10d8dd48ee0cb78e402343d98ef1f9dde168b449b8c8c76181e9aabd",
     "data_or_concept_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
     "source_files": [
       {
@@ -955,7 +955,7 @@
     "original_figure": "E.2",
     "source_page": null,
     "extraction_method": null,
-    "generator_sha256": "5d95db58a8dc3a0d2ba9fcca329b320751272777e59b1f60f1c0c73b6c89cadf",
+    "generator_sha256": "41017d1b2850ee12a28b3f71acbfb251981ef6ca44dcfe2e6e6e75308516e9e1",
     "data_or_concept_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizons 1, 24, 60, 100, and 148",
     "source_files": [
       {
