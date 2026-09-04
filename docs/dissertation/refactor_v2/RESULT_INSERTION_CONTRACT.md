@@ -1,9 +1,0 @@
-# Result insertion and figure contract
-
-No pending row is a measured result. The registry includes positive, neutral, and negative text branches for every slot, including MEC, optional rollout, checkpointing, baselines, routing training/switch/stability, dataset-specific Pareto and sentence-level conclusions.
-
-The accepted-row plotting interface requires status `accepted`, two explicit seeds, data/config/checkpoint hashes, metric units/direction, a fixed selection role, evidence status, and an input-file hash supplied on the command line. Result adapters must be checked against the finalizer's actual output; a path in the registry is not permission to accept a partial file. `all_final_development_metrics.json` is the actual Article 4 aggregate name; `selection_ledger.json` and `final_report.json` govern selected holdout evidence. No generic `aggregate.json` is treated as a real artifact.
-
-Visual grammar: Flat dark gray, hierarchy blue, routed hierarchy orange, Full dark purple. Use two explicit seed markers and a mean, not n=2 Gaussian/SEM/t intervals. FRT uses exact numeric budgets, ALC horizontal policy effects, CEX actual coarse positions with compound-intervention caption, LVL/OVR paired dots, STS mean plus both seed surfaces. Confirmation and MEC are separate figures. Memory allocated/reserved, retained state, and throughput are separate views. MM/TaxiBJ plots stay separate. Qualitative strips use locked indices only after aggregate evidence.
-
-Before release: accept the final artifacts; resolve dependencies; generate plots/tables and their exact JSON rows; select interpretation from measured results; update shared summary claims; normalize language; freeze numbering once; regenerate cross-reference/count maps; complete institutional/permission fields; render and audit the release document. An absent optional comparison contracts the corresponding claim rather than acquiring invented success values.

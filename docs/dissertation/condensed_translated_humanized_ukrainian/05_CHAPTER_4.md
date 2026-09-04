@@ -1,92 +1,134 @@
 # Розділ 4 – Експериментальна валідація та визначення робочої області
 
-The evidence is organized by the question answered, not by the chronology of scripts. New allocation results take the headline position only when their artifacts are complete. Historical evidence remains visible where it tests a different endpoint, particularly self-fed autoregressive behavior. Pending cells below are editorial placeholders, not simulated observations.
+У цьому розділі викладено завершальні докази дослідження ієрархічного контексту, що становить основу рукопису [136]. Виклад підпорядковано дослідницьким питанням і рівням доказовості, а не хронології експериментів. Оскільки модель із розділу 3 залежить від конкретних проєктних рішень, експерименти перевіряють не лише розмір пакета, а й механізм генерації, користь довшої історії, ціну просторової деталізації та робастність висновків до інших джерел варіативності.
+
+Основний підсумок можна сформулювати одним реченням: ієрархія забезпечує досяжність, коли релевантна історія інакше була б недоступною, тоді як плоский контекст зберігає точність відтворення, коли потрібний часовий інтервал уже доступний. Це твердження стосується виміряних робочих областей, а не загального ранжування архітектур.
 
 ## 4.1 Експериментальна карта та правила порівняння
 
-### 4.1.1 Questions and evidence status
+Розділ починається з правил читання доказів, а не з окремих чисел. Цей підрозділ пов’язує дослідницькі питання з експериментальними програмами, розмежовує розроблення, підтвердження, робастність і зовнішні межі, а також установлює єдину орієнтацію знаків та словник бюджетів для подальших порівнянь.
 
-The chapter asks: why use a common 30k endpoint; how does quality respond to retained budget and purchased reach; how do allocation, depth, ownership, and space–time placement matter; which failures persist under self-feedback; and can the integrated model achieve useful matched quality and measured memory on OpenSTL?
+### 4.1.1 Дослідницькі питання, набори даних та рівні доказовості
 
-The complete 86-run matrix is a **registered development estimate**. A contrast earns **direction reproduced across two training seeds** only when both seed directions agree. **Sealed-holdout confirmation** applies only to the selected roles actually evaluated after the selection ledger is locked. A4-MEC is a **mechanism diagnostic**. E2–E8 are **historical/transfer boundary** evidence in this revised chapter, even where their own original protocol included protected confirmation. These statuses cannot be exchanged because two experiments use the same metric name.
+Послідовність експериментів визначено чотирма питаннями. Перше стосується механізму генерації: чи дає стохастичний дифузійний вихідний модуль корисну перевагу над прямою регресією та чи придатний енергетичний спуск як альтернатива у доступному масштабі? Друге питання перевіряє, чи покращує прогнозування довша доступна історія саме для тих записів, де вона потрібна. Третє з’ясовує, чи змінюється порядок методів після того, як плоске вікно наближається до тієї самої часової протяжності й зберігає повну просторову деталізацію. Останнє питання визначає межі висновків: чи зберігаються основні напрями ефектів для різних ініціалізацій навчання, параметрів генератора, незалежно навченого кодека та задачі з об’єктами, ідентичність яких простежується в часі.
 
-### 4.1.2 Matched quantities and visible uncertainty
+LoopMom слугує інструментом для ідентифікації механізму у двох середніх питаннях. Вікно перегляду розміром $64\times64$ переміщується тороїдальним світом розміром $192\times64$, що містить текстури та спрайти цифр. У кожен момент дві третини світу перебувають поза вікном, а в основній робочій точці релевантний вміст повертається приблизно через 48 кадрів. Збережені координати дають змогу точно визначити останнє спостереження кожного видимого стовпця світу. Йдеться про геометричну спостережуваність, але не про доведену інформаційно-теоретичну необхідність: апріорний розподіл цифр може робити частину неспостережуваного вмісту передбачуваною.
 
-Every comparison identifies its invariant: retained payload, shared head, same forward function, detail quota, training schedule, or dataset protocol. Retained tokens, retained bytes, core activation storage, total allocated CUDA peak, reserved allocator peak, and runtime are separate endpoints. Ratios from different baselines are never multiplied.
+Для стислого посилання на експериментальні програми далі використано коди E2, E4b, E5a, E6, E7a, E7c та E8a; B1 позначає окреме порівняння повних конфігурацій. Коди є ідентифікаторами доказових програм, а не послідовними етапами однієї траєкторії. Повне зіставлення кодів із питаннями, класами доказів і виконаними варіантами перенесено до таблиці В.7.
 
-Two-seed figures show both points and the arithmetic mean. Clip-level intervals are conditional on a trained model and retain the registered clustering and multiplicity correction. They do not represent the distribution of training outcomes. Main result tables contain one population and comparison family; configuration and hash tables reside in Appendices В and Г. All primary claims resolve through the claim registry shared with the abstracts and general conclusions.
+Класи доказів залишаються відмінними навіть тоді, коли їхні артефакти входять до одного релізу. Ініціалізації алгоритму вибірки характеризують випадковість генерації для фіксованої моделі й не замінюють незалежних навчань. Еталон E8a отримує прямий доступ і тому не є справедливою базовою моделлю. B1 підтверджує лише виконану конфігурацію, оскільки разом із кроком контексту змінює цільовий інтерфейс.
 
-## 4.2 Training endpoint and predictor-mechanism controls
+Цей порядок відокремлює вибір механізму від підтвердження контекстного ефекту. Повну візуальну матрицю виконаних гілок, токенних бюджетів, цільових інтерфейсів, ініціалізацій і структурно відсутніх комірок перенесено на рисунок В.1. Вона залишається частиною доказового реєстру, але не перериває основну аргументацію. Інтегрований прототип до цієї матриці не входить: він використовує інтерфейс OpenSTL, регресійний SimVP і окремий профіль пам’яті, тому його протокол подано в §4.8.
 
-### 4.2.1 Common 30k calibration
+### 4.1.2 Словник бюджету та правила порівняння
 
-The archived calibration compares two seed-0 configurations at 1,792 tokens, not a replicated two-seed treatment contrast. The registered 2% rule and ordering condition reject the tested 8k, 12k, 16k, 20k, and 24k endpoints. Flat and Balanced recent exchange order between 12k and 16k. Thirty thousand updates were accepted as the common endpoint after reviewing this evidence; a crossing is an empirical optimization effect, not a rank-reversal feature in the implementation.
+Порівняння далі називається *зіставленим* лише щодо явно названого ресурсу, а не через повну тотожність конфігурацій. Майже зіставлена пара відрізняється у задекларованому напрямі: `strided-flat` використовує 1 088 токенів контексту, а `hier-long` – 1 152, тому дефіцит у 64 токени надає невелику перевагу контролю з часовим прорідженням. Експеримент B1 належить до іншої категорії. У ньому одночасно змінюються крок контексту, крок цілі, кількість цільових слотів, допоміжна функція втрат, довжина послідовності та обчислювальне навантаження, тому його результат стосується повної конфігурації.
 
-![Why was 30k selected?](../../../figures/dissertation_v2/a4_calibration_30k.svg)
+Для показника $m$ через $\bar m_{\mathrm{candidate}}$ позначено середнє значення кандидата, а через $\bar m_{\mathrm{comparator}}$ – середнє значення порівнюваної конфігурації. Введемо коефіцієнт напряму $s_m=+1$ для метрик «менше — краще» і $s_m=-1$ для метрик «більше — краще». Щоб додатний знак завжди означав перевагу кандидата, ефект визначено як
 
-Figure D4-calibration — Horizon-4 foreground MSE against optimizer updates for the two seed-0 calibration configurations. Lower is better; points are saved 2k validations, not independent seed replicates. Source: hash-verified archived calibration logs and analysis; observed-range criterion only.
+$$
+\Delta_m=s_m\left(
+\bar m_{\mathrm{comparator}}-\bar m_{\mathrm{candidate}}
+\right).
+\tag{4.1}
+$$
 
-The figure uses every saved 2k validation point, including the earlier region where ranking differs. Its endpoint is horizon-4 foreground MSE, lower being better. The criterion only compares the observed training range. Passing at the terminal checkpoint alone would be tautological; the separate late-window stability check is therefore reported with the calibration artifact. This calibration does not establish that every primary configuration has converged or that the ordering remains unchanged beyond 30k.
+Така орієнтація полегшує читання неоднорідних панелей, однак метрики мають різні шкали й не допускають прямого числового зіставлення. Наприклад, зміну MSE об’єднаної маски на 0,01 не можна прирівняти до зміни точності ідентифікації на 0,01. Для сімейства верхньої межі зареєстрованим кандидатом є плоский пакет. Тому додатний ефект у перевірках робастності свідчить на його користь, хоча в основній таблиці E2 різницю втрат подано як «плоский мінус ієрархічний».
 
-### 4.2.2 Bounded regression/diffusion evidence
+## 4.2 Вибір механізму генерації
 
-The historical head control compares a 7.27M-parameter regression predictor and a 7.53M-parameter diffusion predictor with the same width, depth, heads, latent normalization, and six-frame context on both levels. Diffusion improved the single-step candidate-coverage diagnostic, whereas regression had lower error in the reported one-candidate self-fed comparison. A ground-truth-selected best-of-eight result is an oracle diagnostic, not deployable prediction quality. Eight diffusion candidates at 16 NFE cost 128 network evaluations, versus eight for the regression diagnostic.
+Перш ніж порівнювати форми контексту, потрібно зафіксувати вихідний механізм, щоб його зміна не змішувалася з ефектом пам’яті. Тут пряма регресія зіставляється з дифузією за спільного кодека й контрольованої ємності, а енергетичний спуск оцінюється як окрема альтернатива. Наприкінці формулюється вибір, який використовується в основній програмі.
 
-Table D4-head-single — Historical one-step foreground MSE, lower is better; six fixed evaluation batches. Candidate mean and oracle selection are separate estimands, with no training-seed interval inferred.
+### 4.2.1 Регресія та дифузія за контрольованої ємності
 
-| Endpoint | Regression | Diffusion |
-|---|---:|---:|
-| Oracle best of eight | 0.0664 | 0.0512 |
-| Mean of eight candidates | 0.0714 | 0.0640 |
+Для дослідження контексту потрібний вихідний модуль прогнозування, проте його вибір за звичкою додав би непотрібне припущення до кожного наступного порівняння. Обидва варіанти використовують трансформер шириною 256 із шістьма блоками та вісьмома головами уваги. Регресійна і дифузійна моделі містять відповідно 7,27 та 7,53 млн параметрів. Контекст на обох рівнях прихованого простору складається із шести кадрів, а ціль розташована через чотири дії після останнього кадру контексту. Стандартизація представлень у прихованому просторі за каналами й рівнями є спільною. Відмінність двох шляхів від входу до прогнозу узагальнено на рисунку 4.1.
 
-Table D4-head-rollout — Historical single-candidate self-fed foreground MSE, lower is better. These are configuration-specific point estimates, not a ranking over all possible heads.
+![Цілі прогнозування та шляхи виведення](../../figures/fig24_generation_objectives.png)
 
-| Context package | Regression | Diffusion |
-|---|---:|---:|
-| Hierarchical | 0.1682 | 0.1848 |
-| Flat | 0.2015 | 0.2038 |
+**Рисунок 4.1 – Цілі генерації в межах задачі спільного контексту.** *Джерело: авторська схема експериментального протоколу.*
 
-The full source table, sharpness, persistence comparator, and conditional interval are preserved in Appendix Е. The new campaign fixes WindowDiT rather than selecting a different head for each package. Neither the oracle diagnostic nor the historical single-candidate comparison establishes universal diffusion superiority.
+«Best-of-$N$» використано лише як діагностику з вибором найкращого кандидата за відомим еталоном. Для кожного запису обирається декодований зразок із найменшою MSE переднього плану відносно еталона. Позначимо кількість обчислень мережі на одного кандидата через $K$: для регресії з MC-dropout $K=1$, а для дифузії $K$ дорівнює кількості кроків DDIM. Для $N$ кандидатів загальна кількість обчислень дорівнює
 
-### 4.2.3 EBT as a negative mechanism diagnostic
+$$
+W(N,K)=NK.
+\tag{4.2}
+$$
 
-The adapted Energy-Based Transformer could learn an ordering of some candidate states without demonstrating reliable cold-start descent into a structured prediction. These are distinct requirements. The tested EBT recipes and their energy/sharpness diagnostics are preserved in Appendix Е; they do not serve as competitive baselines for the new allocation matrix. Scaling EBT further would answer a different question and is not part of the current campaign.
+Однакова кількість кандидатів не означає однакового обчислювального навантаження. Зокрема, «best-of-8» за 16 NFE використовує вісім обчислень регресійної мережі та 128 обчислень дифузійної. Тому таблиця 4.1 подає діагностику охоплення, середню поведінку кандидатів і самоподачу окремо; детальну чутливість до NFE перенесено до додатка Е.
 
-## 4.3 Context budget and purchased temporal reach
+**Таблиця 4.1 – Основні докази для вибору механізму генерації.** Для MSE переднього плану менше значення є кращим, для різкості переднього плану – більше. Однокрокові результати усереднено за шістьма пакетами даних фіксованої оцінюваної вибірки.
 
-### 4.3.1 Tenfold context-budget response
+| Режим і показник | Регресія | Дифузія | Незмінне продовження або 95 % ДІ |
+|---|---:|---:|---:|
+| Один крок, найкращий із 8, MSE переднього плану | 0,0664 | **0,0512** | 0,2367 |
+| Один крок, середнє за 8 кандидатами, MSE переднього плану | 0,0714 | **0,0640** | – |
+| Один крок, різкість переднього плану | 0,1591 | **0,1886** | 0,0515 |
+| Самоподача, один кандидат, ієрархічний пакет | **0,1682** | 0,1848 | [0,0110; 0,0227] для «дифузія мінус регресія» |
+| Самоподача, один кандидат, плоский пакет | **0,2015** | 0,2038 | – |
 
-The six-point budget frontier compares Flat, Linear-age, and Geometric-age at their exact registered budgets, shared head and schedule, and seeds 0 and 1. Its primary view is horizon-4 foreground MSE against retained tokens. The numeric axis preserves the uneven spacing. No smooth universal crossover is fitted between six discrete interventions.
+Дифузія краще охоплює множину однокрокових кандидатів і дає різкіші зразки, але цей результат отримано за більшої кількості обчислень. За самоподачі з одним кандидатом порядок змінюється: регресія має нижчу помилку для обох пакетів. Отже, таблиця не встановлює універсального переможця, а розрізняє режим дослідження розподілу та детерміноване розгортання.
 
-> [RESULT PENDING: A4_FRT_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Візуальну різницю між двома вихідними модулями для однакових вхідних даних показано на рисунку Е.1. У кожному рядку повного монтажу стовпці містять останній кадр контексту, прогноз і еталон, а ліва й права панелі відповідають регресії та дифузії. Записи наведено у фіксованому порядку без відбору за помилкою; вони пояснюють характер прогнозів, але рішення про механізм спирається на агреговані значення таблиці 4.1.
 
-> [RESULT PENDING: A4_FRT_RESULTS_TABLE; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+### 4.2.2 Перевірка енергетичного спуску як альтернативного механізму
 
-Interpretation is result-gated. If hierarchy improves both seed outcomes at small budgets but loses at larger ones, the conclusion is a bounded allocation regime. If directions disagree, report the disagreement. If Flat remains better, the hypothesis is not supported in this protocol. The plotted development matrix is not a long autoregressive stability curve and is not promoted wholesale to sealed confirmation.
+Трансформер на основі енергії пропонує інший шлях до генерації: навчати скалярну енергію замість нормалізованої ймовірності [84, 85]. Для контексту $c$ та кандидата майбутнього $z$ енергія $E_\phi(c,z)$ задає напрям оновлення
 
-### 4.3.2 Purchased coarse reach with fixed recent detail
+$$
+z^{(k+1)}=z^{(k)}-\alpha_k\nabla_zE_\phi(c,z^{(k)})+\eta_k,
+\tag{4.3}
+$$
 
-The coarse-expansion study retains six recent full fine positions and adds 0, 4, 8, 16, 32, or 64 older coarse positions. Its response curve uses coarse positions on the horizontal axis and identifies the associated budgets. The intervention increases memory payload, attention work, sequence length, and reach together. A favorable result means that this compound purchase is useful; it is not a fixed-cost estimate of reach alone.
+Тут $k$ є номером ітерації, $\alpha_k$ – кроком спуску, а $\eta_k$ – зареєстрованим ланжевенівським членом, якщо алгоритм використовує шум [89, 90]. Узгодження скорів пов’язує градієнти енергії з градієнтами густини даних [86, 87]. Для корисної генерації енергія має правильно впорядковувати змістовні кандидати, а спуск від заданої початкової точки – досягати структурованої області ландшафту.
 
-> [RESULT PENDING: A4_CEX_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+У масштабі 14,66 мільйона параметрів адаптовано офіційну реалізацію Energy-Based Transformer [88] та оцінено два опубліковані сімейства рецептів. Рецепт S2 збігається до втрати близько 0,597, але розміщує кандидата, що відповідає середньому значенню пакета даних, нижче цільового значення під час кожного з 21 зафіксованого вимірювання. S1 змінює порядок: від оновлень 6 000 до 20 000 цільове значення має найнижчу енергію під час п’ятнадцяти послідовних проб, при цьому розрив між цільовим значенням та середнім значенням становить від 0,22 до 3,09. Отже, впорядкування можна навчити на цьому рівні, але саме по собі воно не доводить, що спуск досягає структурованого кандидата.
 
-### 4.3.3 Re-entry confirmation and context use
+Різницю між навченим упорядкуванням і фактичною досяжністю структурованого стану показано на рисунку 4.2.
 
-The selected roles and checkpoint/config hashes must be locked before fresh confirmation evaluation. The current v2 finalizer uses the common 96-frame/28-frame frame-level re-entry mask defined in Section 3.5.2, not the historical E2 pair-specific pixel population. It summarizes per-frame foreground error over all four horizons and over flagged re-entry frames. These confirmation summaries differ from the horizon-4 development-selection metric. A favorable comparison licenses only its named selected configurations and this fixed population. Full-population quality remains visible alongside re-entry behavior.
+![Рекурсія EBT для потенційних станів, впорядкування за енергією та різкість холодного спуску](../../figures/restructured/ch4_fig4_2_ebt_composite.png)
 
-> [RESULT PENDING: A4_CONFIRMATION_TABLE; evidence=sealed-holdout confirmation of selected roles only; source=artifacts/v2/article4_primary_30k/post_training/final_report.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+**Рисунок 4.2 – Упорядкування за енергією та досяжність спуску.** *Джерело: побудовано автором за журналами навчання й діагностики EBT.*
 
-> [RESULT PENDING: A4_MEC_DIAGNOSTIC_FIG; evidence=mechanism diagnostic; source=artifacts/v2/article4_primary_30k/post_training/final_report.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+### 4.2.3 Вибір механізму
 
-The current attention output is a one-clip direct denoiser probe at time 0.5 with target-latent inputs, not a sampled-trajectory context-ablation test. Attention concentration alone is not a causal demonstration of useful retrieval. Missing or failed diagnostics are reported rather than replaced with a favorable qualitative example. A richer causal probe would be a separate registered evaluation, not an editorial relabelling of this one.
+Із трьох перевірених механізмів два виявилися придатними для подальших дослідів. Для оцінювання пакетів на відкладених даних обрано дифузію, оскільки вона забезпечила найкращу однокрокову оцінку верхньої межі охоплення. Регресію збережено як контроль: у детермінованому розгортанні із самоподачею та одним кандидатом вона мала нижчу помилку для обох пакетів, як свідчать останні два рядки таблиці 4.1. Енергетичний спуск зафіксовано як негативний результат цієї програми, адже його подальше масштабування перевіряло б розмір моделі, а не гіпотезу пакетування контексту.
 
-### 4.3.4 Historical self-fed reach evidence (E2)
+Універсального рейтингу вихідних модулів ці результати не встановлюють; вибір залежить від режиму застосування. Ця відмінність визначає межі подальшої інтерпретації. Досліджена межа бюджетів вимірює ефекти пакетів для дифузії із зазначеною кількістю кроків знешумлення, тоді як регресійні комірки перевіряють, чи зберігається напрям ефекту з детермінованим однопрохідним модулем. Це взаємодоповнювальні перевірки, а не взаємозамінні реплікації.
 
-Legacy E2 remains substantive because its self-fed protocol is not the new four-frame endpoint. On the protected `hier-min`/`flat-min` reach-difference population, relevant evidence was older than 14 and no older than 48 frames, with the original visibility and nonempty-foreground conditions. The foreground-error advantage was +0.0980 for training seed 0 and +0.0914 for seed 1. Conditional clip-clustered 95% intervals were [0.0788, 0.1179] and [0.0736, 0.1098]. Positive values mean lower error for the hierarchy; these intervals do not quantify variation over training seeds.
+Перед відкриттям відкладеної вибірки E2 технічну готовність вихідних модулів перевірено за діагностикою оптимізації; вона не використовується як підтверджувальний доказ. За 6 000 оновлень два предиктори залишаються невирішеними, тоді як незалежно навчені предиктори за 20 000 оновлень дають позитивний напрям. Це окремі графіки, а не контрольні точки однієї траєкторії. Відмінність між коротшими й довшими графіками навчання показано на рисунку 4.3.
+
+![Діагностика «memory-gate» на етапі оптимізації](../../figures/fig28_memory_gate_optimization.png)
+
+**Рисунок 4.3 – Діагностика достатності оптимізації на етапі розробки.** Контраст стає додатним лише у двох довших графіках навчання. Це обґрунтовує вимогу завершеного навчання, але не використовується як підтверджувальний доказ. *Джерело: чотири заморожені журнали розробки для 6 000 та 20 000 оновлень.*
+
+## 4.3 Ієрархічна досяжність за фіксованого бюджету контексту
+
+Цей підрозділ перевіряє центральний механізм у найчистішій умові: релевантна подія входить до довгого ієрархічного пакета, але вже не входить до коротшого плоского пакета зі зіставленим бюджетом. Спочатку аналізується заздалегідь визначена популяція різниці досяжності, потім повний набір показників і, нарешті, межа допустимого причинного тлумачення.
+
+### 4.3.1 Відкладене підтвердження різниці досяжності
+
+Центральний ефект зосереджується там, де релевантний попередній стан уже вийшов за межі короткого плоского вікна, але ще зберігається у грубій історії ієрархічного пакета. Дані розробки вже вплинули на вибір моделі та формулювання цієї гіпотези. Тому коректне підтвердження вимагало нових кліпів. Відкладену вибірку E2 згенеровано й зафіксовано хешем після заморожування контрольних точок, пар пакетів, діапазонів досяжності, показників, макетів таблиць і правил інтерпретації. Точний ідентифікатор наведено в додатку Г. Такий порядок реалізує принцип захищеної вибірки й запобігає її адаптивному повторному використанню [167]. Програмний шлюз забороняв застосовувати E2 для навчання або вибору контрольних точок; кожний дозволений доступ фіксувався разом із його призначенням.
+
+Загальну специфічну для пари популяцію визначено у формулі (3.38). Для пари `hier-min`/`flat-min` вона охоплює записи, у яких останнє релевантне спостереження віддалене більш ніж на 14, але не більш ніж на 48 кадрів. Додатково запис включається лише за скінченного значення $\Delta t_{ci}$, видимості відповідного стовпця не менш як 0,5 та непорожнього переднього плану. Нехай $e_{ci}$ дорівнює одиниці для таких записів і нулю для решти, де $c$ позначає кліп, а $i$ – кадр у ньому. Якщо $d_{ci}=m_{ci}^{\mathrm{flat}}-m_{ci}^{\mathrm{hier}}$ є парною різницею помилок переднього плану, оцінка ефекту досяжності має вигляд
+
+$$
+\widehat{\Delta}_{\mathrm{reach}}=
+\frac{\sum_c\sum_{i\in c}e_{ci}\,d_{ci}}
+{\sum_c\sum_{i\in c}e_{ci}}.
+\tag{4.4}
+$$
+
+Формула (4.4) усереднює різниці лише всередині визначеної до відкриття даних смуги; кадри, доступні обом пакетам або жодному з них, не розмивають оцінюваний механізм. Ефект обчислено окремо для двох незалежних навчань і зіставлено з результатом на повній оцінюваній популяції. Це порівняння наведено на рисунку 4.4.
 
 ![Парно-специфічні ефекти досяжності для кожної ініціалізації та повної популяції](../../figures/restructured/ch4_fig4_4_reach_effects.png)
 
 **Рисунок 4.4 – Ефекти у визначених для кожної пари вибірках досяжності.** Для обох ініціалізацій перевага ієрархії в зареєстрованій смузі досяжності більша, ніж у повній оцінюваній вибірці, що відповідає механізму, передбаченому геометрією пакета. *Джерело: побудовано автором за замороженими результатами E2.*
+
+Пара B1 надає друге підтвердження з важливим застереженням. Її зареєстрована популяція становить $8<\Delta t_i\le48$, а ефекти двох ініціалізацій дорівнюють +0,0692 [0,0543; 0,0845] та +0,0743 [0,0588; 0,0899]. Для повної популяції ефекти становлять +0,0340 та +0,0381. Однак у B1 разом із досяжністю контексту змінюються цільовий інтерфейс із кроком 2, кількість токенів цілі, допоміжна функція втрат і навчальне навантаження порівняно з `flat-short`. Результат підтверджує повну конфігурацію, але не є ізольованою причинною оцінкою часового кроку.
+
+### 4.3.2 Підтвердження на повній вибірці та за всіма показниками
+
+Помилка переднього плану сама по собі може приховати модель, яка правильно розміщує об’єкт, але водночас створює хибні об’єкти в інших місцях. Тому таблиця 4.2 охоплює весь зареєстрований набір показників, а не показники, вибрані після перегляду результатів. Знаки гармонізовано: додатні значення свідчать на користь `hier-min`; для пропущених і зайвих компонентів подано кількість помилок, яких уникає ієрархічний пакет.
 
 **Таблиця 4.2 – Повний набір підтверджувальних показників у відкладеній вибірці $14<\Delta t\le48$.** Кожен рядок містить 1 006 записів кадрів із 96 кліпів. Інтервали отримано парним статистичним виведенням з урахуванням кластеризації за кліпами для названої навченої моделі; два стовпці ініціалізацій не об’єднуються.
 
@@ -103,178 +145,299 @@ Legacy E2 remains substantive because its self-fed protocol is not the new four-
 | Уникнення зайвих компонентів | +0,3231 [0,1530; 0,4915] | +0,1968 [0,0334; 0,3701] |
 | Покриття компонентів | +0,2622 [0,1968; 0,3264] | +0,2992 [0,2370; 0,3605] |
 
+Сукупність показників робить результат досяжності переконливішим, ніж сама різниця MSE переднього плану. Об’єднана маска контролює галюциновану опору; показник фону перевіряє, чи не отримано виграш за рахунок його реконструкції; прецизійність, повнота й F1 виявляють дисбаланс масок. Кількість пропущених і зайвих компонентів разом із покриттям показує, що пакет частіше відтворює цілісний об’єкт після того, як коротше вікно втратило релевантний вміст сцени.
 
-The accompanying union-mask, false/missed component, and coverage endpoints guard against explaining foreground MSE by simply omitting difficult objects. E2 supports the original configuration and protected population, not every v2 allocation or a universal long-rollout guarantee. Its B1 extension also changes target stride, target tokens, auxiliary loss, and training work; that result belongs to the complete configuration. Full E2 arithmetic and the old frontier remain recoverable in Appendix Е.
+### 4.3.3 Інтерпретація досяжності
 
-## 4.4 Allocation, hierarchy depth, overlap, and space–time placement
+Визначена для пари смуга є центральною в експерименті. Загальний аналіз наприкінці горизонту поєднував би події, у яких потрібні свідчення доступні обом пакетам, жодному з них або лише одному. Геометрія LoopMom дає змогу розглянути ці випадки окремо. Більший ефект у смузі спостерігається за обох ініціалізацій навчання й підтверджується показниками, чутливими до хибнопозитивних результатів. Саме цього очікує механізм, передбачений у розділі 3.
 
-### 4.4.1 Allocation policy at 1,792 tokens
+Водночас геометрія пакета доводить лише наявність потрібного часового інтервалу у збереженому контексті. Вона не гарантує, що давній стан закодовано без втрат або що предиктор справді його використав. Зв’язок між адресованістю та якістю встановлює парний ефект у визначеній смузі, але навіть він не перетворює грубий потік на повну копію минулого кадру.
 
-The seven-policy allocation study holds retained payload fixed and reuses three frontier pairs. The primary horizontal dot plot orders policies by their two-seed development mean while showing both seed points. Order is descriptive; the selected policy must follow the registered selection rule, including eligibility for dependent constructions.
+Звідси випливає вимога до майбутніх тестів: пізній кадр є інформативним лише тоді, коли оцінювач може визначити, коли відповідний вміст востаннє спостерігався, і які пакети ще охоплюють це спостереження. Без такого запису ефект, залежний від горизонту, змішує досяжність, точність відтворення, складність сцени та накопичену похибку розгортання. У LoopMom цю проблему розв’язано аналітично. Для природного відео знадобляться відомі траєкторії камер, анотації подій зникнення й повторного входу або контрфактуальні послідовності, що утворюють так само перевірну популяцію.
 
-> [RESULT PENDING: A4_ALC_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+## 4.4 Межа «досяжність–точність відтворення» та ефективність пам’яті
 
-### 4.4.2 One, two, or three levels
+Перевага досяжності не може зростати безумовно: після включення потрібного минулого важливішою може стати точність збережених деталей. Тому тут зіставляються п’ять дискретних бюджетних областей, перевіряється точна токенна й байтова вартість та формулюється область доцільності без інтерполяції неперервної точки переходу.
 
-The level-depth comparison includes reused Flat and two-level checkpoints and the new three-level pair. Its figure reports exact token counts, top-stream presence, and the 1,280-parameter difference in the provenance note. A positive or negative effect concerns these constructions, including payload reallocation and slot rounding. It is not evidence that adding an abstract level necessarily helps or hurts.
+### 4.4.1 Одночасно перевірена межа
 
-> [RESULT PENDING: A4_LVL_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Досяжність має значення лише тоді, коли вона змінює доступність релевантних спостережень. Щойно плоский пакет охоплює більшу частину або всю потрібну історію, збереження повнороздільних деталей може бути кориснішим за їх стиснення в грубий потік. Сімейство E2 перевіряє це припущення на відкладених даних у п’яти дискретних точках бюджету. Центральний емпіричний синтез цих робочих областей подано на рисунку 4.5.
 
-### 4.4.3 Nested, exclusive, and residual packages
+![Перевірена межа і точна арифметика токенів контексту](../../figures/article_confirmed_frontier.png)
 
-The ownership study compares the registered packages at fixed total tokens. Exclusive ownership relocates coarse ages; residual ownership changes the fine representation. Report the dependency-selected base and its feasibility constraint. Avoid the phrase “isolated effect of overlap.”
+**Рисунок 4.5 – Перевірена межа «досяжність–точність відтворення».** Ієрархію одночасно підтверджено за 896 та 1 152 токенів, точка 1 792 залишається невизначеною, а плоский контекст підтверджено за 2 432 та 3 072 токенів. Неперервну точку перетину не апроксимували, тому рисунок не можна тлумачити як оцінену безперервну криву. *Джерело: побудовано автором за замороженими результатами одночасного аналізу E2.*
 
-> [RESULT PENDING: A4_OVR_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Ліва панель показує не неперервний тренд, а п’ять перевірених бюджетних областей. За 896 та 1 152 токенів одночасні інтервали лежать у напрямі ієрархії. Інтервал у точці 1 792 перетинає нуль, тому вона залишається невизначеною. За 2 432 та 3 072 токенів знак змінюється й одночасні інтервали підтверджують плоский контекст. Різна кількість ініціалізацій не дозволяє оцінювати гладку криву або точний поріг переходу між областями.
 
-### 4.4.4 Fine quota and temporal placement
+Права панель пов’язує цю статистичну картину з геометрією пакета. За однакової номінальної досяжності 48 кадрів пакети з 896 та 1 152 токенами використовують відповідно у 3,43 та 2,67 раза менше контекстних токенів, ніж щільна детальна історія. Таким чином, рисунок 4.5 є головним результатом ієрархічної лінії: він одночасно показує виграш досяжності в обмеженому бюджеті та ціну просторового стискання після насичення досяжності.
 
-At budget 1,792, the four fine quotas and three temporal placements define a 4×3 response surface. A mean heat map is accompanied by both seed surfaces, not a hidden average alone. This experiment tests where spatial detail should be retained over time. Its deterministic spatial policy is a bridge to, not empirical proof of, content-adaptive integrated routing.
+Точні ефекти, одночасні інтервали й режими оптимізації перенесено до таблиці Д.3. Кожен інтервал належить до одного зареєстрованого сімейства зі статистичним виведенням з урахуванням кластеризації за кліпами та максимум-статистикою Стьюдента з критичним значенням 2,741. В основному тексті рисунок 4.5 залишає лише результат, потрібний для аргументації: ієрархію підтверджено в двох нижчих зіставлених бюджетах, середня точка невизначена, а плоский пакет підтверджено у двох верхніх областях.
 
-> [RESULT PENDING: A4_STS_PRIMARY_FIG; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Два нижні за бюджетом порівняння 480 проти 512 токенів у таблиці Д.3 є лише майже зіставленими й не визначають межу за точного бюджету. Серед точно зіставлених пар 1 152 токени є найбільшим підтвердженим бюджетом на рівні сімейства, що сприяє ієрархії; 2 432 токени – найменшим підтвердженим бюджетом, що сприяє плоскому пакету.
 
-The token arithmetic belongs to the configuration appendix. Analytic ratios such as those reported for historical packages concern retained tokens or latent payload. They are not measured end-to-end VRAM ratios and do not imply equal-quality savings.
+### 4.4.2 Точна арифметика токенів та корисного навантаження
+
+Ця межа є значущою, оскільки її контекстна вартість є явною. У кодеку з фіксованою структурою кадр високої роздільної здатності містить $q_{\mathrm f}=64$ токени, а грубий кадр – $q_{\mathrm c}=16$. У пакеті $\mathcal P$ кількість детальних і грубих кадрів позначено відповідно $n_{\mathrm f}$ та $n_{\mathrm c}$. Скорочення кількості токенів відносно 48 щільних детальних кадрів становить
+
+$$
+G_{\mathrm{ctx}}(\mathcal P)=
+\frac{48q_{\mathrm f}}
+{n_{\mathrm c}q_{\mathrm c}+n_{\mathrm f}q_{\mathrm f}}.
+\tag{4.5}
+$$
+
+Формула (4.5) описує стан контексту, а не повну пам’ять GPU. Для перевірки фізичного масштабу таблиця 4.3 переводить токени в корисний обсяг даних прихованого простору та матеріалізованих вбудовувань. Кожен токен має 16 коефіцієнтів кодека; значення стосуються одного прикладу й не містять цільових токенів, проміжних активацій уваги й MLP, параметрів, стану оптимізатора та накладних витрат розподільника.
+
+**Таблиця 4.3 – Витрати контексту за однакової номінальної досяжності 48 кадрів.**
+
+| Пакет | Контекстні токени | Дані прихованого простору fp32 / fp16 | Вбудовування 384, bf16 | Відносна вартість |
+|---|---:|---:|---:|---:|
+| 48 щільних детальних кадрів | 3 072 | 192 / 96 КіБ | 2,250 МіБ | 1,00× |
+| 48 грубих + 6 останніх детальних | 1 152 | 72 / 36 КіБ | 0,844 МіБ | у 2,67 раза менше |
+| 48 грубих + 2 останніх детальних | 896 | 56 / 28 КіБ | 0,656 МіБ | у 3,43 раза менше |
+
+Ця арифметика підтверджує два різні твердження. По-перше, ієрархія робить доступною 48-кадрову історію за бюджетів, із якими плоске вікно детальних кадрів досягає лише 14 або 18 кадрів. По-друге, той самий доступний проміжок потребує у 2,67–3,43 раза менше токенів контексту, ніж 48 детальних кадрів. Однакова якість за меншої кількості токенів не перевірялася. Якість прогнозу залежить від потрібної для задачі інформації, що далі показують верхні точки бюджетної межі та E6.
+
+### 4.4.3 Досяжність і точність відтворення як область доцільності
+
+За 896 та 1 152 токенів плоске вікно не містить релевантної історії повторного входу, яку зберігає грубий потік. Результат для визначеної смуги в підрозділі 4.3 робить цей механізм спостережуваним, а не лише правдоподібним. За 3 072 токенів обидва пакети досягають 48 кадрів. Точка 2 432 розташована між цими двома чистими випадками: плоский пакет досягає 38 кадрів, ієрархічний – 48, однак в основному сімействі E2 підтверджено перевагу плоского пакета. У статичному світі давнє детальне спостереження може краще зберігати вигляд цифри й точну текстуру, ніж щільніша груба історія.
+
+Отже, пріоритет задачі визначає, на що витрачати бюджет. Якщо без давнього кадру неможливо відновити положення або продовжити траєкторію, першою вимогою стає досяжність. Коли потрібна історія вже доступна, додаткові детальні спостереження можуть краще зберегти ідентичність. Загального порога достатності у 38 кадрів із цього не випливає. Перевірки генератора й кодека лише показують, що верхній ефект менший і менш точний, ніж нижні ефекти досяжності.
+
+Характер помилок у двох бюджетних областях додатково ілюструє рисунок Е.2. Для кожного з чотирьох заздалегідь зафіксованих кліпів рядки містять еталон, `hier-long` і `flat-budget`, а стовпці – горизонти 1, 24, 60, 100 і 148 кадрів. Вибір прикладів не залежав від величини контрасту між моделями; якісні розгортки пояснюють типи помилок, тоді як висновок про межу визначають агреговані ефекти рисунка 4.5 і таблиці Д.3.
 
 ## 4.5 Форма контекстного пакета та взаємодія з моделлю
 
-### 4.5.1 Historical package/head interaction (E4)
+Однакова або близька кількість токенів ще не робить пакети функціонально однаковими. Цей підрозділ відокремлює просторове огрублення від часового піддискретизування й перевіряє, чи залежить їхній порядок від вихідного модуля та ініціалізації навчання. Отриманий результат визначає межу перенесення висновку про ієрархію між моделями.
 
-The historical five-seed factorial study asks whether temporal subsampling and spatial coarsening have the same ranking under different prediction heads. Diffusion favored full-resolution temporal anchors in all five reported seeds. Regression changed direction across seeds. The comparison is nearly, not exactly, token-matched: `strided-flat` has 1,088 tokens and `hier-long` 1,152.
+### 4.5.1 Просторова ієрархія проти часового піддискретизування
 
-![Does the package effect retain its sign across heads and seeds?](../../../figures/dissertation_v2/legacy_e4_seed_effects.svg)
+Зіставлена бюджетна межа показує, що дешеві грубі токени можуть забезпечувати корисну досяжність. Окремим залишається питання, чи найкраще витрачати фіксований бюджет саме на просторове огрублення. Детальна часова прив’язка також сягає минулого, але залишає проміжки між збереженими кадрами. Порівняння цих пакетів розділяє два типи втрати: просторове стиснення відкидає деталі на кожному давньому часовому кроці, а часове прорідження зберігає вибрані кадри, проте втрачає проміжну динаміку.
 
-Figure D4-E4 — Signed foreground-MSE difference, spatial-package error minus temporal-package error, in squared normalized pixel intensity; positive favors full-resolution temporal anchors. Each point is one trained seed's clip-aggregated effect across all 152 self-fed forecast frames in 100 development clips after a 48-frame warmup. Five seeds are shown per prediction head. No clip interval is drawn as training-seed uncertainty. Values are transcribed mechanically from source Table 4.4, not recomputed from raw arrays. The packages contain 1,152 versus 1,088 tokens; this is historical, nearly matched evidence, not the v2 frontier. Full clip-conditional intervals remain in Appendix Е.
+Для дифузії всі п’ять ініціалізацій навчання віддають перевагу часово розрідженому пакету повної роздільної здатності. Таблиця 4.4 показує цей стабільний напрям разом із ширшою факторною перевіркою. Регресійний вихідний модуль змінює картину, тому взаємодію «вихідний модуль × пакет» розглянуто окремо в §4.5.2.
 
-### 4.5.2 Implication for the new campaign
+**Таблиця 4.4 – Факторний експеримент «вихідний модуль × пакет» для п’яти ініціалізацій.** Додатні ефекти пакета свідчать на користь часових прив’язок повної роздільної здатності порівняно з просторово грубою щільною історією. Інтервали за кліпами умовні щодо однієї навченої моделі; в останніх трьох рядках одиницями є ініціалізації навчання.
 
-E4 motivates a fixed head, common training schedule, and visible seed outcomes. It is not pooled statistically with the new matrix. Regression heterogeneity is not evidence of a stable reversed preference, and a head/package interaction is not isolated by changing several training interfaces at once. The new allocation result therefore stays tied to its WindowDiT contract.
+| ініціалізація навчання або підсумок | Ефект пакета для дифузії [95 % ДІ за кліпами] | Ефект пакета для регресії [95 % ДІ за кліпами] | Взаємодія «вихідний модуль × пакет» [95 % ДІ за кліпами] |
+|---:|---:|---:|---:|
+| 0 | +0,0197 [+0,0143; +0,0252] | +0,0107 [+0,0062; +0,0158] | −0,0089 [−0,0151; −0,0025] |
+| 1 | +0,0046 [+0,0007; +0,0084] | −0,0104 [−0,0146; −0,0062] | −0,0150 [−0,0199; −0,0104] |
+| 2 | +0,0111 [+0,0070; +0,0151] | −0,0208 [−0,0270; −0,0150] | −0,0319 [−0,0401; −0,0245] |
+| 3 | +0,0075 [+0,0037; +0,0114] | +0,0248 [+0,0181; +0,0323] | +0,0173 [+0,0106; +0,0245] |
+| 4 | +0,0060 [+0,0027; +0,0092] | −0,0166 [−0,0229; −0,0108] | −0,0226 [−0,0297; −0,0160] |
+| Середнє за ініціалізаціями | +0,0098 | −0,0024 | −0,0122 |
+| Стандартне відхилення за ініціалізаціями | 0,0060 | 0,0195 | 0,0186 |
+| Інтервал t95 за ініціалізаціями | [+0,0023; +0,0173] | [−0,0266; +0,0217] | [−0,0353; +0,0109] |
+
+Розкид ефектів за ініціалізаціями та відмінність між вихідними модулями видно на рисунку 4.6.
+
+![Ефекти «вихідний модуль × пакет» для п’яти ініціалізацій](../../figures/fig17_head_package_seed_heterogeneity.png)
+
+**Рисунок 4.6 – Ефекти пакетів для різних вихідних модулів прогнозування та ініціалізацій навчання.** *Джерело: побудовано автором за замороженим факторним дослідженням «вихідний модуль × пакет».*
+
+Таблиця 4.4 та рисунок 4.6 показують залежність форми пакета від вихідного модуля й ініціалізації. Повну карту ліцензій на причинне тлумачення перенесено до таблиці В.5 додатка В. У головному тексті достатньо трьох меж. По-перше, `hier-min` проти `flat-min` є зіставленим відкладеним порівнянням, але досяжність і роздільна здатність давньої історії змінюються разом. По-друге, `strided-flat` проти `hier-long` є майже зіставленим факторним дослідом: часово розріджений пакет має на 64 токени менше. По-третє, B1 і трирівнева гілка змінюють кілька інтерфейсів одночасно, тому їхні результати стосуються повних конфігурацій.
+
+Додана третя глибина зберігає бюджет 1 152 токени, але змінює розподіл втрат, цільові токени та навчальне навантаження. Її гірший результат свідчить проти конкретної повної конфігурації, а не проти ієрархічної глибини як такої. Аналогічно, засліплення потоку може показати його функціональну необхідність, однак не вимірює незалежну інформаційну цінність.
+
+### 4.5.2 Взаємодія з вихідним модулем прогнозування
+
+Стовпець регресії демонструє гетерогенність, а не нічию. Дві ініціалізації істотно віддають перевагу часовим прив’язкам, три – просторовій ієрархії; через зміну напряму інтервал між ініціалізаціями широкий. Коректне формулювання тут – «гетерогенність за ініціалізаціями навчання». Взаємодія поводиться подібно: чотири оцінки для окремих ініціалізацій від’ємні, одна додатна, проте t-інтервал за ініціалізаціями [−0,0353; +0,0109] перетинає нуль. Отже, рання гіпотеза про стабільний зсув регресії до просторового огрублення не підтвердилася. Використання пакета залежить не лише від збережених токенів, а й від цільової функції, правила формування вибірки та траєкторії оптимізації, за якою модель навчається працювати з ними.
+
+Для вибору моделі дифузійний результат дає підстави використовувати часові прив’язки в цьому контрольованому статичному середовищі. Утім, через гетерогенність регресійних результатів такий вибір потребує перевірки за кількома ініціалізаціями перед перенесенням в інше середовище. Вирішальним розширенням був би рухомий прихований світ. Якщо між прив’язками з кроком 4 відбуваються змістовні зміни стану, часове прорідження має втрачати інформацію, яку зберігає щільний грубий потік. Такий перехресний динамічний тест відокремив би перевагу конкретного інструмента від ширшого принципу пакетування, не змінюючи підтвердженої межі просторової ієрархії.
 
 ## 4.6 Робастність основних напрямів
 
-### 4.6.1 Replication and immutable configuration
+Після основного підтвердження перевіряється, чи зберігаються напрями ефектів за змін, що не повинні визначати сам механізм досяжності. Окремо варіюються кількість кроків і випадковість алгоритму вибірки та повністю замінюється кодек прихованого простору. Ці досліди локалізують чутливість, але не створюють нових незалежних навчальних реплік.
 
-All new primary runs share two training seeds and the final 30k endpoint. Configurations, data, codec, source commit, and completed checkpoint hashes are validated before aggregation. A missing seed is an incomplete comparison, not a one-seed mean. An interrupted/restarted run resumes its saved state and is not counted as an additional independent replicate. The complete matrix remains development evidence even after selected holdout contrasts are confirmed.
+### 4.6.1 Бюджет алгоритму вибірки та випадковість
 
-### 4.6.2 Historical sampler and codec boundaries
+Основна межа E2 використовує детермінований DDIM-16 з однією зареєстрованою ініціалізацією генератора. Тому в E7c до відкриття нового цільового набору зафіксовано чотири контрасти для предикторів із ініціалізацією навчання 0: ефект досяжності за 896 токенів, внутрішній ефект за 1 152 токенів, ефект форми пакета 1 088 проти 1 152 і плоску інверсію точності за 2 432 токенів.
 
-Legacy E7c varies NFE and generator randomness for fixed trained checkpoints. Generator seeds are not training seeds. E7a replaces the codec and retrains predictors; it changes reconstruction, normalization, latent geometry, and optimization jointly. Their full simultaneous intervals are in Appendix Д/Е. The upper-budget flat inversion was less certain than the lower-budget effects, so neither check licenses a universal threshold. The main chapter does not duplicate their composite plots.
+Усього ці контрасти дають 20 парних оцінок, але науковий висновок визначає не їхня кількість, а стабільність зареєстрованого напряму. Усі точкові оцінки цей напрям зберігають, а для перших трьох контрастів кожна одночасна нижня межа перевищує нуль. Інверсія за 2 432 токенів додатна й визначена на рівні сімейства для всіх трьох бюджетів NFE за ініціалізації генератора 0, але інтервали містять нуль для ініціалізацій 1 (+0,0098 [−0,0001; +0,0196]) і 2 (+0,0077 [−0,0013; +0,0167]). Отже, 18 із 20 одночасних інтервалів не перетинають нуль. Зміна ініціалізації DDIM оцінює випадковість генерації для фіксованої контрольної точки; вона не замінює незалежного навчання моделі з іншою ініціалізацією. Розподіл оцінок за NFE та ініціалізаціями алгоритму вибірки наведено на рисунку 4.7.
+
+![Робастність до розподілу обчислень алгоритму вибірки та NFE](../../figures/fig19_sampler_nfe_robustness.png)
+
+**Рисунок 4.7 – Робастність до обсягу знешумлення та випадковості алгоритму вибірки.** Напрями всіх точкових оцінок зберігаються для зареєстрованих конфігурацій алгоритму вибірки, хоча два верхні інтервали втрачають одночасну статистичну визначеність. *Джерело: побудовано автором за замороженими результатами E7c.*
+
+### 4.6.2 Незалежно навчений кодек
+
+E7a втручається на більш ранньому етапі обчислювального тракту. Другий кодек навчається незалежно, для нього заново обчислюється нормалізація прихованого простору, після чого перенавчають сім предикторів із ініціалізацією 0. Одночасно змінюються похибка реконструкції, геометрія координат, масштаб і оптимізація предиктора. Тому це перевірка робастності до повної заміни кодека; числові відмінності не можна приписати окремій властивості прихованого простору.
+
+Повні одночасні інтервали E7c та E7a наведено в таблиці Д.1 додатка Д. Для альтернативного кодека сім із восьми інтервалів не перетинають нуль у зареєстрованому напрямі. Винятком є верхня плоска інверсія: її точкова оцінка додатна, але інтервал [−0,0006; 0,0165] містить нуль. Співвідношення ефектів оригінального й незалежно навченого кодеків показано на рисунку 4.8.
+
+![Робастність до незалежно навченого кодека](../../figures/fig20_alternate_codec_robustness.png)
+
+**Рисунок 4.8 – Ефекти оригінального та альтернативного кодеків на спільній шкалі.** Панелі А–Г відповідають ефекту досяжності за 896 токенів, внутрішньому ефекту за 1 152 токенів, ефекту форми пакета 1 088 проти 1 152 токенів і верхній інверсії за 2 432 токенів. Квадрати та кола позначають відповідно альтернативний і оригінальний кодеки; відрізки є одночасними 95 % інтервалами, вертикальна лінія – нульовим ефектом. Сім із восьми інтервалів не перетинають нуль у зареєстрованому напрямі; верхній контраст альтернативного кодека залишається невирішеним, а не інвертованим. *Джерело: побудовано автором за замороженими результатами E7a.*
+
+Альтернативний кодек описово посилює нижній і внутрішній ефекти досяжності, тоді як ефекти форми пакета та верхніх бюджетних точок зменшуються. Ініціалізація кодека не є окремою реплікою моделі під час прогнозування, тому ці зміни не можна усереднювати або пояснювати після перегляду результатів. Допустимий висновок вужчий: після повної заміни одного неперервного інтерфейсу прихованого простору чотири основні напрями зберігаються на рівні точкових оцінок, а три залишаються визначеними на рівні сімейства. Верхня плоска інверсія точності є спільною межею статистичної визначеності для обох програм робастності.
 
 ## 4.7 Межа та негативні докази
 
-### 4.7.1 Non-replicated late reversal under self-feedback (E5a)
+Цей підрозділ навмисно зосереджується на випадках, де сильніше узагальнення не підтверджується. Він охоплює невідтворену пізню інверсію самоподачі, привілейований еталон із прямим доступом, конфлікт між просторовим покриттям та ідентичністю й короткогоризонтні зовнішні набори. Разом вони визначають, чого основна межа не доводить.
 
-The original seed-0 long-loop run suggested a late hierarchy disadvantage, but two new training seeds did not reproduce it. For forecast frames 61–256 the reported effects were −0.0064 [−0.0095, −0.0032], +0.0074 [0.0038, 0.0112], and +0.0087 [0.0035, 0.0139]. Positive favors the hierarchy; intervals are conditional clip-level intervals for each trained model.
+### 4.7.1 Невдала реплікація пізньої межі за самоподачі
 
-![Is the late self-fed reversal reproduced across training seeds?](../../../figures/dissertation_v2/legacy_e5_late_effects.svg)
+Доступна історія може бути наявною, але її користь здатна зникнути під час тривалої генерації із самоподачею. Початкове довгоциклове дослідження з ініціалізацією 0 начебто виявило таку межу: спочатку ієрархія допомагала, але приблизно після 24 кадрів ставала гіршою. На горизонтах 61–256 ефект для ініціалізації 0 був від’ємним: −0,0064 [−0,0095; −0,0032]. Дві нові ініціалізації, навпаки, дали перевагу ієрархії: +0,0074 [0,0038; 0,0112] та +0,0087 [0,0035; 0,0139]. Ранній і пізній контрасти для всіх трьох навчань наведено на рисунку 4.9.
 
-Figure D4-E5 — Signed foreground-MSE difference, contiguous-fine error minus long-reach-hierarchy error, in squared normalized pixel intensity. Positive favors hierarchy. The population is nonempty ground-truth foreground records in forecast frames 61–256 of 100 development clips after a 224-frame warmup. Points show training seeds 0, 1, and 2; whiskers are 95% clip-bootstrap intervals conditional on each trained pair. The configurations have unequal retained budgets (3,072 versus 1,280 tokens), so this is a configuration-level long-rollout boundary, not an equal-memory contrast. The negative seed-0 direction is not reproduced. Source values and interval limits accompany the plot; no raw-array reanalysis or v2 extrapolation is implied.
+![Невдала реплікація пізньої межі за самоподачі](../../figures/fig18_trust_negative_replication.png)
 
-The correct conclusion is that rollout age is not a calibrated switching rule. Seed 0 does not establish a universal degradation time. Nor do the positive replications prove stable behavior for arbitrary horizons. This negative result remains in the main narrative because it prevents a stronger but unsupported claim.
+**Рисунок 4.9 – Зареєстровані ефекти раннього та пізнього довгоциклового впливу.** *Джерело: побудовано автором за замороженими результатами E5a.*
 
-### 4.7.2 Coverage/trajectory versus persistent identity (E6)
+Невдала реплікація змінює рекомендацію дисертації. Ранню перевагу за самоподачі можна вважати відтвореною, але вік розгортання не можна використовувати як калібровану точку перемикання між ієрархічною та плоскою пам’яттю. Ініціалізація 0 також не доводить існування універсального часу деградації. Щоб пояснити відмінність цього запуску, потрібні нове зареєстроване питання, додаткові ініціалізації та діагностики, обрані до спостереження результатів. Підтверджена бюджетна межа і зовнішня перевірка вже відповідають на проєктні питання дисертації, тому продовження цієї гілки дало б радше дослідницьке пояснення, ніж необхідний доказ.
 
-Historical E6 evaluates 300 self-generated frames in 100 protected clips after a 48-frame warmup, using three seeds per package at 1,152 context tokens. The persistent-object assignment is fixed before evaluation. Hierarchy improves the point estimates for coverage and trajectory error, but only seeds 0 and 2 have nonzero simultaneous intervals for those endpoints. Flat preserves digit identity better in all three seeds. Low absolute identity accuracy means neither configuration solves the task.
+### 4.7.2 Еталон із прямим доступом до необробленої історії
+
+Навчені моделі поєднують щонайменше три складнощі: стиснення минулого кадру, адресацію потрібного збереженого вмісту та поширення прогнозів без дрейфу. E8a усуває більшу частину перших двох. Варіанти K6, K14, K38 і K48 відрізняються лише обсягом історії прогріву, що формує мозаїку. K6 дає описовий контекст для зберігання та покриття, а зареєстровані одночасні контрасти досяжності порівнюють K14 і K38 з K48 поряд із чотирма нейронними еталонами. Інтерфейс такого прямого доступу показано на рисунку 4.10.
+
+![Необроблена пам’ять із прямим доступом, індексована за позою](../../figures/fig21_pose_indexed_raw_memory.png)
+
+**Рисунок 4.10 – Явне зберігання та доступ, індексовані за позою.** Панель А показує, як зі збільшенням $K\in\{6,14,38,48\}$ кадрів розігріву змінюються медіанна кількість збережених стовпців світу та середня частка майбутнього вікна, вже покрита мозаїкою. Панель Б подає зареєстровані контрасти: два порівняння необробленої пам’яті K14/K38 з K48 і чотири розриви між нейронними моделями та K48; додатне значення означає меншу помилку еталона K48. Цей еталон має привілейований доступ до точних поз і необроблених пікселів та не зіставлений за токенним бюджетом, тому рисунок діагностує розрив доступу, а не ранжує конкурентні моделі. *Джерело: побудовано автором за замороженими результатами E8a.*
+
+Це не конкурентна базова модель. Мозаїка не має обмеження за токенами, отримує майбутню позу, без втрат зберігає спостережувані пікселі, не потребує навченого декодера й не містить прихованого стану із самоподачею. Її призначення діагностичне. Навіть за номінальної геометричної досяжності нейронного пакета залишається значний розрив між потенційним доступом і навченим повторним використанням.
+
+### 4.7.3 Межа просторового покриття та ідентичності об’єктів, що зберігаються в часі
+
+LoopMom робить досяжність вимірюваною, проте його статичний світ і координати вікна не перевіряють, чи зберігає об’єкт ідентичність після зіткнень і тривалого руху із самоподачею. Три плоскі та три ієрархічні предиктори навчено з однаковими кодеком, вихідним модулем, бюджетом контексту 1 152 токени й 48-кадровим прогрівом. Оцінювання охоплює 300 згенерованих кадрів у 100 захищених кліпах.
+
+Усі виявлені компоненти однозначно зіставляються з видимими еталонними об’єктами за замороженою угорською вартістю. Тому модель не може підвищити точність ідентичності, генеруючи лише прості для підтримання об’єкти. П’ятнадцять співпервинних ефектів, тобто п’ять показників для трьох ініціалізацій, утворюють одне одночасне сімейство максимум-статистики. Відносні ефекти потрібно читати разом з абсолютними значеннями, оскільки жодна гілка не розв’язує задачу повністю. Обидва рівні звітності поєднано в таблиці 4.5.
+
+**Таблиця 4.5 – Відносні ефекти E6 та абсолютні показники.** Таблиця складається з двох явно позначених панелей. Після гармонізації знаків додатні ефекти свідчать на користь ієрархії для кожного показника. В абсолютних комірках значення подано як плоский / ієрархічний. Точність ідентичності та покриття є частками; похибку траєкторії виміряно в пікселях.
+
+**Панель А — одночасні попарні ефекти**
+
+| ініціалізація | MSE переднього плану | MSE об’єднаної маски | Похибка траєкторії | Точність ідентичності | Покриття об’єкта |
+|---:|---:|---:|---:|---:|---:|
+| 0 | +0,0036 [−0,0074; +0,0146] | +0,0102 [+0,0019; +0,0185] | +2,4786 [+0,2130; +4,7443] | −0,0762 [−0,1106; −0,0418] | +0,0304 [+0,0016; +0,0591] |
+| 1 | −0,0031 [−0,0127; +0,0065] | +0,0122 [+0,0052; +0,0192] | +1,4223 [−1,0646; +3,9092] | −0,0561 [−0,0934; −0,0188] | +0,0159 [−0,0163; +0,0482] |
+| 2 | −0,0024 [−0,0131; +0,0083] | +0,0169 [+0,0093; +0,0245] | +4,1325 [+1,5271; +6,7380] | −0,0647 [−0,0955; −0,0338] | +0,0498 [+0,0161; +0,0834] |
+
+**Панель Б — абсолютні значення показників**
+
+| ініціалізація | MSE об’єднаної маски, плоска / ієрархічна | Похибка траєкторії, плоска / ієрархічна | Точність ідентичності, плоска / ієрархічна | Покриття, плоска / ієрархічна |
+|---:|---:|---:|---:|---:|
+| 0 | 0,6861 / 0,6759 | 42,19 / 39,71 | 0,214 / 0,138 | 0,619 / 0,650 |
+| 1 | 0,6901 / 0,6779 | 40,20 / 38,77 | 0,244 / 0,188 | 0,646 / 0,662 |
+| 2 | 0,6931 / 0,6763 | 43,79 / 39,65 | 0,222 / 0,158 | 0,599 / 0,649 |
+
+Поділ між просторовою неперервністю та збереженням ідентичності узагальнено на рисунку 4.11.
 
 ![Підтримка об’єктів у часі та межа ідентичності](../../figures/fig22_phasec_v2_boundary.png)
 
 **Рисунок 4.11 – Просторове покриття й неперервність проти ідентичності у довгому Moving-MNIST з об’єктами, що зберігаються в часі.** Напрям покриття й похибки траєкторії сприяє ієрархії для всіх трьох ініціалізацій, але одночасні інтервали не перетинають нуль лише для ініціалізацій 0 і 2. Плоский контекст краще зберігає ідентичність цифр для всіх трьох ініціалізацій. Низькі абсолютні показники не дають підстав вважати задачу розв’язаною. *Джерело: побудовано автором за замороженими результатами E6.*
 
-The full relative and absolute tables are split in Appendix Е so effect units are not mixed with raw measurements. Long Moving-MNIST is retained here solely as historical/transfer boundary evidence. It is excluded from the new hierarchy campaign and is not the standard Moving MNIST OpenSTL experiment planned below.
+### 4.7.4 Межі працездатності на короткому горизонті та реальних даних
 
-### 4.7.3 Privileged access and old external feasibility
+Канонічна послідовність Moving-MNIST 10→10 не містить повторного входу за межі екрану. У гілці плоскої дифузії використано десять детальних кадрів із 640 контекстними токенами, тоді як ієрархічна гілка має десять грубих та шість детальних кадрів загальним обсягом 544 токени. Їхні MSE OpenSTL становлять 180,91 та 181,29, а SSIM – 0,7625 та 0,7607 відповідно. Обидва варіанти перевершують метод незмінного продовження з MSE 286,28 і SSIM 0,6528. Водночас вони значно поступаються спеціалізованим детермінованим предикторам OpenSTL, для яких автори повідомляють MSE від 22 до 30. Це перевірка працездатності й негативний контроль: коли повторний вхід не потрібен, додавання ієрархічного проміжку навряд чи допоможе.
 
-E8a's pose-indexed raw memory has privileged camera information and stores observed pixels without the learned token budget. It diagnoses the gap between potential access and learned reuse, not a competitive memory baseline. Its complete plot is moved to Appendix Е. Earlier short Moving-MNIST/TaxiBJ feasibility results are also retained there as historical context while new matched results are pending; they are not relabelled as results of the new integrated architecture.
+Жодне порівняння не відтворює умови LoopMom точно. Пакети Moving-MNIST містять 640 і 544 токени контексту. Ієрархічна гілка TaxiBJ використовує вдвічі менший бюджет контексту, ніж плоска; відрізняються також набір даних, горизонт і семантика задачі. Ці тести описують працездатність, а не встановлюють перевагу ієрархії для природного відео. Для такого твердження потрібна спеціально сформована популяція з віддаленою історією, зіставлені інтерфейси та статистичне виведення з урахуванням кластеризації за кліпами, як у LoopMom.
 
-### 4.7.4 Optional v2 self-fed evaluation
+## 4.8 Інтегрована перевірка технічної здійсненності просторового пакування та реверсивного навчання
 
-> [RESULT PENDING: A4_SELECTED_ROLLOUT_FIG; evidence=registered development estimate; source=separately authorized sealed rollout bundle (not yet registered); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Основні результати отримано в окремих причинних програмах, тому сумісність їхніх принципів потребує власної перевірки. Тут описано перехід від відхиленої жорсткої маршрутизації до сталих областей, якість компактного інтегрованого прототипу та причинно зіставлене вимірювання пам’яті реверсивного часового ланцюга. Висновок обмежується технічною здійсненністю.
 
-This placeholder is inactive unless the separate selected-checkpoint rollout is authorized and registered. It requires evaluation, not retraining or relaunch of the 86 runs. If absent, remove this result slot at release and retain E5/E6 as the evidence for long autoregressive behavior.
+### 4.8.1 Перехід від динамічної маршрутизації до фіксованих ділянок
 
-## 4.8 Integrated model composition and OpenSTL results
+Попередні результати відповіли на два окремі запитання: ієрархічний пакет збільшує часову досяжність за обмеженого контексту, а реверсивний часовий блок зменшує пам’ять активацій під час диференціації довгого процесу. Проте їхня сумісність не випливає автоматично з окремих дослідів. Тому після основної експериментальної програми виконано обмежений інтеграційний експеримент. Він перевіряє, чи можна поєднати компактний грубо-детальний стан із реверсивним навчальним ланцюгом без негайного руйнування якості. Цей дослід не входить до четвертої статті й не змінює її заявленого внеску.
 
-This section is an explicit evidence-gated draft. The current architecture is implemented; competitive prediction and measured GPU-memory savings are not inferred from compatibility tests. The old fixed-region/second-order prototype is not used to fill these cells.
+Перший прототип використовував жорсткий вибір $K$ ділянок за інформаційною щільністю. Маршрутизатор знаходив передній план, а варіант із чотирма останніми детальними ділянками наближався до контрольної моделі за MSE та повнотою виявлення. Водночас точність виявлення погіршувалася, жорстка дискретна операція ускладнювала оптимізацію, а повні детальні карти фактично залишалися в стані обчислення. Отже, цей варіант демонстрував роботу сигналу маршрутизації, але не забезпечував доведеного скорочення пам’яті. Подальший дослід перейшов до фіксованої геометрії ділянок. Такий вибір відокремив перевірку сумісності від невирішеної задачі навчання політики маршрутизації.
 
-### 4.8.1 Correctness and parity gates
+У фінальному прототипі кожен кадр $64\times64$ подано 16 грубими токенами та вісьмома токенами фіксованих детальних ділянок. Кожен токен містить 16 скалярних значень, тому пакет має 24 токени, або 384 збережені значення на кадр. Необроблений кадр містить 4 096 значень, а щільне одночасне зберігання грубого й детального рівнів – 1 280. Відповідні коефіцієнти скорочення корисного навантаження становлять $4\,096/384=10{,}67$ і $1\,280/384=3{,}33$. Для проєктної історії з 48 кадрів це дало б 1 152 токени, однак фактичний тест якості Moving-MNIST використовує десять вхідних кадрів, тобто 240 токенів. Проєктну місткість не слід ототожнювати з емпірично перевіреною часовою досяжністю.
 
-The recorded CPU checks establish the bounded quota, coordinate, core inverse/parity, shape, checkpoint, and OpenSTL interface contracts listed in Appendix Ж.v2.1. Dynamic full-model parameter parity and deployed CUDA mixed-precision position/switch checks remain explicit gates. No GPU-memory or competitive-quality result is reported by this summary.
+Якість перевірено за протоколом Moving-MNIST 10→10 у конвенції показників OpenSTL [1]. Після вибору контрольної точки за останніми 500 згенерованими навчальними кліпами канонічну тестову вибірку з 10 000 кліпів використано один раз. Через одну ініціалізацію та публічний статус набору цей результат є обмеженим доказом технічної здійсненності. Показники прототипу й базових моделей зведено в таблиці 4.6.
 
-CPU quota, metadata, inverse, core parity, checkpoint, and OpenSTL smoke tests establish bounded compatibility. Full-model dynamic parameter-gradient parity, deployed mixed-precision permutation behavior, route switches under trained weights, and CUDA stability retain their own statuses. A passing CPU gate is not an empirical performance result.
+**Таблиця 4.6 – Якість інтегрованого прототипу та базових моделей на Moving-MNIST 10→10.** Менше значення є кращим. Офіційні показники OpenSTL наведено за його таблицею моделей [1]; SimVP-gSTA відтворено локально. Різні тренувальні рецепти не дають підстав для причинного ранжування архітектур.
 
-### 4.8.2 Measured component memory and checkpointing
+| Модель | Умова | MSE | MAE |
+|---|---|---:|---:|
+| Інтегрований SimVP із фіксованими ділянками | вибрана контрольна точка, 10 000 кліпів | 28,72 | 80,27 |
+| Заморожений SimVP і навчений адаптер ділянок | 10 000 кліпів | 28,87 | 78,74 |
+| Локальний SimVP-gSTA без пакування | 200 епох | 26,69 | 77,36 |
+| OpenSTL ConvLSTM-S | 200 епох | 29,80 | 90,64 |
+| OpenSTL E3D-LSTM | 200 епох | 35,97 | 78,28 |
+| OpenSTL SimVP-IncepU | 200 епох | 32,15 | 89,05 |
+| OpenSTL TAU | 200 епох | **24,60** | **71,93** |
 
-The intended six-component comparison is Flat-Dense, Hier-Static, Flat-Reversible, Hier-Static-Reversible, Hier-Dynamic, and Full. Same-checkpoint ordinary/reversible execution isolates storage in an identical forward function. Flat-versus-hierarchy quality and static-trained versus route-aware quality need separately trained checkpoints; execution toggles do not replace those ablations.
+За MSE інтегрований варіант кращий за наведені ConvLSTM-S, E3D-LSTM і SimVP-IncepU, але поступається локальному SimVP-gSTA та TAU. За MAE він випереджає ConvLSTM-S і SimVP-IncepU, незначно поступається E3D-LSTM та виразніше – SimVP-gSTA і TAU. Результат тому підтверджує працездатність компактного інтерфейсу, а не лідерство за якістю.
 
-> [RESULT PENDING: INT_COMPONENT_ABLATION_TABLE; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+### 4.8.2 Реверсивний часовий ланцюг та вимірювання пам’яті
 
-> [RESULT PENDING: INT_COMPONENT_MEMORY_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Ту саму модель виконано у двох режимах: зі звичайним зворотним поширенням крізь час і з реверсивним відтворенням станів. Вхід, параметри, функція втрат і порядок операцій залишалися однаковими. За розміру мініпакета 1 значення втрат збіглися в усіх трьох горизонтах, а норми градієнта першого параметра відрізнялися не більше ніж на $7{,}4\cdot10^{-6}$. Це важливо: економію виміряно без заміни предиктора або навчальної цілі. Пікові значення для причинно зіставлених режимів наведено в таблиці 4.7.
 
-> [RESULT PENDING: INT_CHECKPOINTING_PROFILE; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+**Таблиця 4.7 – Пікова додаткова пам’ять інтегрованої моделі за різної довжини прогнозу.** Вимірювання виконано на NVIDIA GeForce RTX 4060 Ti без градієнтних контрольних точок; наведено приріст `max_memory_allocated` відносно стану безпосередньо перед прямим проходом, у десяткових мегабайтах.
 
-Profiles must pair host, batch, precision, horizon, optimizer state, warmup, and measurement boundaries. Report retained bytes, inference allocated/reserved peak, training allocated/reserved peak, activation increment, throughput, and recomputation. Checkpointing is the practical same-model comparator [30, 175]. If it is absent, the reversible claim is restricted to comparison with ordinary autograd; no best-available memory–compute claim is made.
+| Прогнозовані кадри | Реверсивний режим, МБ | Звичайний BPTT, МБ | Відношення BPTT / реверсивний |
+|---:|---:|---:|---:|
+| 10 | 352,15 | 353,06 | 1,003 |
+| 20 | 549,73 | 708,74 | 1,29 |
+| 40 | 550,86 | 1 418,79 | **2,58** |
 
-The default retained-token arithmetic is 2,560 versus 800 on Moving MNIST and 256 versus 80 on TaxiBJ: a 3.2 token-count ratio in each case. These counts exclude several live boundary tensors and do not establish a 3.2× CUDA-memory saving. Dynamic routing at unchanged quota has the same retained-token count; it cannot be counted as another memory multiplier.
+Залежність пікової пам’яті від горизонту наочно показано на рисунку 4.12.
 
-### 4.8.3 Routing quality, quota, and stability
+![Пам’ять інтегрованої моделі залежно від горизонту](../../../figures/restructured/ch4_fig4_12_integrated_memory.svg)
 
-> [RESULT PENDING: INT_ROUTING_SWITCH_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+**Рисунок 4.12 – Зростання пам’яті інтегрованої моделі зі збільшенням горизонту прогнозу.** За 10 кадрів накладні витрати реверсивного режиму майже дорівнюють BPTT. Між 20 і 40 кадрами його пік залишається практично сталим, тоді як пам’ять BPTT майже подвоюється. Це виміряна властивість конкретного прототипу, а не асимптотична гарантія для довільної архітектури. *Джерело: побудовано автором за профілем `integrated_reversible_openstl_memory.json`.*
 
-> [RESULT PENDING: INT_ROUTING_TRAINING_REGIME_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Порівняльний профіль із розміром мініпакета 2 додає зовнішній масштаб, але має неоднакові горизонти для різних моделей. Інтегрований реверсивний варіант і його BPTT-контроль прогнозували 20 кадрів; E3D-LSTM та ConvLSTM обробляли 20-кадрову послідовність, тоді як SimVP-IncepU і SimVP-gSTA прогнозували лише 10 кадрів. Тому повну довідкову таблицю перенесено до таблиці Ж.3 додатка Ж.
 
-> [RESULT PENDING: INT_ROUTING_STABILITY_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Інтегрована модель має нижчі MSE та виміряну пам’ять, ніж E3D-LSTM, хоча її MAE дещо гірша. Рядки SimVP-IncepU та SimVP-gSTA також поєднують нижчі MSE і пам’ять за власного 10-кадрового протоколу, тому зовнішня таблиця не встановлює унікального положення чи спільної межі Парето. ConvLSTM використовує істотно менше абсолютної пам’яті, а SimVP-gSTA та TAU дають кращу якість. Найсильніший висновок стосується не ранжування зовнішніх моделей, а контролю всередині тієї самої реалізації: реверсивне відтворення знизило пік у 2,58 раза на 40 прогнозованих кадрах за практично однакових втрат і градієнтів.
 
-> [RESULT PENDING: INT_QUOTA_FRONTIER_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+### 4.8.3 Рівень доказовості та межі композиційного виграшу
 
-Static/density/hybrid inference switches on a route-aware checkpoint test robustness to membership and score-feature changes. Static-only versus mixed exposure is a separate training contrast. Report quality together with coverage, score entropy, frame allocation, churn/Jaccard, margin limitations, and seam/flicker diagnostics. A smaller dynamic quota is a memory benefit only when the real packed tensor and measured resource decrease while the declared quality tolerance is met. If no smaller-quota test is completed, describe routing only as an allocation mechanism.
+Перевірка технічної здійсненності показує, що три компоненти не суперечать один одному на рівні інтерфейсів. Фіксовані ділянки стискають просторовий стан, регресійний декодер повертає прогноз у простір кадрів, а реверсивний часовий ланцюг обмежує зростання пам’яті активацій. Водночас вона встановлює межу такого складання: скорочення корисного навантаження у 10,67 раза та економію активацій у 2,58 раза отримано для різних величин, тому їх не можна перемножувати або подавати як загальну економію GPU.
 
-### 4.8.4 Moving MNIST
-
-> [RESULT PENDING: INT_MM_RESULTS_TABLE; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-The full model uses the OpenSTL 10-to-10 protocol, seeds 0 and 1, validation-only checkpoint selection, and one locked test evaluation. Report MSE, MAE, SSIM, and PSNR with the implementation's scaling, test-set size, and channel reduction. Fixed qualitative strips follow aggregate results and use locked clip indices; no best-case selection is allowed. If the model misses the declared quality tolerance, report the miss even if its memory is lower.
-
-### 4.8.5 TaxiBJ
-
-> [RESULT PENDING: INT_TAXIBJ_RESULTS_TABLE; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-TaxiBJ uses the two-channel 4-to-4 32×32 protocol with its original normalization and split. Seed outcomes and matched local baselines are reported independently of Moving MNIST. These two datasets establish bounded synthetic and real-data behavior, not general superiority on natural video.
-
-### 4.8.6 Matched baselines and the claim decision
-
-> [RESULT PENDING: INT_MATCHED_BASELINE_TABLE; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-> [RESULT PENDING: INT_MM_PARETO_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-> [RESULT PENDING: INT_TAXIBJ_PARETO_FIG; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-> [RESULT PENDING: INT_CROSS_DATASET_SYNTHESIS; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
-
-Published numbers are contextual references unless data, normalization, selection, schedule, metric implementation, precision, hardware, and profiling boundaries match. Existing compatible local checkpoints may avoid retraining; incompatible ones require new authorization and a budget estimate. Four final full-model runs do not include this additional baseline work. A Pareto-improving claim requires measured quality and memory under the matched protocol: no comparator may be both more accurate and lower-memory. Report dataset-specific failure or parity rather than averaging it away. If evidence is absent, this section contracts to architecture/correctness and explicitly untested hypotheses.
+Дослід має одну ініціалізацію, не перевіряє 48-кадрову досяжність, LoopMom, TaxiBJ, KTH чи природне відео та не ізолює перевагу інформаційної щільності над фіксованим просторовим розкладом. Отримані числа не додаються до підтверджувальної сім’ї E2–E8 і не розширюють твердження четвертої статті. Їхня роль у дисертації вужча: продемонструвати технічну сумісність трьох ресурсних інтерфейсів і визначити протокол майбутнього дослідження з кількома незалежними ініціалізаціями, який може бути представлений окремою конференційною роботою.
 
 ## 4.9 Правило вибору методу на системному рівні
 
-### 4.9.1 Four diagnostic questions
+Результати попередніх підрозділів описують різні дефіцитні ресурси, тому їх не можна згорнути в один універсальний рейтинг. Цей підрозділ перетворює емпіричні межі на послідовність діагностики: спочатку визначається, чи бракує досяжності, деталізації або пам’яті активацій, а вже потім обирається відповідне втручання.
 
-First, is useful past evidence outside the flat window? Second, is error dominated by coverage/trajectory or by fine identity? Third, is the limiting resource retained deployment state, training activations, or both? Fourth, is information density sufficiently uneven and stable to justify the router's overhead? These questions identify the intervention and the endpoint needed to test it.
+### 4.9.1 Діагностика обмежувальних умов
 
-![Which resource does each intervention change?](../../../figures/dissertation_v2/resource_interventions.svg)
+Результати не визначають одну модель, яка має замінити всі інші. Натомість вони задають послідовність питань, що повинні передувати вибору архітектури. Спочатку потрібно з’ясувати, яка помилка є найдорожчою для задачі. Система, що має зберігати зайнятість простору, геометрію або траєкторію, допускає інші втрати, ніж система, якій необхідно відтворювати обличчя, клас цифри чи дрібну текстуру. Ця відмінність визначає релевантний критерій консистентності: просторове покриття або ідентичність.
 
-Figure D4-resources — Spatial/temporal allocation changes retained evidence; reversibility changes stored core activations; parameters/optimizer and workspace remain separate accounting terms. No arrow represents multiplication of independently measured ratios.
+Далі потрібно перевірити, чи доступне потрібне минуле. Коли свідчення повторного входження лежать поза поточним плоским вікном, поліпшення локальної точності не поверне їх до контексту. Просторово груба, але часово щільна історія може збільшити досяжність; часово розріджені детальні прив’язки також її збільшують, проте втрачають іншу інформацію. Щільний грубий потік є безпечнішим, коли важливі зміни між прив’язками. Розріджені детальні прив’язки доцільніші, коли старіші стани змінюються повільно, а точний вигляд у вибрані моменти є визначальним.
 
-![How should a constrained predictor be selected?](../../../figures/dissertation_v2/decision_flow.svg)
+Окреме питання навчання полягає в тому, чи відповідає диференціація в межах бажаного часового процесу бюджету пам’яті активацій. Коли кінцевий предиктор навчається на обмежених вікнах, описаних у розділі 3, реверсивний часовий ланцюг є непотрібним. Довша часова диференціація може вимагати контрольних точок або реверсивного відтворення, обидва з яких працюють на активаціях, а не на контекстному стані, виміряному в цьому розділі.
 
-Figure D4-decision — Inspect the bottleneck, choose a matched comparison, and accept only a quality–resource trade-off supported by that comparison. Routing remains optional if overhead or instability outweighs its benefit.
+Нарешті, просторове пакування має зменшувати фактично збережений стан, а не лише логічну кількість токенів. Жорсткий вибір ділянок не пройшов цю перевірку, бо прототип утримував повні детальні карти. Фіксований пакет із підрозділу 4.8 справді обмежує стан до 384 значень на кадр і тому є придатною початковою точкою. Він не доводить, що динамічне ентропійне розміщення краще за фіксовану геометрію. Розмежування двох виміряних ресурсних осей узагальнено на рисунку 4.13.
 
-### 4.9.2 Bounded design rule
+![Окремо виміряні осі стану контексту та пам’яті активацій](../../figures/restructured/ch4_fig4_13_two_resource_axes.png)
 
-The dissertation's outcome is an operating region rather than a universal winner. Coarse older evidence is useful only if it is both relevant and usable. Reversibility is useful only where activation storage matters enough to justify recomputation. Spatial routing is useful only where allocation quality or a smaller viable quota offsets its scoring and boundary costs. Failure of full composition does not invalidate a separately measured component result; it limits the integrated claim.
+**Рисунок 4.13 – Дві окремо виміряні осі ресурсів.** Пакування контексту зменшує обсяг збереженого стану під час застосування, тоді як реверсивне відтворення зменшує активації під час навчання. Перевірка технічної здійсненності підтвердила сумісність цих механізмів у спільному прототипі, але їхні коефіцієнти не описують одну величину й не перемножуються. *Джерело: авторський синтез вимірювань розділів 2 і 4.*
+
+З цього розмежування випливає послідовність практичного вибору, подана на рисунку 4.14: спочатку визначають дефіцитний ресурс, а вже потім обирають втручання.
+
+![Алгоритм вибору за досяжністю, точністю відтворення, пам’яттю активацій і просторовим розподілом](../../figures/restructured/ch4_fig4_14_decision_flow.png)
+
+**Рисунок 4.14 – Алгоритм вибору методу за обмежувальним ресурсом.** Спочатку визначають дефіцитний ресурс: досяжність, деталізацію або пам’ять активацій. Лише після цього обирають ієрархію, щільний контекст, градієнтні контрольні точки чи реверсивне відтворення. *Джерело: авторська схема за результатами розділів 2–4.*
+
+### 4.9.2 Узагальнене правило застосовності
+
+Вибір методу починається з двох головних запитань: який ресурс обмежує систему та яка властивість прогнозу є критичною. Якщо релевантне минуле не вміщується у плоске вікно, доцільним є просторово ієрархічний або часово проріджений контекст. Перший зберігає щільну часову підтримку ціною деталей, другий – точні прив’язки ціною проміжної динаміки. Коли потрібне минуле вже доступне й критичною стає ідентичність, перевагу має щільний плоский контекст.
+
+Пам’ять активацій утворює іншу вісь рішення. Градієнтні контрольні точки підтримують довільні нереверсивні блоки, тоді як реверсивне відтворення замінює збереження частини станів повторним обчисленням. Просторове подання за інформаційною щільністю залишається перспективним розподільником, але динамічна політика не підтверджена інтеграційним дослідом. Повну матрицю втручань, їхню вартість, рівень доказовості та придатну область перенесено до таблиці В.6 додатка В.
+
+Це правило запобігає категоріальним помилкам. Пакування контексту не усуває зростання пам’яті активацій у довгому диференційованому ланцюзі, а реверсивне відтворення не може надати спостереження, відсутні під час застосування. Карта ентропії не стає перевіреним динамічним розподільником без реалізованої політики та виміряного компромісу між обчисленнями і якістю. Нарешті, коефіцієнт скорочення збережених значень не можна подавати як такий самий коефіцієнт зменшення всієї пам’яті GPU.
+
+### 4.9.3 Взаємозв’язок між розробленими методами
+
+Розроблені методи стосуються сусідніх, але різних інтерфейсів однієї системної задачі. Критерії консистентності визначають, яку властивість прогнозу потрібно зберігати. Реверсивне обчислення знижує вартість активацій під час диференціації тривалого процесу. V-BLT та RoPE-ND досліджують просторове представлення, координатну структуру й неоднорідність складності. Кінцевий предиктор, своєю чергою, визначає, які історичні спостереження у прихованому просторі поміщаються в заданий бюджет контексту. Саме для останнього питання розділ 4 встановлює емпіричні області доцільності.
+
+Основні твердження все ще спираються на окремі контрольовані досліди: TempVerseFormer не був компонентом підтверджувальної моделі E2–E8, а V-BLT/RoPE-ND не визначав її позиційне кодування. Водночас підрозділ 4.8 усуває попередню прогалину на рівні технічної здійсненності: компактне просторове представлення та реверсивний часовий блок працювали в одному навченому прототипі. Це не робить архітектуру єдиною експериментальною лінією і не дозволяє переносити на неї підтверджувальні висновки LoopMom.
+
+Отже, композиція виконує конкретну, обмежену роль. Основний WindowDiT ізолює причинний ефект контекстного пакета; інтегрований SimVP перевіряє, чи сумісні компактний стан, однопрохідне декодування та реверсивне навчання. Саме так зберігається єдина системна історія без удаваного твердження, що всі статті досліджували одну незмінну архітектуру.
 
 ## 4.10 Набір програмних засобів та практичне застосування
 
-### 4.10.1 Released software and research controllers
+Практичне значення результатів залежить від того, чи відтворюються їхні інтерфейси в програмному забезпеченні. Тут коротко описано поділ публічних і заморожених просторів імен, роль конфігурацій, артефактів і тестів, а також межі заявленого впровадження. Детальний реєстр команд і компонентів залишається в додатку Ж.
 
-Published software for the procedural datasets, TempVerseFormer, and V-BLT is distinguished from later research branches [171–173]. The Article 4 and integrated controllers use immutable configs, checkpoint resume, local-authoritative logs, and W&B mirroring. Exact commands, source hashes, model tests, profile boundaries, and evidence-cell statuses are in Appendix Ж. A W&B chart is a visualization of local artifacts, not an independent result or an alternative source of truth.
+### 4.10.1 Архітектура програмного забезпечення
 
-### 4.10.2 Institutional use
+Організація програмного забезпечення відтворює логіку наукового аналізу. Підтримуваний пакет `hvp` надає інтерфейси без побічних ефектів для опису контексту й геометрії досяжності, оцінювання повних кадрів і об’єктів, що зберігаються в часі, статистичного виведення з урахуванням кластеризації за кліпами, одночасного аналізу та фіксації походження через контентну адресацію. Опис експерименту відокремлено від його результатів. Імпорт пакета не завантажує набори даних, не ініціалізує CUDA, не під’єднується до сервісу експериментів і не запускає обчислення. У версії 0.3.0 стабільний публічний CLI повідомляє версію та перевіряє шлюз авторизації; навчання й оцінювання залишаються дослідницькими робочими процесами.
+
+Відтворюваність перевіряється на кількох рівнях. Валідатори відхиляють порівняння несумісних пакетів, а тести показників охоплюють порожні маски, хибнопозитивні результати, зіставлення об’єктів у часі, пропуски, зайві компоненти та покриття. Перевірка наукової конфігурації завершується відмовою, якщо дослідження має термінальний стан, пропущене, не зареєстроване або не авторизоване. На момент релізу 0.3.0 десять конфігурацій пройшли перевірку авторизації, 83 CPU-тести завершилися успішно, вихідні файли Python пройшли компіляційну перевірку, а пакет wheel було зібрано й установлено в ізольованому середовищі. Після релізу до робочої гілки додано модулі інтегрованої перевірки технічної здійсненності та відповідні тести; поточний набір містить 99 успішних CPU-тестів. Цей стан не слід ототожнювати із замороженим релізом 0.3.0. Процес придатний до аудиту, однак великі локальні набори даних і контрольні точки ще не опубліковано для завантаження. Для зовнішнього доступу потрібні адреси архівів, ліцензії, хеші та перевірені інструкції.
+
+### 4.10.2 Впровадження та використання в освітніх цілях
 
 Інструментарій має дослідницьке й навчальне призначення. Він містить повторно використовувані генератори, інтерфейси пакетів, засоби оцінювання розгортань і статистичні процедури, завдяки чому перевірка механізму не змішується з оцінюванням загальної продуктивності. Перед додаванням нового пакета потрібно визначити геометрію прив’язок, кількість контекстних і цільових токенів, допустимий тип порівняння та оцінювану популяцію. Ця дисципліна є окремим практичним результатом дисертації.
 
@@ -282,18 +445,30 @@ Published software for the procedural datasets, TempVerseFormer, and V-BLT is di
 
 ## 4.11 Обмеження та загрози валідності
 
-### 4.11.1 Internal and construct validity
+Завершальний підрозділ збирає обмеження, розподілені між окремими експериментами, і групує їх за внутрішньою, конструктною, статистичною та зовнішньою валідністю. Його мета – відокремити локально підтверджені механізми від тверджень, для яких потрібні нові ініціалізації, природне відео або інший зареєстрований протокол.
 
-The frozen head/codec and immutable configurations limit uncontrolled changes but do not turn compound CEX/LVL/OVR interventions into isolated mechanisms. Retained tokens are not total memory; foreground quality is not identity; context reach is not rollout stability. TRB's static toroidal world and action-conditioned viewport make exact observability possible but restrict the ecological scope of the result.
+### 4.11.1 Внутрішня валідність та валідність конструкту
 
-### 4.11.2 Statistical and external validity
+Специфічний для пари інструмент спостережуваності надає найпереконливіші докази внутрішньої валідності. Навіть у центральній парі просторова роздільна здатність і номінальна досяжність змінюються разом. Щоб відрізнити використання спостережуваної історії від сильного апріорного припущення, яке приводить до того самого прогнозу, потрібні були б контрфактуальні приховані світи. У B1 змішування виражене сильніше: разом із кроком контексту змінюються крок і слоти цілі, допоміжна функція втрат, довжина послідовності та оптимізаційне навантаження. Повна конфігурація є валідною й перевіреною, але приписувати її ефект лише часовому кроку не можна. Зонд глибини має подібне обмеження: глибину представлення, розподіл цілей та навчальне навантаження не розділено.
 
-Two training seeds show the outcomes of two runs, not a well-estimated seed distribution. Six budgets define discrete observed regimes, not a continuous scaling law. Selection remains development-only; protected evaluation is restricted to its registered roles. Routing and quota selection must not use test data. Same-host profiles and compatible baseline protocols are necessary for memory claims. Moving MNIST and TaxiBJ do not cover natural-video diversity or arbitrary future horizons.
+Якісні докази навмисно залишаються вторинними. Галерея з фіксованим індексом гарантує, що відображену вибірку можна відтворити, проте невизначеність вибору залишається, оскільки не було зареєстровано квантильне правило відбору. У будь-якому разі, невелика галерея не може охопити кумулятивний розподіл помилок. Необроблена мозаїка є інформативною з аналогічної причини: вона видаляє навчену адресацію. Однак прямий доступ до майбутнього положення та зберігання без втрат роблять її непридатною для ранжування моделей.
 
-### 4.11.3 Chapter conclusions and release gate
+### 4.11.2 Статистична та зовнішня валідність
 
-> [RESULT PENDING: CLAIM_A4_SUMMARY; evidence=registered development estimate; source=artifacts/v2/article4_primary_30k/post_training/all_final_development_metrics.json; registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Кількість ініціалізацій навчання нерівномірна: дві для основного результату за 896 токенів, три для 1 152 і п’ять для факторного експерименту форми пакета; середні та верхні точки мають одну або дві ініціалізації. Інтервали зі статистичним виведенням з урахуванням кластеризації за кліпами описують невизначеність щодо кліпів для кожної навченої моделі, але не замінюють реплікацію за ініціалізаціями. Тому невирішена точка 1 792 разом із нижчою точністю верхніх ефектів робастності має залишатися видимою в кожному підсумку бюджетної межі. Перевірка генератора використовує фіксовані контрольні точки та ініціалізацію предиктора 0. Перевірка кодека охоплює один незалежно навчений кодек із ініціалізацією предиктора 0 і не встановлює, яка саме його властивість зменшила верхній ефект.
 
-> [RESULT PENDING: CLAIM_INT_SUMMARY; evidence=conditional integrated evidence cell; source=integrated accepted evidence bundle (not yet measured/locked); registry=refactor_v2/registries/placeholders.json. No empirical value inserted.]
+Бюджетна межа є дискретною. Вона визначає перевірені точки та сімейство рішень, але не унікальний перетин, монотонну криву чи асимптотичний закон. Арифметика токенів контексту вимірює безпосереднє зберігання стану та матеріалізовані вбудовування; вона не характеризує швидкодію, FLOP уваги, повну пам’ять GPU або однакову якість. Тесту на еквівалентність не проводили, тому інтервал, що перетинає нуль, не означає «методи однакові».
 
-The final ordering is: registered development allocation results; sealed confirmation of selected contrasts; exact-status allocation diagnostics; historical self-fed and negative boundaries; measured component memory; and the dataset-specific matched OpenSTL position. Until the claim ledger is locked, neither this conclusion nor the abstracts claim a successful new frontier or integrated superiority. Missing, neutral, and negative outcomes remain scientifically valid endpoints of the planned comparisons.
+Інтегроване дослідження має додаткові обмеження: одну ініціалізацію, публічний тестовий набір, короткий протокол 10→10 та незбіг горизонтів у частині зовнішніх профілів пам’яті. Фіксовані ділянки прибрали нестабільність дискретної маршрутизації, але разом із нею усунули прямий тест переваги адаптації до інформаційної щільності. Через це підрозділ 4.8 підтверджує сумісність і вимірює компроміси конкретного прототипу, а не встановлює нову область переваги.
+
+### 4.11.3 Висновки розділу
+
+У сукупності експерименти дають основу для вибору, а не визначають архітектуру-переможця. У контрольованій однокроковій оцінці верхньої межі охоплення дифузія краще відтворює цільовий розподіл, ніж регресійний вихідний модуль із близькою кількістю параметрів, але за нерівного загального обсягу обчислень під час генерування. У детермінованому розгортанні із самоподачею та одним кандидатом кращою є регресія. Енергетичний спуск у перевіреному масштабі не досягає структурованих цілей навіть тоді, коли один із алгоритмів навчається правильного енергетичного порядку. Отже, механізм генерації потрібно обирати відповідно до режиму застосування.
+
+Перевірена бюджетна межа містить дві області доцільності. Ієрархію підтверджено за 896 та 1 152 токенів контексту, точка 1 792 залишається невизначеною, а плоский контекст підтверджено за 2 432 і 3 072 токенів. За однакової номінальної досяжності 48 кадрів два ієрархічні пакети використовують у 2,67 та 3,43 раза менше токенів контексту, ніж щільна детальна історія. Це не означає однакової якості, інформаційної місткості, обчислювальних витрат або економії повної пам’яті.
+
+Два граничні результати уточнюють цю картину. У E5a рання перевага ієрархії повторилася за трьома ініціалізаціями, але пізня інверсія, виявлена для ініціалізації 0, не відтворилася й тому не є підтвердженою межею самоподачі. У захищеному E6 напрям покриття та неперервності сприяв ієрархічному контексту в усіх трьох навчаннях, проте одночасні інтервали не перетинали нуль лише для ініціалізацій 0 і 2; перевагу плоского контексту за ідентичністю підтверджено для всіх трьох ініціалізацій. Отже, довша досяжність і детальна ідентичність є різними вимогами, а абсолютні значення E6 не дають підстав вважати задачу розв’язаною.
+
+Результати короткого Moving-MNIST і TaxiBJ дають додаткові свідчення працездатності, але не підтверджують довготривалу пам’ять. Обмежені горизонти та незіставлені бюджети контексту не дають змоги використати ці тести для центрального причинного твердження. Так само LoopMom і довгий Moving-MNIST не відтворюють різноманітність природного відео: рух камери, оклюзії зі змінною тривалістю, появу нових об’єктів і складну текстуру. Подальшу зовнішню валідність найкраще перевіряти на природному відео з подіями зникнення й повторного входу, ширшій панелі кодеків та необроблених еталонів, а також у зареєстрованому дослідженні поблизу точки 1 792 токени.
+
+Інтегрований прототип доповнює, але не замінює ці висновки. Він утримав MSE 28,72 на Moving-MNIST за 384 збережених значень на кадр і зменшив пік пам’яті тієї самої моделі у 2,58 раза на 40-кадровому прогнозі. Порівняння з OpenSTL показало конкурентну, але не найкращу якість та відсутність універсальної переваги в абсолютній пам’яті. Отже, центральна ієрархічна модель залишається розв’язанням обмеження контекстної досяжності, а просторове пакування й реверсивність є сумісними засобами для двох інших ресурсних меж.
