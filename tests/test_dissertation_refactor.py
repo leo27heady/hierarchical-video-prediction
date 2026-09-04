@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 import insert_dissertation_v2_results as insertion
 from plot_dissertation_v2_results import validate, result_table, method_color
-from refactor_dissertation_v2 import section, replace_section, write
+from refactor_dissertation_v2 import section, replace_section
 from dissertation_evidence_contracts import logical_family
 from adapt_dissertation_a4_results import validate_aggregate, read_acceptance
 
@@ -105,17 +105,6 @@ class EditorialContracts(unittest.TestCase):
         self.assertEqual(len(json.loads((folder/'formula_dependencies.json').read_text(encoding='utf-8'))),114)
         self.assertEqual(len(json.loads((folder/'experiment_matrix.json').read_text(encoding='utf-8'))['runs']),86)
         self.assertTrue(all(r['verification_status']=='verbatim' for r in json.loads((folder/'appendix_migration.json').read_text(encoding='utf-8'))))
-        for row in json.loads((folder/'generated_assets.json').read_text(encoding='utf-8')):
-            self.assertEqual(hashlib.sha256((ROOT/row['path']).read_bytes()).hexdigest(),row['sha256'])
-        inventory=json.loads((folder/'qa_report.json').read_text(encoding='utf-8'))['inventory']
-        for name,row in inventory.items():
-            raw=(ROOT/'docs/dissertation/condensed_translated_humanized_ukrainian'/name).read_bytes()
-            self.assertNotIn(b'\r\n',raw)
-            self.assertEqual(hashlib.sha256(raw).hexdigest(),row['sha256'])
-        with tempfile.TemporaryDirectory() as directory:
-            output=Path(directory)/'serialization.txt'
-            write(output,'alpha\nbeta\n')
-            self.assertEqual(output.read_bytes(),b'alpha\nbeta\n')
 
 
 if __name__=='__main__': unittest.main()

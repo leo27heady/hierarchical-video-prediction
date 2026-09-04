@@ -128,7 +128,6 @@ def main():
             if saved["original_metrics_sha256"] != run["metrics_sha256"]:
                 raise ValueError("calibration snapshot provenance changed")
             records = saved["records"]
-            jwrite(local,saved)  # Normalize serialization, never original log identities.
         else:
             source = Path(run["metrics_path"])
             raw = source.read_bytes()

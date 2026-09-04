@@ -26,9 +26,7 @@ def integrated_snapshot():
     output = EDIT/'registries/integrated_source_snapshot.json'
     if output.exists():
         # A source snapshot never silently tracks a moving research checkout.
-        snapshot=json.loads(output.read_text(encoding='utf-8'))
-        jwrite(output,snapshot)  # Stable LF serialization; identities remain unchanged.
-        return snapshot
+        return json.loads(output.read_text(encoding='utf-8'))
     manifest_path = ROOT/'experiments/v2/campaigns/integrated_openstl_confirmation_2026-09-02.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     op = Path(manifest['openstl_root'])

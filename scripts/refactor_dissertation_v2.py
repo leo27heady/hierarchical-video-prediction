@@ -27,7 +27,7 @@ def digest(value: bytes | str) -> str:
 
 def write(path: Path, value: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(value.rstrip() + "\n", encoding="utf-8", newline="\n")
+    path.write_text(value.rstrip() + "\n", encoding="utf-8")
 
 
 def jwrite(path: Path, value) -> None:

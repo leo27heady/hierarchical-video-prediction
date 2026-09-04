@@ -95,8 +95,8 @@ def main():
     if args.kind == "table":
         if args.output.suffix != '.md': raise ValueError('result tables require .md output')
         args.output.parent.mkdir(parents=True,exist_ok=True)
-        args.output.write_text(result_table(bundle),encoding='utf-8',newline='\n')
-        args.output.with_suffix('.json').write_text(json.dumps({'bundle_sha256':args.sha256,'table_rows':bundle['rows']},indent=2)+'\n',encoding='utf-8',newline='\n')
+        args.output.write_text(result_table(bundle),encoding='utf-8')
+        args.output.with_suffix('.json').write_text(json.dumps({'bundle_sha256':args.sha256,'table_rows':bundle['rows']},indent=2)+'\n',encoding='utf-8')
         print(args.output)
         return
     # Import plotting only after all data acceptance gates pass. CPU only.
@@ -149,7 +149,7 @@ def main():
     args.output.parent.mkdir(parents=True,exist_ok=True)
     fig.savefig(args.output)
     plt.close(fig)
-    args.output.with_suffix(".json").write_text(json.dumps({"bundle_sha256":args.sha256,"plotted_rows":rows,"caption_contract":{k:bundle[k] for k in ["metric","units","direction","population","evidence_status","selection_role"]}},indent=2)+"\n",encoding="utf-8",newline='\n')
+    args.output.with_suffix(".json").write_text(json.dumps({"bundle_sha256":args.sha256,"plotted_rows":rows,"caption_contract":{k:bundle[k] for k in ["metric","units","direction","population","evidence_status","selection_role"]}},indent=2)+"\n",encoding="utf-8")
     print(args.output)
 
 
