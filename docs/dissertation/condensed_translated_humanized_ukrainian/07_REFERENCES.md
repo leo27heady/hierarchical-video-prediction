@@ -138,7 +138,7 @@
 133. Kulyk L. R., Mokin O. B. Methods for Ensuring Consistent Generation in Diffusion Models. *Visnyk of Vinnytsia Politechnical Institute*, No. 4, pp. 75–85, 2024. DOI: 10.31649/1997-9266-2024-175-4-75-85.
 134. Kulyk L. R., Mokin O. B. Scaling Video Prediction with Spatio-Temporal Patches. *Visnyk of Vinnytsia Politechnical Institute*, No. 5, pp. 129–139, 2025. DOI: 10.31649/1997-9266-2025-182-5-129-139.
 135. Kulyk L. Temporal Modeling with Reversible Transformers. *Neural Computing and Applications* 38, article 30, 2026. DOI: 10.1007/s00521-025-11707-3.
-136. Kulyk L. R. When Does Hierarchical Video Memory Pay? Reach–Fidelity Trade-offs under Fixed Context Budgets. Manuscript in preparation, 2026. **[ДАНІ ВІД АВТОРА: замінити остаточним списком авторів, назвою видання та статусом публікації на момент подання.]**
+136. Kulyk L. R. When Does Hierarchical Video Memory Pay? Reach–Fidelity Trade-offs and an Integrated Resource-Efficient Predictor. Manuscript in preparation, 2026. **[ДАНІ ВІД АВТОРА: затвердити остаточну назву, список авторів, назву видання та статус публікації на момент подання.]**
 137. Shi X., Chen Z., Wang H., Yeung D.-Y., Wong W.-K., Woo W.-C. Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting. *NeurIPS 28*, 2015.
 138. Wang Y., Long M., Wang J., Gao Z., Yu P. S. PredRNN: Recurrent Neural Networks for Predictive Learning Using Spatiotemporal LSTMs. *NeurIPS 30*, 2017.
 139. Wang Y., Jiang L., Yang M.-H., Li L.-J., Long M., Fei-Fei L. Eidetic 3D LSTM: A Model for Video Prediction and Beyond. *ICLR*, 2019.
