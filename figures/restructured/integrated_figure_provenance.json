@@ -45,6 +45,27 @@
   },
   {
     "schema_version": "1.0",
+    "figure_id": "4.3b",
+    "file": "figures/restructured/ch4_fig4_3b_schedule_calibration.svg",
+    "asset_class": "author-generated-artifact-derived",
+    "sha256": "b9e2fc0917c47a0f94c133f296736783e4b701af7f07176bf235c55b69588ae7",
+    "bytes": 98786,
+    "source": "sealed A4-COR validation JSONL and paired schedule analysis copied into artifacts/dissertation/a4_cor",
+    "modification_status": "new dissertation-native result figure",
+    "rights_status": "author-generated",
+    "permission_status": "no external artwork permission required",
+    "data_or_concept_source": "article4_schedule_calibration_2026-09-01.json plus the flat-recent and balanced-recent seed-0 validation logs",
+    "source_sha256": {
+      "article4_schedule_calibration_2026-09-01.json": "8556e9b07b0e01bb65511f23c075fc96cd5f325483d70f245669b444cf65429b",
+      "flat_recent_seed0_validation_metrics.jsonl": "d4f897831a74e85387b7aee3101463e9acb57a355766f526a2fb61414d75ba37",
+      "balanced_recent_seed0_validation_metrics.jsonl": "116de2a709650ea33da0adf4e5750ba665efe0531a0b5093a1092f0c92911a43"
+    },
+    "generator": "scripts/generate_ch4_schedule_calibration.py",
+    "generator_sha256": "5abecd8962b763b5639807d766706dc2d74999f58234046a955f4da490bd1c0b",
+    "caption_attribution": "Chapter 4 Figure 4.3 lower panel; author-generated from sealed A4-COR logs"
+  },
+  {
+    "schema_version": "1.0",
     "figure_id": "4.12",
     "file": "figures/restructured/ch4_fig4_12_integrated_memory.svg",
     "asset_class": "author-generated-artifact-derived",

@@ -1,0 +1,215 @@
+{
+  "candidate_analysis": [
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025373511016368866,
+          "relative_gap": 0.6640738348149725,
+          "value": 0.04222339577972889,
+          "within_2_percent": false
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 1.1000584703507053,
+          "value": 0.046515537425875664,
+          "within_2_percent": false
+        }
+      },
+      "hierarchy_minus_flat": -0.004292141646146774,
+      "passes": false,
+      "ranking_direction_stable_from_here": false,
+      "step": 8000
+    },
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025373511016368866,
+          "relative_gap": 0.1481789235298004,
+          "value": 0.029133330564945936,
+          "within_2_percent": false
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 0.4921921731132758,
+          "value": 0.03305151825770736,
+          "within_2_percent": false
+        }
+      },
+      "hierarchy_minus_flat": -0.003918187692761421,
+      "passes": false,
+      "ranking_direction_stable_from_here": false,
+      "step": 12000
+    },
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025373511016368866,
+          "relative_gap": 0.13246940678152735,
+          "value": 0.0287347249686718,
+          "within_2_percent": false
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 0.1866139099223588,
+          "value": 0.026283069979399443,
+          "within_2_percent": false
+        }
+      },
+      "hierarchy_minus_flat": 0.002451654989272356,
+      "passes": false,
+      "ranking_direction_stable_from_here": true,
+      "step": 16000
+    },
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025373511016368866,
+          "relative_gap": 0.09573880695624087,
+          "value": 0.027802740689367056,
+          "within_2_percent": false
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 0.07969410831958332,
+          "value": 0.023914834950119257,
+          "within_2_percent": false
+        }
+      },
+      "hierarchy_minus_flat": 0.003887905739247799,
+      "passes": false,
+      "ranking_direction_stable_from_here": true,
+      "step": 20000
+    },
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025373511016368866,
+          "relative_gap": 0.06798954655234432,
+          "value": 0.0270986445248127,
+          "within_2_percent": false
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 0.013048441251761658,
+          "value": 0.022438657470047474,
+          "within_2_percent": true
+        }
+      },
+      "hierarchy_minus_flat": 0.0046599870547652245,
+      "passes": false,
+      "ranking_direction_stable_from_here": true,
+      "step": 24000
+    },
+    {
+      "arms": {
+        "balanced_recent": {
+          "best_at_or_after": 0.025646156631410122,
+          "relative_gap": 0.0,
+          "value": 0.025646156631410122,
+          "within_2_percent": true
+        },
+        "flat_recent": {
+          "best_at_or_after": 0.022149639204144478,
+          "relative_gap": 0.0,
+          "value": 0.022149639204144478,
+          "within_2_percent": true
+        }
+      },
+      "hierarchy_minus_flat": 0.003496517427265644,
+      "passes": true,
+      "ranking_direction_stable_from_here": true,
+      "step": 30000
+    }
+  ],
+  "candidate_steps": [
+    8000,
+    12000,
+    16000,
+    20000,
+    24000,
+    30000
+  ],
+  "late_window_stability": {
+    "final_relative_gap_by_policy": {
+      "balanced_recent": 0.01074528530424379,
+      "flat_recent": 0.0
+    },
+    "window": [
+      24000,
+      30000
+    ],
+    "within_2_percent": true,
+    "worst_final_gap": 0.01074528530424379
+  },
+  "metric_robustness_recommendations": {
+    "diffusion_loss": 30000,
+    "foreground_mse": 30000,
+    "horizon4_foreground_mse": 30000,
+    "horizon4_pixel_mse": 30000,
+    "latent_mse": 30000,
+    "pixel_mse": 30000
+  },
+  "primary_metric": "horizon4_foreground_mse",
+  "recommended_updates": 30000,
+  "relative_tolerance": 0.02,
+  "runs": [
+    {
+      "config_hash": "15088e9c0c9da5e4d6616e7136c4fc9368c8d949559072454b33ca8473c09c7a",
+      "experiment_id": "A4_COR_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+      "git_commit": "2e3b46d007db1d70e377c481efd1c7251b81c964",
+      "metrics_path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\runs\\A4_COR_B1792_L1_FLAT_RECENT_EXCL_S00_T30K__15088e9c0c9d\\validation_metrics.jsonl",
+      "metrics_sha256": "d4f897831a74e85387b7aee3101463e9acb57a355766f526a2fb61414d75ba37",
+      "milestone_sha256": {
+        "milestone_step002000.pt": "3a92b129a8edc024d8872978a467b2645661dd989452153bbec02c0567969081",
+        "milestone_step004000.pt": "32333a226cff091201698b92aba12622a7b1bdcb0777118d2e00d677e53ec1dc",
+        "milestone_step006000.pt": "ce89aa5a949cb422fff837304f98bb629171da0343b2de7eb8a1cf935910333c",
+        "milestone_step008000.pt": "c01734688bf32eaab3850f93681fc62710e9119894da05d63631fb2b892d8c64",
+        "milestone_step010000.pt": "a92ec5b1c9329dff7562c4560a933241684f0dc37a79710a93ae97f2aff1ac0d",
+        "milestone_step012000.pt": "bed243263e92f0cfbeef18e20190aa5a09deeaaf8e11bc8b7a152b769e06448c",
+        "milestone_step014000.pt": "1f5c3fb87ad9105724a7c5c6e069b04b01d44c3540d31304bded93dca415e263",
+        "milestone_step016000.pt": "978a9dfafca72983ee4970424f4ea7e13a56b8a0cfe5c3c8d2aeeb6b3952fee1",
+        "milestone_step018000.pt": "cfbca194e939cfbcf204dd8115eab78af470304aba892f9a9d90a1d36bff2ab0",
+        "milestone_step020000.pt": "e7a796d6edb48680e09cfeac348228117e6005418a330ec47598393880937c02",
+        "milestone_step022000.pt": "1dd76baeb6f5d50f4961a2cb0de8954837ea8189f7f65495a151bdc93f26b36c",
+        "milestone_step024000.pt": "c7dd117f0b65d4b7165473a545d8ceb26ee452f2556c7a7e48a036f37e868c8a",
+        "milestone_step026000.pt": "72f557f520e243f8d84613326d861f56ce955ac73ff10739a3a26e02d518f67d",
+        "milestone_step028000.pt": "b69377ce6118fa9bb99340a3962446791f48059638f441a551834d96d9067e4e",
+        "milestone_step030000.pt": "64e84436a487aaa6e8752a2db7be8ea7fd438a70a78fc8baa73ffc4589b22083"
+      },
+      "peak_allocated_gib": 3.7863950729370117,
+      "peak_reserved_gib": 3.919921875,
+      "policy": "flat_recent",
+      "runtime_seconds": 8102.905253699981
+    },
+    {
+      "config_hash": "c5ba8de728ce16340c25626ebab49dc4d0377fd8c20d5220086b44e8333024ad",
+      "experiment_id": "A4_COR_B1792_L2_BAL_RECENT_NEST_S00_T30K",
+      "git_commit": "2e3b46d007db1d70e377c481efd1c7251b81c964",
+      "metrics_path": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\runs\\A4_COR_B1792_L2_BAL_RECENT_NEST_S00_T30K__c5ba8de728ce\\validation_metrics.jsonl",
+      "metrics_sha256": "116de2a709650ea33da0adf4e5750ba665efe0531a0b5093a1092f0c92911a43",
+      "milestone_sha256": {
+        "milestone_step002000.pt": "5602b43fda12c9014e95062339e4f14b46762d3acfc8a9e7ecd90bb3dd594538",
+        "milestone_step004000.pt": "243b232319d83f6029548c2f48be29a028bbfd493b8d8855fbb4eebc5e506e3e",
+        "milestone_step006000.pt": "d6a080fbf9320684b1fef9dc3e5661310e861d35746fcecb40459577a737761e",
+        "milestone_step008000.pt": "7da908a5084a6818ff148276ce9db8e4d8403f592e0cb08e989e68f720b9851b",
+        "milestone_step010000.pt": "26e7a82051eb439ac0a7e10400ce318077bb537783e1d66d2b6490b849b24136",
+        "milestone_step012000.pt": "ecb514614c35d0292d319911ae45465ec500bea58af7f2598b1c2752943530e1",
+        "milestone_step014000.pt": "cbb77376bba2067b8edbcf7fbfcfbd79f8702bf743693cd4ce2382105fb795b9",
+        "milestone_step016000.pt": "88499c359a685504fea501825b84a771353cc5ad437dd777cd7ef8abad13159f",
+        "milestone_step018000.pt": "aecee4f11dbe67e15234b252f46f0356538c506d485560f861a8c0da0876ad48",
+        "milestone_step020000.pt": "01b1bb7bc4989d7e9255f07df9cd9f62bcd13d39b91fbc7f192679aa198d423d",
+        "milestone_step022000.pt": "23b94887cd7b63d8dc436e1fd003d812288dd8b5af1bcdc506636bd50adf3888",
+        "milestone_step024000.pt": "28dcac50f6b2add8f76199e1d4a5a74d969376082465a9c6633dcbd24b139658",
+        "milestone_step026000.pt": "c7e6dd980459acef1bd66835a4f5deac00e2bdfdca93eb1620701dbc368fabc8",
+        "milestone_step028000.pt": "e50062d81c04b6a52587ec66a11c8cb711c0a50bffc03a2ee4e22c760de42f8d",
+        "milestone_step030000.pt": "c5cada3b016f9ce817b58d7a75c6b362fd2ab8a1c8c936cad2fb683a26d6a979"
+      },
+      "peak_allocated_gib": 3.7873477935791016,
+      "peak_reserved_gib": 3.962890625,
+      "policy": "balanced_recent",
+      "runtime_seconds": 8591.55297650001
+    }
+  ],
+  "schema_version": 1,
+  "status": "recommendation_awaiting_user_confirmation"
+}

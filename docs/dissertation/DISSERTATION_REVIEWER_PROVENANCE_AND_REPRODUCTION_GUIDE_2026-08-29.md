@@ -101,7 +101,8 @@
 | V-BLT | локальний кодер → глобальний трансформер → локальний байтовий декодер, фіксовані просторово-часові патчі, RoPE-ND | категоріальна перехресна ентропія для 256 значень байта | працездатність повної конфігурації на 2-D/3-D обертаннях; просторово структурована ентропія | причинний внесок кожної компоненти; калібрована невизначеність; виграш динамічного ентропійного поділу |
 | Основний WindowDiT-предиктор | заморожений дворівневий кодек (`4×4` coarse, `8×8` fine, 16 каналів) + один joint-attention DiT для чотирикадрової цілі | `v`-prediction diffusion або регресійна SmoothL1 голова | matched-budget межа контекстних пакетів; робастність і межі | універсальна перевага ієрархії; однакова якість при меншій кількості токенів; природне відео |
 | EBT-діагностика | адаптований Energy-Based Transformer зі скалярною енергією та градієнтним спуском за кандидатом майбутнього | ранжування енергією й оптимізація кандидата | енергія навчається ранжувати, але холодний спуск не досягає потрібної різкості в перевіреному бюджеті | що EBT загалом непридатні; що порівняння є matched-capacity з основним DiT |
-| Інтегрований прототип | фіксоване пакування `16 coarse + 8 regional fine` → адаптер → SimVP → реверсивний часовий ланцюг | регресійне прогнозування Moving-MNIST | технічна сумісність; якість однієї конфігурації; same-model BPTT/reversible профіль пам’яті | підтверджувальна нова архітектурна перевага; динамічна маршрутизація; багатонасіннєва робастність |
+| Попередній інтегрований прототип | фіксоване пакування `16 coarse + 8 regional fine` → адаптер → SimVP → другопорядковий реверсивний часовий ланцюг | регресійне прогнозування Moving-MNIST | технічна сумісність; якість однієї конфігурації; інженерний профіль двох різних зовнішніх динамік | same-forward архітектурна перевага; динамічна маршрутизація; багатонасіннєва робастність |
+| Остаточна інтегрована архітектура | фізична coarse/fine піраміда → стала квота → координатне кодування → внутрішньо реверсивне Transformer-ядро → майбутні запити | Moving MNIST 10→10 і TaxiBJ 4→4 | реалізований і CPU-перевірений інтерфейс | конкурентна якість, CUDA-пам’ять і перевага маршрутизації до завершення зіставних вимірювань |
 
 ### 5.2 Дані
 
@@ -191,9 +192,10 @@
 
 | Підрозділ | Основна заява | Первинне джерело |
 |---|---|---|
-| 4.1 | програми мають різні класи доказів і ліцензії порівняння | `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`, authorization ledger |
+| 4.1 | програми мають різні класи доказів і ліцензії порівняння; нова матриця окремо перевіряє тривалість, бюджет, розподіл рівнів, просторово-часову квоту та композицію | `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`, Path B manifest, authorization ledger |
 | 4.2.1 | diffusion краща в однокроковому best-of-8 тесті, regression дешевша й іноді краща self-fed | заморожені механізм-досліди; таблиця 4.1 та додаток Е |
-| 4.2.2 | EBT ранжує кандидатів, але перевірений спуск не досягає достатньої різкості | `logs_rhcp/ebt_scaled_s1.log`, `logs_rhcp/ebt_scaled_s2.log`; рисунок 4.4 |
+| 4.2.2 | EBT ранжує кандидатів, але перевірений спуск не досягає достатньої різкості | `logs_rhcp/ebt_scaled_s1.log`, `logs_rhcp/ebt_scaled_s2.log`; рисунок 4.2 |
+| 4.2.4 | лише 30 000 кроків виконують парне правило 2 % і стабільності порядку; 16 000 та 24 000 недостатні | запечатані копії `artifacts/dissertation/a4_cor/*`; `generate_ch4_schedule_calibration.py`; це evidence вибору розкладу, не переваги ієрархії |
 | 4.3 | у парно визначеній смузі reach hierarchy має +0,0980/+0,0914, а повний набір метрик підтримує механізм | `artifacts/confirmation_e2/results.json` |
 | 4.4 | підтверджено hierarchy при 896/1 152, 1 792 невизначено, flat при 2 432/3 072; 2,67–3,43× стосується токенів | той самий E2 артефакт + прямий розрахунок токенів |
 | 4.5 | форма пакета взаємодіє з головою й seed; diffusion temporal package стабільний у п’яти seeds, regression heterogeneous | E4/E4b артефакти |
@@ -201,8 +203,8 @@
 | 4.7.1 | ранній ефект відтворився, пізня «trust boundary» не відтворилась | E5a |
 | 4.7.2 | pose-indexed raw K48 є нижчою за помилкою привілейованою діагностикою | E8a; не token-matched рейтинг |
 | 4.7.3 | E6: hierarchy підтримує support/continuity, flat краще ID; абсолютна якість низька | Phase C v2 |
-| 4.7.4 | короткі OpenSTL/TaxisBJ тести є competence boundary, не доказом long-range memory | опубліковані/локальні короткі тести |
-| 4.8 | інтегрований прототип має MSE 28,72, MAE 80,27 і same-model memory benefit 2,58× при 40 кадрах | зовнішні D:-артефакти інтеграції, наведені в §10.3 |
+| 4.7.4 | короткі OpenSTL/TaxiBJ тести є межею працездатності, не доказом long-range memory; E6 Long Moving MNIST збережено окремо | опубліковані/локальні короткі тести та Phase C v2 |
+| 4.8 | попередній прототип має MSE 28,72 і MAE 80,27; 2,58× є відношенням піків різних зовнішніх динамік, а не same-forward доказом | зовнішні D:-артефакти інтеграції, наведені в §10.3; остаточна інтегрована модель потребує окремого CUDA-профілю |
 | 4.9 | метод обирається за обмежувальним ресурсом; дві осі економії виміряні окремо | `SYN` з розділів 2–4 |
 | 4.10–4.11 | кодова база, практична роль і загрози валідності | репозитарій, QA-звіти, обмеження експериментів |
 
@@ -391,7 +393,7 @@
 | 4.4 | five-seed head × package factorial | E4/E4b | `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
 | 4.5 | E6 relative and absolute endpoints | `artifacts/phasec_v2/results.json` | `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
 | 4.6 | integrated quality vs OpenSTL | `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json` | `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
-| 4.7 | integrated peak incremental memory by horizon | `integrated_reversible_openstl_memory.json` | `scripts/profile_integrated_reversible_openstl.py`; same-model BPTT/reversible comparison |
+| 4.7 | integrated peak incremental memory by horizon | `integrated_reversible_openstl_memory.json` | `scripts/profile_integrated_reversible_openstl.py`; попередня другопорядкова оболонка змінює зовнішню динаміку, тому це інженерний, не same-forward причинний профіль |
 
 ### 8.4 Таблиці додатків
 
@@ -414,7 +416,7 @@
 | Е.1 | expanded mechanism-selection results | frozen mechanism study | supporting material; NFE sensitivity uses smaller frozen pool and cannot be pooled with main evaluation |
 | Ж.1 | public repositories | GitHub repos [171–173] | record exact commit/environment for any new reproduction |
 | Ж.2 | integrated software components/tests | current worktree | `fixed_region_revformer.py`, `packed_simvp.py`, `reversible_rollout.py`; tests named in table |
-| Ж.3 | descriptive memory vs OpenSTL | `openstl_baseline_comparison.json` + integrated profiles | only first two rows are same-model causal contrast; horizons differ for external baselines |
+| Ж.3 | descriptive memory vs OpenSTL | `openstl_baseline_comparison.json` + integrated profiles | старі перші два рядки походять зі спільного прототипу, але не мають тотожної зовнішньої динаміки; горизонти зовнішніх моделей відрізняються |
 
 ## 9. Повний реєстр рисунків
 
@@ -423,7 +425,7 @@
 - `docs/figures/restructured/figure_provenance.json` – розділ 1;
 - `docs/figures/restructured/ch2_ch4_figure_provenance.json` – нові й опубліковані активи розділів 2–4;
 - `docs/figures/restructured/existing_figure_provenance.json` – раніше наявні активи репозитарію;
-- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18–3.20 і 4.12.
+- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18–3.20, нижня частина 4.3 та рисунок 4.12.
 
 Не змінювати опубліковані рисунки TempVerseFormer і V-BLT під виглядом косметичної правки. Для них дозволено змінити масштаб, зовнішні поля та підпис у дисертації, але не внутрішній зміст. Власні концептуальні схеми можна регенерувати, якщо збережено їхню семантику й оновлено provenance.
 
@@ -512,7 +514,7 @@
 |---|---|---|---|
 | 4.1 | `docs/figures/fig24_generation_objectives.png` | regression/diffusion/EBT interfaces | `scripts/make_dissertation_missing_figures.py`; protocol schematic |
 | 4.2 | `.../ch4_fig4_2_ebt_composite.png` | EBT ranking and cold-descent diagnostics | `scripts/make_restructured_ch2_ch4_figures.py` from `logs_rhcp/ebt_scaled_s1.log` and `ebt_scaled_s2.log`; diagnostic only |
-| 4.3 | `docs/figures/fig28_memory_gate_optimization.png` | four development training logs, 6k vs 20k updates | `scripts/make_dissertation_missing_figures.py`; optimization gate, not untouched evidence |
+| 4.3 | `docs/figures/fig28_memory_gate_optimization.png` + `figures/restructured/ch4_fig4_3b_schedule_calibration.svg` | окремі 6k/20k журнали та всі 15 точок парного A4-COR калібрування до 30k | перший файл створює `make_dissertation_missing_figures.py`; другий — `generate_ch4_schedule_calibration.py` із запечатаних JSON/JSONL; обидва є шлюзом оптимізації, не доказом переваги пакета |
 | 4.4 | `.../ch4_fig4_4_reach_effects.png` | E2 full-population vs pair-specific reach effects | `make_restructured_ch2_ch4_figures.py` from frozen E2 values; validate numbers against `artifacts/confirmation_e2/results.json` |
 | 4.5 | `docs/figures/article_confirmed_frontier.png` | discrete simultaneous E2 frontier + token arithmetic | `scripts/make_rft_result_figures.py`; E2 artifact; no lines/interpolation implying a fitted crossover |
 | 4.6 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | E4b five-seed factorial | `scripts/make_rft_result_figures.py` from `artifacts/e4b_head_package/results.json` |
@@ -521,7 +523,7 @@
 | 4.9 | `docs/figures/fig18_trust_negative_replication.png` | E5a early/late effects | той самий скрипт from `artifacts/e5a_trust_replication/results.json`; late boundary failed |
 | 4.10 | `docs/figures/fig21_pose_indexed_raw_memory.png` | E8a raw K6/K14/K38/K48 reference | той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
 | 4.11 | `docs/figures/fig22_phasec_v2_boundary.png` | E6 support/trajectory/coverage/identity | той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
-| 4.12 | `figures/restructured/ch4_fig4_12_integrated_memory.svg` | same-model reversible vs BPTT horizon profile | dissertation-native manual SVG from `integrated_reversible_openstl_memory.json` |
+| 4.12 | `figures/restructured/ch4_fig4_12_integrated_memory.svg` | попередній second-order reversible vs BPTT профіль довжини ланцюга | dissertation-native manual SVG from `integrated_reversible_openstl_memory.json`; зовнішня динаміка режимів не тотожна |
 | 4.13 | `docs/figures/restructured/ch4_fig4_13_two_resource_axes.png` | context token arithmetic + activation-memory results | `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |
 | 4.14 | `.../ch4_fig4_14_decision_flow.png` | decision flow by limiting resource | той самий скрипт; design rule, not trained classifier or fitted policy |
 
@@ -600,7 +602,7 @@ python scripts/build_existing_figure_provenance.py
 - `scripts/train_fixed_region_adapter.py` – adapter training;
 - `scripts/finetune_simvp_on_packed_context.py` – selected quality run;
 - `scripts/profile_fixed_region_memory.py` – token-core/OpenSTL one-step profiles;
-- `scripts/profile_integrated_reversible_openstl.py` – same-model horizon profile;
+- `scripts/profile_integrated_reversible_openstl.py` – історичний профіль різних зовнішніх рекурентних режимів;
 - `tests/test_fixed_region_revformer.py`, `tests/test_packed_simvp.py`, `tests/test_reversible_rollout.py` – unit/contract tests.
 
 Рисунок 4.12 створено з `integrated_reversible_openstl_memory.json`. Таблиця 4.7 використовує ті самі значення. Якщо D:-диск недоступний іншому агенту, hashes і числа в рукописі можна перевірити за таблицею Г.1, але повне незалежне відтворення потребує передачі архіву або публічного downloader.
@@ -690,7 +692,7 @@ Fixed patches, RoPE-ND, byte classification і entropy maps реалізован
 
 ### 12.8 Інтеграція
 
-Не включати integration experiment до четвертої статті. Не приписувати йому 48-frame LoopMom result. Не заявляти multiplicative `10.67× × 2.58×` memory saving: перше є state-payload ratio, друге – same-model incremental peak activation/profile ratio.
+Нова стаття може поєднати A4 та остаточну integration-перевірку лише як два окремі блоки доказів. Не приписувати інтегрованій моделі 48-frame TRB result. Не заявляти multiplicative `10.67× × 2.58×` memory saving: перше є state-payload ratio, а друге — історичним incremental peak ratio для відмінної зовнішньої динаміки.
 
 ## 13. Відомі обмеження та пункти, що потребують даних автора
 
