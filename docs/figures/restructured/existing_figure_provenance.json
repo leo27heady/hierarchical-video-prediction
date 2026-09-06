@@ -485,7 +485,7 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "B.1",
+    "figure_id": "В.1",
     "file": "docs/figures/fig63_executed_configuration_matrix.png",
     "generator": "scripts/make_dissertation_foundation_figures.py",
     "data_source": "complete configuration/evidence registry and terminal experiment reports",
@@ -523,12 +523,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Appendix B Figure B.1; caption includes an explicit author/source classification.",
+    "caption_attribution": "Ukrainian Figure В.1; asset unchanged, narrative order updated 2026-09-06",
     "layout_note": "Wide nine-column matrix: place on a landscape or dedicated full-width page. At ordinary portrait text width its 7.3-pt source labels fall below the blueprint's 8.5-pt preferred minimum. Appendix Table B.4 remains the authoritative readable registry."
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.1",
+    "figure_id": "4.2",
     "file": "docs/figures/fig24_generation_objectives.png",
     "generator": "scripts/make_dissertation_missing_figures.py",
     "data_source": "implemented regression, diffusion, and energy-head interfaces",
@@ -571,12 +571,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.1; caption includes an explicit author/source classification.",
+    "caption_attribution": "Ukrainian Figure 4.2; asset unchanged, narrative order updated 2026-09-06",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.3",
+    "figure_id": "4.1",
     "file": "docs/figures/fig28_memory_gate_optimization.png",
     "generator": "scripts/make_dissertation_missing_figures.py",
     "data_source": "logs_rhcp/mem_gate_full_s0.log, logs_rhcp/mem_gate_full_s1.log, logs_rhcp/mem_gate_full_s0_t20k.log, and logs_rhcp/mem_gate_full_s1_t20k.log",
@@ -624,7 +624,7 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated repository artwork; no third-party or publisher figure pixels were identified in this asset. Upstream dataset and result-artifact distribution terms remain separate from copyright in the plotted artwork.",
     "permission_status": "no external artwork permission required",
-    "caption_attribution": "Chapter 4 Figure 4.3; caption includes an explicit author/source classification.",
+    "caption_attribution": "Ukrainian Figure 4.1; asset unchanged, narrative order updated 2026-09-06",
     "layout_note": null
   },
   {
@@ -895,7 +895,7 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "E.1",
+    "figure_id": "Е.1",
     "file": "docs/figures/fig29_mechanism_single_step_samples.png",
     "generator": "scripts/make_dissertation_missing_figures.py",
     "data_source": "logs_rhcp/step1_mech_clean_reg.png and logs_rhcp/step1_mech_clean_diff.png",
@@ -933,12 +933,12 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
     "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
-    "caption_attribution": "Appendix E Figure E.1; caption includes an explicit author/source classification.",
+    "caption_attribution": "Ukrainian Figure Е.1; asset unchanged, narrative order updated 2026-09-06",
     "layout_note": null
   },
   {
     "schema_version": "1.0",
-    "figure_id": "E.2",
+    "figure_id": "Е.2",
     "file": "docs/figures/fig7_samples_claim1.png",
     "generator": "scripts/make_samples.py",
     "data_source": "frozen LoopMom train/test arrays, hier_ae_mom.pt, and seed-1 hier-long/flat-budget 30,000-step checkpoints; fixed clip indices 0, 1, 3, and 5 and horizons 1, 24, 60, 100, and 148",
@@ -1006,7 +1006,7 @@
     "publication_reuse_status": "author-created composite or repository artwork; no published figure pixels copied",
     "rights_status": "Author-generated composite from project-produced predictions and ground-truth frames; no publisher artwork was copied. The author-created composite uses MNIST-derived glyphs solely as dataset content, with Moving-MNIST provenance and the exact local data manifest recorded separately.",
     "permission_status": "cleared for scholarly dissertation use; dataset provenance and citation recorded",
-    "caption_attribution": "Appendix E Figure E.2; caption includes an explicit author/source classification.",
+    "caption_attribution": "Ukrainian Figure Е.2; asset unchanged, narrative order updated 2026-09-06",
     "layout_note": "Tall fixed-index gallery: reserve a dedicated portrait page and do not reduce it below full printable height; review labels in the final typeset proof."
   }
 ]

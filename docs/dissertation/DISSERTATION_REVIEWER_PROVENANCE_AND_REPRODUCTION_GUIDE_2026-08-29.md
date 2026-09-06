@@ -361,188 +361,159 @@
 
 ## 8. Повний реєстр таблиць
 
-У поточній редакції 41 нумерована таблиця. Більшість таблиць набрано вручну в Markdown з названого джерела. Скрипт аналізу створює JSON або проміжну Markdown-таблицю, але остаточне розміщення й українські підписи редагувалися вручну. Якщо окремого генератора немає, це прямо зазначено; у такому разі числа потрібно звіряти з первинним PDF/JSON, а не з іншою копією таблиці в рукописі.
-
-### 8.1 Таблиці розділів 1–2
-
-| № | Зміст | Модель / результат | Джерело та відтворення |
-|---|---|---|---|
-| 1.1 | терміни ресурсів та інтерфейси керування | системний синтез | авторська таблиця; формули 1.5, 2.6, 3.3–3.5; окремого генератора немає |
-| 1.2 | критерії консистентності, помилки й сліпі зони метрик | огляд + endpoint taxonomy | [94, 127–129, 133] та метрики LoopMom/E6; авторська синтезована таблиця |
-| 2.1 | ролі наборів даних | усі гілки | авторська evidence-role таблиця; звірити з §2.1 і 3.5 |
-| 2.2 | межа реверсивності TempVerseFormer | TempVerseFormer | аудит статті та публічного коду; ручна таблиця, не експериментальний результат |
-| 2.3 | FID/MSE/SSIM для режимів обертання | TempVerseFormer, TempFormer, Transformer, LSTM | опублікована стаття TempVerseFormer; точкові оцінки без нових CI; окремого локального table generator немає |
-| 2.4 | OpenSTL порівняння | TempVerseFormer і baselines | опублікована таблиця статті; публічний repo для повторного запуску, але не для припущення byte-identical history |
-| 2.5 | пам’ять GPU на 1/4/16 кроках | TempVerseFormer і baselines | опублікована стаття/рисунок; ручне перенесення; далекі точки до 1024 не мають exact raw coordinates |
-| 2.6 | BPTT/checkpoint/replay на 10–160 кроках | детерміноване багаторівневе recurrent core | дисертаційне локальне профілювання RTX 4060 Ti; окремого immutable T1–T4 receipt не збережено, тому таблиця є supporting, а не центральним frozen claim |
-| 2.7 | вибір часової стратегії | BPTT, checkpointing, reversibility | авторський синтез з літератури й вимірювань; без генератора |
-| 2.8 | компоненти V-BLT і рівень доказовості | V-BLT | paper/code audit; ручна таблиця розмежування implemented/proposed |
-| 2.9 | model size і GFLOPs V-BLT/ViViT/UNet-3D | V-BLT paper | опубліковані точкові оцінки; рисунок 2.18 створює `scripts/make_restructured_ch2_ch4_figures.py` з цих чисел |
-| 2.10 | MSE/SSIM/PSNR на 2-D/3-D | V-BLT paper | опублікована таблиця; mixed 3-D ranking зберігати |
-
-### 8.2 Таблиці розділу 3
-
-| № | Зміст | Основа | Джерело та відтворення |
-|---|---|---|---|
-| 3.1 | поля контекстного пакета | основний context model | формули 3.1–3.5, конфігурації/`ArmSpec`; ручний словник інтерфейсу |
-| 3.2 | frozen latent interface | дворівневий codec | реалізація codec у `hvp_rev/rhvd.py` та executed configs; ручна специфікація |
-| 3.3 | набори даних і evidence role | усі експерименти | авторська карта; не ранжування difficulty |
-| 3.4 | тензорний контракт інтегрованої архітектури | Moving MNIST і TaxiBJ | реалізація `HVPIntegratedModel` та конфігурації OpenSTL; арифметика токенів, не профіль VRAM |
-
-### 8.3 Таблиці розділу 4
-
-| № | Зміст | Первинний результат | Скрипт / перевірка |
-|---|---|---|---|
-| 4.1 | regression vs diffusion mechanism selection | frozen one-step mechanism study | числа з terminal mechanism receipts; expanded table Е.1; рисунок 4.1 задає інтерфейси, а повний монтаж Е.1 лишається якісною ілюстрацією |
-| 4.2 | full E2 reach-band endpoint suite | `artifacts/confirmation_e2/results.json` | `scripts/analyze_e2_confirmation.py`; кінцеві числа перевіряє claim/text QA |
-| 4.3 | 48-frame token/payload arithmetic | definitions, not model scores | direct calculation from 16/64 tokens and 16 coefficients; no result analyzer required |
-| 4.4 | five-seed head × package factorial | E4/E4b | `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
-| 4.5 | E6 relative and absolute endpoints | `artifacts/phasec_v2/results.json` | `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
-| 4.6 | integrated quality vs OpenSTL | `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json` | `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
-| 4.7 | integrated peak incremental memory by horizon | `integrated_reversible_openstl_memory.json` | `scripts/profile_integrated_reversible_openstl.py`; попередня другопорядкова оболонка змінює зовнішню динаміку, тому це інженерний, не same-forward причинний профіль |
-
-### 8.4 Таблиці додатків
-
-| № | Зміст | Походження | Правило оновлення |
-|---|---|---|---|
-| А.1 | публікації, результати, внесок | статті [A1–A4] + авторська attribution | статус [A4] і склад авторів потребують даних автора; попередній прототип не приписувати завершеній статті, а остаточну інтеграцію вносити до спільного рукопису лише після експериментів |
-| Б.1 | адміністративні записи | `ADMIN` | заповнювати лише за офіційними документами автора/ВНТУ |
-| В.1 | comparison licences | evidence registry | синхронізувати з `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md` |
-| В.2 | 26 executed LoopMom arms | configs, result registry | ручне компактне представлення повної registry; row IDs LM01–LM26 стабільні |
-| В.3 | structurally absent/closed cells | authorization ledger | не позначати як pending; E9 лишається skipped |
-| В.4 | component/configuration matrix | experiments + artifacts | ручний join; не трактувати як full factorial |
-| В.5 | evidence map for context shape | E2/E4/B1 diagnostics | comparison licence є частиною результату |
-| В.6 | applicability matrix | synthesis of chapters 2–4 | не додавати universal recommendations without evidence |
-| В.7 | experiment codes, questions, evidence classes | authorization/evidence registry | `experiments/authorization.json`, `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`; перенесено з головного тексту як довідковий індекс |
-| В.8 | exact package/context/target/total-token and payload accounting | усі LoopMom arms та B1 | конфігураційний реєстр + формули 3.3–3.5, 3.31–3.32; повний довідковий контракт, перенесений із §3.4.3 |
-| Г.1 | human-readable ↔ machine-readable evidence index | artifact paths and hashes | primary navigation table; update when filenames/hashes change |
-| Д.1 | full simultaneous intervals for sampler/codec | E7c/E7a | analysis scripts in §5.3; positive sign follows registered candidate, including flat at 2 432 |
-| Д.2 | повний реєстр метрик, популяцій і порожніх випадків | LoopMom/E6 evaluators | код метрик у `hvp_rev`, data card, формули 3.39–3.45; довідковий контракт реалізації |
-| Д.3 | exact discrete frontier results with simultaneous intervals | E2 | `analyze_e2_confirmation.py`; `scripts/make_rft_final_tables.py`; не інтерполювати між перевіреними бюджетами |
-| Е.1 | expanded mechanism-selection results | frozen mechanism study | supporting material; NFE sensitivity uses smaller frozen pool and cannot be pooled with main evaluation |
-| Ж.1 | public repositories | GitHub repos [171–173] | record exact commit/environment for any new reproduction |
-| Ж.2 | integrated software components/tests | попередня та остаточна робочі гілки | старі `fixed_region_revformer.py`, `packed_simvp.py`, `reversible_rollout.py` і нові `hvp_integrated_model.py`, OpenSTL-конфігурації та відновлюваний контролер; тести названо в таблиці |
-| Ж.3 | descriptive memory vs OpenSTL | `openstl_baseline_comparison.json` + integrated profiles | старі перші два рядки походять зі спільного прототипу, але не мають тотожної зовнішньої динаміки; горизонти зовнішніх моделей відрізняються |
+| Номер | Назва | Джерело / умови доказу |
+|---|---|---|
+| 1.1 | Терміни, пов’язані з ресурсами, та їхні інтерфейси керування. | `02_CHAPTER_1.md`; системний синтез; авторська таблиця; формули 1.5, 2.6, 3.3–3.5; окремого генератора немає |
+| 1.2 | Критерії консистентності, спостережувані помилки та «сліпі зони» метрик. | `02_CHAPTER_1.md`; огляд + endpoint taxonomy; [94, 127–129, 133] та метрики LoopMom/E6; авторська синтезована таблиця |
+| 2.1 | Ролі наборів даних та межі доказовості. | `03_CHAPTER_2.md`; усі гілки; авторська evidence-role таблиця; звірити з §2.1 і 3.5 |
+| 2.2 | Реверсивність станів TempVerseFormer | `03_CHAPTER_2.md`; TempVerseFormer; аудит статті та публічного коду; ручна таблиця, не експериментальний результат |
+| 2.3 | Опубліковані прогнозні точкові оцінки за режимами обертання | `03_CHAPTER_2.md`; TempVerseFormer, TempFormer, Transformer, LSTM; опублікована стаття TempVerseFormer; точкові оцінки без нових CI; окремого локального table generator немає |
+| 2.4 | Опубліковані порівняння OpenSTL | `03_CHAPTER_2.md`; TempVerseFormer і baselines; опублікована таблиця статті; публічний repo для повторного запуску, але не для припущення byte-identical history |
+| 2.5 | Опубліковані вимірювання пам’яті GPU для зазначених у таблиці горизонтів, розмір пакета 32 | `03_CHAPTER_2.md`; TempVerseFormer і baselines; опублікована стаття/рисунок; ручне перенесення; далекі точки до 1024 не мають exact raw coordinates |
+| 2.6 | Виміряні значення детермінованої багаторівневої пам’яті та межі часу виконання на RTX 4060 Ti 16 ГБ. | `03_CHAPTER_2.md`; детерміноване багаторівневе recurrent core; дисертаційне локальне профілювання RTX 4060 Ti; окремого immutable T1–T4 receipt не збережено, тому таблиця є supporting, а не центральним frozen claim |
+| 2.7 | Вибір стратегії часового диференціювання за обмежувальними умовами. | `03_CHAPTER_2.md`; BPTT, checkpointing, reversibility; авторський синтез з літератури й вимірювань; без генератора |
+| 2.8 | Компоненти V-BLT та рівень їх доказовості. | `03_CHAPTER_2.md`; V-BLT; paper/code audit; ручна таблиця розмежування implemented/proposed |
+| 2.9 | Опубліковані точкові оцінки вартості конфігурацій V-BLT та базових моделей. | `03_CHAPTER_2.md`; V-BLT paper; опубліковані точкові оцінки; рисунок 2.18 створює `scripts/make_restructured_ch2_ch4_figures.py` з цих чисел |
+| 2.10 | Опубліковані точкові оцінки якості прогнозування на процедурних наборах V-BLT. | `03_CHAPTER_2.md`; V-BLT paper; опублікована таблиця; mixed 3-D ranking зберігати |
+| 3.1 | Поля контекстного пакета та їх інтерпретація. | `04_CHAPTER_3.md`; основний context model; формули 3.1–3.5, конфігурації/`ArmSpec`; ручний словник інтерфейсу |
+| 3.2 | Специфікація зафіксованого інтерфейсу прихованого простору. | `04_CHAPTER_3.md`; дворівневий codec; реалізація codec у `hvp_rev/rhvd.py` та executed configs; ручна специфікація |
+| 3.3 | Набори даних для оцінювання та їхня доказова роль. | `04_CHAPTER_3.md`; усі експерименти; авторська карта; не ранжування difficulty |
+| 3.4 | Тензорний контракт інтегрованої моделі та двох зовнішніх протоколів. | `04_CHAPTER_3.md`; Moving MNIST і TaxiBJ; реалізація `HVPIntegratedModel` та конфігурації OpenSTL; арифметика токенів, не профіль VRAM |
+| 3.5 | Принципи побудови ієрархічного предиктора. | `04_CHAPTER_3.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.1 | Основні докази для вибору механізму генерації. | `05_CHAPTER_4.md`; frozen one-step mechanism study; числа з terminal mechanism receipts; expanded table Е.1; рисунок 4.1 задає інтерфейси, а повний монтаж Е.1 лишається якісною ілюстрацією |
+| 4.2 | Повний набір підтверджувальних показників у відкладеній вибірці $14<\Delta t\le48$. | `05_CHAPTER_4.md`; `artifacts/confirmation_e2/results.json`; `scripts/analyze_e2_confirmation.py`; кінцеві числа перевіряє claim/text QA |
+| 4.3 | Витрати контексту за однакової номінальної досяжності 48 кадрів. | `05_CHAPTER_4.md`; definitions, not model scores; direct calculation from 16/64 tokens and 16 coefficients; no result analyzer required |
+| 4.4 | Факторний експеримент «вихідний модуль × пакет» для п’яти ініціалізацій. | `05_CHAPTER_4.md`; E4/E4b; `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
+| 4.5 | Відносні ефекти E6 та абсолютні показники. | `05_CHAPTER_4.md`; `artifacts/phasec_v2/results.json`; `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
+| 4.6 | Якість політик контексту за спільного бюджету 30 000 кроків. | `05_CHAPTER_4.md`; FRT; docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json |
+| 4.7 | Розподіл 1 792 контекстних токенів. | `05_CHAPTER_4.md`; ALC; очікується / умови в experiment_evidence_inventory.json |
+| 4.8 | Якість за розширення грубої підтримки. | `05_CHAPTER_4.md`; CEX; очікується / умови в experiment_evidence_inventory.json |
+| 4.9 | Розміщення глобальної квоти 256 деталей. | `05_CHAPTER_4.md`; STS; очікується / умови в experiment_evidence_inventory.json |
+| 4.10 | Кількість рівнів за бюджету 1 792. | `05_CHAPTER_4.md`; LVL; очікується / умови в experiment_evidence_inventory.json |
+| 4.11 | Перекриття часових представлень. | `05_CHAPTER_4.md`; OVR; очікується / умови в experiment_evidence_inventory.json |
+| 4.12 | Відкладена перевірка вибраних ролей. | `05_CHAPTER_4.md`; CONF; очікується / умови в experiment_evidence_inventory.json |
+| 4.13 | Чутливість за повного покриття валідації. | `05_CHAPTER_4.md`; VAL300; очікується / умови в experiment_evidence_inventory.json |
+| 4.14 | Діагностика поведінки контекстних пакетів. | `05_CHAPTER_4.md`; MECH; очікується / умови в experiment_evidence_inventory.json |
+| 4.15 | Умовна перевірка рекурсивного прогнозу. | `05_CHAPTER_4.md`; ROLL64; очікується / умови в experiment_evidence_inventory.json |
+| 4.16 | Якість інтегрованого прототипу та базових моделей на Moving-MNIST 10→10. | `05_CHAPTER_4.md`; `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json`; `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
+| 4.17 | Пікова додаткова пам’ять інтегрованого предиктора з часовою рекурентністю за різної довжини ланцюга. | `05_CHAPTER_4.md`; `integrated_reversible_openstl_memory.json`; `scripts/profile_integrated_reversible_openstl.py`; попередня другопорядкова оболонка змінює зовнішню динаміку, тому це інженерний, не same-forward причинний профіль |
+| 4.18 | Перевірка однакового обчислення. | `05_CHAPTER_4.md`; PARITY; очікується / умови в experiment_evidence_inventory.json |
+| 4.19 | Повний ресурсний профіль предиктора. | `05_CHAPTER_4.md`; RESOURCE; очікується / умови в experiment_evidence_inventory.json |
+| 4.20 | Обмежені перевірки навчання. | `05_CHAPTER_4.md`; SCREEN; очікується / умови в experiment_evidence_inventory.json |
+| 4.21 | Якість ієрархічного предиктора. | `05_CHAPTER_4.md`; QUALITY; очікується / умови в experiment_evidence_inventory.json |
+| 4.22 | Сумісність компаратора для твердження про якість. | `05_CHAPTER_4.md`; COMP; очікується / умови в experiment_evidence_inventory.json |
+| А.1 | Публікації, використані результати та особистий внесок здобувача. | `08_APPENDICES.md`; статті [A1–A4] + авторська attribution; статус [A4] і склад авторів потребують даних автора; попередній прототип не приписувати завершеній статті, а остаточну інтеграцію вносити до спільного рукопису лише після експериментів |
+| Б.1 | Адміністративні записи, які потребують остаточного підтвердження. | `08_APPENDICES.md`; `ADMIN`; заповнювати лише за офіційними документами автора/ВНТУ |
+| В.1 | Ліцензії на інтерпретацію експериментальних порівнянь. | `08_APPENDICES.md`; evidence registry; синхронізувати з `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md` |
+| В.2 | Повний реєстр виконаних гілок LoopMom. | `08_APPENDICES.md`; configs, result registry; ручне компактне представлення повної registry; row IDs LM01–LM26 стабільні |
+| В.3 | Структурно відсутні та остаточно закриті експериментальні комірки. | `08_APPENDICES.md`; authorization ledger; не позначати як pending; E9 лишається skipped |
+| В.4 | Повна матриця виконаних компонентів і конфігурацій. | `08_APPENDICES.md`; experiments + artifacts; ручний join; не трактувати як full factorial |
+| В.5 | Карта доказів форми контексту та ліцензії на порівняння. | `08_APPENDICES.md`; E2/E4/B1 diagnostics; comparison licence є частиною результату |
+| В.6 | Застосовність розроблених і порівняльних втручань. | `08_APPENDICES.md`; synthesis of chapters 2–4; не додавати universal recommendations without evidence |
+| В.7 | Коди експериментальних програм, питання та класи доказів. | `08_APPENDICES.md`; authorization/evidence registry; `experiments/authorization.json`, `APPENDIX_CH4_CONFIGURATION_AND_EVIDENCE_REGISTRY.md`; перенесено з головного тексту як довідковий індекс |
+| В.8 | Точний облік пакетів, токенів і корисного обсягу контекстних даних для основної межі та інтерфейсів B1. | `08_APPENDICES.md`; усі LoopMom arms та B1; конфігураційний реєстр + формули 3.3–3.5, 3.31–3.32; повний довідковий контракт, перенесений із §3.4.3 |
+| Г.1 | Зв’язок наукових тверджень із людськими та машиночитаними записами. | `08_APPENDICES.md`; artifact paths and hashes; primary navigation table; update when filenames/hashes change |
+| Д.1 | Повні одночасні інтервали для втручань в алгоритм вибірки та кодек. | `08_APPENDICES.md`; E7c/E7a; analysis scripts in §5.3; positive sign follows registered candidate, including flat at 2 432 |
+| Д.2 | Повний реєстр метрик, популяцій та чутливості до помилок. | `08_APPENDICES.md`; LoopMom/E6 evaluators; код метрик у `hvp_rev`, data card, формули 3.39–3.45; довідковий контракт реалізації |
+| Д.3 | Точні результати перевіреної межі на відкладених даних. | `08_APPENDICES.md`; E2; `analyze_e2_confirmation.py`; `scripts/make_rft_final_tables.py`; не інтерполювати між перевіреними бюджетами |
+| Е.1 | Розширені результати вибору механізму генерації. | `08_APPENDICES.md`; frozen mechanism study; supporting material; NFE sensitivity uses smaller frozen pool and cannot be pooled with main evaluation |
+| Ж.1 | Публічні репозиторії попередніх методів і даних. | `08_APPENDICES.md`; GitHub repos [171–173]; record exact commit/environment for any new reproduction |
+| Ж.2 | Програмні компоненти інтеграційного розширення та їх перевірки. | `08_APPENDICES.md`; попередня та остаточна робочі гілки; старі `fixed_region_revformer.py`, `packed_simvp.py`, `reversible_rollout.py` і нові `hvp_integrated_model.py`, OpenSTL-конфігурації та відновлюваний контролер; тести названо в таблиці |
+| Ж.3 | Описове порівняння пікової додаткової пам’яті предиктора зі сталими ділянками з моделями OpenSTL. | `08_APPENDICES.md`; `openstl_baseline_comparison.json` + integrated profiles; старі перші два рядки походять зі спільного прототипу, але не мають тотожної зовнішньої динаміки; горизонти зовнішніх моделей відрізняються |
+| И.1 | Реєстр покриття експериментальних питань. | `08_APPENDICES.md`; авторська схема / явне місце результату; реєстр походження та покриття |
 
 ## 9. Повний реєстр рисунків
 
-У головному тексті рівно 78 нумерованих рисунків: 25 у розділі 1, 19 у розділі 2, 20 у розділі 3 і 14 у розділі 4. Додатки містять ще чотири рисунки: довідкові В.1–В.2 та повні монтажі Е.1–Е.2. Отже, весь рукопис містить 82 підписи рисунків. Композитні рисунки 1.6 і 2.17 містять по два файли, але мають один номер. Точні SHA-256, розміри, спосіб вилучення та права зберігаються у:
-
-- `docs/figures/restructured/figure_provenance.json` – розділ 1;
-- `docs/figures/restructured/ch2_ch4_figure_provenance.json` – нові й опубліковані активи розділів 2–4;
-- `docs/figures/restructured/existing_figure_provenance.json` – раніше наявні активи репозитарію;
-- `figures/restructured/integrated_figure_provenance.json` – рисунки 3.18–3.20, нижня частина 4.3 та рисунок 4.12.
-
-Не змінювати опубліковані рисунки TempVerseFormer і V-BLT під виглядом косметичної правки. Для них дозволено змінити масштаб, зовнішні поля та підпис у дисертації, але не внутрішній зміст. Власні концептуальні схеми можна регенерувати, якщо збережено їхню семантику й оновлено provenance.
-
-### 9.1 Рисунки розділу 1
-
-| № | Файл | Що показує і на чому ґрунтується | Створення / доказовий статус |
-|---|---|---|---|
-| 1.1 | `docs/figures/restructured/ch1_fig1_1_system_boundary.png` | system boundary формул 1.1–1.3 | `scripts/make_restructured_dissertation_figures.py`; авторська `ILL/DEF`, не дані |
-| 1.2 | `.../ch1_fig1_2_hidden_viewport.png` | прихований світ, viewport і occlusion | той самий скрипт; концепт LoopMom/POMDP |
-| 1.3 | `.../ch1_fig1_3_teacher_self_fed.png` | teacher-forced vs self-fed recurrence | той самий скрипт; пояснення формули 1.4 |
-| 1.4 | `.../ch1_fig1_4_resource_locations.png` | parameters/optimizer/activations/context/transient | той самий скрипт; схема розкладу 1.5 |
-| 1.5 | `docs/figures/fig31_consistency_landscape.png` | паралельна перевірка прогнозів за незалежними критеріями консистентності | `scripts/make_dissertation_foundation_figures.py`; умовна матриця, не траєкторія оптимізації і не емпірична шкала |
-| 1.6 | `.../published_2024_fig1_sdxl.png` + `.../ch1_fig1_6b_video_prediction_example.png` | складений рисунок: опубліковані авторські SDXL-приклади та умовний рух/зникнення/повторна поява | першу панель вилучено `make_restructured_dissertation_figures.py` з official PDF, CC BY 4.0; другу створено тим самим скриптом; обидві `ILL` |
-| 1.7 | `.../ch1_fig1_6_consistency_taxonomy.png` | overlapping consistency criteria | той самий скрипт; синтез дисертації й [133] |
-| 1.8 | `.../published_2024_fig5_visual_perception.png` | local visual input vs integrated scene understanding | вилучено з [133]; author-created, концептуально за [174], CC BY 4.0 |
-| 1.9 | `.../ch1_fig1_8_failure_montage.png` | різні довгогоризонтні відмови | `make_restructured_dissertation_figures.py`; illustrative montage |
-| 1.10 | `.../ch1_fig1_8_trajectory_consistency.png` | smoothness vs trajectory vs re-entry identity | той самий скрипт; формула 1.9 і E6 taxonomy |
-| 1.11 | `.../ch1_fig1_9_cross_level_consistency.png` | compatible/conflicting coarse-fine predictions | той самий скрипт; формула 1.11, не measured cross-level experiment |
-| 1.12 | `.../ch1_fig1_7_static_to_video.png` | перехід від static control до video criteria | той самий скрипт; synthesis |
-| 1.13 | `.../published_2024_fig2_forward_diffusion.png` | forward diffusion | вилучено з [133] без зміни; `make_restructured_dissertation_figures.py` |
-| 1.14 | `.../published_2024_fig3_reverse_diffusion.png` | reverse diffusion | так само, original figure 3 |
-| 1.15 | `.../published_2024_fig4_diffusion_pipeline.png` | latent-diffusion pipeline | так само, original figure 4 |
-| 1.16 | `.../published_2024_fig6_img2img.png` | image-to-image conditioning | так само, original figure 6 |
-| 1.17 | `.../published_2024_fig7_controlnet.png` | geometry conditioning/ControlNet | так само, original figure 7 |
-| 1.18 | `.../published_2024_fig8_inversion.png` | inversion-based control | так само, original figure 8 |
-| 1.19 | `.../published_2024_fig9_stylealigned.jpg` | shared style / attention | так само, original figure 9 |
-| 1.20 | `.../ch1_fig1_11_control_interfaces.png` | п’ять interfaces of consistency control | `make_restructured_dissertation_figures.py`; author synthesis |
-| 1.21 | `.../ch1_fig1_12_support_identity_bridge.png` | support і identity як незалежні осі | той самий скрипт; мотивує E6, не є E6 data |
-| 1.22 | `.../ch1_fig1_15_activation_tape.png` | activation tape growth | той самий скрипт; формула 1.12/TempVerse concept |
-| 1.23 | `docs/figures/fig35_fixed_grid_tokenization.png` | fixed grid on nonuniform scene | `scripts/make_dissertation_foundation_figures.py`; V-BLT motivation |
-| 1.24 | `docs/figures/fig39_flat_long_context_barrier.png` | relevant history beyond flat window | той самий скрипт; LoopMom motivation |
-| 1.25 | `.../ch1_fig1_18_systems_map.png` | bottlenecks, interventions, evidence boundaries | `scripts/make_restructured_ch2_ch4_figures.py`; high-level synthesis |
-
-### 9.2 Рисунки розділу 2
-
-| № | Файл | Основа | Створення / статус |
-|---|---|---|---|
-| 2.1 | `docs/figures/restructured/ch2_fig2_1_vblt_2d_sequence_published.png` | V-BLT paper, 2-D sequence, PDF p.7 | `scripts/make_restructured_ch2_ch4_figures.py` вилучив published panel; не регенерувати як нові дані |
-| 2.2 | `.../ch2_fig2_2_vblt_3d_sequence_published.png` | V-BLT paper, 3-D polycube, PDF p.8 | той самий extraction workflow |
-| 2.3 | `.../ch2_fig2_3_dataset_ladder.png` | roles of datasets in dissertation | той самий скрипт; author categorical map |
-| 2.4 | `.../ch2_fig2_4_storage_schedules.png` | BPTT/checkpoint/reversible schedules | той самий скрипт; conceptual, equations 2.4–2.15 |
-| 2.5 | `.../ch2_fig2_5_tempverse_reversible_block_published.png` | published TempVerse reversible block, paper p.9 | copied from `TempVerseFormer/resources/figures/rev-block-final.png`; preserve internal artwork |
-| 2.6 | `.../ch2_fig2_6_tempverse_architecture_published.png` | full TempVerseFormer, paper p.12 | source `tempverse-arch-final.png`; published artwork unchanged |
-| 2.7 | `.../ch2_fig2_7_tempverse_chaining_published.png` | temporal chaining, paper p.17 | source `chain-example-final.png`; published artwork unchanged |
-| 2.8 | `.../ch2_fig2_8_tempverse_time_agnostic_published.png` | reversible backward procedure, paper p.20 | extracted from supplied PDF by `make_restructured_ch2_ch4_figures.py` |
-| 2.9 | `.../ch2_fig2_16_tempverse_combined_fid_published.png` | published combined-motion FID, paper p.31 | extracted published result; точкові криві, no added CI |
-| 2.10 | `.../ch2_fig2_18_tempverse_memory_published.png` | published memory vs horizon, paper p.32 | extracted result; exact quantitative claims only for tabulated 1/4/16 points |
-| 2.11 | `.../ch2_fig2_19_tempverse_time_published.png` | published time vs horizon, paper p.33 | extracted result; configuration-specific |
-| 2.12 | `.../ch2_fig2_20_fixed_patch_flow.png` | V-BLT local-global-local tensor flow | `make_restructured_ch2_ch4_figures.py`; author redrawing from method, not result |
-| 2.13 | `.../ch2_fig2_21_vblt_architecture_published.png` | V-BLT paper p.4 | extracted published architecture; preserve |
-| 2.14 | `.../ch2_fig2_22_vblt_causal_mask_published.png` | V-BLT paper p.6 | extracted published mask; preserve |
-| 2.15 | `docs/figures/fig47_rope_nd.png` | axis-disjoint RoPE-ND subspaces | `scripts/make_dissertation_foundation_figures.py`; explanatory derivation 2.35–2.39 |
-| 2.16 | `.../ch2_fig2_24_entropy_pipeline.png` | logits→softmax→entropy→channel aggregation | `make_restructured_ch2_ch4_figures.py`; based on V-BLT code and 2.40–2.41 |
-| 2.17 | `.../ch2_fig2_25a_vblt_2d_entropy_published.jpeg` + `.../ch2_fig2_25b_vblt_3d_entropy_published.jpeg` | складений рисунок із 2-D та 3-D ентропійними панелями V-BLT, paper pp. 9–10 | extracted published qualitative results; внутрішній зміст панелей не змінювати |
-| 2.18 | `.../ch2_fig2_26_vblt_point_estimates.png` | published values of tables 2.9–2.10 | `make_restructured_ch2_ch4_figures.py`; author-generated visualization of published numbers |
-| 2.19 | `.../ch2_fig2_27_measured_vs_proposed.png` | implemented fixed V-BLT vs proposed dynamic partition | той самий скрипт; left side `PUB`, right side explicitly hypothetical `DEF` |
-
-### 9.3 Рисунки розділу 3
-
-| № | Файл | Основа | Створення / статус |
-|---|---|---|---|
-| 3.1 | `docs/figures/restructured/ch3_fig3_1_reentry_memory.png` | object leaves recent fine context and re-enters | `scripts/make_restructured_ch2_ch4_figures.py`; conceptual bridge to LoopMom |
-| 3.2 | `docs/figures/fig40_context_package_comparison.png` | dense flat, spatial hierarchy, temporal subsampling | `scripts/make_dissertation_foundation_figures.py`; package definitions, not result |
-| 3.3 | `.../ch3_fig3_3_reach_fidelity_axes.png` | три способи розподілу однакового бюджету між давньою історією та недавньою деталлю | `make_restructured_ch2_ch4_figures.py`; структурне порівняння пакетів, **не емпірична безперервна крива** |
-| 3.4 | `.../ch3_fig3_4_codec_dimensions.png` | exact 4×4/8×8 latent shapes and token counts | той самий скрипт; based on frozen codec interface |
-| 3.5 | `docs/figures/fig22_token_sequence_layout.png` | exact context/target token ordering | `scripts/make_dissertation_missing_figures.py`; `build_existing_figure_provenance.py` records hash |
-| 3.6 | `.../ch3_fig3_6_joint_attention.png` | joint attention in one window vs rollout causality | `make_restructured_ch2_ch4_figures.py`; model structure |
-| 3.7 | `.../ch3_fig3_7_gradient_paths.png` | frozen, detached and trained paths | той самий скрипт; формула 3.16/code contract |
-| 3.8 | `.../ch3_fig3_8_objective_interfaces.png` | diffusion, regression, EBT target interfaces | той самий скрипт; comparison taxonomy |
-| 3.9 | `docs/figures/fig16_context_packaging_architecture.png` | full frozen-codec→WindowDiT pipeline | `scripts/make_rft_core_schematics.py`; active architecture, not superseded macro-first design |
-| 3.10 | `.../ch3_fig3_10_ddim_timeline.png` | deterministic DDIM timeline and NFE | `make_restructured_ch2_ch4_figures.py`; формули 3.25–3.27 та текстовий підрахунок NFE |
-| 3.11 | `docs/figures/fig23_rollout_ring_buffer.png` | coarse/fine ring-buffer update | `scripts/make_dissertation_missing_figures.py`; формула 3.29 |
-| 3.12 | `.../ch3_fig3_12_anchor_geometry.png` | exact anchors at four-frame target boundary | `make_restructured_ch2_ch4_figures.py`; формула 3.30/config registry |
-| 3.13 | `.../ch3_fig3_13_token_costs.png` | context/target/total token and payload arithmetic | той самий скрипт; deterministic calculation, not GPU profile |
-| 3.14 | `docs/figures/fig15_loopmom_observability_schematic.png` | LoopMom world, viewport and reach band | `scripts/make_rft_core_schematics.py`; analytic observability |
-| 3.15 | `.../ch3_fig3_15_reentry_storyboard.png` | multi-frame disappearance/re-entry event | `make_restructured_ch2_ch4_figures.py`; illustrative event |
-| 3.16 | `.../ch3_fig3_16_reach_population.png` | pair-specific eligibility filter | той самий скрипт; формули 3.34–3.38 |
-| 3.17 | `.../ch3_fig3_17_persistent_assignment.png` | Hungarian matching and persistent ID tracking | той самий скрипт; E6 metric protocol |
-| 3.18 | `figures/restructured/ch3_fig3_18_integrated_architecture.svg` | fixed-width packed state, SimVP transition, reversible chain | dissertation-native manual deterministic SVG; no standalone generator found; provenance hash in `integrated_figure_provenance.json` |
-| 3.19 | `figures/restructured/ch3_fig3_19_fixed_regions.svg` | 16 coarse cells + 8 fixed fine regions | dissertation-native manual deterministic SVG; based on formulas 3.46–3.48, not dynamic routing |
-| 3.20 | `figures/restructured/ch3_fig3_20_packed_integrated_architecture.svg` | фізичне coarse/fine пакування, стала квота, реверсивне ядро та майбутні запити | `scripts/generate_ch3_packed_integrated_architecture.py`; схема реалізованої архітектури, не результат якості чи пам’яті |
-
-### 9.4 Рисунки розділу 4
-
-| № | Файл | Дані / модель | Створення / допустиме читання |
-|---|---|---|---|
-| 4.1 | `docs/figures/fig24_generation_objectives.png` | regression/diffusion/EBT interfaces | `scripts/make_dissertation_missing_figures.py`; protocol schematic |
-| 4.2 | `.../ch4_fig4_2_ebt_composite.png` | EBT ranking and cold-descent diagnostics | `scripts/make_restructured_ch2_ch4_figures.py` from `logs_rhcp/ebt_scaled_s1.log` and `ebt_scaled_s2.log`; diagnostic only |
-| 4.3 | `docs/figures/fig28_memory_gate_optimization.png` + `figures/restructured/ch4_fig4_3b_schedule_calibration.svg` | окремі 6k/20k журнали та всі 15 точок парного A4-COR калібрування до 30k | перший файл створює `make_dissertation_missing_figures.py`; другий — `generate_ch4_schedule_calibration.py` із запечатаних JSON/JSONL; обидва є шлюзом оптимізації, не доказом переваги пакета |
-| 4.4 | `.../ch4_fig4_4_reach_effects.png` | E2 full-population vs pair-specific reach effects | `make_restructured_ch2_ch4_figures.py` from frozen E2 values; validate numbers against `artifacts/confirmation_e2/results.json` |
-| 4.5 | `docs/figures/article_confirmed_frontier.png` | discrete simultaneous E2 frontier + token arithmetic | `scripts/make_rft_result_figures.py`; E2 artifact; no lines/interpolation implying a fitted crossover |
-| 4.6 | `docs/figures/fig17_head_package_seed_heterogeneity.png` | E4b five-seed factorial | `scripts/make_rft_result_figures.py` from `artifacts/e4b_head_package/results.json` |
-| 4.7 | `docs/figures/fig19_sampler_nfe_robustness.png` | E7c 20 effects | той самий скрипт from `artifacts/e7c_sampler_nfe/results.json`; two upper intervals unresolved |
-| 4.8 | `docs/figures/fig20_alternate_codec_robustness.png` | original vs independently trained codec | той самий скрипт from `artifacts/e7a_codec_robustness/results.json`; conditional on predictor seed 0 |
-| 4.9 | `docs/figures/fig18_trust_negative_replication.png` | E5a early/late effects | той самий скрипт from `artifacts/e5a_trust_replication/results.json`; late boundary failed |
-| 4.10 | `docs/figures/fig21_pose_indexed_raw_memory.png` | E8a raw K6/K14/K38/K48 reference | той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
-| 4.11 | `docs/figures/fig22_phasec_v2_boundary.png` | E6 support/trajectory/coverage/identity | той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
-| 4.12 | `figures/restructured/ch4_fig4_12_integrated_memory.svg` | попередній second-order reversible vs BPTT профіль довжини ланцюга | dissertation-native manual SVG from `integrated_reversible_openstl_memory.json`; зовнішня динаміка режимів не тотожна |
-| 4.13 | `docs/figures/restructured/ch4_fig4_13_two_resource_axes.png` | context token arithmetic + activation-memory results | `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |
-| 4.14 | `.../ch4_fig4_14_decision_flow.png` | decision flow by limiting resource | той самий скрипт; design rule, not trained classifier or fitted policy |
-
-### 9.5 Рисунки додатків і узгодження нумерації активів
-
-| № | Файл | Призначення | Створення / статус |
-|---|---|---|---|
-| В.1 | `docs/figures/fig63_executed_configuration_matrix.png` | виконане покриття й структурно відсутні комірки | `scripts/make_dissertation_foundation_figures.py`; довідковий індекс, не effect size |
-| В.2 | `docs/figures/restructured/appv_figv_2_equal_reach.png` | точна вартість трьох пакетів за досяжності 48 кадрів | `scripts/make_restructured_ch2_ch4_figures.py`; арифметика токенів і fp16 payload, не VRAM profile |
-| Е.1 | `docs/figures/fig29_mechanism_single_step_samples.png` | повний fixed-index монтаж regression/diffusion | `scripts/make_dissertation_missing_figures.py`; якісна ілюстрація, таблиця 4.1 визначає вибір |
-| Е.2 | `docs/figures/fig7_samples_claim1.png` | повний fixed-index монтаж чотирьох E2 rollout clips | `scripts/make_samples.py`; якісна ілюстрація, таблиця Д.3 містить агрегований доказ |
-
-Актив, Markdown і provenance інтеграційного профілю тепер узгоджено під номером 4.12 і basename `ch4_fig4_12_integrated_memory.svg`. Дві компактні галереї вилучено з головного тексту; повні монтажі Е.1–Е.2 збережено лише в додатках із поясненням рядків і стовпців.
+| Номер | Назва | Джерело / умови доказу |
+|---|---|---|
+| 1.1 | Межі системи довгогоризонтного прогнозування відео. | `02_CHAPTER_1.md`; system boundary формул 1.1–1.3; `scripts/make_restructured_dissertation_figures.py`; авторська `ILL/DEF`, не дані |
+| 1.2 | Прихований стан проти спостереження у вікні перегляду. | `02_CHAPTER_1.md`; прихований світ, viewport і occlusion; той самий скрипт; концепт LoopMom/POMDP |
+| 1.3 | Умовна рекурсія з учительською подачею та із самоподачею. | `02_CHAPTER_1.md`; teacher-forced vs self-fed recurrence; той самий скрипт; пояснення формули 1.4 |
+| 1.4 | Розташування витрат системної пам’яті. | `02_CHAPTER_1.md`; parameters/optimizer/activations/context/transient; той самий скрипт; схема розкладу 1.5 |
+| 1.5 | Паралельна перевірка прогнозу за кількома критеріями консистентності. | `02_CHAPTER_1.md`; паралельна перевірка прогнозів за незалежними критеріями консистентності; `scripts/make_dissertation_foundation_figures.py`; умовна матриця, не траєкторія оптимізації і не емпірична шкала |
+| 1.6 | Від якості окремого зображення до консистентності відеопослідовності: | `02_CHAPTER_1.md`; складений рисунок: опубліковані авторські SDXL-приклади та умовний рух/зникнення/повторна поява; першу панель вилучено `make_restructured_dissertation_figures.py` з official PDF, CC BY 4.0; другу створено тим самим скриптом; обидві `ILL` |
+| 1.7 | Критерії консистентності, що перекриваються. | `02_CHAPTER_1.md`; overlapping consistency criteria; той самий скрипт; синтез дисертації й [133] |
+| 1.8 | Локальний візуальний вхід та інтегроване розуміння сцени. | `02_CHAPTER_1.md`; local visual input vs integrated scene understanding; вилучено з [133]; author-created, концептуально за [174], CC BY 4.0 |
+| 1.9 | Різні типи відмов із поверхнево правдоподібними кадрами. | `02_CHAPTER_1.md`; різні довгогоризонтні відмови; `make_restructured_dissertation_figures.py`; illustrative montage |
+| 1.10 | Операціональне розмежування часової плавності, правильності траєкторії та ідентичності повторного входу. | `02_CHAPTER_1.md`; smoothness vs trajectory vs re-entry identity; той самий скрипт; формула 1.9 і E6 taxonomy |
+| 1.11 | Консистентні та суперечливі прогнози на різних рівнях представлення. | `02_CHAPTER_1.md`; compatible/conflicting coarse-fine predictions; той самий скрипт; формула 1.11, не measured cross-level experiment |
+| 1.12 | Від інваріантів статичних зображень до вимог до відео. | `02_CHAPTER_1.md`; перехід від static control до video criteria; той самий скрипт; synthesis |
+| 1.13 | Пряма дифузія як прогресивне спотворення. | `02_CHAPTER_1.md`; forward diffusion; вилучено з [133] без зміни; `make_restructured_dissertation_figures.py` |
+| 1.14 | Зворотна дифузія як ітеративне усунення шуму. | `02_CHAPTER_1.md`; reverse diffusion; так само, original figure 3 |
+| 1.15 | Загальний обчислювальний тракт генерації на основі дифузії у прихованому просторі. | `02_CHAPTER_1.md`; latent-diffusion pipeline; так само, original figure 4 |
+| 1.16 | Генерація «зображення-до-зображення» на основі еталону та рівня шуму. | `02_CHAPTER_1.md`; image-to-image conditioning; так само, original figure 6 |
+| 1.17 | Структурне обумовлення контролює геометрію більш безпосередньо, ніж ідентичність. | `02_CHAPTER_1.md`; geometry conditioning/ControlNet; так само, original figure 7 |
+| 1.18 | Управління на основі інверсії через відновлену траєкторію у прихованому просторі. | `02_CHAPTER_1.md`; inversion-based control; так само, original figure 8 |
+| 1.19 | Спільний стиль для різних суб’єктів. | `02_CHAPTER_1.md`; shared style / attention; так само, original figure 9 |
+| 1.20 | П’ять інтерфейсів для контролю пов’язаних генерацій. | `02_CHAPTER_1.md`; п’ять interfaces of consistency control; `make_restructured_dissertation_figures.py`; author synthesis |
+| 1.21 | Просторове покриття та ідентичність як незалежні осі. | `02_CHAPTER_1.md`; support і identity як незалежні осі; той самий скрипт; мотивує E6, не є E6 data |
+| 1.22 | Зростання стрічки активацій під час часового зворотного поширення. | `02_CHAPTER_1.md`; activation tape growth; той самий скрипт; формула 1.12/TempVerse concept |
+| 1.23 | Рівномірний просторовий розподіл на нерівномірній сцені. | `02_CHAPTER_1.md`; fixed grid on nonuniform scene; `scripts/make_dissertation_foundation_figures.py`; V-BLT motivation |
+| 1.24 | Релевантне спостереження поза щільним вікном детального контексту. | `02_CHAPTER_1.md`; relevant history beyond flat window; той самий скрипт; LoopMom motivation |
+| 1.25 | Карта причинно-наслідкових зв’язків дисертації. | `02_CHAPTER_1.md`; bottlenecks, interventions, evidence boundaries; `scripts/make_restructured_ch2_ch4_figures.py`; high-level synthesis |
+| 2.1 | Процедурно згенерована обертова двовимірна фігура. | `03_CHAPTER_2.md`; V-BLT paper, 2-D sequence, PDF p.7; `scripts/make_restructured_ch2_ch4_figures.py` вилучив published panel; не регенерувати як нові дані |
+| 2.2 | Процедурно згенерований обертовий тривимірний полікуб. | `03_CHAPTER_2.md`; V-BLT paper, 3-D polycube, PDF p.8; той самий extraction workflow |
+| 2.3 | Категоріальна карта експериментальних наборів даних. | `03_CHAPTER_2.md`; roles of datasets in dissertation; той самий скрипт; author categorical map |
+| 2.4 | Схеми зберігання для диференціювання в часі. | `03_CHAPTER_2.md`; BPTT/checkpoint/reversible schedules; той самий скрипт; conceptual, equations 2.4–2.15 |
+| 2.5 | Адитивний реверсивний блок трансформера. | `03_CHAPTER_2.md`; published TempVerse reversible block, paper p.9; copied from `TempVerseFormer/resources/figures/rev-block-final.png`; preserve internal artwork |
+| 2.6 | Повна архітектура TempVerseFormer. | `03_CHAPTER_2.md`; full TempVerseFormer, paper p.12; source `tempverse-arch-final.png`; published artwork unchanged |
+| 2.7 | Часове ланцюгове з’єднання вікна фіксованої ширини. | `03_CHAPTER_2.md`; temporal chaining, paper p.17; source `chain-example-final.png`; published artwork unchanged |
+| 2.8 | Зворотне поширення з пам’яттю, незалежною від часового горизонту, через реверсивний часовий стан. | `03_CHAPTER_2.md`; reversible backward procedure, paper p.20; extracted from supplied PDF by `make_restructured_ch2_ch4_figures.py` |
+| 2.9 | FID залежно від глибини прогнозування для комбінованих часових закономірностей. | `03_CHAPTER_2.md`; published combined-motion FID, paper p.31; extracted published result; точкові криві, no added CI |
+| 2.10 | Обсяг пам’яті GPU у порівнянні з глибиною прогнозування. | `03_CHAPTER_2.md`; published memory vs horizon, paper p.32; extracted result; exact quantitative claims only for tabulated 1/4/16 points |
+| 2.11 | Час навчання залежно від глибини прогнозування. | `03_CHAPTER_2.md`; published time vs horizon, paper p.33; extracted result; configuration-specific |
+| 2.12 | Шлях обробки «локальний-глобальний-локальний». | `03_CHAPTER_2.md`; V-BLT local-global-local tensor flow; `make_restructured_ch2_ch4_figures.py`; author redrawing from method, not result |
+| 2.13 | Опублікована архітектура Vision Byte Latent Transformer. | `03_CHAPTER_2.md`; V-BLT paper p.4; extracted published architecture; preserve |
+| 2.14 | Каузальна просторово-часова маска уваги. | `03_CHAPTER_2.md`; V-BLT paper p.6; extracted published mask; preserve |
+| 2.15 | Неперетинні координатні підпростори в RoPE-ND. | `03_CHAPTER_2.md`; axis-disjoint RoPE-ND subspaces; `scripts/make_dissertation_foundation_figures.py`; explanatory derivation 2.35–2.39 |
+| 2.16 | Від категоріальних логітів до карти просторової ентропії. | `03_CHAPTER_2.md`; logits→softmax→entropy→channel aggregation; `make_restructured_ch2_ch4_figures.py`; based on V-BLT code and 2.40–2.41 |
+| 2.17 | Прогнози V-BLT та карти ентропії для двовимірного та тривимірного обертання. | `03_CHAPTER_2.md`; складений рисунок із 2-D та 3-D ентропійними панелями V-BLT, paper pp. 9–10; extracted published qualitative results; внутрішній зміст панелей не змінювати |
+| 2.18 | Опубліковані точкові оцінки вартості та якості V-BLT. | `03_CHAPTER_2.md`; published values of tables 2.9–2.10; `make_restructured_ch2_ch4_figures.py`; author-generated visualization of published numbers |
+| 2.19 | Реалізований метод V-BLT та запропоноване адаптивне розширення. | `03_CHAPTER_2.md`; implemented fixed V-BLT vs proposed dynamic partition; той самий скрипт; left side `PUB`, right side explicitly hypothetical `DEF` |
+| 3.1 | Повторний вхід після останнього визначального спостереження залишає коротке щільне контекстне вікно. | `04_CHAPTER_3.md`; object leaves recent fine context and re-enters; `scripts/make_restructured_ch2_ch4_figures.py`; conceptual bridge to LoopMom |
+| 3.2 | Три способи пакетування збереженого відеоконтексту. | `04_CHAPTER_3.md`; dense flat, spatial hierarchy, temporal subsampling; `scripts/make_dissertation_foundation_figures.py`; package definitions, not result |
+| 3.3 | Робочі області пакетів на осях досяжності та точності відтворення. | `04_CHAPTER_3.md`; три способи розподілу однакового бюджету між давньою історією та недавньою деталлю; `make_restructured_ch2_ch4_figures.py`; структурне порівняння пакетів, **не емпірична безперервна крива** |
+| 3.4 | Фіксовані розміри дворівневого кодувальника та тензорів прихованого простору. | `04_CHAPTER_3.md`; exact 4×4/8×8 latent shapes and token counts; той самий скрипт; based on frozen codec interface |
+| 3.5 | Збірка токенів перед спільним механізмом уваги. | `04_CHAPTER_3.md`; exact context/target token ordering; `scripts/make_dissertation_missing_figures.py`; `build_existing_figure_provenance.py` records hash |
+| 3.6 | Спільна увага в межах блоку прогнозування та структурна причинність між блоками. | `04_CHAPTER_3.md`; joint attention in one window vs rollout causality; `make_restructured_ch2_ch4_figures.py`; model structure |
+| 3.7 | Заморожені, відокремлені та треновані шляхи. | `04_CHAPTER_3.md`; frozen, detached and trained paths; той самий скрипт; формула 3.16/code contract |
+| 3.8 | Інтерфейси «прогноз-ціль». | `04_CHAPTER_3.md`; diffusion, regression, EBT target interfaces; той самий скрипт; comparison taxonomy |
+| 3.9 | Повний предиктор від заморожених кодів до цілі у прихованому просторі з чотирма кадрами. | `04_CHAPTER_3.md`; full frozen-codec→WindowDiT pipeline; `scripts/make_rft_core_schematics.py`; active architecture, not superseded macro-first design |
+| 3.10 | Хронологія детермінованого DDIM та підрахунок обчислень функції. | `04_CHAPTER_3.md`; deterministic DDIM timeline and NFE; `make_restructured_ch2_ch4_figures.py`; формули 3.25–3.27 та текстовий підрахунок NFE |
+| 3.11 | Оновлення грубого й детального кільцевих буферів під час розгортання із самоподачею. | `04_CHAPTER_3.md`; coarse/fine ring-buffer update; `scripts/make_dissertation_missing_figures.py`; формула 3.29 |
+| 3.12 | Геометрія потокової прив’язки на межі прогнозування з чотирма кадрами. | `04_CHAPTER_3.md`; exact anchors at four-frame target boundary; `make_restructured_ch2_ch4_figures.py`; формула 3.30/config registry |
+| 3.13 | Арифметика контексту, корисного навантаження та загальної кількості токенів за однакової номінальної досяжності 48 кадрів. | `04_CHAPTER_3.md`; context/target/total token and payload arithmetic; той самий скрипт; deterministic calculation, not GPU profile |
+| 3.14 | Геометрія світу TRB і смуги різниці досяжності для порівнюваних пакетів. | `04_CHAPTER_3.md`; LoopMom world, viewport and reach band; `scripts/make_rft_core_schematics.py`; analytic observability |
+| 3.15 | Подія зникнення та повторного входу, що охоплює кілька кадрів. | `04_CHAPTER_3.md`; multi-frame disappearance/re-entry event; `make_restructured_ch2_ch4_figures.py`; illustrative event |
+| 3.16 | Специфічна для кожної пари популяція різниці досяжності. | `04_CHAPTER_3.md`; pair-specific eligibility filter; той самий скрипт; формули 3.34–3.38 |
+| 3.17 | Зіставлення об’єктів зі сталою ідентичністю та їх відстеження. | `04_CHAPTER_3.md`; Hungarian matching and persistent ID tracking; той самий скрипт; E6 metric protocol |
+| 3.18 | Розподіл бюджету та часової підтримки. | `04_CHAPTER_3.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 3.19 | Масштаби та перекриття представлень. | `04_CHAPTER_3.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 3.20 | Межі інтегрованого прототипу для перевірки технічної здійсненності. | `04_CHAPTER_3.md`; fixed-width packed state, SimVP transition, reversible chain; dissertation-native manual deterministic SVG; no standalone generator found; provenance hash in `integrated_figure_provenance.json` |
+| 3.21 | Сталий поділ кадру на 16 грубих комірок і вісім детальних регіонів. | `04_CHAPTER_3.md`; 16 coarse cells + 8 fixed fine regions; dissertation-native manual deterministic SVG; based on formulas 3.46–3.48, not dynamic routing |
+| 3.22 | Інтегрована архітектура з повним грубим покриттям, фізичним вибором сталої квоти деталей, координатним кодуванням, внутрішньо реверсивним Transformer-ядром і декодером майбутнього. | `04_CHAPTER_3.md`; фізичне coarse/fine пакування, стала квота, реверсивне ядро та майбутні запити; `scripts/generate_ch3_packed_integrated_architecture.py`; схема реалізованої архітектури, не результат якості чи пам’яті |
+| 4.1 | Діагностика вибору фіксованого бюджету оптимізації на етапі розроблення. | `05_CHAPTER_4.md`; окремі 6k/20k журнали та всі 15 точок парного A4-COR калібрування до 30k; перший файл створює `make_dissertation_missing_figures.py`; другий — `generate_ch4_schedule_calibration.py` із запечатаних JSON/JSONL; обидва є шлюзом оптимізації, не доказом переваги пакета |
+| 4.2 | Цілі генерації в межах задачі спільного контексту. | `05_CHAPTER_4.md`; regression/diffusion/EBT interfaces; `scripts/make_dissertation_missing_figures.py`; protocol schematic |
+| 4.3 | Упорядкування за енергією та досяжність спуску. | `05_CHAPTER_4.md`; EBT ranking and cold-descent diagnostics; `scripts/make_restructured_ch2_ch4_figures.py` from `logs_rhcp/ebt_scaled_s1.log` and `ebt_scaled_s2.log`; diagnostic only |
+| 4.4 | Ефекти у визначених для кожної пари вибірках досяжності. | `05_CHAPTER_4.md`; E2 full-population vs pair-specific reach effects; `make_restructured_ch2_ch4_figures.py` from frozen E2 values; validate numbers against `artifacts/confirmation_e2/results.json` |
+| 4.5 | Перевірена межа «досяжність–точність відтворення». | `05_CHAPTER_4.md`; discrete simultaneous E2 frontier + token arithmetic; `scripts/make_rft_result_figures.py`; E2 artifact; no lines/interpolation implying a fitted crossover |
+| 4.6 | Ефекти пакетів для різних вихідних модулів прогнозування та ініціалізацій навчання. | `05_CHAPTER_4.md`; E4b five-seed factorial; `scripts/make_rft_result_figures.py` from `artifacts/e4b_head_package/results.json` |
+| 4.7 | Робастність до обсягу знешумлення та випадковості алгоритму вибірки. | `05_CHAPTER_4.md`; E7c 20 effects; той самий скрипт from `artifacts/e7c_sampler_nfe/results.json`; two upper intervals unresolved |
+| 4.8 | Ефекти оригінального та альтернативного кодеків на спільній шкалі. | `05_CHAPTER_4.md`; original vs independently trained codec; той самий скрипт from `artifacts/e7a_codec_robustness/results.json`; conditional on predictor seed 0 |
+| 4.9 | Зареєстровані ефекти раннього та пізнього довгоциклового впливу. | `05_CHAPTER_4.md`; E5a early/late effects; той самий скрипт from `artifacts/e5a_trust_replication/results.json`; late boundary failed |
+| 4.10 | Явне зберігання та доступ, індексовані за позою. | `05_CHAPTER_4.md`; E8a raw K6/K14/K38/K48 reference; той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
+| 4.11 | Просторове покриття й неперервність проти ідентичності у довгому Moving-MNIST з об’єктами, що зберігаються в часі. | `05_CHAPTER_4.md`; E6 support/trajectory/coverage/identity; той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
+| 4.12 | Діагностичні приклади двох завершених FRT-моделей за бюджету 1 152 токени, ініціалізації 0 та 30 000 кроків. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.13 | Якість за зміни місткості та геометрії контексту. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.14 | Зіставлені приклади та умовна діагностика самоподачі. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.15 | Зростання пам’яті інтегрованого предиктора з часовою рекурентністю зі збільшенням довжини ланцюга. | `05_CHAPTER_4.md`; попередній second-order reversible vs BPTT профіль довжини ланцюга; dissertation-native manual SVG from `integrated_reversible_openstl_memory.json`; зовнішня динаміка режимів не тотожна |
+| 4.16 | Прогнозні приклади для двох задач. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.17 | Дві окремо виміряні осі ресурсів. | `05_CHAPTER_4.md`; context token arithmetic + activation-memory results; `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |
+| 4.18 | Алгоритм вибору методу за обмежувальним ресурсом. | `05_CHAPTER_4.md`; decision flow by limiting resource; той самий скрипт; design rule, not trained classifier or fitted policy |
+| В.1 | Виконане експериментальне покриття та структурно відсутні комірки. | `08_APPENDICES.md`; виконане покриття й структурно відсутні комірки; `scripts/make_dissertation_foundation_figures.py`; довідковий індекс, не effect size |
+| В.2 | Розподіл контекстного бюджету за однакової номінальної досяжності 48 кадрів. | `08_APPENDICES.md`; точна вартість трьох пакетів за досяжності 48 кадрів; `scripts/make_restructured_ch2_ch4_figures.py`; арифметика токенів і fp16 payload, не VRAM profile |
+| Е.1 | Повний монтаж однокрокових прогнозів регресії та дифузії. | `08_APPENDICES.md`; повний fixed-index монтаж regression/diffusion; `scripts/make_dissertation_missing_figures.py`; якісна ілюстрація, таблиця 4.1 визначає вибір |
+| Е.2 | Повний монтаж розгорток для чотирьох фіксованих кліпів. | `08_APPENDICES.md`; повний fixed-index монтаж чотирьох E2 rollout clips; `scripts/make_samples.py`; якісна ілюстрація, таблиця Д.3 містить агрегований доказ |
 
 ## 10. Артефакти, скрипти й команди відтворення
 
@@ -861,3 +832,8 @@ python scripts/check_manuscript_finalization.py
 | 9 | `docs/figures/fig22_phasec_v2_boundary.png` | 4.11 | той самий; E6 |
 
 Стаття й дисертація повинні посилатися на одні й ті самі image files та immutable artifacts. Розходження чисел між ними є помилкою, а не допустимою редакційною варіацією.
+
+
+## Структурне узгодження 6 вересня 2026 року
+
+Поточна карта: §3.6 — структура контексту; §3.7 — предиктор і контракти; §4.8 — структурні результати; §4.9 — якість і ресурси; §4.10 — синтез; §4.11 — реалізація; §4.12 — обмеження. Попередні списки прив’язок нижче/вище зберігають походження активів; чинні номери визначають реєстри 8–9 та `docs/reviews/hierarchy_integration_2026-09-06/numbering_map.json`.

@@ -401,7 +401,7 @@
   },
   {
     "schema_version": "1.0",
-    "figure_id": "1.6b",
+    "figure_id": "1.6",
     "file": "docs/figures/restructured/ch1_fig1_6b_video_prediction_example.png",
     "asset_class": "author-generated-conceptual",
     "sha256": "a2b213be270b87153d4fc1c838d7b6ac37b7266a448b3b04de81e05feb4afc1f",
@@ -416,7 +416,7 @@
     "rights_status": "author-generated dissertation artwork",
     "permission_status": "no external artwork permission required",
     "role": "conceptual observed-and-predicted sequence illustrating motion, disappearance and memory-dependent re-entry",
-    "caption_attribution": "Chapter 1 Figure 1.6b; caption identifies it as dissertation-native.",
+    "caption_attribution": "Ukrainian Figure 1.6; asset unchanged, narrative order updated 2026-09-06",
     "original_figure": "1.6b",
     "source_page": null,
     "extraction_method": null,

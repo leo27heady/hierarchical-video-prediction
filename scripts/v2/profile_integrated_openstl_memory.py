@@ -1,12 +1,9 @@
-"""Paired CUDA-memory profile for one trained integrated-model checkpoint.
+"""Fixed-weight synthetic CUDA benchmark. Version 2; not a quality experiment.
 
-All cases reload identical weights.  Hierarchy changes the retained context;
-reversible/vanilla changes only internal activation storage; static/dynamic at a
-fixed quota is reported as equal-memory allocation unless measurement says
-otherwise.
+AdamW lr=0 includes optimizer work without changing checkpoint weights. Each
+repeat starts with empty optimizer state; training peaks include its allocation.
 """
 from __future__ import annotations
-
 import argparse
 import gc
 import hashlib
@@ -14,224 +11,248 @@ import json
 import os
 from pathlib import Path
 import runpy
+import statistics
 import sys
 import time
-
 import torch
 import torch.nn.functional as F
 
-
-CASES = (
-    ("flat_vanilla", "flat", "dense", False),
-    ("hier_static_vanilla", "hierarchical", "static", False),
-    ("hier_dynamic_vanilla", "hierarchical", "hybrid", False),
-    ("hier_static_reversible", "hierarchical", "static", True),
-    ("full_dynamic_reversible", "hierarchical", "hybrid", True),
-)
+MODES = ("eager", "checkpoint", "reversible")
 
 
-def atomic_json(path: Path, value: dict) -> None:
+def sha256(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def atomic_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
     os.replace(temporary, path)
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(4 * 1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def autocast(precision, device="cuda"):
+    return torch.autocast(device, dtype=torch.bfloat16 if precision == "bf16" else torch.float16,
+                          enabled=precision != "fp32")
 
 
-def config(path: Path, dataset: str) -> dict:
-    from openstl.datasets import dataset_parameters
-    values = dict(dataset_parameters[dataset])
-    values.update({
-        key: value for key, value in runpy.run_path(str(path)).items()
-        if not key.startswith("__")
-    })
-    return values
-
-
-def checkpoint_state(path: Path) -> dict:
-    loaded = torch.load(path, map_location="cpu", weights_only=False)
-    state = loaded.get("state_dict", loaded.get("model", loaded))
-    if any(key.startswith("model.") for key in state):
-        state = {key[6:]: value for key, value in state.items() if key.startswith("model.")}
-    return state
-
-
-def synchronize() -> None:
+def clean_memory():
+    gc.collect()
+    torch.cuda.empty_cache()
     torch.cuda.synchronize()
 
 
-def clean_memory() -> None:
-    gc.collect()
-    torch.cuda.empty_cache()
-    synchronize()
+def tensor_bytes(tensors, unique=False):
+    seen, total = set(), 0
+    for value in tensors:
+        if value is None:
+            continue
+        if unique:
+            storage = value.untyped_storage()
+            key = (str(value.device), storage.data_ptr())
+            if key in seen:
+                continue
+            seen.add(key)
+            total += storage.nbytes()
+        else:
+            total += value.numel() * value.element_size()
+    return total
 
 
-def train_iteration(model, inputs, targets, optimizer, precision: str) -> float:
-    optimizer.zero_grad(set_to_none=True)
-    dtype = torch.bfloat16 if precision == "bf16" else torch.float16
-    enabled = precision in {"bf16", "fp16"}
-    with torch.autocast("cuda", dtype=dtype, enabled=enabled):
-        prediction = model(inputs)
-        loss = F.mse_loss(prediction, targets)
-    loss.backward()
-    optimizer.step()
-    return float(loss.detach())
+def set_mode(model, mode):
+    model.set_reversible_core(mode == "reversible")
+    model.core.activation_checkpointing = mode == "checkpoint"
 
 
-def profile_case(model_class, model_config, state, inputs, targets, case, arguments) -> dict:
-    name, hierarchy, routing, reversible = case
-    model = model_class(**model_config).cuda()
-    model.load_state_dict(state)
-    model.hierarchy_mode = hierarchy
-    model.set_routing_mode(routing)
-    model.set_reversible_core(reversible)
-    model.train()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-    for _ in range(arguments.warmup):
-        train_iteration(model, inputs, targets, optimizer, arguments.precision)
-    clean_memory()
-    peaks_allocated, peaks_reserved, durations, losses = [], [], [], []
-    for _ in range(arguments.iterations):
-        optimizer.zero_grad(set_to_none=True)
-        synchronize()
-        baseline_allocated = torch.cuda.memory_allocated()
-        baseline_reserved = torch.cuda.memory_reserved()
+def saved_tensor_accounting(model, inputs, precision):
+    """Diagnostic forward only, outside timing; exclude parameter/input storage."""
+    excluded = {p.untyped_storage().data_ptr() for p in model.parameters()}
+    excluded.add(inputs.untyped_storage().data_ptr())
+    seen, logical = {}, 0
+    def pack(value):
+        nonlocal logical
+        storage = value.untyped_storage()
+        if storage.data_ptr() not in excluded:
+            logical += value.numel() * value.element_size()
+            seen[storage.data_ptr()] = storage.nbytes()
+        return value
+    with torch.autograd.graph.saved_tensors_hooks(pack, lambda value: value):
+        with torch.enable_grad(), autocast(precision, inputs.device.type):
+            output = model(inputs)
+    del output
+    return {"forward_saved_logical_bytes": logical, "forward_saved_unique_storage_bytes": sum(seen.values()),
+            "excludes": "original parameters and input storage; includes nonparameter saved tensors and casts",
+            "scope": "forward autograd save requests, not allocator peak or backward recomputation peak"}
+
+
+def packed_accounting(packed):
+    tensors = [packed.tokens, packed.coarse_grid, packed.route_indices, packed.route_scores]
+    tensors += [v for v in vars(packed.metadata).values() if isinstance(v, torch.Tensor)]
+    tensors += [v for v in packed.diagnostics.values() if isinstance(v, torch.Tensor)]
+    return {"logical_bytes": tensor_bytes(tensors), "unique_storage_bytes": tensor_bytes(tensors, True),
+            "tokens_dtype": str(packed.tokens.dtype), "coarse_grid_dtype": str(packed.coarse_grid.dtype),
+            "includes": "tokens, coarse bypass, metadata, route indices/scores, diagnostics"}
+
+
+def measure(module, forward, inputs, targets, args, training):
+    parameters = list(module.parameters())
+    optimizer = torch.optim.AdamW(parameters, lr=0.0)
+    rows = []
+    for repeat in range(args.warmup + args.iterations):
+        module.zero_grad(set_to_none=True)
+        if inputs.is_leaf:
+            inputs.grad = None
+        optimizer.state.clear()
+        scaler = torch.amp.GradScaler("cuda", enabled=args.precision == "fp16")
+        clean_memory()
+        base_a, base_r = torch.cuda.memory_allocated(), torch.cuda.memory_reserved()
         torch.cuda.reset_peak_memory_stats()
         started = time.perf_counter()
-        losses.append(train_iteration(model, inputs, targets, optimizer, arguments.precision))
-        synchronize()
-        durations.append(time.perf_counter() - started)
-        peaks_allocated.append((torch.cuda.max_memory_allocated() - baseline_allocated) / 1e6)
-        peaks_reserved.append((torch.cuda.max_memory_reserved() - baseline_reserved) / 1e6)
-    contract = model.memory_contract(
-        batch_size=arguments.batch, dtype_bytes=2 if arguments.precision != "fp32" else 4
-    )
-    result = {
-        "case": name,
-        "hierarchy_mode": hierarchy,
-        "routing_mode": routing,
-        "reversible_core": reversible,
-        "memory_contract": contract,
-        "incremental_peak_allocated_mb": max(peaks_allocated),
-        "incremental_peak_reserved_mb": max(peaks_reserved),
-        "mean_seconds_per_step": sum(durations) / len(durations),
-        "mean_loss": sum(losses) / len(losses),
-        "iterations": arguments.iterations,
-        "warmup": arguments.warmup,
-    }
-    del optimizer, model
-    clean_memory()
-    return result
+        with torch.set_grad_enabled(training), autocast(args.precision):
+            output = forward(inputs)
+            loss = F.mse_loss(output.float(), targets.float())
+        if training:
+            scaler.scale(loss).backward()
+            previous_scale = scaler.get_scale()
+            scaler.step(optimizer)
+            scaler.update()
+            if scaler.get_scale() < previous_scale:
+                raise RuntimeError("FP16 overflow skipped optimizer work; this is not a valid profile repeat")
+        torch.cuda.synchronize()
+        elapsed = time.perf_counter() - started
+        if not torch.isfinite(loss):
+            raise RuntimeError("nonfinite profile loss")
+        row = {"seconds": elapsed, "loss": float(loss.detach()),
+               "absolute_peak_allocated_bytes": torch.cuda.max_memory_allocated(),
+               "absolute_peak_reserved_bytes": torch.cuda.max_memory_reserved(),
+               "baseline_allocated_bytes": base_a, "baseline_reserved_bytes": base_r,
+               "gradient_bytes": tensor_bytes(p.grad for p in parameters),
+               "optimizer_bytes": tensor_bytes(v for state in optimizer.state.values()
+                                                for v in state.values() if isinstance(v, torch.Tensor))}
+        row["incremental_peak_allocated_bytes"] = row["absolute_peak_allocated_bytes"] - base_a
+        row["incremental_peak_reserved_bytes"] = row["absolute_peak_reserved_bytes"] - base_r
+        if repeat >= args.warmup:
+            rows.append(row)
+        del output, loss
+    module.zero_grad(set_to_none=True)
+    del optimizer
+    return {"training": training, "batch": inputs.shape[0], "input_dtype": str(inputs.dtype),
+            "parameter_bytes": tensor_bytes(parameters), "repeats": rows,
+            "median_seconds": statistics.median(r["seconds"] for r in rows),
+            "min_seconds": min(r["seconds"] for r in rows),
+            "max_seconds": max(r["seconds"] for r in rows)}
 
 
-def profile_core(model, inputs, routing: str, reversible: bool, arguments) -> dict:
-    model.eval()
-    with torch.no_grad():
-        packed = model.encode_and_pack(inputs, routing)
-    tokens = packed.tokens.detach()
-    durations, peaks = [], []
-    for _ in range(arguments.warmup + arguments.iterations):
-        model.core.zero_grad(set_to_none=True)
-        value = tokens.clone().requires_grad_(True)
-        synchronize()
-        baseline = torch.cuda.memory_allocated()
-        torch.cuda.reset_peak_memory_stats()
-        started = time.perf_counter()
-        dtype = torch.bfloat16 if arguments.precision == "bf16" else torch.float16
-        enabled = arguments.precision in {"bf16", "fp16"}
-        with torch.autocast("cuda", dtype=dtype, enabled=enabled):
-            output = model.core(value, reversible=reversible)
-            loss = output.square().mean()
+def parity(model, inputs, targets, precision):
+    records = {}
+    for mode in MODES:
+        set_mode(model, mode)
+        model.zero_grad(set_to_none=True)
+        value = inputs.detach().clone().requires_grad_(True)
+        with autocast(precision, inputs.device.type):
+            prediction = model(value)
+            loss = F.mse_loss(prediction.float(), targets.float())
         loss.backward()
-        synchronize()
-        if _ >= arguments.warmup:
-            durations.append(time.perf_counter() - started)
-            peaks.append((torch.cuda.max_memory_allocated() - baseline) / 1e6)
-    return {
-        "mode": "reversible" if reversible else "vanilla",
-        "tokens": tokens.shape[1],
-        "incremental_peak_allocated_mb": max(peaks),
-        "mean_seconds": sum(durations) / len(durations),
-    }
+        records[mode] = (prediction.detach().cpu().clone(), value.grad.detach().cpu().clone(),
+                         {n: p.grad.detach().cpu().clone() for n, p in model.named_parameters()
+                          if p.grad is not None})
+        del prediction, value, loss
+    atol, rtol = ((3e-5, 4e-4) if precision == "fp32" else (1e-2, 8e-2))
+    reference = records["eager"]
+    for mode in MODES[1:]:
+        current = records[mode]
+        torch.testing.assert_close(current[0], reference[0], atol=atol, rtol=rtol)
+        torch.testing.assert_close(current[1], reference[1], atol=atol, rtol=rtol)
+        assert current[2].keys() == reference[2].keys()
+        for name, grad in current[2].items():
+            assert torch.isfinite(grad).all(), name
+            torch.testing.assert_close(grad, reference[2][name], atol=atol, rtol=rtol, msg=name)
+    for prefix in ("encoder.", "router.", "core."):
+        magnitude = sum(float(g.abs().sum()) for n, g in reference[2].items() if n.startswith(prefix))
+        if magnitude <= 1e-10:
+            raise RuntimeError(f"degenerate parity probe: no meaningful {prefix} gradient")
+    model.zero_grad(set_to_none=True)
+    return {"passed": True, "modes": MODES, "precision": precision, "batch": inputs.shape[0],
+            "atol": atol, "rtol": rtol, "compared": "outputs, input and active named parameter gradients"}
 
 
-def main(arguments) -> None:
+def main(args):
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is required for memory profiling")
-    sys.path.insert(0, str(arguments.openstl.resolve()))
+    if min(args.batch, args.iterations) < 1 or args.warmup < 0:
+        raise ValueError("positive batch/iterations and nonnegative warmup required")
+    sys.path.insert(0, str(args.openstl.resolve()))
     from openstl.models.hvp_integrated_model import HVPIntegrated_Model
-    model_config = config(arguments.config.resolve(), arguments.dataset)
-    state = checkpoint_state(arguments.checkpoint.resolve())
-    shape = tuple(model_config["in_shape"])
-    generator = torch.Generator(device="cuda").manual_seed(arguments.seed)
-    inputs = torch.rand((arguments.batch, *shape), generator=generator, device="cuda")
-    targets = torch.rand(
-        (arguments.batch, int(model_config["aft_seq_length"]), shape[1], shape[2], shape[3]),
-        generator=generator, device="cuda",
-    )
-    rows = []
-    for case in CASES:
-        try:
-            row = profile_case(
-                HVPIntegrated_Model, model_config, state, inputs, targets, case, arguments
-            )
-        except torch.cuda.OutOfMemoryError as error:
+    from openstl.datasets import dataset_parameters
+    values = dict(dataset_parameters[args.dataset])
+    values.update({k: v for k, v in runpy.run_path(str(args.config)).items() if not k.startswith("__")})
+    loaded = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
+    state = loaded.get("state_dict", loaded.get("model", loaded))
+    if any(k.startswith("model.") for k in state):
+        state = {k[6:]: v for k, v in state.items() if k.startswith("model.")}
+    torch.manual_seed(args.seed)
+    shape = tuple(values["in_shape"])
+    inputs = torch.rand((args.batch, *shape), device="cuda")
+    targets = torch.rand((args.batch, int(values["aft_seq_length"]), *shape[1:]), device="cuda")
+    model = HVPIntegrated_Model(**values).cuda().eval()
+    model.load_state_dict(state)
+    model.hierarchy_mode = "hierarchical"
+    model.set_routing_mode("hybrid")
+    parity_result = parity(model, inputs, targets, args.precision)
+    del model
+    clean_memory()
+    rows, core_rows = [], []
+    for hierarchy, route in (("flat", "dense"), ("hierarchical", "static"), ("hierarchical", "hybrid")):
+        for mode in MODES:
+            model = HVPIntegrated_Model(**values).cuda().eval()
+            model.load_state_dict(state)
+            model.hierarchy_mode = hierarchy
+            model.set_routing_mode(route)
+            set_mode(model, mode)
+            with torch.no_grad(), autocast(args.precision):
+                packed = model.encode_and_pack(inputs, route)
+            accounting = packed_accounting(packed)
+            del packed
+            for training in (False, True):
+                model.train(training)
+                saved = saved_tensor_accounting(model, inputs, args.precision) if training else None
+                row = measure(model, model, inputs, targets, args, training)
+                row.update(hierarchy=hierarchy, routing=route, execution_mode=mode,
+                           scope="whole_model", packed_state=accounting, saved_tensors=saved)
+                rows.append(row)
+            if hierarchy == "hierarchical" and route == "hybrid":
+                model.eval()
+                with torch.no_grad(), autocast(args.precision):
+                    packed = model.encode_and_pack(inputs, route)
+                tokens = packed.tokens.detach().clone().requires_grad_(True)
+                del packed
+                for training in (False, True):
+                    row = measure(model.core, lambda x: model.core(x, reversible=mode == "reversible"),
+                                  tokens, torch.zeros_like(tokens), args, training)
+                    row.update(scope="core_operation_with_whole_model_resident", execution_mode=mode,
+                               tokens=tokens.shape[1])
+                    core_rows.append(row)
+                del tokens
+            for name, value in model.state_dict().items():
+                torch.testing.assert_close(value.cpu(), state[name], atol=0, rtol=0, msg=name)
+            del model
             clean_memory()
-            row = {"case": case[0], "oom": True, "error": repr(error)}
-        rows.append(row)
-        print(json.dumps(row, indent=2), flush=True)
-
-    parity_model = HVPIntegrated_Model(**model_config).cuda().eval()
-    parity_model.load_state_dict(state)
-    parity_model.hierarchy_mode = "hierarchical"
-    parity_model.set_routing_mode("hybrid")
-    first = inputs[:1].detach().clone().requires_grad_(True)
-    second = first.detach().clone().requires_grad_(True)
-    output_reversible = parity_model(first, reversible_core=True)
-    output_vanilla = parity_model(second, reversible_core=False)
-    output_reversible.square().mean().backward()
-    reversible_gradient = first.grad.detach().clone()
-    parity_model.zero_grad(set_to_none=True)
-    output_vanilla.square().mean().backward()
-    parity = {
-        "output_max_abs": float((output_reversible - output_vanilla).abs().max()),
-        "input_gradient_max_abs": float((reversible_gradient - second.grad).abs().max()),
-    }
-    core_rows = [
-        profile_core(parity_model, inputs[:1], "hybrid", False, arguments),
-        profile_core(parity_model, inputs[:1], "hybrid", True, arguments),
-    ]
-    result = {
-        "device": torch.cuda.get_device_name(0),
-        "torch": torch.__version__,
-        "dataset": arguments.dataset,
-        "checkpoint": str(arguments.checkpoint.resolve()),
-        "checkpoint_sha256": sha256(arguments.checkpoint.resolve()),
-        "precision": arguments.precision,
-        "batch": arguments.batch,
-        "measurement": "peak CUDA allocated/reserved minus immediately pre-forward baseline; decimal MB",
-        "cases": rows,
-        "forward_gradient_parity": parity,
-        "core_only": core_rows,
-    }
-    atomic_json(arguments.output.resolve(), result)
-    print(json.dumps(result, indent=2), flush=True)
+    atomic_json(args.output.resolve(), {
+        "schema_version": 2, "checkpoint": str(args.checkpoint.resolve()),
+        "checkpoint_sha256": sha256(args.checkpoint), "profiler_sha256": sha256(Path(__file__)),
+        "dataset": args.dataset, "device": torch.cuda.get_device_name(0), "torch": torch.__version__,
+        "precision": args.precision, "batch": args.batch, "warmup": args.warmup,
+        "measurement": "bytes; fixed weights; synthetic data; cold AdamW state each repeat; lr=0",
+        "saved_activations": "included in training peaks; not separately attributed by allocator",
+        "parity": parity_result, "cases": rows, "core_only": core_rows})
 
 
-def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser()
-    result.add_argument("--openstl", type=Path, required=True)
-    result.add_argument("--config", type=Path, required=True)
-    result.add_argument("--checkpoint", type=Path, required=True)
+def parser():
+    result = argparse.ArgumentParser(description=__doc__)
+    for name in ("openstl", "config", "checkpoint", "output"):
+        result.add_argument("--" + name, type=Path, required=True)
     result.add_argument("--dataset", choices=("mmnist", "taxibj"), required=True)
-    result.add_argument("--output", type=Path, required=True)
     result.add_argument("--batch", type=int, default=1)
     result.add_argument("--warmup", type=int, default=5)
     result.add_argument("--iterations", type=int, default=20)

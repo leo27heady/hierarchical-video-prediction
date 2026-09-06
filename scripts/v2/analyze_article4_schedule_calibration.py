@@ -107,6 +107,9 @@ def candidate_analysis(
         rows.append(
             {
                 "step": step,
+                "terminal_endpoint": step == max(CANDIDATES),
+                "convergence_established": False,
+                "interpretation": "fixed-budget calibration; terminal acceptance is automatic",
                 "arms": per_arm,
                 "hierarchy_minus_flat": (
                     per_arm["balanced_recent"]["value"] - per_arm["flat_recent"]["value"]

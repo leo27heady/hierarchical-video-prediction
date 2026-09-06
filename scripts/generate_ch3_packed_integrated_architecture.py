@@ -126,9 +126,10 @@ SVG = r'''<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="900" view
 
 
 def main() -> None:
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(SVG, encoding="utf-8", newline="\n")
-    print(OUTPUT)
+    # The historical SVG above is retained as source history. Use the corrected
+    # generator so this public entry point cannot restore missing bypasses.
+    from refine_review_figures import main as corrected
+    corrected()
 
 
 if __name__ == "__main__":

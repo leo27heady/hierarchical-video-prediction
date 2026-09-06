@@ -29,11 +29,11 @@ FILES = [
 ]
 CHAPTER_FILES = {chapter: FILES[chapter + 1] for chapter in range(1, 5)}
 EXPECTED_EQUATIONS = {1: 14, 2: 42, 3: 58, 4: 5}
-EXPECTED_FIGURES = {1: 25, 2: 19, 3: 20, 4: 14}
-EXPECTED_TABLES = {1: 2, 2: 10, 3: 4, 4: 7}
+EXPECTED_FIGURES = {1: 25, 2: 19, 3: 22, 4: 18}
+EXPECTED_TABLES = {1: 2, 2: 10, 3: 5, 4: 22}
 EXPECTED_APPENDIX_TABLES = [
     "А.1", "Б.1", "В.1", "В.2", "В.3", "В.4", "В.5", "В.6", "В.7", "В.8",
-    "Г.1", "Д.1", "Д.2", "Д.3", "Е.1", "Ж.1", "Ж.2", "Ж.3",
+    "Г.1", "Д.1", "Д.2", "Д.3", "Е.1", "Ж.1", "Ж.2", "Ж.3", "И.1",
 ]
 EXPECTED_TABLE_IDS = [
     *(f"{chapter}.{index}" for chapter, count in EXPECTED_TABLES.items() for index in range(1, count + 1)),
@@ -220,6 +220,9 @@ def main() -> int:
     author_inputs = re.findall(r"\[(?:ДАНІ ВІД АВТОРА|ВВЕСТИ АВТОРОМ|AUTHOR)[^]]*\]", combined, flags=re.IGNORECASE)
     if author_inputs:
         warnings.append(f"author/institution inputs still required: {len(author_inputs)}")
+    pending_cells = sum(line.count('очікується') for line in combined.splitlines() if line.startswith('|'))
+    if pending_cells:
+        warnings.append(f"explicit pending experimental table cells (not measurements): {pending_cells}")
 
     print(
         f"equations={len(all_tags)} captions={caption_count} image_links={image_count} "

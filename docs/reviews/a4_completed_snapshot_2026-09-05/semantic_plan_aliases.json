@@ -1,0 +1,17 @@
+{
+  "scope": "registered wave-one ordered physical plans, including training seed",
+  "executions": 80,
+  "unique_physical_plans_with_seed": 78,
+  "aliases": {
+    "b48763b805db9af86842f9bf733a96ecbd456951785d2b3862b1fc86bc33f03e": [
+      "A4_ALC_B1792_L2_REACH_OPT_NEST_S00_T30K",
+      "A4_STS_B1792_L2_K64_RECENT_NEST_S00_T30K"
+    ],
+    "fb1caea60540a87e8ecfc138973fa85738e6b0204b0b5885c05750795903eeaf": [
+      "A4_ALC_B1792_L2_REACH_OPT_NEST_S01_T30K",
+      "A4_STS_B1792_L2_K64_RECENT_NEST_S01_T30K"
+    ]
+  },
+  "note": "Plan identity is not evidence that unrelated training recipes are interchangeable.",
+  "campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01"
+}

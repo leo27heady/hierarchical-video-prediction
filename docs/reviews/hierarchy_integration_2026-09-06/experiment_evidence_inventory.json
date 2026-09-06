@@ -1,0 +1,2953 @@
+[
+  {
+    "key": "FRT",
+    "methods_section": "3.6.3",
+    "results_section": "4.8.1",
+    "table": "4.6",
+    "dimensions": {
+      "budget": [
+        320,
+        768,
+        1152,
+        1792,
+        2432,
+        3072
+      ],
+      "policy": [
+        "flat",
+        "linear",
+        "geometric"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "budget": 320,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 320,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 320,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 320,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 320,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 320,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 768,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1152,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 1792,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 2432,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "budget": 3072,
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      }
+    ],
+    "status": "перевірено",
+    "dependency": null,
+    "metric": "MSE h=4 per protocol",
+    "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json",
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "ALC",
+    "methods_section": "3.6.3",
+    "results_section": "4.8.1",
+    "table": "4.7",
+    "dimensions": {
+      "policy": [
+        "flat",
+        "fine_heavy",
+        "balanced",
+        "coarse_heavy",
+        "linear",
+        "geometric",
+        "reach"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "policy": "flat",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "flat",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "fine_heavy",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "fine_heavy",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "balanced",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "balanced",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "coarse_heavy",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "coarse_heavy",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "linear",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "linear",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "geometric",
+        "seed": 0,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "geometric",
+        "seed": 1,
+        "status": "перевірено",
+        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+      },
+      {
+        "policy": "reach",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "policy": "reach",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "частково перевірено: три повторно використані політики FRT",
+    "dependency": null,
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "CEX",
+    "methods_section": "3.6.4",
+    "results_section": "4.8.2",
+    "table": "4.8",
+    "dimensions": {
+      "coarse_positions": [
+        0,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "coarse_positions": 0,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 0,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 4,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 4,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 8,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 8,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 16,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 16,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 32,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 32,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 64,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "coarse_positions": 64,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": null,
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "STS",
+    "methods_section": "3.6.4",
+    "results_section": "4.8.2",
+    "table": "4.9",
+    "dimensions": {
+      "K": [
+        64,
+        32,
+        16,
+        8
+      ],
+      "placement": [
+        "recent",
+        "uniform",
+        "geometric"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "K": 64,
+        "placement": "recent",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 64,
+        "placement": "recent",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 64,
+        "placement": "uniform",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 64,
+        "placement": "uniform",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 64,
+        "placement": "geometric",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 64,
+        "placement": "geometric",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "recent",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "recent",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "uniform",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "uniform",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "geometric",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 32,
+        "placement": "geometric",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "recent",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "recent",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "uniform",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "uniform",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "geometric",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 16,
+        "placement": "geometric",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "recent",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "recent",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "uniform",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "uniform",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "geometric",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "K": 8,
+        "placement": "geometric",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": null,
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "LVL",
+    "methods_section": "3.6.5",
+    "results_section": "4.8.3",
+    "table": "4.10",
+    "dimensions": {
+      "levels": [
+        1,
+        2,
+        3
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "levels": 1,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "levels": 1,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "levels": 2,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "levels": 2,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "levels": 3,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "levels": 3,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "ALC validation selection",
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "OVR",
+    "methods_section": "3.6.5",
+    "results_section": "4.8.3",
+    "table": "4.11",
+    "dimensions": {
+      "overlap": [
+        "nested",
+        "exclusive",
+        "residual"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "overlap": "nested",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "overlap": "nested",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "overlap": "exclusive",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "overlap": "exclusive",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "overlap": "residual",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "overlap": "residual",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "ALC validation selection",
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "CONF",
+    "methods_section": "3.6.6",
+    "results_section": "4.8.4",
+    "table": "4.12",
+    "dimensions": {
+      "role": [
+        "best_flat_1792",
+        "best_hierarchy_1792",
+        "memory_pareto_within_5pct"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "role": "best_flat_1792",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_flat_1792",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_hierarchy_1792",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_hierarchy_1792",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "memory_pareto_within_5pct",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "memory_pareto_within_5pct",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "frozen shortlist",
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "MECH",
+    "methods_section": "3.6.6",
+    "results_section": "4.8.4",
+    "table": "4.14",
+    "dimensions": {
+      "role": [
+        "best_flat_1792",
+        "best_hierarchy_1792",
+        "failure_hierarchy_1792"
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "role": "best_flat_1792",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_flat_1792",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_hierarchy_1792",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "best_hierarchy_1792",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "failure_hierarchy_1792",
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "role": "failure_hierarchy_1792",
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "frozen shortlist",
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "VAL300",
+    "methods_section": "3.6.6",
+    "results_section": "4.8.4",
+    "table": "4.13",
+    "dimensions": {
+      "shortlist_slot": [
+        1,
+        2,
+        3
+      ],
+      "seed": [
+        0,
+        1
+      ]
+    },
+    "result_slots": [
+      {
+        "shortlist_slot": 1,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "shortlist_slot": 1,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "shortlist_slot": 2,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "shortlist_slot": 2,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "shortlist_slot": 3,
+        "seed": 0,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "shortlist_slot": 3,
+        "seed": 1,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "frozen shortlist",
+    "metric": "MSE h=4 per protocol",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "ROLL64",
+    "methods_section": "3.6.6",
+    "results_section": "4.8.4",
+    "table": "4.15",
+    "dimensions": {
+      "model": [
+        "flat",
+        "hierarchy"
+      ],
+      "seed": [
+        0,
+        1
+      ],
+      "horizon": [
+        4,
+        16,
+        32,
+        64
+      ]
+    },
+    "result_slots": [
+      {
+        "model": "flat",
+        "seed": 0,
+        "horizon": 4,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 0,
+        "horizon": 16,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 0,
+        "horizon": 32,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 0,
+        "horizon": 64,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 1,
+        "horizon": 4,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 1,
+        "horizon": 16,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 1,
+        "horizon": 32,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "flat",
+        "seed": 1,
+        "horizon": 64,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 0,
+        "horizon": 4,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 0,
+        "horizon": 16,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 0,
+        "horizon": 32,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 0,
+        "horizon": 64,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 1,
+        "horizon": 4,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 1,
+        "horizon": 16,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 1,
+        "horizon": 32,
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "model": "hierarchy",
+        "seed": 1,
+        "horizon": 64,
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "умовний дослід",
+    "dependency": "frozen shortlist",
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "PARITY",
+    "methods_section": "3.7.7",
+    "results_section": "4.9.4",
+    "table": "4.18",
+    "dimensions": {
+      "dataset": [
+        "mmnist",
+        "taxibj"
+      ],
+      "precision": [
+        "fp32",
+        "intended_training_precision"
+      ],
+      "pair": [
+        "eager/checkpoint",
+        "eager/reversible"
+      ],
+      "quantity": [
+        "output",
+        "input_gradient",
+        "named_parameter_gradients"
+      ]
+    },
+    "result_slots": [
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/checkpoint",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "fp32",
+        "pair": "eager/reversible",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/checkpoint",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "output",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "input_gradient",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "precision": "intended_training_precision",
+        "pair": "eager/reversible",
+        "quantity": "named_parameter_gradients",
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": null,
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "cpu_evidence": "24 CPU model/data tests passed on 2026-09-05; CUDA slots below are not populated by CPU results",
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "RESOURCE",
+    "methods_section": "3.7.7",
+    "results_section": "4.9.4",
+    "table": "4.19",
+    "dimensions": {
+      "dataset": [
+        "mmnist",
+        "taxibj"
+      ],
+      "packing": [
+        "flat_dense",
+        "hier_static",
+        "hier_hybrid"
+      ],
+      "execution": [
+        "eager",
+        "checkpoint",
+        "reversible"
+      ],
+      "precision": [
+        "fp32",
+        "intended_training_precision"
+      ],
+      "phase": [
+        "inference",
+        "training"
+      ],
+      "scope": [
+        "whole_model",
+        "core_operation"
+      ]
+    },
+    "result_slots": [
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "mmnist",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "flat_dense",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_static",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "eager",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "checkpoint",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "fp32",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "inference",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "whole_model",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "packing": "hier_hybrid",
+        "execution": "reversible",
+        "precision": "intended_training_precision",
+        "phase": "training",
+        "scope": "core_operation",
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": null,
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "SCREEN",
+    "methods_section": "3.7.7",
+    "results_section": "4.9.5",
+    "table": "4.20",
+    "dimensions": {
+      "trajectory": [
+        "mmnist_hybrid",
+        "taxibj_hybrid",
+        "mmnist_flat",
+        "mmnist_static"
+      ]
+    },
+    "result_slots": [
+      {
+        "trajectory": "mmnist_hybrid",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "trajectory": "taxibj_hybrid",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "trajectory": "mmnist_flat",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "trajectory": "mmnist_static",
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": null,
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "QUALITY",
+    "methods_section": "3.7.7",
+    "results_section": "4.9.5",
+    "table": "4.21",
+    "dimensions": {
+      "run": [
+        "INT_MM_S00",
+        "INT_MM_S01",
+        "INT_TB_S00",
+        "INT_TB_S01"
+      ]
+    },
+    "result_slots": [
+      {
+        "run": "INT_MM_S00",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "run": "INT_MM_S01",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "run": "INT_TB_S00",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "run": "INT_TB_S01",
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "очікується",
+    "dependency": "CUDA parity and bounded screen",
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  },
+  {
+    "key": "COMP",
+    "methods_section": "3.7.7",
+    "results_section": "4.9.5",
+    "table": "4.22",
+    "dimensions": {
+      "dataset": [
+        "mmnist",
+        "taxibj"
+      ]
+    },
+    "result_slots": [
+      {
+        "dataset": "mmnist",
+        "status": "очікується",
+        "artifact": null
+      },
+      {
+        "dataset": "taxibj",
+        "status": "очікується",
+        "artifact": null
+      }
+    ],
+    "status": "умовний дослід",
+    "dependency": null,
+    "metric": "defined in corresponding methods and table caption",
+    "artifact": null,
+    "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
+  }
+]

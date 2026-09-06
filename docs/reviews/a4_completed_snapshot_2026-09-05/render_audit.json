@@ -1,0 +1,38 @@
+{
+  "pages": 283,
+  "key_pages": {
+    "Рисунок 3.20": [
+      181
+    ],
+    "Таблиця 4.8": [
+      220
+    ],
+    "Таблиця 4.10": [
+      225
+    ],
+    "Рисунок 4.15": [
+      227
+    ],
+    "(3.55)": [
+      182,
+      183
+    ],
+    "(3.54)": [
+      182,
+      183
+    ],
+    "(3.57)": [
+      184,
+      185
+    ]
+  },
+  "outside_page_blocks": [],
+  "near_blank_pages": [],
+  "replacement_characters": 0,
+  "renderer": "Word PDF export + PyMuPDF; packaged DOCX renderer unavailable: LibreOffice absent",
+  "pdf": "output\\pdf\\DISSERTATION_UKRAINIAN_REVIEW_2026-09-05_LAYOUT.pdf",
+  "pdf_sha256": "f407aeb99b6990f23445caba73d2305c9f5f904d52fe51e8f623346265bbbf6b",
+  "heading_bookmarks": 174,
+  "links": 192,
+  "visual_review": "All 12 contact sheets and enlarged revised diagram, equations, lineage, pending/result tables and qualitative panel inspected."
+}

@@ -1,7 +1,7 @@
 [
   {
     "schema_version": "1.0",
-    "figure_id": "3.18",
+    "figure_id": "3.20",
     "file": "figures/restructured/ch3_fig3_18_integrated_architecture.svg",
     "asset_class": "author-generated-conceptual",
     "sha256": "15d69d2926fd975e01cb63619333d0c24421ef3b4f547627579c4fc0224c7dea",
@@ -11,11 +11,11 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "data_or_concept_source": "integrated fixed-region and reversible-rollout interface specified in Chapter 3",
-    "caption_attribution": "Chapter 3 Figure 3.18; author-generated architecture diagram"
+    "caption_attribution": "Ukrainian Figure 3.20; asset unchanged, narrative order updated 2026-09-06"
   },
   {
     "schema_version": "1.0",
-    "figure_id": "3.19",
+    "figure_id": "3.21",
     "file": "figures/restructured/ch3_fig3_19_fixed_regions.svg",
     "asset_class": "author-generated-conceptual",
     "sha256": "ed51adb27a0e0343ca90faa3d556e4ba71f4ca2be83ae577cdd58c5901e1b97f",
@@ -25,27 +25,27 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "data_or_concept_source": "fixed-region packing geometry specified in Chapter 3",
-    "caption_attribution": "Chapter 3 Figure 3.19; author-generated packing diagram"
+    "caption_attribution": "Ukrainian Figure 3.21; asset unchanged, narrative order updated 2026-09-06"
   },
   {
     "schema_version": "1.0",
-    "figure_id": "3.20",
+    "figure_id": "3.22",
     "file": "figures/restructured/ch3_fig3_20_packed_integrated_architecture.svg",
     "asset_class": "author-generated-conceptual",
-    "sha256": "d95f0be6cf30164a66913361a9a368a4dc91cab34040f51b3e274a00761ae57a",
-    "bytes": 8855,
+    "sha256": "a52d33593741d4549886a8dc7252a440a0573fc8fe842d7bbb806011d4e3b1d8",
+    "bytes": 93140,
     "source": "dissertation-native SVG generated from the implemented OpenSTL architecture contract",
-    "modification_status": "new dissertation-native figure",
+    "modification_status": "corrected coarse router and decoder/residual bypasses; 2026-09-05",
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "data_or_concept_source": "OpenSTL-integrated/openstl/models/hvp_integrated_model.py and Chapter 3 Sections 3.7.3-3.7.7",
-    "generator": "scripts/generate_ch3_packed_integrated_architecture.py",
-    "generator_sha256": "5cd954cdb91d963742c92ff9bdc48c035ba41f3a49195fe9e92d80683971d5b3",
-    "caption_attribution": "Chapter 3 Figure 3.20; author-generated architecture diagram"
+    "generator": "scripts/refine_review_figures.py",
+    "generator_sha256": "fd8753392bd66ae1640ed201b1bbb7d267ac4b71c0ad9a0c186bcab93ec9bb41",
+    "caption_attribution": "Ukrainian Figure 3.22; asset unchanged, narrative order updated 2026-09-06"
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.3b",
+    "figure_id": "4.1",
     "file": "figures/restructured/ch4_fig4_3b_schedule_calibration.svg",
     "asset_class": "author-generated-artifact-derived",
     "sha256": "dabdc67590e388f7f60ce11a8baf58cf87c3cd9a0deb05f4e593624318339e9c",
@@ -62,11 +62,11 @@
     },
     "generator": "scripts/generate_ch4_schedule_calibration.py",
     "generator_sha256": "f75d290d2001e1216563302e33fa49bed64995b0b9c1de20067440843085d2fa",
-    "caption_attribution": "Chapter 4 Figure 4.3 lower panel; author-generated from sealed A4-COR logs"
+    "caption_attribution": "Ukrainian Figure 4.1; asset unchanged, narrative order updated 2026-09-06"
   },
   {
     "schema_version": "1.0",
-    "figure_id": "4.12",
+    "figure_id": "4.15",
     "file": "figures/restructured/ch4_fig4_12_integrated_memory.svg",
     "asset_class": "author-generated-artifact-derived",
     "sha256": "b91b27dcfe571abce9cb41e6e7a9dfbe9fa77fa25cbb328aece076fa0ee5163c",
@@ -76,6 +76,78 @@
     "rights_status": "author-generated",
     "permission_status": "no external artwork permission required",
     "data_or_concept_source": "integrated_reversible_openstl_memory.json",
-    "caption_attribution": "Chapter 4 Figure 4.12; author-generated from the integrated memory profile"
+    "caption_attribution": "Ukrainian Figure 4.15; asset unchanged, narrative order updated 2026-09-06"
+  },
+  {
+    "schema_version": "1.0",
+    "figure_id": "4.12",
+    "file": "figures/restructured/ch4_fig4_14_completed_validation_examples.png",
+    "sha256": "71d1926f6381ea6ccfb37865c8058c317d7f87dabef5465451cea0aa79304777",
+    "bytes": 117827,
+    "asset_class": "author-generated-artifact-derived",
+    "rights_status": "author-generated",
+    "source": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json",
+    "generator": "scripts/make_a4_completed_snapshot.py",
+    "caption_attribution": "Ukrainian Figure 4.12; asset unchanged, narrative order updated 2026-09-06"
+  },
+  {
+    "figure_id": "3.18",
+    "file": "figures/restructured/hierarchy_allocation_support.svg",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "07d3f0085e1eeff1fe17bb00c2fde5b537c0e9a09175250e72c169dabbafbab6",
+    "bytes": 3349,
+    "generator": "scripts/build_hierarchy_diagrams.py",
+    "generator_sha256": "8ab3632df88ffdd99356e79b34f363902235121710a87008c88cf63083374c1f",
+    "source": "Hierarchy protocol definitions, not measured outcomes",
+    "caption_attribution": "Ukrainian Figure 3.18; author-generated",
+    "rights_status": "author-generated"
+  },
+  {
+    "figure_id": "3.19",
+    "file": "figures/restructured/hierarchy_levels_overlap.svg",
+    "asset_class": "author-generated-conceptual",
+    "sha256": "2ed032353db679a137d3b7c34224509fa07f421a1f6cb9bfbf03cbf8781e8a37",
+    "bytes": 8412,
+    "generator": "scripts/build_hierarchy_diagrams.py",
+    "generator_sha256": "8ab3632df88ffdd99356e79b34f363902235121710a87008c88cf63083374c1f",
+    "source": "Hierarchy protocol definitions, not measured outcomes",
+    "caption_attribution": "Ukrainian Figure 3.19; author-generated",
+    "rights_status": "author-generated"
+  },
+  {
+    "figure_id": "4.13",
+    "file": "figures/restructured/hierarchy_structural_result_slots.svg",
+    "asset_class": "author-generated-placeholder",
+    "sha256": "ac48e4598dc5375ef26a21378f98aee16ff5b2d388e67342bbd9e1d782b9530b",
+    "bytes": 1709,
+    "generator": "scripts/build_hierarchy_diagrams.py",
+    "generator_sha256": "8ab3632df88ffdd99356e79b34f363902235121710a87008c88cf63083374c1f",
+    "source": "Hierarchy protocol definitions, not measured outcomes",
+    "caption_attribution": "Ukrainian Figure 4.13; author-generated",
+    "rights_status": "author-generated"
+  },
+  {
+    "figure_id": "4.14",
+    "file": "figures/restructured/hierarchy_diagnostic_result_slots.svg",
+    "asset_class": "author-generated-placeholder",
+    "sha256": "d3b2e413f4b6bbfe2caf19314e7368618294e465831b76bf47d9e550ce5ba333",
+    "bytes": 1769,
+    "generator": "scripts/build_hierarchy_diagrams.py",
+    "generator_sha256": "8ab3632df88ffdd99356e79b34f363902235121710a87008c88cf63083374c1f",
+    "source": "Hierarchy protocol definitions, not measured outcomes",
+    "caption_attribution": "Ukrainian Figure 4.14; author-generated",
+    "rights_status": "author-generated"
+  },
+  {
+    "figure_id": "4.16",
+    "file": "figures/restructured/hierarchy_integrated_result_slots.svg",
+    "asset_class": "author-generated-placeholder",
+    "sha256": "2c02ba1c481c930bdf0dd954a6fe4d75c56bf0395135fc447c20c0c332929f06",
+    "bytes": 1715,
+    "generator": "scripts/build_hierarchy_diagrams.py",
+    "generator_sha256": "8ab3632df88ffdd99356e79b34f363902235121710a87008c88cf63083374c1f",
+    "source": "Hierarchy protocol definitions, not measured outcomes",
+    "caption_attribution": "Ukrainian Figure 4.16; author-generated",
+    "rights_status": "author-generated"
   }
 ]

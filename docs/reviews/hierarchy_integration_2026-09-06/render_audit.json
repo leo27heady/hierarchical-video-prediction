@@ -1,0 +1,59 @@
+{
+  "pages": 299,
+  "pdf_sha256": "51ac0753d00221cfcd4ea57bd30121cf58a5488d2bb9538b67dbc2e20e3cf995",
+  "key_pages": {
+    "Рисунок 3.18": [
+      176
+    ],
+    "Рисунок 3.19": [
+      179
+    ],
+    "Рисунок 3.22": [
+      187
+    ],
+    "Таблиця 4.6": [
+      223
+    ],
+    "Таблиця 4.7": [
+      225
+    ],
+    "Таблиця 4.8": [
+      226
+    ],
+    "Таблиця 4.10": [
+      227
+    ],
+    "Таблиця 4.18": [
+      235
+    ],
+    "Таблиця 4.19": [
+      235
+    ],
+    "Таблиця 4.21": [
+      236
+    ],
+    "Рисунок 4.12": [
+      225
+    ],
+    "Рисунок 4.13": [
+      227
+    ],
+    "Рисунок 4.16": [
+      237
+    ],
+    "(3.55)": [
+      188,
+      189
+    ],
+    "Таблиця И.1": [
+      299
+    ]
+  },
+  "outside_page_blocks": [],
+  "near_blank_pages": [],
+  "replacement_characters": 0,
+  "renderer": "Word PDF export + PyMuPDF; packaged DOCX renderer unavailable: LibreOffice absent",
+  "pdf": "output/pdf/DISSERTATION_UKRAINIAN_HIERARCHY_2026-09-06.pdf",
+  "bookmarks": 176,
+  "links": 193
+}

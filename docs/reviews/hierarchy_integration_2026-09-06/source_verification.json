@@ -1,0 +1,28 @@
+{
+  "checked_utc": "2026-09-06T11:34:44.144588+00:00",
+  "display_math_preserved": true,
+  "source_hashes": {
+    "00_FRONT_MATTER.md": "a872d4339880309a1ddefdfefec8e7783647280b334705281addfc811e5bc192",
+    "01_INTRODUCTION.md": "827284ff7b8dc06bd9d6c942b74f7d561264a6ca8b88cb0cf5f0742c33da4036",
+    "02_CHAPTER_1.md": "91a1782889c3be68995ff5c42ccc41fd0ab8ce4a616c9a9929adaba04c0579e1",
+    "03_CHAPTER_2.md": "88f43c75a8b197e173dda7550e3416e1b5a34755dae4ce733c5db593fab54ae6",
+    "04_CHAPTER_3.md": "99b36af22bf26a9b440f0131e56d3f98ec02f5d023fae454c10e8b2f2fb554a5",
+    "05_CHAPTER_4.md": "f02e7e9dc079272535f204830b43ed9816e456553c3f388c07c9e57e6806c9e5",
+    "06_CONCLUSIONS.md": "0d8ce1df2ea063328e5b09e3d4409a986716b70995f218c76f277e0a2724efdf",
+    "07_REFERENCES.md": "122608a612d349f4afd657c55f4984f2097c7190c1cf8bb8678bb62209563c3f",
+    "08_APPENDICES.md": "dc3c31ff26c3e16754840e8ac907e44c1119b653d90508c16857617b4cb7c709"
+  },
+  "build_sources_match": true,
+  "live_controller": {
+    "experiment_id": "A4_STS_B1792_L2_K64_RECENT_NEST_S01_T30K",
+    "invocation_attempt": 1,
+    "source_commit": "7a5979615f5354564a793083b673cf1ed9ec77be",
+    "stage": "wave1",
+    "stage_index": 58,
+    "stage_total": 80,
+    "status": "running",
+    "updated_utc": "2026-09-06T09:39:32.931431+00:00"
+  },
+  "live_git_status": "",
+  "live_campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01"
+}
