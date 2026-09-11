@@ -1,0 +1,10 @@
+{
+  "run": "INT_MM_S00",
+  "test_index": 0,
+  "batch": 8,
+  "precision": "bf16-mixed",
+  "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\confirmations\\INT_MM_S00\\checkpoints\\best-epoch=197-val_loss=0.010104.ckpt",
+  "epoch": 197,
+  "global_step": 247500,
+  "note": "First fixed test clip, no ranking or cherry-picking; qualitative re-evaluation only"
+}

@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-09-11T05:30:49.871792+00:00",
+  "display_math_preserved": true,
+  "source_hashes": {
+    "00_FRONT_MATTER.md": "a872d4339880309a1ddefdfefec8e7783647280b334705281addfc811e5bc192",
+    "01_INTRODUCTION.md": "827284ff7b8dc06bd9d6c942b74f7d561264a6ca8b88cb0cf5f0742c33da4036",
+    "02_CHAPTER_1.md": "91a1782889c3be68995ff5c42ccc41fd0ab8ce4a616c9a9929adaba04c0579e1",
+    "03_CHAPTER_2.md": "88f43c75a8b197e173dda7550e3416e1b5a34755dae4ce733c5db593fab54ae6",
+    "04_CHAPTER_3.md": "3754d70da8cde3ada55baff2b682846a666caa4ca517575b8da933849c3c7ab5",
+    "05_CHAPTER_4.md": "4bca26f7ffd2ea80d6fddbb11f71e174357ecfaf31372b3540e4f64d0bfcfaa3",
+    "06_CONCLUSIONS.md": "0dc15454b38fd46d40863af64f551b81c46fd319d1a427b2e88975b35a9f4a53",
+    "07_REFERENCES.md": "122608a612d349f4afd657c55f4984f2097c7190c1cf8bb8678bb62209563c3f",
+    "08_APPENDICES.md": "a766dd3538cefb669fbb018cc8454b50988e2d21087242befc5abdadee202813"
+  },
+  "build_sources_match": true,
+  "live_controller": {
+    "campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01",
+    "completed_utc": "2026-09-09T11:17:07.214044+00:00",
+    "dependency_resolution_sha256": "2966f8309b69e9aef732f08c1dc1aa9dec7a03c6d41023e052c669d1d2c181f6",
+    "failures": [],
+    "source_commit": "7a5979615f5354564a793083b673cf1ed9ec77be",
+    "status": "complete"
+  },
+  "live_git_status": "",
+  "live_campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01"
+}

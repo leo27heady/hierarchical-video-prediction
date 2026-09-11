@@ -1,0 +1,26 @@
+[
+  {
+    "run": "INT_MM_S00",
+    "selected_epoch": 197,
+    "selected_step": 247500,
+    "weights_finite": true
+  },
+  {
+    "run": "INT_MM_S01",
+    "selected_epoch": 198,
+    "selected_step": 248750,
+    "weights_finite": true
+  },
+  {
+    "run": "INT_TB_S00",
+    "selected_epoch": 54,
+    "selected_step": 63250,
+    "weights_finite": true
+  },
+  {
+    "run": "INT_TB_S01",
+    "selected_epoch": 63,
+    "selected_step": 73600,
+    "weights_finite": true
+  }
+]

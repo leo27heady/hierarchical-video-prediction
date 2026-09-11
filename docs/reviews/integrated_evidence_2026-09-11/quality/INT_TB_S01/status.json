@@ -1,0 +1,44 @@
+{
+  "authorization": {
+    "approved": true,
+    "basis": "user invocation of run --execute after bounded gates",
+    "created_utc": "2026-09-09T17:48:39.722980+00:00",
+    "lock_fingerprint": "6989f01628037c4cf162009ad4f71aa48ea6303f366f8007a7a8f07a68525c44",
+    "manifest_sha256": "58460b231b8c8e8665363c3749a6a0274248bdd8f42dc25cd7a99ba00125ce75",
+    "measured_eta": {
+      "datasets": [
+        {
+          "contingency": 0.2,
+          "dataset": "mmnist",
+          "epochs": 200,
+          "hours_per_seed": 14.221294843166948,
+          "planned_steps_per_seed": 250000,
+          "seconds_per_step": 0.15952895000000353,
+          "test_seconds_proxy": 67.84504949999928,
+          "two_seed_hours": 28.442589686333896,
+          "validation_seconds_per_epoch": 13.569009899999855
+        },
+        {
+          "contingency": 0.2,
+          "dataset": "taxibj",
+          "epochs": 100,
+          "hours_per_seed": 3.504918130124671,
+          "planned_steps_per_seed": 115000,
+          "seconds_per_step": 0.08776631999999153,
+          "test_seconds_proxy": 1.0514403749999701,
+          "two_seed_hours": 7.009836260249342,
+          "validation_seconds_per_epoch": 4.2057614999998805
+        }
+      ],
+      "four_run_hours": 35.45242594658324,
+      "limitation": "test cost uses validation throughput; SSIM may add overhead; estimate is not a deadline"
+    }
+  },
+  "finished_at": 1789085174.2136078,
+  "manifest_sha256": "58460b231b8c8e8665363c3749a6a0274248bdd8f42dc25cd7a99ba00125ce75",
+  "pid": 29716,
+  "return_code": 0,
+  "run_id": "INT_TB_S01",
+  "started_at": 1789072707.3007877,
+  "status": "completed"
+}

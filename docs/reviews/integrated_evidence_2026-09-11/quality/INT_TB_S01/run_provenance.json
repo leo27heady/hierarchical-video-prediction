@@ -1,0 +1,39 @@
+{
+  "config_file": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl\\configs\\taxibj\\HVPIntegrated.py",
+  "config_sha256": "5b5fec6d9eb89dfd078e664faf083303a7e4d800cdfe54c928d5fca4a1d67efe",
+  "cuda_available": true,
+  "cuda_device": "NVIDIA GeForce RTX 4060 Ti",
+  "event": "worker_start",
+  "memory_contract": {
+    "analytic_payload_bytes": 353280.0,
+    "coarse_tokens": 64.0,
+    "detail_tokens": 16.0,
+    "fine_candidates": 256.0,
+    "flat_to_packed_token_ratio": 3.2,
+    "packed_tokens": 80.0
+  },
+  "parameters": 1912963,
+  "planned_optimizer_steps": 115000,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.0 (tags/v3.12.0:0fb18b0, Oct  2 2023, 13:03:39) [MSC v.1935 64 bit (AMD64)]",
+  "repositories": {
+    "hvp": {
+      "branch": "master",
+      "clean": true,
+      "commit": "e7efb9441ca108d98ac41a1d7e700e21fdf41dca",
+      "root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\hvp_launchfix_20260909"
+    },
+    "openstl": {
+      "branch": "master",
+      "clean": true,
+      "commit": "46c01da79fb94c3318738aa3b3a61b51a3ce3753",
+      "root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl"
+    }
+  },
+  "run_id": "INT_TB_S01",
+  "test_batches": 32,
+  "torch": "2.7.0+cu126",
+  "train_batches": 1150,
+  "trainable_parameters": 1912963,
+  "validation_batches": 128
+}

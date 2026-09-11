@@ -1,0 +1,22 @@
+{
+  "profiles": [
+    {
+      "path": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles_corrected_20260909\\mmnist_fp32.json",
+      "sha256": "64c088150a4cea6c6b0d5a4fefd71fa240d4063458903222b5cb1f5060bbdad4"
+    },
+    {
+      "path": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles_corrected_20260909\\mmnist_bf16.json",
+      "sha256": "a4dc6459f43dcf72e31b87213f34b3bbb6bb0cdb72dfd7a884e6bfdb493c3b43"
+    },
+    {
+      "path": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles_corrected_20260909\\taxibj_fp32.json",
+      "sha256": "5301dd069c0dc4436662c318711c1ef9e7fe140b876c5f45fb808262f53e09a6"
+    },
+    {
+      "path": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles_corrected_20260909\\taxibj_bf16.json",
+      "sha256": "bb5d9d566359b0c73880e1269a49712649816b52d75172e8196f74f33ae3615e"
+    }
+  ],
+  "replaces_for_resource_claims": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles",
+  "status": "completed"
+}

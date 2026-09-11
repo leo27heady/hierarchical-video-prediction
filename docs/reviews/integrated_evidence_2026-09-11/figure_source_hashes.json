@@ -1,0 +1,8 @@
+{
+  "docs/reviews/integrated_evidence_2026-09-11/examples/mmnist.json": "b85dedb9ca8fe1089483b1e6b42c1988dacc3beb8319db9113ee439c9ce86cfd",
+  "docs/reviews/integrated_evidence_2026-09-11/examples/mmnist.npz": "2f1694ef71159d26fa011f3ae4bdf018c890487aaf93328a30657c24c27a14f6",
+  "docs/reviews/integrated_evidence_2026-09-11/examples/taxibj.json": "efa9b3f9a3a06a8b7f669780e79fafe21c4780dbaef87317a3ded738e5260054",
+  "docs/reviews/integrated_evidence_2026-09-11/examples/taxibj.npz": "dfbdd262875ca435e7176dbd39338ae2ccd0cbadcbed9326218052da1196a25d",
+  "scripts/export_integrated_examples_20260911.py": "acbfbbfa3614ed299758826aa90ddd3a48cc2164acd24e92f9ab0bfc30662f8f",
+  "scripts/integrate_integrated_evidence_20260911.py": "4cb90b7178067758ea110e2a438b674c653fb214458d5e8c013ced94cff1f3fe"
+}

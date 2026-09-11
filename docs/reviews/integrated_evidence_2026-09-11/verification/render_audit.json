@@ -1,0 +1,59 @@
+{
+  "pages": 303,
+  "pdf_sha256": "3378bf49014efc53cc8bf69249b0741a0bfb502bd38b16f5dc676d51f37bd27a",
+  "key_pages": {
+    "Рисунок 3.18": [
+      176
+    ],
+    "Рисунок 3.19": [
+      179
+    ],
+    "Рисунок 3.22": [
+      187
+    ],
+    "Таблиця 4.6": [
+      223
+    ],
+    "Таблиця 4.7": [
+      225
+    ],
+    "Таблиця 4.8": [
+      226
+    ],
+    "Таблиця 4.10": [
+      228
+    ],
+    "Таблиця 4.18": [
+      236
+    ],
+    "Таблиця 4.19": [
+      236
+    ],
+    "Таблиця 4.21": [
+      238
+    ],
+    "Рисунок 4.12": [
+      225
+    ],
+    "Рисунок 4.13": [
+      228
+    ],
+    "Рисунок 4.16": [
+      240
+    ],
+    "(3.55)": [
+      188,
+      189
+    ],
+    "Таблиця И.1": [
+      302
+    ]
+  },
+  "outside_page_blocks": [],
+  "near_blank_pages": [],
+  "replacement_characters": 0,
+  "renderer": "Word PDF export + PyMuPDF; packaged DOCX renderer unavailable: LibreOffice absent",
+  "pdf": "output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-11.pdf",
+  "bookmarks": 176,
+  "links": 193
+}

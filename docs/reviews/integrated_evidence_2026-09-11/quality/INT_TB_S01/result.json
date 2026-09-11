@@ -1,0 +1,66 @@
+{
+  "best_checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\confirmations\\INT_TB_S01\\checkpoints\\best-epoch=063-val_loss=0.000266.ckpt",
+  "best_validation_loss": 0.0002661675389390439,
+  "cuda_allocated_mb": 23.019008,
+  "cuda_peak_allocated_mb": 287.547392,
+  "cuda_peak_reserved_mb": 327.155712,
+  "cuda_reserved_mb": 35.651584,
+  "elapsed_hours": 3.4586307015021642,
+  "memory_contract": {
+    "analytic_payload_bytes": 353280.0,
+    "coarse_tokens": 64.0,
+    "detail_tokens": 16.0,
+    "fine_candidates": 256.0,
+    "flat_to_packed_token_ratio": 3.2,
+    "packed_tokens": 80.0
+  },
+  "parameters": 1912963,
+  "run_id": "INT_TB_S01",
+  "status": "completed",
+  "test_metrics": {
+    "horizon_mae": [
+      18.293960989415645,
+      19.376325849056244,
+      20.125602513134478,
+      20.971968423843382
+    ],
+    "horizon_mse": [
+      0.4817502911133816,
+      0.5534394789958241,
+      0.59397685917516,
+      0.6340991256818012
+    ],
+    "horizon_pixel_mae": [
+      0.008932598139363108,
+      0.009461096605984494,
+      0.009826954352116444,
+      0.010240218956954776
+    ],
+    "horizon_pixel_mse": [
+      0.00023522963433270585,
+      0.00027023412060342975,
+      0.0002900277632691211,
+      0.00030961871371181697
+    ],
+    "horizon_psnr": [
+      38.36782707832157,
+      37.83433664785595,
+      37.466902909956616,
+      37.06395987552885
+    ],
+    "horizon_ssim": [
+      0.9708828633725644,
+      0.9657979567050934,
+      0.9621427646875381,
+      0.9586376408338547
+    ],
+    "mae": 19.69196444386244,
+    "mse": 0.5658164387415416,
+    "pixel_mae": 0.009615217013604706,
+    "pixel_mse": 0.0002762775579792684,
+    "psnr": 37.68325662791575,
+    "rmse": 0.752207709839205,
+    "samples_times_frames": 2000,
+    "ssim": 0.9643653063997626
+  }
+}

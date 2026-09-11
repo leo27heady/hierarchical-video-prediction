@@ -11,7 +11,7 @@ OUT=ROOT/'tmp/ukrainian_pdf/inspection'
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
-    pdf_path=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-09.pdf'
+    pdf_path=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-11.pdf'
     pdf=pymupdf.open(pdf_path)
     needles=['Рисунок 3.18','Рисунок 3.19','Рисунок 3.22','Таблиця 4.6','Таблиця 4.7','Таблиця 4.8','Таблиця 4.10','Таблиця 4.18','Таблиця 4.19','Таблиця 4.21','Рисунок 4.12','Рисунок 4.13','Рисунок 4.16','(3.55)','Таблиця И.1']
     found={key:[] for key in needles}; outside=[]; blanks=[]

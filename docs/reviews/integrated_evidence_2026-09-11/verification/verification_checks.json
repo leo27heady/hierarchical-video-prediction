@@ -1,0 +1,62 @@
+[
+  {
+    "command": [
+      "scripts/check_manuscript_finalization.py"
+    ],
+    "exit_code": 0,
+    "stdout": "MANUSCRIPT FINALIZATION CHECK PASS: scientific wording, integration spine, curated appendix, 3 synthesis figures, and published-figure freeze verified\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "scripts/check_text_consistency.py",
+      "--gate"
+    ],
+    "exit_code": 0,
+    "stdout": "== 1. stale phrases ==\n  (none)\n== 2. [EXPECTED inventory ==\n  total pending: 0\nGATE PASS: no projected-result shells remain.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "scripts/check_rft_consistency.py"
+    ],
+    "exit_code": 0,
+    "stdout": "PACKAGING/RFT CONSISTENCY PASS: 5 authoritative texts, 8 detailed source chapters and 1 discussion resources; fixed publication/task strands present\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "scripts/audit_ukrainian_dissertation.py"
+    ],
+    "exit_code": 0,
+    "stdout": "equations=119 captions=88 image_links=91 references=174 cited=174\nWARNING: author/institution inputs still required: 11\nWARNING: explicit pending experimental table cells (not measurements): 10\nPASS\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "scripts/check_hierarchy_narrative.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"families\": 15, \"detailed_result_slots\": {\"\\u043f\\u0435\\u0440\\u0435\\u0432\\u0456\\u0440\\u0435\\u043d\\u043e\": 220, \"\\u043e\\u0447\\u0456\\u043a\\u0443\\u0454\\u0442\\u044c\\u0441\\u044f\": 90}, \"headings\": 140}\nHIERARCHY STRUCTURE AND COVERAGE PASS\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "pytest",
+      "tests/test_hierarchy_narrative_gate.py"
+    ],
+    "exit_code": 0,
+    "stdout": "....                                                                     [100%]\n4 passed in 0.03s\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "warning: in the working copy of 'scripts/build_hierarchy_diagrams.py', LF will be replaced by CRLF the next time Git touches it\n"
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "campaign_id": "integrated-openstl-confirmation-2026-09",
+  "description": "Four long full-model confirmations after bounded architecture and memory gates.",
+  "hvp_root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\hvp_launchfix_20260909",
+  "launch_authorized": false,
+  "minimum_free_gib_after_projection": 15,
+  "openstl_reference_data_root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\data",
+  "openstl_root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl",
+  "output_root": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\confirmations",
+  "python": "C:/Users/leoni/Documents/projects/OpenSTL/venv/Scripts/python.exe",
+  "runs": [
+    {
+      "config": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl\\configs\\mmnist\\HVPIntegrated.py",
+      "dataset": "mmnist",
+      "run_id": "INT_MM_S00",
+      "seed": 0
+    },
+    {
+      "config": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl\\configs\\mmnist\\HVPIntegrated.py",
+      "dataset": "mmnist",
+      "run_id": "INT_MM_S01",
+      "seed": 1
+    },
+    {
+      "config": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl\\configs\\taxibj\\HVPIntegrated.py",
+      "dataset": "taxibj",
+      "run_id": "INT_TB_S00",
+      "seed": 0
+    },
+    {
+      "config": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\source\\openstl\\configs\\taxibj\\HVPIntegrated.py",
+      "dataset": "taxibj",
+      "run_id": "INT_TB_S01",
+      "seed": 1
+    }
+  ],
+  "schema_version": 1,
+  "stage": "prelock_confirmation",
+  "wandb_group": "integrated-openstl-confirmation-2026-09",
+  "wandb_project": "hierarchical-video-prediction-integrated-v2"
+}

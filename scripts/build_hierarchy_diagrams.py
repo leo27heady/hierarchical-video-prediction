@@ -70,6 +70,8 @@ def main():
             ('Moving MNIST, 10 → 10','Контекст → еталонні кадри → прогнози → помилки.', 'Фіксовані кліпи, горизонти та спільний масштаб яскравості.'),
             ('TaxiBJ, 4 → 4','Контекст → еталонні канали потоку → прогнози → помилки.', 'Однакові одиниці та нормалізація; канали показуються окремо.')])}
     for name,(title,panels) in specs.items():
+        if name == 'hierarchy_integrated_result_slots.svg' and (ROOT/'docs/reviews/integrated_evidence_2026-09-11/audit.json').exists():
+            continue
         if name in {'hierarchy_structural_result_slots.svg','hierarchy_diagnostic_result_slots.svg'} and (ROOT/'docs/reviews/completed_evidence_2026-09-09/audit.json').exists():
             continue  # These frames now contain measured figures with their own generator.
         s=label(24,35,title,25,'bold')

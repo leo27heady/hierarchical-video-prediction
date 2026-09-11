@@ -16,7 +16,7 @@ import build_final_documents as base
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'docs/dissertation/condensed_translated_humanized_ukrainian'
-OUTPUT=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-09.docx'
+OUTPUT=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-11.docx'
 CACHE=ROOT/'tmp/ukrainian_pdf'
 
 

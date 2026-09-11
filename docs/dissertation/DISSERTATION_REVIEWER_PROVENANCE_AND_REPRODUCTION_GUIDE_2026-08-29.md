@@ -398,9 +398,9 @@
 | 4.16 | Якість інтегрованого прототипу та базових моделей на Moving-MNIST 10→10. | `05_CHAPTER_4.md`; `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json`; `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
 | 4.17 | Пікова додаткова пам’ять інтегрованого предиктора з часовою рекурентністю за різної довжини ланцюга. | `05_CHAPTER_4.md`; `integrated_reversible_openstl_memory.json`; `scripts/profile_integrated_reversible_openstl.py`; попередня другопорядкова оболонка змінює зовнішню динаміку, тому це інженерний, не same-forward причинний профіль |
 | 4.18 | Перевірка однакового обчислення. | `05_CHAPTER_4.md`; PARITY; docs/reviews/completed_evidence_2026-09-09/audit.json |
-| 4.19 | Повний ресурсний профіль предиктора. | `05_CHAPTER_4.md`; RESOURCE; очікується / умови в experiment_evidence_inventory.json |
+| 4.19 | Повний ресурсний профіль предиктора. | `05_CHAPTER_4.md`; RESOURCE; docs/reviews/integrated_evidence_2026-09-11/audit.json |
 | 4.20 | Обмежені перевірки навчання. | `05_CHAPTER_4.md`; SCREEN; docs/reviews/completed_evidence_2026-09-09/audit.json |
-| 4.21 | Якість ієрархічного предиктора. | `05_CHAPTER_4.md`; QUALITY; очікується / умови в experiment_evidence_inventory.json |
+| 4.21 | Якість ієрархічного предиктора. | `05_CHAPTER_4.md`; QUALITY; docs/reviews/integrated_evidence_2026-09-11/audit.json |
 | 4.22 | Сумісність компаратора для твердження про якість. | `05_CHAPTER_4.md`; COMP; очікується / умови в experiment_evidence_inventory.json |
 | А.1 | Публікації, використані результати та особистий внесок здобувача. | `08_APPENDICES.md`; статті [A1–A4] + авторська attribution; статус [A4] і склад авторів потребують даних автора; попередній прототип не приписувати завершеній статті, а остаточну інтеграцію вносити до спільного рукопису лише після експериментів |
 | Б.1 | Адміністративні записи, які потребують остаточного підтвердження. | `08_APPENDICES.md`; `ADMIN`; заповнювати лише за офіційними документами автора/ВНТУ |
@@ -514,6 +514,7 @@
 | В.2 | Розподіл контекстного бюджету за однакової номінальної досяжності 48 кадрів. | `08_APPENDICES.md`; точна вартість трьох пакетів за досяжності 48 кадрів; `scripts/make_restructured_ch2_ch4_figures.py`; арифметика токенів і fp16 payload, не VRAM profile |
 | Е.1 | Повний монтаж однокрокових прогнозів регресії та дифузії. | `08_APPENDICES.md`; повний fixed-index монтаж regression/diffusion; `scripts/make_dissertation_missing_figures.py`; якісна ілюстрація, таблиця 4.1 визначає вибір |
 | Е.2 | Повний монтаж розгорток для чотирьох фіксованих кліпів. | `08_APPENDICES.md`; повний fixed-index монтаж чотирьох E2 rollout clips; `scripts/make_samples.py`; якісна ілюстрація, таблиця Д.3 містить агрегований доказ |
+| И.1 | Валідаційні траєкторії та похибка за горизонтом. | `08_APPENDICES.md`; авторська схема / явне місце результату; реєстр походження та покриття |
 
 ## 10. Артефакти, скрипти й команди відтворення
 
