@@ -1,0 +1,215 @@
+{
+  "aggregation": "arithmetic mean across seeds 0 and 1",
+  "authorized_runs": {
+    "A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S00_T30K": "23b65868526e8828acdac99adab20a59dc5533f69cd501eaadf458930fc95dec",
+    "A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S01_T30K": "dc0bdc4e59671b13140924414ffec1fcd03776901646b5d404e71841403bdba3",
+    "A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S00_T30K": "fc26968386a641612f71a840931100cbc2bcc70e12811f41bf3fb63b0c37c598",
+    "A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S01_T30K": "fd8c4f8902d4c2daadf111a8048dac929482e34123718d13987204f01158aca6",
+    "A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S00_T30K": "b115db195550451cb3e69af1026618da108d0101f918c92bd058004f27ea01fa",
+    "A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S01_T30K": "b55e8e137ff9825ecde08ececeec69eb9e79fea46afdd69dc730d7770a007ba6"
+  },
+  "campaign_id": "article4-primary-30k-2026-09-01",
+  "evidence": {
+    "balanced_recent": {
+      "mean": 0.02370987948961556,
+      "seeds": {
+        "0": {
+          "config_hash": "3ca029b78a7d69ff1c0249fd9cae10f9949406127c8976e3b72b5ac551d00e48",
+          "experiment_id": "A4_ALC_B1792_L2_BAL_RECENT_NEST_S00_T30K",
+          "metric": 0.02479803003370762,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_BAL_RECENT_NEST_S00_T30K__3ca029b78a7d/validation_metrics.jsonl",
+          "metrics_sha256": "79df27c4d723f42c4346341cc34d77a5620b7571512885268d870ac6e187ab1a"
+        },
+        "1": {
+          "config_hash": "28168139e727ee9299c2c38bc446e21ddc68b677c2dd4fab0e4eebcbcad1cc7d",
+          "experiment_id": "A4_ALC_B1792_L2_BAL_RECENT_NEST_S01_T30K",
+          "metric": 0.0226217289455235,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_BAL_RECENT_NEST_S01_T30K__28168139e727/validation_metrics.jsonl",
+          "metrics_sha256": "2403260f86ce1ca594919f1aacb5d5790b4810a1e35bb77b786d27fa946566f6"
+        }
+      }
+    },
+    "coarse_heavy": {
+      "mean": 0.03227110882289708,
+      "seeds": {
+        "0": {
+          "config_hash": "eddddf57fb1296adfe68eb2f26c9974c6f9512617bebb32ae55df7b3023429b0",
+          "experiment_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K",
+          "metric": 0.030599221121519804,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K__eddddf57fb12/validation_metrics.jsonl",
+          "metrics_sha256": "9ce91487e9be3cb6cfeb23ce635fa55d22896714bbbf6c21a1563e3c9b4b4df8"
+        },
+        "1": {
+          "config_hash": "8d5220cfaf8f27d3c747a5ffd5fda3ded35da694e70020b82122983dea3e2d08",
+          "experiment_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K",
+          "metric": 0.03394299652427435,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K__8d5220cfaf8f/validation_metrics.jsonl",
+          "metrics_sha256": "0f9eaddef51fabbbefd444e7dbc308a3caaf33075268336395bdcc0b5bece7df"
+        }
+      }
+    },
+    "fine_heavy": {
+      "mean": 0.023719011805951595,
+      "seeds": {
+        "0": {
+          "config_hash": "880f6e8b9485afedeaba6a7edf59cce337a65e3034a1f722fa88dc9163261a8c",
+          "experiment_id": "A4_ALC_B1792_L2_FINE_HEAVY_NEST_S00_T30K",
+          "metric": 0.023326381109654903,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_FINE_HEAVY_NEST_S00_T30K__880f6e8b9485/validation_metrics.jsonl",
+          "metrics_sha256": "0cc55eb699647c47d1a58f6f81043e68996aaa56f157218d9c3b47efbefa9dc6"
+        },
+        "1": {
+          "config_hash": "dc327e2a8c36bbb4903c74e551eea2999d820813847355e8df6740164dc47189",
+          "experiment_id": "A4_ALC_B1792_L2_FINE_HEAVY_NEST_S01_T30K",
+          "metric": 0.024111642502248287,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_FINE_HEAVY_NEST_S01_T30K__dc327e2a8c36/validation_metrics.jsonl",
+          "metrics_sha256": "c6acf6c8803c70ca810beb02088455cb256215d15e1d7f353eba78aa02a8f836"
+        }
+      }
+    },
+    "flat_recent": {
+      "mean": 0.0215431556571275,
+      "seeds": {
+        "0": {
+          "config_hash": "80d1ac9e0e9dead6e1ff981982700e2e77e5a2eac5334aa30347fc505740974e",
+          "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+          "metric": 0.02224568510428071,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K__80d1ac9e0e9d/validation_metrics.jsonl",
+          "metrics_sha256": "d72fbdab5c0eae4407c3e64500bbc2aaab274024a93feeb4432a64096a18d93a"
+        },
+        "1": {
+          "config_hash": "db5f425f061606f41881ed86d72211fcdc0f8b13d43182f6872ee4544e8b32e2",
+          "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K",
+          "metric": 0.02084062620997429,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K__db5f425f0616/validation_metrics.jsonl",
+          "metrics_sha256": "60e443c4234c72673a5dd9de308944d4b15aad8c4cfb27ccad4b6f7f58bc714e"
+        }
+      }
+    },
+    "geometric_age": {
+      "mean": 0.019617256009951234,
+      "seeds": {
+        "0": {
+          "config_hash": "c2a6664689670de4fcea904c0ecab9ec23d3e46c5d4587da74f4230c82603deb",
+          "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K",
+          "metric": 0.019566677510738373,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K__c2a666468967/validation_metrics.jsonl",
+          "metrics_sha256": "bf77d98f354546be72958c5539d0dd4dcdcedf5e02350f03e74e330430a3c345"
+        },
+        "1": {
+          "config_hash": "952e3d682ca48b9cc6cc3d4d6d540a9de24990dfa28c0d0525915807b70187d9",
+          "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K",
+          "metric": 0.019667834509164095,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K__952e3d682ca4/validation_metrics.jsonl",
+          "metrics_sha256": "bb10679ff9571f345534fde077e2d179d89f705bc7e731fe24b36329f81918a2"
+        }
+      }
+    },
+    "linear_age": {
+      "mean": 0.02120928280055523,
+      "seeds": {
+        "0": {
+          "config_hash": "064b129b23875760e7f4d94405899514214d3e51d71c8a25ec67af73c9539a70",
+          "experiment_id": "A4_FRT_B1792_L2_LINEAR_AGE_NEST_S00_T30K",
+          "metric": 0.020268743857741356,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L2_LINEAR_AGE_NEST_S00_T30K__064b129b2387/validation_metrics.jsonl",
+          "metrics_sha256": "83a5f2f38da3482d03da0abe3a0ebbe1d2857003541f6f05206d4dbdf062e8bd"
+        },
+        "1": {
+          "config_hash": "ba1b29f1605625a9ce07386a08ce8eaf9dad7a9bab6eb20aba856c4042155b2c",
+          "experiment_id": "A4_FRT_B1792_L2_LINEAR_AGE_NEST_S01_T30K",
+          "metric": 0.022149821743369102,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_FRT_B1792_L2_LINEAR_AGE_NEST_S01_T30K__ba1b29f16056/validation_metrics.jsonl",
+          "metrics_sha256": "2bff5a1861ee5d212057677fa55303bee89f24e5fc5220100c7c019574bf9965"
+        }
+      }
+    },
+    "reach_optimized": {
+      "mean": 0.025591704063117504,
+      "seeds": {
+        "0": {
+          "config_hash": "afdc491c3d9523bd2dd5e56a8853e75b4c3e37c87e57c58337ed17d776da19d9",
+          "experiment_id": "A4_ALC_B1792_L2_REACH_OPT_NEST_S00_T30K",
+          "metric": 0.029410120099782944,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_REACH_OPT_NEST_S00_T30K__afdc491c3d95/validation_metrics.jsonl",
+          "metrics_sha256": "372f4f57777c8f4e8c5b7e99816276a589e4a7c7bc00c1e4bb71e4d46fabcf41"
+        },
+        "1": {
+          "config_hash": "94795c36df6d9897a0d5f232e74a2d0d1e728dccd885c5667ccf9bd0c1f49a1b",
+          "experiment_id": "A4_ALC_B1792_L2_REACH_OPT_NEST_S01_T30K",
+          "metric": 0.021773288026452065,
+          "metrics_file": "artifacts/v2/article4_primary_30k/runs/A4_ALC_B1792_L2_REACH_OPT_NEST_S01_T30K__94795c36df6d/validation_metrics.jsonl",
+          "metrics_sha256": "faadc2d212bb33a242e0275a3acbfd6c42bf6fd30ad9e57c32368dd987936234"
+        }
+      }
+    }
+  },
+  "parent_campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01",
+  "primary_metric": "horizon4_foreground_mse",
+  "reused_runs": {
+    "LVL_L1": [
+      "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+      "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K"
+    ],
+    "LVL_L2": [
+      "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K",
+      "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K"
+    ],
+    "OVR_nested": [
+      "A4_ALC_B1792_L2_BAL_RECENT_NEST_S00_T30K",
+      "A4_ALC_B1792_L2_BAL_RECENT_NEST_S01_T30K"
+    ]
+  },
+  "run_order": [
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S00_T30K.json",
+      "config_hash": "23b65868526e8828acdac99adab20a59dc5533f69cd501eaadf458930fc95dec",
+      "experiment_id": "A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S00_T30K",
+      "family": "LVL",
+      "seed": 0
+    },
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S01_T30K.json",
+      "config_hash": "dc0bdc4e59671b13140924414ffec1fcd03776901646b5d404e71841403bdba3",
+      "experiment_id": "A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S01_T30K",
+      "family": "LVL",
+      "seed": 1
+    },
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S00_T30K.json",
+      "config_hash": "fc26968386a641612f71a840931100cbc2bcc70e12811f41bf3fb63b0c37c598",
+      "experiment_id": "A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S00_T30K",
+      "family": "OVR",
+      "seed": 0
+    },
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S01_T30K.json",
+      "config_hash": "fd8c4f8902d4c2daadf111a8048dac929482e34123718d13987204f01158aca6",
+      "experiment_id": "A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S01_T30K",
+      "family": "OVR",
+      "seed": 1
+    },
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S00_T30K.json",
+      "config_hash": "b115db195550451cb3e69af1026618da108d0101f918c92bd058004f27ea01fa",
+      "experiment_id": "A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S00_T30K",
+      "family": "OVR",
+      "seed": 0
+    },
+    {
+      "config": "artifacts/v2/article4_primary_30k/resolved_run_specs/A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S01_T30K.json",
+      "config_hash": "b55e8e137ff9825ecde08ececeec69eb9e79fea46afdd69dc730d7770a007ba6",
+      "experiment_id": "A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S01_T30K",
+      "family": "OVR",
+      "seed": 1
+    }
+  ],
+  "schema_version": 1,
+  "selected": {
+    "best_overall": "geometric_age",
+    "level_base_best_nonflat": "geometric_age",
+    "overlap_base_best_feasible": "balanced_recent"
+  },
+  "selection_checkpoint": 30000,
+  "status": "resolved"
+}

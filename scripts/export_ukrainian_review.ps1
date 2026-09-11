@@ -1,8 +1,8 @@
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 $taskOutput = Join-Path $taskRoot 'output/pdf'
-$taskDocx = Join-Path $taskOutput 'DISSERTATION_UKRAINIAN_HIERARCHY_2026-09-06.docx'
-$taskPdf = Join-Path $taskOutput 'DISSERTATION_UKRAINIAN_HIERARCHY_2026-09-06.pdf'
+$taskDocx = Join-Path $taskOutput 'DISSERTATION_UKRAINIAN_RESULTS_2026-09-09.docx'
+$taskPdf = Join-Path $taskOutput 'DISSERTATION_UKRAINIAN_RESULTS_2026-09-09.pdf'
 $taskStaging = Join-Path $taskOutput ('review-export-' + [guid]::NewGuid().ToString() + '.pdf')
 $taskWord = New-Object -ComObject Word.Application
 $taskWord.Visible = $false

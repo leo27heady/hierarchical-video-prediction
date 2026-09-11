@@ -29,258 +29,258 @@
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 320,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 320,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 320,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 320,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 320,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 768,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1152,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 1792,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 2432,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "budget": 3072,
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
     "status": "перевірено",
     "dependency": null,
     "metric": "MSE h=4 per protocol",
-    "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json",
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -308,91 +308,91 @@
         "policy": "flat",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "flat",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "fine_heavy",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "fine_heavy",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "balanced",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "balanced",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "coarse_heavy",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "coarse_heavy",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "linear",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "linear",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "geometric",
         "seed": 0,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "geometric",
         "seed": 1,
         "status": "перевірено",
-        "artifact": "docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json"
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "reach",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "policy": "reach",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "частково перевірено: три повторно використані політики FRT",
+    "status": "перевірено",
     "dependency": null,
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -418,80 +418,80 @@
       {
         "coarse_positions": 0,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 0,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 4,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 4,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 8,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 8,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 16,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 16,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 32,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 32,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 64,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "coarse_positions": 64,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": null,
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -521,175 +521,175 @@
         "K": 64,
         "placement": "recent",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 64,
         "placement": "recent",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 64,
         "placement": "uniform",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 64,
         "placement": "uniform",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 64,
         "placement": "geometric",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 64,
         "placement": "geometric",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "recent",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "recent",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "uniform",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "uniform",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "geometric",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 32,
         "placement": "geometric",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "recent",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "recent",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "uniform",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "uniform",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "geometric",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 16,
         "placement": "geometric",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "recent",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "recent",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "uniform",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "uniform",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "geometric",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "K": 8,
         "placement": "geometric",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": null,
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -712,44 +712,44 @@
       {
         "levels": 1,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "levels": 1,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "levels": 2,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "levels": 2,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "levels": 3,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "levels": 3,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": "ALC validation selection",
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -772,44 +772,44 @@
       {
         "overlap": "nested",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "overlap": "nested",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "overlap": "exclusive",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "overlap": "exclusive",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "overlap": "residual",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "overlap": "residual",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": "ALC validation selection",
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -832,44 +832,44 @@
       {
         "role": "best_flat_1792",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_flat_1792",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_hierarchy_1792",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_hierarchy_1792",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "memory_pareto_within_5pct",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "memory_pareto_within_5pct",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": "frozen shortlist",
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -892,44 +892,44 @@
       {
         "role": "best_flat_1792",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_flat_1792",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_hierarchy_1792",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "best_hierarchy_1792",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "failure_hierarchy_1792",
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "role": "failure_hierarchy_1792",
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": "frozen shortlist",
     "metric": "defined in corresponding methods and table caption",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -952,44 +952,44 @@
       {
         "shortlist_slot": 1,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "shortlist_slot": 1,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "shortlist_slot": 2,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "shortlist_slot": 2,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "shortlist_slot": 3,
         "seed": 0,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "shortlist_slot": 3,
         "seed": 1,
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": "frozen shortlist",
     "metric": "MSE h=4 per protocol",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {
@@ -1163,198 +1163,198 @@
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "mmnist",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/checkpoint",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "fp32",
         "pair": "eager/reversible",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/checkpoint",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "output",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "input_gradient",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "dataset": "taxibj",
         "precision": "intended_training_precision",
         "pair": "eager/reversible",
         "quantity": "named_parameter_gradients",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": null,
     "metric": "defined in corresponding methods and table caption",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "cpu_evidence": "24 CPU model/data tests passed on 2026-09-05; CUDA slots below are not populated by CPU results",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
@@ -1400,7 +1400,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1410,7 +1411,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1420,7 +1422,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1430,7 +1433,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1440,7 +1444,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1450,7 +1455,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1460,7 +1466,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1470,7 +1477,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1480,7 +1488,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1490,7 +1499,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1500,7 +1510,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1510,7 +1521,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1520,7 +1532,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1530,7 +1543,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1540,7 +1554,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1550,7 +1565,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1560,7 +1576,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1570,7 +1587,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1580,7 +1598,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1590,7 +1609,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1600,7 +1620,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1610,7 +1631,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1620,7 +1642,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1630,7 +1653,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1640,7 +1664,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1650,7 +1675,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1660,7 +1686,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1670,7 +1697,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1680,7 +1708,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1690,7 +1719,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1700,7 +1730,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1710,7 +1741,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1720,7 +1752,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1730,7 +1763,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1740,7 +1774,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1750,7 +1785,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1760,7 +1796,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1770,7 +1807,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1780,7 +1818,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1790,7 +1829,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1800,7 +1840,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1810,7 +1851,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1820,7 +1862,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1830,7 +1873,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1840,7 +1884,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1850,7 +1895,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1860,7 +1906,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1870,7 +1917,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1880,7 +1928,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1890,7 +1939,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1900,7 +1950,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1910,7 +1961,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1920,7 +1972,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1930,7 +1983,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1940,7 +1994,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1950,7 +2005,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1960,7 +2016,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1970,7 +2027,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1980,7 +2038,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -1990,7 +2049,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2000,7 +2060,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2010,7 +2071,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2020,7 +2082,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2030,7 +2093,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2040,7 +2104,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2050,7 +2115,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2060,7 +2126,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2070,7 +2137,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2080,7 +2148,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2090,7 +2159,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2100,7 +2170,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "mmnist",
@@ -2110,7 +2181,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2120,7 +2192,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2130,7 +2203,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2140,7 +2214,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2150,7 +2225,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2160,7 +2236,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2170,7 +2247,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2180,7 +2258,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2190,7 +2269,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2200,7 +2280,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2210,7 +2291,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2220,7 +2302,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2230,7 +2313,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2240,7 +2324,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2250,7 +2335,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2260,7 +2346,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2270,7 +2357,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2280,7 +2368,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2290,7 +2379,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2300,7 +2390,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2310,7 +2401,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2320,7 +2412,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2330,7 +2423,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2340,7 +2434,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2350,7 +2445,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2360,7 +2456,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2370,7 +2467,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2380,7 +2478,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2390,7 +2489,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2400,7 +2500,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2410,7 +2511,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2420,7 +2522,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2430,7 +2533,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2440,7 +2544,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2450,7 +2555,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2460,7 +2566,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2470,7 +2577,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2480,7 +2588,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2490,7 +2599,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2500,7 +2610,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2510,7 +2621,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2520,7 +2632,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2530,7 +2643,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2540,7 +2654,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2550,7 +2665,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2560,7 +2676,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2570,7 +2687,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2580,7 +2698,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2590,7 +2709,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2600,7 +2720,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2610,7 +2731,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2620,7 +2742,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2630,7 +2753,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2640,7 +2764,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2650,7 +2775,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2660,7 +2786,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2670,7 +2797,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2680,7 +2808,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2690,7 +2819,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2700,7 +2830,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2710,7 +2841,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2720,7 +2852,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2730,7 +2863,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2740,7 +2874,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2750,7 +2885,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2760,7 +2896,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2770,7 +2907,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2780,7 +2918,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2790,7 +2929,8 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2800,7 +2940,8 @@
         "phase": "inference",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2810,7 +2951,8 @@
         "phase": "inference",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2820,7 +2962,8 @@
         "phase": "training",
         "scope": "whole_model",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       },
       {
         "dataset": "taxibj",
@@ -2830,10 +2973,11 @@
         "phase": "training",
         "scope": "core_operation",
         "status": "очікується",
-        "artifact": null
+        "artifact": null,
+        "reason": "Повторне вимірювання: відхилено профіль з утриманням графа"
       }
     ],
-    "status": "очікується",
+    "status": "очікується: повторний профіль після контролю вивільнення графа",
     "dependency": null,
     "metric": "defined in corresponding methods and table caption",
     "artifact": null,
@@ -2855,29 +2999,29 @@
     "result_slots": [
       {
         "trajectory": "mmnist_hybrid",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "trajectory": "taxibj_hybrid",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "trajectory": "mmnist_flat",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       },
       {
         "trajectory": "mmnist_static",
-        "status": "очікується",
-        "artifact": null
+        "status": "перевірено",
+        "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json"
       }
     ],
-    "status": "очікується",
+    "status": "перевірено",
     "dependency": null,
     "metric": "defined in corresponding methods and table caption",
-    "artifact": null,
+    "artifact": "docs/reviews/completed_evidence_2026-09-09/audit.json",
     "admissible_claim": "Descriptive only until corresponding protocol evidence is verified; no fabricated favorable outcomes"
   },
   {

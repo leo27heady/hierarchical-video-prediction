@@ -385,21 +385,21 @@
 | 4.3 | Витрати контексту за однакової номінальної досяжності 48 кадрів. | `05_CHAPTER_4.md`; definitions, not model scores; direct calculation from 16/64 tokens and 16 coefficients; no result analyzer required |
 | 4.4 | Факторний експеримент «вихідний модуль × пакет» для п’яти ініціалізацій. | `05_CHAPTER_4.md`; E4/E4b; `scripts/analyze_e4_factorial.py`, `scripts/analyze_e4b_factorial.py`; artifact paths in §5.3 |
 | 4.5 | Відносні ефекти E6 та абсолютні показники. | `05_CHAPTER_4.md`; `artifacts/phasec_v2/results.json`; `scripts/analyze_phasec_v2.py`, `scripts/validate_phasec_completion.py` |
-| 4.6 | Якість політик контексту за спільного бюджету 30 000 кроків. | `05_CHAPTER_4.md`; FRT; docs/reviews/a4_completed_snapshot_2026-09-05/snapshot.json |
-| 4.7 | Розподіл 1 792 контекстних токенів. | `05_CHAPTER_4.md`; ALC; очікується / умови в experiment_evidence_inventory.json |
-| 4.8 | Якість за розширення грубої підтримки. | `05_CHAPTER_4.md`; CEX; очікується / умови в experiment_evidence_inventory.json |
-| 4.9 | Розміщення глобальної квоти 256 деталей. | `05_CHAPTER_4.md`; STS; очікується / умови в experiment_evidence_inventory.json |
-| 4.10 | Кількість рівнів за бюджету 1 792. | `05_CHAPTER_4.md`; LVL; очікується / умови в experiment_evidence_inventory.json |
-| 4.11 | Перекриття часових представлень. | `05_CHAPTER_4.md`; OVR; очікується / умови в experiment_evidence_inventory.json |
-| 4.12 | Відкладена перевірка вибраних ролей. | `05_CHAPTER_4.md`; CONF; очікується / умови в experiment_evidence_inventory.json |
-| 4.13 | Чутливість за повного покриття валідації. | `05_CHAPTER_4.md`; VAL300; очікується / умови в experiment_evidence_inventory.json |
-| 4.14 | Діагностика поведінки контекстних пакетів. | `05_CHAPTER_4.md`; MECH; очікується / умови в experiment_evidence_inventory.json |
+| 4.6 | Якість політик контексту за спільного бюджету 30 000 кроків. | `05_CHAPTER_4.md`; FRT; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.7 | Розподіл 1 792 контекстних токенів. | `05_CHAPTER_4.md`; ALC; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.8 | Якість за розширення грубої підтримки. | `05_CHAPTER_4.md`; CEX; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.9 | Розміщення глобальної квоти 256 деталей. | `05_CHAPTER_4.md`; STS; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.10 | Кількість рівнів за бюджету 1 792. | `05_CHAPTER_4.md`; LVL; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.11 | Перекриття часових представлень. | `05_CHAPTER_4.md`; OVR; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.12 | Відкладена перевірка вибраних ролей. | `05_CHAPTER_4.md`; CONF; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.13 | Чутливість за повного покриття валідації. | `05_CHAPTER_4.md`; VAL300; docs/reviews/completed_evidence_2026-09-09/audit.json |
+| 4.14 | Діагностика поведінки контекстних пакетів. | `05_CHAPTER_4.md`; MECH; docs/reviews/completed_evidence_2026-09-09/audit.json |
 | 4.15 | Умовна перевірка рекурсивного прогнозу. | `05_CHAPTER_4.md`; ROLL64; очікується / умови в experiment_evidence_inventory.json |
 | 4.16 | Якість інтегрованого прототипу та базових моделей на Moving-MNIST 10→10. | `05_CHAPTER_4.md`; `simvp_packed_pixel_finetune_s0_metrics.json`, `openstl_baseline_comparison.json`; `scripts/train_fixed_region_adapter.py`, `scripts/finetune_simvp_on_packed_context.py`; external baselines partly published/local, so no causal rank claim |
 | 4.17 | Пікова додаткова пам’ять інтегрованого предиктора з часовою рекурентністю за різної довжини ланцюга. | `05_CHAPTER_4.md`; `integrated_reversible_openstl_memory.json`; `scripts/profile_integrated_reversible_openstl.py`; попередня другопорядкова оболонка змінює зовнішню динаміку, тому це інженерний, не same-forward причинний профіль |
-| 4.18 | Перевірка однакового обчислення. | `05_CHAPTER_4.md`; PARITY; очікується / умови в experiment_evidence_inventory.json |
+| 4.18 | Перевірка однакового обчислення. | `05_CHAPTER_4.md`; PARITY; docs/reviews/completed_evidence_2026-09-09/audit.json |
 | 4.19 | Повний ресурсний профіль предиктора. | `05_CHAPTER_4.md`; RESOURCE; очікується / умови в experiment_evidence_inventory.json |
-| 4.20 | Обмежені перевірки навчання. | `05_CHAPTER_4.md`; SCREEN; очікується / умови в experiment_evidence_inventory.json |
+| 4.20 | Обмежені перевірки навчання. | `05_CHAPTER_4.md`; SCREEN; docs/reviews/completed_evidence_2026-09-09/audit.json |
 | 4.21 | Якість ієрархічного предиктора. | `05_CHAPTER_4.md`; QUALITY; очікується / умови в experiment_evidence_inventory.json |
 | 4.22 | Сумісність компаратора для твердження про якість. | `05_CHAPTER_4.md`; COMP; очікується / умови в experiment_evidence_inventory.json |
 | А.1 | Публікації, використані результати та особистий внесок здобувача. | `08_APPENDICES.md`; статті [A1–A4] + авторська attribution; статус [A4] і склад авторів потребують даних автора; попередній прототип не приписувати завершеній статті, а остаточну інтеграцію вносити до спільного рукопису лише після експериментів |
@@ -504,8 +504,8 @@
 | 4.10 | Явне зберігання та доступ, індексовані за позою. | `05_CHAPTER_4.md`; E8a raw K6/K14/K38/K48 reference; той самий скрипт from `artifacts/e8a_pose_mosaic/results.json`; privileged reference, not token-matched model |
 | 4.11 | Просторове покриття й неперервність проти ідентичності у довгому Moving-MNIST з об’єктами, що зберігаються в часі. | `05_CHAPTER_4.md`; E6 support/trajectory/coverage/identity; той самий скрипт from `artifacts/phasec_v2/results.json`; external boundary with low absolute performance |
 | 4.12 | Діагностичні приклади двох завершених FRT-моделей за бюджету 1 152 токени, ініціалізації 0 та 30 000 кроків. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
-| 4.13 | Якість за зміни місткості та геометрії контексту. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
-| 4.14 | Зіставлені приклади та умовна діагностика самоподачі. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.13 | Залежність помилки від розподілу й геометрії контексту. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
+| 4.14 | Помилка за горизонтом і парні відкладені контрасти. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
 | 4.15 | Зростання пам’яті інтегрованого предиктора з часовою рекурентністю зі збільшенням довжини ланцюга. | `05_CHAPTER_4.md`; попередній second-order reversible vs BPTT профіль довжини ланцюга; dissertation-native manual SVG from `integrated_reversible_openstl_memory.json`; зовнішня динаміка режимів не тотожна |
 | 4.16 | Прогнозні приклади для двох задач. | `05_CHAPTER_4.md`; авторська схема / явне місце результату; реєстр походження та покриття |
 | 4.17 | Дві окремо виміряні осі ресурсів. | `05_CHAPTER_4.md`; context token arithmetic + activation-memory results; `scripts/make_restructured_ch2_ch4_figures.py`; synthesis of separately measured axes; ratios never multiplied |

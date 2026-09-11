@@ -1,0 +1,57 @@
+{
+  "access_policy": {
+    "locked_evaluation": "explicit purpose-matched switch and access log required",
+    "monitoring_grid": "forbidden",
+    "training": "forbidden"
+  },
+  "artifacts": {
+    "actions": {
+      "bytes": 100128,
+      "path": "artifacts/v2/article4_primary_30k/confirmation/trb_article4_confirmation_500x200_actions.npy",
+      "sha256": "e9030c59c14cf37a34813beef15548953cd76f888544c6b97fb0dfba7467cf83"
+    },
+    "clips": {
+      "bytes": 409600128,
+      "path": "artifacts/v2/article4_primary_30k/confirmation/trb_article4_confirmation_500x200.npy",
+      "sha256": "73495f4e022e815448ee45264d0f2b0deed04ef0927d95f795ca5d28005501bd"
+    },
+    "objects": {
+      "bytes": 8900,
+      "path": "artifacts/v2/article4_primary_30k/confirmation/trb_article4_confirmation_500x200_objects.npz",
+      "sha256": "f917fb7baec5a2691b15e2ab53172f3d654c0c2f37204c1814e6d849570bb187"
+    },
+    "positions": {
+      "bytes": 400128,
+      "path": "artifacts/v2/article4_primary_30k/confirmation/trb_article4_confirmation_500x200_positions.npy",
+      "sha256": "d18a451fac3965bfc3fe372da7b43a5fa67ed773c9dc171db80c26ae3a1d5e7e"
+    }
+  },
+  "configuration": {
+    "digits": 3,
+    "frames": 200,
+    "n": 500,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "speed": 4,
+    "viewport": 64,
+    "world": 192
+  },
+  "dataset_id": "loopmom-confirmation_holdout-26090141-73495f4e022e",
+  "generator": {
+    "commit": "7a5979615f5354564a793083b673cf1ed9ec77be",
+    "dirty_hash": "CLEAN",
+    "legacy_pixel_path": "scripts/gen_looping.py",
+    "path": "scripts/generate_loopmom_confirmation.py",
+    "rng": "numpy.random.RandomState/MT19937",
+    "seed": 26090141
+  },
+  "purpose": "confirmation_holdout",
+  "schema_version": 1,
+  "source_glyph_pool": {
+    "bytes": 9912422,
+    "file_name": "train-images-idx3-ubyte.gz",
+    "indices_artifact": "artifacts/v2/article4_primary_30k/confirmation/trb_article4_confirmation_500x200_objects.npz",
+    "sha256": "440fcabf73cc546fa21475e81ea370265605f56be210a4024d2ca8f203523609",
+    "split": "train"
+  }
+}

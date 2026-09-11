@@ -4,7 +4,8 @@ import datetime,hashlib,json,os,re,subprocess,sys
 import pymupdf
 ROOT=Path(__file__).resolve().parents[1]
 SRC=ROOT/'docs/dissertation/condensed_translated_humanized_ukrainian'
-OUT=ROOT/'docs/reviews/hierarchy_integration_2026-09-06'
+OUT=ROOT/'docs/reviews/completed_evidence_2026-09-09/verification'
+OUT.mkdir(parents=True,exist_ok=True)
 
 def main():
     checks=[]
@@ -32,7 +33,7 @@ def main():
     receipt['live_git_status']=subprocess.run(['git','status','--short'],cwd=live,check=True,capture_output=True,text=True).stdout
     receipt['live_campaign_sha256']=hashlib.sha256((live/'experiments/v2/campaigns/article4_primary_30k_2026-09-01.json').read_bytes()).hexdigest()
     (OUT/'source_verification.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
-    pdf_path=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_HIERARCHY_2026-09-06.pdf'
+    pdf_path=ROOT/'output/pdf/DISSERTATION_UKRAINIAN_RESULTS_2026-09-09.pdf'
     pdf=pymupdf.open(pdf_path);sha=hashlib.sha256(pdf_path.read_bytes()).hexdigest()
     audit=json.loads((ROOT/'tmp/ukrainian_pdf/inspection/audit.json').read_text(encoding='utf-8'))
     assert audit['pdf_sha256']==sha,'Render inspection belongs to another PDF'

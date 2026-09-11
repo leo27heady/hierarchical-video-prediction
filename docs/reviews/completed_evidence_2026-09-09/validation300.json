@@ -1,0 +1,99 @@
+{
+  "contract": {
+    "evaluator_sha256": "d96727ae1ef6b1b2b34a7b77a9dd1cbb7f282173b4f29177b2823fc0e005479f",
+    "metric": "per-clip foreground MSE; threshold >0.5; empty mask=0",
+    "primary_horizon": 4,
+    "role": "validation robustness only; no reselection or held-out claim",
+    "runs": [
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K__80d1ac9e0e9d\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "bcc4186552ea0c1dc3ff05a4f83c1b0c819e1dcd43f4ce61dcffb9ab91d7f7ac",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.json",
+        "config_hash": "80d1ac9e0e9dead6e1ff981982700e2e77e5a2eac5334aa30347fc505740974e",
+        "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K"
+      },
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K__db5f425f0616\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "aa9f8a89050a1cfe2e80cebe43ea329094cd2eee1d73b0c8f3c90d4c432f4346",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.json",
+        "config_hash": "db5f425f061606f41881ed86d72211fcdc0f8b13d43182f6872ee4544e8b32e2",
+        "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K"
+      },
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K__c2a666468967\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "5fc9db561d8e14eeda7c9c29fa9a26e35f73e6ab669faedc75023ce0d6d5cf41",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.json",
+        "config_hash": "c2a6664689670de4fcea904c0ecab9ec23d3e46c5d4587da74f4230c82603deb",
+        "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K"
+      },
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K__952e3d682ca4\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "e1c6161fc8a321551dde5cbab995751bc0a5a22e21a64ee7c487170a50227229",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.json",
+        "config_hash": "952e3d682ca48b9cc6cc3d4d6d540a9de24990dfa28c0d0525915807b70187d9",
+        "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K"
+      },
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K__1a798c3f9641\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "214fc01a1e33a3d336ed4a3158929f9c3b420427c6aacd8a56fc41832a088371",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.json",
+        "config_hash": "1a798c3f9641711db37ba811acb4f9ff8d04122b76a6339a3a56615e29f5cae7",
+        "experiment_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K"
+      },
+      {
+        "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K__9431bc0309eb\\milestones\\milestone_step030000.pt",
+        "checkpoint_sha256": "4d51662d55ecf5c33967cb13974f0cc6bd539cec76290bc4741abee111e64f39",
+        "config": "experiments/v2/runspecs/article4_primary_30k/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.json",
+        "config_hash": "9431bc0309eb1ca4b4fdb824bd04a47b3621fe9e3ad220eb9d6eb5bf8ba034bd",
+        "experiment_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K"
+      }
+    ],
+    "sampling_seed": 260907,
+    "selection_sha256": "6fc9f62fb775f0fe1e6122b30fa45eaf69a9af9fa5d5e18bb58ef45f178a8da5"
+  },
+  "runs": [
+    {
+      "checkpoint_sha256": "bcc4186552ea0c1dc3ff05a4f83c1b0c819e1dcd43f4ce61dcffb9ab91d7f7ac",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.038358185440301895,
+      "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "aa9f8a89050a1cfe2e80cebe43ea329094cd2eee1d73b0c8f3c90d4c432f4346",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03779703006148338,
+      "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "5fc9db561d8e14eeda7c9c29fa9a26e35f73e6ab669faedc75023ce0d6d5cf41",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03616781905293465,
+      "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "e1c6161fc8a321551dde5cbab995751bc0a5a22e21a64ee7c487170a50227229",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03647216781973839,
+      "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "214fc01a1e33a3d336ed4a3158929f9c3b420427c6aacd8a56fc41832a088371",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.0234378632158041,
+      "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "4d51662d55ecf5c33967cb13974f0cc6bd539cec76290bc4741abee111e64f39",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.024283241480588913,
+      "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K",
+      "status": "completed"
+    }
+  ],
+  "status": "completed"
+}

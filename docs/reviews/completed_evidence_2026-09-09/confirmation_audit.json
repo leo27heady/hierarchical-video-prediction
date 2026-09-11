@@ -1,0 +1,19 @@
+{
+  "completed_utc": "2026-09-09T11:09:11.533758+00:00",
+  "development_collisions": 0,
+  "dtype": "uint8",
+  "failures": [],
+  "manifest_sha256": "d3d070a51fc6251349a54d32afc72862e2c6cf56a497f91f745b10425e28ddcd",
+  "p_continue_nonzero": 0.8974682836863578,
+  "p_hold": 0.10035,
+  "position_action_consistency": true,
+  "schema_version": 1,
+  "shape": [
+    500,
+    200,
+    64,
+    64
+  ],
+  "status": "PASS",
+  "unique_clips": 500
+}

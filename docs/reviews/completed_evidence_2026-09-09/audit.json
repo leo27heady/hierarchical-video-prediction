@@ -1,0 +1,837 @@
+{
+  "a4_runs": 86,
+  "roles": {
+    "best_flat_1792": {
+      "policy": "flat_recent",
+      "budget": 1792,
+      "seeds": [
+        {
+          "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+          "h4": 0.036689963191747665,
+          "all_h_foreground_mse": 0.028568372130393982,
+          "reentry_foreground_mse": 0.1053883284330368,
+          "reentry_records": 76,
+          "attention_entropy": 0.6045275737221042
+        },
+        {
+          "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K",
+          "h4": 0.03406259045004845,
+          "all_h_foreground_mse": 0.027133163064718246,
+          "reentry_foreground_mse": 0.09577129036188126,
+          "reentry_records": 76,
+          "attention_entropy": 0.624582776799798
+        }
+      ]
+    },
+    "best_hierarchy_1792": {
+      "policy": "geometric_age",
+      "budget": 1792,
+      "seeds": [
+        {
+          "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K",
+          "h4": 0.033457349985837936,
+          "all_h_foreground_mse": 0.02744268625974655,
+          "reentry_foreground_mse": 0.09853612631559372,
+          "reentry_records": 76,
+          "attention_entropy": 0.6707273547848066
+        },
+        {
+          "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K",
+          "h4": 0.034411389380693436,
+          "all_h_foreground_mse": 0.027452338486909866,
+          "reentry_foreground_mse": 0.09888380765914917,
+          "reentry_records": 76,
+          "attention_entropy": 0.6450632351140181
+        }
+      ]
+    },
+    "failure_hierarchy_1792": {
+      "policy": "coarse_heavy",
+      "budget": 1792,
+      "seeds": [
+        {
+          "run_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K",
+          "h4": 0.03699240833520889,
+          "all_h_foreground_mse": 0.029703382402658463,
+          "reentry_foreground_mse": 0.07750985771417618,
+          "reentry_records": 76,
+          "attention_entropy": 0.5825752327218652
+        },
+        {
+          "run_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K",
+          "h4": 0.037003692239522934,
+          "all_h_foreground_mse": 0.029727572575211525,
+          "reentry_foreground_mse": 0.07507290691137314,
+          "reentry_records": 76,
+          "attention_entropy": 0.6547017423436046
+        }
+      ]
+    },
+    "memory_pareto_within_5pct": {
+      "policy": "k16_geometric_time",
+      "budget": 1792,
+      "seeds": [
+        {
+          "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K",
+          "h4": 0.025003494694828987,
+          "all_h_foreground_mse": 0.021187804639339447,
+          "reentry_foreground_mse": 0.03690299391746521,
+          "reentry_records": 76,
+          "attention_entropy": 0.6438695695251226
+        },
+        {
+          "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K",
+          "h4": 0.023806408047676086,
+          "all_h_foreground_mse": 0.021047942340373993,
+          "reentry_foreground_mse": 0.045379966497421265,
+          "reentry_records": 76,
+          "attention_entropy": 0.625172232898573
+        }
+      ]
+    }
+  },
+  "comparisons": {
+    "best_hierarchy_1792": [
+      {
+        "schema_version": 2,
+        "evidence_class": "descriptive paired checkpoint analysis",
+        "horizon": 4,
+        "clips": 500,
+        "flat_mean": 0.036689963191747665,
+        "hierarchy_mean": 0.033457349985837936,
+        "flat_minus_hierarchy": 0.0032326101791113615,
+        "adjusted_percentile_interval": [
+          0.0005168179708562093,
+          0.006792705290718009
+        ],
+        "family_size": 4,
+        "bootstrap_repetitions": 10000,
+        "bootstrap_seed": 260905,
+        "resampling_unit": "clip within one fixed training seed",
+        "empty_mask_policy": "upstream zero with denominator clamped to one; count unavailable in legacy arrays",
+        "noninferiority_verdict": null
+      },
+      {
+        "schema_version": 2,
+        "evidence_class": "descriptive paired checkpoint analysis",
+        "horizon": 4,
+        "clips": 500,
+        "flat_mean": 0.03406259045004845,
+        "hierarchy_mean": 0.034411389380693436,
+        "flat_minus_hierarchy": -0.0003487968642730266,
+        "adjusted_percentile_interval": [
+          -0.002868336935353,
+          0.0022985070827417093
+        ],
+        "family_size": 4,
+        "bootstrap_repetitions": 10000,
+        "bootstrap_seed": 260905,
+        "resampling_unit": "clip within one fixed training seed",
+        "empty_mask_policy": "upstream zero with denominator clamped to one; count unavailable in legacy arrays",
+        "noninferiority_verdict": null
+      }
+    ],
+    "memory_pareto_within_5pct": [
+      {
+        "schema_version": 2,
+        "evidence_class": "descriptive paired checkpoint analysis",
+        "horizon": 4,
+        "clips": 500,
+        "flat_mean": 0.036689963191747665,
+        "hierarchy_mean": 0.025003494694828987,
+        "flat_minus_hierarchy": 0.011686468496918678,
+        "adjusted_percentile_interval": [
+          0.0055712068482534965,
+          0.018949437025003135
+        ],
+        "family_size": 4,
+        "bootstrap_repetitions": 10000,
+        "bootstrap_seed": 260905,
+        "resampling_unit": "clip within one fixed training seed",
+        "empty_mask_policy": "upstream zero with denominator clamped to one; count unavailable in legacy arrays",
+        "noninferiority_verdict": null
+      },
+      {
+        "schema_version": 2,
+        "evidence_class": "descriptive paired checkpoint analysis",
+        "horizon": 4,
+        "clips": 500,
+        "flat_mean": 0.03406259045004845,
+        "hierarchy_mean": 0.023806408047676086,
+        "flat_minus_hierarchy": 0.01025618240237236,
+        "adjusted_percentile_interval": [
+          0.0050255321781151,
+          0.016395772318355744
+        ],
+        "family_size": 4,
+        "bootstrap_repetitions": 10000,
+        "bootstrap_seed": 260905,
+        "resampling_unit": "clip within one fixed training seed",
+        "empty_mask_policy": "upstream zero with denominator clamped to one; count unavailable in legacy arrays",
+        "noninferiority_verdict": null
+      }
+    ]
+  },
+  "resource": [
+    {
+      "dataset": "mmnist",
+      "mode": "eager",
+      "batch": 8,
+      "allocated_gib": 5.083423614501953,
+      "reserved_gib": 5.134765625,
+      "incremental_gib": 0.7405366897583008,
+      "seconds": 0.08152049999989686,
+      "packed_dtype": "torch.float32"
+    },
+    {
+      "dataset": "mmnist",
+      "mode": "checkpoint",
+      "batch": 8,
+      "allocated_gib": 5.565750598907471,
+      "reserved_gib": 5.6328125,
+      "incremental_gib": 0.6640138626098633,
+      "seconds": 0.08452450000004319,
+      "packed_dtype": "torch.float32"
+    },
+    {
+      "dataset": "mmnist",
+      "mode": "reversible",
+      "batch": 8,
+      "allocated_gib": 6.093472480773926,
+      "reserved_gib": 6.158203125,
+      "incremental_gib": 0.6513185501098633,
+      "seconds": 0.07191309999961959,
+      "packed_dtype": "torch.float32"
+    },
+    {
+      "dataset": "taxibj",
+      "mode": "eager",
+      "batch": 16,
+      "allocated_gib": 1.0803108215332031,
+      "reserved_gib": 1.126953125,
+      "incremental_gib": 0.14969635009765625,
+      "seconds": 0.04810870000028444,
+      "packed_dtype": "torch.float32"
+    },
+    {
+      "dataset": "taxibj",
+      "mode": "checkpoint",
+      "batch": 16,
+      "allocated_gib": 1.1833066940307617,
+      "reserved_gib": 1.201171875,
+      "incremental_gib": 0.134796142578125,
+      "seconds": 0.11096080000015718,
+      "packed_dtype": "torch.float32"
+    },
+    {
+      "dataset": "taxibj",
+      "mode": "reversible",
+      "batch": 16,
+      "allocated_gib": 1.2944889068603516,
+      "reserved_gib": 1.31640625,
+      "incremental_gib": 0.131744384765625,
+      "seconds": 0.10268489999998565,
+      "packed_dtype": "torch.float32"
+    }
+  ],
+  "screens": {
+    "SCREEN_MM_FULL": {
+      "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FULL\\checkpoints\\last.ckpt",
+      "development_only": true,
+      "elapsed_hours": 0.022903594507111442,
+      "parameters": 1912386,
+      "run_id": "SCREEN_MM_FULL",
+      "status": "completed",
+      "steps": 200,
+      "test_evaluated": false,
+      "validation_loss": 0.058327049016952515,
+      "updates_per_second": 6.268454722481267,
+      "last_grad_norm": 0.16408483684062958
+    },
+    "SCREEN_TB_FULL": {
+      "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_TB_FULL\\checkpoints\\last.ckpt",
+      "development_only": true,
+      "elapsed_hours": 0.015560229023297628,
+      "parameters": 1912963,
+      "run_id": "SCREEN_TB_FULL",
+      "status": "completed",
+      "steps": 200,
+      "test_evaluated": false,
+      "validation_loss": 0.001582315657287836,
+      "updates_per_second": 11.3938923268071,
+      "last_grad_norm": 0.06017756089568138
+    },
+    "SCREEN_MM_FLAT": {
+      "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FLAT\\checkpoints\\last.ckpt",
+      "development_only": true,
+      "elapsed_hours": 0.023206553194257948,
+      "parameters": 1912386,
+      "run_id": "SCREEN_MM_FLAT",
+      "status": "completed",
+      "steps": 200,
+      "test_evaluated": false,
+      "validation_loss": 0.05828646197915077,
+      "updates_per_second": 5.1878618144528446,
+      "last_grad_norm": 0.2395404875278473
+    },
+    "SCREEN_MM_STATIC": {
+      "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_STATIC\\checkpoints\\last.ckpt",
+      "development_only": true,
+      "elapsed_hours": 0.021213532553778756,
+      "parameters": 1912386,
+      "run_id": "SCREEN_MM_STATIC",
+      "status": "completed",
+      "steps": 200,
+      "test_evaluated": false,
+      "validation_loss": 0.058349624276161194,
+      "updates_per_second": 6.697748237136793,
+      "last_grad_norm": 0.194912388920784
+    }
+  },
+  "validation300": [
+    {
+      "checkpoint_sha256": "bcc4186552ea0c1dc3ff05a4f83c1b0c819e1dcd43f4ce61dcffb9ab91d7f7ac",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.038358185440301895,
+      "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "aa9f8a89050a1cfe2e80cebe43ea329094cd2eee1d73b0c8f3c90d4c432f4346",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03779703006148338,
+      "run_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "5fc9db561d8e14eeda7c9c29fa9a26e35f73e6ab669faedc75023ce0d6d5cf41",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03616781905293465,
+      "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "e1c6161fc8a321551dde5cbab995751bc0a5a22e21a64ee7c487170a50227229",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.03647216781973839,
+      "run_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "214fc01a1e33a3d336ed4a3158929f9c3b420427c6aacd8a56fc41832a088371",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.0234378632158041,
+      "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K",
+      "status": "completed"
+    },
+    {
+      "checkpoint_sha256": "4d51662d55ecf5c33967cb13974f0cc6bd539cec76290bc4741abee111e64f39",
+      "clips": 300,
+      "horizon4_foreground_mse": 0.024283241480588913,
+      "run_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K",
+      "status": "completed"
+    }
+  ],
+  "sources": {
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\selection_ledger.json": {
+      "sha256": "6fc9f62fb775f0fe1e6122b30fa45eaf69a9af9fa5d5e18bb58ef45f178a8da5",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/selection_ledger.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\confirmation\\trb_article4_confirmation_500x200.manifest.json": {
+      "sha256": "d3d070a51fc6251349a54d32afc72862e2c6cf56a497f91f745b10425e28ddcd",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/trb_article4_confirmation_500x200.manifest.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\confirmation\\confirmation_audit.json": {
+      "sha256": "58606218002ec2946e228ef12871095b106ecae595e6a9b8e4b057f3cabaee14",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation_audit.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\all_final_development_metrics.json": {
+      "sha256": "e9f6139dfe30640a68dfa7d664134afa8733b34a39f5a6f7fa81258303536668",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/all_final_development_metrics.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\final_report.json": {
+      "sha256": "2cb9105c3ea27b723d0f6e087fbed304241919a6d01891d10a9ab1e282e57b3e",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/final_report.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\dependency_resolution.json": {
+      "sha256": "2966f8309b69e9aef732f08c1dc1aa9dec7a03c6d41023e052c669d1d2c181f6",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/dependency_resolution.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "37aec2c9d61e18e94980e4511b9361a674254b8563833f4bb244c19c3aca8074",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "0fb669483d44ad394aed692e7b5e707bf5841a614f01e81732f5d98916a3501d",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "20d24171de3ef6d0a02c790e50fb4162589f6933917269e62eece9b913b6318b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "f856a1a2a63db7326c93558b13f797415ff5d200283ef408fc8f391bd66e0bc8",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "4b91117e8789fb47d5a428ef118b7c3a6130fdcdd56364b68963a7d96c59cd04",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0320_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "99f2d7152fd02c09f8af7ed8e9a0a9937e66b59edfd32b70cf0d58564e0f972b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0320_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "4c8909937c5f5196dbd0bd3298bfa28e6316c1767627e22e75fe5b590dcc4e33",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "9387bb34b1ed65afd038ca1a8813bc3a7e3193c1b1a587f653a25a590f8a70ca",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "68fbaba31645c255df7323c38148e0d62da7a41b8d68657ff0b885c5cb1237ff",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "f0c2c367c25b6f5f9b6092b798e077d277eab1c0f31d193a9700e85ddcd98817",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "16d8b89445ac24da01d7475a42b210bfb060a4e9d5afdadafe7800987acef996",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B0768_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "e8e505ad00a9c9204ad1ff2f157e1aab93d4d733992ae933f266c6e7cf985859",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B0768_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "f351f4315dfb07606f742308317d7addf86584f28cebc8d90b77cb09c64ade8a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "f4fc32cd29a603cc567def6aa863f3f2ae110f733aadc58788943e18875192de",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "096b143c0906dd193ccd5afe30c3a622499c00fbfd189b031bf2e37826917684",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "6e32f23a1fa2e5a61dcf00f1e108f1f4aae3e82af6e219bc15e87084a0a067ea",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "50ee253dd217aed99034ea0f318d10b615128e78d31fc26b2d6fa451d1f5e7d2",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1152_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "c1a0cf6a91b1b3912f96feb8f8820a226b388de782ff790ad0cbe6c7a3200817",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1152_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "5fb332e6ea06527a05c6afb4a24d139ea7d5df06ff40c873d96b49cf8e20b7c5",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "2b6e37774336f9bc72d0783171592db99a2e677ec7f1e874d5ed67fa10112f84",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "af0d64f4f6b26ee87e119a98877e31d8b76df62f9cac65f182226f57526f8898",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "6961fefbcf43f55113cc9be78bc549264a5455295062b00f6d78da5dafd5eb22",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "904964dc4d6d62fc6cc2740948da20e6fdfa4d30b3133da1a327dfa6ace5626c",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "53d57ad6b7adf8d841fc1930a5c31ca42b4c655bdf90aee12e8a4a6a9124d2fe",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "46c9a349829f29ab51d412b95c91ee48c5d000fb48b4cc29bf6f540bf114cc78",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "758c9114863d034f89500ee4007ed56b479689c1c50235f5cad547217aa97e1f",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "17e788d36f1e5de1852aae29d3c01fa40026d9e95272ff1aa3d5b607d9c4711a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "0b52d0ad75e2bd21e1986b04f7d55ad4b82a5ddb77d64679b1a2b3f77ae7a599",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "a9ebf6e2943d7012af4bfac6fe91805259204a79dc6544ba03363d1fdf017647",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B2432_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "4eb3928768d09627ac1fe97950dca03e3dc35946dad9c28ffb3a07fc05fac782",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B2432_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L1_FLAT_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "26c92a39ea9445c6b3c3252e7dffe14e6a064a07ae2daa8beb6f4c0bb2978686",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L1_FLAT_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L1_FLAT_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "09f4a343089286301c73672420dd6c3a3ec2e8895f6691cea04e9de00b2ed1b3",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L1_FLAT_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L2_LINEAR_AGE_NEST_S00_T30K.json": {
+      "sha256": "93ac950a13caa0330a2436ad3a1bb482016e5aa80dab17fe60b1175e55a75cd9",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L2_LINEAR_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L2_LINEAR_AGE_NEST_S01_T30K.json": {
+      "sha256": "7f7cab9a4cfdfb4275f934ce574e57ab59ce9f390bd75f08637d06726f484ba4",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L2_LINEAR_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L2_GEOM_AGE_NEST_S00_T30K.json": {
+      "sha256": "1213f28ace7b4fb31a32946d89df172ec7419c4aa8234953948bbfca84ac5a7b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L2_GEOM_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_FRT_B3072_L2_GEOM_AGE_NEST_S01_T30K.json": {
+      "sha256": "4becb9bed02ccf51954457da6da0c0d01bfb3b9c1732b50c0b0c6788760ba573",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_FRT_B3072_L2_GEOM_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_FINE_HEAVY_NEST_S00_T30K.json": {
+      "sha256": "fc4d8826e5f6698cf925ba0560d9da69aa6111d1d3ea5b414edc4b5190c5d234",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_FINE_HEAVY_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_FINE_HEAVY_NEST_S01_T30K.json": {
+      "sha256": "7179ef5e0b7fa477aeac82a0c0675fd10c9b4985a9b112aab928df305bd4ced0",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_FINE_HEAVY_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_BAL_RECENT_NEST_S00_T30K.json": {
+      "sha256": "4236d546ab079fb3baed3844e1587d8d3a3019c93b1601e84f998381c84c4e2b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_BAL_RECENT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_BAL_RECENT_NEST_S01_T30K.json": {
+      "sha256": "3ab15c830ab4ffe8be621b701f8c06350d3225297809718f7c0e7e6e56422b1d",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_BAL_RECENT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K.json": {
+      "sha256": "9b394c09c1b9e75c9addc21e627f2d2428265de41d7cda153d2b5df1275b6dc5",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K.json": {
+      "sha256": "b4ca9ea63b16967c90baef5b21f00aa1872104734ca9e18aae90aaa120129881",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_REACH_OPT_NEST_S00_T30K.json": {
+      "sha256": "76cb12bab5ec7254d21b17bd22519265dabf123c8e8153d9e592a8cafea371f8",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_REACH_OPT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_ALC_B1792_L2_REACH_OPT_NEST_S01_T30K.json": {
+      "sha256": "9e4f420156c8322f786542464d4289521b0f9741c84aee78452fb07dce68293a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_ALC_B1792_L2_REACH_OPT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0384_L1_C00_EXCL_S00_T30K.json": {
+      "sha256": "bf69e345ebb89131bdc55a0d81c888c1cd0ca7079cc28307b8a75a52bc0b43ae",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0384_L1_C00_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0384_L1_C00_EXCL_S01_T30K.json": {
+      "sha256": "80f2e65596cf5999f5984b1e4d514b6df3b7fa1183d5bc56bc8cb77793a5e0c6",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0384_L1_C00_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0448_L2_C04_EXCL_S00_T30K.json": {
+      "sha256": "bdc8d5f2c33e70046e3d8fb027575c2b9a10e815921965e36469db875bc8a87f",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0448_L2_C04_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0448_L2_C04_EXCL_S01_T30K.json": {
+      "sha256": "71f4fc41fa1318c38b49c8fea60f650ad586179f6ad9a1dff825e6bd0b617909",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0448_L2_C04_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0512_L2_C08_EXCL_S00_T30K.json": {
+      "sha256": "e1b3154578681020114d90cddf90f4315a045451cc5a368ad760921d389f7ab3",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0512_L2_C08_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0512_L2_C08_EXCL_S01_T30K.json": {
+      "sha256": "3204b2b59b2d9095ffcd7e7b1f27fe20a3d0d30ccfa85604c83ad50e363b984a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0512_L2_C08_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0640_L2_C16_EXCL_S00_T30K.json": {
+      "sha256": "3096c4bfa52924c58ab3b320a07c0645bb93b58da591d535522a72080fd0b616",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0640_L2_C16_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0640_L2_C16_EXCL_S01_T30K.json": {
+      "sha256": "748c8264720b738c7fcf6d6c3256a019ed79d3b3c90b90aff7a1be7f4da379fe",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0640_L2_C16_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0896_L2_C32_EXCL_S00_T30K.json": {
+      "sha256": "ffd6696ae9c25efc5f8ba1430b0b420a73cf9e38ca3828a71e1932b114ceca83",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0896_L2_C32_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B0896_L2_C32_EXCL_S01_T30K.json": {
+      "sha256": "7a757d1306462b6aba0c191f5e9e5bd4b3980a40a78c7957bc91d3a759c3717d",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B0896_L2_C32_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B1408_L2_C64_EXCL_S00_T30K.json": {
+      "sha256": "d54582d727adb1b3fc1be79ade40cf4e6cfe3ce103f8cfcd65e11743c20762e0",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B1408_L2_C64_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_CEX_B1408_L2_C64_EXCL_S01_T30K.json": {
+      "sha256": "c3564aa1e47bc6afe66316e61d726cb38424d6579ef8abaf97f9730dc800b70c",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_CEX_B1408_L2_C64_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_RECENT_NEST_S00_T30K.json": {
+      "sha256": "b96bbf0eb003bc1056a229c326dc27d180c4058e80c1968f5ac7dbecdb214591",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_RECENT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_RECENT_NEST_S01_T30K.json": {
+      "sha256": "fdb77c8aa9dd75e959c50bfb1b440c4b4826e3e63d246541c8b67ef7de373fce",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_RECENT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_UNIFORM_NEST_S00_T30K.json": {
+      "sha256": "d71b1299f3793656f14f22cc4fe049cddd49328ce62a0c1843a49f7ded85c093",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_UNIFORM_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_UNIFORM_NEST_S01_T30K.json": {
+      "sha256": "a088dae6f5ae618d59928cfdbaa4f9b21a1ad94af26ce76cf05a191983297f46",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_UNIFORM_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_GEOMETRIC_NEST_S00_T30K.json": {
+      "sha256": "d6a87aa5eab1454080bc21e962bba459603b31819893dc7337927888d76b21b7",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_GEOMETRIC_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K64_GEOMETRIC_NEST_S01_T30K.json": {
+      "sha256": "697f38bc519db63d8b87db18dfe6c67228a62638615c9acd9bfa5851736ef6fb",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K64_GEOMETRIC_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_RECENT_NEST_S00_T30K.json": {
+      "sha256": "aad3054676d1d09cf8343485ef88335663b62dcf3043a1cee418a2a5ec832014",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_RECENT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_RECENT_NEST_S01_T30K.json": {
+      "sha256": "a496adbb8feb31b6ef18fefc07628d8ea1f1af4c9addf3a28c5bc331c150bcf0",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_RECENT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_UNIFORM_NEST_S00_T30K.json": {
+      "sha256": "ad7d467c5403405e8298ad542883504f736c702ff6f4ce1ac387242d8bc9336a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_UNIFORM_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_UNIFORM_NEST_S01_T30K.json": {
+      "sha256": "af75cfb981f17eed8d28d0671f813e8db44fdfa0840ff78c38d2af10a41b8cb8",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_UNIFORM_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_GEOMETRIC_NEST_S00_T30K.json": {
+      "sha256": "741cd12b26e876e84e408cc58c74f91b76252a1698d4a17e074c6d2b6aa1e9ad",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_GEOMETRIC_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K32_GEOMETRIC_NEST_S01_T30K.json": {
+      "sha256": "4bede39b16a00486e6cda93eb781ff4260aa5a985a4a9fcd06c274c17e647be2",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K32_GEOMETRIC_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_RECENT_NEST_S00_T30K.json": {
+      "sha256": "4f7e9657a2b75523c141524c10a9ca85504446ffbf2fb402d631e65f6beeaf55",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_RECENT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_RECENT_NEST_S01_T30K.json": {
+      "sha256": "def79e0d2a073029a45b3d063ffb4dcc185bf286f3116ac1f0ba2ee2d707d715",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_RECENT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_UNIFORM_NEST_S00_T30K.json": {
+      "sha256": "eb3ac309c853bc5fddef2fc290d190d292d497a1258d8342f2f03b7aed14431b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_UNIFORM_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_UNIFORM_NEST_S01_T30K.json": {
+      "sha256": "ccdf545cc7370bfb2632f66b4b25841d097de4ae828927b0c0dbf7082c094ae9",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_UNIFORM_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.json": {
+      "sha256": "b58f63e3c53da15c8df0fe5a302f832ff6ea5498b977d4ec88a99ee07a23aa51",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.json": {
+      "sha256": "e88ec5efee04f264eafebd98983e4a26a91e5b6b7d550f0c90cd95334cf2985c",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_RECENT_NEST_S00_T30K.json": {
+      "sha256": "97da90b581c84ff8e45d75956a0594b906162ef7ef78e5f2364c72c0eb95618a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_RECENT_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_RECENT_NEST_S01_T30K.json": {
+      "sha256": "982fc321878fd6e00d913cf3683354ce3c6cc9acd30edddc343a2d6b6b8e7f66",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_RECENT_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_UNIFORM_NEST_S00_T30K.json": {
+      "sha256": "37fdb991a810a72abf91be05ea514d5824d4344dd046f55e1e14054f682a878c",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_UNIFORM_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_UNIFORM_NEST_S01_T30K.json": {
+      "sha256": "2b4fdc6086a33de1d5ac0fcb0161817b80993de8da7ff46cb624ec7e36bc20e3",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_UNIFORM_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_GEOMETRIC_NEST_S00_T30K.json": {
+      "sha256": "4e4c05ae308caf2c06cd4aea9a5174dcb9cbe2cc4dd671de1faa76aaee7abc74",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_GEOMETRIC_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\experiments\\v2\\runspecs\\article4_primary_30k\\A4_STS_B1792_L2_K08_GEOMETRIC_NEST_S01_T30K.json": {
+      "sha256": "6b2fa06fd4c0ec47a304d996e525194a3c837d9ebd6d8ed363abfac53fb9ead1",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_STS_B1792_L2_K08_GEOMETRIC_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S00_T30K.json": {
+      "sha256": "b22824fe812350a223a8afeecdb9ac35315c7fa8b6c445c1dba36b8785445857",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S01_T30K.json": {
+      "sha256": "019cba90c27b95b0702d08ce4059b0f064371b13bb21995df073f97d4b993cae",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_LVL_B1792_L3_FROM_GEOMETRIC_AGE_NEST_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S00_T30K.json": {
+      "sha256": "7563c0c57e1cdcb848ad19153f9729cdaed0b46ba9fdb84a09352a0bdd52dfb1",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S01_T30K.json": {
+      "sha256": "2dea35feb1e2332d71d760b0ebdd85a828886def8f9f5aecd158da53598a9469",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_OVR_B1792_L2_BALANCED_RECENT_EXCL_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S00_T30K.json": {
+      "sha256": "b824aeb881d24af1b5ddd07a76d724a3da4832b381bae2c473d3303ad36e41cf",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S00_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\resolved_run_specs\\A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S01_T30K.json": {
+      "sha256": "eb4bb9c87f85da7ec4de5d9fb5ee7af43d4bedeb45d37ab5ae7fd1c26268a813",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/configs/A4_OVR_B1792_L2_BALANCED_RECENT_RESID_S01_T30K.json"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K__80d1ac9e0e9d\\per_clip_horizon_metrics.npz": {
+      "sha256": "d322240badb7984e0bc4e3f6826b855d31524150e7377f83a4c8379dfaf93d2a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K__db5f425f0616\\per_clip_horizon_metrics.npz": {
+      "sha256": "947cb119be1d42decf6af5fad40255965f20cffa0333877261de95093fae2dbf",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K__c2a666468967\\per_clip_horizon_metrics.npz": {
+      "sha256": "4633613ac39dc376d79e59c572744c6cb9ccb145ec609adc442e2a3fb732d323",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K__952e3d682ca4\\per_clip_horizon_metrics.npz": {
+      "sha256": "b217b89bb316aa76e56f34149ef0bae1b9fef39d209f157911785288ebce0bc9",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K__eddddf57fb12\\per_clip_horizon_metrics.npz": {
+      "sha256": "f5d5375e98535bf0f2ff97e0af9b7e132198959ac64d10af7763d3f08a42ea61",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K__8d5220cfaf8f\\per_clip_horizon_metrics.npz": {
+      "sha256": "a07bac3d0bcef9d979846e604e769f7932f325e54a00694872a12a91fc3296a7",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K__1a798c3f9641\\per_clip_horizon_metrics.npz": {
+      "sha256": "ff5da67bc5bca747be72745834a5076b13699c7c3686397fd70e12276b7b901d",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.npz"
+    },
+    "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\post_training\\evaluations\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K__9431bc0309eb\\per_clip_horizon_metrics.npz": {
+      "sha256": "ae2f995ec8c43d791f2f836e57c9edc90c405723152c7495f97355d65efbe87a",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/confirmation/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\result.json": {
+      "sha256": "3ac981824ffdcac56d06e85f0e31a3e80e3e1313ec1bcfd5f7fcef1c070d01a0",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\contract.json": {
+      "sha256": "ddc058a7f506d972b218c2d6a1142e9766d0343aff60f89cc5e0c07874f77102",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300_contract.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "27b655648f3f6d10f4de277c5ca555f46eddeefb00e410290744b58fc21f0724",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "053f37f3f8d920bd51234f34ac16e90d0e51fabcc0f073a7f72e4b01d5011281",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "d970416b09911e56885b0912cbdc987c65fe79056f6e64cb0ddc9d68bd3c5bf8",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "699cb4c9fb0014dcc9a394c3f092274030327ded1fe8fb2d84025b7a41f22f9f",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "a509c56800b2cadf325f757a117ac76a6df254f9dc774b5e58944aea272253bd",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\validation300\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K\\per_clip_horizon_metrics.npz": {
+      "sha256": "fbd6c3eb94d98542914fcb16fb12998776f306f175fa860042ac06fd03e30286",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/validation300/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.npz"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles\\mmnist_fp32.json": {
+      "sha256": "7249ed6ed19eb83df53d14e4d8c05fa92c679cb58bd6374036533c737f2a6f3e",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/profiles/mmnist_fp32.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles\\mmnist_bf16.json": {
+      "sha256": "81789c71d6979c38ffb835fcb998d8825dcd21811f704eaf41c8e48fc1d26f10",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/profiles/mmnist_bf16.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles\\taxibj_fp32.json": {
+      "sha256": "d0a8a36f674d841a1ad266b2880dbd63c08bf68c93d83b2b96f101538ef6ba7b",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/profiles/taxibj_fp32.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\profiles\\taxibj_bf16.json": {
+      "sha256": "eca89401e5d00c6f91e05400a0ec0b212b99a1c7c09736b09cf7ed046d387e57",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/profiles/taxibj_bf16.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FULL\\result.json": {
+      "sha256": "ae116241512e9c45ca6c27148f27db3fe45b99cb7856cd1d81e8e5adb4cd9665",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FULL/result.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FULL\\run_provenance.json": {
+      "sha256": "37006842b5a6b1a7fba115b1aa1b3b6abbd12e59ccf7405d05d49a152763f764",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FULL/run_provenance.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FULL\\metrics.jsonl": {
+      "sha256": "728b32ff5562801cd05a3fcdc319bdcb3f0cf9d7529293580dc5f274e3058f43",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FULL/metrics.jsonl"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_TB_FULL\\result.json": {
+      "sha256": "1ec05f5ccf9bc3ddf31976bebb6d332c274a5f0e608063be71bec3a3fabda172",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_TB_FULL/result.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_TB_FULL\\run_provenance.json": {
+      "sha256": "1bd72c5bf2f453c1d41a71b6317c2176baa81e494a2b3a3e11b2c8a91bf2ae06",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_TB_FULL/run_provenance.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_TB_FULL\\metrics.jsonl": {
+      "sha256": "aef7c968f0d4af9d0b1bfd7d4b59874588975ca3584fd54bfaa063ff02351154",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_TB_FULL/metrics.jsonl"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FLAT\\result.json": {
+      "sha256": "73618da89c54c3644149a3f198073255f4338963ddd67fe259124a2e7ece2735",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FLAT/result.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FLAT\\run_provenance.json": {
+      "sha256": "b1e40403c4a9e167e7e1fb7a5cdcab3e58ac5c2aa79b24d641e79c5768f472be",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FLAT/run_provenance.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_FLAT\\metrics.jsonl": {
+      "sha256": "d161a0318e348981eb4a2eb85f161c730165998aaa8969b6f114874eb5eaf8e8",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_FLAT/metrics.jsonl"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_STATIC\\result.json": {
+      "sha256": "1b2e6ef2bcc42f1e537a42e0deecfd9b1c6e20ac51f5bf83254b7c010e13745d",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_STATIC/result.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_STATIC\\run_provenance.json": {
+      "sha256": "000853c1d7a8cee956f24432184dcc5f94b1608a253062cc7637b41a4dcbc8a7",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_STATIC/run_provenance.json"
+    },
+    "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_STATIC\\metrics.jsonl": {
+      "sha256": "110347d719216e22e677c727b41d7e437a10d603525dc7c7202d7537387fb729",
+      "copy": "docs/reviews/completed_evidence_2026-09-09/screens/SCREEN_MM_STATIC/metrics.jsonl"
+    }
+  },
+  "analysis_class": "descriptive; paired intervals adjusted across four contrasts; not a noninferiority test",
+  "auditor_sha256": "57d42d97a1981b19019d9e83fe4785ea23d8b5e23b5ebdd7e8a9303ff0eb09d1",
+  "resource_accepted": false,
+  "resource_exclusion": "Original saved-tensor hook retains autograd graph; growing baseline allocations invalidate total-peak comparisons. Requires corrected remeasurement."
+}

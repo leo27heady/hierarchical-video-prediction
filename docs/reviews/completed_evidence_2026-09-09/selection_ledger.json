@@ -1,0 +1,135 @@
+{
+  "campaign_id": "article4-primary-30k-2026-09-01",
+  "campaign_sha256": "f2be4544227f1b3128c70121f44cd85c5a27bcc6426743303d2f41cda0039e01",
+  "checkpoint_step": 30000,
+  "created_utc": "2026-09-09T11:09:02.808992+00:00",
+  "dependency_resolution_sha256": "2966f8309b69e9aef732f08c1dc1aa9dec7a03c6d41023e052c669d1d2c181f6",
+  "memory_pareto_tolerance_relative": 0.05,
+  "primary_metric": "horizon4_foreground_mse",
+  "roles": {
+    "best_flat_1792": {
+      "budget_tokens": 1792,
+      "configuration_key": "frontier|{\"budget\":1792,\"geometric_decay\":0.94,\"policy\":\"flat_recent\"}|1792|flat_recent|exclusive",
+      "context_tokens": 1792,
+      "levels": 1,
+      "mean_horizon4_foreground_mse": 0.0215431556571275,
+      "overlap": "exclusive",
+      "policy": "flat_recent",
+      "runs": [
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K__80d1ac9e0e9d\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "bcc4186552ea0c1dc3ff05a4f83c1b0c819e1dcd43f4ce61dcffb9ab91d7f7ac",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K.json",
+          "config_hash": "80d1ac9e0e9dead6e1ff981982700e2e77e5a2eac5334aa30347fc505740974e",
+          "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S00_T30K"
+        },
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K__db5f425f0616\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "aa9f8a89050a1cfe2e80cebe43ea329094cd2eee1d73b0c8f3c90d4c432f4346",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K.json",
+          "config_hash": "db5f425f061606f41881ed86d72211fcdc0f8b13d43182f6872ee4544e8b32e2",
+          "experiment_id": "A4_FRT_B1792_L1_FLAT_RECENT_EXCL_S01_T30K"
+        }
+      ],
+      "seed_values": [
+        0.02224568510428071,
+        0.02084062620997429
+      ],
+      "state_bytes_per_sample_bf16": 86016
+    },
+    "best_hierarchy_1792": {
+      "budget_tokens": 1792,
+      "configuration_key": "frontier|{\"budget\":1792,\"geometric_decay\":0.94,\"policy\":\"geometric_age\"}|1792|geometric_age|nested",
+      "context_tokens": 1792,
+      "levels": 2,
+      "mean_horizon4_foreground_mse": 0.019617256009951234,
+      "overlap": "nested",
+      "policy": "geometric_age",
+      "runs": [
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K__c2a666468967\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "5fc9db561d8e14eeda7c9c29fa9a26e35f73e6ab669faedc75023ce0d6d5cf41",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K.json",
+          "config_hash": "c2a6664689670de4fcea904c0ecab9ec23d3e46c5d4587da74f4230c82603deb",
+          "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S00_T30K"
+        },
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K__952e3d682ca4\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "e1c6161fc8a321551dde5cbab995751bc0a5a22e21a64ee7c487170a50227229",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K.json",
+          "config_hash": "952e3d682ca48b9cc6cc3d4d6d540a9de24990dfa28c0d0525915807b70187d9",
+          "experiment_id": "A4_FRT_B1792_L2_GEOM_AGE_NEST_S01_T30K"
+        }
+      ],
+      "seed_values": [
+        0.019566677510738373,
+        0.019667834509164095
+      ],
+      "state_bytes_per_sample_bf16": 72128
+    },
+    "failure_hierarchy_1792": {
+      "budget_tokens": 1792,
+      "configuration_key": "allocation_1792|{\"geometric_decay\":0.94,\"policy\":\"coarse_heavy\"}|1792|coarse_heavy|nested",
+      "context_tokens": 1792,
+      "levels": 2,
+      "mean_horizon4_foreground_mse": 0.03227110882289708,
+      "overlap": "nested",
+      "policy": "coarse_heavy",
+      "runs": [
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K__eddddf57fb12\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "8a2af680e8a4c661b94cddf2a4e229800b8661dc4c608f7597f96f8003006185",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K.json",
+          "config_hash": "eddddf57fb1296adfe68eb2f26c9974c6f9512617bebb32ae55df7b3023429b0",
+          "experiment_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S00_T30K"
+        },
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K__8d5220cfaf8f\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "1fafe6b288c44f5ed31d0b6f2310023b9f2bd57a1bd563d8157aadd934285b2f",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K.json",
+          "config_hash": "8d5220cfaf8f27d3c747a5ffd5fda3ded35da694e70020b82122983dea3e2d08",
+          "experiment_id": "A4_ALC_B1792_L2_COARSE_HEAVY_NEST_S01_T30K"
+        }
+      ],
+      "seed_values": [
+        0.030599221121519804,
+        0.03394299652427435
+      ],
+      "state_bytes_per_sample_bf16": 65184
+    },
+    "memory_pareto_within_5pct": {
+      "budget_tokens": 1792,
+      "configuration_key": "spatial_temporal|{\"budget\":1792,\"quota\":16,\"temporal_policy\":\"geometric_time\"}|1792|k16_geometric_time|nested",
+      "context_tokens": 1792,
+      "levels": 2,
+      "mean_horizon4_foreground_mse": 0.018599562579765916,
+      "overlap": "nested",
+      "policy": "k16_geometric_time",
+      "runs": [
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K__1a798c3f9641\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "214fc01a1e33a3d336ed4a3158929f9c3b420427c6aacd8a56fc41832a088371",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K.json",
+          "config_hash": "1a798c3f9641711db37ba811acb4f9ff8d04122b76a6339a3a56615e29f5cae7",
+          "experiment_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S00_T30K"
+        },
+        {
+          "checkpoint": "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction-path-b\\artifacts\\v2\\article4_primary_30k\\runs\\A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K__9431bc0309eb\\milestones\\milestone_step030000.pt",
+          "checkpoint_sha256": "4d51662d55ecf5c33967cb13974f0cc6bd539cec76290bc4741abee111e64f39",
+          "config": "experiments/v2/runspecs/article4_primary_30k/A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K.json",
+          "config_hash": "9431bc0309eb1ca4b4fdb824bd04a47b3621fe9e3ad220eb9d6eb5bf8ba034bd",
+          "experiment_id": "A4_STS_B1792_L2_K16_GEOMETRIC_NEST_S01_T30K"
+        }
+      ],
+      "seed_values": [
+        0.01844794349744916,
+        0.018751181662082672
+      ],
+      "state_bytes_per_sample_bf16": 62208
+    }
+  },
+  "schema_version": 1,
+  "seed_aggregation": "arithmetic mean across seeds 0 and 1",
+  "selection_split": "development validation only",
+  "status": "locked_from_development_validation"
+}

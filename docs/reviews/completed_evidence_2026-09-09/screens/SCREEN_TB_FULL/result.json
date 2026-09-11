@@ -1,0 +1,11 @@
+{
+  "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_TB_FULL\\checkpoints\\last.ckpt",
+  "development_only": true,
+  "elapsed_hours": 0.015560229023297628,
+  "parameters": 1912963,
+  "run_id": "SCREEN_TB_FULL",
+  "status": "completed",
+  "steps": 200,
+  "test_evaluated": false,
+  "validation_loss": 0.001582315657287836
+}

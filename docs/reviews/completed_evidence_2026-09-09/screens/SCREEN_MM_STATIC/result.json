@@ -1,0 +1,11 @@
+{
+  "checkpoint": "D:\\hierarchical-video-prediction-storage\\dissertation_remaining_2026-09-07\\screens\\SCREEN_MM_STATIC\\checkpoints\\last.ckpt",
+  "development_only": true,
+  "elapsed_hours": 0.021213532553778756,
+  "parameters": 1912386,
+  "run_id": "SCREEN_MM_STATIC",
+  "status": "completed",
+  "steps": 200,
+  "test_evaluated": false,
+  "validation_loss": 0.058349624276161194
+}
