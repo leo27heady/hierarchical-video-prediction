@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "experiment_id": "A5_B5_FULL_S00",
+  "article": 5,
+  "phase": "development",
+  "family": "component_ablation",
+  "dataset": "openstl_moving_mnist",
+  "seed": 0,
+  "split_manifest": "manifest:openstl-mmnist-v2-pending",
+  "checkpoint_selection_split": "validation",
+  "evaluation_split": "validation",
+  "budget_tokens": 1024,
+  "levels": [
+    {"name": "coarse", "tokens_per_slot": 16, "slots": 48, "temporal_stride": 1},
+    {"name": "detail", "tokens_per_slot": 16, "slots": 16, "temporal_stride": 1}
+  ],
+  "overlap": "nested",
+  "allocation_policy": "article4_pareto_pending",
+  "target_horizon": 10,
+  "target_stride": 1,
+  "target_tokens_per_step": 64,
+  "positional_encoding": "coordinate_fourier",
+  "routing": "learned",
+  "detail_quota": 16,
+  "reversible_mode": "internal_blocks",
+  "memory_endpoint": "training_peak",
+  "launch_authorized": false
+}

@@ -1,0 +1,129 @@
+{
+  "ae_sha256": "39e31b99133fca14e1ce4525a8b1bf9ee0a58f3d39aa19f816f6014e93e47ee0",
+  "allocated_gpu_hours": 28.0,
+  "authorized_gpu_hours": 28.0,
+  "config_sha256": "7feef9236e7312e4aa424285096cc21b2e2b514dbb6f99a1cecb7172794bf04b",
+  "data_hashes": {
+    "test_actions": "a47279c28f12532924e7bae033a68a1f703ff3597b39209c1cb2e862a14f075c",
+    "test_clips": "c58fe6288ca3ceee33b908b0d6465ee672b3e5522002af6b7397845517789f44",
+    "test_positions": "9e0c1e0537d43b07bda084ca539617bcfbb79d8b562fcb5a84fe1f3573cf0a1c",
+    "train_actions": "f533cf6ffab607119660f31910c11e1239f1e0b81e25a3336474a08aa5f25749",
+    "train_clips": "b5757a77c3e354c70ede510b67c5d1e1fbd6d08337ef91242926eb601db10e7a",
+    "train_positions": "7a2e8e37900f03027195e4a26963958a77607c8b7f7130302780e1f29d1ffdee"
+  },
+  "existing_runs": [
+    "artifacts/training/e5a-trust-replication/d0-diff-long/seed-1/25bc12c6a4bd3b71/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-1/c82816c7f0818744/run_spec.json",
+    "artifacts/training/e5a-trust-replication/d1-56-diff/seed-2/f8fc583e62c6ea0a/run_spec.json"
+  ],
+  "failures": [],
+  "h3b_parity_sha256": "09fa4c7fa6721ef41d09ec3ce30bae7172ef1fb04672d64522967b610e258aba",
+  "implementation_hashes": {
+    "docs/confirmation/E5A_TABLE_SHELL.md": "59ddafc11872c0652e6298c7d30f3471aa2716f568528d256a46cce5b487ce0e",
+    "hvp_rev/rhvd_train_v2.py": "b76b90747d421559e663866e43b6aa08b056b35c8d2733e94c9d01a7adaef9ab",
+    "scripts/analyze_e5a_trust_replication.py": "e9fcabf5e9a3359d69a08f8e1392883cc410102533111ce0b4e561ef14e2be0d",
+    "scripts/run_e5a_trust_replication.ps1": "b2ae743beee2d31b4c7778b6e6a2f00c0d4240d3814499902e782a71c6212ef9",
+    "scripts/validate_e5a_completion.py": "9748c7a92c3e127d2fba89ac835b403a1c07ad95cb222ada1f0b72a583c298c3",
+    "scripts/validate_e5a_design.py": "686dd902ccd5bc3f600f2bc0e8a7a5f2544599a1c59fb7dddfec1f214c239fca"
+  },
+  "pinned_prior_hashes": {
+    "docs/HGRID_DESIGN.md": "573ab7df8e14dfe9594d4df1d42e34ba82d9d2556775ee3af2d15aae7f36a516",
+    "logs_rhcp/hgrid3_disambig_s0.log": "438ddac458d87eb10e3ab3b26e015eb47b515d29d513bfcf82477b56fb5090cf",
+    "logs_rhcp/hgrid3_disambig_s1.log": "9e69a5898ad2d69c041f4fa8275c700dcdecad2f178d0899325944011bdc799d",
+    "logs_rhcp/rhvd_d0-diff-long_s0_t40000.pt": "bb7b706767e885e451bb9023c90371d526600d82ebf64346f437d365d03a7565",
+    "logs_rhcp/rhvd_d1-56-diff_s0_t40000.pt": "aa5780f13e6d48c85fb82fc985a83f027ff50317cc606ff45003d78cb04b7305",
+    "logs_rhcp/rhvd_eval_d0-diff-long_s0.npz": "b6b9a9e83d58419c2f132bc02e4d409dfcd13859735febefcad2f3e5dae5a88f",
+    "logs_rhcp/rhvd_eval_d0-diff-long_s0_oracle.npz": "7afe29816f7302a2d7be3b486594e0dda639cbe866de39e930d6d38813317c07",
+    "logs_rhcp/rhvd_eval_d1-56-diff_s0.npz": "567c5c450a1588946335c288ff244d37d5c83c1e23682f592d0f293bec11ec23",
+    "logs_rhcp/rhvd_eval_d1-56-diff_s0_oracle.npz": "068220de5b3a42d64dbf72309b294b1853c20ea0ee589b8b39e526348f032b4a"
+  },
+  "resolved_arms": {
+    "d0-diff-long": {
+      "coarse_context_slots": 0,
+      "coarse_context_stride": 1,
+      "coarse_target_stride": 1,
+      "context_reach": 48,
+      "context_tokens": 3072,
+      "fine_history_slots": 0,
+      "fine_recent_slots": 48,
+      "head": "diff",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "d0-diff-long",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 4,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 320,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 3392
+    },
+    "d1-56-diff": {
+      "coarse_context_slots": 56,
+      "coarse_context_stride": 4,
+      "coarse_target_stride": 4,
+      "context_reach": 224,
+      "context_tokens": 1280,
+      "fine_history_slots": 0,
+      "fine_recent_slots": 6,
+      "head": "diff",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "d1-56-diff",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 1,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 272,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 1552
+    }
+  },
+  "runs": 4,
+  "schema_version": 1,
+  "seed0_reference": {
+    "early_benefit": {
+      "clips": 95,
+      "hi": 0.027948601702973037,
+      "lo": 0.0133393890731178,
+      "mean": 0.020417659365431218,
+      "records": 1746
+    },
+    "late_inversion": {
+      "clips": 100,
+      "hi": -0.0031998616677584818,
+      "lo": -0.009546808215143653,
+      "mean": -0.0063627647782138865,
+      "records": 13781
+    },
+    "legacy_oracle_means": {
+      "comparator_oracle": 0.01036657477367268,
+      "long_reach_oracle": 0.010531060716949953
+    },
+    "nonempty_records": 18177,
+    "records": 25600
+  },
+  "status": "DESIGN_VALIDATION_PASS"
+}

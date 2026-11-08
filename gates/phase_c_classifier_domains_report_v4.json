@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "ae_reconstruction": 1995,
+    "clean_test": 2000,
+    "generated_degraded": 1995,
+    "overlap": 2000,
+    "rendered_component": 2000,
+    "translated": 1998
+  },
+  "degraded_domain": {
+    "attenuation": 0.82,
+    "downsample": "28->20->28 bilinear",
+    "gaussian_noise_std": 0.025
+  },
+  "fixture": "artifacts/phasec_v2/classifier_domains_v4.npz",
+  "fixture_sha256": "7c751669174ba216c28452957094d9b3120c3dc65f6ae9fab5fb2eeaa83a60e2",
+  "schema_version": 1,
+  "seed": 20260718,
+  "sources": {
+    "ae_sha256": "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "development_metadata_sha256": "8e5e12addfa4d4798a6b63e494f685a4e5c4a014e8256c75d5a71cf5fd17602b",
+    "development_sha256": "9a4d7884d4ba567aab2a30e7c3d141482a21e82f6698d4fb2e27067874ad9a0c",
+    "test_images_sha256": "8d422c7b0a1c1c79245a5bcf07fe86e33eeafee792b84584aec276f5a2dbc4e6",
+    "test_labels_sha256": "f7ae60f92e00ec6debd23a6088c31dbd2371eca3ffa0defaefb259924204aec6"
+  },
+  "status": "CLASSIFIER_DOMAINS_BUILT"
+}

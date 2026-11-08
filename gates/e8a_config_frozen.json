@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-17T09:22:00+00:00",
+  "schema_version": 1,
+  "source_commit": "6102e8cf6339f0f18f8cd664e4fdd7250894b4d7",
+  "status": "FROZEN",
+  "subject": "experiments/configs/pose_indexed_retrieval.json",
+  "subject_sha256": "f7e56bec8c95191a423af6d4b30922724c236c550a9f9bc6adcea3ef6d9aff38"
+}

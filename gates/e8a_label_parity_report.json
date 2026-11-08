@@ -1,0 +1,11 @@
+{
+  "clips": 5,
+  "fixtures": {
+    "data/dev/e2_test_fixture.npy": "cc8c2d9fe9dc7e025b7b46b8859c66259916746f84b5dee73be7f76f678e591d",
+    "data/dev/e2_test_fixture_actions.npy": "11b151f885c4026019711d9579eed15e591f9c93e56f1badb08f4fed12add928",
+    "data/dev/e2_test_fixture_positions.npy": "f507484d6e41d97996f4e5321fae6f4c6505c889c5afe2f77a6e492db2f2e51c"
+  },
+  "records": 60,
+  "schema_version": 1,
+  "status": "E8A_GEOMETRIC_LABEL_PARITY_PASS"
+}

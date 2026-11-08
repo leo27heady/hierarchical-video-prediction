@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "updated": "2026-07-18-e6-terminal-evidence-frozen",
+  "policy": "Author retains scientific/GPU authority; Codex receives time-bounded tranche autonomy; fail closed; status changes require protocol, budget, gates and a dated claim-ledger entry.",
+  "experiments": {
+    "pre-c-seed2-trio": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "Seed-2 diffusion cells completed; evidence verified, hash-pinned and integrated.",
+      "required_files": ["docs/SPATIAL_FACTORIAL.md"]
+    },
+    "frontier-c2-b8x60k": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "Matched-example, changed-batch/update/noise/grouping/EMA control completed; evidence verified, hash-pinned and integrated.",
+      "required_files": ["scripts/run_frontier_c2_60k.sh"]
+    },
+    "phase-c-legacy": {
+      "status": "PROHIBITED_INVALID_ENDPOINTS",
+      "meaning": "Legacy identity, trajectory, coverage and equivalence semantics are invalid.",
+      "required_files": []
+    },
+    "confirmation-holdout": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "One-time confirmation completed; validated evidence is frozen and the holdout cannot be reused for model selection.",
+      "required_files": [
+        "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md",
+        "experiments/configs/e2_untouched_confirmation.json",
+        "docs/confirmation/E2_TABLE_SHELL.md",
+        "scripts/run_e2_confirmation.ps1"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/confirmation_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/UNTOUCHED_CONFIRMATION_PROTOCOL_2026-07-11.md"}
+        },
+        {
+          "path": "gates/e2_design_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/e2_untouched_confirmation.json"}
+        },
+        {
+          "path": "gates/cpu_validation.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e2_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e2_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e2_dataset_validation.json"}
+        },
+        {
+          "path": "gates/e2_manifest_design_validated.json",
+          "attests": {"status": "DESIGN_DATA_MATCH", "subject": "gates/e2_design_validation.json"}
+        }
+      ]
+    },
+    "b1-fixed-target": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "meaning": "Isolates context stride while target slots and loss interface remain fixed.",
+      "required_files": ["experiments/configs/b1_fixed_target.json"],
+      "required_markers": [
+        {"path": "gates/cpu_validation.txt", "contains": "CPU_VALIDATION_PASS"}
+      ]
+    },
+    "regression-factorial-seed2": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E4a completed, independently validated and integrated; its trigger evidence is immutable.",
+      "required_files": [
+        "experiments/configs/regression_factorial_seed2.json",
+        "hvp_rev/rhvd_train_v2.py",
+        "scripts/run_e4_factorial.ps1",
+        "scripts/analyze_e4_factorial.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/h3b_parity.json",
+          "attests": {"status": "H3B_PARITY_PASS", "subject": "gates/h3b_parity_report.json"}
+        },
+        {
+          "path": "gates/e4_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/regression_factorial_seed2.json"}
+        },
+        {
+          "path": "gates/e4_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e4_design_validation.json"}
+        }
+      ]
+    },
+    "head-package-seeds3-4": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E4b completed at seeds 3 and 4; evidence is frozen and no seed 5+ is authorized.",
+      "required_files": [
+        "experiments/configs/regression_factorial_seeds3_4.json",
+        "hvp_rev/rhvd_train_v2.py",
+        "scripts/run_e4b_factorial.ps1",
+        "scripts/analyze_e4b_factorial.py",
+        "scripts/validate_e4b_design.py",
+        "scripts/validate_e4b_completion.py",
+        "docs/confirmation/E4B_TABLE_SHELL.md"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/h3b_parity.json",
+          "attests": {"status": "H3B_PARITY_PASS", "subject": "gates/h3b_parity_report.json"}
+        },
+        {
+          "path": "gates/e4b_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/regression_factorial_seeds3_4.json"}
+        },
+        {
+          "path": "gates/e4b_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e4b_design_validation.json"}
+        }
+      ]
+    },
+    "trust-replication-seeds1-2": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E5a completed with the registered NOT_REPLICATED verdict; evidence is frozen and no E5b/E5c or further seed is authorized.",
+      "required_files": [
+        "experiments/configs/trust_replication_seeds1_2.json",
+        "hvp_rev/rhvd_train_v2.py",
+        "scripts/run_e5a_trust_replication.ps1",
+        "scripts/analyze_e5a_trust_replication.py",
+        "scripts/validate_e5a_design.py",
+        "scripts/validate_e5a_completion.py",
+        "docs/confirmation/E5A_TABLE_SHELL.md"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/h3b_parity.json",
+          "attests": {"status": "H3B_PARITY_PASS", "subject": "gates/h3b_parity_report.json"}
+        },
+        {
+          "path": "gates/e5a_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/trust_replication_seeds1_2.json"}
+        },
+        {
+          "path": "gates/e5a_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e5a_design_validation.json"}
+        }
+      ]
+    },
+    "trust-horizon-dose-response": {
+      "status": "CANCELLED_GATE_NOT_MET",
+      "meaning": "E5a did not replicate the registered late inversion, so the E5b localization study is closed.",
+      "required_files": ["experiments/configs/trust_horizon_dose_response.json"]
+    },
+    "sampler-nfe-robustness": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E7c completed 35/35 checkpoint-only cells in 5.9975507 GPU-hours. The registered verdict is DIRECTIONALLY_ROBUST: all 20 effects retain direction, 18 simultaneous lower bounds are positive, and the 2432-token inversion is family-wise unresolved at sampler seeds 1/2. No extension is authorized.",
+      "required_files": [
+        "docs/E7C_SAMPLER_NFE_ROBUSTNESS_PROTOCOL_2026-07-15.md",
+        "experiments/configs/sampler_nfe_robustness.json",
+        "docs/confirmation/E7C_TABLE_SHELL.md",
+        "experiments/manifests/loopmom_e7c_robustness_2026-07-15.json",
+        "scripts/generate_e7c_robustness_set.ps1",
+        "scripts/run_e7c_sampler_nfe.ps1",
+        "scripts/analyze_e7c_sampler_nfe.py",
+        "scripts/validate_e7c_design.py",
+        "scripts/validate_e7c_completion.py",
+        "scripts/run_e7c_sampler_parity.py",
+        "scripts/run_e7c_cpu_gate.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/e7c_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/E7C_SAMPLER_NFE_ROBUSTNESS_PROTOCOL_2026-07-15.md"}
+        },
+        {
+          "path": "gates/e7c_config_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/sampler_nfe_robustness.json"}
+        },
+        {
+          "path": "gates/e7c_cpu_validation.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e7c_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e7c_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e7c_design_validation.json"}
+        },
+        {
+          "path": "gates/e7c_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e7c_dataset_validation.json"}
+        }
+      ]
+    },
+    "alternate-autoencoder-robustness": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E7a completed 7/7 alternate-codec trainings and 14/14 locked evaluations in 30.0238 project GPU-hours. The independent validator and 27-run W&B audit pass. Verdict: CODEC_DIRECTIONALLY_ROBUST; the alternate-codec 2,432-token inversion remains positive but its simultaneous interval includes zero.",
+      "required_files": [
+        "docs/E7A_ALTERNATE_CODEC_ROBUSTNESS_PROTOCOL_2026-07-16.md",
+        "experiments/configs/alternate_codec_robustness.json",
+        "docs/confirmation/E7A_TABLE_SHELL.md",
+        "experiments/manifests/loopmom_e7a_codec_robustness_2026-07-16.json",
+        "hvp_rev/hier_convae_v2.py",
+        "scripts/generate_e7a_codec_set.ps1",
+        "scripts/validate_loopmom_confirmation.py",
+        "scripts/run_e7a_codec_robustness.ps1",
+        "scripts/resolve_e7a_evaluation_dispatch.py",
+        "scripts/analyze_e7a_codec_robustness.py",
+        "scripts/validate_e7a_design.py",
+        "scripts/validate_e7a_completion.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/e7a_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/E7A_ALTERNATE_CODEC_ROBUSTNESS_PROTOCOL_2026-07-16.md"}
+        },
+        {
+          "path": "gates/e7a_config_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/alternate_codec_robustness.json"}
+        },
+        {
+          "path": "gates/e7a_cpu_validation.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e7a_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e7a_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e7a_design_validation.json"}
+        },
+        {
+          "path": "gates/e7a_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e7a_dataset_validation.json"}
+        },
+        {
+          "path": "gates/e7a_dispatch_validated.json",
+          "attests": {"status": "E7A_EVALUATION_DISPATCH_PASS", "subject": "gates/e7a_evaluation_dispatch.json"}
+        }
+      ]
+    },
+    "pose-indexed-retrieval": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E8a completed four pose-mosaic spans and seven frozen neural evaluations in 1.0897 project GPU-hours. Independent artifact/alignment/budget validation and a 12-run W&B audit pass. Verdict: RAW_ACCESS_CEILING_CI_CLEAN. The result is a privileged exact-pose raw-pixel reference, not token matched, learned retrieval, neural-frontier confirmation or natural-video evidence; no extension is authorized.",
+      "required_files": [
+        "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
+        "experiments/configs/pose_indexed_retrieval.json",
+        "experiments/manifests/loopmom_e8a_pose_mosaic_2026-07-17.json",
+        "docs/confirmation/E8A_TABLE_SHELL.md",
+        "hvp_rev/rhvd.py",
+        "scripts/generate_e8a_reference_set.ps1",
+        "scripts/evaluate_e8a_pose_mosaic.py",
+        "scripts/analyze_e8a_pose_mosaic.py",
+        "scripts/validate_e8a_design.py",
+        "scripts/validate_e8a_completion.py",
+        "scripts/run_e8a_label_parity.py",
+        "scripts/run_e8a_cpu_gate.py",
+        "scripts/run_e8a_reference.ps1",
+        "tests/test_e8a_pose_mosaic.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/e8a_protocol_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md"}
+        },
+        {
+          "path": "gates/e8a_config_frozen.json",
+          "attests": {"status": "FROZEN", "subject": "experiments/configs/pose_indexed_retrieval.json"}
+        },
+        {
+          "path": "gates/e8a_cpu_validated.json",
+          "attests": {"status": "CPU_VALIDATION_PASS", "subject": "gates/e8a_cpu_validation_report.json"}
+        },
+        {
+          "path": "gates/e8a_design_validated.json",
+          "attests": {"status": "DESIGN_VALIDATION_PASS", "subject": "gates/e8a_design_validation.json"}
+        },
+        {
+          "path": "gates/e8a_dataset_validated.json",
+          "attests": {"status": "DATA_VALIDATION_PASS", "subject": "gates/e8a_dataset_validation.json"}
+        }
+      ]
+    },
+    "phase-c-v2-preparation": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E6 public/development data, codec, classifier and evaluator preparation completed and is frozen; no preparation retry or adaptive replacement is authorized.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json",
+        "scripts/run_phasec_v2.ps1"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/phase_c_cpu_validated.json",
+          "attests": {
+            "status": "CPU_VALIDATION_PASS",
+            "subject": "gates/phase_c_cpu_validation_report.json"
+          }
+        }
+      ]
+    },
+    "phase-c-v2-holdout-generation": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "Generate the single seed-frozen protected holdout and perform one logged integrity access; predictor training and outcome analysis remain forbidden.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json",
+        "scripts/generate_mmnist_confirmation.ps1",
+        "scripts/gen_moving_v2.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/phase_c_protocol_frozen.json",
+          "attests": {
+            "status": "PROTOCOL_FREEZE_PASS",
+            "subject": "gates/phase_c_protocol_freeze_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_classifier_validated.json",
+          "attests": {
+            "status": "CLASSIFIER_VALIDATION_PASS",
+            "subject": "gates/phase_c_classifier_report_v4.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_evaluator_validated.json",
+          "attests": {
+            "status": "EVALUATOR_RELIABILITY_PASS",
+            "subject": "gates/phase_c_evaluator_report_v3.json"
+          }
+        }
+      ]
+    },
+    "phase-c-v2": {
+      "status": "COMPLETED_EVIDENCE_FROZEN",
+      "meaning": "E6 completed six trainings and six protected evaluations in 20.5127 project GPU-hours. Verdict MIXED_BOUNDARY: support/continuity favor hierarchy, identity favors flat context, foreground-only error is unresolved. No adaptive arm, seed, endpoint or retry is authorized.",
+      "required_files": [
+        "docs/PHASE_C_V2_PROTOCOL_2026-07-11.md",
+        "experiments/configs/phase_c_v2.json",
+        "scripts/run_phasec_v2.ps1",
+        "hvp_rev/phasec_eval_v2.py"
+      ],
+      "required_markers": [
+        {
+          "path": "gates/phase_c_cpu_validated.json",
+          "attests": {
+            "status": "CPU_VALIDATION_PASS",
+            "subject": "gates/phase_c_cpu_validation_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_train_development_validated.json",
+          "attests": {
+            "status": "PHASEC_TRAIN_DEVELOPMENT_DATA_PASS",
+            "subject": "gates/phase_c_train_development_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_classifier_validated.json",
+          "attests": {
+            "status": "CLASSIFIER_VALIDATION_PASS",
+            "subject": "gates/phase_c_classifier_report_v4.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_evaluator_validated.json",
+          "attests": {
+            "status": "EVALUATOR_RELIABILITY_PASS",
+            "subject": "gates/phase_c_evaluator_report_v3.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_datasets_final_validated.json",
+          "attests": {
+            "status": "PHASEC_DATASETS_FINAL_PASS",
+            "subject": "gates/phase_c_datasets_final_report.json"
+          }
+        },
+        {
+          "path": "gates/phase_c_protocol_frozen.json",
+          "attests": {
+            "status": "PROTOCOL_FREEZE_PASS",
+            "subject": "gates/phase_c_protocol_freeze_report.json"
+          }
+        }
+      ]
+    },
+    "counterfactual-loopworld-e9": {
+      "status": "SKIPPED_POST_FREEZE_NO_INCREMENTAL_UTILITY",
+      "meaning": "E9 is terminally outside the current programme. E6 closed the registered external boundary; E9 would require a new dataset, oracle, factorial, protocol, budget and explicit authorization. This record cannot authorize a launch.",
+      "required_files": [],
+      "required_markers": []
+    }
+  }
+}

@@ -1,0 +1,6 @@
+# CPU validation environment used on 2026-07-11.  Install the appropriate CPU-only Torch wheel
+# for the target platform when a CUDA wheel is unnecessary.
+numpy==2.4.4
+scipy==1.17.1
+torch==2.11.0
+pytest==9.1.0

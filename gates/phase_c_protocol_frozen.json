@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "status": "PROTOCOL_FREEZE_PASS",
+  "subject": "gates/phase_c_protocol_freeze_report.json",
+  "subject_sha256": "6230905da7ddae0e14d321c6560630f536e065968837e4d8d7cc0af80df22d86",
+  "source_commit": "cad658e241adf62a88b2e6b795e8b7083a25cb5d"
+}

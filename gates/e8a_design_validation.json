@@ -1,0 +1,16 @@
+{
+  "authorized_gpu_hours": 4.0,
+  "config": "experiments/configs/pose_indexed_retrieval.json",
+  "config_sha256": "f7e56bec8c95191a423af6d4b30922724c236c550a9f9bc6adcea3ef6d9aff38",
+  "dataset_id": "loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13",
+  "expected_gpu_hours": 1.0952,
+  "failures": [],
+  "manifest_sha256": "06a88f48676a7c0dc1bd96223c3ca09d6ca8e8c8ef9efb0dd731962155d1558c",
+  "mosaic_variants": 4,
+  "neural_evaluations": 7,
+  "protocol": "docs/E8A_POSE_MOSAIC_PROTOCOL_2026-07-17.md",
+  "protocol_sha256": "ed91df332f6166567af64851fc327c2709421a6fa5146fb5d9356b69473d6e3d",
+  "registered_effects": 6,
+  "schema_version": 1,
+  "status": "DESIGN_VALIDATION_PASS"
+}

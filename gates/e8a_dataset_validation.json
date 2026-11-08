@@ -1,0 +1,26 @@
+{
+  "collisions": {
+    "legacy_test": 0,
+    "legacy_train": 0,
+    "loopmom-codec_robustness_holdout-20260716-77a4ec5aee94": 0,
+    "loopmom-confirmation_holdout-20260712-e033abee6e04": 0,
+    "loopmom-robustness_holdout-20260715-477845150808": 0
+  },
+  "dataset_id": "loopmom-retrieval_reference_holdout-20260717-804b9f5d2c13",
+  "dtype": "uint8",
+  "failures": [],
+  "manifest_sha256": "06a88f48676a7c0dc1bd96223c3ca09d6ca8e8c8ef9efb0dd731962155d1558c",
+  "object_metadata_valid": true,
+  "p_continue_nonzero": 0.901325987799574,
+  "p_hold": 0.09831,
+  "position_action_consistency": true,
+  "schema_version": 1,
+  "shape": [
+    500,
+    200,
+    64,
+    64
+  ],
+  "status": "PASS",
+  "unique_confirmation_clips": 500
+}

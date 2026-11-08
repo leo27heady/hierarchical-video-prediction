@@ -1,0 +1,9 @@
+{
+  "checkpoint_sha256": "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+  "domains_sha256": "7c751669174ba216c28452957094d9b3120c3dc65f6ae9fab5fb2eeaa83a60e2",
+  "schema_version": 1,
+  "source_commit": "f3b3c39d525150f30b2eb3cc54b4deb5894e1417",
+  "status": "CLASSIFIER_VALIDATION_PASS",
+  "subject": "gates/phase_c_classifier_report_v4.json",
+  "subject_sha256": "afa82d162f91f8804db6bfc5349ffaccd004219c6fce52a958e63cb4ec3d579e"
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "purpose": "article4_schedule_calibration",
+  "status": "authorized",
+  "authorized_utc_date": "2026-09-01",
+  "authority": "explicit_user_request_in_current_codex_task",
+  "scope": "Two paired A4-COR development calibrations through 30000 updates, with immutable validation every 2000 updates",
+  "dataset_purpose": "development_only",
+  "test_split_permitted": false,
+  "max_runs": 2,
+  "max_updates_per_run": 30000,
+  "authorized_experiment_ids": [
+    "A4_COR_B1792_L1_FLAT_RECENT_EXCL_S00_T30K",
+    "A4_COR_B1792_L2_BAL_RECENT_NEST_S00_T30K"
+  ],
+  "authorized_config_hashes": {
+    "A4_COR_B1792_L1_FLAT_RECENT_EXCL_S00_T30K": "15088e9c0c9da5e4d6616e7136c4fc9368c8d949559072454b33ca8473c09c7a",
+    "A4_COR_B1792_L2_BAL_RECENT_NEST_S00_T30K": "c5ba8de728ce16340c25626ebab49dc4d0377fd8c20d5220086b44e8333024ad"
+  },
+  "selection_candidates": [8000, 12000, 16000, 20000, 24000, 30000],
+  "selection_rule": "Choose the earliest candidate within 2 percent relative of its best later primary validation metric, with stable flat-versus-hierarchy direction and no sustained later improvement or overfitting; do not force 8000 or 12000 if the evidence rejects them."
+}

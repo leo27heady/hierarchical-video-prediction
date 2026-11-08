@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-15T05:04:00.871318+00:00",
+  "schema_version": 1,
+  "source_commit": "b109bb6d22cffffba4570f64925e40060a42a7e5",
+  "status": "E5A_RESUME_RECOVERY_REVIEWED",
+  "subject": "gates/e5a_resume_recovery.json",
+  "subject_sha256": "27fd1b04d5b1b0e8972dcfb2325519612f9cbd786c549e930992a08d7108d42d"
+}

@@ -1,0 +1,210 @@
+{
+  "schema_version": 2,
+  "study": "phase-c-persistent-object-v2",
+  "programme_id": "E6",
+  "status": "FROZEN",
+  "question": "On a familiar long-rollout Moving-MNIST boundary without LoopMom's explicit re-entry geometry, do the registered flat and hierarchical packages differ in foreground fidelity, identity, trajectory, or survival?",
+  "scope": {
+    "role": "external boundary and cross-dataset validity study",
+    "not_claimed": [
+      "the same geometric re-entry mechanism as LoopMom",
+      "general natural-video transfer",
+      "equivalence",
+      "a pure intervention on context stride or hierarchy"
+    ]
+  },
+  "official_mnist": {
+    "mirror": "https://ossci-datasets.s3.amazonaws.com/mnist/",
+    "train_images": "data/source/mnist/train-images-idx3-ubyte.gz",
+    "train_labels": "data/source/mnist/train-labels-idx1-ubyte.gz",
+    "test_images": "data/source/mnist/t10k-images-idx3-ubyte.gz",
+    "test_labels": "data/source/mnist/t10k-labels-idx1-ubyte.gz"
+  },
+  "datasets": {
+    "schema": "moving-mnist-persistent-v1",
+    "common": {
+      "image_size": 64,
+      "objects": 2,
+      "step": 0.1,
+      "composition": "pixelwise maximum",
+      "actions": "all-zero exogenous conditioning"
+    },
+    "training": {
+      "source_split": "train",
+      "purpose": "training",
+      "seed": 20260718,
+      "clips": 3000,
+      "frames": 100,
+      "path": "data/phasec_v2/mmnist_train_3000x100.npy"
+    },
+    "development": {
+      "source_split": "test",
+      "purpose": "development",
+      "seed": 20260719,
+      "clips": 500,
+      "frames": 348,
+      "path": "data/phasec_v2/mmnist_development_500x348.npy"
+    },
+    "holdout": {
+      "source_split": "test",
+      "purpose": "phase_c_v2_holdout",
+      "seed": 20260720,
+      "clips": 500,
+      "frames": 348,
+      "path": "data/phasec_v2/mmnist_holdout_500x348.npy",
+      "access_policy": "generate only after implementation/classifier/evaluator gates freeze; log access before every open"
+    }
+  },
+  "codec": {
+    "architecture": "HierConvAE-2level-4x4-8x8-LAT16-w64",
+    "seed": 0,
+    "steps": 7000,
+    "batch": 64,
+    "lr": 0.0003,
+    "max_gpu_hours": 0.8,
+    "artifact_root": "artifacts/autoencoders"
+  },
+  "classifier": {
+    "architecture": "DigitCNN-v1",
+    "training_input": "50% canonical official-train glyphs; 50% deterministic isolated production-component-mask crops of the same official-train glyphs",
+    "seed": 20260717,
+    "steps": 3000,
+    "batch": 256,
+    "lr": 0.001,
+    "confidence_threshold": 0.0,
+    "abstention": "disabled; all matched detections receive a class",
+    "max_gpu_hours": 0.25,
+    "domain_minimum_accuracy": {
+      "clean_test": 0.98,
+      "translated": 0.95,
+      "rendered_component": 0.94,
+      "ae_reconstruction": 0.9,
+      "generated_degraded": 0.75,
+      "overlap": null
+    }
+  },
+  "training": {
+    "arms": [
+      "mmL-flat",
+      "mmL-hier"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "steps": 30000,
+    "batch": 16,
+    "lr": 0.0003,
+    "warmup_updates": 2000,
+    "precision": "bf16",
+    "ema": 0.999,
+    "validation_dataset": "development",
+    "train_only_before_protected_access": true,
+    "per_cell_max_gpu_hours": 4.7
+  },
+  "evaluation": {
+    "holdout_clip_start": 250,
+    "holdout_clips": 100,
+    "warmup_frames": 48,
+    "rollout_frames": 300,
+    "window": 4,
+    "nfe": 16,
+    "sampler_seed": 0,
+    "chunk": 10,
+    "per_cell_max_gpu_hours": 1.6,
+    "wandb_project": "hgrid",
+    "wandb_group_prefix": "phasec-v2-persistent-object",
+    "object_evaluator": {
+      "detection_threshold": 0.3,
+      "min_component_pixels": 30,
+      "distance_weight": 0.5,
+      "iou_weight": 0.5,
+      "max_assignment_cost": 0.65,
+      "confidence_threshold": 0.0,
+      "trajectory_coordinate": "center of generator-provided 28x28 source-glyph box",
+      "miss_penalty": "64x64 frame diagonal",
+      "extra_policy": "retain as explicit false positives",
+      "identity_policy": "intention-to-score over every labelled GT object; misses and abstentions are incorrect"
+    }
+  },
+  "validation": {
+    "reliability_seed": 20260721,
+    "reliability_records": 2000,
+    "evaluator_reliability_max_gpu_hours": 0.5,
+    "evaluator_reliability_floors": {
+      "raw_nonoverlap_coverage": 0.95,
+      "raw_nonoverlap_identity_accuracy": 0.92,
+      "raw_nonoverlap_trajectory_px": 6.0,
+      "ae_nonoverlap_coverage": 0.85,
+      "ae_nonoverlap_identity_accuracy": 0.8
+    },
+    "required_cpu_cases": [
+      "object detection-order permutation",
+      "left/right crossing and position-order swap",
+      "overlap and separation",
+      "one missing object",
+      "one extra object",
+      "empty prediction",
+      "same class at wrong localization",
+      "correct localization with wrong class",
+      "assignment threshold and deterministic tie behavior",
+      "differing arm coverage",
+      "dataset and output overwrite refusal",
+      "train/development/holdout exact-clip collision audit",
+      "official source split hashes and counts"
+    ]
+  },
+  "statistics": {
+    "effect_sign": "positive favors the hierarchical package",
+    "co_primary_effects": {
+      "foreground_mse": "flat minus hierarchy",
+      "union_mse": "flat minus hierarchy",
+      "trajectory_error": "flat minus hierarchy",
+      "identity_accuracy": "hierarchy minus flat",
+      "object_coverage": "hierarchy minus flat"
+    },
+    "secondary": [
+      "full-frame MSE",
+      "background MSE",
+      "foreground precision/recall/F1",
+      "missed and extra objects",
+      "identity coverage and matched-only diagnostics",
+      "overlap-stratified versions of every endpoint"
+    ],
+    "bootstrap": {
+      "unit": "clip",
+      "replicates": 10000,
+      "seed": 20260722,
+      "family": "studentized max-statistic over 5 endpoints x 3 training seeds"
+    },
+    "equivalence": {
+      "enabled": false,
+      "reason": "No defensible native-unit smallest effect of interest was justified before protected access"
+    },
+    "registered_verdict": {
+      "HIERARCHY_ADVANTAGE": "all three simultaneous foreground-MSE intervals are positive; each other co-primary endpoint has at least two positive point effects and no interval wholly negative",
+      "FLAT_ADVANTAGE": "sign-reversed symmetric rule",
+      "MIXED_BOUNDARY": "complete and valid results satisfying neither directional rule",
+      "UNSCORABLE": "protected alignment, evaluator reliability, completion, or coverage validity fails"
+    }
+  },
+  "budget": {
+    "authorized_max_gpu_hours": 40.0,
+    "mechanical_accounting": "wall-clock time while a project process owns the GPU, including codec, classifier, validation, training, evaluation, failures and retries",
+    "allocated_max_gpu_hours": 39.35,
+    "reserve_use": "forbidden"
+  },
+  "resolved_artifacts": {
+    "codec_path": "artifacts/autoencoders/phasec-v2-codec/seed-0/564ce75a1a0703c3/checkpoint.pt",
+    "codec_sha256": "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "classifier_path": "artifacts/phasec_v2/classifier-v3/34fd97697094c949/checkpoint.pt",
+    "classifier_sha256": "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+    "training_manifest": "data/phasec_v2/mmnist_train_3000x100.manifest.json",
+    "training_manifest_sha256": "caf737dee5a3546ba1d8357550acd741a477373808df9b07db51ea09f0171631",
+    "development_manifest": "data/phasec_v2/mmnist_development_500x348.manifest.json",
+    "development_manifest_sha256": "ddee14ba4a1274081a09531bdd8aa87e44e8a7cba80ac498bd3e568dde5d6346",
+    "holdout_manifest": "data/phasec_v2/mmnist_holdout_500x348.manifest.json"
+  },
+  "launch_condition": "authorization status may become AUTHORIZED_RUN_ALONE only after immutable CPU, source, dataset-development, classifier, evaluator-reliability, dispatch, protocol-freeze, W&B and budget attestations pass"
+}

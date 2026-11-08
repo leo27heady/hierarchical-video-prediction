@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  1,
+    "status":  "PHASEC_V2_PREPARATION_COMPLETE",
+    "source_commit":  "f3b3c39d525150f30b2eb3cc54b4deb5894e1417",
+    "codec":  "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction\\artifacts\\autoencoders\\phasec-v2-codec\\seed-0\\564ce75a1a0703c3\\checkpoint.pt",
+    "codec_sha256":  "058364c368017892c85e81bc701abec5373223dcea12ec6590b8b171cc6f01a9",
+    "classifier":  "C:\\Users\\leoni\\Documents\\projects\\hierarchical-video-prediction\\artifacts\\phasec_v2\\classifier-v3\\34fd97697094c949\\checkpoint.pt",
+    "classifier_sha256":  "acfd89828f5edfc08a00e7184f31351b2e7150c5da41805f84d44aed2b14f5eb",
+    "train_manifest":  "data/phasec_v2/mmnist_train_3000x100.manifest.json",
+    "development_manifest":  "data/phasec_v2/mmnist_development_500x348.manifest.json",
+    "total_gpu_hours":  0.11307387786111112
+}

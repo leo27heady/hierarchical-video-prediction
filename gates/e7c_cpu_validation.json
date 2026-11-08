@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-15T16:23:06.618297+00:00",
+  "schema_version": 1,
+  "source_commit": "e4132ce6334573ae121e2c46b73596ca68250570",
+  "status": "CPU_VALIDATION_PASS",
+  "subject": "gates/e7c_cpu_validation_report.json",
+  "subject_sha256": "c6b75588390f4b7f7867802bd8a1dec7d301c4a99267d24595ac2e0978fa5fc2"
+}

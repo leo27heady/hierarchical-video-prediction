@@ -1,0 +1,22 @@
+{
+  "collisions": {
+    "legacy_test": 0,
+    "legacy_train": 0
+  },
+  "dataset_id": "loopmom-robustness_holdout-20260715-477845150808",
+  "dtype": "uint8",
+  "failures": [],
+  "manifest_sha256": "135f999f13cef036502fd49fe5f403a73a4ae2f7f58a9313ea5caf5a485c6954",
+  "p_continue_nonzero": 0.9011496050676469,
+  "p_hold": 0.09991,
+  "position_action_consistency": true,
+  "schema_version": 1,
+  "shape": [
+    500,
+    200,
+    64,
+    64
+  ],
+  "status": "PASS",
+  "unique_confirmation_clips": 500
+}
