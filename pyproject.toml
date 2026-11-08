@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hierarchical-video-prediction"
+version = "0.3.0"
+description = "Controlled context-packaging studies for reach, fidelity, and trust in video memory"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+authors = [{name = "Leonid Kulyk"}]
+dependencies = [
+  "numpy>=2.1,<3",
+  "scipy>=1.14,<2",
+  "torch>=2.5",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "scikit-image>=0.24", "psutil>=6"]
+vision = ["pillow>=10", "torchvision>=0.20"]
+tracking = ["wandb>=0.19"]
+release = ["build>=1.2", "twine>=6"]
+
+
+[project.scripts]
+hvp = "hvp.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["hvp*", "hvp_rev*", "hvp_hca*"]
+
+[tool.setuptools.package-data]
+hvp = ["py.typed"]
+hvp_hca = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "slow: CPU tests that are too slow for the default suite",
+  "gpu: requires an explicitly available GPU",
+  "external_data: requires non-repository datasets",
+]

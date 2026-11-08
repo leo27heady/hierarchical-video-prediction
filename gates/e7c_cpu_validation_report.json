@@ -1,0 +1,20 @@
+{
+  "commands": [
+    "venv\\Scripts\\python.exe -m pytest -q",
+    "venv\\Scripts\\python.exe scripts/validate_scientific_configs.py",
+    "venv\\Scripts\\python.exe scripts/check_rft_consistency.py",
+    "venv\\Scripts\\python.exe scripts/validate_e7c_design.py --config experiments/configs/sampler_nfe_robustness.json",
+    "venv\\Scripts\\python.exe scripts/run_e7c_sampler_parity.py",
+    "venv\\Scripts\\python.exe -m compileall -q hvp_rev scripts tests",
+    "git diff --check"
+  ],
+  "commit": "e4132ce6334573ae121e2c46b73596ca68250570",
+  "config_sha256": "6071adce5c125e93554392ed022a462082dd87d2cfdb4bd921277b7c76a5daca",
+  "cuda_visible_devices": "-1",
+  "protocol_sha256": "d5ea9b28b075a7886df08fdf4cb2219f75bbe222f6cc1a557bade3a003767895",
+  "sampler_parity_sha256": "a14e8d739e291162899aeca65709e55a2a0da47f1ee4b62aade4c74f17844e17",
+  "schema_version": 1,
+  "status": "CPU_VALIDATION_PASS",
+  "timestamp_utc": "2026-07-15T16:22:52.468314+00:00",
+  "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

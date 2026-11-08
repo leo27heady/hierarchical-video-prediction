@@ -1,0 +1,9 @@
+{
+  "checkpoint_metadata_valid": true,
+  "device": "cpu",
+  "schema_version": 1,
+  "seed0_legacy_bit_exact": true,
+  "seed1_distinct": true,
+  "status": "E7A_AE_PARITY_PASS",
+  "updates": 2
+}

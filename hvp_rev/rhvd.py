@@ -1,0 +1,1558 @@
+"""RHVD-mini — Stage-2 system per docs/STAGE2_DESIGN.md (+ 4-frame-window addendum).
+
+Minimal MilliVid-style hierarchical latent video diffusion with a LONG COARSE memory, built for
+the pre-registered H1/H2 rollout claims on the momentum looping testbed:
+
+  H1: hier-long (48 coarse + 6 fine ctx) beats hier-short AND the token-budget-matched flat
+      (18 fine ctx) on hard re-entry frames over 200-frame AR rollouts.
+  H2: a matched regressor (reg-long) rolled out with the same scheduler fades vs diffusion.
+
+Design (train == rollout layout, no stride mismatch):
+  * predict a WINDOW of 4 consecutive frames per step, both levels (320 target tokens);
+  * context: n_ctx_c consecutive coarse + n_ctx_f consecutive fine frames (fine = last frames of
+    the coarse window); flat arm: n_ctx_c=0, n_ctx_f=18 (1152 ctx tokens == hier-long's budget);
+  * per-TARGET-FRAME action embedding (frame j gets a_{t+j}), per-frame ids — replaces the single
+    summed action code of the single-frame harness;
+  * v-pred cosine diffusion (DDIM 16 at eval) or direct regression (--arm reg-long);
+  * EMA 0.999 (eval on EMA), constant LR + 2k warmup (restartable), atomic ckpt/resume,
+    [STD-FIX] standardized latents throughout (ActionHierData), bf16 autocast opt-in;
+  * AR rollout: ring buffers (48 coarse / n_ctx_f fine) warmed from GT, append 4 predicted frames
+    per step; per-horizon fg-MSE/sharp, stratified by short-window re-entry hardness; results to
+    .npz so arms trained in separate processes are compared with paired CIs (--compare).
+
+  venv/Scripts/python.exe -u -m hvp_rev.rhvd --arm hier-long --steps 30000 --bf16
+  venv/Scripts/python.exe -u -m hvp_rev.rhvd --probe_steps 50 --arm hier-long --bf16
+  venv/Scripts/python.exe -u -m hvp_rev.rhvd --compare hier-long,flat-budget --seed 0
+"""
+from __future__ import annotations
+
+import argparse
+import copy
+import math
+import os
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+from hvp_rev import hier_convae, viz, wb
+import hvp_rev.step1_mech as M
+from hvp_rev.step1_mech import (ActionHierData, cosine_alphas, decode01, fg_mse_px_frames,
+                                fg_sharp, fg_sharp_per_frame, load_ckpt, save_ckpt)
+from hvp_rev.faithful_nets import LAT, DiTBlock, LatentTokenizer, TimestepEmbedder, modulate
+from hvp_rev.step1 import rel_positions
+from hvp_rev.evaluation.frame_metrics import evaluate_frames
+from hvp_rev.provenance import (
+    ArtifactStore,
+    RunSpec,
+    assert_dataset_purpose,
+    atomic_save_npz,
+    atomic_write_json,
+    log_holdout_access,
+    sha256_file,
+)
+
+DEV = "cuda" if torch.cuda.is_available() else "cpu"
+WIN = 4          # predicted frames per step
+SPILL_SEC = 10.0
+
+
+def rollout_crn_seed(sampler_seed: int, chunk_index: int, rollout_step: int) -> int:
+    """Deterministic common-random-number seed for a rollout cell.
+
+    ``sampler_seed=0`` is deliberately identical to the legacy formula.  Additional registered
+    sampler seeds occupy disjoint million-seed blocks while remaining common across compared arms.
+    """
+    if sampler_seed < 0 or chunk_index < 0 or rollout_step < 0:
+        raise ValueError("rollout seed coordinates must be non-negative")
+    return 100000 + 1_000_000 * sampler_seed + 1000 * chunk_index + rollout_step
+
+ARMS = {
+    # name: (n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f)
+    #   stride_c: temporal stride of the coarse context/target (1 = legacy per-frame; 4 = slow
+    #             clock: one coarse SLOT per 4 frames, anchor = block-end frame, ONE coarse
+    #             target slot per window).
+    #   n_hist_f: extra strided FULL-RES history slots in the fine stream (hybrid control only):
+    #             anchors tj-7, tj-11, ..., depth 4*n_hist_f+6; separates "coarse abstraction"
+    #             from "full-res temporal subsampling" with recency (6 consecutive) held equal.
+    "hier-long":  (48,      6,       "diff", 1, 0),
+    "hier-short": (6,       6,       "diff", 1, 0),
+    "flat-budget": (0,      18,      "diff", 1, 0),  # 18*64 = 1152 ctx tokens == hier-long's budget
+    "reg-long":   (48,      6,       "reg",  1, 0),
+    # fixed-WINDOW corner of the 2x2 (hierarchy-benefit exhibit): flat with the SAME 48-frame
+    # window as hier-long, paying 48*64=3072 ctx tokens (2.7x hier-long's budget). seq ~3392 --
+    # run with --batch 8 (+timing probe first); spill guard protects the 15GB cap.
+    "flat-long":  (0,       48,      "diff", 1, 0),
+    # token-matched flat control for the REGRESSION core (added after the H2 surprise: reg-long
+    # beat hier-long-diffusion at rollout with equal sharpness -- the hierarchy benefit must be
+    # shown for the WINNING mechanism too, or the headline is diffusion-only).
+    "reg-flat":   (0,       18,      "reg",  1, 0),
+    # ---- H-grid arms (HGRID_DESIGN.md v2, testbed operating point B: world 768 / loop ~192 /
+    #      T=480 / WARM=192; run with --train_path data/hgrid_* --world 768 --warm 192,
+    #      uniform B=8 x 40k). d0 = flat, largest affordable window (48 frames << 192 loop).
+    "d0-diff-long": (0,     48,      "diff", 1, 0),
+    "d0-reg-long":  (0,     48,      "reg",  1, 0),
+    # d1 = slow-clock hierarchy: 48 coarse slots @ stride 4 span 192 frames (one full loop) for
+    # 768 ctx tokens + 6 recent fine (384) = 1152 ctx tokens; ~1424-token seq, B=8 safe.
+    "d1-diff":    (48,      6,       "diff", 4, 0),
+    "d1-reg":     (48,      6,       "reg",  4, 0),
+    # hybrid strided-flat control (G-H3): 47 FULL-RES slots @ stride 4 (reach 191) + 6 recent
+    # fine = 3392 ctx tokens (== d0-long budget, 2.9x d1's) at d1's temporal reach — isolates
+    # coarse ABSTRACTION from temporal subsampling; token asymmetry favors the CONTROL.
+    "d0-strided-flat": (0,  6,       "diff", 1, 47),
+    # ---- spatial factorial (docs/SPATIAL_FACTORIAL.md, testbed A/loopmom): the missing W18
+    #      coarse-history cell — 18 coarse + 6 fine = 672 ctx tokens vs flat-budget's 1152 at the
+    #      SAME 18-frame window. Isolates Claim 3 (spatial abstraction) from window length.
+    "spat18":     (18,      6,       "diff", 1, 0),
+    "spat18-reg": (18,      6,       "reg",  1, 0),
+    # ---- token-budget FRONTIER completion (author request 2026-07-06): every flat point gets a
+    #      hierarchical partner at the SAME budget. hier-rich = flat-long's 3072 tokens spent as
+    #      48 coarse + 36 fine (window saturated at 48 by the T=100 train clips — hierarchy cannot
+    #      buy MORE window here, so the pre-registered honest expectation is CONVERGENCE at the
+    #      frontier top, per the factorial's abstraction-cost result, NOT hier dominance).
+    #      flat-short = hier-short's ~480-token partner (8 fine = 512 tokens).
+    "hier-rich":      (48,  36,      "diff", 1, 0),
+    "hier-rich-reg":  (48,  36,      "reg",  1, 0),
+    "flat-short":     (0,   8,       "diff", 1, 0),
+    "flat-short-reg": (0,   8,       "reg",  1, 0),
+    # ---- decisive rollout pair (pre-committed rule PASSED 2026-07-05): d1 with the span-224 fix
+    #      (56 slots @ stride 4 > effective loop ~213; 1552-token seq) vs d0-diff-long, both at
+    #      WARM=224 on hgrid3. Full grid only if this pair's reachable-HARD rollout gate is green.
+    "d1-56-diff": (56,      6,       "diff", 4, 0),
+    # ---- FRONTIER LOWER EDGE (pre-registered 2026-07-07, SPATIAL_FACTORIAL.md final block):
+    #      the win-band theory predicts hier wins from ~896 tokens (the cheapest budget whose
+    #      coarse span covers the ~48-frame loop) while flat's 896 tokens buy only a 14-frame
+    #      window. Exact budget match: 48*16 + 2*64 = 896 == 14*64. Standard regime B16x30k.
+    "hier-min":   (48,      2,       "diff", 1, 0),
+    "flat-min":   (0,       14,      "diff", 1, 0),
+    # ---- FRONTIER UPPER-EDGE BRACKET (pre-registered 2026-07-09): two points between 1152 and
+    #      3072 that BRACKET the interpolated curve-crossing (~2059 tok). Fixed 48-frame coarse
+    #      span (covers the loop); fine-frame count is the varied axis. Budget matches:
+    #      48*16 + 16*64 = 1792 == 28*64 ; 48*16 + 26*64 = 2432 == 38*64.
+    "hier-c1":    (48,      16,      "diff", 1, 0),   # 1792 tok (< crossing: predict hier win)
+    "flat-c1":    (0,       28,      "diff", 1, 0),   # 1792 tok
+    "hier-c2":    (48,      26,      "diff", 1, 0),   # 2432 tok (> crossing: predict flat win)
+    "flat-c2":    (0,       38,      "diff", 1, 0),   # 2432 tok
+    # ---- CW-STYLE COMPARISON TABLE program (pre-registered 2026-07-10, SPATIAL_FACTORIAL.md
+    #      final block). Arms may be 7-tuples: (..., n_ctx_t, stride_t) adds a TOP (2x2, 4 tok/
+    #      frame) context stream -- the depth-3 factor-2 spatial pyramid 2x2/4x4/8x8. 5-tuples
+    #      are auto-extended with (0, 1) by arm_cfg(); every existing arm is bit-unchanged.
+    #   B1 hier-s2-min: stride-2 coarse family edge-law shot @512 tok = 24 slots@s2 (span 48)
+    #      + 2 fine. Partner = the EXISTING flat-short (512 tok, s0+s1 npz) -- no new flat run.
+    #      Pre-registered: the win-band lower edge moves with the temporal factor
+    #      (24*16 + 2*64 = 512 -> hier wins at 512 where the stride-1 family lost).
+    #   B2 strided-flat: temporal-only control @1088 tok = 11 full-res hist slots @stride4 + 6
+    #      recent fine (span 48, NO coarse level) vs the existing 1152 pair. Isolates "cheap
+    #      span" from "coarse abstraction"; its 64-token deficit favors the control if it ties.
+    #   B3 hier3: depth-3 @1152 tok = 48 top(2x2) + 24 coarse + 9 fine (192+384+576). Requires
+    #      --ae_top (frozen-trunk top branch, hvp_rev/hier3.py); loopmom span is protocol-capped
+    #      at 48, so the pre-registered primary read is ~null vs hier-long (re-allocation only).
+    "hier-s2-min":  (24,     2,       "diff", 2, 0),
+    "strided-flat": (0,      6,       "diff", 1, 11),
+    "hier3":        (24,     9,       "diff", 1, 0, 48, 1),
+    # ---- REG TWINS + 320-TOKEN EDGE CELL (pre-registered 2026-07-10 evening, author-approved;
+    #      SPATIAL_FACTORIAL.md addendum). Completes the shape table along the head axis at the
+    #      new cells and adds the third edge-law point:
+    #   E-320: hier-s4-min = 12c@stride4 + 2f = 12*16+2*64 = 320 tok (span 48, the cheapest
+    #      loop-coverer of any family) vs flat-320 = 5f = 320 tok exact match. Edge prediction
+    #      for the (k_t=4, k_s=2) family: 320. Stride-4 coarse rollout machinery = the proven
+    #      d1 path (n_tgt_c = WIN//4 = 1 slot, block-end anchor); GO-gate before training.
+    #   REG twins: the same three shape cells under the regression head (the better rollout
+    #      head, G-S1 "coarse ~free under reg"); flat-short-reg is TRAINED as the 512-tok reg
+    #      partner (symmetric-pairs rule) — reg-flat/reg-long (1152, two-seed) are the others.
+    "hier-s4-min":      (12,  2,      "diff", 4, 0),
+    "flat-320":         (0,   5,      "diff", 1, 0),
+    "hier-s2-min-reg":  (24,  2,      "reg",  2, 0),
+    "strided-flat-reg": (0,   6,      "reg",  1, 11),
+    "hier3-reg":        (24,  9,      "reg",  1, 0, 48, 1),
+    # ---- PHASE C (pre-registered): standard-MMNIST LONG-horizon control column. Distinct arm
+    #      names are REQUIRED (ckpt/npz paths do not encode the dataset — reusing loopmom arm
+    #      names would resume loopmom checkpoints). Same 1152-tok configs as the headline pair;
+    #      zero-action conditioning (actions file of zeros, disclosed); WARM=48, T=348 test
+    #      clips -> 300-frame rollouts; identity/trajectory metrics via hvp_rev/phasec_eval.py
+    #      (pre-registered METRIC MANDATE).
+    "mmL-flat":         (0,   18,     "diff", 1, 0),
+    "mmL-hier":         (48,  6,      "diff", 1, 0),
+}
+
+
+def arm_cfg(arm):
+    """Normalize an ARMS entry to the 7-tuple (n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f,
+    n_ctx_t, stride_t). Legacy 5-tuples get (n_ctx_t=0, stride_t=1) -- no top stream."""
+    v = ARMS[arm]
+    return v if len(v) == 7 else v + (0, 1)
+
+
+def log(*a):
+    print(*a, flush=True)
+
+
+# ================================================================================================
+# Model: window DiT with per-target-frame actions. Reuses LatentTokenizer pieces + DiTBlock.
+# ================================================================================================
+class WindowDiT(nn.Module):
+    def __init__(self, n_ctx_c=48, n_ctx_f=6, win=WIN, d=384, depth=8, heads=6, lat=LAT,
+                 mode="diff", stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1,
+                 fine_cells_per_frame=None, fine_token_budget=None,
+                 temporal_embedding_positions=None, temporal_context_span=None,
+                 top_context_only=False):
+        super().__init__()
+        self.n_ctx_c, self.n_ctx_f, self.win, self.lat, self.d = n_ctx_c, n_ctx_f, win, lat, d
+        self.mode, self.stride_c, self.n_hist_f = mode, stride_c, n_hist_f
+        # [hier3] optional TOP (2x2 = 4 tok/frame) context stream + targets; n_ctx_t=0 (default)
+        # keeps the module IDENTICAL to the 2-level version (same state dict, same seq).
+        self.n_ctx_t, self.stride_t = n_ctx_t, stride_t
+        self.top_context_only = bool(top_context_only)
+        if self.top_context_only and n_ctx_t <= 0:
+            raise ValueError("top_context_only requires a non-empty top context")
+        self.fine_cells_per_frame = fine_cells_per_frame
+        self.fine_token_budget = fine_token_budget
+        if fine_cells_per_frame is not None and fine_token_budget is not None:
+            raise ValueError("choose per-frame or global selected fine tokens, not both")
+        if fine_cells_per_frame is not None:
+            if n_ctx_f <= 0 or n_hist_f != 0:
+                raise ValueError("selected fine cells require n_ctx_f>0 and n_hist_f=0")
+            if not 1 <= int(fine_cells_per_frame) <= 64:
+                raise ValueError("fine_cells_per_frame must lie in [1,64]")
+        if fine_token_budget is not None:
+            if n_ctx_f <= 0 or n_hist_f != 0:
+                raise ValueError("global selected fine tokens require n_ctx_f>0 and n_hist_f=0")
+            if not 1 <= int(fine_token_budget) <= n_ctx_f * 64:
+                raise ValueError("fine_token_budget exceeds the available fine context")
+        # strided coarse: WIN//stride target slots per window (anchors at block ends inside the
+        # window) so the slot buffer keeps phase for ANY stride dividing WIN. stride 4 -> 1 slot
+        # (bit-identical to the legacy d1 rule); stride 2 -> 2 slots (hier-s2-min); stride 1 ->
+        # per-frame. Top targets mirror the same rule.
+        if stride_c > 1 and n_ctx_c > 0:
+            assert win % stride_c == 0, "coarse stride must divide the prediction window"
+        if stride_t > 1 and n_ctx_t > 0:
+            assert win % stride_t == 0, "top stride must divide the prediction window"
+        self.n_tgt_c = win // stride_c if (stride_c > 1 and n_ctx_c > 0) else win
+        self.n_tgt_t = (
+            0
+            if n_ctx_t == 0 or self.top_context_only
+            else (win // stride_t if stride_t > 1 else win)
+        )
+        span_c = n_ctx_c * stride_c
+        span_t = n_ctx_t * stride_t
+        hist_reach = (n_ctx_f + 1 + 4 * (n_hist_f - 1) + 1) if n_hist_f > 0 else 0
+        n_frames = max(span_c, span_t, n_ctx_f, hist_reach)   # context REACH in frames
+        if temporal_context_span is None:
+            temporal_context_span = n_frames
+        if int(temporal_context_span) < n_frames:
+            raise ValueError(f"temporal context span must be at least the reach {n_frames}")
+        self.base = int(temporal_context_span)             # first target frame id
+        required_positions = self.base + win
+        if temporal_embedding_positions is None:
+            temporal_embedding_positions = required_positions
+        if int(temporal_embedding_positions) < required_positions:
+            raise ValueError(
+                f"temporal embedding table needs at least {required_positions} positions"
+            )
+        self.temporal_embedding_positions = int(temporal_embedding_positions)
+        self.tok = LatentTokenizer(lat, d, self.temporal_embedding_positions - 1, k=win,
+                                   n_levels=(3 if n_ctx_t > 0 else 2))
+        self.time_embedding = TimestepEmbedder(d)
+        self.blocks = nn.ModuleList([DiTBlock(d, heads, zero_gate=(mode == "diff"))
+                                     for _ in range(depth)])
+        self.norm_c = nn.LayerNorm(d, elementwise_affine=False, eps=1e-6)
+        self.norm_f = nn.LayerNorm(d, elementwise_affine=False, eps=1e-6)
+        self.final_c_ada = nn.Sequential(nn.SiLU(), nn.Linear(d, 2 * d))
+        self.final_f_ada = nn.Sequential(nn.SiLU(), nn.Linear(d, 2 * d))
+        self.head_c = nn.Linear(d, lat)
+        self.head_f = nn.Linear(d, lat)
+        adas, heads_ = [self.final_c_ada, self.final_f_ada], [self.head_c, self.head_f]
+        if self.n_tgt_t > 0:
+            self.norm_t = nn.LayerNorm(d, elementwise_affine=False, eps=1e-6)
+            self.final_t_ada = nn.Sequential(nn.SiLU(), nn.Linear(d, 2 * d))
+            self.head_t = nn.Linear(d, lat)
+            adas.append(self.final_t_ada); heads_.append(self.head_t)
+        for ada in adas:
+            nn.init.constant_(ada[-1].weight, 0); nn.init.constant_(ada[-1].bias, 0)
+        for head in heads_:
+            nn.init.constant_(head.weight, 0); nn.init.constant_(head.bias, 0)
+        if fine_token_budget is not None:
+            fine_ctx_tokens = int(fine_token_budget)
+        else:
+            fine_ctx_tokens = ((n_hist_f + n_ctx_f) * 64 if fine_cells_per_frame is None
+                               else n_ctx_f * int(fine_cells_per_frame))
+        self.expected_seq = (n_ctx_t * 4 + n_ctx_c * 16 + fine_ctx_tokens
+                             + self.n_tgt_t * 4 + self.n_tgt_c * 16 + win * 64)
+
+    def _ctx_tokens(self, ctx_c, ctx_f, ctx_t=None, ctx_c_frame_ids=None, ctx_f_ids=None,
+                    ctx_f_frame_ids=None, ctx_f_packed=None,
+                    ctx_f_reference_packed=None):
+        """Context token list + (level,role,frame) ids, all in TRUE frame units (base = tj).
+        Top slots first (level 2, stride_t anchors at block ends), then coarse, then fine.
+        Coarse slots (stride s): anchors at frame ids s-1, 2s-1, ..., base-1 (block ends).
+        Fine stream: n_hist_f strided full-res slots (hybrid control; anchors base-n_ctx_f-1-4k,
+        deepest first) followed by the n_ctx_f consecutive recent frames [base-n_ctx_f..base-1].
+        ctx_f is passed pre-concatenated: [:, :n_hist_f] = hist slots, [:, n_hist_f:] = recent."""
+        xs, lvs, rls, fms = [], [], [], []
+        # stream windows END at base-1 (block-end anchors). Generalized from the legacy
+        # (f+1)*stride-1, which assumed the stream is the DEEPEST one (span == base) -- true for
+        # every 2-level arm (bit-identical there), wrong for hier3 where top outreaches coarse.
+        f0_top = self.base - self.n_ctx_t * self.stride_t
+        if self.n_ctx_t > 0 and ctx_t is None:
+            raise ValueError("top context latents are required when n_ctx_t is non-zero")
+        for f in range(self.n_ctx_t):
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_t[:, f], level=2, role=0,
+                                                    frame_idx=f0_top + (f + 1) * self.stride_t - 1)
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        f0_coarse = self.base - self.n_ctx_c * self.stride_c
+        if ctx_c_frame_ids is not None:
+            expected_coarse_ids = (ctx_c.shape[0], self.n_ctx_c)
+            if tuple(ctx_c_frame_ids.shape) != expected_coarse_ids:
+                raise ValueError(
+                    f"coarse frame ids must have shape {expected_coarse_ids}, "
+                    f"got {tuple(ctx_c_frame_ids.shape)}"
+                )
+        for f in range(self.n_ctx_c):
+            frame_idx = (
+                ctx_c_frame_ids[:, f]
+                if ctx_c_frame_ids is not None
+                else f0_coarse + (f + 1) * self.stride_c - 1
+            )
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_c[:, f], level=0, role=0,
+                                                    frame_idx=frame_idx)
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        for k in range(self.n_hist_f):
+            fid = self.base - (self.n_ctx_f + 1 + 4 * (self.n_hist_f - 1 - k))
+            x, lv, rl, fm = self.tok.tokenize_level(ctx_f[:, k], level=1, role=0, frame_idx=fid)
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        f0_fine = self.base - self.n_ctx_f
+        if self.fine_token_budget is not None:
+            expected = (ctx_f.shape[0], self.fine_token_budget)
+            if ctx_f_ids is None or ctx_f_frame_ids is None:
+                raise ValueError("global selected fine context needs cell and frame ids")
+            if tuple(ctx_f_ids.shape) != expected or tuple(ctx_f_frame_ids.shape) != expected:
+                raise ValueError(f"global fine ids must both have shape {expected}")
+            absolute_frames = ctx_f_frame_ids + f0_fine
+            if ctx_f_packed is None:
+                x, lv, rl, fm = self.tok.tokenize_selected_sequence(
+                    ctx_f,
+                    ctx_f_frame_ids,
+                    ctx_f_ids,
+                    level=1,
+                    role=0,
+                    conditioning_frame_ids=absolute_frames,
+                )
+            else:
+                packed_expected = (ctx_f.shape[0], self.fine_token_budget, self.lat)
+                if tuple(ctx_f_packed.shape) != packed_expected:
+                    raise ValueError(
+                        f"packed fine context must have shape {packed_expected}, "
+                        f"got {tuple(ctx_f_packed.shape)}"
+                    )
+                x, lv, rl, fm = self.tok.tokenize_packed_sequence(
+                    ctx_f_packed,
+                    absolute_frames,
+                    ctx_f_ids,
+                    level=1,
+                    role=0,
+                    reference=ctx_f_reference_packed,
+                )
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+            return xs, lvs, rls, fms
+        for j in range(self.n_ctx_f):
+            if self.fine_cells_per_frame is None:
+                x, lv, rl, fm = self.tok.tokenize_level(
+                    ctx_f[:, self.n_hist_f + j], level=1, role=0, frame_idx=f0_fine + j
+                )
+            else:
+                if ctx_f_ids is None:
+                    raise ValueError("ctx_f_ids are required for selected fine-cell context")
+                expected = (ctx_f.shape[0], self.n_ctx_f, self.fine_cells_per_frame)
+                if tuple(ctx_f_ids.shape) != expected:
+                    raise ValueError(f"ctx_f_ids must have shape {expected}, got {tuple(ctx_f_ids.shape)}")
+                x, lv, rl, fm = self.tok.tokenize_selected_level(
+                    ctx_f[:, j], ctx_f_ids[:, j], level=1, role=0, frame_idx=f0_fine + j
+                )
+            xs.append(x); lvs.append(lv); rls.append(rl); fms.append(fm)
+        return xs, lvs, rls, fms
+
+    def forward(self, yc, yf, ctx_c, ctx_f, t, actions, yt=None, ctx_t=None,
+                ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
+                ctx_f_packed=None, ctx_f_reference_packed=None):
+        """yc:(B,n_tgt_c,LAT,4,4) yf:(B,win,LAT,8,8) noisy targets (or dummies for reg);
+        ctx_c:(B,n_ctx_c,...) ctx_f:(B,n_hist_f+n_ctx_f,...); t:(B,); actions:(B,win) one per
+        target frame. [hier3] yt:(B,n_tgt_t,LAT,2,2) / ctx_t:(B,n_ctx_t,LAT,2,2) only when
+        n_ctx_t>0. Returns (out_c, out_f) for 2-level nets (bit-identical to before) or
+        (out_c, out_f, out_t) when the top stream exists (v-pred for diff, x0 for reg).
+        Strided coarse/top (n_tgt=1): the single slot is conditioned on the SUM of the window's
+        action embeddings (multiset of actions = sufficient statistic for the displacement)."""
+        B = yf.shape[0]
+        xs, lvs, rls, fms = self._ctx_tokens(
+            ctx_c, ctx_f, ctx_t, ctx_c_frame_ids=ctx_c_frame_ids,
+            ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
+            ctx_f_packed=ctx_f_packed,
+            ctx_f_reference_packed=ctx_f_reference_packed,
+        )
+        n_ctx_tok = sum(x.shape[1] for x in xs)
+        groups = []                                       # (kind, j, n_tok) in token order
+        if 0 < self.n_tgt_t < self.win:                   # strided top slots (block-end anchors)
+            for m in range(self.n_tgt_t):
+                xt, lvt, rlt, fmt = self.tok.tokenize_level(
+                    yt[:, m], level=2, role=1,
+                    frame_idx=self.base + (m + 1) * self.stride_t - 1)
+                xs += [xt]; lvs += [lvt]; rls += [rlt]; fms += [fmt]
+                groups.append(("t", m, xt.shape[1]))
+        elif self.n_tgt_t == self.win:                    # per-frame top targets
+            for j in range(self.win):
+                xt, lvt, rlt, fmt = self.tok.tokenize_level(yt[:, j], level=2, role=1,
+                                                            frame_idx=self.base + j)
+                xs += [xt]; lvs += [lvt]; rls += [rlt]; fms += [fmt]
+                groups.append(("t", j, xt.shape[1]))
+        if self.n_tgt_c < self.win:                       # strided coarse slots (block-end anchors)
+            for m in range(self.n_tgt_c):
+                xc, lvc, rlc, fmc = self.tok.tokenize_level(
+                    yc[:, m], level=0, role=1,
+                    frame_idx=self.base + (m + 1) * self.stride_c - 1)
+                xs += [xc]; lvs += [lvc]; rls += [rlc]; fms += [fmc]
+                groups.append(("c", m, xc.shape[1]))
+            for j in range(self.win):
+                xf_, lvf, rlf, fmf = self.tok.tokenize_level(yf[:, j], level=1, role=1,
+                                                             frame_idx=self.base + j)
+                xs += [xf_]; lvs += [lvf]; rls += [rlf]; fms += [fmf]
+                groups.append(("f", j, xf_.shape[1]))
+        else:
+            for j in range(self.win):
+                xc, lvc, rlc, fmc = self.tok.tokenize_level(yc[:, j], level=0, role=1,
+                                                            frame_idx=self.base + j)
+                xf_, lvf, rlf, fmf = self.tok.tokenize_level(yf[:, j], level=1, role=1,
+                                                             frame_idx=self.base + j)
+                xs += [xc, xf_]; lvs += [lvc, lvf]; rls += [rlc, rlf]; fms += [fmc, fmf]
+                groups.append(("c", j, xc.shape[1])); groups.append(("f", j, xf_.shape[1]))
+        x = torch.cat(xs, 1)
+        assert x.shape[1] == self.expected_seq, f"seq {x.shape[1]} != expected {self.expected_seq}"
+        level_id, role_id, frame_id = torch.cat(lvs, 1), torch.cat(rls, 1), torch.cat(fms, 1)
+
+        # per-token conditioning: level+frame+role + [ctx: t=0 emb] / [tgt group: t emb + action emb]
+        c = (self.tok.level_embedding(level_id) + self.tok.frame_embedding(frame_id)
+             + self.tok.role_embedding(role_id))
+        cond_ctx = self.time_embedding(torch.zeros(B, device=x.device))
+        cond_tgt = self.time_embedding(t)
+        a_emb = self.tok.action_embedding(actions + 1)     # (B,win,d)
+        per_tok_cond = cond_ctx[:, None, :].expand(B, n_ctx_tok, self.d)
+        chunks = [per_tok_cond]
+        for kind, j, ntk in groups:
+            # strided slot j covers frames [j*stride, (j+1)*stride): condition on the SUM of its
+            # block's action embeddings (stride 4 slot 0 = sum over all win actions, as before)
+            if kind == "c" and self.n_tgt_c < self.win:
+                a_j = a_emb[:, j * self.stride_c:(j + 1) * self.stride_c].sum(1)
+            elif kind == "t" and 0 < self.n_tgt_t < self.win:
+                a_j = a_emb[:, j * self.stride_t:(j + 1) * self.stride_t].sum(1)
+            else:
+                a_j = a_emb[:, j]
+            cj = (cond_tgt + a_j)[:, None, :]              # (B,1,d)
+            chunks.append(cj.expand(B, ntk, self.d))
+        c = c + torch.cat(chunks, 1)
+
+        with M._ac():
+            for blk in self.blocks:
+                x = blk(x, c)
+        x = x.float()
+
+        # unpatchify target tokens per group per level
+        out_c = torch.empty(B, self.n_tgt_c, self.lat, 4, 4, device=x.device)
+        out_f = torch.empty(B, self.win, self.lat, 8, 8, device=x.device)
+        out_t = (torch.empty(B, self.n_tgt_t, self.lat, 2, 2, device=x.device)
+                 if self.n_tgt_t > 0 else None)
+        pos = n_ctx_tok
+        for kind, j, ntk in groups:
+            seg = x[:, pos:pos + ntk]; cseg = c[:, pos:pos + ntk].float(); pos += ntk
+            if kind == "t":
+                st_, stl = self.final_t_ada(cseg).chunk(2, -1)
+                vt = self.head_t(modulate(self.norm_t(seg), st_, stl))
+                out_t[:, j] = vt.transpose(1, 2).reshape(B, self.lat, 2, 2)
+            elif kind == "c":
+                sc, scl = self.final_c_ada(cseg).chunk(2, -1)
+                vc = self.head_c(modulate(self.norm_c(seg), sc, scl))
+                out_c[:, j] = vc.transpose(1, 2).reshape(B, self.lat, 4, 4)
+            else:
+                sf, sfl = self.final_f_ada(cseg).chunk(2, -1)
+                vf = self.head_f(modulate(self.norm_f(seg), sf, sfl))
+                out_f[:, j] = vf.transpose(1, 2).reshape(B, self.lat, 8, 8)
+        if out_t is None:
+            return out_c, out_f
+        return out_c, out_f, out_t
+
+
+class WindowDiffusion:
+    """v-pred cosine diffusion over the whole 4-frame window (shared per-sample t)."""
+
+    def __init__(self, net: WindowDiT, n_train_steps=1000):
+        self.net = net
+        self.Ttr = n_train_steps
+        self.abar = cosine_alphas(n_train_steps)
+
+    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
+             ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
+             ctx_f_packed=None, ctx_f_reference_packed=None):
+        B, dev = tgt_f.shape[0], tgt_f.device
+        ti = torch.randint(1, self.Ttr + 1, (B,), device=dev)
+        ab = self.abar.to(dev)[ti].view(B, 1, 1, 1, 1)
+        sa, sb = ab.sqrt(), (1 - ab).sqrt()
+        nc, nf = torch.randn_like(tgt_c), torch.randn_like(tgt_f)
+        yc, yf = sa * tgt_c + sb * nc, sa * tgt_f + sb * nf
+        vc_t, vf_t = sa * nc - sb * tgt_c, sa * nf - sb * tgt_f
+        if tgt_t is None:
+            vc, vf = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
+                              ctx_t=ctx_t,
+                              ctx_c_frame_ids=ctx_c_frame_ids,
+                              ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
+                              ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
+            return F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
+        nt = torch.randn_like(tgt_t)
+        yt = sa * tgt_t + sb * nt
+        vt_t = sa * nt - sb * tgt_t
+        vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, ti.float() / self.Ttr, actions,
+                              yt=yt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
+                              ctx_c_frame_ids=ctx_c_frame_ids,
+                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
+        return (F.mse_loss(vc.float(), vc_t) + F.mse_loss(vf.float(), vf_t)
+                + F.mse_loss(vt.float(), vt_t))
+
+    @torch.no_grad()
+    def sample(self, ctx_c, ctx_f, actions, n_steps=16, ctx_t=None,
+               ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
+               ctx_f_packed=None, ctx_f_reference_packed=None):
+        """Returns (yc, yf) for 2-level nets (unchanged) or (yc, yf, yt) when the net has a top
+        stream -- callers of 3-level arms must unpack 3."""
+        B, dev = ctx_f.shape[0], ctx_f.device
+        top = self.net.n_tgt_t > 0
+        abar = self.abar.to(dev)
+        yc = torch.randn(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
+        yf = torch.randn(B, WIN, LAT, 8, 8, device=dev)
+        yt = torch.randn(B, self.net.n_tgt_t, LAT, 2, 2, device=dev) if top else None
+        ts = torch.linspace(self.Ttr, 1, n_steps, device=dev).round().long().clamp(1, self.Ttr)
+        for i in range(n_steps):
+            ti = ts[i]
+            ab = abar[ti].view(1, 1, 1, 1, 1)
+            sa, sb = ab.sqrt(), (1 - ab).sqrt()
+            t = torch.full((B,), ti.item() / self.Ttr, device=dev)
+            if top:
+                vc, vf, vt = self.net(yc, yf, ctx_c, ctx_f, t, actions, yt=yt, ctx_t=ctx_t,
+                                      ctx_f_ids=ctx_f_ids,
+                                      ctx_c_frame_ids=ctx_c_frame_ids,
+                                      ctx_f_frame_ids=ctx_f_frame_ids,
+                                      ctx_f_packed=ctx_f_packed,
+                                      ctx_f_reference_packed=ctx_f_reference_packed)
+                vt = vt.float()
+            else:
+                vc, vf = self.net(yc, yf, ctx_c, ctx_f, t, actions,
+                                  ctx_t=ctx_t,
+                                  ctx_c_frame_ids=ctx_c_frame_ids,
+                                  ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
+                                  ctx_f_packed=ctx_f_packed,
+                                  ctx_f_reference_packed=ctx_f_reference_packed)
+            vc, vf = vc.float(), vf.float()
+            x0c, x0f = sa * yc - sb * vc, sa * yf - sb * vf
+            epc, epf = sb * yc + sa * vc, sb * yf + sa * vf
+            if top:
+                x0t, ept = sa * yt - sb * vt, sb * yt + sa * vt
+            if i < n_steps - 1:
+                abn = abar[ts[i + 1]].view(1, 1, 1, 1, 1)
+                yc = abn.sqrt() * x0c + (1 - abn).sqrt() * epc
+                yf = abn.sqrt() * x0f + (1 - abn).sqrt() * epf
+                if top:
+                    yt = abn.sqrt() * x0t + (1 - abn).sqrt() * ept
+            else:
+                yc, yf = x0c, x0f
+                if top:
+                    yt = x0t
+        return (yc, yf, yt) if top else (yc, yf)
+
+
+class WindowRegression:
+    """Direct x0 window prediction (H2 control). Same net/backbone; t fixed 0."""
+
+    def __init__(self, net: WindowDiT):
+        self.net = net
+
+    def loss(self, ctx_c, ctx_f, tgt_c, tgt_f, actions, ctx_t=None, tgt_t=None,
+             ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
+             ctx_f_packed=None, ctx_f_reference_packed=None):
+        B, dev = tgt_f.shape[0], tgt_f.device
+        zc = torch.zeros_like(tgt_c); zf = torch.zeros_like(tgt_f)
+        if tgt_t is None:
+            pc, pf = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                              ctx_t=ctx_t,
+                              ctx_c_frame_ids=ctx_c_frame_ids,
+                              ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
+                              ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
+            return F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
+        zt = torch.zeros_like(tgt_t)
+        pc, pf, pt = self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                              yt=zt, ctx_t=ctx_t, ctx_f_ids=ctx_f_ids,
+                              ctx_c_frame_ids=ctx_c_frame_ids,
+                              ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                              ctx_f_reference_packed=ctx_f_reference_packed)
+        return (F.smooth_l1_loss(pc.float(), tgt_c) + F.smooth_l1_loss(pf.float(), tgt_f)
+                + F.smooth_l1_loss(pt.float(), tgt_t))
+
+    @torch.no_grad()
+    def sample(self, ctx_c, ctx_f, actions, n_steps=0, ctx_t=None,
+               ctx_c_frame_ids=None, ctx_f_ids=None, ctx_f_frame_ids=None,
+               ctx_f_packed=None, ctx_f_reference_packed=None):
+        B, dev = ctx_f.shape[0], ctx_f.device
+        zc = torch.zeros(B, self.net.n_tgt_c, LAT, 4, 4, device=dev)
+        zf = torch.zeros(B, WIN, LAT, 8, 8, device=dev)
+        if self.net.n_tgt_t == 0:
+            return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                            ctx_t=ctx_t,
+                            ctx_c_frame_ids=ctx_c_frame_ids,
+                            ctx_f_ids=ctx_f_ids, ctx_f_frame_ids=ctx_f_frame_ids,
+                            ctx_f_packed=ctx_f_packed,
+                            ctx_f_reference_packed=ctx_f_reference_packed)
+        zt = torch.zeros(B, self.net.n_tgt_t, LAT, 2, 2, device=dev)
+        return self.net(zc, zf, ctx_c, ctx_f, torch.zeros(B, device=dev), actions,
+                        yt=zt, ctx_t=ctx_t, ctx_c_frame_ids=ctx_c_frame_ids,
+                        ctx_f_ids=ctx_f_ids,
+                        ctx_f_frame_ids=ctx_f_frame_ids, ctx_f_packed=ctx_f_packed,
+                        ctx_f_reference_packed=ctx_f_reference_packed)
+
+
+# ================================================================================================
+# Data: window batches on top of ActionHierData's encoded+standardized latents.
+# ================================================================================================
+def ctx_reach(n_ctx_c, n_ctx_f, stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1):
+    """Deepest context reach in frames (= model.base = first target frame id)."""
+    hist_reach = (n_ctx_f + 1 + 4 * (n_hist_f - 1) + 1) if n_hist_f > 0 else 0
+    return max(n_ctx_c * stride_c, n_ctx_t * stride_t, n_ctx_f, hist_reach)
+
+
+def window_batch(data, B, n_ctx_c, n_ctx_f, train=True, seed=None, frames=False,
+                 stride_c=1, n_hist_f=0, n_ctx_t=0, stride_t=1, return_indices=False):
+    """Context ends at frame tj-1. Coarse: n_ctx_c slots at stride_c (anchors tj-1-s*(m) block
+    ends; stride 1 = legacy contiguous). Top [hier3]: n_ctx_t slots at stride_t, same block-end
+    anchoring, from data.zt (attach_top required). Fine: n_hist_f strided full-res slots (anchors
+    tj-n_ctx_f-1-4k, deepest first) ++ n_ctx_f consecutive [tj-n_ctx_f..tj-1].
+    Targets = frames [tj..tj+WIN-1]; coarse/top target = ONE slot (anchor tj+WIN-1) when strided;
+    actions[:, j] = acts[tj+j] (moves frame tj+j-1 -> tj+j)."""
+    rng = np.random.RandomState(seed) if seed is not None else np.random
+    pool = data.train_idx if train else data.val_idx
+    n_frames = ctx_reach(n_ctx_c, n_ctx_f, stride_c, n_hist_f, n_ctx_t, stride_t)
+    span_c = n_ctx_c * stride_c
+    span_t = n_ctx_t * stride_t
+    n_tgt_c = WIN // stride_c if (stride_c > 1 and n_ctx_c > 0) else WIN
+    n_tgt_t = 0 if n_ctx_t == 0 else (WIN // stride_t if stride_t > 1 else WIN)
+    ctx_c = torch.empty(B, n_ctx_c, LAT, 4, 4)
+    ctx_f = torch.empty(B, n_hist_f + n_ctx_f, LAT, 8, 8)
+    ctx_t = torch.empty(B, n_ctx_t, LAT, 2, 2) if n_ctx_t > 0 else None
+    tgt_c = torch.empty(B, n_tgt_c, LAT, 4, 4)
+    tgt_f = torch.empty(B, WIN, LAT, 8, 8)
+    tgt_t = torch.empty(B, n_tgt_t, LAT, 2, 2) if n_tgt_t > 0 else None
+    acts = torch.empty(B, WIN, dtype=torch.long)
+    gt = torch.empty(B, WIN, 1, 64, 64) if frames else None
+    sampled_clips = np.empty(B, dtype=np.int64)
+    sampled_starts = np.empty(B, dtype=np.int64)
+    for b in range(B):
+        ci = int(pool[rng.randint(len(pool))])
+        tj = int(rng.randint(n_frames, data.T - WIN + 1))
+        sampled_clips[b] = ci
+        sampled_starts[b] = tj
+        if n_ctx_c > 0:
+            ctx_c[b] = data.zc[ci, tj - span_c + stride_c - 1:tj:stride_c]
+        if n_ctx_t > 0:
+            ctx_t[b] = data.zt[ci, tj - span_t + stride_t - 1:tj:stride_t]
+        if n_hist_f > 0:
+            ctx_f[b, :n_hist_f] = data.zf[ci, tj - (n_ctx_f + 1 + 4 * (n_hist_f - 1)):
+                                          tj - n_ctx_f:4]
+        ctx_f[b, n_hist_f:] = data.zf[ci, tj - n_ctx_f:tj]
+        if n_tgt_c < WIN:      # strided slots: block-end anchors inside the window
+            tgt_c[b] = data.zc[ci, tj + stride_c - 1:tj + WIN:stride_c]
+        else:
+            tgt_c[b] = data.zc[ci, tj:tj + WIN]
+        if 0 < n_tgt_t < WIN:
+            tgt_t[b] = data.zt[ci, tj + stride_t - 1:tj + WIN:stride_t]
+        elif n_tgt_t == WIN:
+            tgt_t[b] = data.zt[ci, tj:tj + WIN]
+        tgt_f[b] = data.zf[ci, tj:tj + WIN]
+        acts[b] = torch.from_numpy(data.acts[ci, tj:tj + WIN].astype(np.int64))
+        if frames:
+            gt[b] = torch.from_numpy(data.clips_u8[ci, tj:tj + WIN].astype(np.float32)
+                                     / 127.5 - 1.0).unsqueeze(1)
+    out = dict(ctx_c=ctx_c.to(DEV), ctx_f=ctx_f.to(DEV), tgt_c=tgt_c.to(DEV),
+               tgt_f=tgt_f.to(DEV), actions=acts.to(DEV))
+    if n_ctx_t > 0:
+        out["ctx_t"] = ctx_t.to(DEV)
+        out["tgt_t"] = tgt_t.to(DEV)
+    if frames:
+        out["gt"] = gt.to(DEV)
+    if return_indices:
+        out["sampled_clips"] = sampled_clips
+        out["sampled_starts"] = sampled_starts
+    return out
+
+
+def hardness_at(data, ci, tframe, n_short=6, thr=0.5):
+    """Re-entry hardness of GT frame tframe vs the SHORT window [tframe-n_short..tframe-1]:
+    fraction of its sprite world-columns not covered by those frames (mem_gate's novel_fg6,
+    made per-frame / k-free for rollout use)."""
+    rel = rel_positions(data.acts[ci], data.speed)
+    frame = data.clips_u8[ci, tframe].astype(np.float32) / 255.0
+    fg = np.where(frame.max(axis=0) > thr)[0]
+    if len(fg) == 0:
+        return 0.0
+    tw = (rel[tframe] + fg) % data.W
+    cov = np.zeros(data.W, bool)
+    for m in range(tframe - n_short, tframe):
+        cov[(rel[m] + np.arange(64)) % data.W] = True
+    return float((~cov[tw]).mean())
+
+
+class DtLabeler:
+    """[H-grid gate variable] Per-frame dt-since-last-visible + answerability labels.
+
+    For GT frame tf of clip ci: its NOVEL sprite columns (not covered by the 6-frame short
+    window, same notion as hardness_at) each have dt = tf - (last frame the column was in the
+    viewport). Labels per record:
+      dt   = median dt over novel columns that WERE seen before (1e9 if none were) — the
+             capability axis: dt > 48 means the content re-enters from beyond ANY flat window.
+      seen = fraction of novel columns visible at least once before tf (answerable-by-
+             construction; gates read on seen >= 0.5, unseen rows reported separately).
+    Trajectory-only (rel_positions from actions) — identical machinery to hardness_at, so the
+    two axes stratify consistently. Requires monotonically increasing tf per clip (rollout order).
+    """
+
+    def __init__(self, data, warm, n_short=6, thr=0.5):
+        self.data, self.warm, self.n_short, self.thr = data, warm, n_short, thr
+        self._st = {}                                    # ci -> [rel, last_seen, next_unmarked_t]
+
+    def _init_clip(self, ci):
+        rel = rel_positions(self.data.acts[ci], self.data.speed)
+        last = np.full(self.data.W, -(10 ** 9), np.int64)
+        for m in range(self.warm):
+            last[(rel[m] + np.arange(64)) % self.data.W] = m
+        return [rel, last, self.warm]
+
+    def label(self, ci, tf):
+        st = self._st.get(ci)
+        if st is None:
+            st = self._st[ci] = self._init_clip(ci)
+        rel, last, nxt = st
+        assert tf >= nxt, f"DtLabeler needs monotonic tf per clip (got {tf} < {nxt})"
+        for m in range(nxt, tf):                         # mark frames up to but NOT including tf
+            last[(rel[m] + np.arange(64)) % self.data.W] = m
+        st[2] = tf
+        frame = self.data.clips_u8[ci, tf].astype(np.float32) / 255.0
+        fg = np.where(frame.max(axis=0) > self.thr)[0]
+        if len(fg) == 0:
+            return 0.0, 1.0
+        tw = (rel[tf] + fg) % self.data.W
+        dt = tf - last[tw]                               # (n_fg,) per-column dt
+        novel = dt > self.n_short
+        if not novel.any():
+            return 0.0, 1.0
+        dtn = dt[novel]
+        finite = dtn < 10 ** 8
+        seen = float(finite.mean())
+        dt_med = float(np.median(dtn[finite])) if finite.any() else 1e9
+        return dt_med, seen
+
+
+# ================================================================================================
+# Training (EMA + warmup-constant LR + ckpt/resume + grids)
+# ================================================================================================
+class EMA:
+    def __init__(self, net, decay=0.999):
+        self.decay = decay
+        self.shadow = copy.deepcopy(net).eval()
+        for p in self.shadow.parameters():
+            p.requires_grad_(False)
+
+    @torch.no_grad()
+    def update(self, net):
+        for ps, p in zip(self.shadow.parameters(), net.parameters()):
+            ps.lerp_(p.detach(), 1 - self.decay)
+        for bs, b in zip(self.shadow.buffers(), net.buffers()):
+            bs.copy_(b)
+
+
+def training_update(wrap, net, ema, opt, batch, step, *, lr=3e-4, warmup=2000):
+    """One legacy RHVD optimizer/EMA update, shared by legacy and provenance-v2 controllers."""
+    for group in opt.param_groups:
+        group["lr"] = lr * min(1.0, step / warmup)
+    loss = wrap.loss(
+        batch["ctx_c"], batch["ctx_f"], batch["tgt_c"], batch["tgt_f"], batch["actions"],
+        ctx_t=batch.get("ctx_t"), tgt_t=batch.get("tgt_t"),
+        ctx_c_frame_ids=batch.get("ctx_c_frame_ids"),
+        ctx_f_ids=batch.get("ctx_f_ids"),
+        ctx_f_frame_ids=batch.get("ctx_f_frame_ids"),
+        ctx_f_packed=batch.get("ctx_f_packed"),
+        ctx_f_reference_packed=batch.get("ctx_f_reference_packed"),
+    )
+    opt.zero_grad(set_to_none=True)
+    loss.backward()
+    torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
+    opt.step()
+    ema.update(net)
+    return loss
+
+
+def train(arm, data, test, ae, steps, B, seed, lr=3e-4, warmup=2000, val_every=500,
+          save_every=1000, grid_every=2000):
+    n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
+    torch.manual_seed(seed); np.random.seed(seed)
+    net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                    n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t).to(DEV)
+    wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
+    ema = EMA(net)
+    opt = torch.optim.AdamW(net.parameters(), lr=lr, weight_decay=1e-4)
+    ckpt = f"logs_rhcp/rhvd_{arm}_s{seed}_t{steps}.pt"
+    start = 1
+    if os.path.exists(ckpt):
+        st = torch.load(ckpt, map_location=DEV, weights_only=False)
+        net.load_state_dict(st["model"]); opt.load_state_dict(st["opt"])
+        ema.shadow.load_state_dict(st["ema"])
+        start = int(st["step"]) + 1
+        log(f"[ckpt] resumed {ckpt} @ {st['step']}")
+    log(f"[arm {arm}] mode={mode} ctx_t={n_ctx_t}(s{stride_t}) ctx_c={n_ctx_c}(s{stride_c}) "
+        f"hist_f={n_hist_f} ctx_f={n_ctx_f} "
+        f"seq={net.expected_seq} params={sum(p.numel() for p in net.parameters())/1e6:.2f}M "
+        f"steps {start}..{steps} B={B} seed={seed}")
+    if start > steps:
+        log(f"[arm {arm}] already trained; skipping to eval")
+        return wrap, ema
+    if DEV == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    net.train(); run, t_last = 0.0, time.time()
+    for s in range(start, steps + 1):
+        bt = window_batch(data, B, n_ctx_c, n_ctx_f, train=True, stride_c=stride_c,
+                          n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t)
+        loss = training_update(wrap, net, ema, opt, bt, s, lr=lr, warmup=warmup)
+        run += float(loss.detach())
+        dt = time.time() - t_last; t_last = time.time()
+        if dt > SPILL_SEC and s > start + 3:
+            save_ckpt(ckpt, step=s, model=net.state_dict(), opt=opt.state_dict(),
+                      ema=ema.shadow.state_dict())
+            raise RuntimeError(f"[arm {arm}] step {s} took {dt:.1f}s -> WDDM spill; ckpt saved.")
+        if s % val_every == 0:
+            vram = torch.cuda.max_memory_allocated() / 2**30 if DEV == "cuda" else 0.0
+            log(f"  [{arm} {s}/{steps}] loss {run/val_every:.4f}  {dt:.2f}s/step  peak {vram:.2f}GB")
+            wb.log({"train/loss": run / val_every, "train/s_per_step": dt,
+                    "train/vram_gb": vram, "train/lr": opt.param_groups[0]["lr"]}, step=s)
+            run = 0.0
+        if s % save_every == 0 or s == steps:
+            save_ckpt(ckpt, step=s, model=net.state_dict(), opt=opt.state_dict(),
+                      ema=ema.shadow.state_dict())
+        if s % grid_every == 0:
+            net.eval()
+            vb = window_batch(test, 8, n_ctx_c, n_ctx_f, train=False, seed=777, frames=True,
+                              stride_c=stride_c, n_hist_f=n_hist_f, n_ctx_t=n_ctx_t,
+                              stride_t=stride_t)
+            wrap_eval = WindowDiffusion(ema.shadow, wrap.Ttr) if mode == "diff" else WindowRegression(ema.shadow)
+            out = wrap_eval.sample(vb["ctx_c"], vb["ctx_f"], vb["actions"], n_steps=16,
+                                   ctx_t=vb.get("ctx_t"))
+            yc, yf = out[0], out[1]
+            pred01 = decode01(ae, yf[:, -1])               # last window frame (horizon 4)
+            gt01 = (vb["gt"][:, -1].clamp(-1, 1) + 1) * 0.5
+            gpath = f"logs_rhcp/rhvd_{arm}_s{seed}_train{s}.png"
+            viz.save_samples(gpath, [("pred_h4", pred01), ("GT", gt01)], n=8)
+            vfg = float(fg_mse_px_frames(pred01, gt01).mean())
+            net.train()
+            log(f"      >> grid {gpath}  val fg-MSE(h4) {vfg:.4f}")
+            wb.log({"val/fg_mse_h4": vfg}, step=s)
+            wb.image("val/sample_grid", gpath, step=s)
+    return wrap, ema
+
+
+# ================================================================================================
+# AR rollout eval -> npz (per-frame horizon/hardness/fg-MSE/sharp records)
+# ================================================================================================
+@torch.no_grad()
+def rollout_eval(arm, wrap, ema, data, ae, seed, n_clips=100, nfe=16, chunk=16, warm=48,
+                 oracle=False, tag="", blind="", complete_metrics=False,
+                 metric_threshold=0.5, output_path=None, sampler_seed=0, max_hours=0.0):
+    """warm: UNIVERSAL GT warmup across arms of one campaign — every arm starts rollout at the
+    same frame so (clip, horizon) records pair exactly. Legacy campaign: 48. H-grid (testbed B):
+    192 (= one full loop seen in GT before rollout).
+    oracle=True [GO gate]: bypass the model — feed GT latents through the FULL rollout/buffer/
+    metric path; fg-MSE must land at the AE round-trip ceiling at every horizon, which validates
+    buffer alignment, stride phasing, decode, and labels in one shot. Writes *_oracle.npz.
+    blind='coarse'|'fine'|'top' [level-content probe, CW-VAE §5.1 analog]: zero the named
+    context stream at EVERY rollout step (zeros in standardized latent space = the channel-mean
+    neutral input). Eval-only; records still pair with the unblinded npz. Tag the npz
+    (e.g. tag='_blind-coarse') so the canonical eval is never overwritten."""
+    n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(arm)
+    net_eval = ema.shadow
+    wrap_eval = WindowDiffusion(net_eval, wrap.Ttr) if mode == "diff" else WindowRegression(net_eval)
+    n_frames = ctx_reach(n_ctx_c, n_ctx_f, stride_c, n_hist_f, n_ctx_t, stride_t)
+    n_tgt_c = WIN // stride_c if (stride_c > 1 and n_ctx_c > 0) else WIN
+    n_tgt_t = 0 if n_ctx_t == 0 else (WIN // stride_t if stride_t > 1 else WIN)
+    WARM = warm
+    assert WARM >= n_frames, f"warm {WARM} must cover the context reach {n_frames}"
+    if stride_c > 1:
+        assert WARM % stride_c == 0, "warm must be a multiple of the coarse stride"
+    if n_ctx_t > 0 and stride_t > 1:
+        assert WARM % stride_t == 0, "warm must be a multiple of the top stride"
+    assert blind in ("", "coarse", "fine", "top"), blind
+    if blind == "top":
+        assert n_ctx_t > 0, "blind=top needs an arm with a top stream"
+    T = data.T
+    n_steps_roll = (T - WARM) // WIN
+    clips = data.val_idx[:n_clips]
+    dtl = DtLabeler(data, WARM)
+    recs = dict(h=[], hard=[], fg=[], sharp=[], pers_fg=[], clip=[], dt=[], seen=[])
+    complete_keys = (
+        "fg_nonempty", "pred_fg_nonempty", "mse_full", "mse_gt_fg_nonempty", "mse_gt_bg",
+        "mse_union", "fg_laplacian_energy_nonempty", "fg_precision", "fg_recall", "fg_f1", "gt_component_count",
+        "pred_component_count", "missed_components", "extra_components",
+        "matched_component_iou", "matched_centroid_l2",
+    )
+    if complete_metrics:
+        recs["legacy_sharp_batch"] = []
+        recs.update({key: [] for key in complete_keys})
+    viz_h = {1, WIN, 48, 96, 192, min(288, n_steps_roll * WIN)}     # rollout strip horizons
+    viz_rows = []
+    eval_started = time.time()
+    for c0 in range(0, len(clips), chunk):
+        elapsed_before = time.time() - eval_started
+        if max_hours > 0 and c0 > 0:
+            chunks_done = c0 // chunk
+            projected_next = elapsed_before + elapsed_before / chunks_done
+            if projected_next / 3600 > max_hours:
+                raise TimeoutError(
+                    f"rollout projected to exceed its {max_hours:.4f}h authorization before "
+                    f"clips {c0}..{min(c0 + chunk, len(clips)) - 1}"
+                )
+        cs = clips[c0:c0 + chunk]
+        B = len(cs)
+        if n_ctx_c > 0:
+            if stride_c > 1:   # slot buffer: GT anchors at frames stride-1, 2*stride-1, ..., WARM-1
+                buf_c = data.zc[cs, WARM - n_ctx_c * stride_c + stride_c - 1:WARM:stride_c] \
+                    .clone().to(DEV)
+            else:
+                buf_c = data.zc[cs, WARM - n_frames:WARM].clone().to(DEV)
+        else:
+            buf_c = torch.zeros(B, 1, LAT, 4, 4, device=DEV)
+        if n_ctx_t > 0:
+            if stride_t > 1:
+                buf_t = data.zt[cs, WARM - n_ctx_t * stride_t + stride_t - 1:WARM:stride_t] \
+                    .clone().to(DEV)
+            else:
+                buf_t = data.zt[cs, WARM - n_frames:WARM].clone().to(DEV)
+        buf_f = data.zf[cs, WARM - n_frames:WARM].clone().to(DEV)
+        pers01 = decode01(ae, data.zf[cs, WARM - 1].to(DEV))           # persistence reference
+        for srn in range(n_steps_roll):
+            tj = WARM + srn * WIN
+            torch.manual_seed(rollout_crn_seed(sampler_seed, c0 // chunk, srn))  # CRN across arms
+            acts = torch.from_numpy(data.acts[cs, tj:tj + WIN].astype(np.int64)).to(DEV)
+            ctx_c = buf_c[:, -n_ctx_c:] if n_ctx_c > 0 else buf_c[:, :0]
+            ctx_t = buf_t[:, -n_ctx_t:] if n_ctx_t > 0 else None
+            if n_hist_f > 0:
+                lo = n_frames - (n_ctx_f + 1 + 4 * (n_hist_f - 1))     # deepest hist anchor index
+                ctx_f = torch.cat([buf_f[:, lo:n_frames - n_ctx_f:4], buf_f[:, -n_ctx_f:]], 1)
+            else:
+                ctx_f = buf_f[:, -n_ctx_f:]
+            if blind == "coarse":
+                ctx_c = torch.zeros_like(ctx_c)
+            elif blind == "fine":
+                ctx_f = torch.zeros_like(ctx_f)
+            elif blind == "top":
+                ctx_t = torch.zeros_like(ctx_t)
+            if oracle:
+                yc = data.zc[cs, tj + stride_c - 1:tj + WIN:stride_c].to(DEV) if n_tgt_c < WIN \
+                    else data.zc[cs, tj:tj + WIN].to(DEV)
+                yf = data.zf[cs, tj:tj + WIN].to(DEV)
+                if n_ctx_t > 0:
+                    yt = data.zt[cs, tj + stride_t - 1:tj + WIN:stride_t].to(DEV) if n_tgt_t < WIN \
+                        else data.zt[cs, tj:tj + WIN].to(DEV)
+            else:
+                out = wrap_eval.sample(ctx_c, ctx_f, acts, n_steps=nfe, ctx_t=ctx_t)
+                if n_ctx_t > 0:
+                    yc, yf, yt = out
+                else:
+                    yc, yf = out
+            if n_ctx_c > 0:
+                keep = n_ctx_c if stride_c > 1 else n_frames
+                buf_c = torch.cat([buf_c, yc], 1)[:, -keep:]
+            if n_ctx_t > 0:
+                keep_t = n_ctx_t if stride_t > 1 else n_frames
+                buf_t = torch.cat([buf_t, yt], 1)[:, -keep_t:]
+            buf_f = torch.cat([buf_f, yf], 1)[:, -n_frames:]
+            for j in range(WIN):
+                tf = tj + j
+                gt01 = torch.from_numpy(
+                    data.clips_u8[cs, tf].astype(np.float32) / 255.0).unsqueeze(1).to(DEV)
+                p01 = decode01(ae, yf[:, j])
+                fg = fg_mse_px_frames(p01, gt01)
+                pfg = fg_mse_px_frames(pers01, gt01)
+                sh = fg_sharp(p01, gt01)
+                sh_per = fg_sharp_per_frame(p01, gt01).detach().cpu().numpy()
+                frame_metrics = evaluate_frames(
+                    p01.detach().cpu().numpy(), gt01.detach().cpu().numpy(),
+                    threshold=metric_threshold,
+                ) if complete_metrics else None
+                for bi_, ci in enumerate(cs):
+                    recs["h"].append(tf - WARM + 1)
+                    # hardness axis is ARM-INDEPENDENT (always the 6-frame short window) so the
+                    # paired cross-arm comparison stratifies every arm identically
+                    recs["hard"].append(hardness_at(data, ci, tf, n_short=6))
+                    dt_med, seen = dtl.label(ci, tf)
+                    recs["dt"].append(dt_med)
+                    recs["seen"].append(seen)
+                    recs["fg"].append(float(fg[bi_]))
+                    recs["pers_fg"].append(float(pfg[bi_]))
+                    recs["sharp"].append(float(sh_per[bi_]) if complete_metrics else sh)
+                    if complete_metrics:
+                        recs["legacy_sharp_batch"].append(sh)
+                        for key in complete_keys:
+                            recs[key].append(frame_metrics[key][bi_])
+                    recs["clip"].append(int(ci))
+                if c0 == 0 and (tf - WARM + 1) in viz_h:
+                    viz_rows.append((tf - WARM + 1, p01[:6].cpu(), gt01[:6].cpu()))
+        elapsed = time.time() - eval_started
+        running_fg = float(np.mean(recs["fg"]))
+        log(f"  [rollout {arm}] clips {c0}..{c0+B-1} done ({n_steps_roll} steps x {WIN} "
+            f"frames; elapsed {elapsed/3600:.2f}h; running fg {running_fg:.4f})")
+        wb.log({
+            "health/clips_complete": int(c0 + B),
+            "health/clips_total": int(len(clips)),
+            "health/progress": float((c0 + B) / len(clips)),
+            "health/elapsed_hours": float(elapsed / 3600),
+            "health/running_fg_mse": running_fg,
+        }, step=int(c0 + B))
+        if max_hours > 0 and elapsed / 3600 > max_hours:
+            raise TimeoutError(f"rollout exceeded its {max_hours:.4f}h authorization")
+    out = {k: np.asarray(v) for k, v in recs.items()}
+    path = str(output_path or
+               f"logs_rhcp/rhvd_eval_{arm}_s{seed}{'_oracle' if oracle else ''}{tag}.npz")
+    if os.path.exists(path):
+        raise FileExistsError(f"evaluation output exists; refusing overwrite: {path}")
+    atomic_save_npz(path, **out)
+    log(f"[rollout {arm}{' ORACLE' if oracle else ''}] saved {path}: {len(out['fg'])} "
+        f"frame-records, mean fg {out['fg'].mean():.4f} (persistence {out['pers_fg'].mean():.4f})")
+    if viz_rows:
+        viz_suffix = ("_oracle" if oracle else "") + tag + (f"_blind-{blind}" if blind else "")
+        vpath = f"logs_rhcp/rhvd_rollout_{arm}_s{seed}{viz_suffix}.png"
+        panels = []
+        for h, p, g in sorted(viz_rows, key=lambda r: r[0]):
+            panels += [(f"pred_h{h}", p), (f"GT_h{h}", g)]
+        viz.save_samples(vpath, panels, n=6)
+        log(f"[rollout {arm}] strip {vpath}")
+        wb.image("eval/rollout_strip", vpath)
+    hs, fgs = out["h"], out["fg"]
+    h49_192 = (hs > 48) & (hs <= 192)
+    wb.summary({"eval/fg_mse_all": float(fgs.mean()),
+                "eval/pers_fg": float(out["pers_fg"].mean()),
+                "eval/sharp": float(out["sharp"].mean()),
+                "eval/fg_mse_h1_48": float(fgs[hs <= 48].mean()),
+                "eval/fg_mse_h49_192": float(fgs[h49_192].mean()) if h49_192.any() else 0.0,
+                "eval/fg_mse_h193plus": float(fgs[hs > 192].mean()) if (hs > 192).any() else 0.0,
+                "eval/fg_mse_beyondwin_hard": float(
+                    fgs[(out["dt"] > 48) & (out["hard"] > 0.1) & (out["seen"] >= 0.5)].mean())
+                if ((out["dt"] > 48) & (out["hard"] > 0.1) & (out["seen"] >= 0.5)).any() else 0.0})
+    return path
+
+
+def paired_ci(delta, clips, n_boot=10000, seed=0):
+    """Return a clip-cluster bootstrap interval for the mean paired delta.
+
+    ``clips`` is mandatory because frames within one autoregressive rollout are strongly
+    autocorrelated (measured lag-1 approximately +0.86). Frame-IID resampling understated
+    interval widths by factors of 2--7 in the validity audit of 2026-07-03.
+    """
+    rng = np.random.RandomState(seed)
+    delta = np.asarray(delta)
+    clips = np.asarray(clips)
+    if delta.shape[0] != clips.shape[0]:
+        raise ValueError("delta and clips must contain the same number of records")
+    if delta.size == 0:
+        raise ValueError("paired_ci requires at least one paired record")
+    uc = np.unique(clips)
+    s = np.array([delta[clips == c].sum() for c in uc])
+    n = np.array([(clips == c).sum() for c in uc], dtype=np.float64)
+    pick = rng.randint(0, len(uc), (n_boot, len(uc)))
+    m = s[pick].sum(axis=1) / n[pick].sum(axis=1)
+    return float(np.percentile(m, 2.5)), float(np.percentile(m, 97.5))
+
+
+def _fg_empty_mask(clip_arr, h_arr, test_path, warm, thr=0.5):
+    """True where the GT frame has NO foreground above thr. [validity audit] ~21% of rollout
+    records have an empty GT sprite mask; long_eval.fg_mse silently falls back to full-frame MSE
+    there and hardness_at bins them 'easy' -- they are excluded from the stratified tables and
+    reported as their own row. [H-grid fix] test_path/warm are REQUIRED args: the old defaults
+    silently indexed the loopmom file for any campaign."""
+    raw = np.load(test_path, mmap_mode="r")
+    cache, out = {}, np.zeros(len(clip_arr), bool)
+    for i in range(len(clip_arr)):
+        key = (int(clip_arr[i]), int(h_arr[i]))
+        if key not in cache:
+            frame = raw[key[0], warm + key[1] - 1]
+            cache[key] = bool(frame.max() <= thr * 255.0)
+        out[i] = cache[key]
+    return out
+
+
+def compare(arms, seed, test_path, warm, tag=""):
+    """Paired per-frame comparison of rollout npz files (same clips/horizons across arms).
+    Cluster (clip-level) bootstrap CIs; empty-GT-foreground records excluded from strat bins.
+    H-grid npz (with dt/seen fields) additionally get the pre-registered GATE table: dt-since-
+    last-visible bins x HARD, on answerable (seen>=0.5) records — G-H1/2/3 read on dt>48 rows."""
+    d = {}
+    for a in arms:
+        z = np.load(f"logs_rhcp/rhvd_eval_{a}_s{seed}{tag}.npz")
+        d[a] = z
+    base = arms[0]
+    zb = d[base]
+    empty = _fg_empty_mask(zb["clip"], zb["h"], test_path, warm)
+    has_dt = "dt" in zb.files
+    print(f"\n{'='*100}\n  RHVD ROLLOUT COMPARISON (paired per-frame fg-MSE, base = {base}, seed {seed};"
+          f" CLUSTER bootstrap by clip)\n  test={test_path} warm={warm}; empty-GT-fg records excluded"
+          f" from bins: {int(empty.sum())}/{len(empty)} ({empty.mean()*100:.1f}%)\n{'='*100}")
+    hbins = [(1, 8, "h 1-8"), (9, 24, "h 9-24"), (25, 60, "h 25-60"), (61, 120, "h 61-120"),
+             (121, 192, "h 121-192"), (193, 288, "h 193-288")]
+    hardbins = [(-0.01, 0.001, "easy"), (0.001, 0.1, "mid"), (0.1, 1.01, "HARD")]
+    dtbins = [(0, 48, "dt<=48"), (48, 96, "dt 49-96"), (96, 192, "dt 97-192"), (192, 1e12, "dt>192")]
+    for a in arms[1:]:
+        za = d[a]
+        assert np.array_equal(za["clip"], zb["clip"]) and np.array_equal(za["h"], zb["h"]), \
+            "eval sets differ; re-run with same protocol"
+        print(f"\n  {a} vs {base} (sharp {za['sharp'].mean():.4f} vs {zb['sharp'].mean():.4f}; "
+              f"persistence {zb['pers_fg'].mean():.4f}):")
+        print(f"  {'horizon':<10}{'hardness':<8}{'n':>7}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>9}")
+        for hlo, hhi, hname in hbins:
+            for blo, bhi, bname in hardbins:
+                m = (zb["h"] >= hlo) & (zb["h"] <= hhi) & (zb["hard"] > blo) & (zb["hard"] <= bhi) & ~empty
+                if m.sum() < 30:
+                    continue
+                delta = zb["fg"][m] - za["fg"][m]
+                lo, hi = paired_ci(delta, clips=zb["clip"][m])
+                v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
+                print(f"  {hname:<10}{bname:<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}"
+                      f"{za['fg'][m].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+        if has_dt and "dt" in za.files:
+            print(f"\n  [GATE TABLE] dt-since-last-visible x HARD, answerable (seen>=0.5), ~empty"
+                  f" — gates read on dt>48 rows:")
+            print(f"  {'dt bin':<12}{'hardness':<8}{'n':>7}{'base':>10}{'arm':>10}{'delta':>10}{'95% CI':>22}{'verdict':>9}")
+            ans = (zb["seen"] >= 0.5) & ~empty
+            for dlo, dhi, dname in dtbins:
+                for blo, bhi, bname in [(0.001, 1.01, "mid+HARD"), (0.1, 1.01, "HARD")]:
+                    m = ans & (zb["dt"] > dlo) & (zb["dt"] <= dhi) & (zb["hard"] > blo) & (zb["hard"] <= bhi)
+                    if m.sum() < 30:
+                        continue
+                    delta = zb["fg"][m] - za["fg"][m]
+                    lo, hi = paired_ci(delta, clips=zb["clip"][m])
+                    v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
+                    print(f"  {dname:<12}{bname:<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}"
+                          f"{za['fg'][m].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+            un = (zb["seen"] < 0.5) & (zb["dt"] > 48) & ~empty
+            if un.sum() >= 30:
+                delta = zb["fg"][un] - za["fg"][un]
+                lo, hi = paired_ci(delta, clips=zb["clip"][un])
+                print(f"  {'UNSEEN dt>48':<20}{int(un.sum()):>7}{zb['fg'][un].mean():>10.4f}"
+                      f"{za['fg'][un].mean():>10.4f}{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]"
+                      f"{'(report-only)':>14}")
+        # empty-fg row (bg-only frames; full-frame-MSE fallback semantics) + ALL row, both clustered
+        for label, m in (("bg-only", empty), ("ALL", np.ones(len(empty), bool))):
+            delta = zb["fg"][m] - za["fg"][m]
+            lo, hi = paired_ci(delta, clips=zb["clip"][m])
+            v = "WIN" if lo > 0 else ("LOSS" if hi < 0 else "null")
+            print(f"  {label:<10}{'':<8}{int(m.sum()):>7}{zb['fg'][m].mean():>10.4f}{za['fg'][m].mean():>10.4f}"
+                  f"{delta.mean():>+10.4f}   [{lo:+.4f},{hi:+.4f}]{v:>9}")
+
+
+# ================================================================================================
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--arm", default="hier-long", choices=list(ARMS))
+    ap.add_argument("--steps", type=int, default=30000)
+    ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--nfe", type=int, default=16)
+    ap.add_argument("--sampler_seed", type=int, default=0,
+                    help="registered rollout-noise seed; zero preserves the legacy CRN stream")
+    ap.add_argument("--n_eval_clips", type=int, default=100)
+    ap.add_argument("--bf16", action="store_true")
+    ap.add_argument("--probe_steps", type=int, default=0, help=">0: timing/VRAM probe, then exit")
+    ap.add_argument("--eval_only", action="store_true")
+    ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--go_gate", action="store_true",
+                    help="GT-oracle rollout through the full eval path; PASS iff fg-MSE ~= AE ceiling")
+    ap.add_argument("--go_ceiling", type=float, default=0.0106,
+                    help="AE round-trip fg-MSE ceiling for --go_gate (0.0106 = hgrid calibration; "
+                         "pass the campaign's own ceiling if it differs)")
+    ap.add_argument("--eval_tag", default="", help="suffix for the eval npz (mid-training trend "
+                    "probes write _probe10k etc. so the final eval is never overwritten)")
+    ap.add_argument("--complete_metrics", action="store_true",
+                    help="write record-level false-positive-sensitive metrics and sharpness")
+    ap.add_argument("--metric_threshold", type=float, default=0.5)
+    ap.add_argument("--confirmation_manifest", default="",
+                    help="purpose-locked loopmom manifest; requires --eval_only and immutable output")
+    ap.add_argument("--confirmation_access_log", default="artifacts/confirmation_e2/access.jsonl")
+    ap.add_argument("--robustness_manifest", default="",
+                    help="purpose-locked E7c robustness manifest; eval-only, immutable output")
+    ap.add_argument("--robustness_access_log", default="artifacts/e7c_sampler_nfe/access.jsonl")
+    ap.add_argument("--codec_manifest", default="",
+                    help="purpose-locked E7a codec-robustness manifest; eval-only, immutable output")
+    ap.add_argument("--codec_access_log", default="artifacts/e7a_codec_robustness/access.jsonl")
+    ap.add_argument("--retrieval_manifest", default="",
+                    help="purpose-locked E8a retrieval-reference manifest; eval-only, immutable output")
+    ap.add_argument("--retrieval_access_log", default="artifacts/e8a_pose_mosaic/access.jsonl")
+    ap.add_argument("--checkpoint_path", default="",
+                    help="explicit immutable checkpoint; required by E7a codec robustness")
+    ap.add_argument("--artifact_root", default="artifacts/runs")
+    ap.add_argument("--source_commit", default="")
+    ap.add_argument("--wandb_project", default="hgrid")
+    ap.add_argument("--wandb_run_id", default="")
+    ap.add_argument("--wandb_group", default="")
+    ap.add_argument("--wandb_required", action="store_true")
+    ap.add_argument("--run_log", default="")
+    ap.add_argument("--authorized_gpu_hours", type=float, default=0.0)
+    ap.add_argument("--compare", default="", help="comma list of arms to compare from saved npz")
+    # ---- H-grid campaign args (defaults = legacy loopmom campaign, unchanged) ----
+    ap.add_argument("--train_path", default="data/loopmom_train_3000x100.npy")
+    ap.add_argument("--test_path", default="data/loopmom_test_500x200.npy")
+    ap.add_argument("--world", type=int, default=192, help="torus world width (rel_positions mod)")
+    ap.add_argument("--wspeed", type=int, default=4)
+    ap.add_argument("--warm", type=int, default=48, help="universal GT warmup (H-grid: 192)")
+    ap.add_argument("--n_val", type=int, default=250)
+    ap.add_argument("--no_wandb", action="store_true")
+    ap.add_argument("--ae_path", default="logs_rhcp/hier_ae_mom.pt")
+    ap.add_argument("--ae_top", default="logs_rhcp/hier_ae_mom_top.pt",
+                    help="frozen-trunk top-branch ckpt (hvp_rev.hier3); needed by 3-level arms")
+    ap.add_argument("--blind", default="", choices=["", "coarse", "fine", "top"],
+                    help="eval-only level-content probe: zero this ctx stream at every rollout "
+                         "step (use with --eval_only and an --eval_tag like _blind-coarse)")
+    args = ap.parse_args()
+    M._BF16 = bool(args.bf16)
+    if args.blind:
+        assert args.eval_only, "--blind is an eval-only probe; combine with --eval_only"
+        if not args.eval_tag:
+            args.eval_tag = f"_blind-{args.blind}"
+
+    confirmation = None
+    locked_purpose = None
+    locked_manifest = ""
+    locked_access_log = ""
+    locked_prefix = None
+    locked_study = None
+    locked_tag = None
+    locked_job_type = None
+    locked_artifact_type = None
+    locked_checkpoint = None
+    eval_spec = None
+    store = None
+    active_registry = Path("artifacts/active_experiment.json")
+    train_sidecar = Path(args.train_path).with_name(Path(args.train_path).stem + ".manifest.json")
+    test_sidecar = Path(args.test_path).with_name(Path(args.test_path).stem + ".manifest.json")
+    if train_sidecar.is_file():
+        assert_dataset_purpose(
+            train_sidecar, allowed={"training", "development", "development_fixture"},
+            operation="predictor training"
+        )
+    locked_switches = [
+        value for value in (
+            args.confirmation_manifest, args.robustness_manifest, args.codec_manifest,
+            args.retrieval_manifest,
+        ) if value
+    ]
+    if len(locked_switches) > 1:
+        raise ValueError("choose exactly one locked evaluation manifest")
+    locked_manifest = (args.confirmation_manifest or args.robustness_manifest or
+                       args.codec_manifest or args.retrieval_manifest)
+    if test_sidecar.is_file() and not locked_manifest:
+        sidecar = assert_dataset_purpose(
+            test_sidecar, allowed={"development_test", "development_fixture"},
+            operation="ordinary evaluation"
+        )
+        if sidecar.get("purpose") in {
+            "confirmation_holdout", "robustness_holdout", "codec_robustness_holdout",
+            "retrieval_reference_holdout",
+        }:
+            raise PermissionError("locked holdout requires its explicit manifest switch")
+    if locked_manifest:
+        if not args.eval_only or args.compare or args.smoke or args.go_gate or args.blind:
+            raise ValueError("locked evaluation requires plain --eval_only")
+        if args.no_wandb:
+            raise ValueError("locked evaluation requires online W&B logging")
+        if not args.complete_metrics:
+            raise ValueError("locked evaluation requires --complete_metrics")
+        if not args.source_commit:
+            raise ValueError("locked evaluation requires --source_commit")
+        if args.confirmation_manifest:
+            locked_purpose, locked_access_log = (
+                "confirmation_holdout", args.confirmation_access_log
+            )
+            locked_prefix, locked_study = "e2", "confirmation-e2"
+            locked_tag, locked_job_type = "untouched-confirmation", "confirmation-eval"
+            locked_artifact_type = "confirmation-evaluation"
+        elif args.robustness_manifest:
+            locked_purpose, locked_access_log = (
+                "robustness_holdout", args.robustness_access_log
+            )
+            locked_prefix, locked_study = "e7c", "robustness-e7c"
+            locked_tag, locked_job_type = "sampler-nfe-robustness", "robustness-eval"
+            locked_artifact_type = "robustness-evaluation"
+        elif args.codec_manifest:
+            locked_purpose, locked_access_log = (
+                "codec_robustness_holdout", args.codec_access_log
+            )
+            locked_prefix, locked_study = "e7a", "robustness-e7a"
+            locked_tag, locked_job_type = "alternate-codec-robustness", "codec-robustness-eval"
+            locked_artifact_type = "codec-robustness-evaluation"
+            if not args.checkpoint_path:
+                raise ValueError("E7a codec robustness requires --checkpoint_path")
+        else:
+            locked_purpose, locked_access_log = (
+                "retrieval_reference_holdout", args.retrieval_access_log
+            )
+            locked_prefix, locked_study = "e8a", "reference-e8a"
+            locked_tag = "pose-mosaic-neural-reference"
+            locked_job_type = "retrieval-reference-eval"
+            locked_artifact_type = "retrieval-reference-evaluation"
+        confirmation = assert_dataset_purpose(
+            locked_manifest,
+            allowed={locked_purpose},
+            operation=f"{locked_purpose} evaluation",
+        )
+        if not args.eval_tag:
+            args.eval_tag = (f"_{locked_prefix}_{confirmation['dataset_id'].split('-')[-1]}"
+                             f"_nfe{args.nfe}_ss{args.sampler_seed}")
+        if Path(locked_manifest).resolve() != test_sidecar.resolve():
+            raise ValueError("locked manifest must be the test array's canonical sidecar")
+        expected_test = Path(confirmation["artifacts"]["clips"]["path"]).resolve()
+        if Path(args.test_path).resolve() != expected_test:
+            raise ValueError(f"--test_path does not match manifest: {args.test_path} != {expected_test}")
+        cfg = arm_cfg(args.arm)
+        ckpt = Path(args.checkpoint_path or
+                    f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt")
+        if not ckpt.is_file():
+            raise FileNotFoundError(f"evaluation checkpoint missing: {ckpt}")
+        locked_checkpoint = ckpt
+        eval_spec = RunSpec(
+            study=locked_study,
+            arm=args.arm,
+            seed=args.seed,
+            dataset_hash=confirmation["artifacts"]["clips"]["sha256"],
+            ae_hash=sha256_file(args.ae_path),
+            arm_config={
+                "legacy_tuple": list(cfg),
+                "checkpoint": ckpt.as_posix(),
+                "checkpoint_sha256": sha256_file(ckpt),
+                "dataset_id": confirmation["dataset_id"],
+                "training_seed": args.seed,
+            },
+            train_examples=args.steps * args.batch,
+            optimizer_updates=args.steps,
+            batch_size=args.batch,
+            precision="bf16" if args.bf16 else "fp32",
+            nfe=args.nfe,
+            warmup_frames=args.warm,
+            rollout_frames=int(confirmation["configuration"]["frames"] - args.warm),
+            evaluation_clips=args.n_eval_clips,
+            source_commit=args.source_commit,
+            metric_version="complete-v2-thr0.5",
+            optimizer={"name": "AdamW", "lr": 3e-4, "weight_decay": 1e-4,
+                       "warmup_updates": 2000},
+            ema={"decay": 0.999, "evaluation": "EMA"},
+            sampler={"name": "DDIM" if cfg[2] == "diff" else "deterministic-regression",
+                     "nfe": args.nfe, "sampler_seed": args.sampler_seed,
+                     "crn": "100000 + 1000000*sampler_seed + 1000*chunk + rollout_step"},
+            tag=locked_tag,
+        )
+        # Record access before hashing/opening the holdout array itself.
+        log_holdout_access(
+            locked_manifest, locked_access_log,
+            run_spec_hash=eval_spec.identity,
+            allowed_purpose=locked_purpose,
+            operation=f"{locked_purpose} evaluation",
+        )
+        if sha256_file(args.test_path) != confirmation["artifacts"]["clips"]["sha256"]:
+            raise ValueError("confirmation clip hash differs from frozen manifest")
+
+    if args.compare:
+        compare([a.strip() for a in args.compare.split(",")], args.seed,
+                test_path=args.test_path, warm=args.warm, tag=args.eval_tag)
+        return
+
+    if args.arm.startswith(("d0-", "d1-", "d2-")):
+        assert args.warm in (192, 224) and "hgrid" in args.train_path and args.world == 768, \
+            "H-grid arms require hgrid data, world 768, warm 192 (span-192 era) or 224 (span-224 pair)"
+
+    if not args.no_wandb and args.probe_steps == 0 and not args.go_gate:
+        n_ctx_c_, n_ctx_f_, mode_, stride_c_, n_hist_f_, n_ctx_t_, stride_t_ = arm_cfg(args.arm)
+        if eval_spec is not None:
+            codec_suffix = (f"-ae{eval_spec.ae_hash[:8]}" if locked_prefix == "e7a" else "")
+            run_name = (f"{locked_prefix}-{confirmation['dataset_id']}-{args.arm}-s{args.seed}"
+                        f"{codec_suffix}"
+                        f"-nfe{args.nfe}-ss{args.sampler_seed}")
+            run_id = args.wandb_run_id or f"{locked_prefix}-{eval_spec.identity}"
+            wb_config = {"run_spec": eval_spec.resolved(), "cli": vars(args)}
+            tags = ["loopmom", eval_spec.tag, mode_, "eval-only"]
+        else:
+            run_name = (f"rhvd-{args.arm}-s{args.seed}-t{args.steps}{args.eval_tag}"
+                        + ("-smoke" if args.smoke else ""))
+            run_id = args.wandb_run_id or run_name
+            wb_config = dict(vars(args), n_ctx_c=n_ctx_c_, n_ctx_f=n_ctx_f_, mode=mode_,
+                             stride_c=stride_c_, n_hist_f=n_hist_f_, n_ctx_t=n_ctx_t_,
+                             stride_t=stride_t_, win=WIN,
+                             campaign="hgrid" if args.warm == 192 else "loopmom")
+            tags = ["hgrid" if args.warm == 192 else "loopmom", mode_]
+        wb.init(
+            run_name, config=wb_config, project=args.wandb_project, run_id=run_id, tags=tags,
+            resume="never" if eval_spec is not None else "allow",
+            group=args.wandb_group or (confirmation["dataset_id"] if confirmation else None),
+            job_type=locked_job_type if eval_spec is not None else None,
+            required=args.wandb_required or eval_spec is not None,
+        )
+        if eval_spec is not None:
+            store = ArtifactStore(args.artifact_root, eval_spec)
+            atomic_write_json(active_registry, {
+                "schema_version": 1,
+                "status": "running",
+                "study": eval_spec.study,
+                "arm": args.arm,
+                "seed": args.seed,
+                "optimizer_updates": args.steps,
+                "pid": os.getpid(),
+                "started_utc": datetime.now(timezone.utc).isoformat(),
+                "run_spec_hash": eval_spec.identity,
+                "run_dir": store.path.as_posix(),
+                "run_log": args.run_log,
+                "wandb_url": wb.active_url(),
+                "authorized_gpu_hours": args.authorized_gpu_hours,
+            })
+
+    ae = hier_convae.load(args.ae_path)
+    data = ActionHierData(ae, args.train_path, args.train_path.replace(".npy", "_actions.npy"),
+                          n_ctx=6, k=4, W=args.world, speed=args.wspeed)
+    test = ActionHierData(ae, args.test_path, args.test_path.replace(".npy", "_actions.npy"),
+                          n_ctx=6, k=4, n_val=args.n_val, W=args.world, speed=args.wspeed,
+                          stats=data.stats)
+
+    if arm_cfg(args.arm)[5] > 0:      # 3-level arm: attach standardized top latents (data.zt)
+        from hvp_rev import hier3
+        ae3 = hier3.load_top(args.ae_path, args.ae_top)
+        zt_stats = hier3.attach_top(data, ae3)
+        hier3.attach_top(test, ae3, stats=zt_stats)
+
+    if args.probe_steps > 0:
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(args.arm)
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t).to(DEV)
+        wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
+        opt = torch.optim.AdamW(net.parameters(), lr=3e-4)
+        if DEV == "cuda":
+            torch.cuda.reset_peak_memory_stats()
+        t0 = time.time()
+        for _ in range(args.probe_steps):
+            bt = window_batch(data, args.batch, n_ctx_c, n_ctx_f, train=True,
+                              stride_c=stride_c, n_hist_f=n_hist_f, n_ctx_t=n_ctx_t,
+                              stride_t=stride_t)
+            loss = wrap.loss(bt["ctx_c"], bt["ctx_f"], bt["tgt_c"], bt["tgt_f"], bt["actions"],
+                             ctx_t=bt.get("ctx_t"), tgt_t=bt.get("tgt_t"))
+            opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+        if DEV == "cuda":
+            torch.cuda.synchronize()
+        dt = (time.time() - t0) / args.probe_steps
+        vram = torch.cuda.max_memory_allocated() / 2**30 if DEV == "cuda" else 0
+        print(f"[TIMING {args.arm}] {dt:.3f} s/step | peak {vram:.2f} GB | "
+              f"{args.steps} steps => {args.steps*dt/3600:.1f} h")
+        return
+
+    if args.go_gate:
+        # [GO GATE] GT-oracle rollout through the full buffer/metric path: fg-MSE must land at
+        # the AE round-trip ceiling (0.0106 on hgrid test) at every horizon.
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(args.arm)
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t).to(DEV)
+        wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
+        path = rollout_eval(args.arm, wrap, EMA(net), test, ae, args.seed, n_clips=16,
+                            nfe=1, warm=args.warm, oracle=True)
+        z = np.load(path)
+        # skip empty horizon bins (loopmom rollouts are 152 frames -> h193+ is empty; a nan mean
+        # would spuriously FAIL the gate)
+        by_h = [(hn, float(z["fg"][m].mean()))
+                for lo, hi, hn in [(1, 48, "h1-48"), (49, 192, "h49-192"), (193, 288, "h193+")]
+                if (m := (z["h"] >= lo) & (z["h"] <= hi)).any()]
+        ceiling = args.go_ceiling
+        ok = all(v <= ceiling * 1.6 for _, v in by_h)
+        print(f"[GO-GATE {args.arm}] oracle fg-MSE by horizon: "
+              + "  ".join(f"{hn} {v:.4f}" for hn, v in by_h)
+              + f"  (AE ceiling {ceiling:.4f})  -> {'PASS' if ok else 'FAIL'}")
+        return
+
+    steps = 300 if args.smoke else args.steps
+    if args.eval_only:
+        n_ctx_c, n_ctx_f, mode, stride_c, n_hist_f, n_ctx_t, stride_t = arm_cfg(args.arm)
+        net = WindowDiT(n_ctx_c=n_ctx_c, n_ctx_f=n_ctx_f, mode=mode, stride_c=stride_c,
+                        n_hist_f=n_hist_f, n_ctx_t=n_ctx_t, stride_t=stride_t).to(DEV)
+        wrap = WindowDiffusion(net) if mode == "diff" else WindowRegression(net)
+        ema = EMA(net)
+        ckpt = str(locked_checkpoint or Path(
+            f"logs_rhcp/rhvd_{args.arm}_s{args.seed}_t{args.steps}.pt"
+        ))
+        st = torch.load(ckpt, map_location=DEV, weights_only=False)
+        ema.shadow.load_state_dict(st["ema"])
+        log(f"[eval_only] loaded {ckpt} @ step {st['step']}")
+    else:
+        wrap, ema = train(args.arm, data, test, ae, steps, args.batch, args.seed)
+    output_path = store.path / "metrics/rollout_complete.npz" if store is not None else None
+    result_path = rollout_eval(
+        args.arm, wrap, ema, test, ae, args.seed,
+        n_clips=(8 if args.smoke else args.n_eval_clips), nfe=args.nfe, warm=args.warm,
+        tag=args.eval_tag, blind=args.blind, complete_metrics=args.complete_metrics,
+        metric_threshold=args.metric_threshold, output_path=output_path,
+        sampler_seed=args.sampler_seed,
+        max_hours=args.authorized_gpu_hours,
+    )
+    if store is not None:
+        store.write_json("evaluation.json", {
+            "result_path": str(result_path),
+            "dataset_manifest": str(Path(locked_manifest).resolve()),
+            "dataset_manifest_sha256": sha256_file(locked_manifest),
+            "dataset_purpose": locked_purpose,
+            "access_log": str(Path(locked_access_log).resolve()),
+            "wandb_url": wb.active_url(),
+        })
+        store.finalize()
+        wb.artifact(
+            name=f"{locked_prefix}-{eval_spec.identity}",
+            artifact_type=locked_artifact_type,
+            paths=[
+                str(store.path / "run_spec.json"),
+                str(store.path / "metrics/rollout_complete.npz"),
+                str(store.path / "evaluation.json"),
+                str(store.path / "manifest.json"),
+                locked_manifest,
+            ],
+            metadata={
+                "run_spec_hash": eval_spec.identity,
+                "dataset_id": confirmation["dataset_id"],
+                "arm": args.arm,
+                "seed": args.seed,
+                "nfe": args.nfe,
+                "sampler_seed": args.sampler_seed,
+            },
+            aliases=["latest", f"{args.arm}-s{args.seed}"],
+        )
+        atomic_write_json(active_registry, {
+            "schema_version": 1,
+            "status": "complete",
+            "study": eval_spec.study,
+            "arm": args.arm,
+            "seed": args.seed,
+            "optimizer_updates": args.steps,
+            "pid": os.getpid(),
+            "completed_utc": datetime.now(timezone.utc).isoformat(),
+            "run_spec_hash": eval_spec.identity,
+            "run_dir": store.path.as_posix(),
+            "wandb_url": wb.active_url(),
+            "authorized_gpu_hours": args.authorized_gpu_hours,
+        })
+    wb.finish()
+    log("RHVD DONE")
+
+
+if __name__ == "__main__":
+    main()

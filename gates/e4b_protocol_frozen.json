@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-13T06:49:51.922301+00:00",
+  "schema_version": 1,
+  "source_commit": "f8de0000333a75b7da9bc5c0c9c3c3c4f186c82c",
+  "status": "FROZEN",
+  "subject": "experiments/configs/regression_factorial_seeds3_4.json",
+  "subject_sha256": "91546ce4499c580dffe7340dd8a1401c89254c3cb88afd324d44a3faeb72610d"
+}

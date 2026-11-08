@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "study": "reference-e8a",
+  "status": "FROZEN",
+  "frozen_utc": "2026-07-17T07:05:00Z",
+  "scope_guard": "Privileged static-world pose-indexed raw-memory closure reference. It is not token matched, learned retrieval, neural-frontier confirmation, or evidence of natural-video generality.",
+  "dataset": {
+    "purpose": "retrieval_reference_holdout",
+    "seed": 20260717,
+    "clips": 500,
+    "frames": 200,
+    "evaluation_pool": "indices 250..349 (first 100 of n_val=250)",
+    "world": 192,
+    "viewport": 64,
+    "digits": 3,
+    "speed": 4,
+    "p_cont": 0.9,
+    "p_hold": 0.1,
+    "source_glyph_split": "MNIST train images; independently generated from development, E2, E7c and E7a"
+  },
+  "memory": {
+    "variants": [
+      {"id": "pose-mosaic-k6", "warmup_frames_stored": 6, "role": "hardness-window geometric control"},
+      {"id": "pose-mosaic-k14", "warmup_frames_stored": 14, "role": "raw-access counterpart to flat-min reach"},
+      {"id": "pose-mosaic-k38", "warmup_frames_stored": 38, "role": "raw-access counterpart to flat-c2 reach"},
+      {"id": "pose-mosaic-k48", "warmup_frames_stored": 48, "role": "primary privileged hierarchy-reach reference"}
+    ],
+    "warmup_end_exclusive": 48,
+    "coordinate_rule": "world_x=(saved_viewport_left_edge+viewport_x)%192",
+    "fusion_rule": "retain first byte-valued observation; every repeated observation must be byte-identical",
+    "query_rule": "crop frozen world-coordinate mosaic at the saved future viewport pose",
+    "update_after_warmup": false,
+    "unknown_fill": {
+      "rule": "row-wise mean intensity from predictor training clips, frames and horizontal positions",
+      "training_array": "data/loopmom_train_3000x100.npy",
+      "training_array_sha256": "3bc69430542975486d33506e6a2a3d64a8c1789d76fd7ffbe774a5f8dad1f84a"
+    },
+    "uses_future_pixels": false,
+    "uses_object_metadata_for_prediction": false,
+    "budget_matching": "none; temporal-span correspondences only; raw pixel, pose and mask bytes reported"
+  },
+  "neural_reference_runs": [
+    {"arm": "hier-min", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_hier-min_s0_t30000.pt", "checkpoint_sha256": "706710935ad2a8dc201084d099ea8d5db38ec18716e5ef8bc3fdc6fa2b44e515", "reference_eval_hours_nfe16": 0.1123},
+    {"arm": "flat-min", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_flat-min_s0_t30000.pt", "checkpoint_sha256": "e8b94c2f03592a413b27099c2e92c1964416ec92a3ac1ddb7bc25bf81386f88d", "reference_eval_hours_nfe16": 0.1024},
+    {"arm": "hier-long", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_hier-long_s0_t30000.pt", "checkpoint_sha256": "8e243d6ad46004a760328d2b1583128318699d4c688024c500dcabedbcbc1b6e", "reference_eval_hours_nfe16": 0.1302},
+    {"arm": "flat-budget", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_flat-budget_s0_t30000.pt", "checkpoint_sha256": "a568610f0ab8c0b11ffaafb046b97b3ce83e730a84491f4b9cef42ab9c4c457d", "reference_eval_hours_nfe16": 0.1253},
+    {"arm": "strided-flat", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_strided-flat_s0_t30000.pt", "checkpoint_sha256": "a1b90c99c2bc7f7882f69c939695599f3d2ff19d965829063847a08912604a9b", "reference_eval_hours_nfe16": 0.1300},
+    {"arm": "hier-c2", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_hier-c2_s0_t30000.pt", "checkpoint_sha256": "b3d3120f37130e9ba70e1cf1fddb616f15d6733dc7f0f1606fe43d3c5c74ba2b", "reference_eval_hours_nfe16": 0.2503},
+    {"arm": "flat-c2", "seed": 0, "steps": 30000, "batch": 16, "checkpoint": "logs_rhcp/rhvd_flat-c2_s0_t30000.pt", "checkpoint_sha256": "576d2b3fd284fef94c55426073b300b6798b587d2c4c79c17b039220d3981081", "reference_eval_hours_nfe16": 0.2447}
+  ],
+  "codec": {
+    "path": "logs_rhcp/hier_ae_mom.pt",
+    "sha256": "3769200d6f9346a2c7cbfa6cff42113da883a052dfa216d3b60f78d8e3684245"
+  },
+  "evaluation": {
+    "warmup_frames": 48,
+    "rollout_frames": 152,
+    "evaluation_clips": 100,
+    "chunk_size": 16,
+    "nfe": 16,
+    "sampler_seed": 0,
+    "metric_threshold": 0.5,
+    "metric_version": "complete-v2-thr0.5",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 0,
+    "family_method": "studentized max-statistic clip-cluster bootstrap over six registered effects",
+    "family_confidence": 0.95,
+    "effect_convention": "baseline error minus pose-mosaic-k48 error; positive favors the registered 48-frame raw-access reference",
+    "secondary_populations": {
+      "answerable-k48": {
+        "dt_lower_exclusive": 6,
+        "dt_upper_inclusive": 48,
+        "hard_lower_exclusive": 0.1,
+        "seen_lower_inclusive": 0.5
+      },
+      "reach-14-to-48": {
+        "dt_lower_exclusive": 14,
+        "dt_upper_inclusive": 48,
+        "hard_lower_exclusive": 0.1,
+        "seen_lower_inclusive": 0.5
+      },
+      "reach-38-to-48": {
+        "dt_lower_exclusive": 38,
+        "dt_upper_inclusive": 48,
+        "hard_lower_exclusive": 0.1,
+        "seen_lower_inclusive": 0.5
+      }
+    },
+    "wandb_project": "hgrid",
+    "wandb_group_prefix": "e8a-pose-mosaic"
+  },
+  "registered_effects": [
+    {"id": "raw-reach-14-to-48", "baseline": "pose-mosaic-k14", "candidate": "pose-mosaic-k48"},
+    {"id": "raw-reach-38-to-48", "baseline": "pose-mosaic-k38", "candidate": "pose-mosaic-k48"},
+    {"id": "hier-min-to-raw48", "baseline": "hier-min", "candidate": "pose-mosaic-k48"},
+    {"id": "hier-long-to-raw48", "baseline": "hier-long", "candidate": "pose-mosaic-k48"},
+    {"id": "strided-flat-to-raw48", "baseline": "strided-flat", "candidate": "pose-mosaic-k48"},
+    {"id": "flat-c2-to-raw48", "baseline": "flat-c2", "candidate": "pose-mosaic-k48"}
+  ],
+  "decision": {
+    "primary_metric": "legacy foreground MSE on all 15200 aligned records",
+    "neural_reference_effect_ids": ["hier-min-to-raw48", "hier-long-to-raw48", "strided-flat-to-raw48", "flat-c2-to-raw48"],
+    "raw_span_diagnostic_effect_ids": ["raw-reach-14-to-48", "raw-reach-38-to-48"],
+    "raw_access_ceiling_ci_clean": "all four neural-to-K48 point estimates and simultaneous lower bounds are positive",
+    "raw_access_directional_reference": "all four neural-to-K48 point estimates are positive but at least one simultaneous lower bound includes zero",
+    "raw_access_ceiling_not_established": "one or more neural-to-K48 point estimates are zero or negative",
+    "coverage_saturation": "K38 and K48 have equal median stored columns and the K38-to-K48 point estimate is numerically zero within 1e-12; this is a registered saturation diagnostic, not a ceiling failure",
+    "invalid": "static-world consistency, data identity, access logging, alignment, artifact integrity or numerical checks fail",
+    "secondary_populations": ["answerable-k48", "reach-14-to-48", "reach-38-to-48"],
+    "corroborating_metrics": ["mse_gt_fg_nonempty", "mse_full", "mse_gt_bg", "mse_union", "fg_precision", "fg_recall", "fg_f1", "missed_components", "extra_components", "current_crop_observed_fraction", "observed_pixel_mse", "unobserved_pixel_mse"],
+    "no_adaptive_extension": "No memory span, fill rule, neural checkpoint, sampler, threshold, endpoint or comparison may be added after generation or result access."
+  },
+  "budget": {
+    "pool": "closure",
+    "expected_gpu_hours": 1.1,
+    "authorized_max_gpu_hours": 4.0,
+    "accounting": "wall clock while any E8a project process owns the GPU, including gates, failed launches, evaluations, retries and uploads"
+  }
+}

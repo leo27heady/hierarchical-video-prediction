@@ -1,0 +1,11 @@
+{
+  "alternate_seed_distinct": true,
+  "arm": "hier-min",
+  "bit_exact": true,
+  "device": "cpu",
+  "explicit_seed": 103017,
+  "legacy_seed": 103017,
+  "nfe": 16,
+  "schema_version": 1,
+  "status": "SAMPLER_PARITY_PASS"
+}

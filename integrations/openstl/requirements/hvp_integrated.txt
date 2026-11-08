@@ -1,0 +1,2 @@
+# Online experiment tracking for the HVP integrated-model campaign.
+wandb==0.27.2

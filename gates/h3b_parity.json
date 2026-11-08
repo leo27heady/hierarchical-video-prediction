@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-15T05:03:15.579203+00:00",
+  "schema_version": 1,
+  "source_commit": "1e0aee03865d84ad745a6ce4ac8da1daca1db840",
+  "status": "H3B_PARITY_PASS",
+  "subject": "gates/h3b_parity_report.json",
+  "subject_sha256": "09fa4c7fa6721ef41d09ec3ce30bae7172ef1fb04672d64522967b610e258aba"
+}

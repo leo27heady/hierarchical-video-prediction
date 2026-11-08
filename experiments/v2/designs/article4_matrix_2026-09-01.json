@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "status": "authorized_30k_campaign_preparation",
+  "article": 4,
+  "dataset": {
+    "name": "Toroidal Re-entry Benchmark",
+    "short_name": "TRB",
+    "development_manifest": "experiments/v2/manifests/trb_v2_development.manifest.json",
+    "development_manifest_sha256": "2a2e375b82d7431a0d8a42b9b40ca269b21a0305b3df0287f523dc2240a7c1ac",
+    "legacy_test_allowed": false,
+    "fresh_test_generation": "after_config_and_selection_lock"
+  },
+  "training_seeds": [0, 1],
+  "instrument_candidate": {
+    "width": 256,
+    "depth": 6,
+    "heads": 8,
+    "batch_size": 16,
+    "precision": "bf16_autocast_fp32_master",
+    "mixed_precision_rmsnorm": true,
+    "temporal_embedding_positions": 100,
+    "common_first_target_anchor": 96,
+    "target_horizon": 4,
+    "target_stride": 1,
+    "candidate_update_counts": [8000, 12000, 16000, 20000, 24000, 30000],
+    "recommended_update_count": 30000,
+    "confirmed_update_count": 30000,
+    "update_count_selection": "A4-COR convergence and ranking-stability gate; confirmed by Leonid on 2026-09-01",
+    "primary_checkpoint": 30000,
+    "validation_curve_role": "diagnostic only; no per-arm early stopping"
+  },
+  "allocation": {
+    "implementation": "hvp_hca.allocation",
+    "fine_grid": [8, 8],
+    "coarse_tokens_per_time": 16,
+    "fine_tokens_per_complete_time": 64,
+    "geometric_decay": 0.94,
+    "spatial_selection": "deterministic nested phase-cycled farthest-cell lattice"
+  },
+  "series": {
+    "A4-FRT": {
+      "budgets": [320, 768, 1152, 1792, 2432, 3072],
+      "policies": ["flat_recent", "linear_age", "geometric_age"]
+    },
+    "A4-ALC": {
+      "budget": 1792,
+      "policies": [
+        "flat_recent",
+        "fine_heavy",
+        "balanced_recent",
+        "coarse_heavy",
+        "linear_age",
+        "geometric_age",
+        "reach_optimized"
+      ]
+    },
+    "A4-CEX": {
+      "complete_recent_fine_times": 6,
+      "coarse_time_positions": [0, 4, 8, 16, 32, 64],
+      "overlap": "exclusive"
+    },
+    "A4-LVL": {
+      "budget": 1792,
+      "levels": [1, 2, 3],
+      "allocation": "best two-seed mean validation policy from A4-ALC"
+    },
+    "A4-OVR": {
+      "budget": 1792,
+      "modes": ["nested", "exclusive", "residual"],
+      "allocation": "best two-seed mean validation policy from A4-ALC"
+    },
+    "A4-STS": {
+      "budgets": [1792],
+      "fine_token_reserve": 256,
+      "spatial_quotas": [64, 32, 16, 8],
+      "temporal_policies": ["recent_detail", "uniform_time", "geometric_time"]
+    }
+  },
+  "naming": {
+    "machine": "A4_<family>_B<budget>_L<levels>_<policy>_<overlap>_S<seed>",
+    "paper_labels": {
+      "flat_recent": "F",
+      "balanced_recent": "H-B",
+      "linear_age": "H-L",
+      "geometric_age": "H-G",
+      "fine_heavy": "H-F",
+      "coarse_heavy": "H-C",
+      "reach_optimized": "H-R"
+    }
+  },
+  "deduplicated_counts": {
+    "unique_configurations": 43,
+    "training_runs": 86,
+    "immediate_wave_runs": 80,
+    "dependent_wave_runs": 6
+  },
+  "tracking": {
+    "local_artifacts_authoritative": true,
+    "wandb_project": "hierarchical-video-prediction-article4-v2",
+    "wandb_group": "article4-30k-primary-2026-09-01",
+    "wandb_failure_is_fatal_after_launch": false
+  },
+  "launch_authorized": true
+}

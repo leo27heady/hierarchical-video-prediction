@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-07-17T09:24:00+00:00",
+  "schema_version": 1,
+  "source_commit": "05a0b342100625d952d8eb271d23545fa23f754b",
+  "status": "DESIGN_VALIDATION_PASS",
+  "subject": "gates/e8a_design_validation.json",
+  "subject_sha256": "54ac60bb583ab2957eebcaf1b012bd9e1a2bb4324cdf71a90adab7675cc42a95"
+}

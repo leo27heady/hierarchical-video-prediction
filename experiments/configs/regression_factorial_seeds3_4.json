@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "study": "e4b-head-package-seeds3-4",
+  "status": "FROZEN",
+  "frozen_utc": "2026-07-13T06:45:00Z",
+  "rationale": "The preregistered E4b training-seed trigger fired after E4a: regression package effects cross +0.005 and -0.005 and have sample SD 0.0161 > 0.010.",
+  "factors": {
+    "head": ["diffusion", "regression"],
+    "package": ["temporal-sparse-full-resolution", "spatial-coarse-dense"],
+    "seed": [0, 1, 2, 3, 4]
+  },
+  "cells": {
+    "diffusion_temporal": "strided-flat",
+    "diffusion_spatial": "hier-long",
+    "regression_temporal": "strided-flat-reg",
+    "regression_spatial": "reg-long"
+  },
+  "prior_studies": {
+    "seeds_0_1": "legacy-development-pool artifacts",
+    "seed_2_regression": "e4-head-package-seed2"
+  },
+  "new_training_runs": [
+    {"arm": "hier-long", "package": "spatial-coarse-dense", "head": "diffusion", "seed": 3, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "strided-flat", "package": "temporal-sparse-full-resolution", "head": "diffusion", "seed": 3, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "reg-long", "package": "spatial-coarse-dense", "head": "regression", "seed": 3, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "strided-flat-reg", "package": "temporal-sparse-full-resolution", "head": "regression", "seed": 3, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "hier-long", "package": "spatial-coarse-dense", "head": "diffusion", "seed": 4, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "strided-flat", "package": "temporal-sparse-full-resolution", "head": "diffusion", "seed": 4, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "reg-long", "package": "spatial-coarse-dense", "head": "regression", "seed": 4, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "strided-flat-reg", "package": "temporal-sparse-full-resolution", "head": "regression", "seed": 4, "steps": 30000, "batch": 16, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5}
+  ],
+  "evaluation": {
+    "dataset": "data/loopmom_test_500x200.npy",
+    "pool_status": "existing adaptively used development pool; not untouched confirmation",
+    "warmup_frames": 48,
+    "rollout_frames": 152,
+    "clips": 100,
+    "nfe": 16,
+    "metric": "record-level foreground MSE with complete-v2 corroborating metrics",
+    "effect_convention": "spatial error minus temporal error; positive favors temporal packaging",
+    "within_model_interval": "paired clip-cluster bootstrap, 10000 replicates, seed 0"
+  },
+  "training_seed_analysis": {
+    "units": "five independently trained seeds",
+    "estimands": ["diffusion temporal advantage", "regression temporal advantage", "head x package interaction"],
+    "summary": "arithmetic mean, sample standard deviation and two-sided 95% Student-t interval with df=4",
+    "robust_head_shift_rule": "Support a training-seed-robust shift only if all five interaction point estimates are negative and the across-seed 95% t interval is entirely below zero.",
+    "regression_preference_rule": "Call one regression package seed-stable only if all five regression package effects have the same material sign; otherwise report heterogeneity and sign counts.",
+    "scope": "Within-model clip bootstrap intervals are conditional and are never substituted for training-seed uncertainty.",
+    "terminal_rule": "E4b ends after seeds 3 and 4 regardless of outcome; no seeds 5+ are authorized by this study."
+  },
+  "budget": {
+    "pool": "replacement",
+    "replaces": "E8c CW-VAE protocol-bridge GPU allocation; comparison-table work remains CPU-only",
+    "authorized_max_gpu_hours": 36.0,
+    "protected_reserve_allowed": false,
+    "accounting": "wall-clock project GPU ownership including training, evaluation, failed attempts, resumes and uploads"
+  },
+  "compatibility": {
+    "regime": "legacy B16x30k scientific kernel wrapped by H3b provenance-v2",
+    "batch_change_prohibited": true,
+    "reason": "E4b extends the same factorial; filling VRAM would change the optimizer regime.",
+    "required_gate": "H3B_PARITY_PASS"
+  },
+  "wandb": {
+    "project": "hgrid",
+    "group": "e4b-head-package-seeds3-4"
+  }
+}

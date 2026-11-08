@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "study": "e4-head-package-seed2",
+  "status": "FROZEN",
+  "frozen_utc": "2026-07-12T21:10:00Z",
+  "rationale": "E2 confirmed the central reach-fidelity account; F3 remains article-central and regression has opposite package signs at seeds 0 and 1.",
+  "factors": {
+    "head": ["diffusion", "regression"],
+    "package": ["temporal-sparse-full-resolution", "spatial-coarse-dense"],
+    "seed": [0, 1, 2]
+  },
+  "cells": {
+    "diffusion_temporal": "strided-flat",
+    "diffusion_spatial": "hier-long",
+    "regression_temporal": "strided-flat-reg",
+    "regression_spatial": "reg-long"
+  },
+  "new_training_runs": [
+    {
+      "arm": "reg-long",
+      "package": "spatial-coarse-dense",
+      "seed": 2,
+      "steps": 30000,
+      "batch": 16,
+      "lr": 0.0003,
+      "warmup": 2000,
+      "ema": 0.999,
+      "precision": "bf16",
+      "max_gpu_hours": 5.0
+    },
+    {
+      "arm": "strided-flat-reg",
+      "package": "temporal-sparse-full-resolution",
+      "seed": 2,
+      "steps": 30000,
+      "batch": 16,
+      "lr": 0.0003,
+      "warmup": 2000,
+      "ema": 0.999,
+      "precision": "bf16",
+      "max_gpu_hours": 5.0
+    }
+  ],
+  "evaluation": {
+    "dataset": "data/loopmom_test_500x200.npy",
+    "warmup_frames": 48,
+    "rollout_frames": 152,
+    "clips": 100,
+    "nfe": 16,
+    "metric": "record-level foreground MSE with complete-v2 corroborating metrics",
+    "effect_convention": "spatial error minus temporal error; positive favors temporal packaging",
+    "bootstrap": "paired clip-cluster, 10000 replicates, seed 0"
+  },
+  "primary_estimand": "seed-specific difference in temporal-package advantage between regression and diffusion; negative means regression shifts toward spatial packaging",
+  "primary_rule": "Report all three seed-specific package effects and interactions. A consistent head shift is supported only if the interaction is negative at all three seeds; do not call regression equivalent when its seed effects differ in sign.",
+  "e4b_training_seed_trigger": {
+    "fires_if": "After E4a, regression package effects contain both a value >= +0.005 and a value <= -0.005, or their sample standard deviation exceeds 0.010.",
+    "meaning": "material training-seed heterogeneity, independent of clip-bootstrap evaluation uncertainty",
+    "budget_rule": "E4b replaces or reduces E6, E8c or E9 and is never additive or reserve-funded"
+  },
+  "budget": {
+    "pool": "closure",
+    "authorized_max_gpu_hours": 11.0,
+    "accounting": "wall-clock project GPU ownership including training, evaluation, uploads, failures and retries"
+  },
+  "compatibility": {
+    "regime": "legacy B16x30k scientific kernel wrapped by H3b provenance-v2",
+    "batch_change_prohibited": true,
+    "reason": "Changing batch/LR/updates to fill VRAM would create a new optimizer regime and invalidate completion of the legacy factorial.",
+    "required_gate": "H3B_PARITY_PASS"
+  },
+  "wandb": {
+    "project": "hgrid",
+    "group": "e4-head-package-seed2"
+  }
+}

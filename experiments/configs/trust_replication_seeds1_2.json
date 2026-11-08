@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "study": "e5a-trust-replication",
+  "status": "FROZEN",
+  "frozen_utc": "2026-07-14T12:00:00Z",
+  "scientific_role": "Replicate the seed-0 early-benefit to late-inversion boundary before any trust diagnostic or intervention is authorized.",
+  "scope_guard": "E5a tests the self-fed rollout boundary. It does not re-estimate the separately measured single-step addressability effect and it cannot establish a universal trust law.",
+  "dataset": {
+    "name": "hgrid3",
+    "status": "existing adaptively used development testbed",
+    "train_clips": "data/hgrid3_train_1200x480.npy",
+    "train_actions": "data/hgrid3_train_1200x480_actions.npy",
+    "train_positions": "data/hgrid3_train_1200x480_positions.npy",
+    "test_clips": "data/hgrid3_test_300x480.npy",
+    "test_actions": "data/hgrid3_test_300x480_actions.npy",
+    "test_positions": "data/hgrid3_test_300x480_positions.npy",
+    "world": 768,
+    "viewport": 64,
+    "speed": 4,
+    "train_shape": [1200, 480, 64, 64],
+    "test_shape": [300, 480, 64, 64],
+    "n_val": 150,
+    "evaluation_clip_indices": [150, 249],
+    "hashes": {
+      "train_clips": "b5757a77c3e354c70ede510b67c5d1e1fbd6d08337ef91242926eb601db10e7a",
+      "train_actions": "f533cf6ffab607119660f31910c11e1239f1e0b81e25a3336474a08aa5f25749",
+      "train_positions": "7a2e8e37900f03027195e4a26963958a77607c8b7f7130302780e1f29d1ffdee",
+      "test_clips": "c58fe6288ca3ceee33b908b0d6465ee672b3e5522002af6b7397845517789f44",
+      "test_actions": "a47279c28f12532924e7bae033a68a1f703ff3597b39209c1cb2e862a14f075c",
+      "test_positions": "9e0c1e0537d43b07bda084ca539617bcfbb79d8b562fcb5a84fe1f3573cf0a1c"
+    }
+  },
+  "autoencoder": {
+    "path": "logs_rhcp/hier_ae_hgrid3.pt",
+    "sha256": "39e31b99133fca14e1ce4525a8b1bf9ee0a58f3d39aa19f816f6014e93e47ee0"
+  },
+  "cells": {
+    "long_reach_hierarchy": "d1-56-diff",
+    "contiguous_fine_comparator": "d0-diff-long"
+  },
+  "interfaces": {
+    "long_reach_hierarchy": {
+      "context": "56 coarse slots at stride 4 plus 6 recent fine slots",
+      "reach_frames": 224,
+      "context_tokens": 1280,
+      "target_tokens": 272,
+      "total_tokens": 1552
+    },
+    "contiguous_fine_comparator": {
+      "context": "48 contiguous fine slots",
+      "reach_frames": 48,
+      "context_tokens": 3072,
+      "target_tokens": 320,
+      "total_tokens": 3392
+    },
+    "matching_statement": "The cells match head, backbone family, parameter scale, training examples, optimizer, EMA, sampler and evaluation geometry. Context reach, spatial fidelity, context-token count and the legacy coupled coarse target interface intentionally differ; this is a configuration-level trust comparison, not a pure stride or equal-token intervention."
+  },
+  "prior_evidence": {
+    "single_step_addressability": {
+      "role": "external prerequisite, not an E5a endpoint",
+      "statement": "GT-fed stride56x4 addressability replicated at seeds 0 and 1 and was localized to the reach-differential band; effect magnitude was seed-variable.",
+      "design": "docs/HGRID_DESIGN.md",
+      "design_sha256": "573ab7df8e14dfe9594d4df1d42e34ba82d9d2556775ee3af2d15aae7f36a516",
+      "seed0_log": "logs_rhcp/hgrid3_disambig_s0.log",
+      "seed0_log_sha256": "438ddac458d87eb10e3ab3b26e015eb47b515d29d513bfcf82477b56fb5090cf",
+      "seed1_log": "logs_rhcp/hgrid3_disambig_s1.log",
+      "seed1_log_sha256": "9e69a5898ad2d69c041f4fa8275c700dcdecad2f178d0899325944011bdc799d"
+    },
+    "seed0_rollout": {
+      "long_reach_metrics": "logs_rhcp/rhvd_eval_d1-56-diff_s0.npz",
+      "long_reach_metrics_sha256": "567c5c450a1588946335c288ff244d37d5c83c1e23682f592d0f293bec11ec23",
+      "comparator_metrics": "logs_rhcp/rhvd_eval_d0-diff-long_s0.npz",
+      "comparator_metrics_sha256": "b6b9a9e83d58419c2f132bc02e4d409dfcd13859735febefcad2f3e5dae5a88f",
+      "long_reach_checkpoint": "logs_rhcp/rhvd_d1-56-diff_s0_t40000.pt",
+      "long_reach_checkpoint_sha256": "aa5780f13e6d48c85fb82fc985a83f027ff50317cc606ff45003d78cb04b7305",
+      "comparator_checkpoint": "logs_rhcp/rhvd_d0-diff-long_s0_t40000.pt",
+      "comparator_checkpoint_sha256": "bb7b706767e885e451bb9023c90371d526600d82ebf64346f437d365d03a7565",
+      "long_reach_oracle": "logs_rhcp/rhvd_eval_d1-56-diff_s0_oracle.npz",
+      "long_reach_oracle_sha256": "068220de5b3a42d64dbf72309b294b1853c20ea0ee589b8b39e526348f032b4a",
+      "comparator_oracle": "logs_rhcp/rhvd_eval_d0-diff-long_s0_oracle.npz",
+      "comparator_oracle_sha256": "7afe29816f7302a2d7be3b486594e0dda639cbe866de39e930d6d38813317c07",
+      "measured_wall_hours": {
+        "long_reach_hierarchy": 2.4914,
+        "contiguous_fine_comparator": 6.9397
+      }
+    }
+  },
+  "new_training_runs": [
+    {"arm": "d1-56-diff", "seed": 1, "steps": 40000, "batch": 8, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "d0-diff-long", "seed": 1, "steps": 40000, "batch": 8, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 9.5},
+    {"arm": "d1-56-diff", "seed": 2, "steps": 40000, "batch": 8, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 4.5},
+    {"arm": "d0-diff-long", "seed": 2, "steps": 40000, "batch": 8, "lr": 0.0003, "warmup": 2000, "ema": 0.999, "precision": "bf16", "max_gpu_hours": 9.5}
+  ],
+  "evaluation": {
+    "warmup_frames": 224,
+    "rollout_frames": 256,
+    "clips": 100,
+    "nfe": 16,
+    "metric_threshold": 0.5,
+    "primary_metric": "legacy-compatible GT-foreground MSE on non-empty GT-foreground records",
+    "effect_convention": "comparator error minus long-reach-hierarchy error; positive favors hierarchy",
+    "primary_windows": {
+      "early_benefit": {"horizon_min": 1, "horizon_max": 24, "required_sign": "positive"},
+      "late_inversion": {"horizon_min": 61, "horizon_max": 256, "required_sign": "negative"}
+    },
+    "mechanistic_secondary": [
+      "early and late effects restricted to HARD records",
+      "answerable HARD records with dt greater than the 48-frame comparator reach",
+      "horizon-by-hardness table matching the seed-0 report"
+    ],
+    "complete_metric_corroboration": [
+      "full-frame MSE",
+      "union-mask MSE",
+      "background MSE",
+      "foreground precision and recall",
+      "missed and extra component counts"
+    ],
+    "interval": "paired clip-cluster bootstrap, 10000 replicates, seed 0, two-sided percentile 95% interval",
+    "multiplicity": "The replication claim is an intersection-union requirement: both preregistered directional windows must pass. Secondary rows cannot rescue a failed primary gate."
+  },
+  "decision_rule": {
+    "per_seed_ci_clean_boundary": "early_benefit lower 95% bound > 0 AND late_inversion upper 95% bound < 0",
+    "per_seed_directional_boundary": "early_benefit point estimate > 0 AND late_inversion point estimate < 0",
+    "REPLICATED": "both new seeds satisfy the CI-clean boundary",
+    "DIRECTIONALLY_REPLICATED": "both new seeds satisfy the directional boundary but at least one is not CI-clean",
+    "HETEROGENEOUS_PARTIAL": "exactly one new seed satisfies the directional boundary",
+    "NOT_REPLICATED": "neither new seed satisfies the directional boundary",
+    "e5b_gate": "REPLICATED permits the full frozen E5b diagnostic design; DIRECTIONALLY_REPLICATED permits only a reduced diagnostic design after a new freeze; HETEROGENEOUS_PARTIAL or NOT_REPLICATED demotes the title-level empirical trust claim and does not authorize the full E5b programme.",
+    "terminal_rule": "E5a ends after seeds 1 and 2 regardless of outcome. No extra training seed is authorized by E5a."
+  },
+  "budget": {
+    "authorized_max_gpu_hours": 28.0,
+    "expected_gpu_hours_from_seed0": 18.9,
+    "protected_reserve_allowed": false,
+    "accounting": "wall-clock project GPU ownership including training, evaluation, failed attempts, resumes and uploads"
+  },
+  "compatibility": {
+    "regime": "legacy H-grid3 B8x40k kernel wrapped by provenance-v2",
+    "batch_or_lr_change_prohibited": true,
+    "vram_fill_prohibited": true,
+    "reason": "Changing batch size or learning rate to occupy more VRAM would change the optimizer regime and invalidate replication. The measured seed-0 cells used 3.64 and 7.39 GiB allocated VRAM.",
+    "required_gate": "H3B_PARITY_PASS"
+  },
+  "wandb": {
+    "project": "hgrid",
+    "group": "e5a-trust-replication-seeds1-2",
+    "dataset_tag": "hgrid3",
+    "provenance_tag": "e5a-provenance-v2"
+  }
+}

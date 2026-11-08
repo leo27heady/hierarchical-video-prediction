@@ -1,0 +1,151 @@
+{
+  "allocated_gpu_hours": 36.0,
+  "authorized_gpu_hours": 36.0,
+  "config_sha256": "91546ce4499c580dffe7340dd8a1401c89254c3cb88afd324d44a3faeb72610d",
+  "e4a_completion_sha256": "c154c9a67eac3c7313f4c261588acf16464ab440e1a0dd1ac994e9047cab61ce",
+  "e4a_results_sha256": "f052a7e0f09046319d8868db3773df47976a29b01280aca18d069b373b460e4e",
+  "existing_runs": [],
+  "failures": [],
+  "h3b_parity_sha256": "d44ca872d03ced36a00aa4db1d5badbd4604452c019e01d7b2eee650c5b50a7d",
+  "replacement": "E8c CW-VAE protocol-bridge GPU allocation; comparison-table work remains CPU-only",
+  "required_hashes": {
+    "data/loopmom_test_500x200.npy": "00e4dae9a019adf8cd7c3d2bbbeb12c7d511d0c4a313f167420322d0c2e6cad3",
+    "data/loopmom_test_500x200_actions.npy": "1746a8015f8f9f433b04a7778f4c2d36a83e04199998d80098b84f4d2dee0b86",
+    "data/loopmom_train_3000x100.npy": "3bc69430542975486d33506e6a2a3d64a8c1789d76fd7ffbe774a5f8dad1f84a",
+    "data/loopmom_train_3000x100_actions.npy": "a0b39d07aa56ffcb062bcdd73a46b85b6926fdc34dc106ceb701e452b0a0729c",
+    "docs/confirmation/E4B_TABLE_SHELL.md": "815b00485ca9ce7878a56d202eaddffaf8d08762dadfd22194d73b3bcddb8d24",
+    "logs_rhcp/hier_ae_mom.pt": "3769200d6f9346a2c7cbfa6cff42113da883a052dfa216d3b60f78d8e3684245",
+    "scripts/analyze_e4b_factorial.py": "a24ab2c36adba9037a6d7b5c17822380b1d1b5fed636fbaaad9683da0e3f29d9",
+    "scripts/run_e4b_factorial.ps1": "719c9087e2012f14f97c10a3bbd813927b6c18c3bf8cba1c79b7e3ae206e1bb2",
+    "scripts/validate_e4b_completion.py": "fc5ca8c35d4fe8004b5fe6c4a3b207c297088404ba72932f36fd8e6ace8db2b6"
+  },
+  "resolved_arms": {
+    "hier-long": {
+      "coarse_context_slots": 48,
+      "coarse_context_stride": 1,
+      "coarse_target_stride": 1,
+      "context_reach": 48,
+      "context_tokens": 1152,
+      "fine_history_slots": 0,
+      "fine_recent_slots": 6,
+      "head": "diff",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "hier-long",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 4,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 320,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 1472
+    },
+    "reg-long": {
+      "coarse_context_slots": 48,
+      "coarse_context_stride": 1,
+      "coarse_target_stride": 1,
+      "context_reach": 48,
+      "context_tokens": 1152,
+      "fine_history_slots": 0,
+      "fine_recent_slots": 6,
+      "head": "reg",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "reg-long",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 4,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 320,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 1472
+    },
+    "strided-flat": {
+      "coarse_context_slots": 0,
+      "coarse_context_stride": 1,
+      "coarse_target_stride": 1,
+      "context_reach": 48,
+      "context_tokens": 1088,
+      "fine_history_slots": 11,
+      "fine_recent_slots": 6,
+      "head": "diff",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "strided-flat",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 4,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 320,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 1408
+    },
+    "strided-flat-reg": {
+      "coarse_context_slots": 0,
+      "coarse_context_stride": 1,
+      "coarse_target_stride": 1,
+      "context_reach": 48,
+      "context_tokens": 1088,
+      "fine_history_slots": 11,
+      "fine_recent_slots": 6,
+      "head": "reg",
+      "loss_weights": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "name": "strided-flat-reg",
+      "note": "legacy target interface coupled to context stride",
+      "predict_coarse": true,
+      "predict_fine": true,
+      "predict_top": false,
+      "status": "measured",
+      "target_slots": {
+        "coarse": 4,
+        "fine": 4,
+        "top": 0
+      },
+      "target_tokens": 320,
+      "top_context_slots": 0,
+      "top_context_stride": 1,
+      "top_target_stride": 1,
+      "total_tokens": 1408
+    }
+  },
+  "runs": 8,
+  "schema_version": 1,
+  "status": "PASS"
+}

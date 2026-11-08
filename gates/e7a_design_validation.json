@@ -1,0 +1,12 @@
+{
+  "authorized_gpu_hours": 36.0,
+  "budget_components_gpu_hours": 35.3,
+  "config_sha256": "03c28d6a193d6e6294e3edec495c292fb0a75181cc1b35cca769a5ce9a8a6e4e",
+  "dataset_id": "loopmom-codec_robustness_holdout-20260716-77a4ec5aee94",
+  "evaluations": 14,
+  "failures": [],
+  "manifest_sha256": "e57bc7c2d47231216c396a5221041399ba2f8587c38521e0a7fbc71995f53fa1",
+  "predictor_runs": 7,
+  "schema_version": 1,
+  "status": "DESIGN_VALIDATION_PASS"
+}
